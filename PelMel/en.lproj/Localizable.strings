@@ -1,0 +1,242 @@
+/* 
+  File.strings
+  nativeTest
+
+  Created by Christophe Fondacci on 26/09/12.
+  Copyright (c) 2012 Christophe Fondacci. All rights reserved.
+*/
+"account.button"="Account";
+"action.modify"="Modify";
+"action.checkin"="Check In";
+"action.photo"="Photo";
+"action.report.done.title"="Reporting information";
+"action.report.done"="Your notification has been stored and will be reviewed within a few days. Thank you for your help!";
+"action.report.title"="Report what?";
+"action.report.abuse"="This photo contains abuse";
+"action.report.closed"="This place doesn't exist";
+"action.report.location"="Incorrect location";
+"action.report.location.infotitle"="Could you help us?";
+"action.report.location.infomsg"="If you know the proper location of this place, would you mind dragging the pin to the real location and validate so that other users can have correct information?";
+"action.report.notgay"="Not gay";
+"action.report.remove"="Delete this photo";
+"action.edit.title"="Choose an info to edit";
+"action.edit.name"="Name / place type";
+"action.edit.description"="Description";
+"action.edit.location"="Location";
+"action.edit.confirm.title"="Apply changes?";
+"action.edit.confirm.message"="Submit your changes so that everyone will see your modifications?";
+"action.edit.confirm.submit"="Submit";
+"action.save"="Save";
+"action.searchHere"="Show";
+"barButton.list"="List";
+"cancel"="Cancel";
+"city.label"="City";
+"city.withbars"="%d gay places";
+"detail.city.title"="%@: %d gay hangouts";
+"distance.template.kilometers"="%@ km";
+"distance.template.meters"="%@ meters";
+"distance.template.miles"="%@ miles";
+"distance.template.feet"="%@ feet";
+"edit.title"="Enter a name";
+"events.title"="Events";
+"filters.hours.happy"="Happy hours now";
+"filters.hours.open"="Opened now";
+"filters.placeType.header"="Filters";
+"filters.title"="Filters";
+"filters.warning"="Filters may hide some results";
+"gallery.removalFailed.title"="Cannot delete photo";
+"geoloc.deactivated.title"="Location services disabled";
+"geoloc.deactivated.subtitle"="Go to settings > privacy > location";
+"language.fr"="French";
+"language.en"="English";
+"language.es"="Spanish";
+"language.it"="Italian";
+"language.de"="German";
+"language.nl"="Dutch";
+"list.places.men"="%d";
+"list.places.likes"="%d";
+"loading"="Fetching nearest gay places...";
+"loading.events"="Fetching nearest gay events...";
+"loading.city"="Fetching %@'s gay places...";
+"login.failed"="Login failed";
+"login.field.email"="Email";
+"login.field.password"="Password";
+"login.field.pseudo"="Nickname";
+"logging.label"="Login to find all hangouts nearby";
+"login.logging"="Connecting...";
+"login.section.title"="LOGIN";
+"login.section.register.title"="REGISTER";
+"login.localizing"="GPS localization...";
+"map.newpoint.title"="New hangout";
+"map.newpoint.subtitle"="Localizing address...";
+"map.option.add" = "Add";
+"map.option.checkin" = "Check in";
+"map.title"="Map";
+"menu.main.title"="Menu";
+"menu.settings.title"="Settings";
+"messages.wait"="Loading...";
+"message.action.send"="Send";
+"message.placeholder"="Enter your message";
+"message.placeholder.comment"="Write your comment on %@";
+"message.reviews.title"="Comments";
+"message.sending"="Sending message...";
+"messages.my.title"="Messages";
+"moreresults.title"="Search more results";
+"moreresults.subtitle"="Tap here to search for all places and cities";
+"network.noconnection"="No Network Connection";
+"network.connected"="Connected!";
+"network.connecting"="Logging in...";
+"noresult.title"="No nearby result found";
+"noresult.subtitle"="Tap here to search worldwide";
+"noresult.searching"="Searching...";
+"overview.inUser"="They were there";
+"overview.likeUser"="They like";
+"overview.events"="Upcoming events";
+"overview.event.inUser"="They come";
+"overview.event.likeUser"="They like";
+"overview.event.place"="Takes place at";
+"overview.user.likeUser"="He likes";
+"overview.user.likePlace"="He goes to";
+"photos.profile"="Profile photo";
+"photos.other"="Photo #%d";
+"photos.add"="Add photo";
+"photos.uploading"="Uploading photo...";
+"places.search.placeholder"="Find a place or city";
+"places.search.placeholder.event"="Find an event";
+"places.section.incity"="%@'s gay hangouts";
+"places.section.inZone"="%d gay hangouts found";
+"places.section.nearby"="Hangouts nearby";
+"places.section.nearby.events"="Events nearby";
+"places.section.searchPlaces"="Hangouts";
+"places.section.searchCities"="Cities";
+"places.title"="Hangouts";
+"placetypes"="asso,club,restaurant,sauna,sexclub,sexshop,bar,hotel";
+"placetype.sponsored"="%@ (sponsored)";
+"placetype.asso"="Association";
+"placetype.bar"="Bar";
+"placetype.club"="Club";
+"placetype.hotel"="Hotel";
+"placetype.restaurant"="Restaurant";
+"placetype.sauna"="Bathhouse";
+"placetype.sexclub"="Sex club";
+"placetype.sexshop"="Shop";
+"placetype.plural.asso"="Associations";
+"placetype.plural.bar"="Bars";
+"placetype.plural.club"="Clubs";
+"placetype.plural.hotel"="Hotels";
+"placetype.plural.restaurant"="Restaurants";
+"placetype.plural.sauna"="Bathhouses";
+"placetype.plural.sexclub"="Sex clubs";
+"placetype.plural.sexshop"="Shops";
+"profile.height"="Height";
+"profile.weight"="Weight";
+"profile.tags.title"="Define yourself";
+"profile.save"="Sending data...";
+"profile.photo.take"="Take a photo";
+"profile.photo.library"="Photo from library";
+"profile.photo.manage"="Manage photos";
+"profile.photo.subtitle"="%d photos";
+"profile.photo.header"="Photos";
+"profile.photo.title"="Add a photo";
+"profile.title"="My account";
+"push.permission.title"="Enable push?";
+"push.permission.msg"="Would you like to enable push notifications to let PelMel ping you whenever you got new messages?";
+"push.refused.title"="You're the boss";
+"push.refused.msg"="Ok, we won't bother you again. In case you change your mind, you can activate/de-activate push from your settings of the bottom left menu.";
+"push.yes"="Yes";
+"push.no"="Not now";
+"tags"="bear,beard,bi,black,blond,chubby,couple,cruising,daddy,hairy,hardcore,hugedick,leather,military,muscle,naked,piercing,tatoo,twink";
+"description"="Description";
+"age"="%d years old";
+"disconnect"="Disconnect";
+"registering"="Registering...";
+"register.birth.label"="Birth Date";
+"register.birth.placeholder"="Enter your birthdate";
+"register.button"="REGISTER";
+"register.failed.title"="Registration failed";
+"register.failed"="We could not register your account. Potential causes are : no network, email already in use or technical problem.";
+"register.invalid.text"="You need to provide a valid email address, a password with at least 6 characters and a nickname to complete registration.";
+"register.invalid.title"="Invalid information";
+"register.label"="Register freely in 1 clic";
+"register.terms.accept"="By registering you agree to our terms of use. Click here to read them.";
+"register.why.intro"="To operate our services, we need to uniquely identify you in our network. Tap here to find out why.";
+"register.why"="    First of all, our content may not be suitable for children so we need everybody to confirm their age.
+
+Then, we may use your localization when you are near a place so that we can expose to other users the number of persons in a given place. For this purpose we need to uniquely identify you.
+
+Don't be scared, we only need an email, a password, a nickname and your birth date. Your email is only used as a unique identifier internally to our services and will never be exposed to anyone. We encourage you to never use your personal info as your nickname (like your name) but to instead use anything which cannot personally identify yourself.
+";
+"settings.account.title"="My account";
+"settings.account.cell"="My profile";
+"settings.hd"="HD images";
+"settings.hd.subtitle"="Better quality, requires good 3G connexion";
+"settings.general.title"="General";
+"settings.messages"="Messages";
+"settings.placeTypes.title"="Place filters";
+"settings.settings"="Settings";
+"settings.likes"="I like";
+"settings.likers"="Who like me";
+"snippet.likes"="%d likes";
+"snippet.activity"="Nearby users";
+"snippet.edit.descPlaceholder"="Enter a description";
+"snippet.edit.titlePlaceholder"="Enter a name";
+"snippet.title.notitle" = "Tap to add a name";
+"snippet.title.happyhours"="Happy Hours";
+"snippet.title.hours"="Opening Hours";
+"sort.popularity"="Popularity";
+"sort.date"="Date";
+"sort.distance"="Distance";
+"sort.name"="Name";
+"specials.happy"="HAPPY";
+"specials.opened"="OPEN";
+"specials.open.leftHours"="%@ left";
+"specials.open.in"="Opens in";
+"specials.start.in"="Starts in";
+"specials.subtitleTemplate.current"="%@ left : %@";
+"specials.subtitleTemplate.soon"="In %@ : %@";
+"time.days"="days";
+"time.formatter"="%d %@ ago";
+"time.hours"="hrs";
+"time.minutes"="min";
+
+"togayther.slogan"="Your outings, your style";
+"upload.failed.title"="Image upload failed";
+"upload.failed"="We could not send your image to our server, this is probably caused by network problems. Check your connection or try to connect to a wifi hotspot and try again.";
+"user.lastlocation"="Seen @ %@ %d %@ ago";
+"user.loc.days"="days";
+"user.loc.hours"="hours";
+"user.loc.minutes"="minutes";
+"user.status.offline"="OFFLINE";
+"user.status.online"="ONLINE";
+"profile.mustBe18.title"="Age restriction";
+"profile.mustBe18"="You must be over 12 to be able to use togayther, please define your correct birth date so that you can log in.";
+"terms.title"="Terms of use";
+"terms"="These Terms of Use will apply to the use of the Service. Please read these Terms of Use carefully so that you know what your rights and obligations are when using the Service. The acceptance of these Terms of Use constitutes a valid and binding agreement between 'NeXtep Softwares' (the COMPANY) and you (the USER) for the use of the Service. If you make any use of the Service you agree to be bound by these terms and conditions. You must be 18 years of age or older to use this service and must be registered as a member. If we discover that you are not over 18, we reserve our right to suspend and remove you account without any notice.
+    
+    Article 1
+The email address of the user is only used as a unique login identifier and is never exposed to anyone. The COMPANY may use it to communicate important information to the USER.
+
+    Article 2
+You (the USER) are the sole owner of all rights in the materials posted or uploaded by you (including all related copyrights) or that you have the absolute right to license their use as provided in this section. While you will retain ownership of the copyright in the materials posted or uploaded by you, you agree that all materials posted or uploaded by you shall become part of a database, and that the Company will own the compilation copyright in that database. In addition, you hereby grant the Company a perpetual, worldwide, irrevocable license to use, reproduce, modify, publish, publicly perform, publically display and distribute such materials, and portions of such materials and any derivative works created from such materials, in print, electronic and other media, by any means now known or developed in the future. We may sublicense all of our rights and licenses or assign them to third parties. Neither the Company nor any third party using the materials in accordance with this section will be obligated to pay you any royalties or other compensation for use of the materials.
+
+    Article 3
+The USER agrees that every images he uploaded, every line of text he wrote, every action he did using the service may be visible to all other users of this service.
+
+    Article 4
+The USER agrees and acknowledges that the content he posts by means of the Service may be used by other Users. The COMPANY cannot guarantee that other Users will use this content in accordance with these Terms of Use and/or applicable legislation. The COMPANY is not responsible for the submissions or actions of other Users and therefore accepts no liability for any actions of other Users which are in violation of these Terms of Use, the applicable legislation and/or which are otherwise unlawful.
+
+    Article 5
+The USER is entitled to terminate the Agreement at any time by discontinuing the use of the Service and/or by terminating the Account by sending an email to christophe@pelmelguide.com which will completely remove the account.
+
+    Article 6
+The USER agrees to post proper information regarding the content he contributes. If the COMPANY detect that a USER posts erroneous information regarding a place, we may limit the service or we may suspend the account without notice.
+
+    Article 7
+This application, including all software, functions, materials, and information is provided “as is” without warranties of any kind, either express or implied. The COMPANY disclaims all warranties, express or implied, including, but not limited to, warranties of quiet enjoyment and non-infringement and implied warranties of merchantability, fitness for a particular purpose, non-infringement, title, quiet enjoyment, merchantability of computer programs, data accuracy, system integration, and informational Content. The Company does not warrant or make any representations regarding the operation of this application, the use, validity, accuracy or reliability of, or the results of the use of the materials on this Site or any other sites linked to this Site. The materials of this Site may be out of date, and the Company makes no commitment to update the materials at this Site. The Company does not and cannot guarantee or warrant that the files available for downloading from this Site, if any, will be free from infection, viruses, worms, Trojan horses, or other code that manifest contaminating or destructive properties. The Company does not warrant that this Site, software, materials, products, or services will be uninterrupted or error-free or that any defects in this Site, software, materials, products, or services will be corrected.
+
+    Article 8
+In no event will the COMPANY, its suppliers or other third parties mentioned at or in this Site be liable for any damages, including, without limitation direct, indirect, special, incidental, or consequential damages, damages resulting from lost profits, lost data or business interruption arising out of relating to the use, inability to use, or resulting from the use of this application, any web sites linked to this Site, the materials, software or other information contained in any or all such sites, whether based on warranty, contracts, statutes, regulations, tort (including but not limited to, negligence) or any other legal theory and whether or not advised of the possibility of such damages. If your use of the materials or information from this Site results in the need for servicing, repair or correction of equipment or data, you assume all costs thereof.
+
+    Article 9
+The COMPANY may revise this Agreement at any time without notice by updating this posting. By using this Site you agree to be bound by any such revisions and should therefore periodically visit this Site and page to determine the then current Terms of Access and Use conditions of use to which you are bound.
+";

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>EF2644C3-A2B9-46D5-93D8-07E3A34E303C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PelMel</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>8B841995-3CDA-45DD-920E-A32F097A7867</key>
+		<string>http://tg_admin/svn/togayther/mobile/iOS/trunk</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PelMel.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>8B841995-3CDA-45DD-920E-A32F097A7867</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>8B841995-3CDA-45DD-920E-A32F097A7867</key>
+		<string>http://tg_admin/svn/togayther</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://tg_admin/svn/togayther/mobile/iOS/trunk/PelMel.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>8B841995-3CDA-45DD-920E-A32F097A7867</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryBranchesRelativeLocationKey</key>
+			<string>mobile/iOS/branches</string>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlRepositoryTagsRelativeLocationKey</key>
+			<string>mobile/iOS/tags</string>
+			<key>IDESourceControlRepositoryTrunkRelativeLocationKey</key>
+			<string>mobile/iOS/trunk</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8B841995-3CDA-45DD-920E-A32F097A7867</string>
+			<key>IDESourceControlWCCName</key>
+			<string>togayther</string>
+		</dict>
+	</array>
+</dict>
+</plist>

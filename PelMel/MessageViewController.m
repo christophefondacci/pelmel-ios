@@ -1,0 +1,454 @@
+//
+//  MessageViewController.m
+//  togayther
+//
+//  Created by Christophe Fondacci on 29/10/12.
+//  Copyright (c) 2012 Christophe Fondacci. All rights reserved.
+//
+
+#import "MessageViewController.h"
+#import "Message.h"
+#import "TogaytherService.h"
+#import "ChatView.h"
+#import "MessageService.h"
+#import "DetailViewController.h"
+#import "Event.h"
+#import "HPGrowingTextView.h"
+#import "PMLSnippetTableViewController.h"
+
+@interface MessageViewController ()
+
+@end
+
+@implementation MessageViewController {
+    UserService *userService;
+    MessageService *messageService;
+    ImageService *imageService;
+    UIService *uiService;
+    NSMutableDictionary *imageViewsMap;
+    int messagesFetchedCount;
+    
+    HPGrowingTextView *_chatTextView;
+    
+}
+@synthesize scrollView;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [TogaytherService applyCommonLookAndFeel:self];
+    self.view.backgroundColor =UIColorFromRGB(0x272a2e);
+    self.scrollView.backgroundColor = UIColorFromRGB(0x272a2e);
+
+    userService = [TogaytherService userService];
+    messageService = [TogaytherService getMessageService];
+    imageService = [TogaytherService imageService];
+    uiService = [TogaytherService uiService];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if([userDefaults objectForKey:@"pushProposedForMessages"] == nil) {
+        [userDefaults setObject:@"Done" forKey:@"pushProposedForMessages"];
+        [messageService handlePushNotificationProposition:^(BOOL pushActive) {
+            if(!pushActive) {
+                NSString *title = NSLocalizedString(@"push.refused.title",@"");
+                NSString *message = NSLocalizedString(@"push.refused.msg",@"");
+                NSString *yes = NSLocalizedString(@"push.yes",@"");
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:yes otherButtonTitles:nil,nil];
+                [alert show];
+            }
+        }];
+    }
+    // Displaying wait message and animation
+    [_activityIndicator setHidden:NO];
+    [_activityIndicator startAnimating];
+    [_activityText setText:NSLocalizedString(@"messages.wait", @"The wait message which appears while loading messages")];
+
+    // Checking if we have an input, otherwise current user is our input
+    if(_withObject == nil) {
+        _withObject = [userService getCurrentUser];
+    }
+    
+    // Allocating internal cache structures for storing image thumbs map
+    imageViewsMap =  [[NSMutableDictionary alloc] init];
+    messagesFetchedCount = 0;
+    
+    // Fetching messages
+    if([_withObject isKindOfClass:[User class]]) {
+        [messageService getMessagesWithUser:_withObject.key messageCallback:self];
+    } else if([_withObject isKindOfClass:[CALObject class]]){
+        [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
+    }
+
+    self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
+    [self.navigationController.navigationBar setTitleTextAttributes: @{
+                                                                       NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
+                                                                       NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    CurrentUser *currentUser = [userService getCurrentUser];
+    if([_withObject.key isEqualToString:currentUser.key]) {
+        CGRect textFrame = _footerView.frame;
+//        CGRect scrollFrame = scrollView.frame;
+//        _footerView.frame = CGRectMake(textFrame.origin.x, textFrame.origin.y+textFrame.size.height, textFrame.size.width, textFrame.size.height);
+//        [_footerView setHidden:YES];
+//        scrollView.frame = CGRectMake(scrollFrame.origin.x, scrollFrame.origin.y, scrollFrame.size.width,scrollFrame.size.height+textFrame.size.height);
+        self.bottomTextInputConstraint.constant = -textFrame.size.height;
+        self.title = NSLocalizedString(@"messages.my.title",@"Title of the my messages view");
+    } else if([_withObject isKindOfClass:[User class]]){
+        self.title = ((User*)_withObject).pseudo;
+    } else if([_withObject isKindOfClass:[Place class]]){
+        NSString *title = NSLocalizedString(@"message.reviews.title", nil);
+        self.title = title;
+    }
+}
+
+- (void)viewDidUnload
+{
+    [self setScrollView:nil];
+    [self setActivityIndicator:nil];
+    [self setActivityText:nil];
+    [self setActivityBackground:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return NO;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [self configureChatInput];
+}
+-(void)viewDidAppear:(BOOL)animated {
+    [self.navigationController setToolbarHidden:YES];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [_chatTextView resignFirstResponder];
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+#pragma mark - Keyboard notifications
+- (void)keyboardWillShow:(NSNotification*)notification {
+    [self updateKeyboard:notification up:YES];
+}
+- (void)keyboardWillHide:(NSNotification*)notification {
+    [self updateKeyboard:notification up:NO];
+}
+- (void)updateKeyboard:(NSNotification*)notification up:(BOOL)up {
+    NSDictionary *userInfo = [notification userInfo];
+    NSTimeInterval animationDuration;
+    UIViewAnimationCurve animationCurve;
+    CGRect keyboardEndFrame;
+    
+    [[userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey] getValue:&animationCurve];
+    [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] getValue:&animationDuration];
+    [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] getValue:&keyboardEndFrame];
+
+    [self.view layoutIfNeeded];
+    self.bottomTextInputConstraint.constant = up ? keyboardEndFrame.size.height : 0;
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:animationDuration];
+    [UIView setAnimationCurve:animationCurve];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [self.view layoutIfNeeded];
+    if(up) {
+        scrollView.contentOffset = CGPointMake(0, MIN(scrollView.contentSize.height,scrollView.contentOffset.y+keyboardEndFrame.size.height));
+    }
+
+    [UIView commitAnimations];
+
+}
+#pragma mark - Chat Button
+-(void)configureChatInput {
+    _chatTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+    _chatTextView.isScrollable = NO;
+    _chatTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    
+    _chatTextView.minNumberOfLines = 1;
+    _chatTextView.maxNumberOfLines = 6;
+    // you can also set the maximum height in points with maxHeight
+    // textView.maxHeight = 200.0f;
+//    _chatTextView.returnKeyType = UIReturnKeyGo; //just as an example
+    _chatTextView.font = [UIFont systemFontOfSize:15.0f];
+    _chatTextView.delegate = self;
+    _chatTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    _chatTextView.internalTextView.autocorrectionType = UITextAutocorrectionTypeYes;
+    _chatTextView.backgroundColor = [UIColor whiteColor];
+    
+    if([_withObject isKindOfClass:[User class]]) {
+        [_chatTextView setPlaceholder:NSLocalizedString(@"message.placeholder", @"Placeholder text of the message text field for sending instant messages")];
+    } else {
+        NSString *placeholderTemplate = NSLocalizedString(@"message.placeholder.comment", nil);
+        NSString *name;
+        if([_withObject isKindOfClass:[Place class]]) {
+            name=((Place*)_withObject).title;
+        } else if([_withObject isKindOfClass:[Event class]]){
+            name=((Event*)_withObject).name;
+        }
+        NSString *placeholder = [NSString stringWithFormat:placeholderTemplate,name];
+        [_chatTextView setPlaceholder:placeholder];
+    }
+//    [_chatTextView setReturnKeyType:UIReturnKeySend];
+    [_chatTextView setDelegate:self];
+
+//    _chatTextView.placeholder = @"Type to see the textView grow!";
+    
+    // textView.text = @"test\n\ntest";
+    // textView.animateHeightChange = NO; //turns off animation
+    
+    
+    UIImage *rawEntryBackground = [UIImage imageNamed:@"MessageEntryInputField"];
+    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
+    entryImageView.frame = CGRectMake(5, 0, 248, 40);
+    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight; // | UIViewAutoresizingFlexibleWidth;
+    
+    UIImage *rawBackground = [UIImage imageNamed:@"MessageEntryBackground"];
+    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
+    imageView.frame = CGRectMake(0, 0, _footerView.frame.size.width, _footerView.frame.size.height);
+    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    
+    _chatTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth  ;
+    
+    // view hierachy
+    [_footerView addSubview:imageView];
+    [_footerView addSubview:_chatTextView];
+    [_footerView addSubview:entryImageView];
+    
+    UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+    UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+    
+    UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    doneBtn.frame = CGRectMake(_footerView.frame.size.width - 69, 8, 63, 27);
+    doneBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+    doneBtn.titleLabel.adjustsFontSizeToFitWidth=YES;
+    [doneBtn setTitle:NSLocalizedString(@"message.action.send",@"Send") forState:UIControlStateNormal];
+    
+    [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+    doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+    doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+    
+    [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [doneBtn addTarget:self action:@selector(sendMsg:) forControlEvents:UIControlEventTouchUpInside];
+    [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
+    [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+    [_footerView addSubview:doneBtn];
+    _footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+}
+
+#pragma mark - HPGrowingTextViewDelegate
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+{
+    float diff = (growingTextView.frame.size.height - height);
+    
+    CGRect r = _footerView.frame;
+    r.size.height -= diff;
+    r.origin.y += diff;
+    _footerView.frame = r;
+    
+    r = scrollView.frame;
+    r.size.height+=diff;
+    scrollView.frame=r;
+    
+}
+
+#pragma mark - MessageCallback
+- (void)messagesFetched:(NSArray *)messagesList {
+    [_activityIndicator stopAnimating];
+    [_activityIndicator setHidden:YES];
+    [_activityText setHidden:YES];
+    [_activityBackground setHidden:YES];
+    
+    int totalHeight = 0;
+    if(messagesFetchedCount == 0) {
+        
+    }
+    CurrentUser *currentUser = [userService getCurrentUser];
+    BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
+    // A map of all image views hashed by the image key
+//    NSMutableArray *images = [[NSMutableArray alloc] init];
+    BOOL even = NO;
+    for(Message *message in messagesList) {
+        
+        // Instantiating the Chat view to display current message
+        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
+        ChatView *view = [views objectAtIndex:0];
+        
+        // Setuping chat view
+        [view setup:message forObject:message.from snippet:isAllMessageView];
+        if(isAllMessageView) {
+            [view.detailMessageButton setHidden:NO];
+            [view.detailMessageButton addTarget:self action:@selector(showMessageTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        if(![message.from.key isEqualToString:currentUser.key]) {
+            [view.leftThumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
+        }
+        
+        // Adding
+        [scrollView addSubview:view];
+        
+        // Adjusting position
+        CGRect frame = view.frame;
+        [view setFrame:CGRectMake(frame.origin.x, totalHeight, scrollView.bounds.size.width, frame.size.height)];
+        totalHeight+=view.frame.size.height;
+        
+        // Setuping image
+        CALImage *image = message.from.mainImage;
+        [imageService load:image to:view.thumbImage thumb:YES];
+        [imageService load:image to:view.thumbImageSelf thumb:YES];
+        [view.leftActivity setHidden:YES];
+        [view.rightActivity setHidden:YES];
+        
+        // Stripping lines
+        if(even) {
+            view.backgroundColor = UIColorFromRGB(0x343c42);
+        }
+        even = !even;
+    }
+    
+    // Updating our scroll view
+
+    CGRect frame = scrollView.frame;
+    [scrollView setContentSize:CGSizeMake(frame.size.width,totalHeight)];
+    if(![_withObject.key isEqualToString:currentUser.key]) {
+        CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
+        [scrollView setContentOffset:bottomOffset animated:NO];
+    }
+    
+
+}
+- (void)messageSent:(Message *)message {
+    [_activityIndicator stopAnimating];
+    [_activityIndicator setHidden:YES];
+    [_activityText setHidden:YES];
+    [_activityBackground setHidden:YES];
+    
+    // Adding a new bubble for this sent message
+    NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
+    ChatView *view = [views objectAtIndex:0];
+    [view setup:message forObject:message.from snippet:NO];
+    // De-activating activity indicators in case current user has no thumb
+    [view.leftActivity setHidden:YES];
+    [view.rightActivity setHidden:YES];
+    
+    // Adding subview
+    [scrollView addSubview:view];
+    CGRect frame = view.frame;
+    [view setFrame:CGRectMake(frame.origin.x, scrollView.contentSize.height+10, frame.size.width, frame.size.height)];
+    CGRect scrollFrame = scrollView.frame;
+    [scrollView setContentSize:CGSizeMake(scrollFrame.size.width,scrollView.contentSize.height+10+frame.size.height+10)];
+
+    // Scrolling down
+    CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
+    [scrollView setContentOffset:bottomOffset animated:NO];
+    
+    [_chatTextView endEditing:YES];
+    _chatTextView.text=nil;
+    if(![_withObject isKindOfClass:[User class]]){
+        _withObject.reviewsCount++;
+    }
+}
+- (void)messageSendFailed {
+    NSLog(@"Message sent failed");
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self sendMsg:textField];
+    return YES;
+}
+
+- (BOOL)shouldAutorotate {
+    return NO;
+}
+#pragma mark - Message actions
+- (void)sendMsg:(id)sender {
+    [_activityIndicator startAnimating];
+    [_activityIndicator setHidden:NO];
+    [_activityBackground setHidden:NO];
+    _activityText.text = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
+    [_activityText setHidden:NO];
+    
+    if([_withObject isKindOfClass:[User class]]) {
+        [messageService sendMessage:_chatTextView.text toUser:(User*)_withObject messageCallback:self];
+    } else {
+        [messageService postComment:_chatTextView.text forObject:_withObject messageCallback:self];
+    }
+    [_chatTextView resignFirstResponder];
+}
+-(void)showMessageTapped:(id)sender {
+    UIButton *button = (UIButton*)sender;
+    UIView *view = button.superview;
+    if([view isKindOfClass:[ChatView class]]) {
+        ChatView *chatView = (ChatView*)view;
+        Message *message = chatView.getMessage;
+//        [self performSegueWithIdentifier:@"showDetailMessage" sender:message.from];
+        MessageViewController *targetController = (MessageViewController*)[uiService instantiateViewController:SB_ID_MESSAGES];
+        [targetController setWithObject:message.from];
+        if(self.parentMenuController) {
+            [self.parentMenuController.navigationController pushViewController:targetController animated:YES];
+        } else {
+            [self.navigationController pushViewController:targetController animated:YES];
+        }
+    }
+}
+-(void)showFromUserTapped:(id)sender {
+    if([_withObject.key isEqualToString:[[userService getCurrentUser] key]]) {
+        [self showMessageTapped:sender];
+    } else {
+        UIButton *button = (UIButton*)sender;
+        UIView *view = button.superview;
+        if([view isKindOfClass:[ChatView class]]) {
+            ChatView *chatView = (ChatView*)view;
+            Message *message = chatView.getMessage;
+            [self performSegueWithIdentifier:@"showUserSnippet" sender:message.from];
+        }
+    }
+}
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([[segue identifier] isEqualToString:@"showDetailMessage"]) {
+        MessageViewController *targetController = [segue destinationViewController];
+        [targetController setWithObject:sender];
+    } else if([[segue identifier] isEqualToString:@"showUserSnippet"]) {
+        PMLSnippetTableViewController *controller = [segue destinationViewController];
+        controller.snippetItem = sender;
+    }
+}
+-(void)refresh:(id)sender {
+    [_activityIndicator startAnimating];
+    [_activityIndicator setHidden:NO];
+    [_activityBackground setHidden:NO];
+    _activityText.text = NSLocalizedString(@"messages.wait", @"Wait message displayed while sending");
+    [_activityText setHidden:NO];
+    
+    for(UIView *view in scrollView.subviews) {
+        [view removeFromSuperview];
+    }
+    // Fetching messages
+    [messageService getMessagesWithUser:_withObject.key messageCallback:self];
+}
+-(void)dismiss:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+-(void)closeMenu:(id)sender {
+    if(self.parentMenuController!=nil) {
+        PMLMenuManagerController *menuController = self.parentMenuController;
+        [self.navigationController popToRootViewControllerAnimated:NO];
+        [menuController dismissControllerMenu];
+    } else {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+@end;
