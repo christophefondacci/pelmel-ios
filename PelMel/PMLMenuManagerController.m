@@ -212,7 +212,7 @@ static void *MyParentMenuControllerKey;
     PMLSubNavigationController *viewController = [[PMLSubNavigationController alloc] initWithRootViewController:childViewController];
     
     // Placing the frame at the bottom of the visible current view, outside
-    CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height);
+    CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height+1);
     _bottomView.frame = bottomFrame;
     _bottomView.backgroundColor = [UIColor redColor];
     _bottomView.opaque=YES;
@@ -222,7 +222,7 @@ static void *MyParentMenuControllerKey;
     
     // Adding the view controller to our hierarchy
     [self addChildViewController:viewController];
-    viewController.view.frame = CGRectMake(0, 0, myFrame.size.width, myFrame.size.height);
+    viewController.view.frame = CGRectMake(0, 0, myFrame.size.width, myFrame.size.height+1);
     [_bottomView addSubview:viewController.view];
     [viewController didMoveToParentViewController:self];
     _currentSnippetViewController = viewController;
@@ -436,15 +436,17 @@ static void *MyParentMenuControllerKey;
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state {
 
     location.x = CGRectGetMidX(_bottomView.bounds);
-    location.y = MAX(location.y,self.navigationController.navigationBar.bounds.size.height+20);
     if ( state == UIGestureRecognizerStateBegan) {
         [_animator removeAllBehaviors];
         
         _panAttachmentBehaviour = [[UIAttachmentBehavior alloc] initWithItem:_bottomView attachedToAnchor:location];
         [_animator addBehavior:_panAttachmentBehaviour];
-//        UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[_bottomView]];
-//        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(0, 0) toPoint:CGPointMake(2000, 0)];
-//        [_animator addBehavior:collision];
+        
+        // Adding a collision to the screen top edge to constraint snippet in view bounds
+        UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[_bottomView]];
+        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-2000, 1) toPoint:CGPointMake(2000, 1)];
+        [_animator addBehavior:collision];
+        
     } else if (state  == UIGestureRecognizerStateChanged) {
         _panAttachmentBehaviour.anchorPoint = location;
     } else if (state  == UIGestureRecognizerStateEnded) {
