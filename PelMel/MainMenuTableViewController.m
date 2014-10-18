@@ -192,14 +192,14 @@
                 case kRowSettingLikes: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.likes", @"I like");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    placeTypeCell.image.image = [UIImage imageNamed:@"ovvIconLike"];
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconLikes"];
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
                 case kRowSettingLikers: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.likers", @"They like me");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconProfile"];
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconLikeBacks"];
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
