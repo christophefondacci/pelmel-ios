@@ -17,13 +17,14 @@
 #define kSectionSettings 0
 #define kSectionPlaceType 1
 
-#define kRowCountSettings 5
+#define kRowCountSettings 6
 
 #define kRowSettingProfile 0
 #define kRowSettingMessages 1
 #define kRowSettingSettings 2
 #define kRowSettingLikes 3
 #define kRowSettingLikers 4
+#define kRowSettingDisconnect 5
 
 #define kCellIdPlaceType @"placeTypeCell"
 #define kCellIdProfile @"profileTableCell"
@@ -131,6 +132,7 @@
                 case kRowSettingMessages:
                 case kRowSettingLikes:
                 case kRowSettingLikers:
+                case kRowSettingDisconnect:
                     CellIdentifier = kCellIdHD;
 
                     
@@ -203,6 +205,13 @@
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
+                case kRowSettingDisconnect: {
+                    placeTypeCell.label.text = NSLocalizedString(@"disconnect", @"disconnect");
+                    placeTypeCell.accessoryType = UITableViewCellAccessoryNone;
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconDisconnect"];
+                    placeTypeCell.badgeLabel.hidden=YES;
+                }
+                    break;
             }
             placeTypeCell.label.font = [UIFont fontWithName:PML_FONT_DEFAULT size:13];
             break;
@@ -260,6 +269,12 @@
                     break;
                 case kRowSettingLikers:
                     [self performSegueWithIdentifier:@"likers" sender:self];
+                    break;
+                case kRowSettingDisconnect:
+                    // Disconnecting
+                    [_userService disconnect];
+                    // Dismissing this view and immediately
+                    [self.parentMenuController performSegueWithIdentifier:@"login" sender:self];
                     break;
             }
     }

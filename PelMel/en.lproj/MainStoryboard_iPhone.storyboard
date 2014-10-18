@@ -870,7 +870,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="myAccount" id="ImB-N1-fWu" customClass="ProfileTableViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="v8I-qG-mIC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="sectionIndexBackgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
@@ -1085,7 +1085,7 @@
                         <viewControllerLayoutGuide type="bottom" id="x9q-JI-uvB"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="sN4-jm-tLL">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fy2-w9-ZMz">
@@ -1115,7 +1115,7 @@
             <objects>
                 <tableViewController id="e6G-lO-nEe" customClass="PhotoManagerViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="nyc-2Z-gNI">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -1169,7 +1169,7 @@
                         <viewControllerLayoutGuide type="bottom" id="eQ0-ZW-HUW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AXh-8r-e7r">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -1381,6 +1381,7 @@
                     <connections>
                         <outlet property="topWarningLabel" destination="zjH-Jg-o3c" id="oWz-HA-AOl"/>
                         <outlet property="topWarningView" destination="cuT-Gk-A2S" id="u8I-HU-dXD"/>
+                        <segue destination="9hg-XG-APo" kind="modal" identifier="login" id="enc-VM-87F"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uvC-7b-gdi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2549,10 +2550,11 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="agQ-rU-dsm"/>
-        <segue reference="hk5-7z-xvn"/>
-        <segue reference="fnn-3s-KqK"/>
-        <segue reference="bA0-cZ-EFZ"/>
         <segue reference="eKE-7K-Ihn"/>
+        <segue reference="bA0-cZ-EFZ"/>
+        <segue reference="2ht-6y-Id1"/>
+        <segue reference="hk5-7z-xvn"/>
+        <segue reference="enc-VM-87F"/>
+        <segue reference="fnn-3s-KqK"/>
     </inferredMetricsTieBreakers>
 </document>
