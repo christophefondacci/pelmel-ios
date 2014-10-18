@@ -39,8 +39,7 @@
 -(NSString*)thumbSubtitleText;
 // Color of the short thumb subtitle text
 -(UIColor*)thumbSubtitleColor;
--(NSString*)addressLine1;
--(NSString*)addressLine2;
+-(NSArray*)addressComponents;
 
 @optional
 //-(Special*)specialOfType:(NSString*)specialType;

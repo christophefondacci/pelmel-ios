@@ -70,11 +70,8 @@
 -(UIColor*)thumbSubtitleColor {
     return [self color];
 }
--(NSString*)addressLine1 {
-    return nil;
-}
--(NSString*)addressLine2 {
-    return nil;
+- (NSArray *)addressComponents {
+    return @[];
 }
 - (NSArray *)activities {
     return nil;

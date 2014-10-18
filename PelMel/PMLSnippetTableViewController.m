@@ -224,7 +224,7 @@ typedef enum {
             case kPMLSectionOvSummary:
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
-                return [_infoProvider addressLine1] != nil ? kPMLOvAddressRows : 0;
+                return [[_infoProvider addressComponents] count];
             case kPMLSectionOvHours:
                 if([_infoProvider respondsToSelector:@selector(specialFor:ofType:)]) {
                     Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_OPENING];
@@ -586,6 +586,10 @@ typedef enum {
         [cell.peopleView addSubview:_thumbController.view];
         [_thumbController didMoveToParentViewController:self];
     }
+    // Building provider
+    _thumbController.thumbProvider = _infoProvider.thumbsProvider;
+    [self configureThumbController];
+//    [self.tableView reloadData];
     [_thumbController.tableView reloadData];
     
     
@@ -721,7 +725,9 @@ typedef enum {
     cell.cellTextLabel.textColor = [_uiService colorForObject:_snippetItem];
 }
 -(void)configureRowOvAddress:(PMLTextTableViewCell*)cell atIndex:(NSInteger)row {
-    cell.cellTextLabel.text = [_infoProvider addressLine1];
+    NSArray *components = [_infoProvider addressComponents];
+
+    cell.cellTextLabel.text = (NSString*)[components objectAtIndex:row];
     cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
     cell.cellTextLabel.textColor = [UIColor whiteColor];
 }

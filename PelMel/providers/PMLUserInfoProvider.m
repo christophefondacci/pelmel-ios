@@ -78,7 +78,7 @@
 -(UIColor *)thumbSubtitleColor {
     return [_uiService colorForObject:_user];
 }
-- (NSString *)addressLine1 {
+- (NSArray *)addressComponents {
     if(_user.lastLocation != nil) {
         long now = [[NSDate date] timeIntervalSince1970];
         long locTime = [_user.lastLocationDate timeIntervalSince1970];
@@ -103,9 +103,9 @@
         }
         NSString *template = NSLocalizedString(@"user.lastlocation", nil);
         NSString *line = [NSString stringWithFormat:template,_user.lastLocation.title,value,timeScale];
-        return line;
+        return @[line];
     }
-    return @"";
+    return @[];
 }
 - (NSString*)addressLine2 {
     return nil;

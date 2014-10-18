@@ -290,6 +290,10 @@
     // Parsing activities
     NSArray *jsonActivities = [json objectForKey:@"nearbyActivities"];
     NSArray *activities = [jsonService convertJsonActivitiesToActivities:jsonActivities];
+
+    // Parsing users
+    NSArray *jsonUsers = [json objectForKey:@"nearbyUsers"];
+    NSArray *users = [jsonService convertJsonUsersToUsers:jsonUsers];
     
     // Parsing localized city
     NSDictionary *jsonCity = [json objectForKey:@"localizedCity"];
@@ -302,6 +306,7 @@
     [_modelHolder setPlaces:docs];
     [_modelHolder setCities:cities];
     [_modelHolder setActivities:activities];
+    [_modelHolder setUsers:users];
     [_modelHolder setLocalizedCity:localizedCity];
     
     // Callback on main thread

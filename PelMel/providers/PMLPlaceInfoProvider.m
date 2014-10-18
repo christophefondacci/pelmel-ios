@@ -20,10 +20,14 @@
     
     // Main place object
     Place *_place;
+    BOOL _initWithOverviewAvailable;
 
     // Related ingo
     Special *_bestSpecial;
     ItemsThumbPreviewProvider *_thumbsProvider;
+    
+    // Address management
+    NSArray *_addressComponents;
 }
 
 - (instancetype)initWith:(id)place
@@ -34,7 +38,8 @@
         _uiService = TogaytherService.uiService;
         _conversionService = [TogaytherService getConversionService];
         [self configureSpecials];
-
+        [self configureAddress];
+        _initWithOverviewAvailable = _place.hasOverviewData;
     }
     return self;
 }
@@ -46,6 +51,22 @@
             _bestSpecial = special;
         }
     }
+}
+-(void)configureAddress {
+    NSMutableArray *components = [[NSMutableArray alloc] init];
+    if(_place.address != nil ) {
+        // Splitting address by comma
+        NSArray *addrComp = [_place.address componentsSeparatedByString:@","];
+        NSString *currentComponent = @"";
+        for(NSString *comp in addrComp) {
+            currentComponent = [currentComponent stringByAppendingString:comp];
+            if(currentComponent.length>=5) {
+                [components addObject:currentComponent];
+                currentComponent = @"";
+            }
+        }
+    }
+    _addressComponents = components;
 }
 // The element being represented
 -(CALObject*) item {
@@ -103,11 +124,12 @@
 -(UIColor *)thumbSubtitleColor {
     return [UIColor whiteColor];
 }
--(NSString *)addressLine1 {
-    return _place.address;
-}
-- (NSString *)addressLine2 {
-    return nil;
+
+-(NSArray *)addressComponents {
+    if(_initWithOverviewAvailable != _place.hasOverviewData) {
+        [self configureAddress];
+    }
+    return _addressComponents;
 }
 
 #pragma mark - Specials

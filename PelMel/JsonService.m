@@ -418,6 +418,16 @@
     [user setIsOnline:[isOnline boolValue]];
     return user;
 }
+- (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers {
+    NSMutableArray *users = [[NSMutableArray alloc] initWithCapacity:jsonUsers.count];
+    for(NSDictionary *jsonUser in jsonUsers) {
+        User *user = [self convertJsonUserToUser:jsonUser];
+        //        if(activity.user !=nil) {
+        [users addObject:user];
+        //        }
+    }
+    return users;
+}
 - (void)fillUser:(User*)user fromJson:(NSDictionary*)jsonLoginInfo {
     NSString *pseudo    =[jsonLoginInfo objectForKey:@"pseudo"];
     NSString *key       =[jsonLoginInfo objectForKey:@"key"];

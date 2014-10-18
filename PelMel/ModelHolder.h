@@ -57,6 +57,7 @@ typedef enum {
 @property (strong) NSArray *cities;
 @property (strong) NSArray *events;
 @property (strong) NSArray *activities;
+@property (strong) NSArray *users;
 @property (strong) City *localizedCity;
 @property (strong) CLLocation *userLocation;
 @property (strong) CALObject *parentObject;

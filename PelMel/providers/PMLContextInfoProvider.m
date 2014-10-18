@@ -46,16 +46,17 @@
 }
 // Provider of thumb displayed in the main snippet section
 -(NSObject<ThumbsPreviewProvider>*) thumbsProvider {
-    NSMutableArray *people = [[NSMutableArray alloc] init];
-    NSMutableSet *peopleKeys = [[NSMutableSet alloc] init];
-    for(Activity *activity in _modelHolder.activities) {
-        if(activity.user != nil && ![peopleKeys containsObject:activity.user.key]) {
-            [people addObject:activity.user];
-            [peopleKeys addObject:activity.user.key];
-        }
-    }
+//    NSMutableArray *people = [[NSMutableArray alloc] init];
+//    NSMutableSet *peopleKeys = [[NSMutableSet alloc] init];
+//    for(Activity *activity in _modelHolder.activities) {
+//        if(activity.user != nil && ![peopleKeys containsObject:activity.user.key]) {
+//            [people addObject:activity.user];
+//            [peopleKeys addObject:activity.user.key];
+//        }
+//    }
+
     // Building provider
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:nil items:people moreSegueId:nil labelKey:nil icon:nil];
+    return [[ItemsThumbPreviewProvider alloc] initWithParent:nil items:_modelHolder.users moreSegueId:nil labelKey:nil icon:nil];
 }
 // Number of reviews
 -(int)reviewsCount {
@@ -85,11 +86,8 @@
 -(UIColor*)thumbSubtitleColor {
     return [self color];
 }
--(NSString*)addressLine1 {
-    return nil;
-}
--(NSString*)addressLine2 {
-    return nil;
+-(NSArray *)addressComponents {
+    return @[];
 }
 - (NSArray *)activities {
     return _modelHolder.activities;

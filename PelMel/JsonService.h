@@ -39,4 +39,8 @@
  * Converts a JSON light user information to a User bean
  */
 - (User*)convertJsonUserToUser:(NSDictionary*)jsonUser;
+/**
+ * Helper method that batch converts an array of JsonLightUser
+ */
+- (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers;
 @end
