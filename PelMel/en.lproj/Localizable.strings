@@ -59,6 +59,7 @@
 "loading.events"="Fetching nearest gay events...";
 "loading.city"="Fetching %@'s gay places...";
 "login.failed"="Login failed";
+"login.noconnection"="No connection";
 "login.field.email"="Email";
 "login.field.password"="Password";
 "login.field.pseudo"="Nickname";

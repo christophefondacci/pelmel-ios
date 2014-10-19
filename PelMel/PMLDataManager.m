@@ -34,7 +34,8 @@
     // Photo upload
     CALObject *_photoUploadTargetObject;
     
-    BOOL deviceConnected;
+    BOOL _deviceConnected;
+    BOOL _isOnLoginPage;
     // Loaders
 //    UIView *_bgView;
 //    UIActivityIndicatorView *_indicatorView;
@@ -195,7 +196,7 @@
 }
 - (void)authenticationImpossible {
     [_menuController setWarningMessage:NSLocalizedString(@"network.noconnection", @"network.noconnection") color:UIColorFromRGB(0x272a2e) animated:NO duration:0];
-    deviceConnected = NO;
+    _deviceConnected = NO;
 //    UILabel *warningLabel = ((MapViewController*)_menuController.rootViewController).warningLabel;
 //    warningLabel.hidden = NO;
 //    warningLabel.alpha=1;
@@ -203,21 +204,25 @@
 //    warningLabel.text = NSLocalizedString(@"network.noconnection", @"network.noconnection");
 }
 - (void)willStartAuthentication {
-    if(!deviceConnected) {
+    if(!_deviceConnected) {
         // Authenticating
         [_menuController setWarningMessage:NSLocalizedString(@"network.connecting", @"Logging in") color:UIColorFromRGB(0x3083ea) animated:YES duration:0];
     }
 }
 - (void)dataLoginFailed {
-    UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    [_menuController.navigationController presentViewController:navController animated:YES completion:nil];
-    deviceConnected = NO;
+    if(!_isOnLoginPage) {
+        UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [_menuController.navigationController presentViewController:navController animated:YES completion:nil];
+        _isOnLoginPage = YES;
+    }
+    _deviceConnected = NO;
 }
 - (void)userAuthenticated:(CurrentUser *)user {
     NSLog(@"userAuthenticated called in UIDataManager");
-    if(!deviceConnected) {
-        deviceConnected = YES;
+    _isOnLoginPage = NO;
+    if(!_deviceConnected) {
+        _deviceConnected = YES;
         [_menuController setWarningMessage:NSLocalizedString(@"network.connected", @"network.connected") color:UIColorFromRGB(0x5fd500) animated:NO duration:0.5];
     }
     _nearbyLoad = YES;

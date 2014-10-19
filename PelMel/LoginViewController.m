@@ -316,6 +316,11 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
+        case kSectionLogin:
+            switch(indexPath.row) {
+                case kRowLoginIntro:
+                    return [loginInfo sizeThatFits:CGSizeMake(loginInfo.bounds.size.width, 2000)].height;
+            }
         case kSectionRegister:
             switch(indexPath.row) {
                 case kRowRegisterWhy:
@@ -454,14 +459,21 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)authenticationFailed:(NSString *)reason {
-    loginFailed.text = NSLocalizedString(@"login.failed", @"login.failed");
+
+    [self loginError: NSLocalizedString(@"login.failed", @"login.failed")];
+    NSLog(@"Login Failed");
+}
+- (void) loginError:(NSString *)reason {
+    loginFailed.text = reason;
     [loginFailed setHidden:NO];
-//    [loginInfo setHidden:YES];
+    //    [loginInfo setHidden:YES];
     [loginButton setEnabled:YES];
     [loginActivity setHidden:YES];
     [loginActivity stopAnimating];
     [loginWaitText setHidden:YES];
-    NSLog(@"Login Failed");
+}
+- (void)authenticationImpossible {
+    [self loginError:NSLocalizedString(@"login.noconnection", @"login.noconnection")];
 }
 - (void)userRegistered:(CurrentUser *)user {
     [registerActivity stopAnimating];

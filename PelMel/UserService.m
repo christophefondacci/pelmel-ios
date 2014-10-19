@@ -337,6 +337,7 @@
     _currentUser = nil;
     // Voiding password
     [userDefaults removeObjectForKey:kUserPasswordKey];
+    [userDefaults synchronize];
 }
 
 

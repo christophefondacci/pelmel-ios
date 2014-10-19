@@ -274,7 +274,9 @@
                     // Disconnecting
                     [_userService disconnect];
                     // Dismissing this view and immediately
-                    [self.parentMenuController performSegueWithIdentifier:@"login" sender:self];
+                    UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
                     break;
             }
     }
