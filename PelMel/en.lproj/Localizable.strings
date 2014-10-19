@@ -41,7 +41,7 @@
 "events.title"="Events";
 "filters.hours.happy"="Happy hours now";
 "filters.hours.open"="Opened now";
-"filters.placeType.header"="Filters";
+"filters.placeType.header"="Place types";
 "filters.title"="Filters";
 "filters.warning"="Filters may hide some results";
 "gallery.removalFailed.title"="Cannot delete photo";
@@ -73,6 +73,7 @@
 "map.option.add" = "Add";
 "map.option.checkin" = "Check in";
 "map.title"="Map";
+"menu.filters.title"="Filters";
 "menu.main.title"="Menu";
 "menu.settings.title"="Settings";
 "messages.wait"="Loading...";

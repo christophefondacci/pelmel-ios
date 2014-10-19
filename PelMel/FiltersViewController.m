@@ -52,6 +52,18 @@
     settingsService = TogaytherService.settingsService;
     placeTypes = [settingsService listPlaceTypes];
     
+    // Setting title
+    self.view.backgroundColor =UIColorFromRGB(0x272a2e);
+    self.tableView.backgroundColor =  UIColorFromRGB(0x272a2e);
+    self.tableView.separatorColor = [UIColor clearColor];
+    
+    self.title =  NSLocalizedString(@"menu.filters.title",@"menu.filters.title");
+    self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
+    [self.navigationController.navigationBar setTitleTextAttributes: @{
+                                                                       NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
+                                                                       NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -148,6 +160,12 @@
     [self.tableView reloadData];
 
 }
+
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
+    headerView.textLabel.textColor = [UIColor whiteColor];
+    headerView.textLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:15];
+}
 /*
  // Override to support conditional editing of the table view.
  - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
@@ -230,4 +248,10 @@
     placeTypeCell.image.image = placeType.filterIcon;
     placeTypeCell.accessoryType = placeType.visible && !settingsService.allFiltersActive ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 }
+
+#pragma mark - Action callback
+-(void)closeMenu:(id)sender {
+    [self.parentMenuController dismissControllerMenu];
+}
+
 @end

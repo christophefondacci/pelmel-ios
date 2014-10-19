@@ -430,7 +430,8 @@ static void *MyParentMenuControllerKey;
     
     FiltersViewController *filtersController = (FiltersViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_MENU];
     CGPoint topRight = CGPointMake(self.view.bounds.size.width-5, 5);
-    [self presentControllerMenu:filtersController from:topRight withHeightPct:0.7];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:filtersController];
+    [self presentControllerMenu:navController from:topRight withHeightPct:0.7];
 }
 #pragma mark - PanGestureRecognizer
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state {

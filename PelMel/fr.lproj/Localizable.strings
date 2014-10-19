@@ -40,7 +40,7 @@
 "events.title"="Evènements";
 "filters.hours.happy"="Happy hours maintenant";
 "filters.hours.open"="Ouvert maintenant";
-"filters.placeType.header"="Filtres";
+"filters.placeType.header"="Types de lieu";
 "filters.title"="Filtres";
 "filters.warning"="Les filtres cachent des résultats";
 "gallery.removalFailed.title"="Suppression impossible";
@@ -72,6 +72,7 @@
 "map.option.add" = "Ajouter";
 "map.option.checkin" = "Check in";
 "map.title"="Carte";
+"menu.filters.title"="Filtres";
 "menu.main.title"="Menu";
 "menu.settings.title"="Paramètres";
 "messages.wait"="Chargement...";
