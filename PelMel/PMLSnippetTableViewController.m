@@ -518,7 +518,8 @@ typedef enum {
     }
     
     // Loading thumb
-    [_imageService load:_snippetItem.mainImage to:cell.thumbView thumb:YES];
+    CALImage *img = [[_infoProvider item] mainImage];
+    [_imageService load:img to:cell.thumbView thumb:YES];
     
     // Configuring thumb subtitle
     cell.thumbSubtitleLabel.text = _infoProvider.thumbSubtitleText;
@@ -526,10 +527,12 @@ typedef enum {
     cell.thumbSubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:11];
 
     
-    // Image touch events
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
-    [cell.thumbView addGestureRecognizer:tapRecognizer];
-    cell.thumbView.userInteractionEnabled=YES;
+    // Image touch events, only allowing photo addition if item is defined and has a valid key id
+    if(_snippetItem.key != nil) {
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+        [cell.thumbView addGestureRecognizer:tapRecognizer];
+        cell.thumbView.userInteractionEnabled=YES;
+    }
     
     // No subtitle
     cell.subtitleLabel.text = nil;

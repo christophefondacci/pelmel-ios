@@ -27,7 +27,7 @@
 }
 // The element being represented
 -(CALObject*) item {
-    return nil;
+    return _modelHolder.localizedCity;
 }
 // Title of the element
 -(NSString*) title {
@@ -38,7 +38,7 @@
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
-    return nil;
+    return [UIImage imageNamed:@"snpIconBar"];
 }
 // Global theme color for element
 -(UIColor*) color {
