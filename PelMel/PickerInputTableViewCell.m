@@ -103,7 +103,16 @@
 
 - (BOOL)resignFirstResponder {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
-	UITableView *tableView = (UITableView *)self.superview;
+    // View hierarchy is not consistent between iOS 6, 7 and 8 so we browse the superview hierarchy
+    // looking for the first UITableView instance we find
+    UITableView *tableView = nil;
+    UIView *currentView = self;
+    while(tableView == nil && currentView.superview != nil) {
+        currentView = currentView.superview;
+        if([currentView isKindOfClass:[UITableView class]]) {
+            tableView = (UITableView*)currentView;
+        }
+    }
 
     // Trying to unselect row
     NSIndexPath *selectedPath = self.rowPath;

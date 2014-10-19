@@ -129,6 +129,9 @@
     // Preparing labels
     registerLabel.text = NSLocalizedString(@"register.label", @"Register info label");
     loginInfo.text = NSLocalizedString(@"logging.label", @"Label next to the login button");
+    
+    loginEmail.delegate = self;
+    loginPassword.delegate = self;
     registerEmail.delegate = self;
     registerPassword.delegate = self;
     registerPseudo.delegate = self;
@@ -511,7 +514,11 @@
 
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if(textField == registerEmail) {
+    if(textField == loginEmail) {
+        [loginPassword becomeFirstResponder];
+    } else if(textField == loginPassword) {
+        [self loginPressed:self];
+    } else if(textField == registerEmail) {
         [registerPassword becomeFirstResponder];
     } else if(textField == registerPassword) {
         [registerPseudo becomeFirstResponder];
