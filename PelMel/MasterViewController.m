@@ -960,8 +960,8 @@
                     return adBoost1 < adBoost2 ? NSOrderedDescending : NSOrderedAscending;
                 } else {
                     
-                    CLLocation *place1Loc = [[CLLocation alloc] initWithLatitude:place1.lat longitude:place1.lng];
-                    CLLocation *place2Loc = [[CLLocation alloc] initWithLatitude:place2.lat longitude:place2.lng];
+//                    CLLocation *place1Loc = [[CLLocation alloc] initWithLatitude:place1.lat longitude:place1.lng];
+//                    CLLocation *place2Loc = [[CLLocation alloc] initWithLatitude:place2.lat longitude:place2.lng];
 //                    CLLocation *userLoc = TogaytherService.userService .currentLocation;
 //                    CLLocationDistance place1Distance = [place1Loc distanceFromLocation:userLoc];
 //                    CLLocationDistance place2Distance = [place2Loc distanceFromLocation:userLoc];

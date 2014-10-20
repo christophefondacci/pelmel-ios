@@ -31,6 +31,9 @@
 -(CALObject*) item {
     return _user;
 }
+- (CALImage *)snippetImage {
+    return _user.mainImage;
+}
 // Title of the element
 -(NSString*) title {
     return _user.pseudo;

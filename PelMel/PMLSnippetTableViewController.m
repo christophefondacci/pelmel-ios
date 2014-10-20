@@ -518,7 +518,8 @@ typedef enum {
     }
     
     // Loading thumb
-    CALImage *img = [[_infoProvider item] mainImage];
+    CALImage *img = [_infoProvider snippetImage];
+    cell.thumbView.contentMode = UIViewContentModeScaleAspectFit;
     [_imageService load:img to:cell.thumbView thumb:YES];
     
     // Configuring thumb subtitle

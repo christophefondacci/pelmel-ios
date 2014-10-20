@@ -21,6 +21,8 @@
 -(NSString*) title;
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon;
+// The snippet image
+-(CALImage*) snippetImage;
 // Global theme color for element
 -(UIColor*) color;
 // Provider of thumb displayed in the main snippet section

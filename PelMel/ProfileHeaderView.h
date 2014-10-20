@@ -13,6 +13,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *pseudoLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nicknameLabelWidthConstraint;
 
+
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
 
 @end

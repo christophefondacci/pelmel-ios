@@ -29,6 +29,9 @@
 -(CALObject*) item {
     return _city;
 }
+- (CALImage *)snippetImage {
+    return _city.mainImage;
+}
 // Title of the element
 -(NSString*) title {
     return _city.name;

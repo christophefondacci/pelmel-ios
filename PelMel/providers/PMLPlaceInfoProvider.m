@@ -72,6 +72,9 @@
 -(CALObject*) item {
     return _place;
 }
+- (CALImage *)snippetImage {
+    return _place.mainImage;
+}
 // Title of the element
 -(NSString*) title {
     if(_place.title != nil || _place.editing) {

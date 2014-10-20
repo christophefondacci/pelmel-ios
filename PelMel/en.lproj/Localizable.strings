@@ -83,6 +83,7 @@
 "message.reviews.title"="Comments";
 "message.sending"="Sending message...";
 "messages.my.title"="Messages";
+"modify"="Modify";
 "moreresults.title"="Search more results";
 "moreresults.subtitle"="Tap here to search for all places and cities";
 "network.noconnection"="No Network Connection";
@@ -130,17 +131,22 @@
 "placetype.plural.sauna"="Bathhouses";
 "placetype.plural.sexclub"="Sex clubs";
 "placetype.plural.sexshop"="Shops";
+"profile.description"="Description";
 "profile.height"="Height";
-"profile.weight"="Weight";
-"profile.tags.title"="Define yourself";
-"profile.save"="Sending data...";
+"profile.nickname.change.title"="Change your nickname";
+"profile.nickname.change.msg"="Edit your nickname";
 "profile.photo.take"="Take a photo";
 "profile.photo.library"="Photo from library";
 "profile.photo.manage"="Manage photos";
 "profile.photo.subtitle"="%d photos";
 "profile.photo.header"="Photos";
 "profile.photo.title"="Add a photo";
+"profile.save"="Sending data...";
+"profile.tags.title"="Define yourself";
 "profile.title"="My account";
+"profile.weight"="Weight";
+
+
 "push.permission.title"="Enable push?";
 "push.permission.msg"="Would you like to enable push notifications to let PelMel ping you whenever you got new messages?";
 "push.refused.title"="You're the boss";

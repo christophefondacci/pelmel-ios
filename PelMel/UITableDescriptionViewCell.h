@@ -14,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *languageCodeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
 
 //- (BOOL) isUserInteractionEnabled;
 //- (BOOL)canBecomeFirstResponder;

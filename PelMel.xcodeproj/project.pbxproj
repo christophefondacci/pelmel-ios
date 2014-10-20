@@ -70,6 +70,8 @@
 		B43E76211991BD5C00153B46 /* PMLMainNavBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B43E761F1991BD5C00153B46 /* PMLMainNavBarView.m */; };
 		B43E762A199781D200153B46 /* PMLImageTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B43E7628199781D200153B46 /* PMLImageTableViewController.h */; };
 		B43E762B199781D200153B46 /* PMLImageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B43E7629199781D200153B46 /* PMLImageTableViewController.m */; };
+		B43E9ADE19F47F5300F91FC1 /* PMLAddTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B43E9ADC19F47F5300F91FC1 /* PMLAddTableViewCell.h */; };
+		B43E9ADF19F47F5300F91FC1 /* PMLAddTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B43E9ADD19F47F5300F91FC1 /* PMLAddTableViewCell.m */; };
 		B43FA67619866ECD008A1679 /* Activity.h in Headers */ = {isa = PBXBuildFile; fileRef = B43FA67419866ECD008A1679 /* Activity.h */; };
 		B43FA67719866ECD008A1679 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = B43FA67519866ECD008A1679 /* Activity.m */; };
 		B449DEE216245B6600C362F8 /* ImageService.m in Sources */ = {isa = PBXBuildFile; fileRef = B449DEE116245B6600C362F8 /* ImageService.m */; };
@@ -363,6 +365,8 @@
 		B43E761F1991BD5C00153B46 /* PMLMainNavBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLMainNavBarView.m; sourceTree = "<group>"; };
 		B43E7628199781D200153B46 /* PMLImageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLImageTableViewController.h; sourceTree = "<group>"; };
 		B43E7629199781D200153B46 /* PMLImageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLImageTableViewController.m; sourceTree = "<group>"; };
+		B43E9ADC19F47F5300F91FC1 /* PMLAddTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLAddTableViewCell.h; sourceTree = "<group>"; };
+		B43E9ADD19F47F5300F91FC1 /* PMLAddTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLAddTableViewCell.m; sourceTree = "<group>"; };
 		B43FA67419866ECD008A1679 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
 		B43FA67519866ECD008A1679 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		B449DEE016245B6600C362F8 /* ImageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageService.h; sourceTree = "<group>"; };
@@ -723,6 +727,21 @@
 			name = Controls;
 			sourceTree = "<group>";
 		};
+		B43E9ADB19F47EF900F91FC1 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B4592A841622CF35009688B8 /* UITableDescriptionViewCell.h */,
+				B4592A851622CF35009688B8 /* UITableDescriptionViewCell.m */,
+				B4592A9A1623311F009688B8 /* UITableTagViewCell.h */,
+				B4592A9B16233120009688B8 /* UITableTagViewCell.m */,
+				B449DEE61626AA9600C362F8 /* UITablePhotoViewCell.h */,
+				B449DEE71626AA9600C362F8 /* UITablePhotoViewCell.m */,
+				B43E9ADC19F47F5300F91FC1 /* PMLAddTableViewCell.h */,
+				B43E9ADD19F47F5300F91FC1 /* PMLAddTableViewCell.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 		B46AD73B19E50A0B0021E1DE /* Menus */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,6 +1058,7 @@
 		B4D560DA16105B16003A738E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B43E9ADB19F47EF900F91FC1 /* Profile */,
 				B4BB9F0719D4F9180070B03C /* GrowingTextView */,
 				B4BB9EFA19D4DE2A0070B03C /* Chat */,
 				B4FC958719B1EF7B00269E74 /* Snippet */,
@@ -1058,14 +1078,8 @@
 				B4B5040C1621CE2E002D5669 /* DescriptionHeaderView.m */,
 				B4B504131621DE95002D5669 /* UITableMeasureViewCell.h */,
 				B4B504141621DE95002D5669 /* UITableMeasureViewCell.m */,
-				B4592A841622CF35009688B8 /* UITableDescriptionViewCell.h */,
-				B4592A851622CF35009688B8 /* UITableDescriptionViewCell.m */,
 				B4592A8A1623090A009688B8 /* UIInteractiveLabel.h */,
 				B4592A8B1623090A009688B8 /* UIInteractiveLabel.m */,
-				B4592A9A1623311F009688B8 /* UITableTagViewCell.h */,
-				B4592A9B16233120009688B8 /* UITableTagViewCell.m */,
-				B449DEE61626AA9600C362F8 /* UITablePhotoViewCell.h */,
-				B449DEE71626AA9600C362F8 /* UITablePhotoViewCell.m */,
 				B4EECADA162C15F9005F80DE /* UITableGridImageCell.h */,
 				B4EECADB162C15F9005F80DE /* UITableGridImageCell.m */,
 				B4EECAE5162D3FB8005F80DE /* ThumbsPreviewView.xib */,
@@ -1252,6 +1266,7 @@
 				B49F989B19A095C200BD3B2F /* CityDetailProvider.h in Headers */,
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
 				B46AD73519E509580021E1DE /* PMLSnippetLikeTableViewCell.h in Headers */,
+				B43E9ADE19F47F5300F91FC1 /* PMLAddTableViewCell.h in Headers */,
 				B46AD72C19E0E1E50021E1DE /* SettingsTableViewController.h in Headers */,
 				B41DD750197B4F5E008F09D9 /* APLDecorationView.h in Headers */,
 				B46C4C3819D27D9D00C81DA3 /* PMLTagsTableViewCell.h in Headers */,
@@ -1591,6 +1606,7 @@
 				B41DD74D197A4E5B008F09D9 /* PMLMapPopupViewController.m in Sources */,
 				B4FC958B19B1EFAC00269E74 /* PMLSnippetTableViewCell.m in Sources */,
 				B4A290CA16A72811007F5AA9 /* CityMasterProvider.m in Sources */,
+				B43E9ADF19F47F5300F91FC1 /* PMLAddTableViewCell.m in Sources */,
 				B4FC95A019B1F85D00269E74 /* PMLDescriptionTableViewCell.m in Sources */,
 				B4FE2A2D16AE96EF001BE53D /* LikeableStrategyObjectWithLikers.m in Sources */,
 				B4D26A7319DE1637004C5991 /* NSData+Conversion.m in Sources */,

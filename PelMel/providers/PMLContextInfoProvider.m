@@ -29,6 +29,13 @@
 -(CALObject*) item {
     return _modelHolder.localizedCity;
 }
+- (CALImage *)snippetImage {
+    if(_modelHolder.localizedCity.mainImage) {
+        return _modelHolder.localizedCity.mainImage;
+    } else {
+        return [CALImage calImageWithImage:[UIImage imageNamed:@"logoMob"]];
+    }
+}
 // Title of the element
 -(NSString*) title {
     if(_modelHolder.localizedCity) {
