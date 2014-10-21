@@ -163,7 +163,9 @@
     [UIView setAnimationBeginsFromCurrentState:YES];
     [self.view layoutIfNeeded];
     if(up) {
-        scrollView.contentOffset = CGPointMake(0, MIN(scrollView.contentSize.height,scrollView.contentOffset.y+keyboardEndFrame.size.height));
+//        scrollView.contentOffset = CGPointMake(0, MIN(scrollView.contentSize.height,scrollView.contentOffset.y+keyboardEndFrame.size.height));
+        CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
+        [scrollView setContentOffset:bottomOffset animated:NO];
     }
 
     [UIView commitAnimations];
@@ -346,7 +348,7 @@
     // Adding subview
     [scrollView addSubview:view];
     CGRect frame = view.frame;
-    [view setFrame:CGRectMake(frame.origin.x, scrollView.contentSize.height+10, frame.size.width, frame.size.height)];
+    [view setFrame:CGRectMake(frame.origin.x, scrollView.contentSize.height+10, scrollView.frame.size.width, frame.size.height)];
     CGRect scrollFrame = scrollView.frame;
     [scrollView setContentSize:CGSizeMake(scrollFrame.size.width,scrollView.contentSize.height+10+frame.size.height+10)];
 

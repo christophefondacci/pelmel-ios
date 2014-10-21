@@ -841,6 +841,9 @@
 		B4BB9EFA19D4DE2A0070B03C /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				B4956550163ECC82006A0451 /* ChatView.xib */,
+				B4956554163ECE05006A0451 /* ChatView.h */,
+				B4956555163ECE05006A0451 /* ChatView.m */,
 				B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */,
 				B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */,
 				B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */,
@@ -1101,9 +1104,6 @@
 				B41A13F1163942C600827E04 /* TogaytherHeaderView.xib */,
 				B4A290BA16A6BB02007F5AA9 /* TogaytherHeaderView.h */,
 				B4A290BB16A6BB03007F5AA9 /* TogaytherHeaderView.m */,
-				B4956550163ECC82006A0451 /* ChatView.xib */,
-				B4956554163ECE05006A0451 /* ChatView.h */,
-				B4956555163ECE05006A0451 /* ChatView.m */,
 				B4E9120B169ACD4E005D3CAF /* TogaytherTitleView.xib */,
 				B4A290BD16A6C49C007F5AA9 /* UITableNoResultViewCell.h */,
 				B4A290BE16A6C49C007F5AA9 /* UITableNoResultViewCell.m */,
