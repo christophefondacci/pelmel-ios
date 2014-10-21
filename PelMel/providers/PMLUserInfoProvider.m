@@ -10,11 +10,13 @@
 #import "ItemsThumbPreviewProvider.h"
 #import "TogaytherService.h"
 #import "MessageViewController.h"
+#import "PMLUserActionsView.h"
 
 @implementation PMLUserInfoProvider {
     User *_user;
     ItemsThumbPreviewProvider *_thumbsProvider;
     UIService *_uiService;
+    PMLUserActionsView *_actionsView;
 }
 
 - (instancetype)initWithUser:(User *)user
@@ -134,5 +136,18 @@
     MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
     msgController.withObject = _user;
     [controller.navigationController pushViewController:msgController animated:YES];
+}
+
+- (void)configureCustomViewIn:(UIView *)parentView {
+    if(_actionsView == nil) {
+        // Loading profile header view
+        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLUserActionsView" owner:self options:nil];
+        _actionsView = (PMLUserActionsView*)[views objectAtIndex:0];
+        [parentView addSubview:_actionsView];
+    } else if(_actionsView.superview != parentView) {
+        [_actionsView removeFromSuperview];
+        [parentView addSubview:_actionsView];
+    }
+    
 }
 @end

@@ -520,7 +520,9 @@
         case kSectionTags: {
             UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
             headerView.textLabel.textColor = [UIColor whiteColor];
-            headerView.textLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:15];
+            headerView.textLabel.font = [UIFont fontWithDescriptor:[UIFontDescriptor fontDescriptorWithFontAttributes:@{@"NSCTFontUIUsageAttribute" : UIFontTextStyleBody,
+                                                                                                                        @"NSFontNameAttribute" : PML_FONT_DEFAULT}] size:17.0];
+//            [UIFont fontWithName:PML_FONT_DEFAULT size:15];
             headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
             break;
         }

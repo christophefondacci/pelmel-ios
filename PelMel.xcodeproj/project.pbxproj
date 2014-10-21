@@ -56,6 +56,9 @@
 		B42408DF18EC711600B8B898 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42408DE18EC711600B8B898 /* QuartzCore.framework */; };
 		B42408E418F8EA9500B8B898 /* EGORefreshTableHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = B42408E218F8EA9500B8B898 /* EGORefreshTableHeaderView.h */; };
 		B42408E518F8EA9500B8B898 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B42408E318F8EA9500B8B898 /* EGORefreshTableHeaderView.m */; };
+		B4270E1919F62E5C00620773 /* PMLUserActionsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4270E1819F62E5C00620773 /* PMLUserActionsView.xib */; };
+		B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */ = {isa = PBXBuildFile; fileRef = B4270E1A19F631B700620773 /* PMLUserActionsView.h */; };
+		B4270E1D19F631B700620773 /* PMLUserActionsView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4270E1B19F631B700620773 /* PMLUserActionsView.m */; };
 		B42D2D401618D8C400159EBD /* GalleryService.m in Sources */ = {isa = PBXBuildFile; fileRef = B42D2D3F1618D8C400159EBD /* GalleryService.m */; };
 		B42D2D43161970DD00159EBD /* Imaged.m in Sources */ = {isa = PBXBuildFile; fileRef = B42D2D42161970DD00159EBD /* Imaged.m */; };
 		B42D2D461619715B00159EBD /* CALImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B42D2D451619715B00159EBD /* CALImage.m */; };
@@ -346,6 +349,9 @@
 		B42408DE18EC711600B8B898 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B42408E218F8EA9500B8B898 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		B42408E318F8EA9500B8B898 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		B4270E1819F62E5C00620773 /* PMLUserActionsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLUserActionsView.xib; sourceTree = "<group>"; };
+		B4270E1A19F631B700620773 /* PMLUserActionsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLUserActionsView.h; sourceTree = "<group>"; };
+		B4270E1B19F631B700620773 /* PMLUserActionsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLUserActionsView.m; sourceTree = "<group>"; };
 		B42D2D3E1618D8C400159EBD /* GalleryService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryService.h; sourceTree = "<group>"; };
 		B42D2D3F1618D8C400159EBD /* GalleryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryService.m; sourceTree = "<group>"; };
 		B42D2D41161970DD00159EBD /* Imaged.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaged.h; sourceTree = "<group>"; };
@@ -1200,6 +1206,9 @@
 				B4BB9F1519D7F23E0070B03C /* PMLThumbsTableViewCell.m */,
 				B46AD73319E509580021E1DE /* PMLSnippetLikeTableViewCell.h */,
 				B46AD73419E509580021E1DE /* PMLSnippetLikeTableViewCell.m */,
+				B4270E1819F62E5C00620773 /* PMLUserActionsView.xib */,
+				B4270E1A19F631B700620773 /* PMLUserActionsView.h */,
+				B4270E1B19F631B700620773 /* PMLUserActionsView.m */,
 			);
 			name = Snippet;
 			sourceTree = "<group>";
@@ -1262,6 +1271,7 @@
 				B4FC957B19AF3B4B00269E74 /* PMLPopupEditor.h in Headers */,
 				B4859DC41983B71F0036D8FF /* PMLSnippetViewController.h in Headers */,
 				B41DD754197B5FA5008F09D9 /* UIAttachmentView.h in Headers */,
+				B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */,
 				B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */,
 				B49F989B19A095C200BD3B2F /* CityDetailProvider.h in Headers */,
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
@@ -1393,6 +1403,7 @@
 				B41CF0AE1899C0F40031FD7C /* PelMel-config.plist in Resources */,
 				B4859DCB1984C1060036D8FF /* UITextInputView.xib in Resources */,
 				B4FC958219B1E28B00269E74 /* Sari-Medium.otf in Resources */,
+				B4270E1919F62E5C00620773 /* PMLUserActionsView.xib in Resources */,
 				B4B560A818B76C41006E6D90 /* UIPelmelTitleView.xib in Resources */,
 				B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */,
 				B41830C2197CA89900B7E2DD /* UIMapPopupView.xib in Resources */,
@@ -1555,6 +1566,7 @@
 				B4B504151621DE95002D5669 /* UITableMeasureViewCell.m in Sources */,
 				B4859DC51983B71F0036D8FF /* PMLSnippetViewController.m in Sources */,
 				B4592A861622CF35009688B8 /* UITableDescriptionViewCell.m in Sources */,
+				B4270E1D19F631B700620773 /* PMLUserActionsView.m in Sources */,
 				B40668B419713AF20012DF71 /* MenuAction.m in Sources */,
 				B4592A8C1623090A009688B8 /* UIInteractiveLabel.m in Sources */,
 				B449DEE216245B6600C362F8 /* ImageService.m in Sources */,
@@ -1797,7 +1809,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = PelMel;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "8bd28e03-95f4-45b7-af58-40f423d7fb20";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -1830,7 +1842,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = PelMel;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "68c2819b-365a-4630-a38d-0ff83d9abda3";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;

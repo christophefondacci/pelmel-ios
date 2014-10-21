@@ -582,19 +582,25 @@ typedef enum {
     cell.hoursBadgeSubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:8];
     cell.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:16];
     
-    // Configuring thumb controller
-    if(cell.peopleView.subviews.count == 0) {
-        // Initializing thumb controller
-        _thumbController = (ThumbTableViewController*)[_uiService instantiateViewController:SB_ID_THUMBS_CONTROLLER];
-        [self addChildViewController:_thumbController];
-        [cell.peopleView addSubview:_thumbController.view];
-        [_thumbController didMoveToParentViewController:self];
+
+    // If custom view then configuring it
+    if([_infoProvider respondsToSelector:@selector(configureCustomViewIn:)]) {
+        [_infoProvider configureCustomViewIn:cell.peopleView];
+    } else {
+        // Configuring thumb controller
+        if(cell.peopleView.subviews.count == 0) {
+            // Initializing thumb controller
+            _thumbController = (ThumbTableViewController*)[_uiService instantiateViewController:SB_ID_THUMBS_CONTROLLER];
+            [self addChildViewController:_thumbController];
+            [cell.peopleView addSubview:_thumbController.view];
+            [_thumbController didMoveToParentViewController:self];
+        }
+        // Building provider
+        _thumbController.thumbProvider = _infoProvider.thumbsProvider;
+        [self configureThumbController];
+        //    [self.tableView reloadData];
+        [_thumbController.tableView reloadData];
     }
-    // Building provider
-    _thumbController.thumbProvider = _infoProvider.thumbsProvider;
-    [self configureThumbController];
-//    [self.tableView reloadData];
-    [_thumbController.tableView reloadData];
     
     
 }

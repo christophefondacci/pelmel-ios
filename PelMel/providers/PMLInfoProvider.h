@@ -44,6 +44,10 @@
 -(NSArray*)addressComponents;
 
 @optional
+// When implemented, this method will be called and the component will replace
+// The thumbs view
+-(void)configureCustomViewIn:(UIView*)parentView;
+
 //-(Special*)specialOfType:(NSString*)specialType;
 -(NSArray*)activities;
 
