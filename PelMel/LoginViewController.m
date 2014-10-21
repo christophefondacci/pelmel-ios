@@ -371,17 +371,19 @@
 */
 
 #pragma mark - Table view delegate
-
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == kSectionRegister && indexPath.row == kRowRegisterTerms;
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch(indexPath.section) {
-        case 1:
-            switch(indexPath.row) {
-                case 4:
-                    [datePickerDataSource setDate:registerDate picker:datePicker];
-                    break;
-            }
-    }
+//    switch(indexPath.section) {
+//        case 1:
+//            switch(indexPath.row) {
+//                case 4:
+//                    [datePickerDataSource setDate:registerDate picker:datePicker];
+//                    break;
+//            }
+//    }
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
