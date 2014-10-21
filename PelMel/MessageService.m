@@ -443,11 +443,21 @@
 
 #pragma mark - UIAlertViewDelegate (for push)
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    UIApplication *application = [UIApplication sharedApplication];
     switch (buttonIndex) {
         case 1:
             // Let the device know we want to receive push notifications, the system will ask the user
-            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-             (UIRemoteNotificationTypeBadge  | UIRemoteNotificationTypeAlert)];
+            
+            // iOS 8 push notifications
+            if([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+                [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:( UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+                
+                [application registerForRemoteNotifications];
+            } else {
+                // iOS 7 and older notifications
+                [application registerForRemoteNotificationTypes:
+                    (UIRemoteNotificationTypeBadge  | UIRemoteNotificationTypeAlert)];
+            }
             break;
         default:
             [self pushCompletion:NO];
@@ -455,7 +465,9 @@
     }
 }
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    [self pushCompletion:NO];
+    if(alertView.cancelButtonIndex == buttonIndex) {
+        [self pushCompletion:NO];
+    }
 }
 -(void)alertViewCancel:(UIAlertView *)alertView {
     [self pushCompletion:NO];
