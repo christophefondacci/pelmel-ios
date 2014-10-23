@@ -51,10 +51,8 @@
     // Selecting right or left positioning
     CurrentUser *user = userService.getCurrentUser;
     if([object.key isEqualToString:user.key]) {
-        currentBubbleImage = _bubbleImageSelf;
         currentThumb = _thumbImageSelf;
         currentBubbleText = _bubbleTextSelf;
-        [_bubbleImage setHidden:YES];
         [_bubbleText setHidden:YES];
         [_thumbImage setHidden:YES];
         [_leftActivity setHidden:YES];
@@ -63,10 +61,8 @@
         currentBubbleImage.image = [[UIImage imageNamed:@"bubble-gradient-right.png"] resizableImageWithCapInsets:insets];
         currentActivity = _rightActivity;
     } else {
-        currentBubbleImage = _bubbleImage;
         currentThumb = _thumbImage;
         currentBubbleText = _bubbleText;
-        [_bubbleImageSelf setHidden:YES];
         [_bubbleTextSelf setHidden:YES];
         [_thumbImageSelf setHidden:YES];
         [_rightActivity setHidden:YES];
@@ -112,13 +108,7 @@
     // Getting minimum height
     CGSize size = [currentBubbleText sizeThatFits:CGSizeMake(currentBubbleText.frame.size.width,FLT_MAX)];
     int minHeight = MAX(size.height,_thumbImage.frame.size.height);
-    
-    // Adjusting whole view
-    CGRect viewFrame = self.frame;
-    [self setFrame:CGRectMake(viewFrame.origin.x, viewFrame.origin.y, viewFrame.size.width, minHeight + _topTextViewConstraint.constant + _bottomTextViewConstraint.constant)];
-
-    
-
+    _textHeightConstraint.constant = minHeight+1; // Adding 1 for fractional height !!
 }
 
 - (Message *)getMessage {

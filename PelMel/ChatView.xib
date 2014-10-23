@@ -57,13 +57,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </imageView>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="bubble-simple-right" translatesAutoresizingMaskIntoConstraints="NO" id="15">
-                    <rect key="frame" x="20" y="19" width="232" height="84"/>
-                </imageView>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" image="bubble-simple-left" translatesAutoresizingMaskIntoConstraints="NO" id="6">
-                    <rect key="frame" x="68" y="19" width="232" height="84"/>
-                </imageView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8" userLabel="rightText">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8" userLabel="rightText">
                     <rect key="frame" x="68" y="28" width="242" height="79"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -72,9 +66,12 @@
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                 </textView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="16" userLabel="leftText">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" scrollEnabled="NO" editable="NO" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="16" userLabel="leftText">
                     <rect key="frame" x="10" y="28" width="242" height="79"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="79" id="fNG-KK-HaU"/>
+                    </constraints>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="OpenSans-Italic" family="Open Sans" pointSize="14"/>
@@ -153,9 +150,6 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="bottomTextViewConstraint" destination="fv5-nc-ZYE" id="Kjw-qj-OtQ"/>
-                <outlet property="bubbleImage" destination="6" id="11"/>
-                <outlet property="bubbleImageSelf" destination="15" id="18"/>
                 <outlet property="bubbleText" destination="8" id="12"/>
                 <outlet property="bubbleTextSelf" destination="16" id="19"/>
                 <outlet property="dateLabel" destination="4" id="9"/>
@@ -163,17 +157,13 @@
                 <outlet property="leftActivity" destination="22" id="25"/>
                 <outlet property="leftThumbButton" destination="29" id="30"/>
                 <outlet property="rightActivity" destination="23" id="24"/>
+                <outlet property="textHeightConstraint" destination="fNG-KK-HaU" id="5hN-iQ-rIH"/>
                 <outlet property="thumbImage" destination="5" id="21"/>
                 <outlet property="thumbImageSelf" destination="14" id="20"/>
-                <outlet property="topTextViewConstraint" destination="CKO-GK-c3F" id="GEl-7u-fvr"/>
             </connections>
             <point key="canvasLocation" x="139" y="152"/>
         </view>
     </objects>
-    <resources>
-        <image name="bubble-simple-left" width="30" height="30"/>
-        <image name="bubble-simple-right" width="30" height="30"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

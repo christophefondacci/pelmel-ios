@@ -288,6 +288,10 @@
         NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
         ChatView *view = [views objectAtIndex:0];
         
+        // Adjusting position (mostly width because it is used for height computation
+        CGRect frame = view.frame;
+        [view setFrame:CGRectMake(frame.origin.x, totalHeight, scrollView.bounds.size.width, frame.size.height)];
+        [view layoutIfNeeded];
         // Setuping chat view
         [view setup:message forObject:message.from snippet:isAllMessageView];
         if(isAllMessageView) {
@@ -302,8 +306,9 @@
         [scrollView addSubview:view];
         
         // Adjusting position
-        CGRect frame = view.frame;
-        [view setFrame:CGRectMake(frame.origin.x, totalHeight, scrollView.bounds.size.width, frame.size.height)];
+        frame = view.frame;
+        CGSize viewSize = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        [view setFrame:CGRectMake(frame.origin.x, totalHeight, scrollView.bounds.size.width, viewSize.height)];
         totalHeight+=view.frame.size.height;
         
         // Setuping image
@@ -318,6 +323,10 @@
             view.backgroundColor = UIColorFromRGB(0x343c42);
         }
         even = !even;
+        
+        
+        // DEBUG
+        NSLog(@"Height : %d - Width : %d",(int)view.bubbleText.bounds.size.height,(int)view.bubbleText.bounds.size.width);
     }
     
     // Updating our scroll view
@@ -406,7 +415,9 @@
         }
     }
 }
--(void)showFromUserTapped:(id)sender {
+-(void)showFromUserTapped:(UIView*)sender {
+    ChatView *chatView = (ChatView*)sender.superview;
+    NSLog(@"Height : %d - Width : %d - Font : %@ - %d",(int)chatView.bubbleText.bounds.size.height,(int)chatView.bubbleText.bounds.size.width,chatView.bubbleText.font.fontName,(int)chatView.bubbleText.font.pointSize);
     if([_withObject.key isEqualToString:[[userService getCurrentUser] key]]) {
         [self showMessageTapped:sender];
     } else {
