@@ -248,10 +248,10 @@
         }
 
     } else if( [object isKindOfClass:[City class]] ) {
-        PopupAction *searchInCityAction = [[PopupAction alloc] initWithAngle:M_PI/5 distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"search"] titleCode:@"action.searchHere" size:kPMLPhotoSize command:^{
+        PopupAction *searchInCityAction = [[PopupAction alloc] initWithAngle:M_PI/5 distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionSearch"] titleCode:nil size:kPMLLikeSize command:^{
             [_dataService fetchPlacesFor:object searchTerm:nil];
         }];
-        searchInCityAction.color = UIColorFromRGB(0xe8791f);
+        searchInCityAction.color = UIColorFromRGB(0x344160);
         [actions addObject:searchInCityAction];
     }
     return actions;

@@ -205,6 +205,8 @@
         NSString *prop = [NSString stringWithFormat:enabled ? kPMLMarkerPrefKeyTemplate : kPMLMarkerDisabledPrefKeyTemplate,place.placeType];
         
         imageName = [TogaytherService propertyFor:prop];
+    } else if([object isKindOfClass:[City class]] ) {
+        imageName = @"mapMarkerCity";
     }
     if(imageName == nil) {
         imageName = enabled ? @"mapMarkerDefault" : @"mapMarkerDefaultOff";

@@ -30,7 +30,12 @@
     return _city;
 }
 - (CALImage *)snippetImage {
-    return _city.mainImage;
+    if(_city.mainImage!=nil) {
+        return _city.mainImage;
+    } else {
+        return [CALImage calImageWithImage:[UIImage imageNamed:@"logoMob"]];
+    }
+
 }
 // Title of the element
 -(NSString*) title {
@@ -38,7 +43,7 @@
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
-    return nil;
+    return [UIImage imageNamed:@"snpIconCity"];
 }
 // Global theme color for element
 -(UIColor*) color {
