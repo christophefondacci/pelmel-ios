@@ -35,6 +35,9 @@
 
 #define PML_PROP_SERVER @"url.server"
 
+#define kPMLKeyLastLatitude @"lastLatitude"
+#define kPMLKeyLastLongitude @"lastLongitude"
+
 
 #define MAP_HACK_TAG 24681357
 

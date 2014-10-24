@@ -14,9 +14,8 @@
 #import "SettingsService.h"
 #import "PMLPopupActionManager.h"
 
-@interface MapViewController : UIViewController <MKMapViewDelegate,PMLDataListener, PMLUserCallback, UITextFieldDelegate,SettingsListener,CLLocationManagerDelegate> {
-    BOOL _doneInitialZoom;
-}
+@interface MapViewController : UIViewController <MKMapViewDelegate,PMLDataListener, PMLUserCallback, UITextFieldDelegate,SettingsListener,CLLocationManagerDelegate>
+
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UILabel *warningLabel;
 @property (nonatomic) CLLocationCoordinate2D center;

@@ -38,10 +38,8 @@
 }
 // Title of the element
 -(NSString*) title {
-    if(_modelHolder.localizedCity) {
-        return [NSString stringWithFormat:NSLocalizedString(@"places.section.inZone", @"places.section.inZone"),_modelHolder.places.count]; //modelHolder.localizedCity.name;
-    }
-    return nil;
+    return [NSString stringWithFormat:NSLocalizedString(@"places.section.inZone", @"places.section.inZone"),_modelHolder.places.count]; //modelHolder.localizedCity.name;
+
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
@@ -100,7 +98,7 @@
     return _modelHolder.activities;
 }
 - (NSArray *)topPlaces {
-    int topPlacesCount = MIN(_modelHolder.places.count,10);
+    int topPlacesCount = MIN((int)_modelHolder.places.count,10);
     if(topPlacesCount>0) {
         NSRange range;
         range.location = 0;

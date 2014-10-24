@@ -384,6 +384,12 @@
     user.lat = location.coordinate.latitude;
     user.lng = location.coordinate.longitude;
     userService.currentLocation = newLocation;
+    
+    // Saving for future app starts
+    NSNumber *lat = [NSNumber numberWithDouble:user.lat];
+    NSNumber *lng = [NSNumber numberWithDouble:user.lng];
+    [[NSUserDefaults standardUserDefaults] setObject:lat forKey:kPMLKeyLastLatitude];
+    [[NSUserDefaults standardUserDefaults] setObject:lng forKey:kPMLKeyLastLongitude];
 }
 
 #pragma mark - Overview data management

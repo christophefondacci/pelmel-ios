@@ -25,11 +25,15 @@
 
 #define kPMLMinimumPlacesForZoom 3
 
+
+
 @interface MapViewController ()
 
 @end
 
 @implementation MapViewController {
+    NSUserDefaults *_userDefaults;
+    
     ModelHolder *_modelHolder;
     DataService *_dataService;
     UserService *_userService;
@@ -37,12 +41,12 @@
     ConversionService *_conversionService;
     SettingsService *_settingsService;
     MKAnnotationView *selectedAnnotation;
+
     
     // Internal for adding new point management
     UILongPressGestureRecognizer *gestureRecognizer;
     BOOL newPointReady;
     
-    BOOL isNearbyMode;
     CALObject *_parentObject;
     
     // Annotation management
@@ -71,6 +75,9 @@
     
     // Geocoding
     CLGeocoder *_geocoder;
+    BOOL _initialUserLocationZoomDone;
+    BOOL _zoomUpdateRequested;
+    BOOL _zoomAroundUserLocation;
     
     BOOL _snippetDisabledOnSelection;
     
@@ -81,6 +88,9 @@
 {
     [super viewDidLoad];
     [TogaytherService applyCommonLookAndFeel:self];
+    
+    // Defaults
+    _userDefaults = [NSUserDefaults standardUserDefaults];
     
     // Getting services
     _dataService = [TogaytherService dataService];
@@ -109,13 +119,12 @@
     // Map delegate
     _mapView.delegate = self;
     _mapView.showsPointsOfInterest = NO;
-
-    if(_centralObject == nil && _modelHolder.parentObject == nil) {
-//        [_mapView setUserTrackingMode:MKUserTrackingModeFollow animated:NO];
-//        self.mapView.centerCoordinate = self.mapView.userLocation.location.coordinate;
-    } else {
-        [_mapView setUserTrackingMode:MKUserTrackingModeNone animated:NO];
-    }
+    [_mapView setUserTrackingMode:MKUserTrackingModeNone animated:NO];
+    
+    // Pre-centering map to last position
+    [self configureMapCenter];
+    _zoomUpdateRequested = YES;
+    _zoomAroundUserLocation = YES;
     
     // Listening to data events
     [_dataService registerDataListener:self];
@@ -148,7 +157,7 @@
     // Release any retained subviews of the main view.
 }
 - (void)viewWillAppear:(BOOL)animated {
-    [self updateMap];
+//    [self updateMap];
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -170,6 +179,39 @@
     //        [[self navigationController] presentViewController:detailViewController animated:YES completion:nil];
     
 }
+
+#pragma mark - Zooming / Positioning helper methods
+/**
+ * Pre-centers the map to its last known position or to a default place
+ */
+-(void)configureMapCenter {
+    CLLocationCoordinate2D coords = [self lastKnownCoordinates];
+    
+    // Centering map
+    [_mapView setCenterCoordinate:coords animated:NO];
+
+    // Now listening to user position changes
+    if(_modelHolder.userLocation == nil) {
+        _initialUserLocationZoomDone = NO;
+        [_modelHolder addObserver:self forKeyPath:@"userLocation" options:NSKeyValueObservingOptionNew context:NULL];
+    }
+}
+-(CLLocationCoordinate2D)lastKnownCoordinates {
+    // Retrieving last known position
+    NSNumber *lat = [_userDefaults objectForKey:kPMLKeyLastLatitude];
+    NSNumber *lng = [_userDefaults objectForKey:kPMLKeyLastLongitude];
+    CLLocationCoordinate2D coords;
+    if(lat != nil && lng != nil) {
+        coords.latitude = lat.doubleValue;
+        coords.longitude = lng.doubleValue;
+    } else {
+        // Using default San Francisco position
+        coords.latitude = 37.754362f;
+        coords.longitude = -122.426147f;
+    }
+    return coords;
+}
+
 #pragma mark - Map selection
 
 - (void)selectCALObject:(CALObject *)calObject {
@@ -212,7 +254,8 @@
         CLLocationDistance distance = [centerLoc distanceFromLocation:cornerLoc];
         int milesRadius = MIN(1500,distance/1609.344);
         
-        
+        _zoomUpdateRequested = YES;
+        _zoomAroundUserLocation = [[_mapView annotationsInMapRect:_mapView.visibleMapRect] containsObject:_mapView.userLocation];
         [self.parentMenuController.dataManager refreshAt:centerCoords radius:milesRadius];
     }];
     _menuRefreshAction.rightMargin = 5;
@@ -230,31 +273,19 @@
 }
 -(void)updateMap {
     // First updating annotations because we might need them to compute initial zoom
-    [self updateAnnotations];
+    NSArray *updatedAnnotations = [self updateAnnotations];
     
-    // Calibrating user tracking and initial zoom flags
-    if(_centralObject == nil && _modelHolder.parentObject == nil) {
+    // Calibrating center to last coordinates
+    if(_modelHolder.userLocation != nil) {
         _center = _modelHolder.userLocation.coordinate;
-        if(!isNearbyMode) {
-            _doneInitialZoom = NO;
-        }
-        isNearbyMode = YES;
     } else {
-        if(isNearbyMode) {
-            _doneInitialZoom = NO;
-        }
-        isNearbyMode = NO;
+        _center = [self lastKnownCoordinates];
     }
     
     // Have we already setup initial zoom?
-    if(!_doneInitialZoom) {
-        //CLLocationCoordinate2D coords = [[mapView userLocation] coordinate];
-        
+    if(_zoomUpdateRequested) {
+
         // Zooming to current user location with 800m x 800m wide rect
-        if(_modelHolder.parentObject!= nil && _centralObject == nil) {
-            _center.latitude = _modelHolder.parentObject.lat;
-            _center.longitude =_modelHolder.parentObject.lng;
-        }
         if(_center.latitude != 0 && _center.longitude !=0) {
             
             // Setting up width (a little bit larger for iPad)
@@ -263,38 +294,41 @@
                width = 1600;
             }
             
-            // Building our zoom rect
-            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(_center, width, width);
-            MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
-
-            // Converting to a rect to check if we got anything nearby
-            MKMapRect rect = [self MKMapRectForCoordinateRegion:adjustedRegion];
+            MKMapRect rect;
+            if(_zoomAroundUserLocation) {
+                // Building our zoom rect around our center
+                MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(_center, width, width);
+                MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
+                
+                // Converting to a rect to check if we got anything nearby
+                rect = [self MKMapRectForCoordinateRegion:adjustedRegion];
+            } else {
+                rect = _mapView.visibleMapRect;
+            }
             NSSet *nearbyAnnotations = [_mapView annotationsInMapRect:rect];
             int placesCount = (int)nearbyAnnotations.count;
             
             // If we haven't got much in our rect, we check if we need to zoom fit or no
             if(placesCount<kPMLMinimumPlacesForZoom && (placesCount-1) < _modelHolder.places.count+_modelHolder.cities.count) {
                 
-                // If total places are bigger than current places in zoom rect then we zoom fit
-                [_mapView showAnnotations:[_placeAnnotations allObjects] animated:YES];
+                // If total places are bigger than current places in zoom rect then we zoom fit newly updated annotations
+                [_mapView showAnnotations:updatedAnnotations animated:YES];
                 
             } else {
                 
                 // We will have a good nearby view
                 _mapView.camera.pitch = 0;
-                _zoomAnimation = YES;
+                
+                _zoomAnimation = _zoomAroundUserLocation;
                 NSSet *annotationsToDisplay = nearbyAnnotations.count > 0 ? nearbyAnnotations : _placeAnnotations;
                 [_mapView showAnnotations:[annotationsToDisplay allObjects] animated:YES];
-//                [_mapView setUserTrackingMode:MKUserTrackingModeNone];
-//                [_mapView setRegion:adjustedRegion animated:YES];
-//                _mapView.pitchEnabled = YES;
-//                _mapView.camera.pitch = 70;
-//                [_mapView setCenterCoordinate:adjustedRegion.center];
             }
             _mapInitialCenter = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
+        } else {
+            [_mapView showAnnotations:updatedAnnotations animated:YES];
         }
-        _doneInitialZoom = YES;
-
+        _zoomUpdateRequested = NO;
+        _zoomAroundUserLocation = NO;
     }
 
 }
@@ -309,8 +343,15 @@
     return MKMapRectMake(MIN(a.x,b.x), MIN(a.y,b.y), ABS(a.x-b.x), ABS(a.y-b.y));
 }
 
-- (void)updateAnnotations {
+/**
+ * Updates annotations (create/update) from ModelHolder contents and returns an array of all processed annotations
+ */
+- (NSArray*)updateAnnotations {
 
+    // Preparing an array to put all processed annotations here.
+    // This array will be returned so that we could distinguish those annotations from any pre-existing ones
+    NSMutableArray *updatedAnnotations = [[NSMutableArray alloc] initWithCapacity:_modelHolder.places.count];
+    
     // Removing annotations connected to place that are no longer present
     Place *place;
 
@@ -347,6 +388,7 @@
         if(visible && place.lat!=0 && place.lng!=0) {
             // Building annotation
             MapAnnotation *annotation = [self buildMapAnnotationFor:place];
+            [updatedAnnotations addObject:annotation];
             // Selecting if central object
             if ( _centralObject != nil && [place.key isEqualToString:_centralObject.key]) {
                 [_mapView selectAnnotation:annotation animated:YES];
@@ -358,6 +400,7 @@
     for(City *city in _modelHolder.cities) {
         MapAnnotation *annotation = [self buildMapAnnotationFor:city];
         [_placeAnnotations addObject:annotation];
+        [updatedAnnotations addObject:annotation];
     }
     if(!centralObjectProcessed && _centralObject != nil && [_centralObject isKindOfClass:[Place class]]) {
         Place *place = (Place*)_centralObject;
@@ -369,6 +412,7 @@
         [_mapView addAnnotation:annotation];
 
     }
+    return updatedAnnotations;
 }
 -(MapAnnotation*)buildMapAnnotationFor:(CALObject*)place {
     CLLocationCoordinate2D coords;
@@ -410,19 +454,19 @@
     
 }
 
-
-- (void)setCentralObject:(CALObject *)centralObject {
-    _centralObject = centralObject;
-    if([TogaytherService.uiService isIpad:self]) {
-        [self updateMap];
-    }
-}
-- (void)setCenter:(CLLocationCoordinate2D)center {
-    _center = center;
-    if([TogaytherService.uiService isIpad:self]) {
-        [self updateMap];
-    }
-}
+//
+//- (void)setCentralObject:(CALObject *)centralObject {
+//    _centralObject = centralObject;
+//    if([TogaytherService.uiService isIpad:self]) {
+//        [self updateMap];
+//    }
+//}
+//- (void)setCenter:(CLLocationCoordinate2D)center {
+//    _center = center;
+//    if([TogaytherService.uiService isIpad:self]) {
+//        [self updateMap];
+//    }
+//}
 
 #pragma mark - MKMapViewDelegate
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
@@ -589,7 +633,7 @@
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
-//    CLLocation *currentLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
+    CLLocation *currentLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
     if(_zoomAnimation) {
         _zoomAnimation = NO;
         MKMapCamera *camera = [MKMapCamera camera];
@@ -601,13 +645,16 @@
         [_mapView setCamera:camera animated:YES];
         
     }
-//    if(_doneInitialZoom) {
-//        // If we moved more than 100km (our current search radius, then we display refresh
-//        if([currentLocation distanceFromLocation:_mapInitialCenter]>=50000 && !_refreshVisible) {
-//            _refreshVisible = YES;
-//            [self.parentMenuController.menuManagerDelegate addMenuAction:_menuRefreshAction];
-//        }
-//    }
+    if(!_zoomUpdateRequested) {
+        // If we moved more than 100km (our current search radius, then we display refresh
+        if([currentLocation distanceFromLocation:_mapInitialCenter]>=50000) {
+            if([[_mapView annotationsInMapRect:_mapView.visibleMapRect] count] == 0) {
+                [UIView animateWithDuration:0.2 animations:^{
+                    _menuRefreshAction.menuActionView.transform = CGAffineTransformRotate(_menuRefreshAction.menuActionView.transform, M_PI_2);
+                }];
+            }
+        }
+    }
 }
 
 
@@ -707,7 +754,6 @@
 
     // Preparing our annotation list (for zooming)
     _placeAnnotations = [[NSMutableSet alloc] initWithCapacity:_modelHolder.places.count];
-    _doneInitialZoom = NO;
 
     // Hashing places by their ID for fast annotation lookup
     for(Place *place in modelHolder.places) {
@@ -805,6 +851,14 @@
 //        }
         
 
+    } else if([object isKindOfClass:[ModelHolder class]]) {
+        if(!_initialUserLocationZoomDone) {
+            // Centering
+            [_mapView setCenterCoordinate:_modelHolder.userLocation.coordinate animated:YES];
+            // Unregistering
+            [_modelHolder removeObserver:self forKeyPath:@"userLocation"];
+            _initialUserLocationZoomDone = YES;
+        }
     }
 }
 -(void)fillContextKeys {
