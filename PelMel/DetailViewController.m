@@ -517,7 +517,7 @@
     if(!likeInProgress) {
         likeInProgress = YES;
         [_likeActivity startAnimating];
-        [detailProvider likeTapped:self.detailItem callback:^(int likes, int dislikes) {
+        [detailProvider likeTapped:self.detailItem callback:^(int likes, int dislikes, BOOL liked) {
             [self likeDone:self.detailItem newLikes:likes newDislikes:dislikes];
         }];
     }
@@ -527,7 +527,7 @@
     if(!likeInProgress) {
         likeInProgress = YES;
         [_dislikeActivity startAnimating];
-        [_dataService dislike:self.detailItem callback:^(int likes, int dislikes) {
+        [_dataService dislike:self.detailItem callback:^(int likes, int dislikes, BOOL liked) {
             [self likeDone:self.detailItem newLikes:likes newDislikes:dislikes];
         }];
     }

@@ -49,7 +49,7 @@ typedef enum {
 -(void)didLooseConnection;
 
 // A like has been successfully done
--(void)didLike:(CALObject*)likedObject newLikes:(int)likeCount newDislikes:(int)dislikesCount;
+-(void)didLike:(CALObject*)likedObject newLikes:(int)likeCount newDislikes:(int)dislikesCount liked:(BOOL)liked;
 
 // About to update a place
 -(void)willUpdatePlace:(Place*)place;
@@ -69,7 +69,7 @@ typedef enum {
 @end
 
 typedef void (^OverviewCompletionBlock)(CALObject*overviewObject);
-typedef void (^LikeCompletionBlock)(int likes,int dislikes);
+typedef void (^LikeCompletionBlock)(int likes,int dislikes, BOOL isLiked);
 typedef void (^UpdatePlaceCompletionBlock)(Place *place );
 
 @interface DataService : NSObject <CLLocationManagerDelegate>

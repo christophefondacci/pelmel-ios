@@ -191,6 +191,46 @@
 -(void)didLooseConnection {
     [_menuController.menuManagerDelegate loadingEnd];
 }
+
+/**
+ * Triggers the common standardized feedback when a like is done: updating counts, flags, likers,
+ * and providing feedback to end user.
+ *
+ * @param likedObject the CALObject that was liked / unliked
+ * @param likeCount new like count
+ * @param dislikesCount new dislikes count
+ * @param liked whether the object is now liked or not liked
+ */
+- (void)didLike:(CALObject *)likedObject newLikes:(int)likeCount newDislikes:(int)dislikesCount liked:(BOOL)liked {
+    // Updating counts
+    likedObject.likeCount = likeCount;
+    likedObject.isLiked = liked;
+    
+    // Updating likers
+    CurrentUser *user = [_userService getCurrentUser];
+    if(liked) {
+        [likedObject.likers addObject:user];
+    } else {
+        [likedObject.likers removeObject:user];
+    }
+    
+    // Feedback message
+    NSString *title;
+    NSString *message;
+    if(likedObject.isLiked) {
+        title = NSLocalizedString(@"action.like.feedbackTitle", @"action.like.feedbackTitle");
+        message = NSLocalizedString(@"action.like.feedbackMessage", @"action.like.feedbackMessage");
+    } else {
+        title = NSLocalizedString(@"action.unlike.feedbackTitle", @"action.unlike.feedbackTitle");
+        message = NSLocalizedString(@"action.unlike.feedbackMessage", @"action.unlike.feedbackMessage");
+    }
+    
+    // Displaying the alert
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    [alert show];
+
+
+}
 #pragma mark UserLoginCallback
 - (void)authenticationFailed:(NSString *)reason {
     [self dataLoginFailed];

@@ -40,6 +40,11 @@
  */
 - (User*)convertJsonUserToUser:(NSDictionary*)jsonUser;
 /**
+ * Converts a JSON Overview user information to a User bean. If a bean is not yet
+ * in cache (or has been excluded), the defaultUser bean will be used.
+ */
+- (User*)convertJsonOverviewUserToUser:(NSDictionary*)json  defaultUser:(User*)defaultUser;
+/**
  * Helper method that batch converts an array of JsonLightUser
  */
 - (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers;

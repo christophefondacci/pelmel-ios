@@ -638,8 +638,8 @@ typedef enum {
     
 
     // If custom view then configuring it
-    if([_infoProvider respondsToSelector:@selector(configureCustomViewIn:)]) {
-        [_infoProvider configureCustomViewIn:cell.peopleView];
+    if([_infoProvider respondsToSelector:@selector(configureCustomViewIn:forController:)]) {
+        [_infoProvider configureCustomViewIn:cell.peopleView forController:self];
     } else {
         // Configuring thumb controller
         if(cell.peopleView.subviews.count == 0) {
@@ -1070,6 +1070,9 @@ typedef enum {
     [_observedProperties addObject:@"editing"];
     [self.snippetItem addObserver:self forKeyPath:@"editingDesc" options:NSKeyValueObservingOptionNew context:NULL];
     [_observedProperties addObject:@"editingDesc"];
+}
+- (void)didLike:(CALObject *)likedObject newLikes:(int)likeCount newDislikes:(int)dislikesCount liked:(BOOL)liked {
+    [self.tableView reloadData];
 }
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

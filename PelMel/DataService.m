@@ -50,7 +50,7 @@
 //    id<DataRefreshCallback> __weak _callback;
     
     BOOL shouldFetchObjectsContinue;
-    NSMutableSet *dataListeners;
+    NSMutableArray *dataListeners;
     
     NSMutableDictionary *connectionPlacesMap;
 
@@ -86,7 +86,7 @@
         
 
         // Initializing list of listeners
-        dataListeners = [[NSMutableSet alloc] init];
+        dataListeners = [[NSMutableArray alloc] init];
 
         // Initializing location manager
         localizationCount = 0;
@@ -489,7 +489,6 @@
     });
 }
 - (void)userOverviewDataFetched:(NSData*)data object:(CALObject*)object {
-    User *user = (User*)object;
     NSError* error;
     if(data == nil) {
         NSLog(@"userOverviewDataFetched: JSON data is null, aborting");
@@ -508,52 +507,8 @@
     }
 
     // Filling user from JSon
-    [jsonService fillUser:user fromJson:json];
-    
-    // Extracting JSON data
-    NSNumber *likeCount     = [json objectForKey:@"likes"];
-    NSArray *jsonLikeUsers  = [json objectForKey:@"likeUsers"];
-    NSNumber *placeLikeCount= [json objectForKey:@"likedPlacesCount"];
-    NSArray *jsonLikedPlaces= [json objectForKey:@"likedPlaces"];
-    
-    // Getting unread message count
-    NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
-    [messageService setUnreadMessageCount:[unreadMsgCount intValue]];
-    
-    // Preparing thumbs list to download
-    NSMutableArray *thumbsToDownload = [[NSMutableArray alloc] initWithCapacity:jsonLikeUsers.count+jsonLikedPlaces.count];
-    
-    // Injecting liked users into user
-    NSLog(@"Fill user likeCount = %d, placesCount= %d",[likeCount intValue],[placeLikeCount intValue]);
-    [user setLikeCount:[likeCount integerValue]];
-    [user.likers removeAllObjects];
-    for(NSDictionary *jsonUser in jsonLikeUsers) {
-        // Building User bean (liked user) from JSON
-        User *likedUser = [jsonService convertJsonUserToUser:jsonUser];
-        
-        // Adding this user to our thumbs download list
-        [thumbsToDownload addObject:likedUser];
-        
-        // Adding this liked user
-        [user.likers addObject:likedUser];
-    }
-    
-    // Injecting liked places into user
-    [user setLikedPlacesCount:[placeLikeCount integerValue]];
-    [user.likedPlaces removeAllObjects];
-    for(NSDictionary *jsonPlace in jsonLikedPlaces) {
-        // Building the place bean from JSON
-        Place *place = [jsonService convertJsonPlaceToPlace:jsonPlace];
-        
-        // Adding this place to our thumbs download list
-        [thumbsToDownload addObject:place];
-        
-        // Adding this liked place
-        [user.likedPlaces addObject:place];
-    }
-    
-    // Flagging user as having its overview data
-    [user setHasOverviewData:YES];
+//    [jsonService fillUser:user fromJson:json];
+    User *user = [jsonService convertJsonOverviewUserToUser:json defaultUser:(User*)object];
     
     // Calling our callback
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -622,13 +577,14 @@
         // Extracting new counts
         NSNumber *likeCount = [json objectForKey:@"likeCount"];
         NSNumber *dislikeCount = [json objectForKey:@"dislikeCount"];
+        NSNumber *liked = [json objectForKey:@"liked"];
         
         // Calling callback
         dispatch_async(dispatch_get_main_queue(), ^{
             int myLikeCount = [likeCount intValue];
             int myDislikeCount = [dislikeCount intValue];
-            callback(myLikeCount,myDislikeCount);
-            [self notifyLike:object likes:myLikeCount dislikes:myDislikeCount];
+            callback(myLikeCount,myDislikeCount,liked.boolValue);
+            [self notifyLike:object likes:myLikeCount dislikes:myDislikeCount liked:liked.boolValue];
         });
     });
 }
@@ -673,14 +629,16 @@
 #pragma mark - Listeners and callback management
 
 - (void)registerDataListener:(NSObject<PMLDataListener>*)callback {
-    [dataListeners addObject:callback];
-    
-    // If registering a listener while we already have data, we callback immediately
-    if(_modelHolder != nil && _modelHolder.places.count>0) {
+    if(![dataListeners containsObject:callback]) {
+        [dataListeners addObject:callback];
         
-        // Checking if implemented
-        if([callback respondsToSelector:@selector(didLoadData:)]) {
-            [callback didLoadData:_modelHolder];
+        // If registering a listener while we already have data, we callback immediately
+        if(_modelHolder != nil && _modelHolder.places.count>0) {
+            
+            // Checking if implemented
+            if([callback respondsToSelector:@selector(didLoadData:)]) {
+                [callback didLoadData:_modelHolder];
+            }
         }
     }
 }
@@ -689,7 +647,7 @@
 }
 -(void)startOp:(NSString*)msg {
     // Notifying that we are starting a data op
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         
         // Only notifying if supported
         if([callback respondsToSelector:@selector(didStartDataOperation:)]) {
@@ -700,30 +658,30 @@
 
 
 - (void)notifyOverviewDataAvailable:(CALObject*)object {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:@selector(didLoadOverviewData:)]) {
             [callback didLoadOverviewData:object];
         }
     }
 }
 -(void)notifyLoginFailed {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:@selector(loginFailed)]) {
             [callback loginFailed];
         }
     }
 }
--(void)notifyLike:(CALObject*)object likes:(int)likes dislikes:(int)dislikes {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
-        if([callback respondsToSelector:@selector(didLike:newLikes:newDislikes:)]) {
-            [callback didLike:object newLikes:likes newDislikes:dislikes];
+-(void)notifyLike:(CALObject*)object likes:(int)likes dislikes:(int)dislikes liked:(BOOL)liked {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
+        if([callback respondsToSelector:@selector(didLike:newLikes:newDislikes:liked:)]) {
+            [callback didLike:object newLikes:likes newDislikes:dislikes liked:liked];
         }
     }
 }
 - (void) doCallback {
     
     // Iterating over all listeners
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         
         // Optional callback method
         if([callback respondsToSelector:@selector(didLoadData:)]) {
@@ -732,35 +690,35 @@
     }
 }
 -(void)notifyWillUpdatePlace:(Place*)place {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:@selector(willUpdatePlace:)]) {
             [callback willUpdatePlace:place];
         }
     }
 }
 -(void)notifyPlaceUpdated:(Place*)place {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:@selector(didUpdatePlace:)]) {
             [callback didUpdatePlace:place];
         }
     }
 }
 -(void)notifyObjectCreated:(CALObject*)object {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:@selector(objectCreated:)]) {
             [callback objectCreated:object];
         }
     }
 }
 -(void)notifyConnectionLost {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:@selector(didLooseConnection)]) {
             [callback didLooseConnection];
         }
     }
 }
 -(void)notify:(SEL)selector with:(CALObject*)object mainThread:(BOOL)mainThread {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:selector]) {
             if(mainThread) {
                 [callback performSelectorOnMainThread:selector withObject:object waitUntilDone:NO];
@@ -771,7 +729,7 @@
     }
 }
 -(void)notifySendReportFailed:(CALObject*)object reason:(NSString*)reason {
-    for(NSObject<PMLDataListener> *callback in [dataListeners allObjects]) {
+    for(NSObject<PMLDataListener> *callback in dataListeners) {
         if([callback respondsToSelector:@selector(didFailSendReportFor:reason:)]) {
             [callback didFailSendReportFor:object reason:reason];
         }

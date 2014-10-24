@@ -184,6 +184,7 @@
     
     NSArray *jsonInUsers   = [json objectForKey:@"inUsers"];
     NSArray *jsonLikeUsers = [json objectForKey:@"likeUsers"];
+    NSNumber *jsonLiked     = [json objectForKey:@"liked"];
     NSArray *jsonEvents    = [json objectForKey:@"events"];
     
     // Getting unread message count
@@ -262,6 +263,9 @@
         // Adding to likers list
         [place addLiker:user];
     }
+    
+    // Like flag
+    place.isLiked = [jsonLiked boolValue];
     
     // Processing upcoming events
     for(NSDictionary *jsonEvent in jsonEvents) {
@@ -416,6 +420,73 @@
         [cacheService setObject:user forKey:user.key];
     }
     [user setIsOnline:[isOnline boolValue]];
+    return user;
+}
+-(User*)convertJsonOverviewUserToUser:(NSDictionary*)json  defaultUser:(User*)defaultUser {
+    NSString *key     = [json objectForKey:@"key"];
+    
+    // Getting user
+    User *user = [cacheService objectForKey:key];
+    if(user == nil) {
+        if(defaultUser != nil) {
+            user = defaultUser;
+        } else {
+            user = [[User alloc] init];
+        }
+    } else if(user != defaultUser) {
+        NSLog(@"WARNING: Original user object has been replaced: %@ (cache may have been purged)",user.key );
+        user = defaultUser;
+    }
+    
+    // Extracting JSON data
+    NSNumber *likeCount     = [json objectForKey:@"likes"];
+    NSArray *jsonLikeUsers  = [json objectForKey:@"likeUsers"];
+    NSNumber *placeLikeCount= [json objectForKey:@"likedPlacesCount"];
+    NSArray *jsonLikedPlaces= [json objectForKey:@"likedPlaces"];
+    NSNumber *liked         = [json objectForKey:@"liked"];
+    
+    // Getting unread message count
+    NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
+    [_messageService setUnreadMessageCount:[unreadMsgCount intValue]];
+    
+    // Preparing thumbs list to download
+    NSMutableArray *thumbsToDownload = [[NSMutableArray alloc] initWithCapacity:jsonLikeUsers.count+jsonLikedPlaces.count];
+    
+    // Injecting liked users into user
+    NSLog(@"Fill user likeCount = %d, placesCount= %d",[likeCount intValue],[placeLikeCount intValue]);
+    [user setLikeCount:[likeCount integerValue]];
+    [user.likers removeAllObjects];
+    for(NSDictionary *jsonUser in jsonLikeUsers) {
+        // Building User bean (liked user) from JSON
+        User *likedUser = [self convertJsonUserToUser:jsonUser];
+        
+        // Adding this user to our thumbs download list
+        [thumbsToDownload addObject:likedUser];
+        
+        // Adding this liked user
+        [user.likers addObject:likedUser];
+    }
+    
+    // Injecting liked places into user
+    [user setLikedPlacesCount:[placeLikeCount integerValue]];
+    [user.likedPlaces removeAllObjects];
+    for(NSDictionary *jsonPlace in jsonLikedPlaces) {
+        // Building the place bean from JSON
+        Place *place = [self convertJsonPlaceToPlace:jsonPlace];
+        
+        // Adding this place to our thumbs download list
+        [thumbsToDownload addObject:place];
+        
+        // Adding this liked place
+        [user.likedPlaces addObject:place];
+    }
+    
+    // Setting liked flag
+    user.isLiked = [liked boolValue];
+    
+    // Flagging user as having its overview data
+    [user setHasOverviewData:YES];
+    
     return user;
 }
 - (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers {

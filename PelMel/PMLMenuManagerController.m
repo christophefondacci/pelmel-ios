@@ -64,7 +64,6 @@ static void *MyParentMenuControllerKey;
     
     // Bottom view for cover view
     UIView *_bottomView;
-    UIViewController *_currentSnippetViewController;
     
     // Menu view for left slide interaction
     UIView *_menuView;

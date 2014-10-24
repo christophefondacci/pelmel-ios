@@ -26,6 +26,12 @@
 "action.edit.confirm.title"="Appliquer les changements ?";
 "action.edit.confirm.message"="Voulez-vous soumettre vos modifications pour qu'elles soient visibles de tous ?";
 "action.edit.confirm.submit"="Soumettre";
+"action.like"="J'aime";
+"action.like.feedbackTitle"="Vous aimez!";
+"action.like.feedbackMessage"="Votre \"j'aime\" a été pris en compte, merci !";
+"action.unlike"="Je n'aime plus";
+"action.unlike.feedbackTitle"="Vous n'aimez plus!";
+"action.unlike.feedbackMessage"="Votre \"j'aime\" précédent a bien été retiré.";
 "action.save"="Sauver";
 "barButton.list"="Liste";
 "cancel"="Annuler";

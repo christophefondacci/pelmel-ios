@@ -95,6 +95,7 @@ typedef void(^TextInputCallback)(NSString *text);
 @property (nonatomic,strong) PMLMainNavBarView *mainNavBarView; // Nav bar access
 @property (weak, nonatomic) IBOutlet UIView *topWarningView;
 @property (weak, nonatomic) IBOutlet UILabel *topWarningLabel;
+@property (weak, nonatomic) UIViewController *currentSnippetViewController;
 //@property (nonatomic,strong) UILabel *topWarningLabel;
 /**
  * Initializes this menu manager with the given root UIViewController

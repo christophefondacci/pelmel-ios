@@ -137,9 +137,11 @@
         NSLog(@"LIKE");
         if(_detailProvider) {
             [self.popupController.controller.parentMenuController.menuManagerDelegate loadingStart];
-            [_detailProvider likeTapped:_currentObject callback:^(int likes, int dislikes) {
+            [_detailProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
                 [self.popupController updateBadgeFor:_likeAction with:likes];
                 [self.popupController.controller.parentMenuController.menuManagerDelegate loadingEnd];
+
+                                
             }];
         }
     }];

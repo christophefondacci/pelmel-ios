@@ -11,12 +11,14 @@
 #import "TogaytherService.h"
 #import "MessageViewController.h"
 #import "PMLUserActionsView.h"
+#import "PMLSnippetTableViewController.h"
 
 @implementation PMLUserInfoProvider {
     User *_user;
     ItemsThumbPreviewProvider *_thumbsProvider;
     UIService *_uiService;
     PMLUserActionsView *_actionsView;
+    PMLSnippetTableViewController *_snippetController;
 }
 
 - (instancetype)initWithUser:(User *)user
@@ -133,21 +135,45 @@
 }
 
 - (void)snippetRightActionTapped:(UIViewController *)controller {
-    MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
-    msgController.withObject = _user;
-    [controller.navigationController pushViewController:msgController animated:YES];
+    
 }
 
-- (void)configureCustomViewIn:(UIView *)parentView {
+- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
+    // Saving snippet controller for later
+    _snippetController = (PMLSnippetTableViewController*)controller;
+    
+    // Configuring custom view
     if(_actionsView == nil) {
         // Loading profile header view
         NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLUserActionsView" owner:self options:nil];
         _actionsView = (PMLUserActionsView*)[views objectAtIndex:0];
         [parentView addSubview:_actionsView];
+        [_actionsView.chatButton addTarget:self action:@selector(chatButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [_actionsView.likeButton addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     } else if(_actionsView.superview != parentView) {
         [_actionsView removeFromSuperview];
         [parentView addSubview:_actionsView];
     }
-    
+    [self refreshLikeButton];
+}
+
+-(void)chatButtonTapped:(id)sender {
+    MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
+    msgController.withObject = _user;
+    [_snippetController.navigationController pushViewController:msgController animated:YES];
+}
+
+-(void)refreshLikeButton {
+    if(_user.isLiked) {
+        [_actionsView.likeButton setTitle:NSLocalizedString(@"action.unlike",@"Unlike") forState:UIControlStateNormal];
+    } else {
+        [_actionsView.likeButton setTitle:NSLocalizedString(@"action.like",@"Like") forState:UIControlStateNormal];
+    }
+}
+-(void)likeButtonTapped:(id)sender {
+    [[TogaytherService dataService] like:_user callback:^(int likes, int dislikes,BOOL liked) {
+        _user.isLiked = liked;
+        [self refreshLikeButton];
+    }];
 }
 @end

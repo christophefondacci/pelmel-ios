@@ -103,4 +103,5 @@
 -(void)setProgressView:(UIProgressView*)progressView;
 -(void)reportProgress:(float)progress;
 -(void)progressDone;
+
 @end

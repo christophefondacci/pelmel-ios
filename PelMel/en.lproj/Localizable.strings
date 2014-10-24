@@ -26,6 +26,12 @@
 "action.edit.confirm.title"="Apply changes?";
 "action.edit.confirm.message"="Submit your changes so that everyone will see your modifications?";
 "action.edit.confirm.submit"="Submit";
+"action.like"="Like";
+"action.like.feedbackTitle"="You like!";
+"action.like.feedbackMessage"="Your like has been saved, thank you!";
+"action.unlike"="Unlike";
+"action.unlike.feedbackTitle"="You no longer like!";
+"action.unlike.feedbackMessage"="Your previous \"like\" has been removed.";
 "action.save"="Save";
 "action.searchHere"="Show";
 "barButton.list"="List";

@@ -25,13 +25,13 @@
 }
 
 - (void)likeTapped:(CALObject*)likedObject callback:(LikeCompletionBlock)callback {
-    BOOL isLiked = NO;
+    BOOL isLiked = likedObject.isLiked;
     User *likedUser;
     CurrentUser *currentUser = [userService getCurrentUser];
     for(User *user in likedObject.likers) {
         if([user.key isEqualToString:currentUser.key]) {
-            isLiked = YES;
             likedUser = user;
+            break;
         }
     }
     if(!isLiked) {
