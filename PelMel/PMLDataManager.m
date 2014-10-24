@@ -79,7 +79,8 @@
 - (void)didLoadData:(ModelHolder *)modelHolder {
     if(_nearbyLoad) {
         if(modelHolder.places.count == 0 ) {
-            if(_dataService.currentRadius!=1500) {
+            CLLocation *location = [[CLLocation alloc] initWithLatitude:_searchCenter.latitude longitude:_searchCenter.longitude];
+            if([_dataService.modelHolder.userLocation distanceFromLocation:location] <100 &&  _dataService.currentRadius!=1500) {
                 _dataService.currentRadius =1500;
                 [_dataService fetchNearbyPlaces];
             }

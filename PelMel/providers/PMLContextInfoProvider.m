@@ -99,6 +99,17 @@
 - (NSArray *)activities {
     return _modelHolder.activities;
 }
+- (NSArray *)topPlaces {
+    int topPlacesCount = MIN(_modelHolder.places.count,10);
+    if(topPlacesCount>0) {
+        NSRange range;
+        range.location = 0;
+        range.length=topPlacesCount;
+        return [_modelHolder.places subarrayWithRange:range];;
+    } else {
+        return nil;
+    }
+}
 
 - (NSObject<ThumbsPreviewProvider> *)likesThumbsProvider {
     return nil;

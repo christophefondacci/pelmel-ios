@@ -28,7 +28,7 @@
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
-#define kPMLSectionsCount 8
+#define kPMLSectionsCount 9
 
 #define kPMLSectionSnippet 0
 #define kPMLSectionOvSummary 1
@@ -37,7 +37,8 @@
 #define kPMLSectionOvHappyHours 4
 #define kPMLSectionOvDesc 5
 #define kPMLSectionOvTags 6
-#define kPMLSectionActivity 7
+#define kPMLSectionTopPlaces 7
+#define kPMLSectionActivity 8
 
 #define kPMLSnippetRows 3
 #define kPMLRowSnippet 0
@@ -254,6 +255,8 @@ typedef enum {
                 return 1;
             case kPMLSectionActivity:
                 return [[_infoProvider activities] count];
+            case kPMLSectionTopPlaces:
+                return [[_infoProvider topPlaces] count];
         }
         
     }
@@ -300,6 +303,9 @@ typedef enum {
             return kPMLRowOvTagsId;
         case kPMLSectionActivity:
             return kPMLRowActivityId;
+        case kPMLSectionTopPlaces:
+            return kPMLRowActivityId;
+
     }
     return nil;
 }
@@ -365,6 +371,9 @@ typedef enum {
         case kPMLSectionActivity:
             [self configureRowActivity:(PMLActivityTableViewCell*)cell atIndex:indexPath.row];
             break;
+        case kPMLSectionTopPlaces:
+            [self configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:indexPath.row];
+            break;
     }
     return cell;
 }
@@ -417,13 +426,13 @@ typedef enum {
                 label.lineBreakMode = NSLineBreakByWordWrapping;
                 CGSize maxSize = CGSizeMake(tableView.frame.size.width-40, MAXFLOAT);
                 CGSize expectedSize = [label sizeThatFits:maxSize];
-                _readMoreSize = expectedSize.height;
+                _readMoreSize = expectedSize.height+1;
             }
 
             _descHeight = MAX(_readMoreSize,30);
-            if(!_readMore) {
-                _descHeight = MIN(_descHeight,kPMLHeightOvDesc);
-            }
+//            if(!_readMore) {
+//                _descHeight = MIN(_descHeight,kPMLHeightOvDesc);
+//            }
             _descHeight = 25+_descHeight+30+25;
 
             return _descHeight;
@@ -431,10 +440,23 @@ typedef enum {
         case kPMLSectionOvTags:
             return 44;
         case kPMLSectionActivity:
+        case kPMLSectionTopPlaces:
             return kPMLHeightActivityRows;
     }
     return 44;
 
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    switch(section) {
+        case kPMLSectionTopPlaces:
+            return NSLocalizedString(@"snippet.header.topPlaces", @"Popular places");
+            break;
+        case kPMLSectionActivity:
+            return NSLocalizedString(@"snippet.header.activities", @"Recent activity");
+            break;
+    }
+    return nil;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if(_snippetItem != nil) {
@@ -446,13 +468,45 @@ typedef enum {
             default:
                 break;
         }
+    } else {
+        switch(section) {
+            case kPMLSectionTopPlaces:
+            case kPMLSectionActivity:
+                return 20;
+        }
     }
     return [super tableView:tableView heightForHeaderInSection:section];
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    for(UIView *childView in view.subviews) {
-        childView.backgroundColor = UIColorFromRGB(0x272a2e);
+    if(_snippetItem != nil) {
+        for(UIView *childView in view.subviews) {
+            childView.backgroundColor = UIColorFromRGB(0x272a2e);
+        }
+    } else {
+        switch(section) {
+            case kPMLSectionActivity:
+            case kPMLSectionTopPlaces: {
+                UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
+                headerView.textLabel.textColor = [UIColor whiteColor];
+                headerView.textLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:15];
+//                headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
+            }
+                break;
+        }
+    }
+}
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == kPMLSectionTopPlaces || indexPath.section == kPMLSectionActivity;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch(indexPath.section) {
+        case kPMLSectionTopPlaces:
+            [self topPlaceTapped:indexPath.row];
+            break;
+        case kPMLSectionActivity:
+            [self activityTapped:indexPath.row];
+            break;
     }
 }
 /*
@@ -790,6 +844,25 @@ typedef enum {
     cell.activityTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
     cell.activitySubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:12];
 }
+-(void)configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:(NSInteger)row {
+    Place *place = [[_infoProvider topPlaces] objectAtIndex:row];
+    cell.activityTitleLabel.text = place.title;
+    NSString *likeTemplate = NSLocalizedString(@"snippet.likes",@"snippet.likes");
+    cell.activitySubtitleLabel.text = [NSString stringWithFormat:likeTemplate,place.likeCount];
+    cell.activityThumbImageView.image = [CALImage getDefaultThumb];
+    [_imageService load:place.mainImage to:cell.activityThumbImageView thumb:YES];
+    cell.activityThumbImageView.layer.borderColor = [[_uiService colorForObject:place] CGColor];
+    cell.activityTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
+    cell.activitySubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:12];
+    for(UIGestureRecognizer *recognizer in cell.activityThumbImageView.gestureRecognizers) {
+        [cell.activityThumbImageView removeGestureRecognizer:recognizer];
+    }
+    UITapGestureRecognizer *r = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topPlaceTapped:)];
+    cell.activityThumbImageView.tag = row;
+    [cell.activityThumbImageView addGestureRecognizer:r];
+    cell.activityThumbImageView.userInteractionEnabled = YES;
+}
+
 -(void) configureRowTags:(PMLTagsTableViewCell*)cell atIndex:(NSInteger)index {
     NSInteger tagsPerRow = (int) (self.tableView.bounds.size.width / kPMLOvTagWidth);
     NSInteger startTagIndex = index*tagsPerRow;
@@ -885,6 +958,23 @@ typedef enum {
     [self.navigationController pushViewController:msgController animated:YES];
 //    }
 }
+-(void)topPlaceTapped:(NSInteger)index {
+     CALObject *item = [[_infoProvider topPlaces] objectAtIndex:index];
+    [self pushSnippetFor:item];
+}
+-(void)activityTapped:(NSInteger)index {
+    Activity *activity = [[_infoProvider activities] objectAtIndex:index];
+    [self pushSnippetFor:activity.user];
+}
+-(void)pushSnippetFor:(CALObject*)item {
+    PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)[TogaytherService.uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+    childSnippet.snippetItem = item;
+    if(self.subNavigationController != nil) {
+        [self.subNavigationController pushViewController:childSnippet animated:YES];
+    } else {
+        [self.navigationController pushViewController:childSnippet animated:YES];
+    }
+}
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
     [self toggleFullscreenGallery];
@@ -939,13 +1029,7 @@ typedef enum {
             [controller.tableView reloadData];
         }
     } else {
-        PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)[TogaytherService.uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-        childSnippet.snippetItem = selectedItem;
-        if(self.subNavigationController != nil) {
-            [self.subNavigationController pushViewController:childSnippet animated:YES];
-        } else {
-            [self.navigationController pushViewController:childSnippet animated:YES];
-        }
+        [self pushSnippetFor:(CALObject*)selectedItem];
     }
 }
 
@@ -959,6 +1043,9 @@ typedef enum {
         
         // Updating gallery
         [_galleryCell.galleryView reloadData];
+        
+        // Resetting description size
+        _readMoreSize = 0;
         
         // Selecting on map
         if([object isKindOfClass:[Place class]] && object.lat!=0 && object.lng!=0) {

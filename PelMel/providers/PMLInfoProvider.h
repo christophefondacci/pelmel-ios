@@ -49,6 +49,7 @@
 -(void)configureCustomViewIn:(UIView*)parentView;
 
 //-(Special*)specialOfType:(NSString*)specialType;
+-(NSArray*)topPlaces;
 -(NSArray*)activities;
 
 // Implement all or none
