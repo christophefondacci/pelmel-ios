@@ -228,9 +228,8 @@
     // Displaying the alert
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
     [alert show];
-
-
 }
+
 #pragma mark UserLoginCallback
 - (void)authenticationFailed:(NSString *)reason {
     [self dataLoginFailed];
@@ -292,6 +291,36 @@
 }
 -(void)userRegistered:(CurrentUser *)user {
     [self userAuthenticated:user];
+}
+
+- (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object {
+    if([object isKindOfClass:[Place class]]) {
+        Place *place = (Place*)object;
+        if(![place.inUsers containsObject:user]) {
+            [place.inUsers addObject:user];
+            place.inUserCount ++ ;
+        }
+        // Feedback message
+        NSString *title;
+        NSString *message;
+        title = NSLocalizedString(@"action.checkin.feedbackTitle", @"action.checkin.feedbackTitle");
+        NSString *msgTemplate = NSLocalizedString(@"action.checkin.feedbackMessage", @"action.checkin.feedbackMessage");
+        message = [NSString stringWithFormat:msgTemplate,place.title];
+        
+        // Displaying the alert
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        [alert show];
+    }
+}
+- (void)user:(CurrentUser *)user didFailCheckInTo:(CALObject *)object {
+    NSString *title;
+    NSString *message;
+    title = NSLocalizedString(@"action.failure.title", @"action.failure.title");
+    message = NSLocalizedString(@"action.failure.message", @"action.failure.message");
+    
+    // Displaying the alert
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    [alert show];
 }
 -(void)searchText:(id)sender {
     

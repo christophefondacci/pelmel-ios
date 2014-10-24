@@ -90,6 +90,7 @@
     UIActionSheet *_editActionSheet;
     
     CALObject *_currentObject;
+    BOOL _checkinEnabled;
     PMLPopupEditor *_currentEditor;
     NSObject<DetailProvider> *_detailProvider;
     NSMutableSet *_observedProperties;
@@ -109,7 +110,7 @@
     [_dataService unregisterDataListener:self];
 }
 -(void)dismiss {
-    [_dataService unregisterDataListener:self];
+//    [_dataService unregisterDataListener:self];
     // Cleaning any property change listener
     for(NSString *prop in _observedProperties) {
         [_currentObject removeObserver:self forKeyPath:prop];
@@ -129,6 +130,7 @@
             [self.popupController.controller.parentMenuController.menuManagerDelegate loadingStart];
             [_userService checkin:_currentObject completion:^(id obj) {
                 [self.popupController.controller.parentMenuController.menuManagerDelegate loadingEnd];
+                [self updateBadge];
             }];
         }
     }];
@@ -218,7 +220,10 @@
                 if(_userService.currentLocation!=nil) {
                     CLLocation *objectLocation = [[CLLocation alloc] initWithLatitude:object.lat longitude:object.lng];
                     CLLocationDistance distance = [_userService.currentLocation distanceFromLocation:objectLocation];
+                    
+                    // If less than our checkin distance, we activate checkin action
                     if(distance <= kCheckinDistanceMeters) {
+                        _checkinEnabled = YES;
                         likeOrCheckinAction = _checkinAction;
                     }
                 }
@@ -227,15 +232,14 @@
                 [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];
                 [actions addObject:_modifyAction];
             }
-            if(object.likeCount>0) {
-                _likeAction.badgeValue = [NSNumber numberWithInt:(int)object.likeCount];
-//                [self.popupController updateBadgeFor:_likeAction with:object.likeCount];
-            } else {
-                _likeAction.badgeValue = nil;
-            }
+            // Updates the badge on popup actions
+            [self updateBadge];
+            
+            // Loading overview data if not yet available
             if(!object.hasOverviewData) {
                 [_dataService getOverviewData:object];
             }
+            
         } else {
             // New place, we propose save if name defined
 
@@ -258,7 +262,25 @@
     }
     return actions;
 }
-
+- (void)updateBadge {
+    if([_currentObject isKindOfClass:[Place class]]) {
+        Place *place = (Place*)_currentObject;
+        if(_currentObject.likeCount>0 && !_checkinEnabled) {
+            _likeAction.badgeValue = [NSNumber numberWithInt:(int)_currentObject.likeCount];
+        } else if(_checkinEnabled) {
+            int badgeCount = MAX((int)place.inUserCount,place.inUsers.count);
+            if(badgeCount>0) {
+                _checkinAction.badgeValue = [NSNumber numberWithInt:badgeCount];
+                [self.popupController updateBadgeFor:_checkinAction with:badgeCount];
+            } else {
+                _checkinAction.badgeValue = nil;
+            }
+        } else {
+            _likeAction.badgeValue = nil;
+            _checkinAction.badgeValue = nil;
+        }
+    }
+}
 -(NSArray*)peopleConnectionsWithImage:(CALObject*)parent {
     NSMutableArray *people = [[NSMutableArray alloc] init ];
     NSMutableSet *peopleKeys = [[NSMutableSet alloc] init];
@@ -444,8 +466,9 @@
 
 #pragma mark - PMLDataListener
 - (void)didLoadOverviewData:(CALObject *)object {
-    if([object.key isEqualToString:_currentObject.key] && object.likeCount>0) {
-        [self.popupController updateBadgeFor:_likeAction with:(int)object.likeCount];
+    if([object.key isEqualToString:_currentObject.key]) {
+//        [self.popupController updateBadgeFor:_likeAction with:(int)object.likeCount];
+        [self updateBadge];
     }
 //    if([object.key isEqualToString:_currentObject.key]) {
 //        // Building additional actions
