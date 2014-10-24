@@ -245,18 +245,12 @@
     _menuRefreshAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnRefresh"] pctWidth:1 pctHeight:0.5 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
         
         // Getting current map center coordinates
-        CLLocationCoordinate2D centerCoords = _mapView.centerCoordinate;
-        CLLocationCoordinate2D cornerCoords = [_mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:_mapView];
-
-        // Distance between center and top left corner will give our distance for search
-        CLLocation *centerLoc = [[CLLocation alloc] initWithLatitude:centerCoords.latitude longitude:centerCoords.longitude];
-        CLLocation *cornerLoc = [[CLLocation alloc] initWithLatitude:cornerCoords.latitude longitude:cornerCoords.longitude];
-        CLLocationDistance distance = [centerLoc distanceFromLocation:cornerLoc];
+        CLLocationDistance distance = [self distanceFromCornerPoint];
         int milesRadius = MIN(1500,distance/1609.344);
         
         _zoomUpdateRequested = YES;
         _zoomAroundUserLocation = [[_mapView annotationsInMapRect:_mapView.visibleMapRect] containsObject:_mapView.userLocation];
-        [self.parentMenuController.dataManager refreshAt:centerCoords radius:milesRadius];
+        [self.parentMenuController.dataManager refreshAt:_mapView.centerCoordinate radius:milesRadius];
     }];
     _menuRefreshAction.rightMargin = 5;
     _menuRefreshAction.topMargin = 0; //topMargin = 100; //69;
@@ -264,12 +258,40 @@
     // My Position action
     _menuMyPositionAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnPosition"] pctWidth:1 pctHeight:0.5 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
         if(_mapView.showsUserLocation) {
-            [_mapView setCenterCoordinate:_mapView.userLocation.coordinate animated:YES];
+            
+            // First zoom mode: center on current position
+            CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
+            if([_mapView.userLocation.location distanceFromLocation:centerLocation] > 50) {
+                [_mapView setCenterCoordinate:_mapView.userLocation.coordinate animated:YES];
+            } else {
+                // If not zoomed, we zoom
+                CLLocationDistance distance = [self distanceFromCornerPoint];
+                if(distance > 2000) {
+                    // Building our zoom rect around our center
+                    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(_mapView.centerCoordinate, 1500, 1500);
+                    MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
+                    MKMapRect mapRect = [self MKMapRectForCoordinateRegion:adjustedRegion];
+                    [_mapView setVisibleMapRect:mapRect animated:YES];
+                } else {
+                    [_mapView showAnnotations:[_placeAnnotations allObjects] animated:YES];
+                }
+            }
         }
     }];
     _menuMyPositionAction.rightMargin = 5;
     _menuMyPositionAction.topMargin = -184; //topMargin = 50;
     
+}
+
+-(CLLocationDistance)distanceFromCornerPoint {
+    CLLocationCoordinate2D centerCoords = _mapView.centerCoordinate;
+    CLLocationCoordinate2D cornerCoords = [_mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:_mapView];
+    
+    // Distance between center and top left corner will give our distance for search
+    CLLocation *centerLoc = [[CLLocation alloc] initWithLatitude:centerCoords.latitude longitude:centerCoords.longitude];
+    CLLocation *cornerLoc = [[CLLocation alloc] initWithLatitude:cornerCoords.latitude longitude:cornerCoords.longitude];
+    CLLocationDistance distance = [centerLoc distanceFromLocation:cornerLoc];
+    return distance;
 }
 -(void)updateMap {
     // First updating annotations because we might need them to compute initial zoom
