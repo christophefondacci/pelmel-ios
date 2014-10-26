@@ -28,23 +28,27 @@
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
-#define kPMLSectionsCount 9
+#define kPMLSectionsCount 11
 
 #define kPMLSectionSnippet 0
-#define kPMLSectionOvSummary 1
-#define kPMLSectionOvAddress 2
-#define kPMLSectionOvHours 3
-#define kPMLSectionOvHappyHours 4
-#define kPMLSectionOvDesc 5
-#define kPMLSectionOvTags 6
-#define kPMLSectionTopPlaces 7
-#define kPMLSectionActivity 8
+#define kPMLSectionGallery 1
+#define kPMLSectionCounters 2
+#define kPMLSectionOvSummary 3
+#define kPMLSectionOvAddress 4
+#define kPMLSectionOvHours 5
+#define kPMLSectionOvHappyHours 6
+#define kPMLSectionOvDesc 7
+#define kPMLSectionOvTags 8
+#define kPMLSectionTopPlaces 9
+#define kPMLSectionActivity 10
 
-#define kPMLSnippetRows 3
+#define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
-#define kPMLRowGallery 1
-#define kPMLRowCounters 2
-#define kPMLRowThumbPreview 3
+
+#define kPMLRowGallery 0
+
+#define kPMLRowCounters 0
+#define kPMLRowThumbPreview 1
 #define kPMLRowSnippetId @"snippet"
 #define kPMLRowGalleryId @"gallery"
 #define kPMLRowCountersId @"counters"
@@ -88,9 +92,10 @@
 
 #define kPMLOvTagsRows 1
 #define kPMLRowOvTagsId @"tags"
-#define kPMLHeightOvTagsRows 44
+#define kPMLHeightOvTagsRows 60
 #define kPMLOvTagWidth 60
-#define kPMLOvTagInnerWidth 44
+#define kPMLOvTagInnerWidth 50
+#define kPMLMaxTagsPerRow 5
 
 #define kPMLRowActivityId @"activity"
 #define kPMLHeightActivityRows 60
@@ -221,7 +226,16 @@ typedef enum {
     if(_snippetItem != nil) {
         switch(section) {
             case kPMLSectionSnippet:
-                return kPMLSnippetRows + (_thumbPreviewMode == ThumbPreviewModeNone ? 0 : 1);
+                return kPMLSnippetRows;
+            case kPMLSectionGallery:
+                if(_snippetItem.mainImage!=nil) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+                break;
+            case kPMLSectionCounters:
+                return (_thumbPreviewMode == ThumbPreviewModeNone ? 1 : 2);
             case kPMLSectionOvSummary:
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
@@ -243,9 +257,9 @@ typedef enum {
                 }
                 return 0;
             case kPMLSectionOvDesc:
-                return _snippetItem.miniDesc.length > 0 ? kPMLOvDescRows : 0;
+                return [[_infoProvider descriptionText] length]>0 ? kPMLOvDescRows : 0;
             case kPMLSectionOvTags: {
-                double rows = (double)_snippetItem.tags.count / ((double)tableView.bounds.size.width / (double)kPMLOvTagWidth);
+                double rows = (double)_snippetItem.tags.count / (double)kPMLMaxTagsPerRow; //((double)tableView.bounds.size.width / (double)kPMLOvTagWidth);
                 return (int)ceil(rows);
             }
         }
@@ -269,8 +283,12 @@ typedef enum {
             switch(indexPath.row) {
                 case kPMLRowSnippet:
                     return kPMLRowSnippetId;
-                case kPMLRowGallery:
-                    return kPMLRowGalleryId;
+            }
+            break;
+        case kPMLSectionGallery:
+            return kPMLRowGalleryId;
+        case kPMLSectionCounters:
+            switch(indexPath.row) {
                 case kPMLRowCounters:
                     return kPMLRowCountersId;
                 case kPMLRowThumbPreview:
@@ -320,9 +338,13 @@ typedef enum {
                 case kPMLRowSnippet:
                     [self configureRowSnippet:(PMLSnippetTableViewCell*)cell];
                     break;
-                case kPMLRowGallery:
-                    [self configureRowGallery:(PMLGalleryTableViewCell*)cell];
-                    break;
+            }
+            break;
+        case kPMLSectionGallery:
+            [self configureRowGallery:(PMLGalleryTableViewCell*)cell];
+            break;
+        case kPMLSectionCounters:
+            switch(indexPath.row) {
                 case kPMLRowCounters:
                     [self configureRowCounters:(PMLCountersTableViewCell*)cell];
                     break;
@@ -384,12 +406,17 @@ typedef enum {
             switch(indexPath.row) {
                 case kPMLRowSnippet:
                     return kPMLHeightSnippet;
-                case kPMLRowGallery:
-                    if(!_galleryFullscreen) {
-                        return tableView.bounds.size.width-(48*2);
-                    } else {
-                        return tableView.bounds.size.height;
-                    }
+            }
+            break;
+        case kPMLSectionGallery:
+            if(!_galleryFullscreen) {
+                return tableView.bounds.size.width-(48*2);
+            } else {
+                return tableView.bounds.size.height;
+            }
+            break;
+        case kPMLSectionCounters:
+            switch(indexPath.row) {
                 case kPMLRowCounters:
                     return kPMLHeightCounters;
                 case kPMLRowThumbPreview:
@@ -431,7 +458,7 @@ typedef enum {
             return _descHeight;
         }
         case kPMLSectionOvTags:
-            return 44;
+            return kPMLHeightOvTagsRows;
         case kPMLSectionActivity:
         case kPMLSectionTopPlaces:
             return kPMLHeightActivityRows;
@@ -614,6 +641,11 @@ typedef enum {
             [cell.hoursBadgeView addGestureRecognizer:recognizer];
             cell.hoursBadgeView.userInteractionEnabled=YES;
         }
+        
+        // If no subtitle, right title will fill all height so it will be centered vertically
+        if([_infoProvider snippetRightTitleText]!=nil && [_infoProvider snippetRightSubtitleText] == nil) {
+            cell.rightLabelHeight.constant = cell.rightIconHeight.constant;
+        }
     } else {
         cell.hoursBadgeView.hidden = YES;
     }
@@ -749,8 +781,9 @@ typedef enum {
         _countersPreviewGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x4b4d53).CGColor, (id)UIColorFromRGB(0x33363e).CGColor, nil];
         [cell.thumbsContainer.layer insertSublayer:_countersPreviewGradient atIndex:0];
         cell.thumbsContainer.layer.masksToBounds=YES;
+    [cell.thumbsContainer layoutIfNeeded];
         CGRect frame = cell.thumbsContainer.bounds;
-        _countersPreviewGradient.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+        _countersPreviewGradient.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, kPMLHeightThumbPreview+10);
 //    }
     if(provider != nil) {
         if(_counterThumbController != nil) {
@@ -862,7 +895,7 @@ typedef enum {
 }
 
 -(void) configureRowTags:(PMLTagsTableViewCell*)cell atIndex:(NSInteger)index {
-    NSInteger tagsPerRow = (int) (self.tableView.bounds.size.width / kPMLOvTagWidth);
+    NSInteger tagsPerRow = kPMLMaxTagsPerRow; // (int) (self.tableView.bounds.size.width / kPMLOvTagWidth);
     NSInteger startTagIndex = index*tagsPerRow;
     NSInteger endTagIndex = MIN(_snippetItem.tags.count,startTagIndex+tagsPerRow);
     
@@ -875,20 +908,27 @@ typedef enum {
     if(cell.tagViews.count < tagsCount) {
         for(NSInteger i = cell.tagViews.count ; i < tagsCount ; i++ ) {
             UIImageView *imageView = [[UIImageView alloc] init];
-            [cell addSubview:imageView];
+            [cell.tagsContainerView addSubview:imageView];
             [cell.tagViews addObject:imageView];
         }
     }
 
     // Computing margins
-    int margin = (self.tableView.bounds.size.width-tagsCount*kPMLOvTagInnerWidth)/(tagsCount*2);
+//    int margin = (cell.tagsContainerView.bounds.size.width-tagsCount*kPMLOvTagInnerWidth)/(tagsCount*2);
+    NSInteger startX=0;
     for(NSInteger i = startTagIndex ; i < endTagIndex ; i++) {
         NSString *tagStr = [_snippetItem.tags objectAtIndex:i];
         UIImage *tagIcon = [_imageService getTagImage:tagStr];
-        UIImageView *tagImageView = [cell.tagViews objectAtIndex:i-startTagIndex];
-        tagImageView.image = tagIcon;
-        tagImageView.frame = CGRectMake((i-startTagIndex)*(kPMLOvTagInnerWidth+2*margin)+margin, 0, kPMLOvTagInnerWidth, kPMLOvTagInnerWidth);
+        if(tagIcon != nil) {
+            UIImageView *tagImageView = [cell.tagViews objectAtIndex:i-startTagIndex];
+            tagImageView.image = tagIcon;
+            tagImageView.frame = CGRectMake(startX, 0, kPMLOvTagInnerWidth, kPMLOvTagInnerWidth);
+            cell.tagsContainerWidthConstraint.constant = startX+kPMLOvTagInnerWidth;
+            startX += kPMLOvTagInnerWidth + 5;
+        }
+//        tagImageView.frame = CGRectMake((i-startTagIndex)*(kPMLOvTagInnerWidth+2*margin)+margin, 0, kPMLOvTagInnerWidth, kPMLOvTagInnerWidth);
     }
+    [cell layoutIfNeeded];
     
 }
 -(NSString *) stringByStrippingHTML:(NSString*)html {
@@ -938,11 +978,11 @@ typedef enum {
     BOOL insert = _thumbPreviewMode == ThumbPreviewModeNone;
     _thumbPreviewMode = (_thumbPreviewMode == mode) ? ThumbPreviewModeNone : mode;
     if(insert && _thumbPreviewMode == mode) {
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionSnippet]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionCounters]] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else if (_thumbPreviewMode == ThumbPreviewModeNone) {
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionSnippet]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionCounters]] withRowAnimation:UITableViewRowAnimationAutomatic];
     } else {
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionSnippet]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionCounters]] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     [self updateGradient:_countersCell];
     
@@ -990,7 +1030,7 @@ typedef enum {
         _galleryCell.rightConstraint.constant = 0;
     }
     
-    NSIndexPath *galleryPath = [NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionSnippet];
+    NSIndexPath *galleryPath = [NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery];
     [self.tableView scrollToRowAtIndexPath:galleryPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
@@ -1129,10 +1169,13 @@ typedef enum {
 }
 #pragma mark - KVO Observing implementation
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if([@"addess" isEqualToString:keyPath]) {
-        if([object isKindOfClass:[Place class]]) {
-            _snippetCell.subtitleLabel.text = ((Place*)object).address;
-        }
+    if([@"address" isEqualToString:keyPath]) {
+//        if([object isKindOfClass:[Place class]]) {
+//            _snippetCell.subtitleLabel.text = ((Place*)object).address;
+//        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionOvAddress] withRowAnimation:UITableViewRowAnimationAutomatic];
+        });
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         [self updateTitleEdition];
     }

@@ -508,8 +508,9 @@
     }
 
     // Filling user from JSon
-//    [jsonService fillUser:user fromJson:json];
+
     User *user = [jsonService convertJsonOverviewUserToUser:json defaultUser:(User*)object];
+    [jsonService fillUser:user fromJson:json];
     
     // Calling our callback
     dispatch_async(dispatch_get_main_queue(), ^{

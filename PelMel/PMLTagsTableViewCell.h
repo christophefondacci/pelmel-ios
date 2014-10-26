@@ -10,5 +10,7 @@
 
 @interface PMLTagsTableViewCell : UITableViewCell
 
+@property (weak, nonatomic) IBOutlet UIView *tagsContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tagsContainerWidthConstraint;
 @property (nonatomic,strong) NSMutableArray *tagViews;
 @end

@@ -80,7 +80,7 @@
     return _user.miniDesc;
 }
 - (NSString *)thumbSubtitleText {
-    return _user.isOnline ? NSLocalizedString(@"user.status.online", @"online") : NSLocalizedString(@"user.status.offline",@"offline");
+    return nil;
 }
 -(UIColor *)thumbSubtitleColor {
     return [_uiService colorForObject:_user];
@@ -118,22 +118,6 @@
     return nil;
 }
 
-- (BOOL)hasSnippetRightSection {
-    return YES;
-}
--(UIImage *)snippetRightIcon {
-    return [UIImage imageNamed:@"mnuIconMessage"];
-}
-- (NSString *)snippetRightTitleText {
-    return nil;
-}
--(NSString *)snippetRightSubtitleText {
-    return nil;
-}
--(UIColor *)snippetRightColor {
-    return UIColorFromRGB(0xa8a7a5);
-}
-
 - (void)snippetRightActionTapped:(UIViewController *)controller {
     
 }
@@ -150,6 +134,10 @@
         [parentView addSubview:_actionsView];
         [_actionsView.chatButton addTarget:self action:@selector(chatButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
         [_actionsView.likeButton addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        // Right aligning view
+        CGRect parentBounds = parentView.bounds;
+        CGRect actionsFrame = _actionsView.frame;
+        _actionsView.frame = CGRectMake(parentBounds.size.width-actionsFrame.size.width, actionsFrame.origin.y, actionsFrame.size.width, actionsFrame.size.height);
     } else if(_actionsView.superview != parentView) {
         [_actionsView removeFromSuperview];
         [parentView addSubview:_actionsView];
@@ -175,5 +163,23 @@
         _user.isLiked = liked;
         [self refreshLikeButton];
     }];
+}
+
+#pragma mark - right section
+- (BOOL)hasSnippetRightSection {
+    return YES;
+}
+-(UIImage *)snippetRightIcon {
+    NSString *imageName = _user.isOnline ? @"online" : @"offline";
+    return [UIImage imageNamed:imageName];
+}
+- (NSString *)snippetRightTitleText {
+    return _user.isOnline ? NSLocalizedString(@"user.status.online", @"online") : NSLocalizedString(@"user.status.offline",@"offline");
+}
+-(UIColor *)snippetRightColor {
+    return [_uiService colorForObject:_user];
+}
+-(NSString *)snippetRightSubtitleText {
+    return nil;
 }
 @end

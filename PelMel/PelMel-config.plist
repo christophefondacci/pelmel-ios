@@ -79,7 +79,7 @@
 	<key>marker.sexshop.closed</key>
 	<string>mapMarkerStoreOff</string>
 	<key>url.server</key>
-	<string>http://preprod.togayther.net</string>
+	<string>http://192.168.1.25</string>
 	<key>hdEnabled</key>
 	<false/>
 	<key>color.event</key>

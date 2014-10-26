@@ -2135,17 +2135,27 @@
                                                     <rect key="frame" x="0.0" y="1" width="1" height="20"/>
                                                     <color key="backgroundColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="OPEN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM6-Q1-j0M">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OPEN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM6-Q1-j0M">
                                                     <rect key="frame" x="25" y="8" width="43" height="17"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="17" id="7UR-mq-SHg"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="11"/>
                                                     <color key="textColor" red="0.44705882349999998" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ovvIconHours" translatesAutoresizingMaskIntoConstraints="NO" id="NT3-rh-EOd">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ovvIconHours" translatesAutoresizingMaskIntoConstraints="NO" id="NT3-rh-EOd">
                                                     <rect key="frame" x="4" y="1" width="18" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="DoE-95-nUR"/>
+                                                        <constraint firstAttribute="width" constant="18" id="VyG-eS-g9r"/>
+                                                    </constraints>
                                                 </imageView>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2h left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="gk2-N6-RGg">
-                                                    <rect key="frame" x="25" y="1" width="43" height="10"/>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2h left" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="gk2-N6-RGg">
+                                                    <rect key="frame" x="25" y="1" width="42" height="10"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="10" id="gRQ-8h-tJf"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="8"/>
                                                     <color key="textColor" red="0.44705882349999998" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -2154,7 +2164,15 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="67" id="1my-r0-OSO"/>
+                                                <constraint firstItem="lM6-Q1-j0M" firstAttribute="leading" secondItem="NT3-rh-EOd" secondAttribute="trailing" constant="3" id="3bQ-LV-hDT"/>
+                                                <constraint firstItem="NT3-rh-EOd" firstAttribute="top" secondItem="AoI-bv-Qdx" secondAttribute="top" constant="1" id="6mP-T0-nEV"/>
+                                                <constraint firstItem="gk2-N6-RGg" firstAttribute="top" secondItem="AoI-bv-Qdx" secondAttribute="top" constant="1" id="LOf-Y8-dxP"/>
+                                                <constraint firstItem="gk2-N6-RGg" firstAttribute="leading" secondItem="NT3-rh-EOd" secondAttribute="trailing" constant="3" id="REL-0h-zQe"/>
+                                                <constraint firstAttribute="trailing" secondItem="lM6-Q1-j0M" secondAttribute="trailing" constant="-1" id="Wfa-TP-SN1"/>
+                                                <constraint firstAttribute="trailing" secondItem="gk2-N6-RGg" secondAttribute="trailing" id="c4s-Hg-HSn"/>
                                                 <constraint firstAttribute="height" constant="25" id="cq8-pc-mpn"/>
+                                                <constraint firstItem="NT3-rh-EOd" firstAttribute="leading" secondItem="AoI-bv-Qdx" secondAttribute="leading" constant="4" id="kli-dl-aPi"/>
+                                                <constraint firstAttribute="bottom" secondItem="lM6-Q1-j0M" secondAttribute="bottom" id="paV-mg-cTf"/>
                                             </constraints>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -2236,6 +2254,8 @@
                                     <outlet property="hoursBadgeTitleLabel" destination="gk2-N6-RGg" id="CQf-gj-MGl"/>
                                     <outlet property="hoursBadgeView" destination="AoI-bv-Qdx" id="qSb-bP-G6Q"/>
                                     <outlet property="peopleView" destination="Mzf-FI-IZq" id="o7e-GX-bMc"/>
+                                    <outlet property="rightIconHeight" destination="DoE-95-nUR" id="hhh-D4-gpP"/>
+                                    <outlet property="rightLabelHeight" destination="gRQ-8h-tJf" id="bFh-lL-SHv"/>
                                     <outlet property="thumbSubtitleLabel" destination="JJA-zH-yl9" id="wRr-LB-OUQ"/>
                                     <outlet property="thumbView" destination="RWK-57-UNX" id="2xY-sZ-WiC"/>
                                     <outlet property="titleDecorationImage" destination="6oI-hB-S0q" id="cas-1D-1fJ"/>
@@ -2733,14 +2753,32 @@
                                     <outlet property="cellTextLabel" destination="nE9-3P-aDJ" id="MSH-hk-IEW"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="tags" id="D5U-1J-IGd" customClass="PMLTagsTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="tags" rowHeight="60" id="D5U-1J-IGd" customClass="PMLTagsTableViewCell">
                                 <rect key="frame" x="0.0" y="700" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="D5U-1J-IGd" id="ZHL-9r-SPf">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ihN-qX-G3a">
+                                            <rect key="frame" x="10" y="5" width="300" height="50"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="5au-XI-UsS"/>
+                                                <constraint firstAttribute="width" constant="300" id="m0t-gb-0DR"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerX" secondItem="ihN-qX-G3a" secondAttribute="centerX" id="Xfh-Cp-TDq"/>
+                                        <constraint firstAttribute="centerY" secondItem="ihN-qX-G3a" secondAttribute="centerY" id="cbQ-27-Lnd"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="tagsContainerView" destination="ihN-qX-G3a" id="Vig-H0-LjG"/>
+                                    <outlet property="tagsContainerWidthConstraint" destination="m0t-gb-0DR" id="wTx-If-EVO"/>
+                                </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="thumbsPreview" rowHeight="70" id="v3m-q0-0bA" customClass="PMLThumbsTableViewCell">
                                 <rect key="frame" x="0.0" y="700" width="320" height="44"/>

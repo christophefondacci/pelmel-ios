@@ -24,5 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *hoursBadgeSubtitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *titleDecorationImage;
 @property (weak, nonatomic) IBOutlet UIImageView *hoursBadgeImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightLabelHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightIconHeight;
 
 @end
