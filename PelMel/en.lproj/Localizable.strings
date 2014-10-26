@@ -191,11 +191,12 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "settings.hd"="HD images";
 "settings.hd.subtitle"="Better quality, requires good 3G connexion";
 "settings.general.title"="General";
+"settings.leftHanded"="Left handed mode";
+"settings.likes"="I like";
+"settings.likers"="Who like me";
 "settings.messages"="Messages";
 "settings.placeTypes.title"="Place filters";
 "settings.settings"="Settings";
-"settings.likes"="I like";
-"settings.likers"="Who like me";
 "snippet.likes"="%d likes";
 "snippet.activity"="Nearby users";
 "snippet.edit.descPlaceholder"="Enter a description";

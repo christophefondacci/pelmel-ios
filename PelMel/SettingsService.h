@@ -33,6 +33,7 @@ typedef enum {
 // A quick access to the information telling that everything is active
 @property (nonatomic) BOOL allFiltersActive;
 @property (nonatomic,retain) ConversionService *conversionService;
+@property (nonatomic) BOOL leftHandedMode;
 
 /**
  * Provides a list of defined PlaceType objects

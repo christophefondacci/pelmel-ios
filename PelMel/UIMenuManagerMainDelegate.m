@@ -73,7 +73,11 @@
             MainMenuTableViewController *rearView = (MainMenuTableViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_CONTROLLER];
             // Computing point where menu pops from
             CGRect menuFrame = menuAction.menuActionView.frame;
-            CGPoint menuPoint = CGPointMake(menuFrame.origin.x, menuFrame.origin.y + menuFrame.size.height);
+            
+            // Handling offset where the menu starts
+            BOOL leftHanded = [[TogaytherService settingsService] leftHandedMode];
+            
+            CGPoint menuPoint = CGPointMake(menuFrame.origin.x + (leftHanded ? menuFrame.size.width : 0), menuFrame.origin.y + menuFrame.size.height);
             UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rearView];
             [_menuManagerController presentControllerMenu:navController from:menuPoint withHeightPct:0.55];
         }];
@@ -128,12 +132,19 @@
     CGRect actionBounds = action.menuActionView.bounds;
     
     // Computing X-position
-    float x = action.pctWidthPosition*size.width-actionBounds.size.width/2+action.leftMargin;
-    x = MIN(x,size.width-actionBounds.size.width-action.rightMargin);
-    x = MAX(x,action.leftMargin);
+    float pctWidth, pctHeight,leftMargin,rightMargin;
+    BOOL reverse = [[TogaytherService settingsService] leftHandedMode];
+    pctWidth = reverse ? (1-action.pctWidthPosition) : action.pctWidthPosition;
+    pctHeight = reverse ? (1-action.pctHeightPosition) : action.pctHeightPosition;
+    leftMargin = reverse ? action.rightMargin : action.leftMargin;
+    rightMargin = reverse ? action.leftMargin : action.rightMargin;
+    
+    float x = pctWidth*size.width-actionBounds.size.width/2+leftMargin;
+    x = MIN(x,size.width-actionBounds.size.width-rightMargin);
+    x = MAX(x,leftMargin);
     
     // Computing Y-position
-    float y = action.pctHeightPosition*size.height-actionBounds.size.height/2+action.topMargin;
+    float y = pctHeight*size.height-actionBounds.size.height/2+action.topMargin;
     y = MIN(y,size.height-actionBounds.size.height-action.bottomMargin);
     y = MAX(y,action.topMargin);
     NSLog(@"Menu action y=%d",(int)y);

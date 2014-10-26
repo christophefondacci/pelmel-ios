@@ -34,6 +34,7 @@
 #define SB_ID_MENU_MANAGER @"menuManager"
 
 #define PML_PROP_SERVER @"url.server"
+#define PML_PROP_LEFTHANDED @"settings.leftHanded"
 
 #define kPMLKeyLastLatitude @"lastLatitude"
 #define kPMLKeyLastLongitude @"lastLongitude"

@@ -11,5 +11,8 @@
 @interface SettingsTableViewController : UITableViewController
 @property (weak, nonatomic) IBOutlet UISwitch *pushSwitch;
 @property (weak, nonatomic) IBOutlet UITableViewCell *pushCell;
+@property (weak, nonatomic) IBOutlet UISwitch *leftHandedSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *leftHandedLabel;
+@property (weak, nonatomic) IBOutlet UITableViewCell *leftHandedCell;
 
 @end

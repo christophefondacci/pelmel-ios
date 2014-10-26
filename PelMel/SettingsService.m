@@ -45,6 +45,8 @@
         NSString *placeCode;
         
         self.allFiltersActive = YES;
+        _leftHandedMode = [[_defaults objectForKey:PML_PROP_LEFTHANDED] boolValue];
+        
         for(placeCode in placeCodes) {
             PlaceType *placeType = [[PlaceType alloc] initWithCode:placeCode];
             
@@ -207,5 +209,10 @@
             [listener filtersChanged];
         }
     }
+}
+
+- (void)setLeftHandedMode:(BOOL)leftHandedMode {
+    _leftHandedMode = leftHandedMode;
+    [_defaults setObject:[NSNumber numberWithBool:leftHandedMode] forKey:PML_PROP_LEFTHANDED];
 }
 @end

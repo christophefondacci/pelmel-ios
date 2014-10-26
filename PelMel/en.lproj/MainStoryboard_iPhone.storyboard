@@ -39,6 +39,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -1908,10 +1909,6 @@
                                                 </label>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DU2-5a-gKT">
                                                     <rect key="frame" x="261" y="6" width="51" height="31"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="49" id="DZS-ke-8bT"/>
-                                                        <constraint firstAttribute="height" constant="31" id="TsG-DM-4bX"/>
-                                                    </constraints>
                                                 </switch>
                                             </subviews>
                                             <constraints>
@@ -1920,6 +1917,37 @@
                                                 <constraint firstAttribute="centerY" secondItem="DU2-5a-gKT" secondAttribute="centerY" id="b5r-UX-GZR"/>
                                                 <constraint firstItem="FP6-ET-9UI" firstAttribute="leading" secondItem="p3h-uX-6GX" secondAttribute="leading" constant="20" id="juT-wa-Cjr"/>
                                                 <constraint firstAttribute="centerY" secondItem="FP6-ET-9UI" secondAttribute="centerY" id="ssK-9Q-wdK"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="swu-u9-EBF">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="swu-u9-EBF" id="0Zc-lF-1qi">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Left-handed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ls-ce-OwR">
+                                                    <rect key="frame" x="20" y="10" width="231" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="uZn-Pp-R02"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                                    <color key="textColor" red="0.6588235294" green="0.65490196079999996" blue="0.64705882349999999" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wdE-xg-iwg">
+                                                    <rect key="frame" x="261" y="6" width="51" height="31"/>
+                                                    <connections>
+                                                        <action selector="leftHandedTapped:" destination="s47-dq-ftH" eventType="valueChanged" id="D9e-Hv-3QX"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="wdE-xg-iwg" firstAttribute="leading" secondItem="1ls-ce-OwR" secondAttribute="trailing" constant="10" id="FSe-NX-tjh"/>
+                                                <constraint firstAttribute="centerY" secondItem="1ls-ce-OwR" secondAttribute="centerY" id="GtQ-va-fya"/>
+                                                <constraint firstAttribute="centerY" secondItem="wdE-xg-iwg" secondAttribute="centerY" id="LWK-oH-agm"/>
+                                                <constraint firstAttribute="trailing" secondItem="wdE-xg-iwg" secondAttribute="trailing" constant="10" id="UQM-VE-3OJ"/>
+                                                <constraint firstItem="1ls-ce-OwR" firstAttribute="leading" secondItem="0Zc-lF-1qi" secondAttribute="leading" constant="20" id="ojJ-8T-iq4"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
@@ -1934,6 +1962,9 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="bLO-mO-Obk"/>
                     <connections>
+                        <outlet property="leftHandedCell" destination="swu-u9-EBF" id="aLJ-Fh-vFx"/>
+                        <outlet property="leftHandedLabel" destination="1ls-ce-OwR" id="Qcb-tp-ryL"/>
+                        <outlet property="leftHandedSwitch" destination="wdE-xg-iwg" id="oOd-HY-Key"/>
                         <outlet property="pushCell" destination="Q7t-O5-UFi" id="Npq-4B-tiv"/>
                         <outlet property="pushSwitch" destination="DU2-5a-gKT" id="VTh-Uq-rLc"/>
                     </connections>
@@ -2837,12 +2868,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="bA0-cZ-EFZ"/>
-        <segue reference="eKE-7K-Ihn"/>
-        <segue reference="enc-VM-87F"/>
         <segue reference="agQ-rU-dsm"/>
+        <segue reference="enc-VM-87F"/>
         <segue reference="fnn-3s-KqK"/>
         <segue reference="hk5-7z-xvn"/>
         <segue reference="hap-7x-4U2"/>
+        <segue reference="bA0-cZ-EFZ"/>
+        <segue reference="eKE-7K-Ihn"/>
     </inferredMetricsTieBreakers>
 </document>
