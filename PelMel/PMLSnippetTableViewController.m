@@ -554,7 +554,12 @@ typedef enum {
 //    for(Place *p in _dataService.modelHolder.places) {
 //        NSLog(@" -> %@", p.key );
 //    }
-    cell.titleLabel.text = _infoProvider.title;
+
+    if(_infoProvider.title == nil) {
+        cell.titleLabel.text = NSLocalizedString(@"snippet.title.notitle", @"Tap to enter a name");
+    } else {
+        cell.titleLabel.text = _infoProvider.title;
+    }
     cell.titleDecorationImage.image = _infoProvider.titleIcon;
     
     // Tappable label for name edition

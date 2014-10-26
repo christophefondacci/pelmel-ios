@@ -77,11 +77,7 @@
 }
 // Title of the element
 -(NSString*) title {
-    if(_place.title != nil || _place.editing) {
-        return _place.title;
-    } else {
-        return NSLocalizedString(@"snippet.title.notitle", @"Tap to enter a name");
-    }
+    return _place.title;
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
