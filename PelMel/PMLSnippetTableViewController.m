@@ -418,22 +418,15 @@ typedef enum {
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
-                UIFont *font = [UIFont fontWithName:PML_FONT_DEFAULT size:kPMLRowDescFontSize];
-                UILabel *label = [[UILabel alloc] init];
-                label.font = font;
-                label.text = _infoProvider.descriptionText;
-                label.numberOfLines = 0;
-                label.lineBreakMode = NSLineBreakByWordWrapping;
-                CGSize maxSize = CGSizeMake(tableView.frame.size.width-40, MAXFLOAT);
-                CGSize expectedSize = [label sizeThatFits:maxSize];
+                PMLDescriptionTableViewCell *descriptionCell = [self.tableView dequeueReusableCellWithIdentifier:kPMLRowDescId];
+                descriptionCell.descriptionLabel.text = _infoProvider.descriptionText;
+                
+                CGSize expectedSize = [descriptionCell.descriptionLabel sizeThatFits:CGSizeMake(descriptionCell.descriptionLabel.bounds.size.width, MAXFLOAT)];
                 _readMoreSize = expectedSize.height+1;
             }
 
             _descHeight = MAX(_readMoreSize,30);
-//            if(!_readMore) {
-//                _descHeight = MIN(_descHeight,kPMLHeightOvDesc);
-//            }
-            _descHeight = 25+_descHeight+30+25;
+            _descHeight = 26+_descHeight+26;
 
             return _descHeight;
         }
