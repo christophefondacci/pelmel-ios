@@ -230,16 +230,16 @@
 #pragma mark - Map contributed menu actions
 -(void)initializeMenuActions {
     // Providing our menu action (add content)
-    _menuAddAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnAdd"] pctWidth:1 pctHeight:0.5 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
+    _menuAddAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnAdd"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
         NSLog(@"AddContent");
         CLLocationCoordinate2D coords = _mapView.centerCoordinate;
         [self addPlaceAtLatitude:coords.latitude longitude:coords.longitude];
     }];
     _menuAddAction.rightMargin=5;
-    _menuAddAction.topMargin=58;
+    _menuAddAction.bottomMargin=160;
     
     // Refresh action
-    _menuRefreshAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnRefresh"] pctWidth:1 pctHeight:0.5 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+    _menuRefreshAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnRefresh"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
         
         // Getting current map center coordinates
         CLLocationDistance distance = [self distanceFromCornerPoint];
@@ -253,10 +253,10 @@
         [self.parentMenuController.dataManager refreshAt:_mapView.centerCoordinate radius:milesRadius];
     }];
     _menuRefreshAction.rightMargin = 5;
-    _menuRefreshAction.topMargin = 0; //topMargin = 100; //69;
+    _menuRefreshAction.bottomMargin = 215; //topMargin = 100; //69;
     
     // My Position action
-    _menuMyPositionAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnPosition"] pctWidth:1 pctHeight:0.5 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+    _menuMyPositionAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnPosition"] pctWidth:1 pctHeight:00 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
         if(_mapView.showsUserLocation) {
             
             // First zoom mode: center on current position
@@ -276,10 +276,15 @@
                     [_mapView showAnnotations:[_placeAnnotations allObjects] animated:YES];
                 }
             }
+        } else {
+            NSString *title = NSLocalizedString(@"action.myposition.alertTitle", @"action.myposition.alertTitle");
+            NSString *msg = NSLocalizedString(@"action.myposition.alertMsg", @"action.myposition.alertMsg");
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+            [alert show];
         }
     }];
     _menuMyPositionAction.rightMargin = 5;
-    _menuMyPositionAction.topMargin = -184; //topMargin = 50;
+    _menuMyPositionAction.topMargin = 40; //topMargin = 50;
     
 }
 
@@ -336,6 +341,12 @@
             
             NSSet *nearbyAnnotations = [_mapView annotationsInMapRect:rect];
             int placesCount = (int)nearbyAnnotations.count;
+            if(_zoomUpdateType == PMLZoomUpdateAroundLocation) {
+                if(_mapView.userLocation.location!=nil) {
+                    nearbyAnnotations = [nearbyAnnotations setByAddingObject:_mapView.userLocation];
+                    updatedAnnotations = [updatedAnnotations arrayByAddingObject:_mapView.userLocation];
+                }
+            }
             
             // If we haven't got much in our rect, we check if we need to zoom fit or no
             if(_zoomUpdateType == PMLZoomUpdateFitResults || (placesCount<kPMLMinimumPlacesForZoom && (placesCount-1) < _modelHolder.places.count+_modelHolder.cities.count)) {
@@ -349,7 +360,7 @@
                 _mapView.camera.pitch = 0;
                 
                 // TODO: Compute final map rect and enable animation if close enough
-                _zoomAnimation = _zoomUpdateType == PMLZoomUpdateAroundLocation;
+                _zoomAnimation = _zoomUpdateType == PMLZoomUpdateAroundLocation && _modelHolder.userLocation!=nil;
                 NSSet *annotationsToDisplay = nearbyAnnotations.count > 0 ? nearbyAnnotations : _placeAnnotations;
                 [_mapView showAnnotations:[annotationsToDisplay allObjects] animated:YES];
             }
@@ -883,7 +894,7 @@
     } else if([object isKindOfClass:[ModelHolder class]]) {
         if(!_initialUserLocationZoomDone) {
             // Centering
-            [_mapView setCenterCoordinate:_modelHolder.userLocation.coordinate animated:YES];
+//            [_mapView setCenterCoordinate:_modelHolder.userLocation.coordinate animated:YES];
             // Unregistering
             [_modelHolder removeObserver:self forKeyPath:@"userLocation"];
             _initialUserLocationZoomDone = YES;

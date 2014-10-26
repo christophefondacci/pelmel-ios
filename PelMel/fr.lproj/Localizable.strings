@@ -22,6 +22,8 @@
 "action.like"="J'aime";
 "action.like.feedbackTitle"="Vous aimez!";
 "action.like.feedbackMessage"="Votre \"j'aime\" a été pris en compte, merci !";
+"action.myposition.alertTitle"="Services de localisation";
+"action.myposition.alertMsg"="Vous n'avez pas autorisé PelMel à accéder à votre localisation. Vous pouvez changer ceci en ouvrant l'application 'Réglages' et en allant dans Confidentialité > Localisation > PelMel et autorisez.";
 "action.photo"="Photo";
 "action.report.done.title"="Report d'information";
 "action.report.done"="Votre notification a été enregistrée et sera revue dans les jours qui viennent. Merci de votre aide!";

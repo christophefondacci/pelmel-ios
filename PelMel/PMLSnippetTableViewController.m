@@ -1174,7 +1174,7 @@ typedef enum {
 //            _snippetCell.subtitleLabel.text = ((Place*)object).address;
 //        }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionOvAddress] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView reloadData]; //reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionOvAddress] withRowAnimation:UITableViewRowAnimationAutomatic];
         });
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         [self updateTitleEdition];

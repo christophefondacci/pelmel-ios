@@ -22,6 +22,8 @@
 "action.like"="Like";
 "action.like.feedbackTitle"="You like!";
 "action.like.feedbackMessage"="Your like has been saved, thank you!";
+"action.myposition.alertTitle"="Enable location services";
+"action.myposition.alertMsg"="You have not authorized PelMel to access your location. You can change this by opening the settings app and going into Privacy > Location > PelMel and authorize.";
 "action.photo"="Photo";
 "action.report.done.title"="Reporting information";
 "action.report.done"="Your notification has been stored and will be reviewed within a few days. Thank you for your help!";

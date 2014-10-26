@@ -438,6 +438,7 @@
     [self pushCompletion:YES];
 }
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    
     [self pushCompletion:NO];
 }
 

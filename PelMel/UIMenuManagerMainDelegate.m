@@ -67,7 +67,7 @@
     
     // Adding the chat action
     if(_actionChat==nil) {
-        _actionChat = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnMenu"] pctWidth:1 pctHeight:0.5 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
+        _actionChat = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnMenu"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
             
             NSLog(@"Chat");
             MainMenuTableViewController *rearView = (MainMenuTableViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_CONTROLLER];
@@ -92,7 +92,7 @@
         // Registering it
         [[TogaytherService getMessageService] setMessageCountBadgeView:badgeView];
         
-        _actionChat.topMargin=116;
+        _actionChat.bottomMargin=105;
         _actionChat.rightMargin = 5;
     }
     [self setupMenuAction:_actionChat];
