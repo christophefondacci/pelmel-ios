@@ -11,8 +11,10 @@
 @implementation LanguagePickerDataSource {
     id<LanguageCallback> _callback;
     NSMutableArray *languagesArray;
-    UILabel *_label;
     int _index;
+    
+    UIPickerView *_pickerView;
+    NSString *_languageCode;
 }
 
 
@@ -47,25 +49,33 @@
     NSString *langLabel = NSLocalizedString(formatStr,@"language label");
     return langLabel;
 }
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    NSString *title = [self pickerView:pickerView titleForRow:row forComponent:component];
+    NSAttributedString *attString = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    return attString;
+}
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     NSString *selectedLangCode = [languagesArray objectAtIndex:row];
-    [_callback languageChanged:[selectedLangCode uppercaseString] label:_label index:_index];
+    [_callback languageChanged:[selectedLangCode uppercaseString] index:_index];
 }
 
-- (void)registerLabel:(UILabel *)label forIndex:(int)index{
-    _label = label;
+- (void)setLanguage:(NSString *)languageCode forIndex:(int)index {
+    _languageCode = languageCode;
     _index = index;
 }
-- (void)setLanguage:(NSString *)languageCode picker:(UIPickerView *)picker {
-    int selectedIndex = -1;
+-(void)setPickerView:(UIPickerView *)picker {
+    _pickerView = picker;
+    int _selectedIndex = -1;
     for(int i = 0 ; i < languagesArray.count ; i++) {
         NSString *currentLangCode = [languagesArray objectAtIndex:i];
-        if([currentLangCode isEqualToString:languageCode]) {
-            selectedIndex = i;
+        if([currentLangCode isEqualToString:_languageCode]) {
+            _selectedIndex = i;
+            break;
         }
     }
-    if(selectedIndex!=-1) {
-        [picker selectRow:selectedIndex inComponent:0 animated:NO];
+    if(_selectedIndex!=-1) {
+        [_pickerView selectRow:_selectedIndex inComponent:0 animated:NO];
     }
 }
+
 @end

@@ -10,7 +10,7 @@
 #import "UIInteractiveLabel.h"
 #import "PickerInputTableViewCell.h"
 
-@interface UITableDescriptionViewCell : PickerInputTableViewCell
+@interface UITableDescriptionViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *languageCodeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;

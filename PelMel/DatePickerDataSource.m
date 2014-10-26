@@ -12,7 +12,6 @@
     id<DateCallback> _callback;
     NSMutableArray *yearsArray;
     NSMutableArray *monthArray;
-    UILabel *_label;
 }
 
 -(id)initWithCallback:(id<DateCallback>)callback {
@@ -71,6 +70,11 @@
     }
     return nil;
 }
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {
+    NSString *title = [self pickerView:pickerView titleForRow:row forComponent:component];
+    NSAttributedString *attString = [[NSAttributedString alloc] initWithString:title attributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]}];
+    return attString;
+}
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     NSCalendar *cal = [NSCalendar currentCalendar];
     NSDateComponents *components = [[NSDateComponents alloc] init];
@@ -84,7 +88,7 @@
     [components setYear:year];
     
     NSDate *date = [cal dateFromComponents:components];
-    [_callback dateUpdated:date label:_label];
+    [_callback dateUpdated:date];
 }
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component {
     CGRect bounds = [[UIScreen mainScreen] bounds];
@@ -100,9 +104,9 @@
     return 0;
 }
 
--(void)setDate:(NSDate *)date picker:(UIPickerView *)picker {
+-(void)setPickerView:(UIPickerView *)picker {
     NSCalendar* calendar = [NSCalendar currentCalendar];
-    NSDateComponents* compoNents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date]; // Get necessary date components
+    NSDateComponents* compoNents = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:_dateValue]; // Get necessary date components
     NSInteger year = [compoNents year];
     NSInteger month = [compoNents month];
     NSInteger day = [compoNents day];
@@ -110,8 +114,5 @@
     [picker selectRow:day-1 inComponent:0 animated:NO];
     [picker selectRow:month-1 inComponent:1 animated:NO];
     [picker selectRow:(year-1920) inComponent:2 animated:NO];
-}
-- (void)registerTargetLabel:(UILabel *)label {
-    _label = label;
 }
 @end

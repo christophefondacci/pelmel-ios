@@ -7,15 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PMLPickerProvider.h"
 
 @protocol LanguageCallback
 
-- (void)languageChanged:(NSString*)languageCode label:(UILabel*)label index:(int)index;
+- (void)languageChanged:(NSString*)languageCode index:(int)index;
 
 @end
-@interface LanguagePickerDataSource : NSObject <UIPickerViewDataSource, UIPickerViewDelegate>
+@interface LanguagePickerDataSource : NSObject <PMLPickerProvider>
 
 - (id) initWithCallback:(id<LanguageCallback>)callback;
-- (void)setLanguage:(NSString*)languageCode picker:(UIPickerView*)picker;
-- (void)registerLabel:(UILabel*)label forIndex:(int)index;
+- (void)setLanguage:(NSString*)languageCode forIndex:(int)index;
+
 @end

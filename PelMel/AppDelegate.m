@@ -117,4 +117,10 @@
 -(void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
     NSLog(@"handleActionWithIdentifier");
 }
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application {
+    ModelHolder *holder = [[TogaytherService dataService] modelHolder];
+    NSMutableArray *allPlaces = [holder allPlaces];
+    [allPlaces removeAllObjects];
+    [allPlaces addObjectsFromArray:[holder places]];
+}
 @end

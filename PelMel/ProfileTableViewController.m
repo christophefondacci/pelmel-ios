@@ -22,6 +22,8 @@
 #import "UITablePhotoViewCell.h"
 #import "PMLAddTableViewCell.h"
 #import "PhotoPreviewViewController.h"
+#import "PMLPickerTableViewCell.h"
+#import "PMLPickerProvider.h"
 
 #define kSectionCount 5
 #define kSectionBirthday 0
@@ -58,6 +60,10 @@
     // Picker
     UIPickerView *languagePicker;
     UIPickerView *datePicker;
+    
+    NSIndexPath *_pickerIndexPath;
+    NSObject <PMLPickerProvider> *_currentPickerSource;
+
     UIActivityIndicatorView *activityView;
     UIImageView __weak *profileImageView;
     
@@ -72,6 +78,10 @@
     // Edit states
     BOOL _photoEdition;
     BOOL _descEdition;
+    
+    // Description height management
+    NSMutableDictionary *_descPathMap;
+    NSMutableDictionary *_descHeightMap;
 }
 
 
@@ -131,6 +141,9 @@
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ProfileHeader" owner:self options:nil];
     profileHeaderView = [views objectAtIndex:0];
     
+    // Height management
+    _descPathMap = [[NSMutableDictionary alloc] init];
+    _descHeightMap= [[NSMutableDictionary alloc] init];
 //    // Loading description header view
 //    views = [[NSBundle mainBundle] loadNibNamed:@"DescriptionHeader" owner:self options:nil];
 //    descriptionHeaderView = [views objectAtIndex:0];
@@ -147,11 +160,12 @@
     } else {
         [_uiService setProgressView:_progressView];
     }
+    [self.tableView reloadData];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     NSLog(@"View did appear");
-    [self.tableView reloadData];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 - (void)viewDidUnload
@@ -194,12 +208,12 @@
     CurrentUser *user = userService.getCurrentUser;
     switch(section) {
         case kSectionBirthday:
-            return 1;
+            return _pickerIndexPath!=nil && _pickerIndexPath.section == kSectionBirthday ? 2 : 1;
         case kSectionMeasure:
             return 2;
         case kSectionDescriptions: {
             int descCount = (int)[user.descriptions count];
-            return (descCount == 0 ? 1 : descCount)+1;
+            return (descCount == 0 ? 1 : descCount)+1+(_pickerIndexPath.section == kSectionDescriptions ? 1 :0);
         }
         case kSectionPhotos: {
             int mainImageCount = user.mainImage == nil ? 0 : 1;
@@ -224,140 +238,157 @@
     CurrentUser *user = userService.getCurrentUser;
     // Selecting the cell type
     NSString *cellId;
-    switch(indexPath.section) {
-        case kSectionBirthday:
-            cellId = birthdayCell;
-            break;
-        case kSectionMeasure:
-            cellId = measureCell;
-            break;
-        case kSectionDescriptions:
-            cellId = indexPath.row == 0 ? addCell :descCell;
-            break;
-        case kSectionPhotos:
-            // Last row of photo section is the add button, otherwise it is a photo cell
-            cellId = indexPath.row == 0 ? addCell : photosCell;
-            break;
-        case kSectionTags:
-            cellId = tagCell;
-            break;
-    }
-    // Retrieving a cell instance
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-
-    cell.backgroundColor = UIColorFromRGB(0x272a2e);
-    // Formatting the cell
-    switch(indexPath.section) {
-        case kSectionBirthday: {
-            // Birthday cell
-            [self dateUpdated:user.birthDate label:cell.detailTextLabel];
-            [datePickerDataSource registerTargetLabel:cell.detailTextLabel];
-            PickerInputTableViewCell *pickerCell = (PickerInputTableViewCell*) cell;
-            [pickerCell setPicker:datePicker];
-            pickerCell.rowPath = indexPath;
-            break;
+    UITableViewCell *cell ;
+    if([_pickerIndexPath isEqual:indexPath]) {
+        cellId = @"picker";
+        PMLPickerTableViewCell *pickerCell =[tableView dequeueReusableCellWithIdentifier:cellId];
+        cell = pickerCell;
+        pickerCell.pickerView.dataSource = _currentPickerSource;
+        pickerCell.pickerView.delegate = _currentPickerSource;
+        [_currentPickerSource setPickerView:pickerCell.pickerView];
+    } else {
+        switch(indexPath.section) {
+            case kSectionBirthday:
+                cellId = birthdayCell;
+                break;
+            case kSectionMeasure:
+                cellId = measureCell;
+                break;
+            case kSectionDescriptions:
+                cellId = indexPath.row == 0 ? addCell :descCell;
+                break;
+            case kSectionPhotos:
+                // Last row of photo section is the add button, otherwise it is a photo cell
+                cellId = indexPath.row == 0 ? addCell : photosCell;
+                break;
+            case kSectionTags:
+                cellId = tagCell;
+                break;
         }
-        case kSectionMeasure:
-            // Measure cells
-            switch(indexPath.row) {
-                case kRowIndexHeight: {
-                    // Formatting height
-                    UITableMeasureViewCell *measureCell = (UITableMeasureViewCell*)cell;
-                    measureCell.measureLabel.text = NSLocalizedString(@"profile.height", @"Height label of profile section");
-                    measureCell.measureSlider.minimumValue = 120;
-                    measureCell.measureSlider.maximumValue = 210;
-                    [measureCell.measureSlider setValue:user.heightInCm];
-                    // Registering as delegate to be notified of measure changes
-                    [measureCell setDelegate:self id:kMeasureHeight];
-                    break;
-                }
-                case kRowIndexWeight: {
-                    // Formatting weight
-                    UITableMeasureViewCell *measureCell = (UITableMeasureViewCell*)cell;
-                    measureCell.measureLabel.text = NSLocalizedString(@"profile.weight", @"Weight label of profile section");
-                    measureCell.measureSlider.minimumValue= 40;
-                    measureCell.measureSlider.maximumValue= 150;
-                    [measureCell.measureSlider setValue:user.weightInKg];
-                    // Registering as delegate to be notified of measure changes
-                    [measureCell setDelegate:self id:kMeasureWeight];
-                    break;
-                }
+        
+        // Retrieving a cell instance
+        cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        
+        cell.backgroundColor = UIColorFromRGB(0x272a2e);
+        
+        // Formatting the cell
+        switch(indexPath.section) {
+            case kSectionBirthday: {
+                // Birthday cell
+                NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+                [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+                [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+                
+                cell.detailTextLabel.text = [dateFormatter stringFromDate:user.birthDate];
+                [cell.detailTextLabel sizeToFit];
+//                [self dateUpdated:user.birthDate label:cell.detailTextLabel];
+//                [datePickerDataSource registerTargetLabel:cell.detailTextLabel];
+//                PickerInputTableViewCell *pickerCell = (PickerInputTableViewCell*) cell;
+//                [pickerCell setPicker:datePicker];
+//                pickerCell.rowPath = indexPath;
+                break;
             }
-            break;
-        case kSectionDescriptions: {
-            if(indexPath.row == 0) {
-                PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
-                
-                // Add button text and action
-                addCell.addButton.titleLabel.text = NSLocalizedString(@"map.option.add", @"Add");
-                [addCell.addButton addTarget:self action:@selector(addDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
-
-                // Modify button text and action
-                addCell.modifyButton.titleLabel.text = NSLocalizedString(@"modify", @"modify");
-                [addCell.modifyButton addTarget:self action:@selector(modifyDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
-                
-                // Colors (a bug reverts colors of buttons to blue
-                addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
-                addCell.modifyButton.titleLabel.textColor = [UIColor whiteColor];
-            } else {
-                UITableDescriptionViewCell *descCell=(UITableDescriptionViewCell*)cell;
-                [descCell setPicker:languagePicker];
-                Description *d = [self getDescriptionFor:(int)indexPath.row];
-                NSString *language = [NSString stringWithFormat:@"language.%@",d.languageCode];
-                descCell.languageCodeLabel.text= NSLocalizedString(language,@"language");
-                descCell.descriptionLabel.text = d.descriptionText;
-                descCell.editButton.tag = indexPath.row;
-                [descCell.editButton addTarget:self action:@selector(descriptionEditTapped:) forControlEvents:UIControlEventTouchUpInside];
-                //            UITableDescriptionViewCell *descCell=(UITableDescriptionViewCell*)cell;
-                //            descCell.inputView = picker;
-                //            [descCell setPicker:picker];
-                //            descCell.descriptionText.inputView = picker;
-            }
-            break;
-        }
-        case kSectionPhotos:
-            if(indexPath.row > 0) {
-                UITablePhotoViewCell *photoCell = (UITablePhotoViewCell*)cell;
-                
-                CALImage *image = [self imageForIndexPath:indexPath];
-                if(indexPath.row == 1) {
-                    photoCell.label.text = NSLocalizedString(@"photos.profile", @"Title of a profile photo in the photo list");
+            case kSectionMeasure:
+                // Measure cells
+                switch(indexPath.row) {
+                    case kRowIndexHeight: {
+                        // Formatting height
+                        UITableMeasureViewCell *measureCell = (UITableMeasureViewCell*)cell;
+                        measureCell.measureLabel.text = NSLocalizedString(@"profile.height", @"Height label of profile section");
+                        measureCell.measureSlider.minimumValue = 120;
+                        measureCell.measureSlider.maximumValue = 210;
+                        [measureCell.measureSlider setValue:user.heightInCm];
+                        // Registering as delegate to be notified of measure changes
+                        [measureCell setDelegate:self id:kMeasureHeight];
+                        break;
+                    }
+                    case kRowIndexWeight: {
+                        // Formatting weight
+                        UITableMeasureViewCell *measureCell = (UITableMeasureViewCell*)cell;
+                        measureCell.measureLabel.text = NSLocalizedString(@"profile.weight", @"Weight label of profile section");
+                        measureCell.measureSlider.minimumValue= 40;
+                        measureCell.measureSlider.maximumValue= 150;
+                        [measureCell.measureSlider setValue:user.weightInKg];
+                        // Registering as delegate to be notified of measure changes
+                        [measureCell setDelegate:self id:kMeasureWeight];
+                        break;
+                    }
+                }
+                break;
+            case kSectionDescriptions: {
+                if(indexPath.row == 0) {
+                    PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
+                    
+                    // Add button text and action
+                    [addCell.addButton setTitle:NSLocalizedString(@"map.option.add", @"Add") forState:UIControlStateNormal];
+                    [addCell.addButton addTarget:self action:@selector(addDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    // Modify button text and action
+                    [addCell.modifyButton setTitle:NSLocalizedString(@"modify", @"modify") forState:UIControlStateNormal];
+                    [addCell.modifyButton addTarget:self action:@selector(modifyDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    // Colors (a bug reverts colors of buttons to blue
+                    addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
+                    addCell.modifyButton.titleLabel.textColor = [UIColor whiteColor];
                 } else {
-                    photoCell.label.text = nil; //[NSString stringWithFormat:NSLocalizedString(@"photos.other", @"Title of a non-profile photo in the photo list"),indexPath.row+1];
+                    UITableDescriptionViewCell *descCell=(UITableDescriptionViewCell*)cell;
+                    Description *d = [self getDescriptionFor:(int)indexPath.row];
+                    NSString *language = [NSString stringWithFormat:@"language.%@",[d.languageCode lowercaseString]];
+                    [descCell.editButton setTitle:NSLocalizedString(language,@"language") forState:UIControlStateNormal];
+                    descCell.descriptionLabel.text = d.descriptionText;
+                    descCell.editButton.tag = indexPath.row;
+                    [descCell.editButton addTarget:self action:@selector(descriptionEditTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    //            UITableDescriptionViewCell *descCell=(UITableDescriptionViewCell*)cell;
+                    //            descCell.inputView = picker;
+                    //            [descCell setPicker:picker];
+                    //            descCell.descriptionText.inputView = picker;
+                }
+                break;
+            }
+            case kSectionPhotos:
+                if(indexPath.row > 0) {
+                    UITablePhotoViewCell *photoCell = (UITablePhotoViewCell*)cell;
+                    
+                    CALImage *image = [self imageForIndexPath:indexPath];
+                    if(indexPath.row == 1) {
+                        photoCell.label.text = NSLocalizedString(@"photos.profile", @"Title of a profile photo in the photo list");
+                    } else {
+                        photoCell.label.text = nil; //[NSString stringWithFormat:NSLocalizedString(@"photos.other", @"Title of a non-profile photo in the photo list"),indexPath.row+1];
+                    }
+                    
+                    [imageService load:image to:photoCell.photo thumb:YES];
+                    [photoCell.activity stopAnimating];
+                    photoCell.activity.hidden=YES;
+                } else {
+                    PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
+                    [addCell.addButton setTitle:NSLocalizedString(@"map.option.add", @"Add") forState:UIControlStateNormal];
+                    [addCell.addButton addTarget:self action:@selector(addPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [addCell.modifyButton setTitle:NSLocalizedString(@"modify", @"modify") forState:UIControlStateNormal];
+                    [addCell.modifyButton addTarget:self action:@selector(modifyPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    // Colors (a bug reverts colors of buttons to blue
+                    addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
+                    addCell.modifyButton.titleLabel.textColor = [UIColor whiteColor];
                 }
                 
-                [imageService load:image to:photoCell.photo thumb:YES];
-                [photoCell.activity stopAnimating];
-                photoCell.activity.hidden=YES;
-            } else {
-                PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
-                addCell.addButton.titleLabel.text = NSLocalizedString(@"map.option.add", @"Add");
-                [addCell.addButton addTarget:self action:@selector(addPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
-                addCell.modifyButton.titleLabel.text = NSLocalizedString(@"modify", @"modify");
-                [addCell.modifyButton addTarget:self action:@selector(modifyPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
+                //            int mainImage = user.mainImage == nil ? 0 : 1;
+                //            NSInteger photosCount = user.otherImages.count+mainImage;
+                //            NSString *photosLabel = [NSString stringWithFormat:NSLocalizedString(@"profile.photo.subtitle", @"subtitle for number of photos"),photosCount];
+                //            cell.textLabel.text = NSLocalizedString(@"profile.photo.manage", nil);
+                //            cell.detailTextLabel.text = photosLabel;
+                break;
                 
-                // Colors (a bug reverts colors of buttons to blue
-                addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
-                addCell.modifyButton.titleLabel.textColor = [UIColor whiteColor];
-            }
-
-//            int mainImage = user.mainImage == nil ? 0 : 1;
-//            NSInteger photosCount = user.otherImages.count+mainImage;
-//            NSString *photosLabel = [NSString stringWithFormat:NSLocalizedString(@"profile.photo.subtitle", @"subtitle for number of photos"),photosCount];
-//            cell.textLabel.text = NSLocalizedString(@"profile.photo.manage", nil);
-//            cell.detailTextLabel.text = photosLabel;
-            break;
-
-        case kSectionTags: {
-            UITableTagViewCell *tagCell = (UITableTagViewCell*)cell;
-            NSArray *tags = settingsService.listTags;
-            NSString *tagCode = [tags objectAtIndex:indexPath.row];
-            tagCell.icon.image = [imageService getTagImage:tagCode];
-            tagCell.label.text = tagCode;
-            if([user.tags containsObject:tagCode]) {
-                tagCell.accessoryType = UITableViewCellAccessoryCheckmark;
-            } else {
-                tagCell.accessoryType = UITableViewCellAccessoryNone;
+            case kSectionTags: {
+                UITableTagViewCell *tagCell = (UITableTagViewCell*)cell;
+                NSArray *tags = settingsService.listTags;
+                NSString *tagCode = [tags objectAtIndex:indexPath.row];
+                tagCell.icon.image = [imageService getTagImage:tagCode];
+                tagCell.label.text = tagCode;
+                if([user.tags containsObject:tagCode]) {
+                    tagCell.accessoryType = UITableViewCellAccessoryCheckmark;
+                } else {
+                    tagCell.accessoryType = UITableViewCellAccessoryNone;
+                }
             }
         }
     }
@@ -376,64 +407,92 @@
 }
 
 #pragma mark - Table view delegate
-
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Picker is not selectable
+    return ![_pickerIndexPath isEqual:indexPath];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CurrentUser *user = userService.getCurrentUser;
-    switch(indexPath.section) {
-        case kSectionBirthday:
-            // Setting current date
-            [datePickerDataSource setDate:user.birthDate picker:datePicker];
-            break;
-        case kSectionDescriptions: {
-            UITableDescriptionViewCell *cell = (UITableDescriptionViewCell*)[tableView cellForRowAtIndexPath:indexPath];
-            [langPickerDataSource registerLabel:cell.languageCodeLabel forIndex:(int)indexPath.row];
-            
-            Description *d = [self getDescriptionFor:(int)indexPath.row];
-            [langPickerDataSource setLanguage:d.languageCode picker:languagePicker];
-            
-            
-//            [self editLanguage:indexPath.row];
-            break;
-        }
-        case kSectionPhotos: {
-            if(indexPath.row >0) {
-                [self performSegueWithIdentifier:@"previewPhoto" sender:self];
+    // If reselecting the row on top of picker, we remove it
+    NSIndexPath *editedPath = [NSIndexPath indexPathForRow:_pickerIndexPath.row-1 inSection:_pickerIndexPath.section];
+    if([editedPath isEqual:indexPath]) {
+        NSIndexPath *oldPath = _pickerIndexPath;
+        _pickerIndexPath = nil;
+        _currentPickerSource = nil;
+        [self.tableView deleteRowsAtIndexPaths:@[oldPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:editedPath];
+        [cell setSelected:NO animated:YES];
+    } else {
+        CurrentUser *user = userService.getCurrentUser;
+        switch(indexPath.section) {
+            case kSectionBirthday: {
+                NSIndexPath *oldIndexPath = _pickerIndexPath;
+                // Registering picker right below our cell with a date provider initialized at birthdate
+                _pickerIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+                _currentPickerSource = datePickerDataSource;
+                datePickerDataSource.dateValue = user.birthDate;
+                
+                // Inserting picker
+                // Deleting any previous picker
+                [self.tableView beginUpdates];
+                if(oldIndexPath) {
+                    [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                }
+                [self.tableView insertRowsAtIndexPaths:@[_pickerIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView endUpdates];
+                // Setting current date
+                //            [datePickerDataSource setDate:user.birthDate picker:datePicker];
             }
-            break;
-        }
-        case kSectionTags: {
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            // Retrieving selected tag
-            NSString *tagCode = [settingsService.listTags objectAtIndex:indexPath.row];
-            CurrentUser *user = userService.getCurrentUser;
-            // Unselected if previously selected
-            if(cell.accessoryType  == UITableViewCellAccessoryCheckmark) {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                [user.tags removeObject:tagCode];
-            } else {
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-                [user.tags addObject:tagCode];
+                break;
+            case kSectionDescriptions: {
+                if(indexPath.row>0) {
+                    Description *desc = [self getDescriptionFor:indexPath.row];
+                    [self performSegueWithIdentifier:@"editDesc" sender:desc];
+                }
+                break;
             }
-            [cell setSelected:NO animated:YES   ];
-            break;
+            case kSectionPhotos: {
+                if(indexPath.row >0) {
+                    [self performSegueWithIdentifier:@"previewPhoto" sender:self];
+                }
+                break;
+            }
+            case kSectionTags: {
+                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                // Retrieving selected tag
+                NSString *tagCode = [settingsService.listTags objectAtIndex:indexPath.row];
+                CurrentUser *user = userService.getCurrentUser;
+                // Unselected if previously selected
+                if(cell.accessoryType  == UITableViewCellAccessoryCheckmark) {
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                    [user.tags removeObject:tagCode];
+                } else {
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    [user.tags addObject:tagCode];
+                }
+                [cell setSelected:NO animated:YES   ];
+                break;
+            }
         }
     }
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     DetailViewController *detailViewController = [[DetailViewController alloc] initWithNibName:@"Nib name" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
 }
--(Description*)getDescriptionFor:(int)index {
+-(Description*)getDescriptionFor:(NSInteger)index {
     // Setting current date
     CurrentUser *user = userService.getCurrentUser;
-    if(user.descriptions.count <= index-1) {
+
+    
+    // Default index
+    int descIndex = index-1;
+    // If a picker is somewhere in our description list we need
+    // to pick the right description
+    if(_pickerIndexPath.section == kSectionDescriptions) {
+        if(index>_pickerIndexPath.row) {
+            descIndex--;
+        }
+    } else     if(user.descriptions.count <= index-1) {
         [user addDescription:@"" language:@"fr"];
     }
-    return [user.descriptions objectAtIndex:index-1];
+    return [user.descriptions objectAtIndex:descIndex];
 }
 - (void) selectCell:(UITableViewCell*)cellToSelect {
     if(currentPicker != nil) {
@@ -445,16 +504,16 @@
 
 - (IBAction)dismiss:(id)sender {
     CurrentUser *user = [userService getCurrentUser];
-    int age = [userService getAge:user];
-    if(age<12) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"profile.mustBe18.title", @"profile.mustBe18.title")
-                                                        message:NSLocalizedString(@"profile.mustBe18", @"profile.mustBe18")
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        return;
-    }
+//    int age = [userService getAge:user];
+//    if(age<12) {
+//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"profile.mustBe18.title", @"profile.mustBe18.title")
+//                                                        message:NSLocalizedString(@"profile.mustBe18", @"profile.mustBe18")
+//                                                       delegate:nil
+//                                              cancelButtonTitle:@"OK"
+//                                              otherButtonTitles:nil];
+//        [alert show];
+//        return;
+//    }
     
     // Registering user info
     self.title = NSLocalizedString(@"profile.save", "Wait message while sending user data to server for save");
@@ -464,7 +523,9 @@
     [self dismissViewControllerAnimated:YES completion:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
-
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    cell.backgroundColor = UIColorFromRGB(0x272a2e);
+}
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     switch(section) {
@@ -565,26 +626,43 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch(indexPath.section) {
-        case kSectionDescriptions: {
-            if(indexPath.row == 0) {
-                return 44;
-            } else {
-                Description *desc = [self getDescriptionFor:indexPath.row];
-                NSInteger width = tableView.bounds.size.width-49;
-                CGRect rect = [desc.descriptionText boundingRectWithSize:CGSizeMake(width, CGFLOAT_MAX)
-                                                                 options:NSStringDrawingUsesLineFragmentOrigin
-                                                              attributes:@{NSFontAttributeName: [UIFont fontWithName:PML_FONT_DEFAULT size:15]}
-                                                                 context:nil];
-                return rect.size.height+37;
+    if([_pickerIndexPath isEqual:indexPath]) {
+        return 162;
+    } else {
+        switch(indexPath.section) {
+            case kSectionDescriptions: {
+                if(indexPath.row == 0) {
+                    return 44;
+                } else {
+                    NSString *text = [_descPathMap objectForKey:indexPath];
+                    Description *desc = [self getDescriptionFor:indexPath.row];
+                    CGFloat height;
+                    if(text == nil || ![text isEqualToString:desc.descriptionText]) {
+
+                        // Getting cell
+                        UITableDescriptionViewCell *descCell = [self.tableView dequeueReusableCellWithIdentifier:@"descriptionUnique"];
+                        descCell.descriptionLabel.text = desc.descriptionText;
+                        
+                        // Computing adequate height constraining width
+                        CGSize size = [descCell.descriptionLabel sizeThatFits:CGSizeMake(descCell.descriptionLabel.bounds.size.width, MAXFLOAT)];
+                        
+                        NSLog(@"Desc height: %d",(int)(size.height+1+46+8));
+                        height = MAX(size.height+1+46+8,80);
+                        [_descHeightMap setObject:[NSNumber numberWithFloat:height] forKey:indexPath];
+                        [_descPathMap setObject:desc.descriptionText forKey:indexPath];
+                    } else {
+                        height = [[_descHeightMap objectForKey:indexPath] floatValue];
+                    }
+                    return height;
+                }
             }
+            case kSectionPhotos:
+                return 64;
+            case kSectionTags:
+                return 35;
         }
-        case kSectionPhotos:
-            return 64;
-        case kSectionTags:
-            return 35;
+        return [super tableView:tableView heightForRowAtIndexPath:indexPath];
     }
-    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -608,7 +686,11 @@
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return (indexPath.section == kSectionDescriptions && indexPath.row>0 && _descEdition ) || (indexPath.section == kSectionPhotos && indexPath.row>0 && _photoEdition);
+    if([_pickerIndexPath isEqual:indexPath]) {
+        return NO;
+    } else {
+        return (indexPath.section == kSectionDescriptions && indexPath.row>0 && _descEdition ) || (indexPath.section == kSectionPhotos && indexPath.row>0 && _photoEdition);
+    }
 }
 // Override to support conditional rearranging of the table view.
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -760,11 +842,14 @@
 
 
 
-- (void)languageChanged:(NSString *)languageCode label:(UILabel *)label index:(int)index {
-    label.text = languageCode;
-    CurrentUser *user = userService.getCurrentUser;
-    Description *d = [user.descriptions objectAtIndex:index];
+- (void)languageChanged:(NSString *)languageCode index:(int)index {
+    Description *d = [self getDescriptionFor:index];
     [d setLanguageCode:languageCode];
+    if(_pickerIndexPath!=nil) {
+        [self.tableView beginUpdates];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:kSectionDescriptions]] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView endUpdates];
+    }
 }
 - (void)measureChanged:(UITableMeasureViewCell *)cell id:(NSString *)identifier {
     if(currentPicker != nil) {
@@ -782,20 +867,56 @@
         [user setWeightInKg:value];
     }
 }
-- (void)dateUpdated:(NSDate *)date label:(UILabel*)label {
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-    
-    label.text = [dateFormatter stringFromDate:date];
-    [label sizeToFit];
+- (void)dateUpdated:(NSDate *)date {
+
     CurrentUser *user = userService.getCurrentUser;
     user.birthDate =date;
+    if(_pickerIndexPath!=nil) {
+        [self.tableView beginUpdates];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_pickerIndexPath.row-1 inSection:_pickerIndexPath.section]] withRowAnimation:UITableViewRowAnimationNone];
+        [self.tableView endUpdates];
+    }
 }
 
 - (void)descriptionEditTapped:(UIButton*)button {
-    Description *desc = [self getDescriptionFor:(int)button.tag];
-    [self performSegueWithIdentifier:@"editDesc" sender:desc];
+    // Index path of the tapped description
+    NSIndexPath *descIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:kSectionDescriptions];
+    
+    // Index path of the item being edited
+    NSIndexPath *editedPath = [NSIndexPath indexPathForRow:_pickerIndexPath.row-1 inSection:_pickerIndexPath.section];
+
+    // If the tapped description is the one currently being edited
+    if([editedPath isEqual:descIndexPath]) {
+        // Then we remove the picker below it
+        NSIndexPath *oldPath = _pickerIndexPath;
+        _pickerIndexPath = nil;
+        _currentPickerSource = nil;
+        [self.tableView deleteRowsAtIndexPaths:@[oldPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        // And unselect the row
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:editedPath];
+        [cell setSelected:NO animated:YES];
+    } else {
+        
+        // Setting up language picker
+        Description *d = [self getDescriptionFor:button.tag];
+        [langPickerDataSource setLanguage:d.languageCode forIndex:button.tag];
+        
+        // We add a picker
+        NSIndexPath *oldIndexPath = _pickerIndexPath;
+        _pickerIndexPath = [NSIndexPath indexPathForRow:button.tag+1 inSection:kSectionDescriptions];
+        _currentPickerSource = langPickerDataSource;
+        
+        // Deleting any previous picker
+        [self.tableView beginUpdates];
+        if(oldIndexPath) {
+            [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        // Adding new picker
+        [self.tableView insertRowsAtIndexPaths:@[_pickerIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+        
+    }
 }
 - (void)addPhotoTapped:(UIButton*)button {
     [imageService promptUserForPhoto:self callback:self];

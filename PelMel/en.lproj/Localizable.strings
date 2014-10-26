@@ -118,6 +118,7 @@
 "places.search.placeholder.event"="Find an event";
 "places.section.incity"="%@'s gay hangouts";
 "places.section.inZone"="%d gay hangouts found";
+"places.section.inZoneWithUsers"="%d hangouts / %d guys";
 "places.section.nearby"="Hangouts nearby";
 "places.section.nearby.events"="Events nearby";
 "places.section.searchPlaces"="Hangouts";
@@ -184,6 +185,7 @@ Then, we may use your localization when you are near a place so that we can expo
 
 Don't be scared, we only need an email, a password, a nickname and your birth date. Your email is only used as a unique identifier internally to our services and will never be exposed to anyone. We encourage you to never use your personal info as your nickname (like your name) but to instead use anything which cannot personally identify yourself.
 ";
+"search.placeholder"="Search a place or a city";
 "settings.account.title"="My account";
 "settings.account.cell"="My profile";
 "settings.hd"="HD images";

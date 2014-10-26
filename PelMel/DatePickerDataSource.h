@@ -7,16 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "PMLPickerProvider.h"
 
 @protocol DateCallback
--(void)dateUpdated:(NSDate*)date label:(UILabel*)label;
+-(void)dateUpdated:(NSDate*)date;
 @end
 
-@interface DatePickerDataSource : NSObject <UIPickerViewDataSource,UIPickerViewDelegate>
+@interface DatePickerDataSource : NSObject <PMLPickerProvider>
+
+@property (nonatomic,retain) NSDate *dateValue;
 
 -(id)initWithCallback:(id<DateCallback>)callback;
 
--(void)setDate:(NSDate*)date picker:(UIPickerView*)picker;
--(void)registerTargetLabel:(UILabel*)label;
+/**
+ * Sets the date information that this datasource will edit (must be set BEFORE picker view)
+ */
+//-(void)setDate:(NSDate*)date;
+
 
 @end

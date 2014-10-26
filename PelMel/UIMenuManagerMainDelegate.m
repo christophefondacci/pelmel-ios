@@ -230,7 +230,7 @@
 }
 - (void)didLoadData:(ModelHolder *)modelHolder {
     [self loadingEnd];
-    [_menuManagerController.mainNavBarView.searchTextField setText:nil];
+//    [_menuManagerController.mainNavBarView.searchTextField setText:nil];
 }
 -(void)willSendReportFor:(CALObject *)object {
     [self loadingStart];

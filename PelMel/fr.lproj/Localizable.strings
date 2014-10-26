@@ -117,6 +117,7 @@
 "places.search.placeholder.event"="Trouver un évènement";
 "places.section.incity"="Lieux gay de %@";
 "places.section.inZone"="%d lieux gays trouvés";
+"places.section.inZoneWithUsers"="%d lieux / %d mecs";
 "places.section.nearby"="Lieux à proximité";
 "places.section.nearby.events"="Evènements à proximité";
 "places.section.searchPlaces"="Lieux";
@@ -176,6 +177,7 @@
 
     N'ayez crainte, nous avons simplement besoin d'un email, un mot de passe, un pseudo et votre date de naissance. Votre email sert uniquement en tant qu'identifiant unique interne à nos services et n'est jamais exposé à qui que ce soit. Nous vous encourageons à ne jamais utiliser vos informations personnelles dans votre pseudo (comme votre nom) mais d'utiliser des données qui ne permettent jamais de vous identifier personnellement.
 ";
+"search.placeholder"="Cherchez un lieu, une ville";
 "settings.account.title"="Mon compte";
 "settings.account.cell"="Mon profil";
 "settings.hd"="Images HD";

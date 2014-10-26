@@ -14,6 +14,13 @@
 #import "SettingsService.h"
 #import "PMLPopupActionManager.h"
 
+typedef enum {
+    PMLZoomUpdateNone,              // No zoom update requested
+    PMLZoomUpdateAroundLocation,    // Zoom preferably around current user location and extend
+    PMLZoomUpdateInMapRect,         // Zoom preferably in current map rect and extend to fit results if needed
+    PMLZoomUpdateFitResults         // Zoom fit new results
+} PMLZoomUpdateType;
+
 @interface MapViewController : UIViewController <MKMapViewDelegate,PMLDataListener, PMLUserCallback, UITextFieldDelegate,SettingsListener,CLLocationManagerDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -23,6 +30,7 @@
 @property (weak,nonatomic) CALObject *editedObject;
 @property (strong, nonatomic) PMLPopupActionManager *popupActionManager;
 @property (strong, nonatomic) PMLMapPopupViewController *popupController;
+@property (nonatomic) PMLZoomUpdateType zoomUpdateType;
 //@property (nonatomic) BOOL ignoreSelectionEvents;
 
 -(void)updateMap;

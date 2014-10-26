@@ -38,7 +38,15 @@
 }
 // Title of the element
 -(NSString*) title {
-    return [NSString stringWithFormat:NSLocalizedString(@"places.section.inZone", @"places.section.inZone"),_modelHolder.places.count]; //modelHolder.localizedCity.name;
+    NSString *title;
+    if(_modelHolder.users.count == 0) {
+        NSString *titleTemplate = @"places.section.inZone";
+        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count];
+    } else {
+        NSString *titleTemplate = @"places.section.inZoneWithUsers";
+        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count,_modelHolder.users.count];
+    }
+    return title;
 
 }
 // Icon representing the type of item being displayed

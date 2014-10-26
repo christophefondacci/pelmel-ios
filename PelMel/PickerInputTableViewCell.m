@@ -8,7 +8,10 @@
 
 #import "PickerInputTableViewCell.h"
 
-@implementation PickerInputTableViewCell
+@implementation PickerInputTableViewCell {
+    UIViewController *_popoverContentController;
+    BOOL _firstResponder;
+}
 
 @synthesize languageCodeLabel;
 @synthesize picker;
@@ -18,12 +21,12 @@
 	self.picker.showsSelectionIndicator = YES;
 	self.picker.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 	
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-		UIViewController *popoverContent = [[UIViewController alloc] init];
-		popoverContent.view = self.picker;
-		popoverController = [[UIPopoverController alloc] initWithContentViewController:popoverContent];
-		popoverController.delegate = self;
-	}
+//	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+//		_popoverContentController = [[UIViewController alloc] init];
+//		_popoverContentController.view = self.picker;
+//		popoverController = [[UIPopoverController alloc] initWithContentViewController:_popoverContentController];
+//		popoverController.delegate = self;
+//	}
 }
 
 
@@ -81,12 +84,14 @@
 
 - (BOOL)becomeFirstResponder {
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(deviceDidRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
-	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+	if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad && !_firstResponder) {
+        _firstResponder = YES;
 		CGSize pickerSize = [self.picker sizeThatFits:CGSizeZero];
 		CGRect frame = self.picker.frame;
 		frame.size = pickerSize;
+        _popoverContentController.preferredContentSize = pickerSize;
 		self.picker.frame = frame;
-		popoverController.popoverContentSize = pickerSize;
+//		popoverController.popoverContentSize = pickerSize;
 		[popoverController presentPopoverFromRect:self.detailTextLabel.frame inView:self permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 		// resign the current first responder
 		for (UIView *subview in self.superview.subviews) {
@@ -100,19 +105,21 @@
 	}
 	return [super becomeFirstResponder];
 }
-
-- (BOOL)resignFirstResponder {
-	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+- (UITableView*)parentTableViewFor:(UIView*)currentView {
     // View hierarchy is not consistent between iOS 6, 7 and 8 so we browse the superview hierarchy
     // looking for the first UITableView instance we find
     UITableView *tableView = nil;
-    UIView *currentView = self;
     while(tableView == nil && currentView.superview != nil) {
         currentView = currentView.superview;
         if([currentView isKindOfClass:[UITableView class]]) {
             tableView = (UITableView*)currentView;
         }
     }
+    return tableView;
+}
+- (BOOL)resignFirstResponder {
+	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceOrientationDidChangeNotification object:nil];
+    UITableView *tableView = [self parentTableViewFor:self];
 
     // Trying to unselect row
     NSIndexPath *selectedPath = self.rowPath;
@@ -125,6 +132,7 @@
         [tableView deselectRowAtIndexPath:selectedPath animated:YES];
     }
     
+    _firstResponder = NO;
 	return [super resignFirstResponder];
 }
 
@@ -169,7 +177,7 @@
 #pragma mark UIPopoverControllerDelegate Protocol Methods
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
-	UITableView *tableView = (UITableView *)self.superview;
+	UITableView *tableView = [self parentTableViewFor:self];
 	[tableView deselectRowAtIndexPath:[tableView indexPathForCell:self] animated:YES];
 	[self resignFirstResponder];
 }

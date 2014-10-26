@@ -58,6 +58,7 @@ typedef enum {
 @property (strong) NSArray *events;
 @property (strong) NSArray *activities;
 @property (strong) NSArray *users;
+@property (strong) NSMutableArray *allPlaces; // All places ever loaded
 @property (strong) City *localizedCity;
 @property (strong) CLLocation *userLocation;
 @property (strong) CALObject *parentObject;

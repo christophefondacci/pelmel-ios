@@ -304,6 +304,7 @@
     
     // Assigning to model holder for all-view synch
     [_modelHolder setPlaces:docs];
+    [[_modelHolder allPlaces] addObjectsFromArray:docs];
     [_modelHolder setCities:cities];
     [_modelHolder setActivities:activities];
     [_modelHolder setUsers:users];

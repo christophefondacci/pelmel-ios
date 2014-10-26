@@ -132,6 +132,7 @@ static void *MyParentMenuControllerKey;
     [_mainNavBarView.searchTextField addTarget:self action:@selector(searchFocused:) forControlEvents:UIControlEventEditingDidBegin];
     [_mainNavBarView.cancelButton addTarget:self action:@selector(searchCancelled:) forControlEvents:UIControlEventTouchUpInside];
     _mainNavBarView.searchTextField.delegate = self;
+    _mainNavBarView.searchTextField.placeholder = NSLocalizedString(@"search.placeholder", @"Search a place or a city");
     [_mainNavBarView.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     _mainNavBarView.cancelButton.transform = CGAffineTransformMakeRotation(-M_PI);
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
@@ -523,7 +524,7 @@ static void *MyParentMenuControllerKey;
         // Getting current provider
         int matchCount = 0;
         Place *lastMatchedPlace = nil;
-        for(Place *place in _dataService.modelHolder.places) {
+        for(Place *place in _dataService.modelHolder.allPlaces) {
             // Getting object's title
             NSString *title = place.title;
             // Searching the text to match
@@ -541,10 +542,10 @@ static void *MyParentMenuControllerKey;
             } else {
                 [(MapViewController*)self.rootViewController show:place];
             }
-            // Auto-selecting if only one match
-            if(matchCount == 1) {
-                [(MapViewController*)self.rootViewController selectCALObject:lastMatchedPlace withSnippet:YES];
-            }
+        }
+        // Auto-selecting if only one match
+        if(matchCount == 1) {
+            [(MapViewController*)self.rootViewController selectCALObject:lastMatchedPlace withSnippet:YES];
         }
     }
 }
@@ -564,7 +565,10 @@ static void *MyParentMenuControllerKey;
 - (void) searchInputDone {
     NSString *searchTerm = _mainNavBarView.searchTextField.text;
     [self dismissSearch];
+    ((MapViewController*)self.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
     [TogaytherService.dataService fetchPlacesFor:nil searchTerm:searchTerm];
+//    _mainNavBarView.searchTextField.text = nil;
+//    [self textFieldDidChange:_mainNavBarView.searchTextField];
 }
 -(void)inputButtonTapped:(id)sender {
     [self inputDone];

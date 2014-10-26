@@ -90,6 +90,7 @@
     } else {
         // Case of a single city, we search again in this city
         if(modelHolder.places.count == 0 && modelHolder.cities.count == 1) {
+            ((MapViewController*)_menuController.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
             [_dataService fetchPlacesFor:modelHolder.cities[0]];
             return;
         }

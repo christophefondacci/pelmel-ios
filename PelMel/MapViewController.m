@@ -76,8 +76,6 @@
     // Geocoding
     CLGeocoder *_geocoder;
     BOOL _initialUserLocationZoomDone;
-    BOOL _zoomUpdateRequested;
-    BOOL _zoomAroundUserLocation;
     
     BOOL _snippetDisabledOnSelection;
     
@@ -123,8 +121,7 @@
     
     // Pre-centering map to last position
     [self configureMapCenter];
-    _zoomUpdateRequested = YES;
-    _zoomAroundUserLocation = YES;
+    _zoomUpdateType = PMLZoomUpdateAroundLocation;
     
     // Listening to data events
     [_dataService registerDataListener:self];
@@ -248,8 +245,11 @@
         CLLocationDistance distance = [self distanceFromCornerPoint];
         int milesRadius = MIN(1500,distance/1609.344);
         
-        _zoomUpdateRequested = YES;
-        _zoomAroundUserLocation = [[_mapView annotationsInMapRect:_mapView.visibleMapRect] containsObject:_mapView.userLocation];
+        if([[_mapView annotationsInMapRect:_mapView.visibleMapRect] containsObject:_mapView.userLocation]) {
+            _zoomUpdateType = PMLZoomUpdateAroundLocation;
+        } else {
+            _zoomUpdateType = PMLZoomUpdateInMapRect;
+        }
         [self.parentMenuController.dataManager refreshAt:_mapView.centerCoordinate radius:milesRadius];
     }];
     _menuRefreshAction.rightMargin = 5;
@@ -305,7 +305,7 @@
     }
     
     // Have we already setup initial zoom?
-    if(_zoomUpdateRequested) {
+    if(_zoomUpdateType != PMLZoomUpdateNone) {
 
         // Zooming to current user location with 800m x 800m wide rect
         if(_center.latitude != 0 && _center.longitude !=0) {
@@ -317,21 +317,28 @@
             }
             
             MKMapRect rect;
-            if(_zoomAroundUserLocation) {
-                // Building our zoom rect around our center
-                MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(_center, width, width);
-                MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
-                
-                // Converting to a rect to check if we got anything nearby
-                rect = [self MKMapRectForCoordinateRegion:adjustedRegion];
-            } else {
-                rect = _mapView.visibleMapRect;
+            switch(_zoomUpdateType) {
+                case PMLZoomUpdateAroundLocation: {
+                    // Building our zoom rect around our center
+                    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(_center, width, width);
+                    MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
+                    
+                    // Converting to a rect to check if we got anything nearby
+                    rect = [self MKMapRectForCoordinateRegion:adjustedRegion];
+                }
+                    break;
+                case PMLZoomUpdateInMapRect:
+                    rect = _mapView.visibleMapRect;
+                    break;
+                default:
+                    break;
             }
+            
             NSSet *nearbyAnnotations = [_mapView annotationsInMapRect:rect];
             int placesCount = (int)nearbyAnnotations.count;
             
             // If we haven't got much in our rect, we check if we need to zoom fit or no
-            if(placesCount<kPMLMinimumPlacesForZoom && (placesCount-1) < _modelHolder.places.count+_modelHolder.cities.count) {
+            if(_zoomUpdateType == PMLZoomUpdateFitResults || (placesCount<kPMLMinimumPlacesForZoom && (placesCount-1) < _modelHolder.places.count+_modelHolder.cities.count)) {
                 
                 // If total places are bigger than current places in zoom rect then we zoom fit newly updated annotations
                 [_mapView showAnnotations:updatedAnnotations animated:YES];
@@ -341,7 +348,8 @@
                 // We will have a good nearby view
                 _mapView.camera.pitch = 0;
                 
-                _zoomAnimation = _zoomAroundUserLocation;
+                // TODO: Compute final map rect and enable animation if close enough
+                _zoomAnimation = _zoomUpdateType == PMLZoomUpdateAroundLocation;
                 NSSet *annotationsToDisplay = nearbyAnnotations.count > 0 ? nearbyAnnotations : _placeAnnotations;
                 [_mapView showAnnotations:[annotationsToDisplay allObjects] animated:YES];
             }
@@ -349,8 +357,7 @@
         } else {
             [_mapView showAnnotations:updatedAnnotations animated:YES];
         }
-        _zoomUpdateRequested = NO;
-        _zoomAroundUserLocation = NO;
+        _zoomUpdateType = PMLZoomUpdateNone;
     }
 
 }
@@ -667,7 +674,7 @@
         [_mapView setCamera:camera animated:YES];
         
     }
-    if(!_zoomUpdateRequested) {
+    if(_zoomUpdateType == PMLZoomUpdateNone) {
         // If we moved more than 100km (our current search radius, then we display refresh
         if([currentLocation distanceFromLocation:_mapInitialCenter]>=50000) {
             if([[_mapView annotationsInMapRect:_mapView.visibleMapRect] count] == 0) {

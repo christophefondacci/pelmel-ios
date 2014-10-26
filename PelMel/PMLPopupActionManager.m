@@ -255,6 +255,7 @@
 
     } else if( [object isKindOfClass:[City class]] ) {
         PopupAction *searchInCityAction = [[PopupAction alloc] initWithAngle:M_PI/5 distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionSearch"] titleCode:nil size:kPMLLikeSize command:^{
+            _popupController.controller.zoomUpdateType = PMLZoomUpdateFitResults;
             [_dataService fetchPlacesFor:object searchTerm:nil];
         }];
         searchInCityAction.color = UIColorFromRGB(0x344160);

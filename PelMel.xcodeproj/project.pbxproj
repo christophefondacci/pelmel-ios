@@ -187,6 +187,8 @@
 		B4B560A818B76C41006E6D90 /* UIPelmelTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4B560A718B76C41006E6D90 /* UIPelmelTitleView.xib */; };
 		B4B560AB18B76CD0006E6D90 /* UIPelmelTitleView.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B560A918B76CD0006E6D90 /* UIPelmelTitleView.h */; };
 		B4B560AC18B76CD0006E6D90 /* UIPelmelTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B560AA18B76CD0006E6D90 /* UIPelmelTitleView.m */; };
+		B4B82B3619FBB69900895C57 /* PMLPickerTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B82B3419FBB69900895C57 /* PMLPickerTableViewCell.h */; };
+		B4B82B3719FBB69900895C57 /* PMLPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */; };
 		B4BB9EFD19D4DE430070B03C /* PMLChatTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */; };
 		B4BB9EFE19D4DE430070B03C /* PMLChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */; };
 		B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */; };
@@ -515,6 +517,9 @@
 		B4B560A718B76C41006E6D90 /* UIPelmelTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIPelmelTitleView.xib; sourceTree = "<group>"; };
 		B4B560A918B76CD0006E6D90 /* UIPelmelTitleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPelmelTitleView.h; sourceTree = "<group>"; };
 		B4B560AA18B76CD0006E6D90 /* UIPelmelTitleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIPelmelTitleView.m; sourceTree = "<group>"; };
+		B4B82B3419FBB69900895C57 /* PMLPickerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPickerTableViewCell.h; sourceTree = "<group>"; };
+		B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPickerTableViewCell.m; sourceTree = "<group>"; };
+		B4B82B3819FC6CBA00895C57 /* PMLPickerProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLPickerProvider.h; sourceTree = "<group>"; };
 		B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTableViewCell.h; sourceTree = "<group>"; };
 		B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLChatTableViewCell.m; sourceTree = "<group>"; };
 		B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTimeTableViewCell.h; sourceTree = "<group>"; };
@@ -834,6 +839,7 @@
 				B4D26A7119DE1637004C5991 /* NSData+Conversion.m */,
 				B4B1FCF619E012BD0068894C /* NSString+HTML.h */,
 				B4B1FCF719E012BD0068894C /* NSString+HTML.m */,
+				B4B82B3819FC6CBA00895C57 /* PMLPickerProvider.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1209,6 +1215,8 @@
 				B4270E1819F62E5C00620773 /* PMLUserActionsView.xib */,
 				B4270E1A19F631B700620773 /* PMLUserActionsView.h */,
 				B4270E1B19F631B700620773 /* PMLUserActionsView.m */,
+				B4B82B3419FBB69900895C57 /* PMLPickerTableViewCell.h */,
+				B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */,
 			);
 			name = Snippet;
 			sourceTree = "<group>";
@@ -1295,6 +1303,7 @@
 				B4859DB8197FC6810036D8FF /* PopupAction.h in Headers */,
 				B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */,
 				B4A4666819A73A0B004ADC7E /* PMLInfoProvider.h in Headers */,
+				B4B82B3619FBB69900895C57 /* PMLPickerTableViewCell.h in Headers */,
 				B45CAB3E197375F70089C7E8 /* PMLDataManager.h in Headers */,
 				B4859DBC197FC7FF0036D8FF /* PMLPopupActionManager.h in Headers */,
 				B46AD73919E50A020021E1DE /* PMLSnippetLikesTableViewController.h in Headers */,
@@ -1531,6 +1540,7 @@
 				B41C6FF7198903ED00210474 /* CALayer+XibConfiguration.m in Sources */,
 				B41DD75B197BD9DA008F09D9 /* UIMapOptionView.m in Sources */,
 				B41CF0AA1895E1700031FD7C /* DisplayHelper.m in Sources */,
+				B4B82B3719FBB69900895C57 /* PMLPickerTableViewCell.m in Sources */,
 				B496661F1612250800911FE5 /* UITablePlaceTypeViewCell.m in Sources */,
 				B4966622161227C400911FE5 /* FiltersViewController.m in Sources */,
 				B41CF0B11899C20A0031FD7C /* UIService.m in Sources */,
