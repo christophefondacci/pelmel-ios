@@ -95,10 +95,15 @@
     return _thumbsProvider;
 }
 - (NSObject<ThumbsPreviewProvider> *)likesThumbsProvider {
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.likers forType:PMLThumbsLike];
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.likers forType:PMLThumbsLike];
+    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeLikes",@"he likes"),_place.title]];
+    return provider;
+
 }
 - (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.inUsers forType:PMLThumbsCheckin];
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.inUsers forType:PMLThumbsCheckin];
+    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeCheckins",@"he likes"),_place.title]];
+    return provider;
 }
 
 // Number of reviews

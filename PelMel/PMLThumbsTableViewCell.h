@@ -10,5 +10,7 @@
 
 @interface PMLThumbsTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIView *thumbsContainer;
+@property (weak, nonatomic) IBOutlet UILabel *introLabel;
+@property (weak, nonatomic) IBOutlet UIView *tabView;
 
 @end

@@ -58,10 +58,15 @@
     return _thumbsProvider;
 }
 - (NSObject<ThumbsPreviewProvider> *)likesThumbsProvider {
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likers forType:PMLThumbsLike];
+    ItemsThumbPreviewProvider *provider =  [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likers forType:PMLThumbsLike];
+    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.userLikes",@"he likes"),_user.pseudo]];
+    return provider;
 }
 - (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likedPlaces forType:PMLThumbsCheckin];
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likedPlaces forType:PMLThumbsCheckin];
+    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.userCheckins",@"he likes"),_user.pseudo]];
+    return provider;
+
 }
 // Number of reviews
 -(int)reviewsCount {
@@ -69,7 +74,7 @@
 }
 // Number of likes
 -(int)likesCount {
-    return (int)_user.likeCount;
+    return (int)_user.likers.count; //likeCount;
 }
 // Number of checkins (if applicable)
 -(int)checkinsCount {

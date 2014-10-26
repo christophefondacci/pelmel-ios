@@ -200,6 +200,10 @@
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Heures d'ouverture";
 "snippet.title.notitle" = "Touchez pour ajouter un nom";
+"snippet.thumbIntro.userLikes"="%@ aime:";
+"snippet.thumbIntro.userCheckins"="%@ a fait un checkin à:";
+"snippet.thumbIntro.placeLikes"="Ils aiment %@:";
+"snippet.thumbIntro.placeCheckins"="Ils sont venus à %@:";
 "sort.popularity"="Popularité";
 "sort.date"="Date";
 "sort.distance"="Distance";

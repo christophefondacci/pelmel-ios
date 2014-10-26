@@ -20,6 +20,7 @@
     NSMutableSet *_itemKeys;
     NSString *_segueId;
     NSString *_labelKey;
+    NSString *_label;
     UIImage *_icon;
     
     int lastTappedThumb;
@@ -148,7 +149,12 @@
     return _items.count>5 && _segueId != nil;
 }
 - (NSString *)getLabel {
-    return NSLocalizedString(_labelKey, @"Key of message to display");
+    if(_label != nil) {
+        return _label;
+    } else if(_labelKey != nil) {
+        return NSLocalizedString(_labelKey, @"Key of message to display");
+    }
+    return nil;
 }
 - (UIImage *)getIcon {
     return _icon;
@@ -163,5 +169,8 @@
         color = [_uiService colorForObject:item];
     }
     return color;
+}
+-(void)setIntroLabel:(NSString *)label {
+    _label = label;
 }
 @end

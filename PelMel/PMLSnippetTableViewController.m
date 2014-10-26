@@ -56,7 +56,8 @@
 #define kPMLHeightSnippet 101
 #define kPMLHeightGallery 240
 #define kPMLHeightCounters 97
-#define kPMLHeightThumbPreview 60
+#define kPMLHeightThumbPreview 100
+#define kPMLHeightThumbPreviewContainer 65
 #define kPMLThumbSize @42
 
 
@@ -420,7 +421,7 @@ typedef enum {
                 case kPMLRowCounters:
                     return kPMLHeightCounters;
                 case kPMLRowThumbPreview:
-                    return kPMLHeightThumbPreview+10;
+                    return kPMLHeightThumbPreview;
                 default:
                     break;
             }
@@ -776,14 +777,21 @@ typedef enum {
         default:
             break;
     }
+    // Setting intro label
+    if([provider respondsToSelector:@selector(getLabel)]) {
+        cell.introLabel.text = [provider getLabel];
+    } else {
+        cell.introLabel.text = nil;
+    }
+    
 //    if(_countersPreviewGradient == nil) {
         _countersPreviewGradient = [CAGradientLayer layer];
         _countersPreviewGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x4b4d53).CGColor, (id)UIColorFromRGB(0x33363e).CGColor, nil];
-        [cell.thumbsContainer.layer insertSublayer:_countersPreviewGradient atIndex:0];
-        cell.thumbsContainer.layer.masksToBounds=YES;
-    [cell.thumbsContainer layoutIfNeeded];
-        CGRect frame = cell.thumbsContainer.bounds;
-        _countersPreviewGradient.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, kPMLHeightThumbPreview+10);
+        [cell.tabView.layer insertSublayer:_countersPreviewGradient atIndex:0];
+        cell.tabView.layer.masksToBounds=YES;
+    [cell.tabView layoutIfNeeded];
+        CGRect frame = cell.tabView.bounds;
+        _countersPreviewGradient.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, kPMLHeightThumbPreview);
 //    }
     if(provider != nil) {
         if(_counterThumbController != nil) {
@@ -800,6 +808,7 @@ typedef enum {
 //        } else {
 //            //        }
         _counterThumbController.view.frame = cell.thumbsContainer.bounds;
+        _counterThumbController.actionDelegate=self;
         [_counterThumbController setThumbProvider:provider];
     }
     

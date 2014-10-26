@@ -40,6 +40,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -2811,27 +2812,53 @@
                                     <outlet property="tagsContainerWidthConstraint" destination="m0t-gb-0DR" id="wTx-If-EVO"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="thumbsPreview" rowHeight="70" id="v3m-q0-0bA" customClass="PMLThumbsTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="thumbsPreview" rowHeight="100" id="v3m-q0-0bA" customClass="PMLThumbsTableViewCell">
                                 <rect key="frame" x="0.0" y="700" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v3m-q0-0bA" id="j4s-fk-EfU">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xWH-dk-Aef">
-                                            <rect key="frame" x="5" y="0.0" width="310" height="65"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZDA-DQ-4DF" userLabel="tab">
+                                            <rect key="frame" x="5" y="0.0" width="310" height="95"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xWH-dk-Aef" userLabel="thumbsContainer">
+                                                    <rect key="frame" x="0.0" y="22" width="310" height="65"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                </view>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eqv-JQ-dyn">
+                                                    <rect key="frame" x="8" y="3" width="294" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="21" id="krj-vn-S06"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.24313725489999999" green="0.25098039220000001" blue="0.26274509800000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="xWH-dk-Aef" secondAttribute="trailing" id="6kK-ZY-vIq"/>
+                                                <constraint firstItem="xWH-dk-Aef" firstAttribute="leading" secondItem="ZDA-DQ-4DF" secondAttribute="leading" id="88A-87-4Av"/>
+                                                <constraint firstItem="eqv-JQ-dyn" firstAttribute="leading" secondItem="ZDA-DQ-4DF" secondAttribute="leading" constant="8" id="WZ4-7e-MWd"/>
+                                                <constraint firstItem="xWH-dk-Aef" firstAttribute="top" secondItem="eqv-JQ-dyn" secondAttribute="bottom" constant="-2" id="ZJk-5i-tTf"/>
+                                                <constraint firstItem="eqv-JQ-dyn" firstAttribute="top" secondItem="ZDA-DQ-4DF" secondAttribute="top" constant="3" id="a9e-4j-8sk"/>
+                                                <constraint firstAttribute="bottom" secondItem="xWH-dk-Aef" secondAttribute="bottom" constant="8" id="bhJ-I7-n3v"/>
+                                                <constraint firstAttribute="trailing" secondItem="eqv-JQ-dyn" secondAttribute="trailing" constant="8" id="yaD-v2-WnA"/>
+                                            </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" secondItem="xWH-dk-Aef" secondAttribute="trailing" constant="5" id="Cwr-nb-Dg9"/>
-                                        <constraint firstAttribute="bottom" secondItem="xWH-dk-Aef" secondAttribute="bottom" constant="5" id="IUl-Ep-2Tv"/>
-                                        <constraint firstItem="xWH-dk-Aef" firstAttribute="top" secondItem="j4s-fk-EfU" secondAttribute="top" id="d0R-7p-KLb"/>
-                                        <constraint firstItem="xWH-dk-Aef" firstAttribute="leading" secondItem="j4s-fk-EfU" secondAttribute="leading" constant="5" id="wnM-MP-Ecu"/>
+                                        <constraint firstItem="ZDA-DQ-4DF" firstAttribute="leading" secondItem="j4s-fk-EfU" secondAttribute="leading" constant="5" id="9JA-gj-2vO"/>
+                                        <constraint firstItem="ZDA-DQ-4DF" firstAttribute="top" secondItem="j4s-fk-EfU" secondAttribute="top" id="GWD-a8-0vs"/>
+                                        <constraint firstAttribute="bottom" secondItem="ZDA-DQ-4DF" secondAttribute="bottom" constant="5" id="ezV-L1-Rdg"/>
+                                        <constraint firstAttribute="trailing" secondItem="ZDA-DQ-4DF" secondAttribute="trailing" constant="5" id="l1p-Sn-RhA"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
+                                    <outlet property="introLabel" destination="eqv-JQ-dyn" id="v60-FA-H2n"/>
+                                    <outlet property="tabView" destination="ZDA-DQ-4DF" id="h1n-46-IM5"/>
                                     <outlet property="thumbsContainer" destination="xWH-dk-Aef" id="P1a-Nu-8zt"/>
                                 </connections>
                             </tableViewCell>

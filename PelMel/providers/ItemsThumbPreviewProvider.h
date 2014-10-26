@@ -28,6 +28,12 @@ typedef enum {
 - (id)initWithParent:(CALObject *)place items:(NSArray*)items forType:(PMLThumbType)type;
 
 /**
+ * Defines the label to use as an intro when displaying the contents
+ * @param label the label to use as intro text
+ */
+-(void)setIntroLabel:(NSString*)label;
+
+/**
  * Adds items to this thumb provider under a specific type. If type is unknown, use the PMLThumbsOther enum.
  */
 -(void)addItems:(NSArray*)items forType:(PMLThumbType)type;
