@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *leftActivity;
 @property (weak, nonatomic) IBOutlet UIButton *detailMessageButton;
 @property (weak, nonatomic) IBOutlet UIButton *leftThumbButton;
+@property (weak, nonatomic) IBOutlet UIButton *rightThumbButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textHeightConstraint;
 

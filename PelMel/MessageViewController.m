@@ -298,9 +298,15 @@
             [view.detailMessageButton setHidden:NO];
             [view.detailMessageButton addTarget:self action:@selector(showMessageTapped:) forControlEvents:UIControlEventTouchUpInside];
         }
+        
+        // Handling tap on thumb
+        UIButton *thumbButton;
         if(![message.from.key isEqualToString:currentUser.key]) {
-            [view.leftThumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
+            thumbButton = view.leftThumbButton;
+        } else {
+            thumbButton = view.rightThumbButton;
         }
+        [thumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         // Adding
         [scrollView addSubview:view];

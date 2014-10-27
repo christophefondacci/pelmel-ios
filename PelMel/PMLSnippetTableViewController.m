@@ -897,10 +897,10 @@ typedef enum {
     for(UIGestureRecognizer *recognizer in cell.activityThumbImageView.gestureRecognizers) {
         [cell.activityThumbImageView removeGestureRecognizer:recognizer];
     }
-    UITapGestureRecognizer *r = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topPlaceTapped:)];
-    cell.activityThumbImageView.tag = row;
-    [cell.activityThumbImageView addGestureRecognizer:r];
-    cell.activityThumbImageView.userInteractionEnabled = YES;
+//    UITapGestureRecognizer *r = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topPlaceTapped:)];
+//    cell.activityThumbImageView.tag = row;
+//    [cell.activityThumbImageView addGestureRecognizer:r];
+//    cell.activityThumbImageView.userInteractionEnabled = YES;
 }
 
 -(void) configureRowTags:(PMLTagsTableViewCell*)cell atIndex:(NSInteger)index {

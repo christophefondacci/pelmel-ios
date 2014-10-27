@@ -392,11 +392,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "435754818.062308"
+            timestampString = "436100322.198258"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "403"
-            endingLineNumber = "403"
+            startingLineNumber = "409"
+            endingLineNumber = "409"
             landmarkName = "-showMessageTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1502,6 +1502,22 @@
             startingLineNumber = "260"
             endingLineNumber = "260"
             landmarkName = "-initializeMenuActions"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/MessageViewController.m"
+            timestampString = "436100322.198258"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "425"
+            endingLineNumber = "425"
+            landmarkName = "-showFromUserTapped:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
