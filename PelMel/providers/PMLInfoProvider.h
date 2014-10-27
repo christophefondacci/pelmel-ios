@@ -12,6 +12,8 @@
 #import "Special.h"
 #import "Activity.h"
 
+@class PMLMenuManagerController;
+
 
 @protocol PMLInfoProvider <NSObject>
 
@@ -47,10 +49,12 @@
 // When implemented, this method will be called and the component will replace
 // The thumbs view
 -(void)configureCustomViewIn:(UIView*)parentView forController:(UIViewController*)controller;
-
-//-(Special*)specialOfType:(NSString*)specialType;
+// List of top places
 -(NSArray*)topPlaces;
+// List of activities
 -(NSArray*)activities;
+// Action to implement to support action when the thumb of the snippet is tapped
+-(void)thumbTapped:(PMLMenuManagerController*)menuController;
 
 // Implement all or none
 -(BOOL)hasSnippetRightSection;

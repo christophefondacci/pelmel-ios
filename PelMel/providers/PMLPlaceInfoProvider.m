@@ -11,6 +11,8 @@
 #import "Place.h"
 #import "TogaytherService.h"
 #import "ItemsThumbPreviewProvider.h"
+//#import "PMLMenuManagerController.h"
+#import "PMLDataManager.h"
 
 @implementation PMLPlaceInfoProvider {
     
@@ -240,4 +242,8 @@
     return label;
 }
 
+-(void)thumbTapped:(PMLMenuManagerController *)menuController {
+    // Prompting for upload
+    [menuController.dataManager promptUserForPhotoUploadOn:_place];
+}
 @end

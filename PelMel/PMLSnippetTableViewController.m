@@ -958,12 +958,8 @@ typedef enum {
     
 }
 -(void)imageTapped:(UITapGestureRecognizer*)sender {
-    if(_snippetItem.mainImage==nil) {
-        // Prompting for upload
-        [self.parentMenuController.dataManager promptUserForPhotoUploadOn:_snippetItem];
-    } else {
-        [self.parentMenuController openCurrentSnippet];
-        [self toggleFullscreenGallery];
+    if([_infoProvider respondsToSelector:@selector(thumbTapped:)]) {
+        [_infoProvider thumbTapped:self.parentMenuController];
     }
 }
 -(void)readMoreTapped:(id)sender {
