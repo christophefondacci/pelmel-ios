@@ -231,7 +231,7 @@ static void *MyParentMenuControllerKey;
     [_animator removeAllBehaviors];
 
     UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:myFrame.size.height-kSnippetHeight-_kbSize.height];
-    [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
+//    [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
     [_animator addBehavior:menuBehavior];
     
     // And dismissing menu
@@ -252,7 +252,7 @@ static void *MyParentMenuControllerKey;
 
         // Dismissing and pushing menu views
         UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:NO boundary:myFrame.size.height+_bottomView.frame.size.height];
-        [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
+//        [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
         [_animator addBehavior:menuBehavior];
         dismissed= YES;
     } else {
