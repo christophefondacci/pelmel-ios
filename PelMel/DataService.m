@@ -794,6 +794,7 @@
             // Now processing
             Place *newPlace = [jsonService convertJsonOverviewPlaceToPlace:json defaultPlace:place];
             place.key = newPlace.key;
+            place.editing = NO;
             // Adding new place to model holder places list
             if(isNew) {
                 NSMutableArray *newPlaces = [NSMutableArray arrayWithArray:_modelHolder.places];
@@ -820,6 +821,7 @@
     Place *newPlace = [[Place alloc] init];
     newPlace.lat = latitude;
     newPlace.lng = longitude;
+    newPlace.editing = YES;
     newPlace.placeType = [[[TogaytherService settingsService] defaultPlaceType] code];
     
     // Sending request

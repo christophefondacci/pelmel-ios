@@ -658,13 +658,7 @@ static void *MyParentMenuControllerKey;
     [UIView setAnimationCurve:curve.intValue];
     [UIView setAnimationBeginsFromCurrentState:YES];
     _bottomView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.size.height-kSnippetHeight, snippetBounds.size.width, snippetBounds.size.height);
-    // If any 100% height action we pull them by the keyboard height
-    for(MenuAction *action in _menuManagerDelegate.menuActions) {
-        if(action.pctHeightPosition==1) {
-            CGRect frame = action.menuActionView.frame;
-            action.menuActionView.frame = CGRectMake(frame.origin.x, frame.origin.y+_kbSize.height, frame.size.width, frame.size.height);
-        }
-    }
+
     [UIView commitAnimations];
     _kbSize.height = 0;
     _kbSize.width = 0;

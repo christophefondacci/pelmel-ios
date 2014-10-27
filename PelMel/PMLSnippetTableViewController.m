@@ -687,6 +687,10 @@ typedef enum {
         [_thumbController.tableView reloadData];
     }
     
+    // If edit mode we activate it
+    if(_snippetItem.editing) {
+        [self updateTitleEdition];
+    }
     
 }
 
@@ -1131,11 +1135,8 @@ typedef enum {
         // Only doing something if we have a valid text
         NSString *title = [inputText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if(title.length>0) {
-            _snippetItem.editing=NO;
             ((Place*)_snippetItem).title = inputText;
             _snippetCell.titleLabel.text = inputText;
-
-            self.editing=NO;
         }
     }
     [_snippetCell.titleTextField resignFirstResponder];
@@ -1166,7 +1167,7 @@ typedef enum {
         _snippetItem.editingDesc=NO;
         _snippetItem.miniDesc = inputText;
         
-        self.editing=NO;
+//        self.editing=NO;
     }
     [_snippetCell.titleTextField resignFirstResponder];
     [self.tableView reloadData];
@@ -1183,6 +1184,10 @@ typedef enum {
         });
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         [self updateTitleEdition];
+        // If place is already created we show the keyboard, otherwise it stays hidden
+        if(_snippetItem.key != nil) {
+            [_snippetCell.titleTextField becomeFirstResponder];
+        }
     }
 }
 -(void)updateTitleEdition {
@@ -1191,7 +1196,7 @@ typedef enum {
         _snippetCell.titleTextField.hidden=NO;
         _snippetCell.titleTextField.text = _infoProvider.title;
         _snippetCell.titleTextField.placeholder = NSLocalizedString(@"snippet.edit.titlePlaceholder", @"Enter a name");
-        [_snippetCell.titleTextField becomeFirstResponder];
+//        [_snippetCell.titleTextField becomeFirstResponder];
         
         // Toggling place type selection
         if([_snippetItem isKindOfClass:[Place class]]) {
