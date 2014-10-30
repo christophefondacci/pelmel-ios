@@ -14,6 +14,11 @@
 "action.edit.name"="Nom / Type";
 "action.edit.description"="Description";
 "action.edit.location"="Position";
+"action.edit.mylocation"="Placer sur ma position";
+"action.edit.mylocation.title"="Position modifiée";
+"action.edit.mylocation.msg"="Le lieu a été déplacé sur votre position actuelle, vous pouvez soumettre cette modification en appuyant sur le bouton vert de validation ou taper sur le bouton rouge pour annuler.";
+"action.edit.mylocation.fail.title"="Position inconnue";
+"action.edit.mylocation.fail.msg"="Votre position ne pouvant pas être déterminée, le lieu n'a pas été déplacé. Vous devrez peut-être autoriser PelMel à accéder à votre position en activant les services de localisation (Réglages > Confidentialité > Localisation > PelMel).";
 "action.edit.confirm.title"="Appliquer les changements ?";
 "action.edit.confirm.message"="Voulez-vous soumettre vos modifications pour qu'elles soient visibles de tous ?";
 "action.edit.confirm.submit"="Soumettre";

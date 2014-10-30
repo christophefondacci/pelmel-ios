@@ -60,6 +60,7 @@
 #define kPMLActionEditName 0
 #define kPMLActionEditDescription 1
 #define kPMLActionEditLocation 2
+#define kPMLActionEditMyLocation 3
 
 
 //#define kPMLLikeSize 50.0
@@ -88,6 +89,7 @@
     // Report
     UIActionSheet *_reportActionSheet;
     UIActionSheet *_editActionSheet;
+    UIActionSheet *_relocationConfirmActionSheet;
     
     CALObject *_currentObject;
     BOOL _checkinEnabled;
@@ -329,8 +331,9 @@
     [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.name", @"Name / Place type")];
     [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.description", @"Description")];
     [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.location", @"Location")];
+    [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.mylocation", @"Change to my location")];
     [_editActionSheet addButtonWithTitle:cancel];
-    _editActionSheet.cancelButtonIndex=3;
+    _editActionSheet.cancelButtonIndex=4;
     [_editActionSheet showInView:_popupController.controller.parentMenuController.view];
 }
 #pragma mark - ActionSheet Delegate
@@ -364,6 +367,9 @@
                 break;
             case kPMLActionEditLocation:
                 [self editLocation];
+                break;
+            case kPMLActionEditMyLocation:
+                [self editToMyLocation];
                 break;
         }
     }
@@ -420,6 +426,52 @@
     };
     // Starting new edition
     [_currentEditor startEditionWith:nil cancelledBy:cancelAction mapEdition:YES];
+}
+-(void)editToMyLocation {
+    CLLocationCoordinate2D coords;
+    NSString *title;
+    NSString *msg;
+    if(_dataService.modelHolder.userLocation != nil) {
+        coords = _dataService.modelHolder.userLocation.coordinate;
+        title =  NSLocalizedString(@"action.edit.mylocation.title", @"action.edit.mylocation.title");
+        msg =NSLocalizedString(@"action.edit.mylocation.msg", @"action.edit.mylocation.msg");
+        
+        // Saving old information to roll it back
+        double oldLat = _currentObject.lat;
+        double oldLng = _currentObject.lng;
+        NSString *oldAddress;
+        if([_currentObject isKindOfClass:[Place class]]) {
+            oldAddress = ((Place*)_currentObject).address;
+        }
+        __block CALObject *obj = _currentObject;
+        // Preparing cancel action
+        EditionAction cancelAction = ^{
+            obj.lat=oldLat;
+            obj.lng=oldLng;
+            if([obj isKindOfClass:[Place class]]) {
+                ((Place*)obj).address =  oldAddress;
+            }
+            
+        };
+        
+        ConversionService *conversionService = [TogaytherService getConversionService];
+        _currentObject.lat = coords.latitude;
+        _currentObject.lng = coords.longitude;
+        [conversionService geocodeAddressFor:_currentObject completion:^(NSString *address) {
+            ((Place*)_currentObject).address = address;
+        }];
+        // Starting new edition
+        [_currentEditor startEditionWith:nil cancelledBy:cancelAction mapEdition:YES];
+
+    } else {
+        title =  NSLocalizedString(@"action.edit.mylocation.fail.title", @"action.edit.mylocation.fail.title");
+        msg =NSLocalizedString(@"action.edit.mylocation.fail.msg", @"action.edit.mylocation.fail.msg");
+    }
+    
+    
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok",nil];
+    [alert show];
 }
 #pragma mark - Dynamic actions generation
 -(NSArray *)buildLikeActions:(CALObject*)object {

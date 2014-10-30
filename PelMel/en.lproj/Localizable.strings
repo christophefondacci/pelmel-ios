@@ -14,6 +14,9 @@
 "action.edit.name"="Name / place type";
 "action.edit.description"="Description";
 "action.edit.location"="Location";
+"action.edit.mylocation"="Relocate to my location";
+"action.edit.mylocation.title"="Position changed";
+"action.edit.mylocation.msg"="The place has been moved to your current position, you can now press the check button to submit your changes or hit cancel button to discard the change.";
 "action.edit.confirm.title"="Apply changes?";
 "action.edit.confirm.message"="Submit your changes so that everyone will see your modifications?";
 "action.edit.confirm.submit"="Submit";
