@@ -57,13 +57,57 @@
 
     return _thumbsProvider;
 }
-- (NSObject<ThumbsPreviewProvider> *)likesThumbsProvider {
-    ItemsThumbPreviewProvider *provider =  [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likers forType:PMLThumbsLike];
-    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.userLikes",@"he likes"),_user.pseudo]];
+- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+    switch(mode) {
+        case ThumbPreviewModeLikes:
+            return [self likesThumbsProviderAtIndex:row];
+        case ThumbPreviewModeCheckins:
+            return [self checkinsThumbsProvider];
+        default:
+            return nil;
+    }
+}
+- (NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
+    NSArray *items;
+    NSString *labelCode;
+    switch(row-1) {
+        case 0:
+            if(_user.likers.count>0) {
+                items = _user.likers;
+                labelCode =@"snippet.thumbIntro.userLikes";
+            } else {
+                items = _user.likedPlaces;
+                labelCode = @"snippet.thumbIntro.userPlaceLikes";
+            }
+            break;
+        case 1:
+            items = _user.likedPlaces;
+            labelCode = @"snippet.thumbIntro.userPlaceLikes";
+            break;
+    }
+    
+    
+    ItemsThumbPreviewProvider *provider =  [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:items forType:PMLThumbsLike];
+    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(labelCode,@"he likes"),_user.pseudo]];
     return provider;
 }
+- (NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode {
+    switch (mode) {
+        case ThumbPreviewModeLikes:
+            return [self likesThumbsRowCount];
+        case ThumbPreviewModeCheckins:
+            return _user.checkedInPlaces.count>0 ? 1 : 0;
+        default:
+            return 0;
+    }
+}
+- (NSInteger)likesThumbsRowCount {
+    int likeCount = _user.likers.count>0 ? 1 : 0;
+    likeCount += _user.likedPlaces.count>0 ? 1 : 0;
+    return likeCount;
+}
 - (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
-    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likedPlaces forType:PMLThumbsCheckin];
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.checkedInPlaces forType:PMLThumbsCheckin];
     [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.userCheckins",@"he likes"),_user.pseudo]];
     return provider;
 
@@ -74,11 +118,11 @@
 }
 // Number of likes
 -(int)likesCount {
-    return (int)_user.likers.count; //likeCount;
+    return (int)_user.likers.count + (int)_user.likedPlaces.count; //likeCount;
 }
 // Number of checkins (if applicable)
 -(int)checkinsCount {
-    return (int)_user.likedPlacesCount;
+    return (int)_user.checkedInPlaces.count;
 }
 // Description of elements
 -(NSString*)descriptionText {

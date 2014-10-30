@@ -13,7 +13,11 @@
 #import "Activity.h"
 
 @class PMLMenuManagerController;
-
+typedef enum {
+    ThumbPreviewModeNone,
+    ThumbPreviewModeLikes,
+    ThumbPreviewModeCheckins
+} ThumbPreviewMode;
 
 @protocol PMLInfoProvider <NSObject>
 
@@ -29,8 +33,9 @@
 -(UIColor*) color;
 // Provider of thumb displayed in the main snippet section
 -(NSObject<ThumbsPreviewProvider>*) thumbsProvider;
--(NSObject<ThumbsPreviewProvider>*) likesThumbsProvider;
--(NSObject<ThumbsPreviewProvider>*) checkinsThumbsProvider;
+-(NSObject<ThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row;
+// Implement to say how many rows of likes need to be displayed
+-(NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode;
 // Number of reviews
 -(int)reviewsCount;
 // Number of likes
@@ -46,6 +51,7 @@
 -(NSArray*)addressComponents;
 
 @optional
+
 // When implemented, this method will be called and the component will replace
 // The thumbs view
 -(void)configureCustomViewIn:(UIView*)parentView forController:(UIViewController*)controller;
@@ -55,6 +61,7 @@
 -(NSArray*)activities;
 // Action to implement to support action when the thumb of the snippet is tapped
 -(void)thumbTapped:(PMLMenuManagerController*)menuController;
+
 
 // Implement all or none
 -(BOOL)hasSnippetRightSection;

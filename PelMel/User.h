@@ -20,6 +20,8 @@
 @property (nonatomic) BOOL isOnline;
 @property (nonatomic) NSInteger likedPlacesCount;
 @property (readonly) NSMutableArray *likedPlaces;
+@property (nonatomic) NSInteger checkedInPlacesCount;
+@property (readonly) NSMutableArray *checkedInPlaces;
 @property (nonatomic,strong) Place *lastLocation;
 
 @property (strong) NSMutableArray *descriptions;

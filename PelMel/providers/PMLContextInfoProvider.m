@@ -59,17 +59,11 @@
 }
 // Provider of thumb displayed in the main snippet section
 -(NSObject<ThumbsPreviewProvider>*) thumbsProvider {
-//    NSMutableArray *people = [[NSMutableArray alloc] init];
-//    NSMutableSet *peopleKeys = [[NSMutableSet alloc] init];
-//    for(Activity *activity in _modelHolder.activities) {
-//        if(activity.user != nil && ![peopleKeys containsObject:activity.user.key]) {
-//            [people addObject:activity.user];
-//            [peopleKeys addObject:activity.user.key];
-//        }
-//    }
-
     // Building provider
     return [[ItemsThumbPreviewProvider alloc] initWithParent:nil items:_modelHolder.users moreSegueId:nil labelKey:nil icon:nil];
+}
+- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+    return nil;
 }
 // Number of reviews
 -(int)reviewsCount {
@@ -117,7 +111,7 @@
     }
 }
 
-- (NSObject<ThumbsPreviewProvider> *)likesThumbsProvider {
+- (NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
     return nil;
 }
 -(NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {

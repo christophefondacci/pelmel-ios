@@ -96,17 +96,7 @@
     [_thumbsProvider addItems:_place.likers forType:PMLThumbsLike];
     return _thumbsProvider;
 }
-- (NSObject<ThumbsPreviewProvider> *)likesThumbsProvider {
-    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.likers forType:PMLThumbsLike];
-    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeLikes",@"he likes"),_place.title]];
-    return provider;
 
-}
-- (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
-    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.inUsers forType:PMLThumbsCheckin];
-    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeCheckins",@"he likes"),_place.title]];
-    return provider;
-}
 
 // Number of reviews
 -(int)reviewsCount {
@@ -245,5 +235,40 @@
 -(void)thumbTapped:(PMLMenuManagerController *)menuController {
     // Prompting for upload
     [menuController.dataManager promptUserForPhotoUploadOn:_place];
+}
+
+#pragma mark - Thumbs preview management
+- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+    switch(mode) {
+        case ThumbPreviewModeLikes:
+            return [self likesThumbsProviderAtIndex:row];
+        case ThumbPreviewModeCheckins:
+            return [self checkinsThumbsProvider];
+        default:
+            return [self thumbsProvider];
+    }
+}
+
+- (NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.likers forType:PMLThumbsLike];
+    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeLikes",@"he likes"),_place.title]];
+    return provider;
+    
+}
+- (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.inUsers forType:PMLThumbsCheckin];
+    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeCheckins",@"he likes"),_place.title]];
+    return provider;
+}
+
+-(NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode {
+    switch (mode) {
+        case ThumbPreviewModeLikes:
+            return _place.likers.count>0 ? 1 : 0;
+        case ThumbPreviewModeCheckins:
+            return _place.inUsers.count>0 ? 1:0;
+        default:
+            return 0;
+    }
 }
 @end

@@ -54,6 +54,9 @@
    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_city items:_city.likers forType:PMLThumbsLike];
     return _thumbsProvider;
 }
+- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+    return nil;
+}
 // Number of reviews
 -(int)reviewsCount {
     return 0;
@@ -85,7 +88,7 @@
     return nil;
 }
 
--(NSObject<ThumbsPreviewProvider> *)likesThumbsProvider {
+-(NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
 #pragma mark Implement me
     return nil;
 }

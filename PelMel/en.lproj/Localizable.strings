@@ -208,7 +208,8 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.title.notitle" = "Tap to add a name";
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Opening Hours";
-"snippet.thumbIntro.userLikes"="%@ likes:";
+"snippet.thumbIntro.userLikes"="%@ likes them:";
+"snippet.thumbIntro.userPlaceLikes"="%@ likes those places:";
 "snippet.thumbIntro.userCheckins"="%@ checked in to:";
 "snippet.thumbIntro.placeLikes"="They like %@:";
 "snippet.thumbIntro.placeCheckins"="They went to %@:";

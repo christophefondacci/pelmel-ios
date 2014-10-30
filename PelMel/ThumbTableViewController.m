@@ -100,7 +100,11 @@
     int cellSize = [_size intValue];
     cell.thumbImage.image=nil;
     CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row];
-    [imageService load:image to:cell.thumbImage thumb:YES];
+    if(image.thumbImage == nil) {
+        [imageService load:image to:cell.thumbImage thumb:YES];
+    } else {
+        cell.thumbImage.image = image.thumbImage;
+    }
     
     // Setting rounded corners (or not)
     BOOL rounded= YES;
@@ -129,7 +133,7 @@
     cell.bottomDecorator.image = [self.thumbProvider bottomRightDecoratorForIndex:(int)indexPath.row];
     NSInteger labelSize = 9;
     cell.titleLabel.text = [self.thumbProvider titleAtIndex:indexPath.row];
-    cell.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:labelSize];
+//    cell.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:labelSize];
     cell.titleLabel.minimumScaleFactor=0.8;
     return cell;
 }

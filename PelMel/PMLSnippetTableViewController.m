@@ -101,11 +101,7 @@
 #define kPMLRowActivityId @"activity"
 #define kPMLHeightActivityRows 60
 
-typedef enum {
-    ThumbPreviewModeNone,
-    ThumbPreviewModeLikes,
-    ThumbPreviewModeCheckins
-} ThumbPreviewMode;
+
 @interface PMLSnippetTableViewController ()
 
 @end
@@ -114,7 +110,7 @@ typedef enum {
     
     // Inner controller for thumb listview
     ThumbTableViewController *_thumbController;
-    ThumbTableViewController *_counterThumbController;
+    NSMutableDictionary *_counterThumbControllers; // map of ThumbTableViewController for likes/checkins preview
     
     // Providers
     NSObject<PMLInfoProvider> *_infoProvider;
@@ -126,7 +122,7 @@ typedef enum {
     PMLGalleryTableViewCell *_galleryCell;
     PMLCountersTableViewCell *_countersCell;
     CAGradientLayer *_countersGradient;
-    CAGradientLayer *_countersPreviewGradient;
+    NSMutableDictionary *_countersPreviewGradients; // map of CAGradientLayer for likes/checkins gradients
     
     // Gallery
     BOOL _galleryFullscreen;
@@ -163,17 +159,13 @@ typedef enum {
     _observedProperties = [[NSMutableArray alloc] init];
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
+    _counterThumbControllers = [[NSMutableDictionary alloc] init];
     
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
 
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -236,7 +228,15 @@ typedef enum {
                 }
                 break;
             case kPMLSectionCounters:
-                return (_thumbPreviewMode == ThumbPreviewModeNone ? 1 : 2);
+                switch (_thumbPreviewMode) {
+                    case ThumbPreviewModeCheckins:
+                    case ThumbPreviewModeLikes:
+                        return 1+[_infoProvider thumbsRowCountForMode:_thumbPreviewMode];
+                    case ThumbPreviewModeNone:
+                    default:
+                        return 1;
+                }
+                break;
             case kPMLSectionOvSummary:
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
@@ -292,10 +292,8 @@ typedef enum {
             switch(indexPath.row) {
                 case kPMLRowCounters:
                     return kPMLRowCountersId;
-                case kPMLRowThumbPreview:
-                    return kPMLRowThumbPreviewId;
                 default:
-                    return nil;
+                    return kPMLRowThumbPreviewId;
             }
             break;
         case kPMLSectionOvSummary:
@@ -349,11 +347,9 @@ typedef enum {
                 case kPMLRowCounters:
                     [self configureRowCounters:(PMLCountersTableViewCell*)cell];
                     break;
-                case kPMLRowThumbPreview:
-                    [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell];
-                    break;
                 default:
-                    return nil;
+                    [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:indexPath.row];
+                    break;
             }
             break;
         case kPMLSectionOvSummary:
@@ -420,10 +416,8 @@ typedef enum {
             switch(indexPath.row) {
                 case kPMLRowCounters:
                     return kPMLHeightCounters;
-                case kPMLRowThumbPreview:
-                    return kPMLHeightThumbPreview;
                 default:
-                    break;
+                    return kPMLHeightThumbPreview;
             }
             break;
         case kPMLSectionOvSummary:
@@ -767,20 +761,8 @@ typedef enum {
     }
 
 }
--(void)configureRowThumbPreview:(PMLThumbsTableViewCell*)cell {
-    NSObject<ThumbsPreviewProvider> *provider = nil;
-    switch(_thumbPreviewMode) {
-        case ThumbPreviewModeLikes: {
-            provider = [_infoProvider likesThumbsProvider];
-            break;
-        }
-        case ThumbPreviewModeCheckins: {
-            provider = [_infoProvider checkinsThumbsProvider];
-            break;
-        }
-        default:
-            break;
-    }
+-(void)configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:(NSInteger)index {
+    NSObject<ThumbsPreviewProvider> *provider = [_infoProvider thumbsProviderFor:_thumbPreviewMode atIndex:index];
     // Setting intro label
     if([provider respondsToSelector:@selector(getLabel)]) {
         cell.introLabel.text = [provider getLabel];
@@ -788,32 +770,45 @@ typedef enum {
         cell.introLabel.text = nil;
     }
     
-//    if(_countersPreviewGradient == nil) {
-        _countersPreviewGradient = [CAGradientLayer layer];
-        _countersPreviewGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x4b4d53).CGColor, (id)UIColorFromRGB(0x33363e).CGColor, nil];
-        [cell.tabView.layer insertSublayer:_countersPreviewGradient atIndex:0];
-        cell.tabView.layer.masksToBounds=YES;
+    // Numeric row key
+    NSNumber *key = [NSNumber numberWithInt:index];
+    
+    // Purging any previous gradient
+    CAGradientLayer *countersPreviewGradient = [_countersPreviewGradients objectForKey:key];
+    if(countersPreviewGradient != nil) {
+        [countersPreviewGradient removeFromSuperlayer];
+    }
+    // Registering a new one
+    countersPreviewGradient = [CAGradientLayer layer];
+    [_countersPreviewGradients setObject:countersPreviewGradient forKey:key];
+    
+    // Setting up
+    countersPreviewGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x4b4d53).CGColor, (id)UIColorFromRGB(0x33363e).CGColor, nil];
+    [cell.tabView.layer insertSublayer:countersPreviewGradient atIndex:0];
+    cell.tabView.layer.masksToBounds=YES;
     [cell.tabView layoutIfNeeded];
-        CGRect frame = cell.tabView.bounds;
-        _countersPreviewGradient.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, kPMLHeightThumbPreview);
-//    }
+    CGRect frame = cell.tabView.bounds;
+    countersPreviewGradient.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, kPMLHeightThumbPreview);
+
+    // Thumb controller
     if(provider != nil) {
-        if(_counterThumbController != nil) {
-            [_counterThumbController willMoveToParentViewController:nil];
-            [_counterThumbController.view removeFromSuperview];
-            [_counterThumbController removeFromParentViewController];
+        ThumbTableViewController *counterThumbController = [_counterThumbControllers objectForKey:key];
+        if(counterThumbController != nil) {
+            [counterThumbController willMoveToParentViewController:nil];
+            [counterThumbController.view removeFromSuperview];
+            [counterThumbController removeFromParentViewController];
         } else {
-            _counterThumbController = (ThumbTableViewController*)[_uiService instantiateViewController:SB_ID_THUMBS_CONTROLLER];
+            counterThumbController = (ThumbTableViewController*)[_uiService instantiateViewController:SB_ID_THUMBS_CONTROLLER];
+            [_counterThumbControllers setObject:counterThumbController forKey:key];
         }
-            [self addChildViewController:_counterThumbController];
-            [cell.thumbsContainer addSubview:_counterThumbController.view];
-            [_counterThumbController didMoveToParentViewController:self];
-            _counterThumbController.size = kPMLThumbSize;
-//        } else {
-//            //        }
-        _counterThumbController.view.frame = cell.thumbsContainer.bounds;
-        _counterThumbController.actionDelegate=self;
-        [_counterThumbController setThumbProvider:provider];
+        [self addChildViewController:counterThumbController];
+        [cell.thumbsContainer addSubview:counterThumbController.view];
+        [counterThumbController didMoveToParentViewController:self];
+        counterThumbController.size = kPMLThumbSize;
+
+        counterThumbController.view.frame = cell.thumbsContainer.bounds;
+        counterThumbController.actionDelegate=self;
+        [counterThumbController setThumbProvider:provider];
     }
     
 }
@@ -877,6 +872,7 @@ typedef enum {
     
     cell.activityTitleLabel.text = [self stringByStrippingHTML:activity.message];
     cell.activitySubtitleLabel.text = [_uiService delayStringFrom:activity.activityDate];
+    cell.activityThumbImageView.image = [CALImage getDefaultUserThumb];
     if(activity.user.mainImage!=nil) {
         [_imageService load:activity.user.mainImage to:cell.activityThumbImageView thumb:YES];
     } else {
@@ -983,16 +979,84 @@ typedef enum {
     [self counterTappedForMode:ThumbPreviewModeCheckins];
 }
 
+-(NSArray*)indexPathArrayForMode:(ThumbPreviewMode)mode {
+    
+    // Building array of index path (to insert or delete)
+    NSMutableArray *paths = [[NSMutableArray alloc] init];
+    for(int i = kPMLRowThumbPreview ; i < kPMLRowThumbPreview + [_infoProvider thumbsRowCountForMode:mode] ; i++) {
+        [paths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
+    }
+    return paths;
+}
+
 -(void)counterTappedForMode:(ThumbPreviewMode)mode {
     BOOL insert = _thumbPreviewMode == ThumbPreviewModeNone;
+    ThumbPreviewMode currentMode = _thumbPreviewMode;
     _thumbPreviewMode = (_thumbPreviewMode == mode) ? ThumbPreviewModeNone : mode;
-    if(insert && _thumbPreviewMode == mode) {
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionCounters]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else if (_thumbPreviewMode == ThumbPreviewModeNone) {
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionCounters]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else {
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowThumbPreview inSection:kPMLSectionCounters]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    
+    // if new mode is empty then we consider no mode
+    if(_thumbPreviewMode!=ThumbPreviewModeNone && [_infoProvider thumbsRowCountForMode:_thumbPreviewMode] == 0) {
+        _thumbPreviewMode = ThumbPreviewModeNone;
     }
+
+    
+    // Unallocating thumbs preview resources
+    // Getting number of rows previously displayed
+//    NSInteger previousRows = [_infoProvider thumbsRowCountForMode:currentMode];
+    for(int i = 0 ; i < 5 ; i++) {
+        NSNumber *key = [NSNumber numberWithInt:i];
+        ThumbTableViewController *counterThumbController = [_counterThumbControllers objectForKey:key];
+        if(counterThumbController != nil) {
+            [counterThumbController willMoveToParentViewController:nil];
+            [counterThumbController.view removeFromSuperview];
+            [counterThumbController removeFromParentViewController];
+        }
+        [_counterThumbControllers removeObjectForKey:key];
+    }
+    
+    
+    if(insert && _thumbPreviewMode == mode) {
+        NSArray *paths = [self indexPathArrayForMode:_thumbPreviewMode];
+        [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else if (_thumbPreviewMode == ThumbPreviewModeNone) {
+        NSArray *paths = [self indexPathArrayForMode:currentMode];
+        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else {
+        NSInteger currentRows = [_infoProvider thumbsRowCountForMode:currentMode];
+        NSInteger newRows = [_infoProvider thumbsRowCountForMode:_thumbPreviewMode];
+
+        NSMutableArray *oldPaths = [[NSMutableArray alloc] init];
+        for(int i = kPMLRowThumbPreview ; i < kPMLRowThumbPreview + currentRows ; i++) {
+            [oldPaths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
+        }
+        NSMutableArray *newPaths = [[NSMutableArray alloc] init];
+        for(int i = kPMLRowThumbPreview ; i < kPMLRowThumbPreview + newRows ; i++) {
+            [newPaths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
+        }
+        [self.tableView beginUpdates];
+        [self.tableView deleteRowsAtIndexPaths:oldPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertRowsAtIndexPaths:newPaths withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+//        if(currentRows>newRows) {
+//            [paths removeAllObjects];
+//            for(int i = (int)newRows ; i < currentRows ; i++) {
+//                [paths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
+//            }
+//            [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+//        } else if(newRows > currentRows) {
+//            [paths removeAllObjects];
+//            for(int i = (int)currentRows ; i < newRows ; i++) {
+//                [paths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
+//            }
+//            [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+//        } else {
+//            [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+//        }
+    }
+    
+
+    
     [self updateGradient:_countersCell];
     
 }
@@ -1018,6 +1082,7 @@ typedef enum {
     childSnippet.snippetItem = item;
     if(self.subNavigationController != nil) {
         [self.subNavigationController pushViewController:childSnippet animated:YES];
+        [self.parentMenuController openCurrentSnippet];
     } else {
         [self.navigationController pushViewController:childSnippet animated:YES];
     }
@@ -1185,7 +1250,7 @@ typedef enum {
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         [self updateTitleEdition];
         // If place is already created we show the keyboard, otherwise it stays hidden
-        if(_snippetItem.key != nil) {
+        if(_snippetItem.key != nil && _snippetItem.editing) {
             [_snippetCell.titleTextField becomeFirstResponder];
         }
     }

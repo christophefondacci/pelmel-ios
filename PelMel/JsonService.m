@@ -443,6 +443,8 @@
     NSArray *jsonLikeUsers  = [json objectForKey:@"likeUsers"];
     NSNumber *placeLikeCount= [json objectForKey:@"likedPlacesCount"];
     NSArray *jsonLikedPlaces= [json objectForKey:@"likedPlaces"];
+    NSNumber *checkinPlacesCount= [json objectForKey:@"checkedInPlacesCount"];
+    NSArray *jsonCheckedInPlaces= [json objectForKey:@"checkedInPlaces"];
     NSNumber *liked         = [json objectForKey:@"liked"];
     
     // Getting unread message count
@@ -479,6 +481,20 @@
         
         // Adding this liked place
         [user.likedPlaces addObject:place];
+    }
+    
+    // Injecting checked places into user
+    [user setCheckedInPlacesCount:[checkinPlacesCount integerValue]];
+    [user.checkedInPlaces removeAllObjects];
+    for(NSDictionary *jsonPlace in jsonCheckedInPlaces) {
+        // Building the place bean from JSON
+        Place *place = [self convertJsonPlaceToPlace:jsonPlace];
+        
+        // Adding this place to our thumbs download list
+        [thumbsToDownload addObject:place];
+        
+        // Adding this liked place
+        [user.checkedInPlaces addObject:place];
     }
     
     // Setting liked flag
