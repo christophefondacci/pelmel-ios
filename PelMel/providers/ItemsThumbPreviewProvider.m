@@ -81,8 +81,8 @@
 - (CALImage *)imageAtIndex:(NSInteger)index {
     if(_items.count>index) {
         CALObject *item = [_items objectAtIndex:index];
-        
-        return item.mainImage;
+        CALImage *image = [[TogaytherService imageService] imageOrPlaceholderFor:item allowAdditions:NO];
+        return image;
     } else {
         return nil;
     }

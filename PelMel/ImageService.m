@@ -581,5 +581,17 @@
         [urlMap setObject:url forKey:imageViewId];
     }
 }
-
+- (CALImage *)imageOrPlaceholderFor:(CALObject *)object allowAdditions:(BOOL)additionsAllowed{
+    if(object.mainImage!=nil) {
+        return object.mainImage;
+    } else {
+        if([object isKindOfClass:[User class]]) {
+            return [CALImage getDefaultUserCalImage];
+        } else if([object isKindOfClass:[City class]]) {
+            return [CALImage defaultCityCalImage];
+        } else {
+            return [CALImage defaultAddPhotoCalImage];
+        }
+    }
+}
 @end

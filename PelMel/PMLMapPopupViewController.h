@@ -13,7 +13,7 @@
 /**
  * This is the controller for map interactions using a popup
  */
-@interface PMLMapPopupViewController : NSObject <PMLDataListener>
+@interface PMLMapPopupViewController : NSObject <PMLDataListener, PMLImagePickerCallback>
 
 @property (nonatomic,retain,readonly) MapViewController *controller;
 

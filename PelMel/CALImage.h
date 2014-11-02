@@ -28,5 +28,7 @@
 + (UIImage *)getDefaultThumbLandscape;
 + (UIImage *)getDefaultUserThumb;
 + (CALImage*)getDefaultUserCalImage;
++ (CALImage *)defaultCityCalImage;
++ (CALImage *)defaultAddPhotoCalImage;
 - (UIImage *)getThumbImage;
 @end

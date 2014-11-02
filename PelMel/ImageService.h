@@ -95,6 +95,12 @@ typedef void (^ImageLoaderBlock)(CALImage *image);
 -(void)decorate:(UIImageView*)parentView decorator:(UIImage*)decorator;
 
 /**
+ * Provides the most appropriate CAL Image for the object, providing 
+ * a placeholder if needed
+ */
+-(CALImage*)imageOrPlaceholderFor:(CALObject*)object allowAdditions:(BOOL)additionsAllowed;
+
+/**
  * Fetches the full main image of the provided element.
  */
 //-(void)getOverviewMainImage:(Imaged*)imaged callback:(id<ImageRefreshCallback>)callback;

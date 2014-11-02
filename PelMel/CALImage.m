@@ -84,6 +84,18 @@ static UIImage *defaultThumbLandscape;
     img.fullImage = [UIImage imageNamed:@"imgBlankUser"];
     return img;
 }
++(CALImage *)defaultCityCalImage {
+    CALImage *img = [[CALImage alloc] init];
+    img.thumbImage = [UIImage imageNamed:@"imgBlankCityMini"];
+    img.fullImage = [UIImage imageNamed:@"imgBlankCity"];
+    return img;
+}
++ (CALImage *)defaultAddPhotoCalImage {
+    CALImage *img = [[CALImage alloc] init];
+    img.thumbImage = [UIImage imageNamed:@"imgBlankAddMini"];
+    img.fullImage = [UIImage imageNamed:@"imgBlankAdd"];
+    return img;
+}
 + (UIImage *)getDefaultThumbLandscape {
     if(defaultThumbLandscape ==nil) {
         defaultThumbLandscape = [UIImage imageNamed:@"no-photo-big-landscape.png"];

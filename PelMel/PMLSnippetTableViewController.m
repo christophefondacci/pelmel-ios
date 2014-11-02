@@ -820,8 +820,15 @@
     cell.galleryView.dataSource=self;
 }
 -(void)configureRowOvImage:(PMLImageTableViewCell*)cell {
-    [_imageService load:_snippetItem.mainImage to:cell.cellImageView thumb:NO];
+    CALImage *image = [_imageService imageOrPlaceholderFor:_snippetItem allowAdditions:YES];
+    [_imageService load:image to:cell.cellImageView thumb:NO];
     cell.cellImageView.layer.borderColor = [[_uiService colorForObject:_snippetItem] CGColor];
+    if(_snippetItem.key!=nil) {
+        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+        [cell.cellImageView addGestureRecognizer:tapRecognizer];
+        cell.cellImageView.userInteractionEnabled=YES;
+    }
+    
 }
 -(void)configureRowOvTitle:(PMLTextTableViewCell*)cell {
     cell.cellTextLabel.text = [[_infoProvider title] uppercaseString];

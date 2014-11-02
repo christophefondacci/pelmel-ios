@@ -17,6 +17,7 @@
 #import "UITouchBehavior.h"
 #import "MKNumberBadgeView.h"
 #import "PMLOpenActionBehavior.h"
+#import "PMLDataManager.h"
 
 #define kPMLMainRadius 100.0 // Radius of the main title box
 #define kPMLDistance 10.0
@@ -449,8 +450,12 @@
 
 
 -(void)imageTapped:(id)sender {
-
-    [_controller.parentMenuController openCurrentSnippet];
+    // When no image, we offer to upload one
+    if(_object.mainImage == nil) {
+        [self.controller.parentMenuController.dataManager promptUserForPhotoUploadOn:_object];
+    } else {
+        [_controller.parentMenuController openCurrentSnippet];
+    }
 }
 -(void)actionTapped:(UIButton*)sender {
     
@@ -470,4 +475,6 @@
         [[TogaytherService imageService] load:((CALObject*)object).mainImage to:objectMainView thumb:NO];
     }
 }
+
+
 @end
