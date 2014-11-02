@@ -538,6 +538,7 @@
         } else {
             PMLPlaceAnnotationView *placeAnnotation = (PMLPlaceAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
             placeAnnotation.alpha = 1;
+            placeAnnotation.hidden=NO;
             if ( placeAnnotation == nil ) {
                 placeAnnotation = [[PMLPlaceAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:defaultPinID];
             } else {

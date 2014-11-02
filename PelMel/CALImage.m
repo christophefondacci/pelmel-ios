@@ -17,13 +17,13 @@ static UIImage *defaultThumbLandscape;
 
 - (void)configure {
     if(defaultThumb == nil) {
-        defaultThumb = [UIImage imageNamed:@"place-no-photo.png"];
+        defaultThumb = [UIImage imageNamed:@"imgBlankAddMini"];
     }
     if(defaultImage == nil) {
-        defaultImage = [UIImage imageNamed:@"no-photo-big.png"];
+        defaultImage = [UIImage imageNamed:@"imgBlankAdd"];
     }
     if(defaultUserThumb == nil) {
-        defaultUserThumb = [UIImage imageNamed:@"no-photo-profile-small.png"];
+        defaultUserThumb = [UIImage imageNamed:@"imgBlankUser"];
     }
     if(defaultThumbLandscape == nil) {
         defaultThumbLandscape = [UIImage imageNamed:@"no-photo-big-landscape.png"];
@@ -61,27 +61,27 @@ static UIImage *defaultThumbLandscape;
 }
 + (UIImage *)getDefaultImage {
     if(defaultImage == nil) {
-        defaultImage = [UIImage imageNamed:@"no-photo-big.png"];
+        defaultImage = [UIImage imageNamed:@"imgBlankAdd"];
     }
     return defaultImage;
 }
 
 +(UIImage *)getDefaultThumb{
     if(defaultThumb == nil) {
-        defaultThumb = [UIImage imageNamed:@"place-no-photo.png"];
+        defaultThumb = [UIImage imageNamed:@"imgBlankAddMini"];
     }
     return defaultThumb;
 }
 +(UIImage *)getDefaultUserThumb {
     if(defaultUserThumb == nil) {
-        defaultUserThumb = [UIImage imageNamed:@"no-photo-profile-small.png"];
+        defaultUserThumb = [UIImage imageNamed:@"imgBlankUserMini"];
     }
     return defaultUserThumb;
 }
 +(CALImage *)getDefaultUserCalImage {
     CALImage *img = [[CALImage alloc] init];
     img.thumbImage = [self getDefaultUserThumb];
-    img.fullImage = [self getDefaultImage];
+    img.fullImage = [UIImage imageNamed:@"imgBlankUser"];
     return img;
 }
 + (UIImage *)getDefaultThumbLandscape {

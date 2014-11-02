@@ -36,7 +36,11 @@
     return _user;
 }
 - (CALImage *)snippetImage {
-    return _user.mainImage;
+    if(_user.mainImage != nil) {
+        return _user.mainImage;
+    } else {
+        return [CALImage getDefaultUserCalImage];
+    }
 }
 // Title of the element
 -(NSString*) title {

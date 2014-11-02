@@ -81,6 +81,7 @@
 - (CALImage *)imageAtIndex:(NSInteger)index {
     if(_items.count>index) {
         CALObject *item = [_items objectAtIndex:index];
+        
         return item.mainImage;
     } else {
         return nil;

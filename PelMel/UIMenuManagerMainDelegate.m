@@ -135,7 +135,7 @@
     float pctWidth, pctHeight,leftMargin,rightMargin;
     BOOL reverse = [[TogaytherService settingsService] leftHandedMode];
     pctWidth = reverse ? (1-action.pctWidthPosition) : action.pctWidthPosition;
-    pctHeight = reverse ? (1-action.pctHeightPosition) : action.pctHeightPosition;
+    pctHeight = action.pctHeightPosition; //reverse ? (1-action.pctHeightPosition) : action.pctHeightPosition;
     leftMargin = reverse ? action.rightMargin : action.leftMargin;
     rightMargin = reverse ? action.leftMargin : action.rightMargin;
     
