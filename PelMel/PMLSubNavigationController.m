@@ -16,6 +16,7 @@
 @implementation PMLSubNavigationController {
     NSMutableArray *_viewControllers;
     UIButton *_backButton;
+    UIImageView *_gripView;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -46,6 +47,13 @@
     [_backButton setBackgroundImage:[UIImage imageNamed:@"btnSubBack"] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(backTapped:) forControlEvents:UIControlEventTouchUpInside];
     
+    // Adding snippet grip
+    _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mnuFooterGrip"]];
+    CGRect frame = self.view.frame;
+    CGRect gripFrame = _gripView.frame;
+    _gripView.frame = CGRectMake(CGRectGetMidX(frame)-CGRectGetWidth(gripFrame)/2, -gripFrame.size.height+8, gripFrame.size.width, gripFrame.size.height);
+    [self.view addSubview:_gripView];
+    
     if(_viewControllers.count>0) {
         UIViewController *topController = [self topViewController];
         
@@ -53,7 +61,7 @@
         [self addChildViewController:topController];
         topController.subNavigationController = self;
         topController.view.frame = self.view.bounds;
-        [self.view addSubview:topController.view];
+        [self.view insertSubview:topController.view belowSubview:_gripView];
         [topController didMoveToParentViewController:self];
     }
     

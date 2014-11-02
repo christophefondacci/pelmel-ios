@@ -652,7 +652,7 @@
     
     // Setting colored line
     UIColor *color = _infoProvider.color;
-    cell.colorLineView.backgroundColor = color;
+    cell.colorLineView.backgroundColor = [UIColor clearColor]; // color; // Removing color for grip
     // Thumb border
     cell.thumbView.layer.borderColor = color.CGColor;
     // Subtitle
