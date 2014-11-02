@@ -2304,7 +2304,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0lj-4h-2sZ" userLabel="galleryView" customClass="KIImagePager">
-                                            <rect key="frame" x="48" y="7" width="224" height="30"/>
+                                            <rect key="frame" x="48" y="4" width="224" height="36"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
@@ -2322,8 +2322,8 @@
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="0lj-4h-2sZ" secondAttribute="trailing" constant="48" id="2dt-SO-cab"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="leading" secondItem="tHk-nU-W36" secondAttribute="leading" constant="48" id="Uvp-Mz-h2e"/>
-                                        <constraint firstItem="0lj-4h-2sZ" firstAttribute="top" secondItem="tHk-nU-W36" secondAttribute="top" constant="7" id="Z5g-aB-HMf"/>
-                                        <constraint firstAttribute="bottom" secondItem="0lj-4h-2sZ" secondAttribute="bottom" constant="7" id="t2M-gb-rke"/>
+                                        <constraint firstItem="0lj-4h-2sZ" firstAttribute="top" secondItem="tHk-nU-W36" secondAttribute="top" constant="4" id="Z5g-aB-HMf"/>
+                                        <constraint firstAttribute="bottom" secondItem="0lj-4h-2sZ" secondAttribute="bottom" constant="4" id="t2M-gb-rke"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>

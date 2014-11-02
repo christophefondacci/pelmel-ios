@@ -407,7 +407,8 @@
             break;
         case kPMLSectionGallery:
             if(!_galleryFullscreen) {
-                return tableView.bounds.size.width-(48*2);
+                // Substract 5 for #44 little truncation
+                return (tableView.bounds.size.width-5)-(48*2);
             } else {
                 return tableView.bounds.size.height;
             }
