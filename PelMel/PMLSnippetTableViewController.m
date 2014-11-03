@@ -595,7 +595,6 @@
     // Loading thumb
     CALImage *img = [_infoProvider snippetImage];
     cell.thumbView.contentMode = UIViewContentModeScaleAspectFit;
-    cell.thumbView.image=nil;
     [_imageService load:img to:cell.thumbView thumb:YES];
     
     // Configuring thumb subtitle

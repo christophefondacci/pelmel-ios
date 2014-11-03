@@ -75,7 +75,7 @@
     return _place;
 }
 - (CALImage *)snippetImage {
-    return _place.mainImage;
+    return [[TogaytherService imageService] imageOrPlaceholderFor:_place allowAdditions:YES ];
 }
 // Title of the element
 -(NSString*) title {

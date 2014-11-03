@@ -588,9 +588,17 @@
         if([object isKindOfClass:[User class]]) {
             return [CALImage getDefaultUserCalImage];
         } else if([object isKindOfClass:[City class]]) {
-            return [CALImage defaultCityCalImage];
+            if(additionsAllowed) {
+                return [CALImage defaultCityAddCalImage];
+            } else {
+                return [CALImage defaultCityCalImage];
+            }
         } else {
-            return [CALImage defaultAddPhotoCalImage];
+            if(additionsAllowed) {
+                return [CALImage defaultAddPhotoCalImage];
+            } else {
+                return [CALImage defaultNoPhotoCalImage];
+            }
         }
     }
 }

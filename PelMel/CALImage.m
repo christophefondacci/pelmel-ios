@@ -17,10 +17,10 @@ static UIImage *defaultThumbLandscape;
 
 - (void)configure {
     if(defaultThumb == nil) {
-        defaultThumb = [UIImage imageNamed:@"imgBlankAddMini"];
+        defaultThumb = [UIImage imageNamed:@"imgBlankMini"];
     }
     if(defaultImage == nil) {
-        defaultImage = [UIImage imageNamed:@"imgBlankAdd"];
+        defaultImage = [UIImage imageNamed:@"imgBlank"];
     }
     if(defaultUserThumb == nil) {
         defaultUserThumb = [UIImage imageNamed:@"imgBlankUser"];
@@ -61,14 +61,14 @@ static UIImage *defaultThumbLandscape;
 }
 + (UIImage *)getDefaultImage {
     if(defaultImage == nil) {
-        defaultImage = [UIImage imageNamed:@"imgBlankAdd"];
+        defaultImage = [UIImage imageNamed:@"imgBlank"];
     }
     return defaultImage;
 }
 
 +(UIImage *)getDefaultThumb{
     if(defaultThumb == nil) {
-        defaultThumb = [UIImage imageNamed:@"imgBlankAddMini"];
+        defaultThumb = [UIImage imageNamed:@"imgBlankMini"];
     }
     return defaultThumb;
 }
@@ -90,10 +90,22 @@ static UIImage *defaultThumbLandscape;
     img.fullImage = [UIImage imageNamed:@"imgBlankCity"];
     return img;
 }
++(CALImage *)defaultCityAddCalImage {
+    CALImage *img = [[CALImage alloc] init];
+    img.thumbImage = [UIImage imageNamed:@"imgBlankAddCityMini"];
+    img.fullImage = [UIImage imageNamed:@"imgBlankAddCity"];
+    return img;
+}
 + (CALImage *)defaultAddPhotoCalImage {
     CALImage *img = [[CALImage alloc] init];
     img.thumbImage = [UIImage imageNamed:@"imgBlankAddMini"];
     img.fullImage = [UIImage imageNamed:@"imgBlankAdd"];
+    return img;
+}
++ (CALImage *)defaultNoPhotoCalImage {
+    CALImage *img = [[CALImage alloc] init];
+    img.thumbImage = [UIImage imageNamed:@"imgBlankMini"];
+    img.fullImage = [UIImage imageNamed:@"imgBlank"];
     return img;
 }
 + (UIImage *)getDefaultThumbLandscape {
