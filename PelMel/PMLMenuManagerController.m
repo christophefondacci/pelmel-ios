@@ -51,6 +51,7 @@ static void *MyParentMenuControllerKey;
     objc_setAssociatedObject(self, &MyParentMenuControllerKey, parentMenuController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
+
 @end
 @implementation PMLMenuManagerController {
     
@@ -471,6 +472,7 @@ static void *MyParentMenuControllerKey;
     
         // Building the 'open' (or 'close') behavior
         UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:_snippetFullyOpened boundary:offset];
+
         [_animator removeAllBehaviors];
         [_animator addBehavior:menuBehavior];
         

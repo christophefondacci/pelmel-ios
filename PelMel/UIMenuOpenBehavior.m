@@ -56,6 +56,7 @@
             [collisionBehavior addBoundaryWithIdentifier:@"menuBoundary"
                                                fromPoint:fromPoint
                                                  toPoint:toPoint];
+            collisionBehavior.collisionDelegate = self;
             _currentMainViewBoundary = (_horizontal ? view.frame.origin.x + view.frame.size.width : view.frame.origin.y);
             [self addChildBehavior:collisionBehavior];
         }
@@ -103,6 +104,13 @@
 
             }
         }
+    }
+}
+
+#pragma mark - UICollisionBehaviorDelegate
+- (void)collisionBehavior:(UICollisionBehavior *)behavior endedContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier {
+    if(self.completion) {
+        self.completion();
     }
 }
 @end

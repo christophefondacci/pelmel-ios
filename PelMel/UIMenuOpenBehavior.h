@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIMenuOpenBehavior : UIDynamicBehavior
+typedef void(^MenuOpenCompletion)();
 
+@interface UIMenuOpenBehavior : UIDynamicBehavior <UICollisionBehaviorDelegate>
+
+@property (nonatomic,copy) MenuOpenCompletion completion;
 
 - (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(int)yBoundary;
 

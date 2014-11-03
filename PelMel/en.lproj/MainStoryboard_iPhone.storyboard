@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ioq-7z-Wfd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ioq-7z-Wfd">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -2165,7 +2166,7 @@
                                             <rect key="frame" x="250" y="17" width="67" height="25"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5PL-OK-dQT">
-                                                    <rect key="frame" x="0.0" y="1" width="1" height="20"/>
+                                                    <rect key="frame" x="79" y="-99" width="82" height="60"/>
                                                     <color key="backgroundColor" red="0.4431372549" green="0.4431372549" blue="0.4431372549" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OPEN" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lM6-Q1-j0M">
@@ -2218,7 +2219,6 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </view>
                                         <view alpha="0.80000001192092896" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5d8-KQ-De6" userLabel="line">
-                                            <rect key="frame" x="0.0" y="0.0" width="960" height="2"/>
                                             <color key="backgroundColor" red="0.92549019610000005" green="0.46666666670000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
                                         <textView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DDH-iT-KCC">
@@ -2245,6 +2245,13 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </button>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpGripBottom" translatesAutoresizingMaskIntoConstraints="NO" id="epE-52-tm3">
+                                            <rect key="frame" x="120" y="0.0" width="80" height="5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="80" id="Mgb-HC-JdU"/>
+                                                <constraint firstAttribute="height" constant="5" id="tYk-PK-c3K"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="nlv-ZZ-SbG" firstAttribute="leading" secondItem="6oI-hB-S0q" secondAttribute="trailing" constant="6" id="0DL-mh-EuW"/>
@@ -2267,7 +2274,9 @@
                                         <constraint firstItem="nlv-ZZ-SbG" firstAttribute="centerY" secondItem="oU2-1c-ViE" secondAttribute="centerY" id="VS8-AC-70b"/>
                                         <constraint firstAttribute="bottom" secondItem="DDH-iT-KCC" secondAttribute="bottom" constant="4" id="Vah-7T-G5m"/>
                                         <constraint firstAttribute="trailing" secondItem="AoI-bv-Qdx" secondAttribute="trailing" constant="3" id="eHa-sU-rJL"/>
+                                        <constraint firstAttribute="centerX" secondItem="epE-52-tm3" secondAttribute="centerX" id="fgy-wc-XFO"/>
                                         <constraint firstItem="JJA-zH-yl9" firstAttribute="top" secondItem="RWK-57-UNX" secondAttribute="bottom" id="h4J-RW-wwy"/>
+                                        <constraint firstItem="epE-52-tm3" firstAttribute="top" secondItem="DDp-c6-bah" secondAttribute="top" id="hml-Gx-Rl8"/>
                                         <constraint firstItem="nlv-ZZ-SbG" firstAttribute="centerY" secondItem="AoI-bv-Qdx" secondAttribute="centerY" id="htY-GN-We9"/>
                                         <constraint firstItem="DDH-iT-KCC" firstAttribute="top" secondItem="DDp-c6-bah" secondAttribute="top" constant="8" id="icI-JE-71Z"/>
                                         <constraint firstItem="Mzf-FI-IZq" firstAttribute="leading" secondItem="RWK-57-UNX" secondAttribute="trailing" constant="8" id="lLz-Nc-Y1V"/>
@@ -2889,6 +2898,7 @@
         <image name="ovvTypeBar" width="17" height="17"/>
         <image name="place-marker.png" width="284" height="77"/>
         <image name="snpActionButton" width="12" height="14"/>
+        <image name="snpGripBottom" width="80" height="5"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
