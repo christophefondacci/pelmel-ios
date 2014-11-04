@@ -281,7 +281,7 @@
                     _termsOfUseLabel.text = NSLocalizedString(@"register.terms.accept", nil);
                     return registerTermsCell;
                 case kRowRegisterButton:
-                    _registerButton.titleLabel.text = NSLocalizedString(@"register.button", @"REGISTER button label");
+                    [_registerButton setTitle:NSLocalizedString(@"register.button", @"REGISTER button label") forState:UIControlStateNormal];
                     return registerButtonCell;
             }
             break;

@@ -163,11 +163,11 @@
     BOOL isHighRes = [TogaytherService isRetina];
     
     // Getting birth date components
-    NSCalendar* calendar = [NSCalendar currentCalendar];
-    NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:birthDate]; // Get necessary date components
-    NSInteger birthYYYY = [components year];
-    NSInteger birthMM = [components month];
-    NSInteger birthDD = [components day];
+//    NSCalendar* calendar = [NSCalendar currentCalendar];
+//    NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:birthDate]; // Get necessary date components
+//    NSInteger birthYYYY = [components year];
+//    NSInteger birthMM = [components month];
+//    NSInteger birthDD = [components day];
     
     // Preparing post dictionary
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
@@ -179,9 +179,9 @@
     [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.latitude] forKey:kParamLat];
     [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.longitude] forKey:kParamLng];
     [params setObject:(isHighRes ? @"true" : @"false") forKey:kParamHighRes];
-    [params setObject:[NSNumber numberWithInteger:birthDD] forKey:kParamBirthDD];
-    [params setObject:[NSNumber numberWithInteger:birthMM] forKey:kParamBirthMM];
-    [params setObject:[NSNumber numberWithInteger:birthYYYY] forKey:kParamBirthYYYY];
+//    [params setObject:[NSNumber numberWithInteger:birthDD] forKey:kParamBirthDD];
+//    [params setObject:[NSNumber numberWithInteger:birthMM] forKey:kParamBirthMM];
+//    [params setObject:[NSNumber numberWithInteger:birthYYYY] forKey:kParamBirthYYYY];
 
     // POSTing request
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
