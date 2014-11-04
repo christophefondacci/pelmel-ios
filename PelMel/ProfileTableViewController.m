@@ -144,6 +144,8 @@
     // Height management
     _descPathMap = [[NSMutableDictionary alloc] init];
     _descHeightMap= [[NSMutableDictionary alloc] init];
+    
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
 //    // Loading description header view
 //    views = [[NSBundle mainBundle] loadNibNamed:@"DescriptionHeader" owner:self options:nil];
 //    descriptionHeaderView = [views objectAtIndex:0];
@@ -158,6 +160,8 @@
         // Progress view
         _progressView = [_uiService addProgressTo:self.navigationController];
     } else {
+        [_progressView removeFromSuperview];
+        _progressView = [_uiService addProgressTo:self.navigationController];
         [_uiService setProgressView:_progressView];
     }
     [self.tableView reloadData];

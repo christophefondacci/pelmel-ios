@@ -279,8 +279,10 @@
     // Do any additional setup after loading the view.
     
     _progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-    [controller.view addSubview:_progressView];
+
     UINavigationBar *navBar = [controller navigationBar];
+    [navBar layoutIfNeeded];
+    [controller.view addSubview:_progressView];
     
     NSLayoutConstraint *constraint;
     constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeBottom multiplier:1 constant:-0.5];
