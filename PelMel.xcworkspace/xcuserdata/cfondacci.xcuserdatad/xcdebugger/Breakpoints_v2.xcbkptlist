@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "435499393.339596"
+            timestampString = "436835883.536216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
             landmarkName = "-updateCurrentUser"
             landmarkType = "5">
          </BreakpointContent>
@@ -1688,11 +1688,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLMapPopupViewController.m"
-            timestampString = "436608469.203948"
+            timestampString = "436835883.536216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "457"
-            endingLineNumber = "457"
+            startingLineNumber = "452"
+            endingLineNumber = "452"
             landmarkName = "-imageTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1736,11 +1736,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "436791185.235969"
+            timestampString = "436835883.536216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "-registerWithLogin:password:pseudo:birthDate:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1752,11 +1752,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "436791189.141009"
+            timestampString = "436835883.536216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
             landmarkName = "-registerWithLogin:password:pseudo:birthDate:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1768,11 +1768,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "436791302.478161"
+            timestampString = "436835883.536216"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "187"
-            endingLineNumber = "187"
+            startingLineNumber = "177"
+            endingLineNumber = "177"
             landmarkName = "-registerWithLogin:password:pseudo:birthDate:callback:"
             landmarkType = "5">
          </BreakpointContent>

@@ -98,13 +98,8 @@
         // Building main object view: the main image
         objectMainView = [[UIImageView alloc] initWithFrame:_mainButton.bounds];
         [_object addObserver:self forKeyPath:@"mainImage" options:NSKeyValueObservingOptionNew context:NULL];
-        if(_object.mainImage != nil) {
-            CALImage *img = _object.mainImage;
-            [[TogaytherService imageService] load:img to:objectMainView thumb:NO];
-
-        } else {
-            objectMainView.image = [CALImage getDefaultImage];
-        }
+        CALImage *calImage = [[TogaytherService imageService] imageOrPlaceholderFor:_object allowAdditions:YES];
+        [[TogaytherService imageService] load:calImage to:objectMainView thumb:NO];
 
         objectMainView.layer.cornerRadius = kPMLMainRadius/2-2;
         objectMainView.layer.masksToBounds = YES;
