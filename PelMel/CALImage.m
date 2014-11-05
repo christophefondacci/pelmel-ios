@@ -110,7 +110,7 @@ static UIImage *defaultThumbLandscape;
 }
 + (UIImage *)getDefaultThumbLandscape {
     if(defaultThumbLandscape ==nil) {
-        defaultThumbLandscape = [UIImage imageNamed:@"no-photo-big-landscape.png"];
+        defaultThumbLandscape = [UIImage imageNamed:@"imgBlank"];
     }
     return defaultThumbLandscape;
 }

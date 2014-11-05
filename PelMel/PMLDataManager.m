@@ -80,7 +80,8 @@
     if(_nearbyLoad) {
         if(modelHolder.places.count == 0 ) {
             CLLocation *location = [[CLLocation alloc] initWithLatitude:_searchCenter.latitude longitude:_searchCenter.longitude];
-            if([_dataService.modelHolder.userLocation distanceFromLocation:location] <100 &&  _dataService.currentRadius!=1500) {
+            if(([_dataService.modelHolder.userLocation distanceFromLocation:location] <100 || (_searchCenter.latitude == 0 && _searchCenter.longitude==0) )&&  _dataService.currentRadius!=1500) {
+//                ((MapViewController*)_menuController.rootViewController).zoomUpdateType = PMLZoomUpdateAroundLocation;
                 _dataService.currentRadius =1500;
                 [_dataService fetchNearbyPlaces];
             }

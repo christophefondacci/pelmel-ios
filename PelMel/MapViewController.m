@@ -310,6 +310,7 @@
     }
     
     // Have we already setup initial zoom?
+    int placesCount = 0;
     if(_zoomUpdateType != PMLZoomUpdateNone) {
 
         // Zooming to current user location with 800m x 800m wide rect
@@ -340,7 +341,7 @@
             }
             
             NSSet *nearbyAnnotations = [_mapView annotationsInMapRect:rect];
-            int placesCount = (int)nearbyAnnotations.count;
+            placesCount = (int)nearbyAnnotations.count;
             if(_zoomUpdateType == PMLZoomUpdateAroundLocation) {
                 if(_mapView.userLocation.location!=nil) {
                     nearbyAnnotations = [nearbyAnnotations setByAddingObject:_mapView.userLocation];
@@ -349,7 +350,7 @@
             }
             
             // If we haven't got much in our rect, we check if we need to zoom fit or no
-            if(_zoomUpdateType == PMLZoomUpdateFitResults || (placesCount<kPMLMinimumPlacesForZoom && (placesCount-1) < _modelHolder.places.count+_modelHolder.cities.count)) {
+            if(_zoomUpdateType == PMLZoomUpdateFitResults || (placesCount<kPMLMinimumPlacesForZoom)) {
                 
                 // If total places are bigger than current places in zoom rect then we zoom fit newly updated annotations
                 [_mapView showAnnotations:updatedAnnotations animated:YES];
@@ -368,7 +369,10 @@
         } else {
             [_mapView showAnnotations:updatedAnnotations animated:YES];
         }
-        _zoomUpdateType = PMLZoomUpdateNone;
+        // Only de-activating zoom if enough results
+        if(placesCount>=kPMLMinimumPlacesForZoom) {
+            _zoomUpdateType = PMLZoomUpdateNone;
+        }
     }
 
 }
