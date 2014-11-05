@@ -447,7 +447,9 @@
 -(void)imageTapped:(id)sender {
     // When no image, we offer to upload one
     if(_object.mainImage == nil) {
-        [self.controller.parentMenuController.dataManager promptUserForPhotoUploadOn:_object];
+        if(_object.key!=nil) {
+            [self.controller.parentMenuController.dataManager promptUserForPhotoUploadOn:_object];
+        }
     } else {
         [_controller.parentMenuController openCurrentSnippet];
     }

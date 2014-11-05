@@ -620,7 +620,9 @@
             cell.subtitleLabel.text = place.address;
         }
         [self.snippetItem addObserver:self forKeyPath:@"address" options:   NSKeyValueObservingOptionNew context:NULL];
+        [self.snippetItem addObserver:self forKeyPath:@"mainImage" options:   NSKeyValueObservingOptionNew context:NULL];
         [_observedProperties addObject:@"address"];
+        [_observedProperties addObject:@"mainImage"];
     }
     
     // Setting opening hours badge
@@ -1261,6 +1263,8 @@
         if(_snippetItem.key != nil && _snippetItem.editing) {
             [_snippetCell.titleTextField becomeFirstResponder];
         }
+    } else if([keyPath isEqualToString:@"mainImage"]) {
+        [self.tableView reloadData]; 
     }
 }
 -(void)updateTitleEdition {
