@@ -2008,7 +2008,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kQm-KZ-25Z">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kQm-KZ-25Z">
                                             <rect key="frame" x="8" y="5" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="TKK-mL-UeE"/>
@@ -2906,12 +2906,12 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="fnn-3s-KqK"/>
         <segue reference="enc-VM-87F"/>
         <segue reference="agQ-rU-dsm"/>
+        <segue reference="fnn-3s-KqK"/>
         <segue reference="hk5-7z-xvn"/>
         <segue reference="hap-7x-4U2"/>
-        <segue reference="eKE-7K-Ihn"/>
         <segue reference="bA0-cZ-EFZ"/>
+        <segue reference="FQz-aE-p6t"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -23,7 +23,7 @@ static UIImage *defaultThumbLandscape;
         defaultImage = [UIImage imageNamed:@"imgBlank"];
     }
     if(defaultUserThumb == nil) {
-        defaultUserThumb = [UIImage imageNamed:@"imgBlankUser"];
+        defaultUserThumb = [UIImage imageNamed:@"imgBlankUserMini"];
     }
     if(defaultThumbLandscape == nil) {
         defaultThumbLandscape = [UIImage imageNamed:@"no-photo-big-landscape.png"];

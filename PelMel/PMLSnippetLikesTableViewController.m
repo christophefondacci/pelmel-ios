@@ -39,7 +39,10 @@
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
-
+- (void)viewDidAppear:(BOOL)animated {
+    [self.view layoutIfNeeded];
+    [self.tableView reloadData];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -66,9 +69,10 @@
     
     cell.imageView.layer.cornerRadius = 25;
     cell.imageView.layer.masksToBounds = YES;
-    cell.imageView.image = [CALImage getDefaultUserThumb];
+    NSLog(@"W=%d / H=%d",(int)cell.imageView.frame.size.width,(int)cell.imageView.frame.size.height );
     cell.imageView.layer.borderColor = [[provider color] CGColor];
-    [_imageService load:activityObject.mainImage to:cell.imageView thumb:YES];
+    CALImage *calImage = [_imageService imageOrPlaceholderFor:activityObject allowAdditions:NO];
+    [_imageService load:calImage to:cell.imageView thumb:YES];
     cell.nameLabel.text = [provider title];
     NSString *delay = [_uiService delayStringFrom:activity.activityDate];
     cell.timeLabel.text = delay;
