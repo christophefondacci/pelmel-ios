@@ -69,6 +69,7 @@
     
     cell.imageView.layer.cornerRadius = 25;
     cell.imageView.layer.masksToBounds = YES;
+    cell.imageView.image = [CALImage getDefaultUserThumb];
     NSLog(@"W=%d / H=%d",(int)cell.imageView.frame.size.width,(int)cell.imageView.frame.size.height );
     cell.imageView.layer.borderColor = [[provider color] CGColor];
     CALImage *calImage = [_imageService imageOrPlaceholderFor:activityObject allowAdditions:NO];
