@@ -33,6 +33,8 @@
     NSUserDefaults *_userDefaults;
     // Push dialog
     PushPropositionCallback _pushCompletion;
+    
+    NSMutableArray *_messageCallbacks;
 }
 
 @synthesize userService = userService;
@@ -46,6 +48,7 @@
         uploadConnectionCallbacksMap= [[NSMutableDictionary alloc] init];
         uploadMessagesMap = [[NSMutableDictionary alloc] init];
         _unreadMessageCount = 0;
+        _messageCallbacks = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -143,6 +146,7 @@
     NSArray *messages = [jsonMessageList objectForKey:@"messages"];
     NSMutableArray *calMessages = [[NSMutableArray alloc] initWithCapacity:messages.count];
     for(NSDictionary *message in messages) {
+        NSString *key       = [message objectForKey:@"key"];
         NSString *fromKey   = [message objectForKey:@"fromKey"];
         NSString *toKey     = [message objectForKey:@"toKey"];
         NSString *text      = [message objectForKey:@"message"];
@@ -151,7 +155,7 @@
         NSDate *msgDate = [[NSDate alloc] initWithTimeIntervalSince1970:time];
         
         Message *m = [[Message alloc] init];
-        
+        m.key = key;
         User *fromUser = [usersMap objectForKey:fromKey];
         [m setFrom:fromUser];
         User *toUser = [usersMap objectForKey:toKey];
@@ -179,6 +183,9 @@
     // Now invoking callback
     dispatch_async(dispatch_get_main_queue(), ^{
         [callback messagesFetched:calMessages];
+        for(id<MessageCallback> callback in _messageCallbacks) {
+            [callback messagesFetched:calMessages];
+        }
     });
 }
 
@@ -472,5 +479,13 @@
 }
 -(void)alertViewCancel:(UIAlertView *)alertView {
     [self pushCompletion:NO];
+}
+
+#pragma mark - Listeners management
+- (void)registerCallback:(id<MessageCallback>)callback {
+    [_messageCallbacks addObject:callback];
+}
+- (void)unregisterCallback:(id<MessageCallback>)callback {
+    [_messageCallbacks removeObject:callback];
 }
 @end

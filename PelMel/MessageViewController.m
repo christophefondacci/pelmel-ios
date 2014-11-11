@@ -30,6 +30,8 @@
     
     HPGrowingTextView *_chatTextView;
     
+    NSArray *_messagesList;
+    NSMutableDictionary *_messagesViewsKeys;
 }
 @synthesize scrollView;
 
@@ -54,6 +56,9 @@
     messageService = [TogaytherService getMessageService];
     imageService = [TogaytherService imageService];
     uiService = [TogaytherService uiService];
+    
+    _messagesList = @[];
+    _messagesViewsKeys = [[NSMutableDictionary alloc] init];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"pushProposedForMessages"] == nil) {
@@ -273,78 +278,89 @@
     [_activityText setHidden:YES];
     [_activityBackground setHidden:YES];
     
+    _messagesList = messagesList;
     int totalHeight = 0;
     if(messagesFetchedCount == 0) {
         
     }
-    CurrentUser *currentUser = [userService getCurrentUser];
-    BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
+
+
     // A map of all image views hashed by the image key
 //    NSMutableArray *images = [[NSMutableArray alloc] init];
-    BOOL even = NO;
+    int i = 0;
     for(Message *message in messagesList) {
-        
-        // Instantiating the Chat view to display current message
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
-        ChatView *view = [views objectAtIndex:0];
-        
-        // Adjusting position (mostly width because it is used for height computation
-        CGRect frame = view.frame;
-        [view setFrame:CGRectMake(frame.origin.x, totalHeight, scrollView.bounds.size.width, frame.size.height)];
-        [view layoutIfNeeded];
-        // Setuping chat view
-        [view setup:message forObject:message.from snippet:isAllMessageView];
-        if(isAllMessageView) {
-            [view.detailMessageButton setHidden:NO];
-            [view.detailMessageButton addTarget:self action:@selector(showMessageTapped:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        
-        // Handling tap on thumb
-        UIButton *thumbButton;
-        if(![message.from.key isEqualToString:currentUser.key]) {
-            thumbButton = view.leftThumbButton;
-        } else {
-            thumbButton = view.rightThumbButton;
-        }
-        [thumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
-        
-        // Adding
-        [scrollView addSubview:view];
-        
-        // Adjusting position
-        frame = view.frame;
-        CGSize viewSize = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
-        [view setFrame:CGRectMake(frame.origin.x, totalHeight, scrollView.bounds.size.width, viewSize.height)];
-        totalHeight+=view.frame.size.height;
-        
-        // Setuping image
-        CALImage *image = message.from.mainImage;
-        [imageService load:image to:view.thumbImage thumb:YES];
-        [imageService load:image to:view.thumbImageSelf thumb:YES];
-        [view.leftActivity setHidden:YES];
-        [view.rightActivity setHidden:YES];
-        
-        // Stripping lines
-        if(even) {
-            view.backgroundColor = UIColorFromRGB(0x343c42);
-        }
-        even = !even;
-        
-        
-        // DEBUG
-        NSLog(@"Height : %d - Width : %d",(int)view.bubbleText.bounds.size.height,(int)view.bubbleText.bounds.size.width);
+        NSInteger messageHeight = [self addMessageToScrollView:message atHeight:totalHeight forIndex:i++];
+        totalHeight+= messageHeight;
     }
     
     // Updating our scroll view
-
-    CGRect frame = scrollView.frame;
-    [scrollView setContentSize:CGSizeMake(frame.size.width,totalHeight)];
-    if(![_withObject.key isEqualToString:currentUser.key]) {
+    if(![_withObject.key isEqualToString:[[userService getCurrentUser] key]]) {
         CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
         [scrollView setContentOffset:bottomOffset animated:NO];
     }
     
 
+}
+
+- (NSInteger)addMessageToScrollView:(Message*)message atHeight:(NSInteger)height forIndex:(NSInteger)index {
+    CurrentUser *currentUser = [userService getCurrentUser];
+    BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
+    
+    ChatView * view = [_messagesViewsKeys objectForKey:message.key];
+    if(view==nil) {
+        // Instantiating the Chat view to display current message
+        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
+        view = [views objectAtIndex:0];
+        // TODO: Uncomment me when server sends message primary keys
+//        [_messagesViewsKeys setObject:view forKey:message.key];
+    }
+    
+    // Adjusting position (mostly width because it is used for height computation
+    CGRect frame = view.frame;
+    [view setFrame:CGRectMake(frame.origin.x, height, scrollView.bounds.size.width, frame.size.height)];
+    [view layoutIfNeeded];
+    // Setuping chat view
+    [view setup:message forObject:message.from snippet:isAllMessageView];
+    if(isAllMessageView) {
+        [view.detailMessageButton setHidden:NO];
+        [view.detailMessageButton addTarget:self action:@selector(showMessageTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    // Handling tap on thumb
+    UIButton *thumbButton;
+    if(![message.from.key isEqualToString:currentUser.key]) {
+        thumbButton = view.leftThumbButton;
+    } else {
+        thumbButton = view.rightThumbButton;
+    }
+    [thumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Adding
+    [scrollView addSubview:view];
+    
+    // Adjusting position
+    frame = view.frame;
+    CGSize viewSize = [view systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    [view setFrame:CGRectMake(frame.origin.x, height, scrollView.bounds.size.width, viewSize.height)];
+
+    
+    // Setuping image
+    CALImage *image = message.from.mainImage;
+    [imageService load:image to:view.thumbImage thumb:YES];
+    [imageService load:image to:view.thumbImageSelf thumb:YES];
+    [view.leftActivity setHidden:YES];
+    [view.rightActivity setHidden:YES];
+    
+    // Stripping lines
+    if(index % 2 > 0) {
+        view.backgroundColor = UIColorFromRGB(0x343c42);
+    }
+    
+    // DEBUG
+    NSLog(@"Height : %d - Width : %d",(int)view.bubbleText.bounds.size.height,(int)view.bubbleText.bounds.size.width);
+    int totalHeight = height + view.frame.size.height;
+    [scrollView setContentSize:CGSizeMake(frame.size.width,totalHeight)];
+    return view.frame.size.height;
 }
 - (void)messageSent:(Message *)message {
     [_activityIndicator stopAnimating];
@@ -353,23 +369,12 @@
     [_activityBackground setHidden:YES];
     
     // Adding a new bubble for this sent message
-    NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
-    ChatView *view = [views objectAtIndex:0];
-    [view setup:message forObject:message.from snippet:NO];
-    // De-activating activity indicators in case current user has no thumb
-    [view.leftActivity setHidden:YES];
-    [view.rightActivity setHidden:YES];
-    
-    // Adding subview
-    [scrollView addSubview:view];
-    CGRect frame = view.frame;
-    [view setFrame:CGRectMake(frame.origin.x, scrollView.contentSize.height+10, scrollView.frame.size.width, frame.size.height)];
-    CGRect scrollFrame = scrollView.frame;
-    [scrollView setContentSize:CGSizeMake(scrollFrame.size.width,scrollView.contentSize.height+10+frame.size.height+10)];
+    [self addMessageToScrollView:message atHeight:scrollView.contentSize.height forIndex:_messagesList.count];
 
+    _messagesList = [_messagesList arrayByAddingObject:message];
     // Scrolling down
     CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
-    [scrollView setContentOffset:bottomOffset animated:NO];
+    [scrollView setContentOffset:bottomOffset animated:YES];
     
     [_chatTextView endEditing:YES];
     _chatTextView.text=nil;

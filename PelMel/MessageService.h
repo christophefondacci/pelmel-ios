@@ -45,7 +45,8 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 -(void)handleToolbar:(UIViewController*)view;
 -(void)releaseToobar:(UIViewController*)view;
 
-
+-(void)registerCallback:(id<MessageCallback>)callback;
+-(void)unregisterCallback:(id<MessageCallback>)callback;
 
 // Asks the user to enable push if needed
 -(void)handlePushNotificationProposition:(PushPropositionCallback)completion;
