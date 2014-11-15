@@ -374,12 +374,6 @@
                     addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
                     addCell.modifyButton.titleLabel.textColor = [UIColor whiteColor];
                 }
-                
-                //            int mainImage = user.mainImage == nil ? 0 : 1;
-                //            NSInteger photosCount = user.otherImages.count+mainImage;
-                //            NSString *photosLabel = [NSString stringWithFormat:NSLocalizedString(@"profile.photo.subtitle", @"subtitle for number of photos"),photosCount];
-                //            cell.textLabel.text = NSLocalizedString(@"profile.photo.manage", nil);
-                //            cell.detailTextLabel.text = photosLabel;
                 break;
                 
             case kSectionTags: {
@@ -493,8 +487,9 @@
         if(index>_pickerIndexPath.row) {
             descIndex--;
         }
-    } else     if(user.descriptions.count <= index-1) {
-        [user addDescription:@"" language:@"fr"];
+    } else if(user.descriptions.count <= index-1) {
+        NSString *language = [TogaytherService getLanguageIso6391Code];
+        [user addDescription:@"" language:language];
     }
     return [user.descriptions objectAtIndex:descIndex];
 }
@@ -507,18 +502,6 @@
 }
 
 - (IBAction)dismiss:(id)sender {
-    CurrentUser *user = [userService getCurrentUser];
-//    int age = [userService getAge:user];
-//    if(age<12) {
-//        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"profile.mustBe18.title", @"profile.mustBe18.title")
-//                                                        message:NSLocalizedString(@"profile.mustBe18", @"profile.mustBe18")
-//                                                       delegate:nil
-//                                              cancelButtonTitle:@"OK"
-//                                              otherButtonTitles:nil];
-//        [alert show];
-//        return;
-//    }
-    
     // Registering user info
     self.title = NSLocalizedString(@"profile.save", "Wait message while sending user data to server for save");
     // Updating
@@ -729,7 +712,11 @@
                     [user.descriptions removeObjectAtIndex:indexPath.row-1];
                 }
                 // Delete the row from the data source
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                if(user.descriptions.count>0) {
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                } else {
+                    [tableView reloadData];
+                }
                 break;
             }
             case kSectionPhotos: {
