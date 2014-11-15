@@ -241,21 +241,20 @@
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
                 return [[_infoProvider addressComponents] count];
-            case kPMLSectionOvHours:
-                if([_infoProvider respondsToSelector:@selector(specialFor:ofType:)]) {
-                    Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_OPENING];
-                    if(special != nil) {
-                        return 1+[[special.descriptionText componentsSeparatedByString:@"/"] count];
-                    }
+            case kPMLSectionOvHours: {
+                
+                Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_OPENING];
+                if(special != nil) {
+                    return 1+[[special.descriptionText componentsSeparatedByString:@"/"] count];
                 }
+            }
                 return 0;
-            case kPMLSectionOvHappyHours:
-                if([_infoProvider respondsToSelector:@selector(specialFor:ofType:)]) {
-                    Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_HAPPY];
-                    if(special != nil) {
-                        return 1+[[special.descriptionText componentsSeparatedByString:@"/"] count];
-                    }
+            case kPMLSectionOvHappyHours: {
+                Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_HAPPY];
+                if(special != nil) {
+                    return 1+[[special.descriptionText componentsSeparatedByString:@"/"] count];
                 }
+            }
                 return 0;
             case kPMLSectionOvDesc:
                 return [[_infoProvider descriptionText] length]>0 ? kPMLOvDescRows : 0;
