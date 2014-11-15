@@ -43,6 +43,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -2034,6 +2036,80 @@
                                     <outlet property="timeLabel" destination="wHQ-hv-qRp" id="54S-KF-QTi"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="loadCell" rowHeight="60" id="CMp-Yd-edR" customClass="PMLTextTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CMp-Yd-edR" id="Kue-dU-Rr0">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="0K6-J6-j5p">
+                                            <rect key="frame" x="15" y="11" width="37" height="37"/>
+                                        </activityIndicatorView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWO-ah-5lN">
+                                            <rect key="frame" x="74" y="19" width="238" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="238" id="ijT-hK-RJ5"/>
+                                                <constraint firstAttribute="height" constant="21" id="kFG-5P-iJj"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                            <color key="textColor" red="0.65882354970000001" green="0.6549019814" blue="0.64705884459999996" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="0K6-J6-j5p" secondAttribute="centerY" id="5gf-9N-XRa"/>
+                                        <constraint firstItem="0K6-J6-j5p" firstAttribute="leading" relation="lessThanOrEqual" secondItem="Kue-dU-Rr0" secondAttribute="leading" constant="15" id="KwZ-Ww-m9t"/>
+                                        <constraint firstItem="rWO-ah-5lN" firstAttribute="leading" secondItem="0K6-J6-j5p" secondAttribute="trailing" constant="22" id="Rx7-QJ-38e"/>
+                                        <constraint firstAttribute="trailing" secondItem="rWO-ah-5lN" secondAttribute="trailing" constant="8" id="gYX-cD-BUD"/>
+                                        <constraint firstAttribute="centerY" secondItem="rWO-ah-5lN" secondAttribute="centerY" id="zaa-Oa-d2k"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="activityIndicator" destination="0K6-J6-j5p" id="QzV-W6-8mO"/>
+                                    <outlet property="cellTextLabel" destination="rWO-ah-5lN" id="MYc-Xn-Xjg"/>
+                                    <outlet property="textHeightConstraint" destination="kFG-5P-iJj" id="f1o-AQ-tcb"/>
+                                    <outlet property="textWidthConstraint" destination="ijT-hK-RJ5" id="PLq-Kf-rWk"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="noLikeCell" rowHeight="60" id="meQ-UC-MsJ" customClass="PMLSnippetLikeTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="meQ-UC-MsJ" id="f6A-v9-LAk">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconLike" translatesAutoresizingMaskIntoConstraints="NO" id="L9y-vr-i50">
+                                            <rect key="frame" x="8" y="5" width="28" height="28"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="28" id="Qto-H6-vc5"/>
+                                                <constraint firstAttribute="height" constant="28" id="Uc6-ve-r8I"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xZT-dv-ePe">
+                                            <rect key="frame" x="44" y="5" width="268" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="5WE-IK-y8E"/>
+                                                <constraint firstAttribute="width" constant="268" id="wNG-1H-mDI"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                            <color key="textColor" red="0.65882354970000001" green="0.6549019814" blue="0.64705884459999996" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="xZT-dv-ePe" firstAttribute="top" secondItem="f6A-v9-LAk" secondAttribute="top" constant="5" id="1fF-q0-bsu"/>
+                                        <constraint firstItem="L9y-vr-i50" firstAttribute="leading" relation="lessThanOrEqual" secondItem="f6A-v9-LAk" secondAttribute="leading" constant="8" id="bWq-Zw-rS1"/>
+                                        <constraint firstAttribute="trailing" secondItem="xZT-dv-ePe" secondAttribute="trailing" constant="8" id="nQu-hw-Kko"/>
+                                        <constraint firstItem="L9y-vr-i50" firstAttribute="top" secondItem="f6A-v9-LAk" secondAttribute="top" constant="5" id="pfD-DE-Lir"/>
+                                        <constraint firstItem="xZT-dv-ePe" firstAttribute="leading" secondItem="L9y-vr-i50" secondAttribute="trailing" constant="8" id="zTQ-bQ-Y8U"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="heightConstraint" destination="5WE-IK-y8E" id="gy5-Wx-VIJ"/>
+                                    <outlet property="nameLabel" destination="xZT-dv-ePe" id="1K4-zF-W75"/>
+                                    <outlet property="thumbImageView" destination="L9y-vr-i50" id="AGN-Kv-CPz"/>
+                                    <outlet property="widthConstraint" destination="wNG-1H-mDI" id="WtP-NN-LJF"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="hwY-Lk-EtC" id="5vq-Id-zQr"/>
@@ -2899,6 +2975,7 @@
         <image name="place-marker.png" width="284" height="77"/>
         <image name="snpActionButton" width="12" height="14"/>
         <image name="snpGripBottom" width="80" height="5"/>
+        <image name="snpIconLike" width="30" height="30"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

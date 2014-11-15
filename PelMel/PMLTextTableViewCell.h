@@ -10,5 +10,8 @@
 
 @interface PMLTextTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *cellTextLabel;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textWidthConstraint;
 
 @end

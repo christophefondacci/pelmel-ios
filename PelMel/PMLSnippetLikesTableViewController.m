@@ -10,10 +10,13 @@
 #import "Activity.h"
 #import "TogaytherService.h"
 #import "PMLSnippetLikeTableViewCell.h"
+#import "PMLTextTableViewCell.h"
 #import "PMLSnippetTableViewController.h"
 #import "PMLInfoProvider.h"
 
-#define kSectionsCount 1
+#define kSectionsCount 2
+#define kSectionNoResult 0
+#define kSectionLikes 1
 
 @interface PMLSnippetLikesTableViewController ()
 
@@ -22,6 +25,9 @@
 @implementation PMLSnippetLikesTableViewController {
     ImageService *_imageService;
     UIService *_uiService;
+    BOOL _loading;
+    
+    int _heightNoLike;
 }
 
 - (void)viewDidLoad {
@@ -30,14 +36,18 @@
     self.view.backgroundColor =UIColorFromRGB(0x272a2e);
     self.tableView.backgroundColor =  UIColorFromRGB(0x272a2e);
     self.tableView.separatorColor = [UIColor clearColor];
+    _heightNoLike = -1;
     
     _imageService = [TogaytherService imageService];
     _uiService = [TogaytherService uiService];
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+-(void)viewWillAppear:(BOOL)animated {
+    if(self.activities==nil) {
+        _loading = YES;
+    } else {
+        _loading = NO;
+    }
 }
 - (void)viewDidAppear:(BOOL)animated {
     [self.view layoutIfNeeded];
@@ -56,13 +66,45 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.activities.count;
+    switch(section) {
+        case kSectionNoResult:
+            return !_loading && self.activities.count == 0 ? 1 : 0;
+        case kSectionLikes:
+            return _loading ? 1 : self.activities.count;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    PMLSnippetLikeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"likeCell" forIndexPath:indexPath];
+    NSString *cellId;
+    switch (indexPath.section) {
+        case kSectionNoResult:
+            cellId = @"noLikeCell";
+            break;
+        default:
+            cellId = _loading ? @"loadCell" :@"likeCell";
+            break;
+    }
     
-    Activity *activity = [self.activities objectAtIndex:indexPath.row];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
+    
+    switch(indexPath.section) {
+        case kSectionLikes:
+            if(_loading) {
+                [self configureRowLoading:(PMLTextTableViewCell*)cell];
+            } else {
+                [self configureRowLikes:(PMLSnippetLikeTableViewCell*)cell forIndex:indexPath.row];
+            }
+            break;
+        case kSectionNoResult:
+            [self configureRowNoResult:(PMLSnippetLikeTableViewCell*)cell];
+            break;
+    }
+    return cell;
+}
+
+-(void) configureRowLikes:(PMLSnippetLikeTableViewCell*)cell forIndex:(NSInteger)row {
+    Activity *activity = [self.activities objectAtIndex:row];
     
     CALObject *activityObject = [self activityObjectFor:activity];
     NSObject<PMLInfoProvider> *provider = [_uiService infoProviderFor:activityObject];
@@ -77,8 +119,22 @@
     cell.nameLabel.text = [provider title];
     NSString *delay = [_uiService delayStringFrom:activity.activityDate];
     cell.timeLabel.text = delay;
-    
-    return cell;
+}
+
+-(void) configureRowNoResult:(PMLSnippetLikeTableViewCell*)cell {
+    cell.nameLabel.text = NSLocalizedString(@"likes.list.noResult", @"likes.list.noResult");
+    cell.thumbImageView.image = [UIImage imageNamed:@"snpIconLike"];
+    CGSize size = [cell.nameLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-52,FLT_MAX)];
+    cell.widthConstraint.constant=self.view.frame.size.width-52;
+    cell.heightConstraint.constant = size.height+1;
+
+}
+
+-(void)configureRowLoading:(PMLTextTableViewCell*)cell {
+    cell.cellTextLabel.text = NSLocalizedString(@"likes.list.loading", @"likes.list.loading");
+    CGSize size = [cell.cellTextLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-82,FLT_MAX)];
+    cell.textHeightConstraint.constant = size.height;
+    cell.textWidthConstraint.constant=self.view.frame.size.width-82;
 }
 
 - (CALObject*)activityObjectFor:(Activity*)activity {
@@ -100,55 +156,22 @@
     [self.parentMenuController.navigationController pushViewController:controller animated:YES ];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch(indexPath.section) {
+        case kSectionNoResult: {
+            PMLSnippetLikeTableViewCell  *cell = [self.tableView dequeueReusableCellWithIdentifier:@"noLikeCell"];
+            cell.nameLabel.text = NSLocalizedString(@"likes.list.noResult", @"likes.list.noResult");
+            CGSize size = [cell.nameLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-52,FLT_MAX)];
+            return MAX(60,size.height+1+5);
+
+        }
+    }
     return 60;
 }
 #pragma mark - Data setup
 - (void)setActivities:(NSArray *)activities {
+    _loading = NO;
     _activities = activities;
     [self.tableView reloadData];
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -68,8 +68,11 @@
 "language.it"="Italian";
 "language.de"="German";
 "language.nl"="Dutch";
+"likes.list.loading"="Loading your like history...";
+"likes.list.noResult"="Want more likes? Improve your visibility by liking other people and places, checking into venues, and posting comments and pictures.";
 "list.places.men"="%d";
 "list.places.likes"="%d";
+
 "loading"="Fetching nearest gay places...";
 "loading.events"="Fetching nearest gay events...";
 "loading.city"="Fetching %@'s gay places...";
