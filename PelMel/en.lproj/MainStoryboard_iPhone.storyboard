@@ -2790,8 +2790,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3600 16th St. San Francisco" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f5u-H8-oM0">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3600 16th St. San Francisco" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f5u-H8-oM0">
                                             <rect key="frame" x="75" y="9" width="225" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="zNT-wv-mII"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" name="Sari-Medium" family="Sari" pointSize="17"/>
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -2841,6 +2844,7 @@
                                     <outlet property="activitySubtitleLabel" destination="Bou-yw-ANs" id="mV6-fF-z0s"/>
                                     <outlet property="activityThumbImageView" destination="mGX-Mj-mxb" id="4ot-w8-D8S"/>
                                     <outlet property="activityTitleLabel" destination="f5u-H8-oM0" id="Qmn-DJ-nSG"/>
+                                    <outlet property="heightTitleConstraint" destination="zNT-wv-mII" id="cTp-zU-tL1"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="hoursTitle" id="pPr-Za-ZrY" customClass="PMLTextTableViewCell">

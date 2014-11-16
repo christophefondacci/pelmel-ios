@@ -123,6 +123,7 @@
     PMLCountersTableViewCell *_countersCell;
     CAGradientLayer *_countersGradient;
     NSMutableDictionary *_countersPreviewGradients; // map of CAGradientLayer for likes/checkins gradients
+    NSMutableDictionary *_heightsMap;
     
     // Gallery
     BOOL _galleryFullscreen;
@@ -160,6 +161,7 @@
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
     _counterThumbControllers = [[NSMutableDictionary alloc] init];
+    _heightsMap = [[NSMutableDictionary alloc] init];
     
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
@@ -454,7 +456,24 @@
         }
         case kPMLSectionOvTags:
             return kPMLHeightOvTagsRows;
-        case kPMLSectionActivity:
+        case kPMLSectionActivity: {
+            Activity *activity = [_infoProvider.activities objectAtIndex:indexPath.row];
+            NSString *key = [NSString stringWithFormat:@"%p",activity];
+            NSNumber *height = [_heightsMap objectForKey:key];
+            if(height == nil) {
+                PMLActivityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[self rowIdForIndexPath:indexPath]];
+                
+                // Auto-height
+                cell.activityTitleLabel.text = [self stringByStrippingHTML:activity.message];
+                CGSize size = [cell.activityTitleLabel sizeThatFits:CGSizeMake(cell.activityTitleLabel.frame.size.width,FLT_MAX)];
+                height = [NSNumber numberWithFloat:size.height+1+41];
+                [_heightsMap setObject:height forKey:key];
+                
+            }
+            return height.intValue;
+            // +41
+        }
+            break;
         case kPMLSectionTopPlaces:
             return kPMLHeightActivityRows;
     }
@@ -888,6 +907,11 @@
         [_imageService load:activity.activityObject.mainImage to:cell.activityThumbImageView thumb:YES];
     }
     cell.activityThumbImageView.layer.borderColor = [[_uiService colorForObject:activity.user] CGColor];
+    
+    // Auto-height
+    CGSize size = [cell.activityTitleLabel sizeThatFits:CGSizeMake(cell.activityTitleLabel.frame.size.width,FLT_MAX)];
+    cell.heightTitleConstraint.constant=size.height;
+    // +41
     
     // Fonts
     cell.activityTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
