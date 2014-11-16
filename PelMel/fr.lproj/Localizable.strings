@@ -132,12 +132,13 @@
 "places.section.searchPlaces"="Lieux";
 "places.section.searchCities"="Villes";
 "places.title"="Lieux";
-"placetypes"="asso,club,restaurant,sauna,sexclub,sexshop,bar,hotel";
+"placetypes"="asso,club,restaurant,sauna,sexclub,sexshop,bar,hotel,outdoors";
 "placetype.sponsored"="%@ (sponsored)";
 "placetype.asso"="Association";
 "placetype.bar"="Bar";
 "placetype.club"="Club";
 "placetype.hotel"="Hôtel";
+"placetype.outdoors"="Nature / Extérieur";
 "placetype.restaurant"="Restaurant";
 "placetype.sauna"="Sauna";
 "placetype.sexclub"="Sex club";
@@ -146,6 +147,7 @@
 "placetype.plural.bar"="Bars";
 "placetype.plural.club"="Clubs";
 "placetype.plural.hotel"="Hotels";
+"placetype.plural.outdoors"="Nature / Extérieurs";
 "placetype.plural.restaurant"="Restaurants";
 "placetype.plural.sauna"="Saunas";
 "placetype.plural.sexclub"="Sex clubs";

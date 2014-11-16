@@ -12,6 +12,8 @@
 	<string>menufilterIconClub</string>
 	<key>icon.filter.hotel</key>
 	<string>menufilterIconHotel</string>
+	<key>icon.filter.outdoors</key>
+	<string>menufilterIconOutdoor</string>
 	<key>icon.filter.restaurant</key>
 	<string>menufilterIconResto</string>
 	<key>icon.filter.sauna</key>
@@ -30,6 +32,8 @@
 	<string>snpIconClub</string>
 	<key>icon.hotel</key>
 	<string>snpIconHotel</string>
+	<key>icon.outdoors</key>
+	<string>snpIconOutdoor</string>
 	<key>icon.restaurant</key>
 	<string>snpIconRestaurant</string>
 	<key>icon.sauna</key>
@@ -62,6 +66,10 @@
 	<string>mapMarkerHotel</string>
 	<key>marker.hotel.closed</key>
 	<string>mapMarkerHotelClosed</string>
+	<key>marker.outdoors</key>
+	<string>mapMarkerOutdoor</string>
+	<key>marker.outdoors.closed</key>
+	<string>mapMarkerOutdoorOff</string>
 	<key>marker.restaurant</key>
 	<string>mapMarkerResto</string>
 	<key>marker.restaurant.closed</key>
