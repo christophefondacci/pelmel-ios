@@ -12,6 +12,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *activityTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *activitySubtitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *activityThumbImageView;
+@property (weak, nonatomic) IBOutlet UILabel *cityLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightTitleConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthSubtitleLabelConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthCityLabelConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthDistanceLabelConstraint;
 
 @end

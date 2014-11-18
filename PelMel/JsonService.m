@@ -62,6 +62,7 @@
     NSString *description   = [obj objectForKey:@"description"];
     NSDictionary *thumb     = [obj objectForKey:@"thumb"];
     NSString *placeType     = [obj objectForKey:@"type"];
+    NSString *cityName      = [obj objectForKey:@"city"];
     NSNumber *inUser        = [obj objectForKey:@"usersCount"];
     NSNumber *likeUser      = [obj objectForKey:@"likesCount"];
     NSNumber *adBoost       = [obj objectForKey:@"boostValue"];
@@ -104,6 +105,7 @@
     [data setLat:placeLat];
     [data setLng:placeLng];
     [data setPlaceType:placeType];
+    [data setCityName:cityName];
     [data setKey:itemKey];
     [data setInUserCount:[inUser integerValue]];
     [data setLikeCount:[likeUser integerValue]];

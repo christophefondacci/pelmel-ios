@@ -322,7 +322,7 @@
         case kPMLSectionActivity:
             return kPMLRowActivityId;
         case kPMLSectionTopPlaces:
-            return kPMLRowActivityId;
+            return @"topPlace";
 
     }
     return nil;
@@ -475,7 +475,7 @@
         }
             break;
         case kPMLSectionTopPlaces:
-            return kPMLHeightActivityRows;
+            return 80; //kPMLHeightActivityRows;
     }
     return 44;
 
@@ -917,8 +917,25 @@
 -(void)configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:(NSInteger)row {
     Place *place = [[_infoProvider topPlaces] objectAtIndex:row];
     cell.activityTitleLabel.text = place.title;
+    
+    // Subtitle (like count)
     NSString *likeTemplate = NSLocalizedString(@"snippet.likes",@"snippet.likes");
     cell.activitySubtitleLabel.text = [NSString stringWithFormat:likeTemplate,place.likeCount];
+    CGSize size = [cell.activitySubtitleLabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+    cell.widthSubtitleLabelConstraint.constant = size.width;
+    
+    // Setting city
+    cell.cityLabel.text = place.cityName;
+    size = [cell.cityLabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
+    cell.widthCityLabelConstraint.constant = size.width;
+    
+    // Setting distance
+    NSString *distance = [_conversionService distanceTo:place];
+    cell.distanceLabel.text = distance;
+    size = [cell.distanceLabel sizeThatFits:CGSizeZero];
+    cell.widthDistanceLabelConstraint.constant = size.width;
+    
+    
     cell.activityThumbImageView.image = [CALImage getDefaultThumb];
     // Resetting height that might have been changed by an activity row
     cell.heightTitleConstraint.constant = 21;
