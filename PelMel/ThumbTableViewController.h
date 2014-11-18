@@ -24,6 +24,7 @@
 
 // Optional
 @optional
+- (NSInteger)fontSize;
 - (BOOL)rounded; // Whether or not images are rounded corners (defaults to YES)
 - (BOOL)isSelected:(NSInteger)index;
 - (UIColor*) colorFor:(NSInteger)index; // Color to use when displaying element (border color), defaults to white

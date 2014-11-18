@@ -67,4 +67,8 @@
     PlaceType *placeType = [_placeTypes objectAtIndex:index];
     return [placeType.code isEqualToString:_place.placeType];
 }
+
+- (NSInteger)fontSize {
+    return 7;
+}
 @end

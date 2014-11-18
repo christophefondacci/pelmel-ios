@@ -133,7 +133,11 @@
     cell.bottomDecorator.image = [self.thumbProvider bottomRightDecoratorForIndex:(int)indexPath.row];
     NSInteger labelSize = 9;
     cell.titleLabel.text = [self.thumbProvider titleAtIndex:indexPath.row];
-//    cell.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:labelSize];
+    // Custom font size if supported
+    if([self.thumbProvider respondsToSelector:@selector(fontSize)]) {
+        NSInteger fontSize = [self.thumbProvider fontSize];
+        cell.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:fontSize];
+    }
     cell.titleLabel.minimumScaleFactor=0.8;
     return cell;
 }
