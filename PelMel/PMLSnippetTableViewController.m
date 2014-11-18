@@ -894,9 +894,6 @@
 }
 -(void)configureRowActivity:(PMLActivityTableViewCell*)cell atIndex:(NSInteger)row {
     Activity *activity = [[_infoProvider activities] objectAtIndex:row];
-//    NSError *error;
-//    NSAttributedString *attributedStr = [[NSAttributedString alloc] initWithData:[[activity.message stringByAppendingString:@"\n" ] dataUsingEncoding:NSUTF8StringEncoding] options:@{NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType, NSCharacterEncodingDocumentAttribute: @(NSUTF8StringEncoding)} documentAttributes:nil error:&error];
-    
     
     cell.activityTitleLabel.text = [self stringByStrippingHTML:activity.message];
     cell.activitySubtitleLabel.text = [_uiService delayStringFrom:activity.activityDate];
@@ -923,6 +920,8 @@
     NSString *likeTemplate = NSLocalizedString(@"snippet.likes",@"snippet.likes");
     cell.activitySubtitleLabel.text = [NSString stringWithFormat:likeTemplate,place.likeCount];
     cell.activityThumbImageView.image = [CALImage getDefaultThumb];
+    // Resetting height that might have been changed by an activity row
+    cell.heightTitleConstraint.constant = 21;
     [_imageService load:place.mainImage to:cell.activityThumbImageView thumb:YES];
     cell.activityThumbImageView.layer.borderColor = [[_uiService colorForObject:place] CGColor];
     cell.activityTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
@@ -930,10 +929,6 @@
     for(UIGestureRecognizer *recognizer in cell.activityThumbImageView.gestureRecognizers) {
         [cell.activityThumbImageView removeGestureRecognizer:recognizer];
     }
-//    UITapGestureRecognizer *r = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(topPlaceTapped:)];
-//    cell.activityThumbImageView.tag = row;
-//    [cell.activityThumbImageView addGestureRecognizer:r];
-//    cell.activityThumbImageView.userInteractionEnabled = YES;
 }
 
 -(void) configureRowTags:(PMLTagsTableViewCell*)cell atIndex:(NSInteger)index {
