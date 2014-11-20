@@ -131,7 +131,6 @@
 
     // Configuring bottom right decorator
     cell.bottomDecorator.image = [self.thumbProvider bottomRightDecoratorForIndex:(int)indexPath.row];
-    NSInteger labelSize = 9;
     cell.titleLabel.text = [self.thumbProvider titleAtIndex:indexPath.row];
     // Custom font size if supported
     if([self.thumbProvider respondsToSelector:@selector(fontSize)]) {

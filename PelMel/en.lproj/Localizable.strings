@@ -240,7 +240,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "togayther.slogan"="Your outings, your style";
 "upload.failed.title"="Image upload failed";
 "upload.failed"="We could not send your image to our server, this is probably caused by network problems. Check your connection or try to connect to a wifi hotspot and try again.";
-"user.lastlocation"="Seen @ %@ %d %@ ago";
+"user.lastlocation"="@ %@ %d %@ ago";
 "user.loc.days"="days";
 "user.loc.hours"="hours";
 "user.loc.minutes"="minutes";

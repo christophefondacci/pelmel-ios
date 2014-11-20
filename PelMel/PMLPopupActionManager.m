@@ -271,7 +271,7 @@
         if(_currentObject.likeCount>0 && !_checkinEnabled) {
             _likeAction.badgeValue = [NSNumber numberWithInt:(int)_currentObject.likeCount];
         } else if(_checkinEnabled) {
-            int badgeCount = MAX((int)place.inUserCount,place.inUsers.count);
+            int badgeCount = MAX((int)place.inUserCount,(int)place.inUsers.count);
             if(badgeCount>0) {
                 _checkinAction.badgeValue = [NSNumber numberWithInt:badgeCount];
                 [self.popupController updateBadgeFor:_checkinAction with:badgeCount];

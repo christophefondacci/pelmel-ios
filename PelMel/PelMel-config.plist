@@ -87,7 +87,7 @@
 	<key>marker.sexshop.closed</key>
 	<string>mapMarkerStoreOff</string>
 	<key>url.server</key>
-	<string>http://www.pelmelguide.com</string>
+	<string>http://192.168.1.25</string>
 	<key>hdEnabled</key>
 	<false/>
 	<key>color.event</key>
@@ -97,7 +97,7 @@
 	<key>color.placeType.hotel</key>
 	<string>3dabff</string>
 	<key>color.placeType.asso</key>
-	<string>c8c90b</string>
+	<string>00d0c7</string>
 	<key>color.placeType.sauna</key>
 	<string>4856ff</string>
 	<key>color.placeType.restaurant</key>

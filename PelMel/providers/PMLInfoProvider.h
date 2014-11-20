@@ -49,7 +49,9 @@ typedef enum {
 // Color of the short thumb subtitle text
 -(UIColor*)thumbSubtitleColor;
 -(NSArray*)addressComponents;
-
+// The label of the type of element being displayed
+- (NSString*)itemTypeLabel;
+- (NSString*)city;
 @optional
 
 // When implemented, this method will be called and the component will replace

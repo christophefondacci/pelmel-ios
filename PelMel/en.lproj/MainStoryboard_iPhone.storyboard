@@ -47,6 +47,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -3075,6 +3076,45 @@
                                     <outlet property="heightTitleConstraint" destination="uY2-Ru-auk" id="o96-3L-rED"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="imagedTitle" rowHeight="39" id="Fin-hd-DxW" customClass="PMLImagedTitleTableViewCell">
+                                <rect key="frame" x="0.0" y="640" width="320" height="60"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fin-hd-DxW" id="ITX-AZ-M2N">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bar" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Of7-H5-JLp">
+                                            <rect key="frame" x="153" y="9" width="32" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="FaI-5V-jud"/>
+                                                <constraint firstAttribute="width" constant="32" id="uf1-Sj-Y2L"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconBar" translatesAutoresizingMaskIntoConstraints="NO" id="WdK-01-7me" userLabel="mainImage">
+                                            <rect key="frame" x="130" y="9.5" width="18" height="18"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="18" id="bOx-iB-YYj"/>
+                                                <constraint firstAttribute="height" constant="18" id="s4j-vm-gme"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="centerX" secondItem="Of7-H5-JLp" secondAttribute="centerX" constant="-9" id="eY2-5p-5QR"/>
+                                        <constraint firstItem="WdK-01-7me" firstAttribute="centerY" secondItem="Of7-H5-JLp" secondAttribute="centerY" constant="-1" id="jdd-IY-UoV"/>
+                                        <constraint firstItem="Of7-H5-JLp" firstAttribute="leading" secondItem="WdK-01-7me" secondAttribute="trailing" constant="5" id="oge-8F-4Ma"/>
+                                        <constraint firstItem="Of7-H5-JLp" firstAttribute="top" secondItem="ITX-AZ-M2N" secondAttribute="top" constant="9" id="r2c-gr-nOa"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="titleImage" destination="WdK-01-7me" id="26S-Pd-arQ"/>
+                                    <outlet property="titleLabel" destination="Of7-H5-JLp" id="N1f-Pq-jGx"/>
+                                    <outlet property="widthTitleConstraint" destination="uf1-Sj-Y2L" id="4as-kC-pBn"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="ek0-vZ-CFQ" id="6MC-VV-B5V"/>
@@ -3102,6 +3142,7 @@
         <image name="place-marker.png" width="284" height="77"/>
         <image name="snpActionButton" width="12" height="14"/>
         <image name="snpGripBottom" width="80" height="5"/>
+        <image name="snpIconBar" width="20" height="20"/>
         <image name="snpIconCity" width="20" height="20"/>
         <image name="snpIconDistance" width="20" height="20"/>
         <image name="snpIconLike" width="30" height="30"/>
@@ -3114,11 +3155,11 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="enc-VM-87F"/>
-        <segue reference="agQ-rU-dsm"/>
         <segue reference="fnn-3s-KqK"/>
+        <segue reference="agQ-rU-dsm"/>
         <segue reference="hk5-7z-xvn"/>
         <segue reference="hap-7x-4U2"/>
         <segue reference="bA0-cZ-EFZ"/>
-        <segue reference="FQz-aE-p6t"/>
+        <segue reference="eKE-7K-Ihn"/>
     </inferredMetricsTieBreakers>
 </document>

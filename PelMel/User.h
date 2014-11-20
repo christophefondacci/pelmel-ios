@@ -23,6 +23,7 @@
 @property (nonatomic) NSInteger checkedInPlacesCount;
 @property (readonly) NSMutableArray *checkedInPlaces;
 @property (nonatomic,strong) Place *lastLocation;
+@property (strong) NSString *cityName;
 
 @property (strong) NSMutableArray *descriptions;
 -(void) addDescription:(NSString*)description language:(NSString*)language;

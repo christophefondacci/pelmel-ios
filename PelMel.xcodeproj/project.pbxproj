@@ -68,6 +68,8 @@
 		B4322E3D198DE2DA0037E260 /* PMLSubNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4322E3B198DE2DA0037E260 /* PMLSubNavigationController.h */; };
 		B4322E3E198DE2DA0037E260 /* PMLSubNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4322E3C198DE2DA0037E260 /* PMLSubNavigationController.m */; };
 		B435798C1677736900E6E461 /* PlaceMasterProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B435798B1677736900E6E461 /* PlaceMasterProvider.m */; };
+		B43805B91A1D870100736051 /* PMLImagedTitleTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */; };
+		B43805BA1A1D870100736051 /* PMLImagedTitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */; };
 		B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B43E761C1991012000153B46 /* PMLMainNavBarView.xib */; };
 		B43E76201991BD5C00153B46 /* PMLMainNavBarView.h in Headers */ = {isa = PBXBuildFile; fileRef = B43E761E1991BD5C00153B46 /* PMLMainNavBarView.h */; };
 		B43E76211991BD5C00153B46 /* PMLMainNavBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B43E761F1991BD5C00153B46 /* PMLMainNavBarView.m */; };
@@ -368,6 +370,8 @@
 		B4322E3C198DE2DA0037E260 /* PMLSubNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLSubNavigationController.m; sourceTree = "<group>"; };
 		B435798A1677736900E6E461 /* PlaceMasterProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceMasterProvider.h; sourceTree = "<group>"; };
 		B435798B1677736900E6E461 /* PlaceMasterProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceMasterProvider.m; sourceTree = "<group>"; };
+		B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLImagedTitleTableViewCell.h; sourceTree = "<group>"; };
+		B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLImagedTitleTableViewCell.m; sourceTree = "<group>"; };
 		B43E761C1991012000153B46 /* PMLMainNavBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLMainNavBarView.xib; sourceTree = "<group>"; };
 		B43E761E1991BD5C00153B46 /* PMLMainNavBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLMainNavBarView.h; sourceTree = "<group>"; };
 		B43E761F1991BD5C00153B46 /* PMLMainNavBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLMainNavBarView.m; sourceTree = "<group>"; };
@@ -1217,6 +1221,8 @@
 				B4270E1B19F631B700620773 /* PMLUserActionsView.m */,
 				B4B82B3419FBB69900895C57 /* PMLPickerTableViewCell.h */,
 				B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */,
+				B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */,
+				B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */,
 			);
 			name = Snippet;
 			sourceTree = "<group>";
@@ -1312,6 +1318,7 @@
 				B4E8292918A9EE530063715C /* MainMenuTableViewController.h in Headers */,
 				B41DD75A197BD9DA008F09D9 /* UIMapOptionView.h in Headers */,
 				B43FA67619866ECD008A1679 /* Activity.h in Headers */,
+				B43805B91A1D870100736051 /* PMLImagedTitleTableViewCell.h in Headers */,
 				B42F543F19873CC200C2371F /* MKNewPlaceAnnotationView.h in Headers */,
 				B4BB9EFD19D4DE430070B03C /* PMLChatTableViewCell.h in Headers */,
 				B4E8292F18AAFAA10063715C /* SettingsService.h in Headers */,
@@ -1515,6 +1522,7 @@
 				B4592A94162318A4009688B8 /* PickerInputTableViewCell.m in Sources */,
 				B4D560D2160E1BC1003A738E /* UIImageExtras.m in Sources */,
 				B4D56082160B673F003A738E /* main.m in Sources */,
+				B43805BA1A1D870100736051 /* PMLImagedTitleTableViewCell.m in Sources */,
 				B46AD73A19E50A020021E1DE /* PMLSnippetLikesTableViewController.m in Sources */,
 				B40668B01971394E0012DF71 /* PMLMenuManagerController.m in Sources */,
 				B4D56086160B673F003A738E /* AppDelegate.m in Sources */,

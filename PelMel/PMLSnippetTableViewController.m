@@ -24,6 +24,7 @@
 #import "PMLTagsTableViewCell.h"
 #import "PMLThumbsTableViewCell.h"
 #import "MessageViewController.h"
+#import "PMLImagedTitleTableViewCell.h"
 
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
@@ -61,17 +62,20 @@
 #define kPMLThumbSize @42
 
 
-#define kPMLOvSummaryRows 3
+#define kPMLOvSummaryRows 4
 #define kPMLRowOvSeparator 0
 #define kPMLRowOvImage 1
 #define kPMLRowOvTitle 2
+#define kPMLRowOvPlaceType 3
 #define kPMLRowOvSeparatorId @"separator"
 #define kPMLRowOvImageId @"image"
 #define kPMLRowOvTitleId @"text"
+#define kPMLRowOvImagedTitleId @"imagedTitle"
 #define kPMLRowTextId @"text"
 #define kPMLHeightOvSeparator 31
 #define kPMLHeightOvImage 106
 #define kPMLHeightOvTitle 30
+#define kPMLHeightOvImagedTitle 39
 
 
 #define kPMLOvAddressRows 1
@@ -242,7 +246,7 @@
             case kPMLSectionOvSummary:
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
-                return [[_infoProvider addressComponents] count];
+                return [[_infoProvider addressComponents] count]+1;
             case kPMLSectionOvHours: {
                 
                 Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_OPENING];
@@ -305,12 +309,18 @@
                     return kPMLRowOvImageId;
                 case kPMLRowOvTitle:
                     return kPMLRowOvTitleId;
+                case kPMLRowOvPlaceType:
+                    return kPMLRowOvImagedTitleId;
                 default:
                     return kPMLRowTextId;
             }
             break;
         case kPMLSectionOvAddress:
-            return kPMLRowOvAddressId;
+            if(indexPath.row<[[_infoProvider addressComponents] count]) {
+                return kPMLRowOvAddressId;
+            } else {
+                return kPMLRowOvImagedTitleId;
+            }
         case kPMLSectionOvHours:
             return indexPath.row == 0 ? kPMLRowHoursTitleId : kPMLRowTextId;
         case kPMLSectionOvHappyHours:
@@ -361,12 +371,19 @@
                 case kPMLRowOvTitle:
                     [self configureRowOvTitle:(PMLTextTableViewCell*)cell];
                     break;
+                case kPMLRowOvPlaceType:
+                    [self configureRowOvPlaceType:(PMLImagedTitleTableViewCell*)cell];
+                    break;
                 default:
                     break;
             }
             break;
         case kPMLSectionOvAddress:
-            [self configureRowOvAddress:(PMLTextTableViewCell*)cell atIndex:indexPath.row];
+            if(indexPath.row < [[_infoProvider addressComponents] count]) {
+                [self configureRowOvAddress:(PMLTextTableViewCell*)cell atIndex:indexPath.row];
+            } else {
+                [self configureRowOvCity:(PMLImagedTitleTableViewCell*)cell];
+            }
             break;
         case kPMLSectionOvHours:
             if(indexPath.row==0) {
@@ -430,12 +447,18 @@
                     return kPMLHeightOvImage;
                 case kPMLRowOvTitle:
                     return kPMLHeightOvTitle;
+                case kPMLRowOvPlaceType:
+                    return kPMLHeightOvImagedTitle;
                 default:
                     break;
             }
             break;
         case kPMLSectionOvAddress:
-            return kPMLHeightOvAddressRows;
+            if(indexPath.row< [[_infoProvider addressComponents] count]) {
+                return kPMLHeightOvAddressRows;
+            } else {
+                return kPMLHeightOvImagedTitle;
+            }
         case kPMLSectionOvHours:
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvHappyHours:
@@ -792,7 +815,7 @@
     }
     
     // Numeric row key
-    NSNumber *key = [NSNumber numberWithInt:index];
+    NSNumber *key = [NSNumber numberWithInt:(int)index];
     
     // Purging any previous gradient
     CAGradientLayer *countersPreviewGradient = [_countersPreviewGradients objectForKey:key];
@@ -853,7 +876,14 @@
 -(void)configureRowOvTitle:(PMLTextTableViewCell*)cell {
     cell.cellTextLabel.text = [[_infoProvider title] uppercaseString];
     cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_EXTRABOLD size:17];
-    cell.cellTextLabel.textColor = [_uiService colorForObject:_snippetItem];
+    cell.cellTextLabel.textColor = [UIColor whiteColor]; //[_uiService colorForObject:_snippetItem];
+}
+-(void)configureRowOvPlaceType:(PMLImagedTitleTableViewCell*)cell {
+    cell.titleLabel.text = [_infoProvider itemTypeLabel];
+    cell.titleImage.image = [_infoProvider titleIcon];
+    CGSize size = [cell.titleLabel sizeThatFits:CGSizeZero];
+    cell.widthTitleConstraint.constant = size.width;
+    cell.titleLabel.textColor = [_infoProvider color];
 }
 -(void)configureRowOvAddress:(PMLTextTableViewCell*)cell atIndex:(NSInteger)row {
     NSArray *components = [_infoProvider addressComponents];
@@ -861,6 +891,13 @@
     cell.cellTextLabel.text = (NSString*)[components objectAtIndex:row];
     cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
     cell.cellTextLabel.textColor = [UIColor whiteColor];
+}
+-(void)configureRowOvCity:(PMLImagedTitleTableViewCell*)cell {
+    cell.titleLabel.text = [_infoProvider city];
+    cell.titleImage.image = [UIImage imageNamed:@"snpIconCity"];
+    CGSize size = [cell.titleLabel sizeThatFits:CGSizeZero];
+    cell.widthTitleConstraint.constant = size.width;
+
 }
 -(void)configureRowOvHours:(PMLTextTableViewCell*)cell atIndex:(NSInteger)row forType:(NSString*)specialType {
     

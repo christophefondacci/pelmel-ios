@@ -86,6 +86,13 @@
     PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
     return placeType.icon;
 }
+- (NSString *)itemTypeLabel {
+    PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
+    return placeType.label;
+}
+-(NSString *)city {
+    return _place.cityName;
+}
 // Global theme color for element
 -(UIColor*) color {
     return [_uiService colorForObject:_place];

@@ -480,7 +480,7 @@
 
     
     // Default index
-    int descIndex = index-1;
+    NSInteger descIndex = index-1;
     // If a picker is somewhere in our description list we need
     // to pick the right description
     if(_pickerIndexPath.section == kSectionDescriptions) {
@@ -891,7 +891,7 @@
         
         // Setting up language picker
         Description *d = [self getDescriptionFor:button.tag];
-        [langPickerDataSource setLanguage:d.languageCode forIndex:button.tag];
+        [langPickerDataSource setLanguage:d.languageCode forIndex:(int)button.tag];
         
         // We add a picker
         NSIndexPath *oldIndexPath = _pickerIndexPath;

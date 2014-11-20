@@ -96,4 +96,19 @@
 #pragma mark Implement me
     return nil;
 }
+
+- (NSString *)itemTypeLabel {
+    return NSLocalizedString(@"city.label", @"city.label");
+}
+- (NSString *)city {
+    return _city.name;
+}
+- (NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode {
+    switch (mode) {
+        case ThumbPreviewModeLikes:
+            return _city.likers.count;
+        default:
+            return 0;
+    }
+}
 @end

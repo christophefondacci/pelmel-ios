@@ -513,13 +513,13 @@
         controller.labelKey = @"register.why";
     }
 }
--(void)dateUpdated:(NSDate *)date label:(UILabel *)label {
+-(void)dateUpdated:(NSDate *)date {
     NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateStyle:NSDateFormatterLongStyle];
     [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
     
-    label.text = [dateFormatter stringFromDate:date];
-    [label sizeToFit];
+//    label.text = [dateFormatter stringFromDate:date];
+//    [label sizeToFit];
     
     registerDate = date;
     // Unselecting cell
@@ -541,4 +541,6 @@
     }
     return YES;
 }
+
+
 @end

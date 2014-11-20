@@ -172,6 +172,7 @@
     // Extracting data from JSON structure
     NSString *placeKey      = [json objectForKey:@"key"];
     NSString *name          = [json objectForKey:@"name"];
+    NSString *cityName      = [json objectForKey:@"city"];
     NSString *address       = [json objectForKey:@"address"];
     NSNumber *likeCount     = [json objectForKey:@"likes"];
     NSNumber *inCount       = [json objectForKey:@"users"];
@@ -221,6 +222,7 @@
         [place setTitle:name];
     }
     [place setAddress:address];
+    [place setCityName:cityName];
     [place setLikeCount:[likeCount integerValue]];
     [place setInUserCount:[inCount integerValue]];
     [place setMiniDesc:description];
@@ -520,6 +522,7 @@
 - (void)fillUser:(User*)user fromJson:(NSDictionary*)jsonLoginInfo {
     NSString *pseudo    =[jsonLoginInfo objectForKey:@"pseudo"];
     NSString *key       =[jsonLoginInfo objectForKey:@"key"];
+    NSString *city       =[jsonLoginInfo objectForKey:@"city"];
     NSNumber *heightInCm=[jsonLoginInfo objectForKey:@"heightInCm"];
     NSNumber *weightInKg=[jsonLoginInfo objectForKey:@"weightInKg"];
     NSNumber *birthdate =[jsonLoginInfo objectForKey:@"birthDate"];
@@ -535,6 +538,7 @@
     
     user.pseudo     = pseudo;
     user.key        = key;
+    user.cityName   = city;
     user.heightInCm = [heightInCm integerValue];
     user.weightInKg = [weightInKg integerValue];
     user.birthDate  = [[NSDate alloc] initWithTimeIntervalSince1970:birthDateTime];

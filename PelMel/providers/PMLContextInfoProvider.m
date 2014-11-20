@@ -117,4 +117,14 @@
 -(NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
     return nil;
 }
+
+- (NSString *)itemTypeLabel {
+    return nil;
+}
+- (NSString *)city {
+    return nil;
+}
+-(NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode {
+    return 0;
+}
 @end

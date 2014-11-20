@@ -50,6 +50,12 @@
 -(UIImage*) titleIcon {
     return [UIImage imageNamed:@"snpIconEvent"];
 }
+- (NSString *)itemTypeLabel {
+    return [self snippetRightTitleText];
+}
+- (NSString *)city {
+    return _user.cityName;
+}
 // Global theme color for element
 -(UIColor*) color {
     return [self thumbSubtitleColor];
