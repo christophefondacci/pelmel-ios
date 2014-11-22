@@ -378,6 +378,7 @@
 - (void)editName {
     if(!_currentObject.editing) {
         _currentObject.editing = YES;
+        _currentObject.editingDesc=NO;
         NSString *oldName = ((Place*)_currentObject).title;
         NSString *oldPlaceType= ((Place*)_currentObject).placeType;
         EditionAction cancelAction = ^{
@@ -395,6 +396,7 @@
 -(void)editDescription {
     if(!_currentObject.editingDesc) {
         _currentObject.editingDesc = YES;
+        _currentObject.editing = NO;
         NSString *oldDesc = _currentObject.miniDesc;
         EditionAction cancelAction = ^{
             _currentObject.miniDesc = oldDesc;
