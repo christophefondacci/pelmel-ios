@@ -769,6 +769,11 @@
     cell.likesTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
     cell.checkinsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
     cell.commentsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
+    if([_infoProvider respondsToSelector:@selector(commentsCounterTitle)]) {
+        cell.commentsTitleLabel.text = [_infoProvider commentsCounterTitle];
+    } else {
+        cell.commentsTitleLabel.text = NSLocalizedString(@"counters.comments", @"Comments");
+    }
 }
 /**
  * Updates the gradient of the counters view based on the selected tab

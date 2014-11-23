@@ -223,7 +223,9 @@
         [self refreshLikeButton];
     }];
 }
-
+- (NSString *)commentsCounterTitle {
+    return NSLocalizedString(@"counters.chat",@"Chat");
+}
 #pragma mark - right section
 - (BOOL)hasSnippetRightSection {
     return YES;

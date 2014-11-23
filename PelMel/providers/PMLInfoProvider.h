@@ -52,8 +52,9 @@ typedef enum {
 // The label of the type of element being displayed
 - (NSString*)itemTypeLabel;
 - (NSString*)city;
-@optional
 
+@optional
+- (NSString*)commentsCounterTitle;
 // When implemented, this method will be called and the component will replace
 // The thumbs view
 -(void)configureCustomViewIn:(UIView*)parentView forController:(UIViewController*)controller;
