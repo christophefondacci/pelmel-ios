@@ -1373,6 +1373,16 @@
         _snippetCell.hoursBadgeView.hidden=YES;
         [_snippetCell.descriptionTextViewButton addTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
         [_snippetCell.descriptionTextView becomeFirstResponder];
+        // Building placeholder
+        NSString *langCode = _snippetItem.miniDescLang;
+        if(langCode == nil) {
+            langCode = [TogaytherService getLanguageIso6391Code];
+        }
+        NSString *template = [NSString stringWithFormat:@"language.%@",langCode];
+        NSString *langLabel = NSLocalizedString(template, @"language name");
+        NSString *descPlaceholderTemplate = NSLocalizedString(@"description.placeholder", @"description placeholder");
+        NSString *descPlaceholder = [NSString stringWithFormat:descPlaceholderTemplate,langLabel];
+        
 
     } else {
         _snippetCell.titleTextField.hidden=YES;

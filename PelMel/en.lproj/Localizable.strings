@@ -47,6 +47,10 @@
 "cancel"="Cancel";
 "city.label"="City";
 "city.withbars"="%d gay places";
+"description"="Description";
+"description.placeholder"="Write a description in %@";
+"description.edition.title"="Choose your language";
+"description.edition.langChoice"="Write in %@";
 "detail.city.title"="%@: %d gay hangouts";
 "distance.template.kilometers"="%@ km";
 "distance.template.meters"="%@ meters";
@@ -68,6 +72,10 @@
 "language.it"="Italian";
 "language.de"="German";
 "language.nl"="Dutch";
+"language.ru"="Russian";
+"language.pt"="Portuguese";
+"language.cn"="Chinese";
+"language.zn"="Chinese";
 "likes.list.loading"="Loading your like history...";
 "likes.list.noResult"="Want more likes? Improve your visibility by liking other people and places, checking into venues, and posting comments and pictures.";
 "list.places.men"="%d";
@@ -175,7 +183,6 @@
 "push.yes"="Yes";
 "push.no"="Not now";
 "tags"="bear,beard,bi,black,blond,chubby,couple,cruising,daddy,hairy,hardcore,hugedick,leather,military,muscle,naked,piercing,tatoo,twink";
-"description"="Description";
 "age"="%d years old";
 "disconnect"="Disconnect";
 "registering"="Registering...";

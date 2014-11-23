@@ -90,6 +90,7 @@
     UIActionSheet *_reportActionSheet;
     UIActionSheet *_editActionSheet;
     UIActionSheet *_relocationConfirmActionSheet;
+    UIActionSheet *_descriptionActionSheet;
     
     CALObject *_currentObject;
     BOOL _checkinEnabled;
@@ -372,6 +373,15 @@
                 [self editToMyLocation];
                 break;
         }
+    } else if(_descriptionActionSheet == actionSheet) {
+        switch(buttonIndex) {
+            case 0:
+                [self editDescriptionWithCurrentLanguage:NO];
+                break;
+            case 1:
+                [self editDescriptionWithCurrentLanguage:YES];
+                break;
+        }
     }
 }
 #pragma mark - Edition actions
@@ -395,18 +405,70 @@
 }
 -(void)editDescription {
     if(!_currentObject.editingDesc) {
-        _currentObject.editingDesc = YES;
-        _currentObject.editing = NO;
-        NSString *oldDesc = _currentObject.miniDesc;
-        EditionAction cancelAction = ^{
-            _currentObject.miniDesc = oldDesc;
-            _currentObject.editingDesc = NO;
-        };
-        EditionAction commitAction = ^{
-            _currentObject.editingDesc = NO;
-        };
-        [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
+        NSString *sysLang = [TogaytherService getLanguageIso6391Code];
+        BOOL noDescription = (_currentObject.miniDescKey == nil||_currentObject.miniDescKey.length==0);
+        // If there is an existing description in another language
+        // OR if there is NO description and english is not the system language
+        if((!noDescription && ![sysLang isEqualToString: _currentObject.miniDescLang])
+           || ( noDescription && ![sysLang isEqualToString:@"en"])) {
+            
+            // Then we offer to choose between current description language (or english if none) and current sys language
+            NSString *title = NSLocalizedString(@"description.edition.title", @"Choose your language");
+            _descriptionActionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+            
+            // Language labels
+            NSString *descTemplate  = [NSString stringWithFormat:@"language.%@", noDescription ? @"en" : _currentObject.miniDescLang];
+            NSString *descLangLabel = NSLocalizedString(descTemplate, @"language name");
+            NSString *sysTemplate   = [NSString stringWithFormat:@"language.%@",[TogaytherService getLanguageIso6391Code] ];
+            NSString *sysLangLabel  = NSLocalizedString(sysTemplate, @"Language");
+            
+            // Current choice
+            NSString *choiceTemplate= NSLocalizedString(@"description.edition.langChoice", @"Write in ..." );
+            NSString *choiceCurrent = [NSString stringWithFormat:choiceTemplate,descLangLabel];
+            // System choice
+            NSString *systemChoice  = [NSString stringWithFormat:choiceTemplate,sysLangLabel];
+            
+            // Registering options
+            [_descriptionActionSheet addButtonWithTitle:systemChoice];
+            [_descriptionActionSheet addButtonWithTitle:choiceCurrent];
+            [_descriptionActionSheet addButtonWithTitle:NSLocalizedString(@"cancel", @"cancel")];
+            _descriptionActionSheet.cancelButtonIndex=2;
+            [_descriptionActionSheet showInView:_popupController.controller.parentMenuController.view];
+
+        } else {
+            [self editDescriptionWithCurrentLanguage:YES];
+        }
     }
+}
+-(void)editDescriptionWithCurrentLanguage:(BOOL)currentLanguage {
+    NSString *oldDesc = _currentObject.miniDesc;
+    NSString *oldDescKey = _currentObject.miniDescKey;
+    NSString *oldDescLang = _currentObject.miniDescLang;
+    // If current description exists and is in another language
+    if(!currentLanguage) {
+        // Then we prepare a new one
+        _currentObject.miniDesc = nil;
+        _currentObject.miniDescKey = nil;
+        _currentObject.miniDescLang = [TogaytherService getLanguageIso6391Code];
+    } else {
+        // If currentLanguage set to YES with no description, it means english
+        if(_currentObject.miniDescKey == nil || _currentObject.miniDescKey.length==0) {
+            _currentObject.miniDescLang = @"en";
+        }
+    }
+    _currentObject.editingDesc = YES;
+    _currentObject.editing = NO;
+    EditionAction cancelAction = ^{
+        _currentObject.miniDesc = oldDesc;
+        _currentObject.miniDescKey = oldDescKey;
+        _currentObject.miniDescLang = oldDescLang;
+        _currentObject.editingDesc = NO;
+    };
+    EditionAction commitAction = ^{
+        _currentObject.editingDesc = NO;
+    };
+    [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
+
 }
 -(void)editLocation
 {

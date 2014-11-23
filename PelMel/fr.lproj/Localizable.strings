@@ -48,6 +48,10 @@
 "cancel"="Annuler";
 "city.label"="Ville";
 "city.withbars"="%d lieux gays";
+"description"="Description";
+"description.placeholder"="Ecrire en %@";
+"description.edition.title"="Choisissez votre langue";
+"description.edition.langChoice"="Ecrire en %@";
 "detail.city.title"="%@ : %d lieux gays";
 "distance.template.kilometers"="%@ km";
 "distance.template.meters"="%@ mètres";
@@ -69,6 +73,10 @@
 "language.it"="Italien";
 "language.de"="Allemand";
 "language.nl"="Hollandais";
+"language.ru"="Russe";
+"language.pt"="Portugais";
+"language.cn"="Chinois";
+"language.zn"="Chinois";
 "likes.list.loading"="Chargement de vos likes...";
 "likes.list.noResult"="Vous voulez plus de likes ? Améliorez votre visibilité en aimant d'autres personnes et des lieux, en faisant un check-in où vous êtes, et en postant des commentaires ou photos.";
 "list.places.men"="%d";
