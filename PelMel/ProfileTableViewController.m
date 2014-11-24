@@ -326,10 +326,12 @@
                     // Add button text and action
                     [addCell.addButton setTitle:NSLocalizedString(@"map.option.add", @"Add") forState:UIControlStateNormal];
                     [addCell.addButton addTarget:self action:@selector(addDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [addCell.addButtonIcon addTarget:self action:@selector(addDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
                     
                     // Modify button text and action
                     [addCell.modifyButton setTitle:NSLocalizedString(@"modify", @"modify") forState:UIControlStateNormal];
                     [addCell.modifyButton addTarget:self action:@selector(modifyDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [addCell.modifyButtonIcon addTarget:self action:@selector(modifyDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
                     
                     // Colors (a bug reverts colors of buttons to blue
                     addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
@@ -367,8 +369,10 @@
                     PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
                     [addCell.addButton setTitle:NSLocalizedString(@"map.option.add", @"Add") forState:UIControlStateNormal];
                     [addCell.addButton addTarget:self action:@selector(addPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [addCell.addButtonIcon addTarget:self action:@selector(addPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
                     [addCell.modifyButton setTitle:NSLocalizedString(@"modify", @"modify") forState:UIControlStateNormal];
                     [addCell.modifyButton addTarget:self action:@selector(modifyPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
+                    [addCell.modifyButtonIcon addTarget:self action:@selector(modifyPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
                     
                     // Colors (a bug reverts colors of buttons to blue
                     addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);

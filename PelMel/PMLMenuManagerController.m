@@ -215,7 +215,7 @@ static void *MyParentMenuControllerKey;
     // Placing the frame at the bottom of the visible current view, outside
     CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height+1);
     _bottomView.frame = bottomFrame;
-    _bottomView.backgroundColor = [UIColor redColor];
+//    _bottomView.backgroundColor = [UIColor redColor];
     _bottomView.opaque=YES;
     
     // Assigning the menu controller for access from children
@@ -269,7 +269,8 @@ static void *MyParentMenuControllerKey;
 - (void)openCurrentSnippet {
     if(_currentSnippetViewController != nil) {
         _snippetFullyOpened = YES;
-        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:0];
+        NSInteger top = [self offsetForOpenedSnippet];
+        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:top];
         [_animator removeAllBehaviors];
         [_animator addBehavior:menuBehavior];
     }
@@ -462,7 +463,7 @@ static void *MyParentMenuControllerKey;
         if (bottomFrame.origin.y + velocity.y/4 < midY) {
             // Then we open full page
             _snippetFullyOpened = YES;
-            offset = 0;
+            offset = [self offsetForOpenedSnippet];
         } else {
             // Otherwise we close it back to snippet
             _snippetFullyOpened = NO;
@@ -483,6 +484,14 @@ static void *MyParentMenuControllerKey;
     }
 }
 
+-(NSInteger)offsetForOpenedSnippet {
+    CGRect bounds = self.view.bounds;
+    NSInteger top = 0;
+//    if(bounds.size.height> 600) {
+//        top = MAX(bounds.size.height-600,0);
+//    }
+    return top;
+}
 #pragma mark - UIPanGestureRecognizerDelegate
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     return YES;

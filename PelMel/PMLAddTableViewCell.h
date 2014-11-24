@@ -11,7 +11,9 @@
 @interface PMLAddTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *addLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
+@property (weak, nonatomic) IBOutlet UIButton *addButtonIcon;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthLabelConstaint;
 @property (weak, nonatomic) IBOutlet UIButton *modifyButton;
+@property (weak, nonatomic) IBOutlet UIButton *modifyButtonIcon;
 
 @end

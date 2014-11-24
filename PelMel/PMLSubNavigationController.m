@@ -51,7 +51,7 @@
     _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpGripTop"]];
     CGRect frame = self.view.frame;
     CGRect gripFrame = _gripView.frame;
-    _gripView.frame = CGRectMake(CGRectGetMidX(frame)-CGRectGetWidth(gripFrame)/2, -gripFrame.size.height, gripFrame.size.width, gripFrame.size.height);
+    _gripView.frame = CGRectMake(CGRectGetMidX(frame)-CGRectGetWidth(gripFrame)/2, -gripFrame.size.height+1, gripFrame.size.width, gripFrame.size.height);
     [self.view addSubview:_gripView];
     
     if(_viewControllers.count>0) {

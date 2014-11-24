@@ -212,6 +212,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
+    
     switch(indexPath.section) {
         case kSectionLogin:
             switch(indexPath.row) {
@@ -279,6 +280,7 @@
 //                }
                 case kRowRegisterTerms:
                     _termsOfUseLabel.text = NSLocalizedString(@"register.terms.accept", nil);
+                    registerTermsCell.accessoryType = UITableViewCellAccessoryNone;
                     return registerTermsCell;
                 case kRowRegisterButton:
                     [_registerButton setTitle:NSLocalizedString(@"register.button", @"REGISTER button label") forState:UIControlStateNormal];

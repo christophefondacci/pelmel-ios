@@ -1289,7 +1289,9 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="addButton" destination="bsK-dQ-73E" id="qu1-pJ-6nm"/>
+                                    <outlet property="addButtonIcon" destination="by4-A1-XmU" id="MTx-J7-vwC"/>
                                     <outlet property="modifyButton" destination="vJh-Pp-pMi" id="R64-MM-aMF"/>
+                                    <outlet property="modifyButtonIcon" destination="0Cs-RY-qEZ" id="i6i-Kk-0ek"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="picker" rowHeight="162" id="2cv-ud-FKn" userLabel="picker" customClass="PMLPickerTableViewCell">
@@ -3154,11 +3156,11 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="hap-7x-4U2"/>
+        <segue reference="agQ-rU-dsm"/>
         <segue reference="enc-VM-87F"/>
         <segue reference="fnn-3s-KqK"/>
-        <segue reference="agQ-rU-dsm"/>
         <segue reference="hk5-7z-xvn"/>
-        <segue reference="hap-7x-4U2"/>
         <segue reference="bA0-cZ-EFZ"/>
         <segue reference="eKE-7K-Ihn"/>
     </inferredMetricsTieBreakers>

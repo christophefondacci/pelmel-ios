@@ -36,6 +36,7 @@
     self.view.backgroundColor =UIColorFromRGB(0x272a2e);
     self.tableView.backgroundColor =  UIColorFromRGB(0x272a2e);
     self.tableView.separatorColor = [UIColor clearColor];
+    
     _heightNoLike = -1;
     
     _imageService = [TogaytherService imageService];
@@ -87,7 +88,7 @@
     }
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-    
+    cell.backgroundColor = UIColorFromRGB(0x272a2e);
     switch(indexPath.section) {
         case kSectionLikes:
             if(_loading) {

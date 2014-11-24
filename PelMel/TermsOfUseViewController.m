@@ -48,7 +48,7 @@
     
     CGSize textSize = [termsText sizeThatFits:CGSizeMake(screenRect.size.width, MAXFLOAT)];
     self.textHeightConstraint.constant = textSize.height+200;
-    self.textWidthConstraint.constant = scrollView.bounds.size.width;
+    self.textWidthConstraint.constant = self.view.bounds.size.width;
     
 //    CGRect frame = termsText.frame;
 //    frame.size.height = MAX(termsText.contentSize.height+20,screenRect.size.height);
