@@ -20,6 +20,7 @@
 #import "MenuAction.h"
 #import "Constants.h"
 #import "NSData+Conversion.h"
+#import "PMLDataManager.h"
 
 @implementation AppDelegate
 
@@ -58,8 +59,18 @@
     [self.window.rootViewController.view addSubview:view];
     
     [TogaytherService.uiService start:self.window];
+    TogaytherService.uiService.menuManagerController = menuManagerController;
     
+    // Checking if we are started with an URL
+    NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
 
+    if(url != nil) {
+        [self openURL:url searchCallback:^(CALObject *object) {
+            [menuManagerController.dataManager setInitialContext:object isSearch:YES];
+        } overviewCallback:^(CALObject *object) {
+            [menuManagerController.dataManager setInitialContext:object isSearch:NO];
+        }];
+    }
     return YES;
 }
 							
@@ -122,5 +133,43 @@
     NSMutableArray *allPlaces = [holder allPlaces];
     [allPlaces removeAllObjects];
     [allPlaces addObjectsFromArray:[holder places]];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+    
+    PMLMenuManagerController *menuController = [[TogaytherService uiService] menuManagerController];
+    [self openURL:url searchCallback:^(CALObject *object) {
+        // Opening a context means fitting results
+        ((MapViewController*)menuController.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
+        [[TogaytherService dataService] fetchPlacesFor:object];
+    } overviewCallback:^(CALObject *object) {
+        [[menuController dataManager] setInitialContext:object isSearch:NO];
+        [[TogaytherService dataService] fetchOverviewData:object];
+    }];
+    return YES;
+}
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return [self application:application openURL:url sourceApplication:nil annotation:nil];
+}
+
+-(void)openURL:(NSURL*)url searchCallback:(void (^)(CALObject *obj))searchCallback overviewCallback:(void(^)(CALObject *obj))overviewCallback{
+    
+    NSString *absoluteUrl = [url absoluteString];
+    NSString *lastComponent = [absoluteUrl lastPathComponent];
+    NSRange range = [lastComponent rangeOfString:@"-"];
+    if(range.length>0) {
+        NSUInteger loc = range.location;
+        NSString *key = [lastComponent substringToIndex:loc];
+        CALObject *object = [[TogaytherService dataService] objectForKey:key];
+        if(object != nil) {
+            if([absoluteUrl rangeOfString:@"/s-"].length>0) {
+                // Search
+                searchCallback(object);
+            } else {
+                // Overview
+                overviewCallback(object);
+            }
+        }
+    }
 }
 @end

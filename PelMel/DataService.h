@@ -145,7 +145,11 @@ typedef void (^UpdatePlaceCompletionBlock)(Place *place );
 
 -(void)cancelRunningProcesses;
 
-
+/**
+ * Retrieves an already loaded object matching this key or creates a new empty
+ * object for this key which could then be loaded
+ */
+-(CALObject*)objectForKey:(NSString*)key;
 
 @end
 

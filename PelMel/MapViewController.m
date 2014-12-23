@@ -636,9 +636,7 @@
         [_mapView setCenterCoordinate:coords animated:YES];
     
         if(!_snippetDisabledOnSelection) {
-            PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[TogaytherService.uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-            snippetController.snippetItem = place;
-            [self.parentMenuController presentControllerSnippet:snippetController];
+            [_uiService presentSnippetFor:place opened:NO];
         }
         
         if(_popupController != nil) {

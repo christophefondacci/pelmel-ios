@@ -138,6 +138,9 @@
 }
 -(void)viewDidAppear:(BOOL)animated {
     [self.navigationController setToolbarHidden:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(appBecameActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [_chatTextView resignFirstResponder];
@@ -473,6 +476,13 @@
         [menuController dismissControllerMenu];
     } else {
         [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
+- (void)appBecameActive:(NSNotification*)notification {
+    if([_withObject isKindOfClass:[User class]]) {
+        [messageService getMessagesWithUser:_withObject.key messageCallback:self];
+    } else if([_withObject isKindOfClass:[CALObject class]]){
+        [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
     }
 }
 @end;

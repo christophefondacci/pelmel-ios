@@ -2,6 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>pelmel</string>
+			</array>
+			<key>CFBundleURLName</key>
+			<string>com.pelmelguide</string>
+		</dict>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -25,11 +36,11 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.14</string>
+	<string>2.0.17</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>PelMel would like to access your location to tell you what's around</string>
+	<string>PelMel would like to access your location to tell you what&apos;s around</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>OpenSans-Italic.ttf</string>
@@ -61,9 +72,9 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0.25513803930135248</real>
+				<real>0.2551380393013525</real>
 				<key>Green</key>
-				<real>0.54738482512463693</real>
+				<real>0.5473848251246369</real>
 				<key>Red</key>
 				<real>1</real>
 			</dict>

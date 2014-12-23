@@ -22,6 +22,8 @@
 @property (strong,nonatomic) MapViewController *splitMapController;
 @property (strong,nonatomic) UINavigationController *splitMainNavController;
 
+@property (strong,nonatomic) PMLMenuManagerController *menuManagerController;
+
 /**
  * Provides the color from the given place type
  */
@@ -104,5 +106,9 @@
 -(void)reportProgress:(float)progress;
 -(void)progressDone;
 
+/**
+ * Creates a snippet for the given element, presents it, and optionally opens it
+ */
+-(void)presentSnippetFor:(CALObject*)object opened:(BOOL)opened;
 
 @end

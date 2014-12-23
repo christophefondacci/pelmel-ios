@@ -36,12 +36,11 @@
     
     BOOL _deviceConnected;
     BOOL _isOnLoginPage;
-    // Loaders
-//    UIView *_bgView;
-//    UIActivityIndicatorView *_indicatorView;
-//    UIImageView *insideImage;
-//    UIImageView *outsideImage;
-//    CGSize btnSize;
+    
+    // Initial context
+    CALObject *_initialContextObject;
+    BOOL _initialContextSearch;
+    
 }
 
 
@@ -189,6 +188,15 @@
 
 - (void)didLoadOverviewData:(CALObject *)object {
     [self hideSpinner];
+    if([_initialContextObject.key isEqualToString:object.key]) {
+        if([object isKindOfClass:[User class]]) {
+            [[TogaytherService uiService] presentSnippetFor:object opened:YES];
+        } else {
+            MapViewController *mapController = (MapViewController*)_menuController.rootViewController;
+            [mapController selectCALObject:_initialContextObject withSnippet:YES];
+        }
+        _initialContextObject = nil;
+    }
 }
 -(void)didLooseConnection {
     [_menuController.menuManagerDelegate loadingEnd];
@@ -267,28 +275,45 @@
         _deviceConnected = YES;
         [_menuController setWarningMessage:NSLocalizedString(@"network.connected", @"network.connected") color:UIColorFromRGB(0x5fd500) animated:NO duration:0.5];
     }
-    _nearbyLoad = YES;
-    if(_searchRadius>0) {
-        _dataService.currentRadius = _searchRadius;
-    } else {
-        _dataService.currentRadius = 0;
-        
-        if(_userService.currentLocation == nil || (_userService.currentLocation.coordinate.latitude == 0 && _userService.currentLocation.coordinate.longitude==0)) {
-            MKMapView *mapView = ((MapViewController*)_menuController.rootViewController).mapView;
-            // Getting current map center coordinates
-            CLLocationCoordinate2D centerCoords = mapView.centerCoordinate;
-            CLLocationCoordinate2D cornerCoords = [mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:mapView];
-            
-            // Distance between center and top left corner will give our distance for search
-            CLLocation *centerLoc = [[CLLocation alloc] initWithLatitude:centerCoords.latitude longitude:centerCoords.longitude];
-            CLLocation *cornerLoc = [[CLLocation alloc] initWithLatitude:cornerCoords.latitude longitude:cornerCoords.longitude];
-            CLLocationDistance distance = [centerLoc distanceFromLocation:cornerLoc];
-            int milesRadius = MIN(1500,distance/1609.344);
-            [self refreshAt:centerCoords radius:milesRadius];
-            return ;
+    // If we have an initial context we open it
+    if(_initialContextObject != nil) {
+        // Opening a context means fitting results
+        ((MapViewController*)_menuController.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
+        // Overview or search use case
+        if(_initialContextSearch) {
+            [[TogaytherService dataService] fetchPlacesFor:_initialContextObject];
+            // Only once at startup, clearing everything
+            _initialContextObject = nil;
+            _initialContextSearch = NO;
+        } else {
+            [_dataService fetchOverviewData:_initialContextObject];
         }
+
+    } else {
+        // Standard behavior
+        _nearbyLoad = YES;
+        if(_searchRadius>0) {
+            _dataService.currentRadius = _searchRadius;
+        } else {
+            _dataService.currentRadius = 0;
+            
+            if(_userService.currentLocation == nil || (_userService.currentLocation.coordinate.latitude == 0 && _userService.currentLocation.coordinate.longitude==0)) {
+                MKMapView *mapView = ((MapViewController*)_menuController.rootViewController).mapView;
+                // Getting current map center coordinates
+                CLLocationCoordinate2D centerCoords = mapView.centerCoordinate;
+                CLLocationCoordinate2D cornerCoords = [mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:mapView];
+                
+                // Distance between center and top left corner will give our distance for search
+                CLLocation *centerLoc = [[CLLocation alloc] initWithLatitude:centerCoords.latitude longitude:centerCoords.longitude];
+                CLLocation *cornerLoc = [[CLLocation alloc] initWithLatitude:cornerCoords.latitude longitude:cornerCoords.longitude];
+                CLLocationDistance distance = [centerLoc distanceFromLocation:cornerLoc];
+                int milesRadius = MIN(1500,distance/1609.344);
+                [self refreshAt:centerCoords radius:milesRadius];
+                return ;
+            }
+        }
+        [_dataService fetchPlacesAtLatitude:_searchCenter.latitude longitude:_searchCenter.longitude for:nil searchTerm:nil];
     }
-    [_dataService fetchPlacesAtLatitude:_searchCenter.latitude longitude:_searchCenter.longitude for:nil searchTerm:nil];
 
 }
 -(void)userRegistered:(CurrentUser *)user {
@@ -363,4 +388,8 @@
     [_menuController.menuManagerDelegate loadingEnd];
 }
 
+- (void)setInitialContext:(CALObject *)object isSearch:(BOOL)isSearch {
+    _initialContextObject = object;
+    _initialContextSearch = isSearch;
+}
 @end

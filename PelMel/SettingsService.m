@@ -115,7 +115,7 @@
     if(prop != nil && [prop isKindOfClass:[NSNumber class]]) {
         return ((NSNumber*)prop).integerValue == 1;
     } else {
-        return YES;
+        return NO;
     }
 }
 - (BOOL)isVisible:(CALObject*)object {

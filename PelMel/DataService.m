@@ -830,4 +830,21 @@
     });
 }
 
+- (CALObject *)objectForKey:(NSString *)key {
+    CALObject *object = [overviewCache objectForKey:key];
+    if(object == nil) {
+        if([key hasPrefix:@"PLAC"]) {
+            object = [[Place alloc] init];
+        } else if([key hasPrefix:@"CITY"] || [key hasPrefix:@"ADMS"] || [key hasPrefix:@"CNTY"]) {
+            object = [[City alloc] init];
+        } else if([key hasPrefix:@"USER"]) {
+            object = [[User alloc] init];
+        } else if([key hasPrefix:@"EVNT"]) {
+            object = [[Event alloc] init];
+        }
+        object.key = key;
+        [overviewCache setObject:object forKey:key];
+    }
+    return object;
+}
 @end

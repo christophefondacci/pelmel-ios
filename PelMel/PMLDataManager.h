@@ -30,4 +30,9 @@
  */
 -(void)promptUserForPhotoUploadOn:(CALObject*)object;
 
+/**
+ * Registers the initial context that should be opened after 
+ */
+-(void)setInitialContext:(CALObject*)object isSearch:(BOOL)isSearch;
+
 @end

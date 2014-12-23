@@ -20,6 +20,7 @@
 #import "CityDetailProvider.h"
 #import "PMLPlaceInfoProvider.h"
 #import "PMLUserInfoProvider.h"
+#import "PMLSnippetTableViewController.h"
 #import "PMLContextInfoProvider.h"
 #import "PMLCityInfoProvider.h"
 
@@ -309,5 +310,12 @@
     _progressView.hidden=YES;
 }
 
-
+- (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened {
+    PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[self instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+    snippetController.snippetItem = object;
+    [_menuManagerController presentControllerSnippet:snippetController];
+    if(opened) {
+        [_menuManagerController openCurrentSnippet];
+    }
+}
 @end

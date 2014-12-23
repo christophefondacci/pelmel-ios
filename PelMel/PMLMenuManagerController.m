@@ -86,12 +86,28 @@ static void *MyParentMenuControllerKey;
     BOOL _initialized;
 }
 
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+-(instancetype)init {
+    self = [super init];
+    if (self) {
+        // Initializing data manager
+        self.dataManager = [[PMLDataManager alloc] initWith:self];
+    }
+    return self;
+}
+- (id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if(self) {
+        // Initializing data manager
+        self.dataManager = [[PMLDataManager alloc] initWith:self];
+    }
+    return self;
+}
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        // Initializing data manager
+        self.dataManager = [[PMLDataManager alloc] initWith:self];
     }
     return self;
 }
@@ -102,6 +118,8 @@ static void *MyParentMenuControllerKey;
     if (self) {
         self.menuManagerDelegate = menuManagerDelegate;
         self.rootViewController = rootViewController;
+        // Initializing data manager
+        self.dataManager = [[PMLDataManager alloc] initWith:self];
         
     }
     return self;
@@ -117,8 +135,7 @@ static void *MyParentMenuControllerKey;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Initializing data manager
-    self.dataManager = [[PMLDataManager alloc] initWith:self];
+
     
     // Initializing navigation
     _uiService = [TogaytherService uiService];
@@ -485,7 +502,7 @@ static void *MyParentMenuControllerKey;
 }
 
 -(NSInteger)offsetForOpenedSnippet {
-    CGRect bounds = self.view.bounds;
+//    CGRect bounds = self.view.bounds;
     NSInteger top = 0;
 //    if(bounds.size.height> 600) {
 //        top = MAX(bounds.size.height-600,0);
