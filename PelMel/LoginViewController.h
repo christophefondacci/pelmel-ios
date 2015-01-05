@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "UserService.h"
 #import "DatePickerDataSource.h"
+#import <FacebookSDK/FacebookSDK.h>
 
-@interface LoginViewController : UITableViewController <PMLUserCallback, DateCallback, UITextFieldDelegate>
+@interface LoginViewController : UITableViewController <PMLUserCallback, DateCallback, UITextFieldDelegate, FBLoginViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *loginEmail;
 @property (weak, nonatomic) IBOutlet UITextField *loginPassword;
 @property (weak, nonatomic) IBOutlet UITextField *registerEmail;
@@ -19,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *loginInfo;
 @property (weak, nonatomic) IBOutlet UILabel *loginFailed;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet FBLoginView *loginFacebookButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loginActivity;
 @property (weak, nonatomic) IBOutlet UILabel *loginWaitText;
 
@@ -26,6 +28,7 @@
 - (IBAction)registerPressed:(id)sender;
 - (IBAction)dismiss:(id)sender;
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *loginFacebookCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginIntroCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginEmailCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginPasswordCell;

@@ -2,17 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>pelmel</string>
-			</array>
-			<key>CFBundleURLName</key>
-			<string>com.pelmelguide</string>
-		</dict>
-	</array>
+	<key>FacebookDisplayName</key>
+	<string>PelMel Guide</string>
+	<key>FacebookAppID</key>
+	<string>302478486488872</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -24,7 +17,7 @@
 	<key>CFBundleIcons~ipad</key>
 	<dict/>
 	<key>CFBundleIdentifier</key>
-	<string>com.nextep.${PRODUCT_NAME:rfc1034identifier}</string>
+	<string>com.nextep.$(PRODUCT_NAME:rfc1034identifier)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -35,6 +28,18 @@
 	<string>2.0.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.pelmelguide</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb302478486488872</string>
+				<string>pelmel</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>2.0.17</string>
 	<key>LSRequiresIPhoneOS</key>

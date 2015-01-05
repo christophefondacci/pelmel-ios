@@ -21,13 +21,14 @@
 #define kSectionLogin 0
 #define kSectionRegister 1
 
-#define kRowsLogin 4
+#define kRowsLogin 5
 #define kRowsRegister 6
 
 #define kRowLoginIntro 0
-#define kRowLoginEmail 1
-#define kRowLoginPassword 2
-#define kRowLoginButton 3
+#define kRowLoginFacebook 1
+#define kRowLoginEmail 2
+#define kRowLoginPassword 3
+#define kRowLoginButton 4
 
 #define kRowRegisterWhy 7
 #define kRowRegisterIntro 0
@@ -135,15 +136,10 @@
     registerEmail.delegate = self;
     registerPassword.delegate = self;
     registerPseudo.delegate = self;
-    // If we have values for both login / password we try to login
-//    if(email != nil && passw != nil) {
-//        [self login];
-//    }
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+
+    // Facebook init
+    self.loginFacebookButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
+    self.loginFacebookButton.delegate=self;
 }
 
 - (void)viewDidUnload
@@ -218,6 +214,9 @@
             switch(indexPath.row) {
                 case kRowLoginIntro:
                     return self.loginIntroCell;
+                case kRowLoginFacebook:
+                    
+                    return self.loginFacebookCell;
                 case kRowLoginEmail: {
                     CGRect frame = self.loginEmailCell.frame;
                     self.loginEmail.frame = CGRectMake(kFieldOffsetX, 6, frame.size.width-2*kFieldOffsetX, 31);
@@ -299,14 +298,7 @@
     }
     return [super tableView:tableView viewForHeaderInSection:section];
 }
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//    switch(section) {
-//        case 1:
-//            return NSLocalizedString(@"login.section.register.title", @"Title of the register section");
-//        default:
-//            return [super tableView:tableView titleForHeaderInSection:section];
-//    }
-//}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     switch(section) {
         case 0:
@@ -333,44 +325,6 @@
     }
     return 44; //[super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -378,39 +332,14 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    switch(indexPath.section) {
-//        case 1:
-//            switch(indexPath.row) {
-//                case 4:
-//                    [datePickerDataSource setDate:registerDate picker:datePicker];
-//                    break;
-//            }
-//    }
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+
 }
 
 - (IBAction)loginPressed:(id)sender {
     [self login];
 }
 -(void)login {
-    [loginFailed setHidden:YES];
-//    [loginInfo setHidden:YES];
-    
-    // Preventing to login multiple times
-    [loginButton setEnabled:NO];
-    
-    // Activating the activity wait animation
-    [loginActivity setHidden:NO];
-    [loginActivity startAnimating];
-    // Displaying the "logging" message to inform user that something is happening
-    loginWaitText.text = NSLocalizedString(@"login.logging", @"Waiting text displayed when the user press 'login' to inform the user that we are processing the login");
-    [loginWaitText setHidden:NO];
+
     
     // Storing login & password in user defaults
     [userDefaults setObject:loginEmail.text forKey:kUserEmailKey];
@@ -453,6 +382,76 @@
 
 - (IBAction)dismiss:(id)sender {
 }
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if([@"terms" isEqualToString:segue.identifier]) {
+        TermsOfUseViewController *controller = segue.destinationViewController;
+        controller.labelKey = @"terms";
+    } else if([@"whyRegister" isEqualToString:segue.identifier]) {
+        TermsOfUseViewController *controller = segue.destinationViewController;
+        controller.labelKey = @"register.why";
+    }
+}
+-(void)dateUpdated:(NSDate *)date {
+    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateStyle:NSDateFormatterLongStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
+    
+//    label.text = [dateFormatter stringFromDate:date];
+//    [label sizeToFit];
+    
+    registerDate = date;
+    // Unselecting cell
+    [registerBirthDateCell setSelected:NO animated:YES];
+}
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if(textField == loginEmail) {
+        [loginPassword becomeFirstResponder];
+    } else if(textField == loginPassword) {
+        [self loginPressed:self];
+    } else if(textField == registerEmail) {
+        [registerPassword becomeFirstResponder];
+    } else if(textField == registerPassword) {
+        [registerPseudo becomeFirstResponder];
+    } else if(textField == registerPseudo) {
+        [self registerPressed:self];
+    }
+    return YES;
+}
+
+
+#pragma mark - FBLoginViewDelegate
+- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
+    NSString *accessToken = [[[FBSession activeSession] accessTokenData] accessToken];
+    NSString *email = [user objectForKey:@"email"] ? [user objectForKey:@"email"] : [NSString stringWithFormat:@"%@@facebook.com", user.username];
+    
+    [_userService authenticateWithFacebook:accessToken email:email callback:self];
+}
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView {
+    NSLog(@"Showing logged in user");
+}
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView {
+    NSLog(@"Showing logged out user");
+}
+
+#pragma mark - PMLUserCallback
+- (void)willStartAuthentication {
+    [loginFailed setHidden:YES];
+    //    [loginInfo setHidden:YES];
+    
+    // Preventing to login multiple times
+    [loginButton setEnabled:NO];
+    
+    // Activating the activity wait animation
+    [loginActivity setHidden:NO];
+    [loginActivity startAnimating];
+    // Displaying the "logging" message to inform user that something is happening
+    loginWaitText.text = NSLocalizedString(@"login.logging", @"Waiting text displayed when the user press 'login' to inform the user that we are processing the login");
+    [loginWaitText setHidden:NO];
+}
 - (void)userAuthenticated:(CurrentUser *)user {
     [loginFailed setHidden:YES];
     [loginInfo setHidden:NO];
@@ -463,7 +462,7 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 - (void)authenticationFailed:(NSString *)reason {
-
+    
     [self loginError: NSLocalizedString(@"login.failed", @"login.failed")];
     NSLog(@"Login Failed");
 }
@@ -505,44 +504,4 @@
                                           otherButtonTitles:nil];
     [alert show];
 }
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if([@"terms" isEqualToString:segue.identifier]) {
-        TermsOfUseViewController *controller = segue.destinationViewController;
-        controller.labelKey = @"terms";
-    } else if([@"whyRegister" isEqualToString:segue.identifier]) {
-        TermsOfUseViewController *controller = segue.destinationViewController;
-        controller.labelKey = @"register.why";
-    }
-}
--(void)dateUpdated:(NSDate *)date {
-    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterLongStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterNoStyle];
-    
-//    label.text = [dateFormatter stringFromDate:date];
-//    [label sizeToFit];
-    
-    registerDate = date;
-    // Unselecting cell
-    [registerBirthDateCell setSelected:NO animated:YES];
-}
-
-#pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if(textField == loginEmail) {
-        [loginPassword becomeFirstResponder];
-    } else if(textField == loginPassword) {
-        [self loginPressed:self];
-    } else if(textField == registerEmail) {
-        [registerPassword becomeFirstResponder];
-    } else if(textField == registerPassword) {
-        [registerPseudo becomeFirstResponder];
-    } else if(textField == registerPseudo) {
-        [self registerPressed:self];
-    }
-    return YES;
-}
-
-
 @end

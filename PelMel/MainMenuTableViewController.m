@@ -273,10 +273,13 @@
                 case kRowSettingDisconnect:
                     // Disconnecting
                     [_userService disconnect];
-                    // Dismissing this view and immediately
-                    UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
-                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                    [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        // Dismissing this view and immediately
+                        UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
+                        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                        [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
+
+                    });
                     break;
             }
     }

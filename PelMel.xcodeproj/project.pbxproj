@@ -234,6 +234,7 @@
 		B4D561121611BC27003A738E /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D561111611BC27003A738E /* MapViewController.m */; };
 		B4D561161611C259003A738E /* ModelHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D561151611C259003A738E /* ModelHolder.m */; };
 		B4D561191611C8DE003A738E /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D561181611C8DE003A738E /* MapAnnotation.m */; };
+		B4E288381A4A3A5900F84EA7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E288371A4A3A5900F84EA7 /* FacebookSDK.framework */; };
 		B4E8292518A9BCFF0063715C /* SWRevealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4E8292318A9BCFF0063715C /* SWRevealViewController.h */; };
 		B4E8292618A9BCFF0063715C /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4E8292418A9BCFF0063715C /* SWRevealViewController.m */; };
 		B4E8292918A9EE530063715C /* MainMenuTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4E8292718A9EE530063715C /* MainMenuTableViewController.h */; };
@@ -585,6 +586,7 @@
 		B4D561151611C259003A738E /* ModelHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModelHolder.m; sourceTree = "<group>"; };
 		B4D561171611C8DE003A738E /* MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnnotation.h; sourceTree = "<group>"; };
 		B4D561181611C8DE003A738E /* MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnnotation.m; sourceTree = "<group>"; };
+		B4E288371A4A3A5900F84EA7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		B4E8292318A9BCFF0063715C /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		B4E8292418A9BCFF0063715C /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		B4E8292718A9EE530063715C /* MainMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuTableViewController.h; sourceTree = "<group>"; };
@@ -651,6 +653,7 @@
 				B4D5610F1611BA52003A738E /* MapKit.framework in Frameworks */,
 				B4D560D6160F3674003A738E /* CoreLocation.framework in Frameworks */,
 				B4D56076160B673F003A738E /* UIKit.framework in Frameworks */,
+				B4E288381A4A3A5900F84EA7 /* FacebookSDK.framework in Frameworks */,
 				B4D56078160B673F003A738E /* Foundation.framework in Frameworks */,
 				B4D5607A160B673F003A738E /* CoreGraphics.framework in Frameworks */,
 				DE05E89E1AF844FEA4C522FD /* libPods.a in Frameworks */,
@@ -896,6 +899,7 @@
 		B4D56074160B673F003A738E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B4E288371A4A3A5900F84EA7 /* FacebookSDK.framework */,
 				B42408DE18EC711600B8B898 /* QuartzCore.framework */,
 				B4E8293418AB28A80063715C /* ImageIO.framework */,
 				B495654E163EC83B006A0451 /* MessageUI.framework */,
@@ -1813,6 +1817,7 @@
 					"$(inherited)",
 					/Users/cfondacci/Dev/iOS/togayther.mobile,
 					"$(PROJECT_DIR)",
+					/Users/cfondacci/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PelMel/PelMel-Prefix.pch";
@@ -1846,6 +1851,7 @@
 					"$(inherited)",
 					/Users/cfondacci/Dev/iOS/togayther.mobile,
 					"$(PROJECT_DIR)",
+					/Users/cfondacci/Documents/FacebookSDK,
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "PelMel/PelMel-Prefix.pch";

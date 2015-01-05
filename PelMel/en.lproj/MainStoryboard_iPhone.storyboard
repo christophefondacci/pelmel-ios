@@ -267,6 +267,30 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="9lV-eh-uPc">
+                                        <rect key="frame" x="0.0" y="179" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9lV-eh-uPc" id="g3G-n5-bt2">
+                                            <rect key="frame" x="10" y="0.0" width="300" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Uwj-dr-BRe" customClass="FBLoginView">
+                                                    <rect key="frame" x="12" y="0.0" width="296" height="44"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="296" id="0t3-BR-r8B"/>
+                                                        <constraint firstAttribute="height" constant="44" id="wPJ-22-sWl"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="centerY" secondItem="Uwj-dr-BRe" secondAttribute="centerY" id="5Is-vK-XOq"/>
+                                                <constraint firstAttribute="centerX" secondItem="Uwj-dr-BRe" secondAttribute="centerX" id="E1x-97-MQC"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="Register" id="C7H-Ao-w6w">
@@ -568,6 +592,8 @@
                         <outlet property="loginButtonCell" destination="ixy-aF-9rm" id="jVl-jW-gkZ"/>
                         <outlet property="loginEmail" destination="zGZ-bL-89w" id="9WO-8C-2ig"/>
                         <outlet property="loginEmailCell" destination="zfx-k2-9uP" id="UCc-yN-tdy"/>
+                        <outlet property="loginFacebookButton" destination="Uwj-dr-BRe" id="Laq-kc-oww"/>
+                        <outlet property="loginFacebookCell" destination="9lV-eh-uPc" id="5To-tZ-3ka"/>
                         <outlet property="loginFailed" destination="il6-mW-5Q1" id="jlo-UG-ReA"/>
                         <outlet property="loginInfo" destination="pXc-YQ-Z9G" id="h0K-Ay-g5d"/>
                         <outlet property="loginIntroCell" destination="bcy-XM-ANP" id="Y7z-gH-q1r"/>

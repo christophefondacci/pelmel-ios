@@ -286,7 +286,11 @@
     if(messagesFetchedCount == 0) {
         
     }
-
+    
+    // Clearing everything
+    for(UIView *subview in scrollView.subviews) {
+        [subview removeFromSuperview];
+    }
 
     // A map of all image views hashed by the image key
 //    NSMutableArray *images = [[NSMutableArray alloc] init];

@@ -12,8 +12,9 @@
 #import "TogaytherService.h"
 #import <AFNetworking.h>
 #import "PMLLikeStatistic.h"
+#import <FacebookSDK/FacebookSDK.h>
 
-
+#define kFBLoginUrlFormat @"%@/mobileFacebookLogin"
 #define kLoginUrlFormat @"%@/mobileLogin" //?email=%@&password=%@&highRes=%@"
 #define kParamEmail @"email"
 #define kParamPassword @"password"
@@ -29,6 +30,7 @@
 #define kParamBirthYYYY @"birthYYYY"
 #define kParamUserToken @"nxtpUserToken"
 #define kParamCheckinKey @"checkInKey"
+#define kParamFBAccessToken @"fbAccessToken"
 
 #define kLoginParamsFormat      @"email=%@&password=%@&highRes=%@"
 #define kDisconnectUrlFormat    @"%@/mobileDisconnect?nxtpUserToken=%@"
@@ -40,6 +42,8 @@
 
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0) //1
+#define kUserFacebookTokenKey @"userFbToken"
+#define kUserFacebookEmailKey @"userFbEmail"
 #define kUserEmailKey @"userEmail"
 #define kUserPasswordKey @"userPassword"
 
@@ -74,13 +78,22 @@
 #pragma mark - Authentication
 
 -(void)authenticateWithLastLogin:(NSObject<PMLUserCallback>*)callback {
-    
-    // Fetching email & password from properties
-    NSString *email = (NSString *)[userDefaults objectForKey:kUserEmailKey];
-    NSString *passw = (NSString *)[userDefaults objectForKey:kUserPasswordKey];
-    
-    // Authenticating
-    [self authenticateWithLogin:email password:passw callback:callback];
+    NSString *fbToken = nil; //[[[FBSession activeSession] accessTokenData] accessToken];
+    NSString *email = nil;
+    if(fbToken == nil) {
+        fbToken = (NSString*)[userDefaults objectForKey:kUserFacebookTokenKey];
+        email = (NSString *)[userDefaults objectForKey:kUserFacebookEmailKey];
+    }
+
+    if(fbToken != nil) {
+        [self authenticateWithFacebook:fbToken email:email callback:callback];
+    } else {
+        // Fetching email & password from properties
+        NSString *passw = (NSString *)[userDefaults objectForKey:kUserPasswordKey];
+        
+        // Authenticating
+        [self authenticateWithLogin:email password:passw callback:callback];
+    }
 }
 
 - (void)authenticateWithLogin:(NSString *)login password:(NSString *)password callback:(NSObject<PMLUserCallback>*)callback {
@@ -92,24 +105,14 @@
         [self notifyUserAuthenticationFailed:callback];
         return ;
     }
-    // Preparing parameters
-    BOOL isRetina = [TogaytherService isRetina];
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSString *deviceId = [defaults objectForKey:PML_PROP_DEVICE_TOKEN];
-    NSNumber *pushEnabled = [defaults objectForKey:PML_PROP_PUSH_ENABLED];
-    if(pushEnabled != nil && ![pushEnabled boolValue]) {
-        deviceId = nil;
-    }
     
     // Building param structure
+    BOOL isRetina = [TogaytherService isRetina];
     NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
     [params setObject:login forKey:kParamEmail];
     [params setObject:password forKey:kParamPassword];
     [params setObject:(isRetina ? @"true" : @"false") forKey:kParamHighRes];
-    if(deviceId != nil) {
-        [params setObject:deviceId forKey:kParamDeviceToken];
-        [params setObject:kPushProvider forKey:kParamPushProvider];
-    }
+    [self fillPushInformation:params];
     
     // Building URL
     NSString *url = [[NSString alloc] initWithFormat:kLoginUrlFormat, togaytherServer];
@@ -117,23 +120,7 @@
     // POSTing request
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *jsonLoginInfo = (NSDictionary*)responseObject;
-        
-        // Retrieving authentication token
-        NSString *token     =[jsonLoginInfo objectForKey:kParamUserToken];
-        
-        if(token != nil) {
-            // Creating user
-            _currentUser = [[CurrentUser alloc] initWithLogin:login password:password token:token];
-            [jsonService fillUser:_currentUser fromJson:jsonLoginInfo];
-            //                _currentUser.hasOverviewData = YES;
-            [cacheService setObject:_currentUser forKey:_currentUser.key];
-            
-            
-            [self notifyUserAuthenticated:callback];
-        } else {
-            [self notifyUserAuthenticationFailed:callback];
-        }
+        [self handleAuthenticationSuccess:(NSDictionary*)responseObject callback:callback login:login password:password];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSHTTPURLResponse *response = operation.response;
         if(response.statusCode == 401) {
@@ -142,7 +129,6 @@
             [self notifyUserAuthenticationImpossible:callback];
         }
     }];
-  
 }
 - (void)registerDeviceToken:(NSString *)deviceToken {
     [self authenticateWithLastLogin:nil];
@@ -155,6 +141,72 @@
     return _currentUser;
 }
 
+- (void)authenticateWithFacebook:(NSString *)accessToken email:(NSString*)email callback:(NSObject<PMLUserCallback> *)callback {
+    // Notifying that we are about to start
+    [self notifyWillStartAuthentication:callback];
+
+    // Storing facebook info
+    [userDefaults setObject:nil forKey:kUserEmailKey];
+    [userDefaults setObject:nil forKey:kUserPasswordKey];
+    [userDefaults setObject:accessToken forKey:kUserFacebookTokenKey];
+    [userDefaults setObject:email forKey:kUserFacebookEmailKey];
+    
+    // Building param structure
+    NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
+    [params setObject:accessToken forKey:kParamFBAccessToken];
+    [self fillPushInformation:params];
+    
+    // Building URL
+    NSString *url = [[NSString alloc] initWithFormat:kFBLoginUrlFormat, togaytherServer];
+
+    // POSTing request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [self handleAuthenticationSuccess:(NSDictionary*)responseObject callback:callback login:email password:nil];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [userDefaults setObject:nil forKey:kUserEmailKey];
+        [userDefaults setObject:nil forKey:kUserFacebookTokenKey];
+        NSHTTPURLResponse *response = operation.response;
+        if(response.statusCode == 401) {
+            [self notifyUserAuthenticationFailed:callback];
+        } else {
+            [self notifyUserAuthenticationImpossible:callback];
+        }
+    }];
+
+}
+
+-(void) handleAuthenticationSuccess:(NSDictionary*)jsonLoginResponse callback:(NSObject<PMLUserCallback>*)callback login:(NSString*)login password:(NSString*)password {
+    
+    // Retrieving authentication token
+    NSString *token     =[jsonLoginResponse objectForKey:kParamUserToken];
+    
+    if(token != nil) {
+        // Creating user
+        _currentUser = [[CurrentUser alloc] initWithLogin:login password:password token:token];
+        [jsonService fillUser:_currentUser fromJson:jsonLoginResponse];
+        //                _currentUser.hasOverviewData = YES;
+        [cacheService setObject:_currentUser forKey:_currentUser.key];
+        
+        [self notifyUserAuthenticated:callback];
+    } else {
+        [self notifyUserAuthenticationFailed:callback];
+    }
+}
+
+-(void) fillPushInformation:(NSMutableDictionary*)params {
+    // Getting push information
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *deviceId = [defaults objectForKey:PML_PROP_DEVICE_TOKEN];
+    NSNumber *pushEnabled = [defaults objectForKey:PML_PROP_PUSH_ENABLED];
+    if(pushEnabled != nil && ![pushEnabled boolValue]) {
+        deviceId = nil;
+    }
+    if(deviceId != nil) {
+        [params setObject:deviceId forKey:kParamDeviceToken];
+        [params setObject:kPushProvider forKey:kParamPushProvider];
+    }
+}
 #pragma mark - Registration
 
 -(void)registerWithLogin:(NSString *)login password:(NSString *)password pseudo:(NSString *)pseudo birthDate:(NSDate*)birthDate callback:(NSObject<PMLUserCallback>*)callback {
@@ -325,6 +377,13 @@
     [[TogaytherService imageService] cancelRunningProcesses];
     [[TogaytherService dataService] cancelRunningProcesses];
     _currentUser = nil;
+    
+    // Facebook signout
+    NSString * fbToken = [userDefaults objectForKey:kUserFacebookTokenKey];
+    if(fbToken != nil) {
+        [[FBSession activeSession] closeAndClearTokenInformation];
+        [userDefaults removeObjectForKey:kUserFacebookTokenKey];
+    }
     // Voiding password
     [userDefaults removeObjectForKey:kUserPasswordKey];
     [userDefaults synchronize];

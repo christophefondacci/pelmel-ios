@@ -45,6 +45,7 @@ typedef void(^Completor)(id obj);
  */
 - (void)authenticateWithLogin:(NSString*)login password:(NSString *)password callback:(NSObject<PMLUserCallback>*)callback;
 - (void)authenticateWithLastLogin:(NSObject<PMLUserCallback>*)callback;
+- (void)authenticateWithFacebook:(NSString*)accessToken email:(NSString*)email callback:(NSObject<PMLUserCallback>*)callback;
 
 -(void)registerListener:(NSObject<PMLUserCallback>*)listener;
 -(void)unregisterListener:(NSObject<PMLUserCallback>*)listener;

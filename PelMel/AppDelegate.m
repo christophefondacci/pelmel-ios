@@ -21,27 +21,18 @@
 #import "Constants.h"
 #import "NSData+Conversion.h"
 #import "PMLDataManager.h"
-
+#import <FacebookSDK/FacebookSDK.h>
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    for (NSString* family in [UIFont familyNames])
-//    {
-//        NSLog(@"%@", family);
-//        
-//        for (NSString* name in [UIFont fontNamesForFamilyName: family])
-//        {
-//            NSLog(@"  %@", name);
-//        }
-//    }
-
-    
     // Starting services
     [TogaytherService start];
     UIService *uiService = TogaytherService.uiService;
     MapViewController *mapView = (MapViewController*)[uiService instantiateViewController:@"mapItemsView"];
     
+    // Facebook init
+    [FBLoginView class];
     // ------------ NEW PELMEL NAV
 
     UIMenuManagerMainDelegate *mainDelegate = [[UIMenuManagerMainDelegate alloc] init];
@@ -136,16 +127,18 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    
-    PMLMenuManagerController *menuController = [[TogaytherService uiService] menuManagerController];
-    [self openURL:url searchCallback:^(CALObject *object) {
-        // Opening a context means fitting results
-        ((MapViewController*)menuController.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
-        [[TogaytherService dataService] fetchPlacesFor:object];
-    } overviewCallback:^(CALObject *object) {
-        [[menuController dataManager] setInitialContext:object isSearch:NO];
-        [[TogaytherService dataService] fetchOverviewData:object];
-    }];
+    BOOL fbUrlHandled = [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+    if(!fbUrlHandled) {
+        PMLMenuManagerController *menuController = [[TogaytherService uiService] menuManagerController];
+        [self openURL:url searchCallback:^(CALObject *object) {
+            // Opening a context means fitting results
+            ((MapViewController*)menuController.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
+            [[TogaytherService dataService] fetchPlacesFor:object];
+        } overviewCallback:^(CALObject *object) {
+            [[menuController dataManager] setInitialContext:object isSearch:NO];
+            [[TogaytherService dataService] fetchOverviewData:object];
+        }];
+    }
     return YES;
 }
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {

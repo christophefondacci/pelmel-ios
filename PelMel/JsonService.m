@@ -538,6 +538,7 @@
     
     user.pseudo     = pseudo;
     user.key        = key;
+    
     user.cityName   = city;
     user.heightInCm = [heightInCm integerValue];
     user.weightInKg = [weightInKg integerValue];
