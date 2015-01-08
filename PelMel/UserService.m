@@ -16,6 +16,7 @@
 
 #define kFBLoginUrlFormat @"%@/mobileFacebookLogin"
 #define kLoginUrlFormat @"%@/mobileLogin" //?email=%@&password=%@&highRes=%@"
+#define kResetPasswordUrlFormat @"%@/lostPassword"
 #define kParamEmail @"email"
 #define kParamPassword @"password"
 #define kParamHighRes @"highRes"
@@ -90,6 +91,7 @@
     } else {
         // Fetching email & password from properties
         NSString *passw = (NSString *)[userDefaults objectForKey:kUserPasswordKey];
+        email = (NSString *)[userDefaults objectForKey:kUserEmailKey];
         
         // Authenticating
         [self authenticateWithLogin:email password:passw callback:callback];
@@ -382,6 +384,8 @@
     NSString * fbToken = [userDefaults objectForKey:kUserFacebookTokenKey];
     if(fbToken != nil) {
         [[FBSession activeSession] closeAndClearTokenInformation];
+        [FBSession.activeSession close];
+        [FBSession setActiveSession:nil];
         [userDefaults removeObjectForKey:kUserFacebookTokenKey];
     }
     // Voiding password
@@ -463,6 +467,21 @@
         }];
     }
 }
+#pragma mark - Tools
+- (void)resetPasswordFor:(NSString *)email success:(Completor)success failure:(Completor)failure {
+    NSString *url = [NSString  stringWithFormat:kResetPasswordUrlFormat,togaytherServer];
+    
+    NSDictionary *params = @{ @"email" : email };
+    
+    AFHTTPRequestOperationManager *manager= [AFHTTPRequestOperationManager manager];
+    [manager GET:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        success(responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+}
+
+
 #pragma mark - Listeners and callback management
 -(void)registerListener:(NSObject<PMLUserCallback> *)listener {
     [_listeners addObject:listener];

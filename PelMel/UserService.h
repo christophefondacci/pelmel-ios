@@ -65,6 +65,13 @@ typedef void(^Completor)(id obj);
 -(void)registerDeviceToken:(NSString*)deviceToken;
 
 /**
+ * Asks for a reset password email for the given email
+ * @param success the callback block called if the call succeeds
+ * @param failure the callback block called if the call fails
+ */
+-(void)resetPasswordFor:(NSString*)email success:(Completor)success failure:(Completor)failure;
+
+/**
  * Registers every change of the current user to the server 
  */
 - (void)updateCurrentUser;

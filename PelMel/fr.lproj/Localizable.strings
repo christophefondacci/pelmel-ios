@@ -94,7 +94,16 @@
 "login.field.email"="Email";
 "login.field.password"="Mot de passe";
 "login.field.pseudo"="Pseudo";
+"login.forgotPassword"="Mot de pass oublié ?";
+"login.forgotPassword.wait"="Envoi email";
+"login.forgotPasswordMissingEmailTitle"="Email requis";
+"login.forgotPasswordMissingEmail"="Veuillez renseigner votre adresse email pour que nous puissions vous envoyez un lien de changement de mot de passe.";
+"login.forgotPasswordEmailSentTitle"="Email envoyé";
+"login.forgotPasswordEmailSent"="Un email a été envoyé à votre adresse avec un lien qui vous permettra de changer votre mot de passe. Au cas où vous ne le receviez pas immédiatement, veuillez vérifier votre dossier de spam / courrier indésirable.";
+"login.forgotPasswordEmailErrorTitle"="A problem has occurred";
+"login.forgotPasswordEmailError"="We were unable to contact the server or it returned with an error, please try again or check your network connection.";
 "login.logging"="Connexion...";
+"login.or"="OU";
 "login.section.title"="LOGIN";
 "login.section.register.title"="M'INSCRIRE";
 "login.localizing"="Localisation GPS...";

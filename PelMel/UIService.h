@@ -111,4 +111,8 @@
  */
 -(void)presentSnippetFor:(CALObject*)object opened:(BOOL)opened;
 
+/**
+ * Simple alert dialog with localized messages, only one OK button
+ */
+-(void)alertWithTitle:(NSString*)titleKey text:(NSString*)textKey;
 @end

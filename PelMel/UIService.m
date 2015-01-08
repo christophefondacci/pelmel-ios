@@ -318,4 +318,12 @@
         [_menuManagerController openCurrentSnippet];
     }
 }
+
+- (void)alertWithTitle:(NSString *)titleKey text:(NSString *)textKey {
+    NSString *title = NSLocalizedString(titleKey,titleKey);
+    NSString *msg = NSLocalizedString(textKey,textKey);
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    [alert show];
+}
 @end

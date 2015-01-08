@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginIntroCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginEmailCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginPasswordCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *loginForgotPasswordCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *loginButtonCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *registerIntroCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *registerEmailCell;
@@ -41,6 +42,7 @@
 @property (weak, nonatomic) IBOutlet UITableViewCell *registerButtonCell;
 //@property (weak, nonatomic) IBOutlet UITableViewCell *registerIntroCell;
 @property (weak, nonatomic) IBOutlet UITableViewCell *registerBirthDateCell;
+@property (weak, nonatomic) IBOutlet UITableViewCell *socialSeparatorCell;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *registerActivity;
 @property (weak, nonatomic) IBOutlet UILabel *registeringLabel;
 @property (weak, nonatomic) IBOutlet UILabel *registerLabel;
@@ -50,5 +52,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *birthDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *birthDateText;
 @property (weak, nonatomic) IBOutlet UILabel *termsOfUseLabel;
+@property (weak, nonatomic) IBOutlet UILabel *separatorLabel;
+@property (weak, nonatomic) IBOutlet UILabel *forgotPasswordLabel;
 
 @end

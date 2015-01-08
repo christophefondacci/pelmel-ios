@@ -16,19 +16,24 @@
 #define kUserEmailKey @"userEmail"
 #define kUserPasswordKey @"userPassword"
 
-#define kSectionsCount 2
+#define kSectionsCount 3
 
-#define kSectionLogin 0
-#define kSectionRegister 1
+#define kSectionSocial 0
+#define kSectionLogin 1
+#define kSectionRegister 2
 
+#define kRowsSocial 2
 #define kRowsLogin 5
 #define kRowsRegister 6
 
+#define kRowLoginFacebook 0
+#define kRowSocialSeparator 1
+
 #define kRowLoginIntro 0
-#define kRowLoginFacebook 1
-#define kRowLoginEmail 2
-#define kRowLoginPassword 3
-#define kRowLoginButton 4
+#define kRowLoginEmail 1
+#define kRowLoginPassword 2
+#define kRowLoginButton 3
+#define kRowLoginForgotPassword 4
 
 #define kRowRegisterWhy 7
 #define kRowRegisterIntro 0
@@ -47,13 +52,17 @@
 
 @implementation LoginViewController {
     UserService *_userService;
+    UIService *_uiService;
     NSUserDefaults *userDefaults;
     
     TogaytherHeaderView *headerView;
     UIPelmelTitleView *registerTitleView;
+    UIPelmelTitleView *loginTitleView;
     
     UIPickerView *datePicker;
     DatePickerDataSource *datePickerDataSource;
+    
+    UITapGestureRecognizer *forgotPasswordRecognizer;
     
     NSDate *registerDate;
 }
@@ -92,6 +101,8 @@
     self.tableView.backgroundColor = UIColorFromRGB(0xec7700);
     self.tableView.opaque=YES;
     _userService = [TogaytherService userService];
+    _uiService = [TogaytherService uiService];
+    
     userDefaults = [NSUserDefaults standardUserDefaults];
     datePickerDataSource = [[DatePickerDataSource alloc] initWithCallback:self];
     
@@ -118,18 +129,26 @@
     
     
     // Loading profile header view
-    NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"TogaytherHeaderView" owner:self options:nil];
-    headerView = [views objectAtIndex:0];
+    headerView = (TogaytherHeaderView*)[_uiService loadView:@"TogaytherHeaderView"];
     headerView.togaytherSlogan.text = NSLocalizedString(@"togayther.slogan", "Togayther intro slogan");
     headerView.loginLabel.text = NSLocalizedString(@"login.section.title", "Title of the login section");
     
-    views = [[NSBundle mainBundle] loadNibNamed:@"UIPelmelTitleView" owner:self options:nil];
-    registerTitleView = [views objectAtIndex:0];
+    registerTitleView = (UIPelmelTitleView*)[_uiService loadView:@"UIPelmelTitleView"];
     registerTitleView.titleLabel.text = NSLocalizedString(@"login.section.register.title", @"login.section.register.title");
-
+    loginTitleView = (UIPelmelTitleView*)[_uiService loadView:@"UIPelmelTitleView"];
+    loginTitleView.titleLabel.text = NSLocalizedString(@"login.section.title", @"login.section.title");
+    loginTitleView.verticalSpacingConstraint.constant=0;
+    
     // Preparing labels
     registerLabel.text = NSLocalizedString(@"register.label", @"Register info label");
     loginInfo.text = NSLocalizedString(@"logging.label", @"Label next to the login button");
+    self.separatorLabel.text = NSLocalizedString(@"login.or", @"login.or");
+    self.forgotPasswordLabel.text = NSLocalizedString(@"login.forgotPassword", @"login.forgotPassword");
+    
+    // Forgot password action
+    self.forgotPasswordLabel.userInteractionEnabled=YES;
+    forgotPasswordRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(forgotPasswordTapped:)];
+    [self.forgotPasswordLabel addGestureRecognizer:forgotPasswordRecognizer];
     
     loginEmail.delegate = self;
     loginPassword.delegate = self;
@@ -194,6 +213,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch(section) {
+        case kSectionSocial:
+            return kRowsSocial;
         case kSectionLogin:
             return kRowsLogin;
         case kSectionRegister:
@@ -208,15 +229,20 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    
+    NSLog(@"Section %d - row %d", indexPath.section,indexPath.row );
     switch(indexPath.section) {
+        case kSectionSocial:
+            switch(indexPath.row) {
+                case kRowLoginFacebook:
+                    return self.loginFacebookCell;
+                case kRowSocialSeparator:
+                    return self.socialSeparatorCell;
+            }
+            break;
         case kSectionLogin:
             switch(indexPath.row) {
                 case kRowLoginIntro:
                     return self.loginIntroCell;
-                case kRowLoginFacebook:
-                    
-                    return self.loginFacebookCell;
                 case kRowLoginEmail: {
                     CGRect frame = self.loginEmailCell.frame;
                     self.loginEmail.frame = CGRectMake(kFieldOffsetX, 6, frame.size.width-2*kFieldOffsetX, 31);
@@ -229,6 +255,8 @@
                 }
                 case kRowLoginButton:
                     return self.loginButtonCell;
+                case kRowLoginForgotPassword:
+                    return self.loginForgotPasswordCell;
             }
             break;
         case kSectionRegister:
@@ -291,25 +319,37 @@
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     switch(section) {
-        case 0:
+        case kSectionSocial:
             return headerView;
-        case 1:
+        case kSectionLogin:
+            return loginTitleView;
+        case kSectionRegister:
             return registerTitleView;
     }
-    return [super tableView:tableView viewForHeaderInSection:section];
+    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     switch(section) {
-        case 0:
+        case kSectionSocial:
             return headerView.bounds.size.height;
-        case 1:
+        case kSectionLogin:
+            return loginTitleView.bounds.size.height-5;
+        case kSectionRegister:
             return registerTitleView.bounds.size.height;
     }
-    return [super tableView:tableView heightForHeaderInSection:section];
+    return 0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
+        case kSectionSocial:
+            switch(indexPath.row) {
+                case kRowLoginFacebook:
+                    return 40; 
+                case kRowSocialSeparator:
+                    return 50;
+            }
+            break;
         case kSectionLogin:
             switch(indexPath.row) {
                 case kRowLoginIntro:
@@ -326,6 +366,9 @@
     return 44; //[super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
+- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 0;
+}
 #pragma mark - Table view delegate
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     return indexPath.section == kSectionRegister && indexPath.row == kRowRegisterTerms;
@@ -503,5 +546,45 @@
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
     [alert show];
+}
+
+# pragma mark - Actions
+- (void) forgotPasswordTapped:(UIGestureRecognizer*)sender {
+    if(self.loginEmail.text != nil && self.loginEmail.text.length >0) {
+        [loginFailed setHidden:YES];
+
+        // Preventing to login multiple times
+        [self.forgotPasswordLabel setEnabled:NO];
+        
+        // Activating the activity wait animation
+        [loginActivity setHidden:NO];
+        [loginActivity startAnimating];
+        
+        // Displaying the "logging" message to inform user that something is happening
+        loginWaitText.text = NSLocalizedString(@"login.forgotPassword.wait", @"login.forgotPassword.wait");
+        [loginWaitText setHidden:NO];
+        
+        [_userService resetPasswordFor:self.loginEmail.text success:^(id obj) {
+            [loginFailed setHidden:YES];
+            [loginInfo setHidden:NO];
+            [loginButton setEnabled:YES];
+            [loginActivity setHidden:YES];
+            [loginActivity stopAnimating];
+            [loginWaitText setHidden:YES];
+            [self.forgotPasswordLabel setEnabled:YES];
+            [_uiService alertWithTitle:@"login.forgotPasswordEmailSentTitle" text:@"login.forgotPasswordEmailSent"];
+        } failure:^(id obj) {
+            [loginFailed setHidden:YES];
+            [loginInfo setHidden:NO];
+            [loginButton setEnabled:YES];
+            [loginActivity setHidden:YES];
+            [loginActivity stopAnimating];
+            [loginWaitText setHidden:YES];
+            [self.forgotPasswordLabel setEnabled:YES];
+            [_uiService alertWithTitle:@"login.forgotPasswordEmailErrorTitle" text:@"login.forgotPasswordEmailError"];
+        }];
+    } else {
+        [_uiService alertWithTitle:@"login.forgotPasswordMissingEmailTitle" text:@"login.forgotPasswordMissingEmail"];
+    }
 }
 @end
