@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "636"
-            endingLineNumber = "636"
+            startingLineNumber = "639"
+            endingLineNumber = "639"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -42,11 +42,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "442410729.891351"
+            timestampString = "442823213.957745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
+            startingLineNumber = "302"
+            endingLineNumber = "302"
             landmarkName = "-updateCurrentUser"
             landmarkType = "5">
          </BreakpointContent>
@@ -262,7 +262,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
@@ -840,11 +840,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "884"
-            endingLineNumber = "884"
+            startingLineNumber = "896"
+            endingLineNumber = "896"
             landmarkName = "-descriptionEditTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -856,11 +856,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "840"
-            endingLineNumber = "840"
+            startingLineNumber = "852"
+            endingLineNumber = "852"
             landmarkName = "-languageChanged:index:"
             landmarkType = "5">
          </BreakpointContent>
@@ -920,11 +920,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "644"
-            endingLineNumber = "644"
+            startingLineNumber = "647"
+            endingLineNumber = "647"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -936,11 +936,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "841"
-            endingLineNumber = "841"
+            startingLineNumber = "853"
+            endingLineNumber = "853"
             landmarkName = "-languageChanged:index:"
             landmarkType = "5">
          </BreakpointContent>
@@ -984,11 +984,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "907"
-            endingLineNumber = "907"
+            startingLineNumber = "919"
+            endingLineNumber = "919"
             landmarkName = "-descriptionEditTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1064,11 +1064,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "655"
-            endingLineNumber = "655"
+            startingLineNumber = "658"
+            endingLineNumber = "658"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1080,11 +1080,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/ProfileTableViewController.m"
-            timestampString = "438518628.156497"
+            timestampString = "442820704.149485"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "625"
-            endingLineNumber = "625"
+            startingLineNumber = "628"
+            endingLineNumber = "628"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1688,11 +1688,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "442410729.891351"
+            timestampString = "442823213.957745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
             landmarkName = "-registerWithLogin:password:pseudo:birthDate:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1704,11 +1704,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "442410729.891351"
+            timestampString = "442823213.957745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "249"
-            endingLineNumber = "249"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
             landmarkName = "-registerWithLogin:password:pseudo:birthDate:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1720,27 +1720,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "442410729.891351"
+            timestampString = "442823213.957745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "236"
-            endingLineNumber = "236"
-            landmarkName = "-registerWithLogin:password:pseudo:birthDate:callback:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PelMel/UserService.m"
-            timestampString = "442410729.891351"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "237"
+            endingLineNumber = "237"
             landmarkName = "-registerWithLogin:password:pseudo:birthDate:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2545,7 +2529,7 @@
                   symbolName = "-[AppDelegate application:didFinishLaunchingWithOptions:]"
                   moduleName = "PelMel"
                   urlString = "file:///Users/cfondacci/Dev/iOS/togayther.mobile/PelMel/AppDelegate.m"
-                  timestampString = "442410654.892505"
+                  timestampString = "442823214.220493"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "59"
@@ -2559,7 +2543,7 @@
                   symbolName = "__57-[AppDelegate application:didFinishLaunchingWithOptions:]_block_invoke"
                   moduleName = "PelMel"
                   urlString = "file:///Users/cfondacci/Dev/iOS/togayther.mobile/PelMel/AppDelegate.m"
-                  timestampString = "442410654.892668"
+                  timestampString = "442823214.220707"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "59"
@@ -2672,11 +2656,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "442410729.891351"
+            timestampString = "442823213.957745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
             landmarkName = "-authenticateWithFacebook:email:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2684,7 +2668,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
@@ -2752,11 +2736,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "442410729.891351"
+            timestampString = "442823213.957745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "374"
-            endingLineNumber = "374"
+            startingLineNumber = "383"
+            endingLineNumber = "383"
             landmarkName = "-disconnect"
             landmarkType = "5">
          </BreakpointContent>
@@ -2768,11 +2752,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
-            timestampString = "442410939.341564"
+            timestampString = "442823213.957745"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "387"
-            endingLineNumber = "387"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
             landmarkName = "-disconnect"
             landmarkType = "5">
          </BreakpointContent>
@@ -2916,6 +2900,118 @@
             startingLineNumber = "264"
             endingLineNumber = "264"
             landmarkName = "-dataLoginFailed"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/ProfileTableViewController.m"
+            timestampString = "442820704.149485"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "730"
+            endingLineNumber = "730"
+            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/ProfileTableViewController.m"
+            timestampString = "442820704.149485"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "731"
+            endingLineNumber = "731"
+            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/ProfileTableViewController.m"
+            timestampString = "442820704.149485"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "745"
+            endingLineNumber = "745"
+            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/UserService.m"
+            timestampString = "442823213.957745"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "175"
+            endingLineNumber = "175"
+            landmarkName = "-authenticateWithFacebook:email:callback:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/UserService.m"
+            timestampString = "442822278.709392"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
+            landmarkName = "-authenticateWithLogin:password:callback:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/UserService.m"
+            timestampString = "442822286.753561"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "-authenticateWithLogin:password:callback:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/UserService.m"
+            timestampString = "442823228.923322"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
+            landmarkName = "-authenticateWithFacebook:email:callback:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

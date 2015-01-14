@@ -164,12 +164,18 @@
     // POSTing request
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self handleAuthenticationSuccess:(NSDictionary*)responseObject callback:callback login:email password:nil];
+        NSDictionary *json = (NSDictionary*)responseObject;
+        NSNumber *isNewUser  =[json objectForKey:@"newUser"];
+        if([isNewUser boolValue]) {
+            [self userRegistered:(NSDictionary*)responseObject login:email password:nil callback:callback];
+        } else {
+            [self handleAuthenticationSuccess:(NSDictionary*)responseObject callback:callback login:email password:nil];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [userDefaults setObject:nil forKey:kUserEmailKey];
         [userDefaults setObject:nil forKey:kUserFacebookTokenKey];
         NSHTTPURLResponse *response = operation.response;
-        if(response.statusCode == 401) {
+        if(response.statusCode == 401 || response.statusCode == 500) {
             [self notifyUserAuthenticationFailed:callback];
         } else {
             [self notifyUserAuthenticationImpossible:callback];
@@ -230,26 +236,29 @@
     // POSTing request
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *jsonRegisterInfo = (NSDictionary*)responseObject;
-        
-        // Retrieving authentication token
-        NSString *token     =[jsonRegisterInfo objectForKey:@"nxtpUserToken"];
-        
-        if(token != nil) {
-            _currentUser = [[CurrentUser alloc] initWithLogin:login password:password token:token];
-            [jsonService fillUser:_currentUser fromJson:jsonRegisterInfo];
-            [self notifyUserRegistered:callback];
-        } else {
-            if(currentCallback != nil) {
-                _currentUser = nil;
-                [self notifyUserRegistrationFailed:callback];
-            }
-        }
+        [self userRegistered:(NSDictionary*)responseObject login:login password:password callback:callback];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"User creation failed: %@",error.localizedDescription);
         [self notifyUserRegistrationFailed:callback];
     }];
 
+}
+-(void) userRegistered:(NSDictionary*)jsonRegisterInfo login:(NSString*)login password:(NSString*)password callback:(NSObject<PMLUserCallback>*)callback {
+
+    
+    // Retrieving authentication token
+    NSString *token     =[jsonRegisterInfo objectForKey:@"nxtpUserToken"];
+    
+    if(token != nil) {
+        _currentUser = [[CurrentUser alloc] initWithLogin:login password:password token:token];
+        [jsonService fillUser:_currentUser fromJson:jsonRegisterInfo];
+        [self notifyUserRegistered:callback];
+    } else {
+        if(currentCallback != nil) {
+            _currentUser = nil;
+            [self notifyUserRegistrationFailed:callback];
+        }
+    }
 }
 - (void)updateCurrentUser {
 

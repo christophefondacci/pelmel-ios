@@ -539,6 +539,9 @@
             [activityView stopAnimating];
             [profileHeaderView.activityIndicator stopAnimating];
             profileHeaderView.activityIndicator.hidden=YES;
+            if(mainImage == nil) {
+                profileImageView.image= nil;
+            }
             [imageService load:mainImage to:profileImageView thumb:YES];
             
             [profileHeaderView.editButton addTarget:self action:@selector(editNicknameTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -739,7 +742,11 @@
                 [self rearrangeImages:user images:images];
                 
                 // Delete the row from the data source
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//                if(images.count>0) {
+                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//                } else {
+//                    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+//                }
                 break;
             }
             default:
@@ -778,10 +785,15 @@
     return (user.mainImage ? 1 : 0) + user.otherImages.count;
 }
 -(void) rearrangeImages:(Imaged*)user images:(NSMutableArray*)images {
-    // Re-arranging user
-    user.mainImage = [images objectAtIndex:0];
-    [images removeObjectAtIndex:0];
-    user.otherImages = images;
+    if(images.count>0) {
+        // Re-arranging user
+        user.mainImage = [images objectAtIndex:0];
+        [images removeObjectAtIndex:0];
+        user.otherImages = images;
+    } else {
+        user.mainImage = nil;
+        [user.otherImages removeAllObjects];
+    }
 }
 
 #pragma mark - PMLImagePickerCallback
