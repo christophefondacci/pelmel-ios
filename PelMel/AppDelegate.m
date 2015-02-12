@@ -112,8 +112,22 @@
 
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
     NSLog(@"didReceiveRemoteNotification:fetchCompletionHandler");
-    User *currentUser = [[TogaytherService userService] getCurrentUser];
-    [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+    if(application.applicationState == UIApplicationStateInactive) {
+        
+        NSLog(@"Inactive");
+        
+    } else if (application.applicationState == UIApplicationStateBackground) {
+        
+        NSLog(@"Background");
+        
+    } else {
+        
+        NSLog(@"Active");
+        User *currentUser = [[TogaytherService userService] getCurrentUser];
+        [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+        
+    }
+    completionHandler(UIBackgroundFetchResultNewData);
 }
 
 -(void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)userInfo completionHandler:(void (^)())completionHandler {
