@@ -164,12 +164,21 @@
     NSString *absoluteUrl = [url absoluteString];
     NSString *lastComponent = [absoluteUrl lastPathComponent];
     NSRange range = [lastComponent rangeOfString:@"-"];
+    NSString *key;
+    BOOL isSearch = NO;
     if(range.length>0) {
         NSUInteger loc = range.location;
-        NSString *key = [lastComponent substringToIndex:loc];
+        key = [lastComponent substringToIndex:loc];
+        isSearch = NO;
+    }
+    if([absoluteUrl rangeOfString:@"/s-"].length>0) {
+        key = lastComponent;
+        isSearch = YES;
+    }
+    if(key != nil) {
         CALObject *object = [[TogaytherService dataService] objectForKey:key];
         if(object != nil) {
-            if([absoluteUrl rangeOfString:@"/s-"].length>0) {
+            if(isSearch) {
                 // Search
                 searchCallback(object);
             } else {
