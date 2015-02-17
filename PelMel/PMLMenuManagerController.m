@@ -22,6 +22,7 @@
 #import "PMLMainNavBarView.h"
 #import "PMLSnippetViewController.h"
 #import "FiltersViewController.h"
+#import "MainMenuTableViewController.h"
 
 #define kSnippetHeight 100
 
@@ -141,22 +142,10 @@ static void *MyParentMenuControllerKey;
     _uiService = [TogaytherService uiService];
     _dataService = [TogaytherService dataService];
     [TogaytherService applyCommonLookAndFeel:self];
-    NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLMainNavBarView" owner:self options:nil];
-    _mainNavBarView = [views objectAtIndex:0];
-    self.navigationItem.titleView = _mainNavBarView;
-    CGRect navFrame = self.navigationController.navigationBar.bounds;
-    _mainNavBarView.frame = navFrame;
-    _mainNavBarView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [_mainNavBarView.searchTextField addTarget:self action:@selector(searchFocused:) forControlEvents:UIControlEventEditingDidBegin];
-    [_mainNavBarView.cancelButton addTarget:self action:@selector(searchCancelled:) forControlEvents:UIControlEventTouchUpInside];
-    _mainNavBarView.searchTextField.delegate = self;
-    _mainNavBarView.searchTextField.placeholder = NSLocalizedString(@"search.placeholder", @"Search a place or a city");
-    [_mainNavBarView.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    _mainNavBarView.cancelButton.transform = CGAffineTransformMakeRotation(-M_PI);
-    self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(filtersTapped:)];
-    [_mainNavBarView.filtersView addGestureRecognizer:tapRecognizer];
+    // Configuring main nav bar
+    [self configureNavBar];
+
     
     // Do any additional setup after loading the view.
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -181,6 +170,45 @@ static void *MyParentMenuControllerKey;
     // Warning label@
 //    [self configureWarningLabel];
 
+}
+
+- (void)configureNavBar {
+    NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLMainNavBarView" owner:self options:nil];
+    _mainNavBarView = [views objectAtIndex:0];
+    self.navigationItem.titleView = _mainNavBarView;
+    //    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconReveal"] style:UIBarButtonItemStylePlain target:self action:@selector(revealLeftMenu:)];
+    CGRect navFrame = self.navigationController.navigationBar.bounds;
+    _mainNavBarView.frame = navFrame;
+    _mainNavBarView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    [_mainNavBarView.searchTextField addTarget:self action:@selector(searchFocused:) forControlEvents:UIControlEventEditingDidBegin];
+    [_mainNavBarView.cancelButton addTarget:self action:@selector(searchCancelled:) forControlEvents:UIControlEventTouchUpInside];
+    _mainNavBarView.searchTextField.delegate = self;
+    _mainNavBarView.searchTextField.placeholder = NSLocalizedString(@"search.placeholder", @"Search a place or a city");
+    [_mainNavBarView.searchTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    _mainNavBarView.cancelButton.transform = CGAffineTransformMakeRotation(-M_PI);
+    
+    
+    self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    
+    // Binding filter action
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(filtersTapped:)];
+    [_mainNavBarView.filtersView addGestureRecognizer:tapRecognizer];
+    
+    // Binding reveal menu
+    tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(revealLeftMenu:)];
+    [_mainNavBarView.appIconView addGestureRecognizer:tapRecognizer];
+    _mainNavBarView.appIconView.userInteractionEnabled=YES;
+    
+    // Adding the badge view for messages
+    MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
+    badgeView.frame = CGRectMake(_mainNavBarView.appIconView.frame.size.width-20, -10, 30, 20);
+    badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
+    badgeView.shadow = NO;
+    badgeView.shine=NO;
+    [_mainNavBarView.appIconView addSubview:badgeView];
+    
+    // Registering it
+    [[TogaytherService getMessageService] setMessageCountBadgeView:badgeView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -249,7 +277,7 @@ static void *MyParentMenuControllerKey;
     [_animator removeAllBehaviors];
 
     UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:myFrame.size.height-kSnippetHeight-_kbSize.height];
-//    [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
+    [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
     [_animator addBehavior:menuBehavior];
     
     // And dismissing menu
@@ -270,7 +298,7 @@ static void *MyParentMenuControllerKey;
 
         // Dismissing and pushing menu views
         UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:NO boundary:myFrame.size.height+_bottomView.frame.size.height];
-//        [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
+        [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
         [_animator addBehavior:menuBehavior];
         dismissed= YES;
     } else {
@@ -691,6 +719,64 @@ static void *MyParentMenuControllerKey;
     _kbSize.height = 0;
     _kbSize.width = 0;
 
+}
+
+-(void)revealLeftMenu:(UIView*)sender {
+    NSLog(@"Reveal");
+
+    // Clearing any menu
+    if(_menuViewController !=nil) {
+        if(_menuView != nil) {
+            UIMenuOpenBehavior *popBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_menuView] open:NO boundary:-self.view.frame.size.width horizontal:YES];
+            [popBehavior setIntensity:3.0];
+            
+            [_menuAnimator removeAllBehaviors];
+            [_menuAnimator addBehavior:popBehavior];
+        }
+
+        _menuViewController = nil;
+    } else {
+        // Just in case we have residual animation artefacts
+        [_menuView removeFromSuperview];
+        
+        // Instantiating menu view if needed
+        CGRect frame = self.view.window.frame;
+        frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
+        frame.size.height -= self.navigationController.navigationBar.frame.size.height;
+        frame = CGRectOffset(frame, -frame.size.width, 0);
+        
+        // Building standard menu
+        _menuView = [[UIView alloc] initWithFrame:frame];
+        _menuView.backgroundColor = UIColorFromRGB(0x272a2e);
+        _menuView.opaque=YES;
+        _menuView.layer.borderColor = UIColorFromRGB(0xf36523).CGColor;
+        _menuView.layer.borderWidth=2;
+        _menuView.clipsToBounds = YES;
+        [self.view addSubview:_menuView];
+        
+        // Building contents
+        MainMenuTableViewController *rearView = (MainMenuTableViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_CONTROLLER];
+//        rearView.view.bounds=CGRectMake(0,0,frame.size.width, frame.size.height);
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rearView];
+        
+        _menuViewController = navController;
+        _menuViewController.parentMenuController = self;
+        [self addChildViewController:_menuViewController];
+        _menuViewController.view.frame = CGRectMake(0,0, frame.size.width, frame.size.height);
+        [_menuView addSubview:_menuViewController.view];
+        [_menuViewController didMoveToParentViewController:self];
+        
+   
+        
+        // Displaying menu
+        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_menuView] open:YES boundary:frame.size.width-2 horizontal:YES];
+        [menuBehavior setIntensity:3.0f];
+        
+        [_menuAnimator removeAllBehaviors];
+        [_menuAnimator addBehavior:menuBehavior];
+
+    }
+    
 }
 //- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 //    if(object == _bottomView) {

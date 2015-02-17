@@ -24,4 +24,6 @@ typedef void(^MenuOpenCompletion)();
  * @param bounds the bounds of the screen to consider when putting back pushed views (when menu closes)
  */
 -(void)addPushedActions:(NSArray*)pushedMenuActions inBounds:(CGRect)bounds;
+
+-(void)setIntensity:(float)intensity;
 @end

@@ -48,6 +48,7 @@
 {
     [super viewDidLoad];
     
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     [TogaytherService applyCommonLookAndFeel:self];
     self.view.backgroundColor =UIColorFromRGB(0x272a2e);
     self.scrollView.backgroundColor = UIColorFromRGB(0x272a2e);

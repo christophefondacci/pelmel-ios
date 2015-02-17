@@ -525,11 +525,7 @@
             CurrentUser *user = userService.getCurrentUser;
             
             // Updating header title with user pseudo
-            profileHeaderView.pseudoLabel.text=user.pseudo;
-            
-            // Sizing label to fit its width (so the edit button will be next to the text
-            CGSize optimalSize = [profileHeaderView.pseudoLabel sizeThatFits:CGSizeMake(tableView.bounds.size.width, profileHeaderView.pseudoLabel.bounds.size.height)];
-            profileHeaderView.nicknameLabelWidthConstraint.constant = optimalSize.width;
+            [profileHeaderView setNickname:user.pseudo parentWidth:tableView.bounds.size.width];
             
             // Updating image thumb for user
             CALImage *mainImage = user.mainImage;

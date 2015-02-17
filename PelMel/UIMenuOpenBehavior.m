@@ -107,6 +107,9 @@
     }
 }
 
+-(void)setIntensity:(float)intensity {
+    _gravityBehavior.gravityDirection = CGVectorMake(_gravityBehavior.gravityDirection.dx*intensity, _gravityBehavior.gravityDirection.dy*intensity);
+}
 #pragma mark - UICollisionBehaviorDelegate
 - (void)collisionBehavior:(UICollisionBehavior *)behavior endedContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier {
     if(self.completion) {

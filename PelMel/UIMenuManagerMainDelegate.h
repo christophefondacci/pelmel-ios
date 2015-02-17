@@ -11,4 +11,6 @@
 
 @interface UIMenuManagerMainDelegate : NSObject<PMLMenuManagerDelegate,PMLDataListener>
 
+@property (nonatomic,strong) MenuAction *pelmelLogo;
+
 @end

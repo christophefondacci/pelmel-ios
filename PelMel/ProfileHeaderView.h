@@ -18,4 +18,9 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 
+/**
+ * Sets the nickname to display while ensuring proper sizing of constraints for centering the edit icon
+ */
+-(void)setNickname:(NSString*)nickname parentWidth:(NSInteger)width;
+
 @end

@@ -30,7 +30,7 @@
     // Our list of current actions
     NSMutableArray *_actions;
     MenuAction *_loaderAction;
-    MenuAction *_actionChat;
+
     
     // Menu controls
     NSMutableArray *_menuActions;
@@ -66,36 +66,37 @@
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:_menuManagerController.view];
     
     // Adding the chat action
-    if(_actionChat==nil) {
-        _actionChat = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnMenu"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
-            
-            NSLog(@"Chat");
-            MainMenuTableViewController *rearView = (MainMenuTableViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_CONTROLLER];
-            // Computing point where menu pops from
-            CGRect menuFrame = menuAction.menuActionView.frame;
-            
-            // Handling offset where the menu starts
-            BOOL leftHanded = [[TogaytherService settingsService] leftHandedMode];
-            
-            CGPoint menuPoint = CGPointMake(menuFrame.origin.x + (leftHanded ? menuFrame.size.width : 0), menuFrame.origin.y + menuFrame.size.height);
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rearView];
-            [_menuManagerController presentControllerMenu:navController from:menuPoint withHeightPct:0.55];
-        }];
-        // Adding the badge view for messages
-        MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
-        badgeView.frame = CGRectMake(_actionChat.menuActionView.bounds.size.width-20, -10, 30, 20);
-        badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
-        badgeView.shadow = NO;
-        badgeView.shine=NO;
-        [_actionChat.menuActionView addSubview:badgeView];
-        
-        // Registering it
-        [[TogaytherService getMessageService] setMessageCountBadgeView:badgeView];
-        
-        _actionChat.bottomMargin=105;
-        _actionChat.rightMargin = 5;
+    if(_pelmelLogo==nil) {
+//        _actionChat = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnMenu"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
+//            
+//            NSLog(@"Chat");
+//            MainMenuTableViewController *rearView = (MainMenuTableViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_CONTROLLER];
+//            // Computing point where menu pops from
+//            CGRect menuFrame = menuAction.menuActionView.frame;
+//            
+//            // Handling offset where the menu starts
+//            BOOL leftHanded = [[TogaytherService settingsService] leftHandedMode];
+//            
+//            CGPoint menuPoint = CGPointMake(menuFrame.origin.x + (leftHanded ? menuFrame.size.width : 0), menuFrame.origin.y + menuFrame.size.height);
+//            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rearView];
+//            [_menuManagerController presentControllerMenu:navController from:menuPoint withHeightPct:0.55];
+//        }];
+//        // Adding the badge view for messages
+//        MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
+//        badgeView.frame = CGRectMake(_actionChat.menuActionView.bounds.size.width-20, -10, 30, 20);
+//        badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
+//        badgeView.shadow = NO;
+//        badgeView.shine=NO;
+//        [_actionChat.menuActionView addSubview:badgeView];
+//        
+//        // Registering it
+//        [[TogaytherService getMessageService] setMessageCountBadgeView:badgeView];
+
+        _pelmelLogo = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"logoMob"] pctWidth:0 pctHeight:1 action:nil];
+        _pelmelLogo.bottomMargin=5;
+        _pelmelLogo.leftMargin = 5;
     }
-    [self setupMenuAction:_actionChat];
+    [self setupMenuAction:_pelmelLogo];
     
     // Building loader view
     if(_activityView == nil) {

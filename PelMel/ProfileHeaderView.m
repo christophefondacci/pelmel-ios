@@ -32,6 +32,15 @@
 */
 
 
+- (void)setNickname:(NSString *)nickname parentWidth:(NSInteger)width {
 
+    // Updating header title with user pseudo
+    self.pseudoLabel.text=nickname;
+    
+    // Sizing label to fit its width (so the edit button will be next to the text
+    CGSize optimalSize = [self.pseudoLabel sizeThatFits:CGSizeMake(width, self.pseudoLabel.bounds.size.height)];
+    self.nicknameLabelWidthConstraint.constant = optimalSize.width;
+
+}
 
 @end

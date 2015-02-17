@@ -11,6 +11,7 @@
 #import "UITablePlaceTypeViewCell.h"
 #import "PMLLikeStatistic.h"
 #import "PMLSnippetLikesTableViewController.h"
+#import "ProfileHeaderView.h"
 
 #define kSectionsCount 1
 
@@ -40,8 +41,11 @@
     SettingsService *_settingsService;
     MessageService *_messageService;
     UserService *_userService;
+    UIService *_uiService;
+    ImageService *_imageService;
     
     PMLLikeStatistic *_likeStat;
+    ProfileHeaderView *_profileHeaderView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -58,12 +62,15 @@
     [super viewDidLoad];
     
     [TogaytherService applyCommonLookAndFeel:self];
-    
-//    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
+    // Service initialization
     _settingsService = [TogaytherService settingsService];
     _messageService = [TogaytherService getMessageService];
     _userService = [TogaytherService userService];
+    _imageService = [TogaytherService imageService];
+    _uiService = [TogaytherService uiService];
+    
+    // Preparing header view
+    _profileHeaderView = (ProfileHeaderView*)[_uiService loadView:@"ProfileHeader"];
     
     placeTypes = [_settingsService listPlaceTypes];
 
@@ -90,6 +97,9 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -239,6 +249,27 @@
 //}
 
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if(section == 0) {
+        // Filling nickname and image of header view
+        CurrentUser *user = [_userService getCurrentUser];
+        [_profileHeaderView setNickname:user.pseudo parentWidth:self.tableView.frame.size.width];
+        _profileHeaderView.editButton.hidden=YES;
+        _profileHeaderView.profileImageView.image= nil;
+        if(user.mainImage) {
+            [_imageService load:user.mainImage to:_profileHeaderView.profileImageView thumb:YES];
+        }
+        return _profileHeaderView;
+    }
+    return nil;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if(section==0) {
+        return _profileHeaderView.bounds.size.height;
+    }
+    return [super tableView:tableView heightForHeaderInSection:section];
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch(section) {
         case kSectionPlaceType:
@@ -328,6 +359,7 @@
 // In a story board-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+        [self.navigationController setNavigationBarHidden:NO animated:NO];
     if([segue.identifier isEqualToString:@"likes"] || [segue.identifier isEqualToString:@"likers"]) {
         if(_likeStat != nil) {
             [self configureSegue:segue stat:_likeStat];
