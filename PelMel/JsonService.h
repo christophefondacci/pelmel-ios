@@ -48,4 +48,11 @@
  * Helper method that batch converts an array of JsonLightUser
  */
 - (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers;
+/**
+ * Converts a JsonHour bean (recurring event, opening hours) to a PMLCalendar object
+ * @param jsonHour a dictionary representing JSON contents
+ * @param calendar the default calendar bean to use when no entry exists in cache
+ * @return the corresponding model as a PMLCalendar bean
+ */
+- (PMLCalendar*)convertJsonCalendarToCalendar:(NSDictionary*)jsonHour defaultCalendar:(PMLCalendar*)calendar;
 @end

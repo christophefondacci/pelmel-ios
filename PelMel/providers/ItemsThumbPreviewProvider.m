@@ -55,6 +55,7 @@
     return self;
 }
 
+
 - (void)addItems:(NSArray *)items forType:(PMLThumbType)type {
     for(CALObject *item in items) {
         if(![_itemKeys containsObject:item.key]) {

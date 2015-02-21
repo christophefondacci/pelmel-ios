@@ -20,6 +20,7 @@
 
 #define SPECIAL_TYPE_OPENING @"OPENING"
 #define SPECIAL_TYPE_HAPPY @"HAPPY_HOUR"
+#define SPECIAL_TYPE_THEME @"THEME"
 
 #define SB_ID_DETAIL_CONTROLLER @"detailViewController"
 //#define SB_ID_SNIPPET_CONTROLLER @"snippetViewController"

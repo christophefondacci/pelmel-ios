@@ -88,6 +88,9 @@
 - (void)getMessagesWithUser:(NSString *)userKey messageCallback:(id<MessageCallback>)callback {
     // Getting current user and some device settings
     CurrentUser *user = userService.getCurrentUser;
+    if(user == nil) {
+        return;
+    }
     BOOL retina = [TogaytherService isRetina];
     
     // Building URL
@@ -291,8 +294,10 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [callback messageSendFailed];
     });
-    [uploadConnectionCallbacksMap removeObjectForKey:cacheKey];
-    [uploadMessagesMap removeObjectForKey:cacheKey];
+    if(cacheKey != nil) {
+        [uploadConnectionCallbacksMap removeObjectForKey:cacheKey];
+        [uploadMessagesMap removeObjectForKey:cacheKey];
+    }
 }
 -(void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
     NSLog(@"Authentication challenge");
@@ -319,8 +324,10 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [callback messageSent:msg];
     });
-    [uploadConnectionCallbacksMap removeObjectForKey:cacheKey];
-    [uploadMessagesMap removeObjectForKey:cacheKey];
+    if(cacheKey != nil) {
+        [uploadConnectionCallbacksMap removeObjectForKey:cacheKey];
+        [uploadMessagesMap removeObjectForKey:cacheKey];
+    }
 
 }
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {

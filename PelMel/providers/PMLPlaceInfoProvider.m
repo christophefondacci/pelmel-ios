@@ -26,7 +26,7 @@
 
     // Related ingo
     Special *_bestSpecial;
-    ItemsThumbPreviewProvider *_thumbsProvider;
+    
     
     // Address management
     NSArray *_addressComponents;

@@ -13,6 +13,7 @@
 "action.edit.title"="Choose an item to edit";
 "action.edit.name"="Name / place type";
 "action.edit.description"="Description";
+"action.edit.hours"="Opening hours / events";
 "action.edit.location"="Location";
 "action.edit.mylocation"="Relocate to my location";
 "action.edit.mylocation.title"="Position changed";
@@ -43,7 +44,17 @@
 "action.unlike.feedbackMessage"="Your previous \"like\" has been removed.";
 "action.save"="Save";
 "action.searchHere"="Show";
+"action.wait"="Please wait...";
 "barButton.list"="List";
+"calendar.daily"="Daily";
+"calendar.days"="Days of week";
+"calendar.end"="End";
+"calendar.editor.saving"="Saving...";
+"calendar.happy"="Happy hours";
+"calendar.opening"="Opening hours";
+"calendar.start"="Start";
+"calendar.theme"="Theme nights";
+"calendar.time"="Schedule";
 "cancel"="Cancel";
 "city.label"="City";
 "city.withbars"="%d gay places";

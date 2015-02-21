@@ -229,7 +229,9 @@
         [_animator addBehavior:_menuTouchBehavior];
         
         // Executing action
-        action.menuAction(_menuManagerController,action);
+        if(action.menuAction) {
+            action.menuAction(_menuManagerController,action);
+        }
     }
 }
 #pragma mark - PMLDataListener

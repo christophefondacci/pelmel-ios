@@ -24,6 +24,8 @@
 #define kOverviewDataUrlFormat @"%@/mobileOverview?id=%@&nxtpUserToken=%@&highRes=%@&lat=%f&lng=%f"
 #define kLikeUrlFormat @"%@/mobileIlike?id=%@&nxtpUserToken=%@&type=%@"
 #define kPlaceUpdateUrlFormat @"%@/mobileUpdatePlace"
+#define kCalendarUpdateUrlFormat @"%@/mobileUpdateEvent"
+#define kCalendarDeleteUrlFormat @"%@/mobileDeleteEvent"
 #define kReportAbuseUrl @"%@/mobileReport?key=%@&nxtpUserToken=%@&type=%d"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
@@ -738,9 +740,14 @@
     }
 }
 #pragma mark - Data modification methods
--(void)setIfDefined:(NSString *)value forKey:(NSString*)key in:(NSMutableDictionary*)dic {
+-(void)setIfDefined:(NSString *)value forKey:(NSString*)key fill:(NSMutableDictionary*)dic {
     if(value != nil) {
         [dic setObject:value forKey:key];
+    }
+}
+-(void)setIfTrue:(BOOL)myBool forKey:(NSString*)key fill:(NSMutableDictionary*)dic {
+    if(myBool) {
+        [dic setObject:@"true" forKey:key];
     }
 }
 - (void)updatePlace:(Place *)place callback:(UpdatePlaceCompletionBlock)callback {
@@ -758,17 +765,17 @@
         // Getting birth date components
         NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
         CurrentUser *user = userService.getCurrentUser;
-        [self setIfDefined:place.title      forKey:@"name"      in:paramValues];
-        [self setIfDefined:place.key        forKey:@"placeId"   in:paramValues];
-        [self setIfDefined:place.address    forKey:@"address"   in:paramValues];
-        [self setIfDefined:place.placeType  forKey:@"placeType" in:paramValues];
-        [self setIfDefined:[NSString stringWithFormat:@"%f",place.lat]  forKey:@"latitude"  in:paramValues];
-        [self setIfDefined:[NSString stringWithFormat:@"%f",place.lng]  forKey:@"longitude" in:paramValues];
-        [self setIfDefined:place.placeType  forKey:@"placeType" in:paramValues];
-        [self setIfDefined:user.token       forKey:@"nxtpUserToken" in:paramValues];
+        [self setIfDefined:place.title      forKey:@"name"      fill:paramValues];
+        [self setIfDefined:place.key        forKey:@"placeId"   fill:paramValues];
+        [self setIfDefined:place.address    forKey:@"address"   fill:paramValues];
+        [self setIfDefined:place.placeType  forKey:@"placeType" fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%f",place.lat]  forKey:@"latitude"  fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%f",place.lng]  forKey:@"longitude" fill:paramValues];
+        [self setIfDefined:place.placeType  forKey:@"placeType" fill:paramValues];
+        [self setIfDefined:user.token       forKey:@"nxtpUserToken" fill:paramValues];
         
 
-        [self setIfDefined:place.miniDesc   forKey:@"description" in:paramValues];
+        [self setIfDefined:place.miniDesc   forKey:@"description" fill:paramValues];
         if(place.miniDesc) {
             NSString *key = place.miniDescKey == nil ? @"" : place.miniDescKey;
             [paramValues setObject:key forKey:@"descriptionKey"];
@@ -776,7 +783,7 @@
         if(place.miniDescLang==nil) {
             place.miniDescLang= [TogaytherService getLanguageIso6391Code];
         }
-        [self setIfDefined:place.miniDescLang forKey:@"descriptionLanguageCode" in:paramValues];
+        [self setIfDefined:place.miniDescLang forKey:@"descriptionLanguageCode" fill:paramValues];
         
         // Preparing POST request
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -846,5 +853,68 @@
         [overviewCache setObject:object forKey:key];
     }
     return object;
+}
+
+- (void)updateCalendar:(PMLCalendar *)calendar callback:(UpdateCalendarCompletionBlock)callback errorCallback:(ErrorCompletionBlock)errorCallback {
+    dispatch_async(kTopQueue, ^{
+        // Building the URL
+        
+        NSString *url = [[NSString alloc] initWithFormat:kCalendarUpdateUrlFormat,togaytherServer ];
+        
+        // Getting birth date components
+        NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
+        CurrentUser *user = userService.getCurrentUser;
+        [self setIfDefined:calendar.key     forKey:@"eventId"   fill:paramValues];
+        [self setIfDefined:calendar.name    forKey:@"name"      fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.startHour]   forKey:@"startHour"   fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.startMinute] forKey:@"startMinute" fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.endHour]     forKey:@"endHour"     fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.endMinute]   forKey:@"endMinute"   fill:paramValues];
+        
+        [self setIfTrue:calendar.isMonday       forKey:@"monday"    fill:paramValues];
+        [self setIfTrue:calendar.isTuesday      forKey:@"tuesday"   fill:paramValues];
+        [self setIfTrue:calendar.isWednesday    forKey:@"wednesday" fill:paramValues];
+        [self setIfTrue:calendar.isThursday     forKey:@"thursday"  fill:paramValues];
+        [self setIfTrue:calendar.isFriday       forKey:@"friday"    fill:paramValues];
+        [self setIfTrue:calendar.isSaturday     forKey:@"saturday"  fill:paramValues];
+        [self setIfTrue:calendar.isSunday       forKey:@"sunday"    fill:paramValues];
+
+        [self setIfDefined:calendar.calendarType    forKey:@"calendarType" fill:paramValues];
+        [self setIfDefined:calendar.place.key       forKey:@"placeId" fill:paramValues];
+        [self setIfDefined:@"0"               forKey:@"monthRecurrency" fill:paramValues];
+        [self setIfDefined:user.token               forKey:@"nxtpUserToken" fill:paramValues];
+        
+        // Preparing POST request
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+            NSDictionary *json = (NSDictionary*)responseObject;
+            PMLCalendar *newCalendar = [jsonService convertJsonCalendarToCalendar:json defaultCalendar:calendar];
+            callback(newCalendar);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            errorCallback(error.code,@"Cannot update calendar");
+        }];
+    });
+}
+- (void)deleteCalendar:(PMLCalendar *)calendar callback:(UpdateCalendarCompletionBlock)callback errorCallback:(ErrorCompletionBlock)errorCallback {
+    dispatch_async(kTopQueue, ^{
+        // Building the URL
+        
+        NSString *url = [[NSString alloc] initWithFormat:kCalendarDeleteUrlFormat,togaytherServer ];
+        
+        // Getting birth date components
+        NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
+        CurrentUser *user = userService.getCurrentUser;
+        [self setIfDefined:user.token               forKey:@"nxtpUserToken" fill:paramValues];
+        [self setIfDefined:calendar.key             forKey:@"eventKey" fill:paramValues];
+        // Preparing POST request
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+            callback(calendar);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            errorCallback(error.code,@"Cannot delete calendar");
+        }];
+    });
 }
 @end

@@ -115,4 +115,18 @@
  * Simple alert dialog with localized messages, only one OK button
  */
 -(void)alertWithTitle:(NSString*)titleKey text:(NSString*)textKey;
+- (void)alertError;
+/**
+ * Takes a snapshot of the given view and return it as a UIImage for processing.
+ * Generally used for blurring.
+ * @param view the UIView to blur
+ * @return the snapshot image as a UIImage
+ */
+- (UIImage *)takeSnapshotOfView:(UIView *)view;
+/**
+ * Blurs the given view and returns the result as a UIImage
+ * @param view the UIView to blur
+ * @return an UIImage of the same view after applying a blur filter on it
+ */
+- (UIImage *)blurWithImageEffects:(UIView *)view;
 @end

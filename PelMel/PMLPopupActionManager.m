@@ -14,6 +14,7 @@
 #import "PMLPopupEditor.h"
 #import "MapAnnotation.h"
 #import "MessageViewController.h"
+#import "PMLCalendarTableViewController.h"
 
 #define kCheckinDistanceMeters 100
 
@@ -61,6 +62,8 @@
 #define kPMLActionEditDescription 1
 #define kPMLActionEditLocation 2
 #define kPMLActionEditMyLocation 3
+#define kPMLActionEditHours 4
+
 
 
 //#define kPMLLikeSize 50.0
@@ -333,8 +336,9 @@
     [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.description", @"Description")];
     [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.location", @"Location")];
     [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.mylocation", @"Change to my location")];
+    [_editActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.hours", @"Opening Hours / Events")];
     [_editActionSheet addButtonWithTitle:cancel];
-    _editActionSheet.cancelButtonIndex=4;
+    _editActionSheet.cancelButtonIndex=5;
     [_editActionSheet showInView:_popupController.controller.parentMenuController.view];
 }
 #pragma mark - ActionSheet Delegate
@@ -371,6 +375,9 @@
                 break;
             case kPMLActionEditMyLocation:
                 [self editToMyLocation];
+                break;
+            case kPMLActionEditHours:
+                [self editHours];
                 break;
         }
     } else if(_descriptionActionSheet == actionSheet) {
@@ -537,6 +544,17 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok",nil];
     [alert show];
 }
+
+-(void)editHours {
+    PMLCalendarTableViewController *calendarController = (PMLCalendarTableViewController*)[_uiService instantiateViewController:@"calendarEditor"];
+    if([_currentObject isKindOfClass:[Place class]]) {
+    calendarController.place = (Place*)_currentObject;
+    [self.popupController.controller.parentMenuController.navigationController pushViewController:calendarController animated:YES];
+    } else {
+        NSLog(@"WARNING: Expected a Place object but got %@", NSStringFromClass([_currentObject class]) );
+    }
+}
+
 #pragma mark - Dynamic actions generation
 -(NSArray *)buildLikeActions:(CALObject*)object {
 //    NSMutableArray *likeActions = [[NSMutableArray alloc] initWithCapacity:object.likers.count];

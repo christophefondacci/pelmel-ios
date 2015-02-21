@@ -141,6 +141,9 @@
     SettingsService *_settingsService;
     ConversionService *_conversionService;
     
+    // Pre-computing
+    NSDictionary *_hoursTypeMap;
+    
     // Dragging
     BOOL _parentDragging;
     CGPoint _dragStartPoint;
@@ -166,12 +169,13 @@
     _thumbPreviewMode = ThumbPreviewModeNone;
     _counterThumbControllers = [[NSMutableDictionary alloc] init];
     _heightsMap = [[NSMutableDictionary alloc] init];
-    
+    _hoursTypeMap = [[NSMutableDictionary alloc] init];
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
 
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -247,21 +251,10 @@
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
                 return [[_infoProvider addressComponents] count]+1;
-            case kPMLSectionOvHours: {
-                
-                Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_OPENING];
-                if(special != nil) {
-                    return 1+[[special.descriptionText componentsSeparatedByString:@"/"] count];
-                }
-            }
-                return 0;
-            case kPMLSectionOvHappyHours: {
-                Special *special = [_conversionService specialFor:_snippetItem ofType:SPECIAL_TYPE_HAPPY];
-                if(special != nil) {
-                    return 1+[[special.descriptionText componentsSeparatedByString:@"/"] count];
-                }
-            }
-                return 0;
+            case kPMLSectionOvHours:
+                return [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count]+1;
+            case kPMLSectionOvHappyHours:
+                return [[_hoursTypeMap objectForKey:SPECIAL_TYPE_HAPPY] count]+1;
             case kPMLSectionOvDesc:
                 return [[_infoProvider descriptionText] length]>0 ? kPMLOvDescRows : 0;
             case kPMLSectionOvTags: {
@@ -905,10 +898,15 @@
 
 }
 -(void)configureRowOvHours:(PMLTextTableViewCell*)cell atIndex:(NSInteger)row forType:(NSString*)specialType {
+    // Getting the corresponding calendar for specialType / row
+    NSArray *calendars = [_hoursTypeMap objectForKey:specialType];
+    PMLCalendar *cal = [calendars objectAtIndex:row];
     
-    Special *special = [_conversionService specialFor:_snippetItem ofType:specialType];
-    if(special != nil) {
-        cell.cellTextLabel.text = [[special.descriptionText componentsSeparatedByString:@"/"] objectAtIndex:row];
+    if(cal != nil) {
+        // Generating the label
+        NSString *calLabel = [_conversionService stringFromCalendar:cal];
+    
+        cell.cellTextLabel.text = calLabel;
         cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
         cell.cellTextLabel.textColor = UIColorFromRGB(0xababac);
     } else {
@@ -1237,6 +1235,7 @@
     if([_snippetItem.key isEqualToString:object.key]) {
         // Building provider
         _thumbController.thumbProvider = _infoProvider.thumbsProvider;
+        _hoursTypeMap = [_conversionService hashHoursByType:object];
         [self configureThumbController];
         [self.tableView reloadData];
         
@@ -1262,6 +1261,7 @@
     _snippetItem = snippetItem;
     _infoProvider = [TogaytherService.uiService infoProviderFor:_snippetItem];
     _masterProvider = [TogaytherService.uiService masterProviderFor:_snippetItem];
+    _hoursTypeMap = [_conversionService hashHoursByType:snippetItem];
     
     
     // Listening to edit mode

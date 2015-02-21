@@ -148,4 +148,100 @@
     }
     return bestSpecial;
 }
+-(NSString *)stringFromCalendar:(PMLCalendar *)calendar {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSArray *daySymbols = [formatter shortStandaloneWeekdaySymbols];
+    
+    
+    // Building a list from days
+    NSMutableArray *enabledList = [[NSMutableArray alloc] init];
+    [enabledList addObject:([calendar isSunday] ? @1 : @0)];
+    [enabledList addObject:([calendar isMonday] ? @1 : @0)];
+    [enabledList addObject:([calendar isTuesday] ? @1 : @0)];
+    [enabledList addObject:([calendar isWednesday] ? @1 : @0)];
+    [enabledList addObject:([calendar isThursday] ? @1 : @0)];
+    [enabledList addObject:([calendar isFriday] ? @1 : @0)];
+    [enabledList addObject:([calendar isSaturday] ? @1 : @0)];
+
+    
+    int i = 0;
+    NSNumber *start = nil;
+    NSString *buf = @"";
+    NSString *sep = @"";
+    BOOL allTrue = YES;
+    while (i < [enabledList count]) {
+        // Is this day active?
+        BOOL enabled = [[enabledList objectAtIndex:i] boolValue];
+        allTrue = allTrue && enabled;
+        // If yes and no start, we register it
+        if (start == nil && enabled) {
+            start = [NSNumber numberWithInt:i];
+        }
+        // If not enabled we print last range
+        if (!enabled && start != nil) {
+            buf = [buf stringByAppendingFormat:@"%@%@",sep,daySymbols[start.intValue ]];
+            if (i > start.intValue + 1) {
+                buf = [buf stringByAppendingFormat:@"-%@",daySymbols[i-1]];
+            }
+            sep = @",";
+            start = nil;
+        }
+        i++;
+    }
+    // Last part may not have been added
+    if (start != nil) {
+        buf = [buf stringByAppendingFormat:@"%@%@",sep,daySymbols[start.intValue ]];
+        if (i > start.intValue + 1) {
+            buf = [buf stringByAppendingFormat:@"-%@",daySymbols[i-1]];
+        }
+    }
+    if (allTrue) {
+        buf = NSLocalizedString(@"calendar.daily",@"Daily");
+    }
+    
+    // Handling US / european dates
+    NSString *localStartTime = [self stringForHours:[calendar startHour] minutes:[calendar startMinute]];
+    NSString *localEndTime = [self stringForHours:[calendar endHour] minutes:[calendar endMinute]];
+
+    
+    buf = [buf stringByAppendingFormat:@" %@-%@",localStartTime,localEndTime];
+    
+    return buf;
+}
+
+- (NSString *)stringForHours:(NSInteger)hours minutes:(NSInteger)minutes {
+    NSDateFormatter *fullClockFormatter = [[NSDateFormatter alloc]init];
+    [fullClockFormatter setDateFormat:@"HH:mm"];
+
+    NSDate *startTime = [fullClockFormatter dateFromString:[NSString stringWithFormat:@"%02d:%02d",hours%24,minutes]];
+
+    [fullClockFormatter setDateStyle:NSDateFormatterNoStyle];
+    [fullClockFormatter setTimeStyle:NSDateFormatterShortStyle];
+    NSString *localStartTime = [fullClockFormatter stringFromDate:startTime];
+    return localStartTime;
+}
+
+-(NSDictionary*)hashHoursByType:(CALObject*)object {
+    NSArray *hours = nil;
+    if([object isKindOfClass:[Place class]]) {
+        hours = ((Place*)object).hours;
+    }
+    // Processing hours hashmap
+    NSMutableDictionary *hoursTypeMap = [[NSMutableDictionary alloc] init];
+    for(PMLCalendar *calendar in hours) {
+        
+        // Retrieving previous list registered for this type
+        NSMutableArray *typedCalendars = [hoursTypeMap objectForKey:calendar.calendarType];
+        
+        // Creating a new entry if not yet defined
+        if(typedCalendars == nil) {
+            typedCalendars = [[NSMutableArray alloc] init];
+            [hoursTypeMap setObject:typedCalendars forKey:calendar.calendarType];
+        }
+        
+        // Appending this calendar to the typed list
+        [typedCalendars addObject:calendar];
+    }
+    return hoursTypeMap;
+}
 @end

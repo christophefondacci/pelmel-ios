@@ -40,4 +40,18 @@ typedef void(^AddressClosure)(NSString*address);
  */
 -(SpecialMode)specialModeFor:(Special*)special;
 -(Special*)specialFor:(CALObject*)place ofType:(NSString *)specialType;
+
+/**
+ * Converts a calendar definition into a human readable string
+ * @param calendar the PMLCalendar to convert
+ * @return the human-readable string corresponding to the calendar definition
+ */
+-(NSString*)stringFromCalendar:(PMLCalendar*)calendar;
+-(NSString*)stringForHours:(NSInteger)hours minutes:(NSInteger)minutes;
+/**
+ * Hashes an array of PMLCalendar instances by their corresponding calendar type
+ * @param object the object to get hours from
+ * @return a dictionary of all PMLCalendar instances hashed by their calendar type
+ */
+-(NSDictionary*)hashHoursByType:(CALObject*)object;
 @end

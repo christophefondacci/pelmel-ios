@@ -8,12 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
+@class PMLAddTableViewCell;
+
+@protocol PMLAddModifyDelegate
+-(void)addTapped:(PMLAddTableViewCell*)sourceCell;
+-(void)modifyTapped:(PMLAddTableViewCell*)sourceCell;
+@end
+
 @interface PMLAddTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *addLabel;
 @property (weak, nonatomic) IBOutlet UIButton *addButton;
 @property (weak, nonatomic) IBOutlet UIButton *addButtonIcon;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthLabelConstaint;
 @property (weak, nonatomic) IBOutlet UIButton *modifyButton;
 @property (weak, nonatomic) IBOutlet UIButton *modifyButtonIcon;
 
+// The delegate for add/modify callback actions
+@property (nonatomic,weak) NSObject<PMLAddModifyDelegate> *delegate;
 @end

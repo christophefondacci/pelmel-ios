@@ -17,6 +17,7 @@
 
 
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIImageView *editButtonIcon;
 
 /**
  * Sets the nickname to display while ensuring proper sizing of constraints for centering the edit icon

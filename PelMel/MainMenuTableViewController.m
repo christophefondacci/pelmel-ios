@@ -254,7 +254,7 @@
         // Filling nickname and image of header view
         CurrentUser *user = [_userService getCurrentUser];
         [_profileHeaderView setNickname:user.pseudo parentWidth:self.tableView.frame.size.width];
-        _profileHeaderView.editButton.hidden=YES;
+        _profileHeaderView.editButtonIcon.hidden=YES;
         _profileHeaderView.profileImageView.image= nil;
         if(user.mainImage) {
             [_imageService load:user.mainImage to:_profileHeaderView.profileImageView thumb:YES];

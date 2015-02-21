@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "PMLInfoProvider.h"
 #import "Place.h"
+#import "ItemsThumbPreviewProvider.h"
 
 @interface PMLPlaceInfoProvider : NSObject<PMLInfoProvider>
 
+@property (nonatomic,strong) ItemsThumbPreviewProvider *thumbsProvider;
 - (instancetype)initWith:(Place*)place;
 @end

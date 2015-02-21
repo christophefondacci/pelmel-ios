@@ -11,7 +11,9 @@
 #import "LanguagePickerDataSource.h"
 #import "UITableMeasureViewCell.h"
 #import "ImageService.h"
-@interface ProfileTableViewController : UITableViewController <DateCallback,MeasureSliderDelegate,LanguageCallback, PMLImagePickerCallback, PMLImageUploadCallback, ImageManagementCallback,UIAlertViewDelegate>
+#import "PMLAddTableViewCell.h"
+
+@interface ProfileTableViewController : UITableViewController <DateCallback,MeasureSliderDelegate,LanguageCallback, PMLImagePickerCallback, PMLImageUploadCallback, ImageManagementCallback,UIAlertViewDelegate, PMLAddModifyDelegate>
 
 - (IBAction)dismiss:(id)sender;
 

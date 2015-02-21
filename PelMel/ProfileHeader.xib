@@ -98,6 +98,7 @@
             <connections>
                 <outlet property="activityIndicator" destination="12" id="13"/>
                 <outlet property="editButton" destination="cwm-PZ-qZv" id="f0V-0x-Mem"/>
+                <outlet property="editButtonIcon" destination="OkT-VM-Hz9" id="5qL-uR-f4f"/>
                 <outlet property="nicknameLabelWidthConstraint" destination="3E6-Rd-52W" id="fL3-E5-UkE"/>
                 <outlet property="profileImageView" destination="4" id="11"/>
                 <outlet property="pseudoLabel" destination="9" id="10"/>

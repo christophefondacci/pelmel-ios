@@ -185,10 +185,11 @@
     NSDictionary *thumb     = [json objectForKey:@"thumb"];
     NSArray *otherImages    = [json objectForKey:@"otherImages"];
     
-    NSArray *jsonInUsers   = [json objectForKey:@"inUsers"];
-    NSArray *jsonLikeUsers = [json objectForKey:@"likeUsers"];
+    NSArray *jsonInUsers    = [json objectForKey:@"inUsers"];
+    NSArray *jsonLikeUsers  = [json objectForKey:@"likeUsers"];
     NSNumber *jsonLiked     = [json objectForKey:@"liked"];
-    NSArray *jsonEvents    = [json objectForKey:@"events"];
+    NSArray *jsonEvents     = [json objectForKey:@"events"];
+    NSArray *jsonHours      = [json objectForKey:@"hours"];
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
@@ -287,6 +288,16 @@
         [thumbsDownloadList addObject:event];
     }
     
+    // Processing hours
+    NSMutableArray *hours = [[NSMutableArray alloc] init];
+    for(NSDictionary *jsonHour in jsonHours) {
+        PMLCalendar *calendar = [self convertJsonCalendarToCalendar:jsonHour defaultCalendar:nil];
+        calendar.place = place;
+        [hours addObject:calendar];
+    }
+    [place setHours:hours];
+    
+    
     // Registering that this object has data
     [place setHasOverviewData:YES];
     
@@ -295,6 +306,58 @@
     return place;
 }
 
+-(PMLCalendar*)convertJsonCalendarToCalendar:(NSDictionary*)jsonHour defaultCalendar:(PMLCalendar*)defaultCalendar {
+    NSString *key           = [jsonHour objectForKey:@"key"];
+    NSString *hoursType     = [jsonHour objectForKey:@"type"];
+    NSString *hoursName     = [jsonHour objectForKey:@"name"];
+    
+    NSNumber *startHour     = [jsonHour objectForKey:@"startHour"];
+    NSNumber *startMinute   = [jsonHour objectForKey:@"startMinute"];
+    NSNumber *endHour       = [jsonHour objectForKey:@"endHour"];
+    NSNumber *endMinute     = [jsonHour objectForKey:@"endMinute"];
+    
+    NSNumber *isMonday      = [jsonHour objectForKey:@"monday"];
+    NSNumber *isTuesday     = [jsonHour objectForKey:@"tuesday"];
+    NSNumber *isWednesday   = [jsonHour objectForKey:@"wednesday"];
+    NSNumber *isThursday    = [jsonHour objectForKey:@"thursday"];
+    NSNumber *isFriday      = [jsonHour objectForKey:@"friday"];
+    NSNumber *isSaturday    = [jsonHour objectForKey:@"saturday"];
+    NSNumber *isSunday      = [jsonHour objectForKey:@"sunday"];
+    
+    NSNumber *recurrency    = [jsonHour objectForKey:@"recurrency"];
+    
+    PMLCalendar *calendar = [cacheService objectForKey:key];
+    if(calendar == nil) {
+        if(defaultCalendar) {
+            calendar = defaultCalendar;
+        } else {
+            calendar = [[PMLCalendar alloc] init];
+        }
+        [cacheService setObject:calendar forKey:key];
+    }
+
+    [calendar setKey:key];
+    [calendar setName:hoursName];
+    [calendar setStartHour:[startHour integerValue]];
+    [calendar setStartMinute:[startMinute integerValue]];
+    [calendar setEndHour:[endHour integerValue]];
+    [calendar setEndMinute:[endMinute integerValue]];
+    
+    [calendar setIsMonday:[isMonday boolValue]];
+    [calendar setIsTuesday:[isTuesday boolValue]];
+    [calendar setIsWednesday:[isWednesday boolValue]];
+    [calendar setIsThursday:[isThursday boolValue]];
+    [calendar setIsFriday:[isFriday boolValue]];
+    [calendar setIsSaturday:[isSaturday boolValue]];
+    [calendar setIsSunday:[isSunday boolValue]];
+    [calendar setCalendarType:hoursType];
+    if(recurrency != (NSNumber*)[NSNull null]){
+        [calendar setRecurrency:recurrency];
+    } else {
+        [calendar setRecurrency:nil];
+    }
+    return calendar;
+}
 -(Activity *)convertJsonActivityToActivity:(NSDictionary *)jsonActivity {
     NSDictionary *jsonUser = [jsonActivity objectForKey:@"user"];
     NSDictionary *jsonActivityPlace = [jsonActivity objectForKey:@"activityPlace"];

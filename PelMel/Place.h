@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
-
+#import "PMLCalendar.h"
 
 @interface Place : CALObject
 
@@ -23,6 +23,7 @@
 @property (readonly) NSMutableArray *events;
 @property (strong,nonatomic) NSArray *specials;
 @property (nonatomic) int closedReportsCount;
+@property (strong,nonatomic) NSMutableArray *hours;
 
 
 - (id)initFull:(NSString*)title distance:(NSString *)distance miniDesc:(NSString*)desc;

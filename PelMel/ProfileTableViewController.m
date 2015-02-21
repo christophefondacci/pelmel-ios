@@ -82,6 +82,10 @@
     // Description height management
     NSMutableDictionary *_descPathMap;
     NSMutableDictionary *_descHeightMap;
+    
+    // Pointers to add/modify cells
+    PMLAddTableViewCell *_addPhotoCell;
+    PMLAddTableViewCell *_addDescriptionCell;
 }
 
 
@@ -146,6 +150,10 @@
     _descHeightMap= [[NSMutableDictionary alloc] init];
     
     [self.navigationController setNavigationBarHidden:NO animated:NO];
+    
+    
+    // Registering external reused cells
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLAddModifyViewCell" bundle:nil] forCellReuseIdentifier:@"add"];
 //    // Loading description header view
 //    views = [[NSBundle mainBundle] loadNibNamed:@"DescriptionHeader" owner:self options:nil];
 //    descriptionHeaderView = [views objectAtIndex:0];
@@ -321,21 +329,8 @@
                 break;
             case kSectionDescriptions: {
                 if(indexPath.row == 0) {
-                    PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
-                    
-                    // Add button text and action
-                    [addCell.addButton setTitle:NSLocalizedString(@"map.option.add", @"Add") forState:UIControlStateNormal];
-                    [addCell.addButton addTarget:self action:@selector(addDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    [addCell.addButtonIcon addTarget:self action:@selector(addDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    // Modify button text and action
-                    [addCell.modifyButton setTitle:NSLocalizedString(@"modify", @"modify") forState:UIControlStateNormal];
-                    [addCell.modifyButton addTarget:self action:@selector(modifyDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    [addCell.modifyButtonIcon addTarget:self action:@selector(modifyDescriptionTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    // Colors (a bug reverts colors of buttons to blue
-                    addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
-                    addCell.modifyButton.titleLabel.textColor = [UIColor whiteColor];
+                    _addDescriptionCell = (PMLAddTableViewCell*)cell;
+                    _addDescriptionCell.delegate = self;
                 } else {
                     UITableDescriptionViewCell *descCell=(UITableDescriptionViewCell*)cell;
                     Description *d = [self getDescriptionFor:(int)indexPath.row];
@@ -366,17 +361,8 @@
                     [photoCell.activity stopAnimating];
                     photoCell.activity.hidden=YES;
                 } else {
-                    PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
-                    [addCell.addButton setTitle:NSLocalizedString(@"map.option.add", @"Add") forState:UIControlStateNormal];
-                    [addCell.addButton addTarget:self action:@selector(addPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    [addCell.addButtonIcon addTarget:self action:@selector(addPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    [addCell.modifyButton setTitle:NSLocalizedString(@"modify", @"modify") forState:UIControlStateNormal];
-                    [addCell.modifyButton addTarget:self action:@selector(modifyPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    [addCell.modifyButtonIcon addTarget:self action:@selector(modifyPhotoTapped:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    // Colors (a bug reverts colors of buttons to blue
-                    addCell.addButton.titleLabel.textColor = UIColorFromRGB(0x2db024);
-                    addCell.modifyButton.titleLabel.textColor = [UIColor whiteColor];
+                    _addPhotoCell = (PMLAddTableViewCell*)cell;
+                    _addPhotoCell.delegate = self;
                 }
                 break;
                 
@@ -921,14 +907,14 @@
         
     }
 }
-- (void)addPhotoTapped:(UIButton*)button {
+- (void)addPhotoTapped {
     [imageService promptUserForPhoto:self callback:self];
 }
-- (void)modifyPhotoTapped:(UIButton*)button {
+- (void)modifyPhotoTapped {
     _photoEdition = !_photoEdition;
     [self updateEditingStyle];
 }
-- (void)modifyDescriptionTapped:(UIButton*)button {
+- (void)modifyDescriptionTapped {
     _descEdition = !_descEdition;
     [self updateEditingStyle];
 }
@@ -939,7 +925,7 @@
     }
     [self setEditing:newEditing animated:YES];
 }
--(void)addDescriptionTapped:(id)source {
+-(void)addDescriptionTapped {
     CurrentUser *user = [userService getCurrentUser];
     NSString *currentLanguage = [[[NSLocale preferredLanguages] objectAtIndex:0] substringToIndex:2];
     NSArray *languages = @[@"en",@"es",@"fr",@"de",@"it",@"nl"];
@@ -984,6 +970,26 @@
         UITextField *textField = [alertView textFieldAtIndex:0];
         [user setPseudo:textField.text];
         [self.tableView reloadData];
+    }
+}
+
+#pragma mark - PMLAddModifyDelegate
+- (void)addTapped:(PMLAddTableViewCell *)sourceCell {
+    if(sourceCell == _addPhotoCell) {
+        [self addPhotoTapped];
+    } else if(sourceCell == _addDescriptionCell) {
+        [self addDescriptionTapped];
+    } else {
+        NSLog(@"Warning: no cell found for add/modify callback action");
+    }
+}
+- (void)modifyTapped:(PMLAddTableViewCell *)sourceCell {
+    if(sourceCell == _addPhotoCell) {
+        [self modifyPhotoTapped];
+    } else if(sourceCell == _addDescriptionCell) {
+        [self modifyDescriptionTapped];
+    } else {
+        NSLog(@"Warning: no cell found for add/modify callback action");
     }
 }
 @end

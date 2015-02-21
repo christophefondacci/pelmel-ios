@@ -23,6 +23,8 @@
 #import "PMLSnippetTableViewController.h"
 #import "PMLContextInfoProvider.h"
 #import "PMLCityInfoProvider.h"
+#import "UIImage+ImageEffects.h"
+
 
 #define kColorPrefKeyTemplate @"color.%@"
 #define kPMLMarkerPrefKeyTemplate @"marker.%@"
@@ -325,5 +327,27 @@
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alert show];
+}
+- (void)alertError {
+    [self alertWithTitle:NSLocalizedString(@"action.failure.title", "Error") text:NSLocalizedString(@"action.failure.message", @"An error has occurred")];
+}
+#pragma mark - Image effects
+- (UIImage *)takeSnapshotOfView:(UIView *)view
+{
+    CGFloat reductionFactor = 1;
+    UIGraphicsBeginImageContext(CGSizeMake(view.frame.size.width/reductionFactor, view.frame.size.height/reductionFactor));
+    [view drawViewHierarchyInRect:CGRectMake(0, 0, view.frame.size.width/reductionFactor, view.frame.size.height/reductionFactor) afterScreenUpdates:YES];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
+}
+
+- (UIImage *)blurWithImageEffects:(UIView *)view
+{
+    // Taking snapshot
+    UIImage *image = [self takeSnapshotOfView:view];
+    // Bluring
+    return [image applyBlurWithRadius:5 tintColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2] saturationDeltaFactor:1.0 maskImage:nil];
 }
 @end
