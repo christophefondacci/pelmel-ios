@@ -107,6 +107,9 @@
 		B452EDF719B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B452EDF519B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h */; };
 		B452EDF819B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B452EDF619B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m */; };
 		B452FC21169C45F100596D9E /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = B452FC20169C45F100596D9E /* Tag.m */; };
+		B457A0E61A980DDA00207D8E /* PMLEventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B457A0E51A980DDA00207D8E /* PMLEventTableViewCell.xib */; };
+		B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B457A0E71A999C3E00207D8E /* PMLEventTableViewCell.h */; };
+		B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B457A0E81A999C3E00207D8E /* PMLEventTableViewCell.m */; };
 		B4592A861622CF35009688B8 /* UITableDescriptionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A851622CF35009688B8 /* UITableDescriptionViewCell.m */; };
 		B4592A8C1623090A009688B8 /* UIInteractiveLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A8B1623090A009688B8 /* UIInteractiveLabel.m */; };
 		B4592A93162314A3009688B8 /* PickerInputTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A92162314A3009688B8 /* PickerInputTableViewCell.m */; };
@@ -437,6 +440,9 @@
 		B452EDF619B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPlaceTypesThumbProvider.m; sourceTree = "<group>"; };
 		B452FC1F169C45F100596D9E /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; };
 		B452FC20169C45F100596D9E /* Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tag.m; sourceTree = "<group>"; };
+		B457A0E51A980DDA00207D8E /* PMLEventTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLEventTableViewCell.xib; sourceTree = "<group>"; };
+		B457A0E71A999C3E00207D8E /* PMLEventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLEventTableViewCell.h; sourceTree = "<group>"; };
+		B457A0E81A999C3E00207D8E /* PMLEventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLEventTableViewCell.m; sourceTree = "<group>"; };
 		B4592A841622CF35009688B8 /* UITableDescriptionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableDescriptionViewCell.h; sourceTree = "<group>"; };
 		B4592A851622CF35009688B8 /* UITableDescriptionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableDescriptionViewCell.m; sourceTree = "<group>"; };
 		B4592A8A1623090A009688B8 /* UIInteractiveLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIInteractiveLabel.h; sourceTree = "<group>"; };
@@ -1299,6 +1305,9 @@
 				B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */,
 				B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */,
 				B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */,
+				B457A0E51A980DDA00207D8E /* PMLEventTableViewCell.xib */,
+				B457A0E71A999C3E00207D8E /* PMLEventTableViewCell.h */,
+				B457A0E81A999C3E00207D8E /* PMLEventTableViewCell.m */,
 			);
 			name = Snippet;
 			sourceTree = "<group>";
@@ -1381,6 +1390,7 @@
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
 				B43D11731A97A12B008476C7 /* PresentingSpringAnimator.h in Headers */,
 				B46AD73519E509580021E1DE /* PMLSnippetLikeTableViewCell.h in Headers */,
+				B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */,
 				B43E9ADE19F47F5300F91FC1 /* PMLAddTableViewCell.h in Headers */,
 				B46AD72C19E0E1E50021E1DE /* SettingsTableViewController.h in Headers */,
 				B41DD750197B4F5E008F09D9 /* APLDecorationView.h in Headers */,
@@ -1513,6 +1523,7 @@
 				B423643D199F4ABB00E350A7 /* PelMel.xcassets in Resources */,
 				B41CF0AE1899C0F40031FD7C /* PelMel-config.plist in Resources */,
 				B4859DCB1984C1060036D8FF /* UITextInputView.xib in Resources */,
+				B457A0E61A980DDA00207D8E /* PMLEventTableViewCell.xib in Resources */,
 				B4FC958219B1E28B00269E74 /* Sari-Medium.otf in Resources */,
 				B4270E1919F62E5C00620773 /* PMLUserActionsView.xib in Resources */,
 				B4B560A818B76C41006E6D90 /* UIPelmelTitleView.xib in Resources */,
@@ -1630,6 +1641,7 @@
 				B4859DC91984BAD60036D8FF /* UITouchBehavior.m in Sources */,
 				B4D56092160B673F003A738E /* DetailViewController.m in Sources */,
 				B4859DCF1984C39B0036D8FF /* UITextInputView.m in Sources */,
+				B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */,
 				B42F544019873CC200C2371F /* MKNewPlaceAnnotationView.m in Sources */,
 				B4D560B9160C95A3003A738E /* Place.m in Sources */,
 				B4322E3E198DE2DA0037E260 /* PMLSubNavigationController.m in Sources */,

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Place.h"
 #import "Special.h"
+#import "Event.h"
 
 typedef enum {
     CURRENT, SOON, PAST
@@ -54,4 +55,6 @@ typedef void(^AddressClosure)(NSString*address);
  * @return a dictionary of all PMLCalendar instances hashed by their calendar type
  */
 -(NSDictionary*)hashHoursByType:(CALObject*)object;
+
+-(NSString *)eventDateLabel:(Event*)event;
 @end

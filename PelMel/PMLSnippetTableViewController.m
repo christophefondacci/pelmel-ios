@@ -25,11 +25,12 @@
 #import "PMLThumbsTableViewCell.h"
 #import "MessageViewController.h"
 #import "PMLImagedTitleTableViewCell.h"
+#import "PMLEventTableViewCell.h"
 
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
-#define kPMLSectionsCount 11
+#define kPMLSectionsCount 12
 
 #define kPMLSectionSnippet 0
 #define kPMLSectionGallery 1
@@ -38,10 +39,11 @@
 #define kPMLSectionOvAddress 4
 #define kPMLSectionOvHours 5
 #define kPMLSectionOvHappyHours 6
-#define kPMLSectionOvDesc 7
-#define kPMLSectionOvTags 8
-#define kPMLSectionTopPlaces 9
-#define kPMLSectionActivity 10
+#define kPMLSectionOvEvents 7
+#define kPMLSectionOvDesc 8
+#define kPMLSectionOvTags 9
+#define kPMLSectionTopPlaces 10
+#define kPMLSectionActivity 11
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -87,6 +89,9 @@
 #define kPMLHeightOvHoursRows 20
 #define kPMLHeightOvHoursTitleRows 40
 #define kPMLHeaderHeightOvHours 20
+
+#define kPMLRowEventId @"event"
+#define kPMLHeightOvEventRows 140
 
 #define kPMLOvDescRows 1
 #define kPMLRowOvDesc 0
@@ -176,6 +181,8 @@
 
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
     
+    // Initializing external table view cells
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowEventId];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -255,6 +262,11 @@
                 return [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count]+1;
             case kPMLSectionOvHappyHours:
                 return [[_hoursTypeMap objectForKey:SPECIAL_TYPE_HAPPY] count]+1;
+            case kPMLSectionOvEvents:
+                if([_snippetItem isKindOfClass:[Place class]]) {
+                    return [[((Place*)_snippetItem) events] count];
+                }
+                break;
             case kPMLSectionOvDesc:
                 return [[_infoProvider descriptionText] length]>0 ? kPMLOvDescRows : 0;
             case kPMLSectionOvTags: {
@@ -294,6 +306,8 @@
                     return kPMLRowThumbPreviewId;
             }
             break;
+        case kPMLSectionOvEvents:
+            return kPMLRowEventId;
         case kPMLSectionOvSummary:
             switch(indexPath.row) {
                 case kPMLRowOvSeparator:
@@ -392,6 +406,9 @@
                 [self configureRowOvHours:(PMLTextTableViewCell*)cell atIndex:indexPath.row-1 forType:SPECIAL_TYPE_HAPPY];
             }
             break;
+        case kPMLSectionOvEvents:
+            [self configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
+            break;
         case kPMLSectionOvDesc:
             [self configureRowOvDesc:(PMLDescriptionTableViewCell*)cell];
             break;
@@ -456,6 +473,8 @@
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvHappyHours:
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
+        case kPMLSectionOvEvents:
+            return kPMLHeightOvEventRows;
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
                 PMLDescriptionTableViewCell *descriptionCell = [self.tableView dequeueReusableCellWithIdentifier:kPMLRowDescId];
@@ -923,7 +942,24 @@
     cell.cellTextLabel.textColor = UIColorFromRGB(0xfff600);
     cell.cellTextLabel.text = NSLocalizedString(@"snippet.title.happyhours", @"Happy hours");
 }
-
+-(void)configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
+    Event *event = [((Place*)_snippetItem).events objectAtIndex:row];
+    cell.image.image = nil;
+    [_imageService load:event.mainImage to:cell.image thumb:NO];
+    
+    cell.titleLabel.text = [event.name uppercaseString];
+    cell.dateLabel.text = [_conversionService eventDateLabel:event];
+    cell.locationIcon.image = [UIImage imageNamed:@"snpIconCity"]; // TODO: Change to marker pinpoint
+    cell.locationLabel.text = _infoProvider.title;
+    if(event.likeCount>0) {
+        cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"snippet.event.inUsers","# guys are in"),event.likeCount];
+        cell.countIcon.image=[UIImage imageNamed:@"snpIconEvent"];
+    } else {
+        cell.countIcon.image = nil;
+        cell.countLabel.text = nil;
+    }
+    cell.backgroundColor = UIColorFromRGB(0x31363a);
+}
 -(void)configureRowOvDesc:(PMLDescriptionTableViewCell*)cell {
     cell.descriptionLabel.text = [_infoProvider descriptionText];
     cell.descriptionLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:kPMLRowDescFontSize];

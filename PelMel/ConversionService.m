@@ -12,6 +12,7 @@
 
 @implementation ConversionService {
     CLGeocoder *_geocoder;
+    NSDateFormatter *_eventDateFormatter;
 }
 
 - (instancetype)init
@@ -19,6 +20,11 @@
     self = [super init];
     if (self) {
         _geocoder = [[CLGeocoder alloc] init];
+        _eventDateFormatter = [[NSDateFormatter alloc] init];
+        NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMMhmma" options:0
+                                                                  locale:[NSLocale currentLocale]];
+
+        [_eventDateFormatter setDateFormat:formatString];
     }
     return self;
 }
@@ -243,5 +249,9 @@
         [typedCalendars addObject:calendar];
     }
     return hoursTypeMap;
+}
+
+- (NSString *)eventDateLabel:(Event*)event {
+    return [_eventDateFormatter stringFromDate:event.startDate];
 }
 @end

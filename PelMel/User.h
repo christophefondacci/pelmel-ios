@@ -1,6 +1,6 @@
 //
 //  User.h
-//  nativeTest
+//  PelMel
 //
 //  Created by Christophe Fondacci on 28/09/12.
 //  Copyright (c) 2012 Christophe Fondacci. All rights reserved.
