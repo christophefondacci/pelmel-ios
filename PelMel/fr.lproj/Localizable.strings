@@ -72,6 +72,7 @@
 "distance.template.feet"="%@ pieds";
 "edit.title"="Entrez un nom";
 "events.title"="Evènements";
+"events.addButton"="Créer et promouvoir un évènement";
 "filters.hours.happy"="Happy hours maintenant";
 "filters.hours.open"="Ouvert maintenant";
 "filters.placeType.header"="Types de lieu";
@@ -237,6 +238,7 @@
 "snippet.header.topPlaces"="Lieux populaires";
 "snippet.header.activities"="Activité récente";
 "snippet.likes"="%d aiment";
+"snippet.title.events"="Evènements à venir";
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Heures d'ouverture";
 "snippet.title.notitle" = "Touchez pour ajouter un nom";

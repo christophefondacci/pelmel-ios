@@ -58,6 +58,10 @@ typedef enum {
 // When implemented, this method will be called and the component will replace
 // The thumbs view
 -(void)configureCustomViewIn:(UIView*)parentView forController:(UIViewController*)controller;
+// Provides the list of events connected to the current element
+-(NSArray*)events;
+// Provides the introduction label for the events section, if not implemented or nil then no section header will be displayed
+-(NSString*)eventsSectionTitle;
 // List of top places
 -(NSArray*)topPlaces;
 // List of activities

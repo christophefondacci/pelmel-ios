@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PMLAddEventTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UBp-Ha-x1N">
+                    <rect key="frame" x="25" y="8" width="270" height="46"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="evtButtonAdd" translatesAutoresizingMaskIntoConstraints="NO" id="6ys-sH-dUD">
+                            <rect key="frame" x="10" y="9" width="43" height="28"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="43" id="asj-1T-utL"/>
+                                <constraint firstAttribute="height" constant="28" id="cSl-ol-w7P"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create and promote" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="jW1-57-IOp">
+                            <rect key="frame" x="65" y="12" width="188" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="Bxt-fP-WHR"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.1529411765" green="0.1647058824" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="6ys-sH-dUD" secondAttribute="centerY" id="CrA-1j-1PH"/>
+                        <constraint firstAttribute="trailing" secondItem="jW1-57-IOp" secondAttribute="trailing" constant="17" id="Djv-W1-5w0"/>
+                        <constraint firstAttribute="centerY" secondItem="jW1-57-IOp" secondAttribute="centerY" id="Hdz-xm-sed"/>
+                        <constraint firstItem="6ys-sH-dUD" firstAttribute="leading" secondItem="UBp-Ha-x1N" secondAttribute="leading" constant="10" id="PSV-lt-5C8"/>
+                        <constraint firstAttribute="height" constant="46" id="WTy-PN-WKA"/>
+                        <constraint firstItem="jW1-57-IOp" firstAttribute="leading" secondItem="6ys-sH-dUD" secondAttribute="trailing" constant="12" id="nNQ-Iy-AER"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
+                            <color key="value" red="0.2627450980392157" green="0.27450980392156865" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="UBp-Ha-x1N" secondAttribute="trailing" constant="25" id="NhI-cf-JZE"/>
+                <constraint firstItem="UBp-Ha-x1N" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="25" id="rVK-jb-7rZ"/>
+                <constraint firstAttribute="centerY" secondItem="UBp-Ha-x1N" secondAttribute="centerY" id="zd0-ua-yUr"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="addEventLabel" destination="jW1-57-IOp" id="8SK-wX-bvV"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="-118"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="evtButtonAdd" width="43" height="28"/>
+    </resources>
+</document>

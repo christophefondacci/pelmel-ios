@@ -278,4 +278,10 @@
             return 0;
     }
 }
+- (NSArray *)events {
+    return _place.events;
+}
+- (NSString *)eventsSectionTitle {
+    return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
+}
 @end

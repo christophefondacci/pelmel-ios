@@ -73,6 +73,7 @@
 "distance.template.feet"="%@ feet";
 "edit.title"="Enter a name";
 "events.title"="Events";
+"events.addButton"="Create and promote an event";
 "filters.hours.happy"="Happy hours now";
 "filters.hours.open"="Opened now";
 "filters.placeType.header"="Place types";
@@ -245,6 +246,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.event.inUsers"="%@ guys are in";
 "snippet.header.topPlaces"="Popular places";
 "snippet.header.activities"="Recent activity";
+"snippet.title.events"="Upcoming Events";
 "snippet.title.notitle" = "Tap to add a name";
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Opening Hours";

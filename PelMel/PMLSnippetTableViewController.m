@@ -26,7 +26,8 @@
 #import "MessageViewController.h"
 #import "PMLImagedTitleTableViewCell.h"
 #import "PMLEventTableViewCell.h"
-
+#import "PMLSectionTitleView.h"
+#import "PMLAddEventTableViewCell.h"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
@@ -91,7 +92,10 @@
 #define kPMLHeaderHeightOvHours 20
 
 #define kPMLRowEventId @"event"
-#define kPMLHeightOvEventRows 140
+#define kPMLRowAddEventId @"addEvent"
+#define kPMLHeightOvEventRows 144
+#define kPMLHeightOvAddEventRow 62
+
 
 #define kPMLOvDescRows 1
 #define kPMLRowOvDesc 0
@@ -133,6 +137,9 @@
     CAGradientLayer *_countersGradient;
     NSMutableDictionary *_countersPreviewGradients; // map of CAGradientLayer for likes/checkins gradients
     NSMutableDictionary *_heightsMap;
+    
+    // Headers
+    PMLSectionTitleView *_sectionTitleView;
     
     // Gallery
     BOOL _galleryFullscreen;
@@ -183,6 +190,10 @@
     
     // Initializing external table view cells
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowEventId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLAddEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
+    // Loading header views
+    _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -263,8 +274,8 @@
             case kPMLSectionOvHappyHours:
                 return [[_hoursTypeMap objectForKey:SPECIAL_TYPE_HAPPY] count]+1;
             case kPMLSectionOvEvents:
-                if([_snippetItem isKindOfClass:[Place class]]) {
-                    return [[((Place*)_snippetItem) events] count];
+                if([_infoProvider respondsToSelector:@selector(events)]) {
+                    return [[_infoProvider events] count]+1;
                 }
                 break;
             case kPMLSectionOvDesc:
@@ -307,7 +318,12 @@
             }
             break;
         case kPMLSectionOvEvents:
-            return kPMLRowEventId;
+            if(indexPath.row<[[_infoProvider events] count]) {
+                return kPMLRowEventId;
+            } else {
+                return kPMLRowAddEventId;
+            }
+            break;
         case kPMLSectionOvSummary:
             switch(indexPath.row) {
                 case kPMLRowOvSeparator:
@@ -407,7 +423,11 @@
             }
             break;
         case kPMLSectionOvEvents:
-            [self configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
+            if(indexPath.row < [[_infoProvider events] count]) {
+                [self configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
+            } else {
+                [self configureRowOvAddEvent:(PMLAddEventTableViewCell*)cell];
+            }
             break;
         case kPMLSectionOvDesc:
             [self configureRowOvDesc:(PMLDescriptionTableViewCell*)cell];
@@ -474,7 +494,11 @@
         case kPMLSectionOvHappyHours:
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvEvents:
-            return kPMLHeightOvEventRows;
+            if(indexPath.row<[[_infoProvider events] count]) {
+                return kPMLHeightOvEventRows;
+            } else {
+                return kPMLHeightOvAddEventRow;
+            }
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
                 PMLDescriptionTableViewCell *descriptionCell = [self.tableView dequeueReusableCellWithIdentifier:kPMLRowDescId];
@@ -527,13 +551,46 @@
     }
     return nil;
 }
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    switch(section) {
+        case kPMLSectionOvEvents:
+            // If provider provides a section name for events, we use the section header view
+            if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
+                
+                // Getting the section title from provider
+                NSString *sectionTitle = [_infoProvider eventsSectionTitle];
+                if(sectionTitle!=nil) {
+                    _sectionTitleView.titleLabel.text = sectionTitle;
+                    
+                    // Adjusting label width to fit label size
+                    CGSize fitSize = [_sectionTitleView.titleLabel sizeThatFits:CGSizeMake(MAXFLOAT, _sectionTitleView.titleLabel.bounds.size.height)];
+                    _sectionTitleView.titleLabelWidthConstraint.constant = fitSize.width;
+                    
+                    return _sectionTitleView;
+                }
+            }
+            return nil;
+    }
+    if(section != kPMLSectionOvDesc) {
+        return [super tableView:tableView viewForHeaderInSection:section];
+    }
+    return nil;
+}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if(_snippetItem != nil) {
         switch (section) {
             case kPMLSectionOvDesc:
                 return kPMLHeaderHeightOvDesc;
-            case kPMLSectionOvHours:
-                return kPMLHeaderHeightOvHours;
+//            case kPMLSectionOvHours:
+//                return kPMLHeaderHeightOvHours;
+            case kPMLSectionOvEvents:
+                if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
+                    if([_infoProvider eventsSectionTitle]!=nil) {
+                        return _sectionTitleView.bounds.size.height;
+                    }
+                }
+                return 0;
             default:
                 break;
         }
@@ -548,21 +605,20 @@
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    if(_snippetItem != nil) {
-        for(UIView *childView in view.subviews) {
-            childView.backgroundColor = UIColorFromRGB(0x272a2e);
-        }
-    } else {
-        switch(section) {
-            case kPMLSectionActivity:
-            case kPMLSectionTopPlaces: {
-                UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
-                headerView.textLabel.textColor = [UIColor whiteColor];
-                headerView.textLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:15];
-//                headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
+    switch(section) {
+        case kPMLSectionOvDesc:
+            for(UIView *childView in view.subviews) {
+                childView.backgroundColor = UIColorFromRGB(0x272a2e);
             }
-                break;
+            break;
+        case kPMLSectionActivity:
+        case kPMLSectionTopPlaces: {
+            UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
+            headerView.textLabel.textColor = [UIColor whiteColor];
+            headerView.textLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:15];
+            //                headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
         }
+            break;
     }
 }
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -958,7 +1014,10 @@
         cell.countIcon.image = nil;
         cell.countLabel.text = nil;
     }
-    cell.backgroundColor = UIColorFromRGB(0x31363a);
+//    cell.backgroundColor = UIColorFromRGB(0x31363a);
+}
+-(void)configureRowOvAddEvent:(PMLAddEventTableViewCell*)cell {
+    cell.addEventLabel.text = NSLocalizedString(@"events.addButton", @"Create and promote an event");
 }
 -(void)configureRowOvDesc:(PMLDescriptionTableViewCell*)cell {
     cell.descriptionLabel.text = [_infoProvider descriptionText];
