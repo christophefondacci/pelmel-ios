@@ -48,11 +48,11 @@
 "barButton.list"="List";
 "calendar.daily"="Daily";
 "calendar.days"="Days of week";
-"calendar.end"="End";
+"calendar.end"="Ends";
 "calendar.editor.saving"="Saving...";
 "calendar.happy"="Happy hours";
 "calendar.opening"="Opening hours";
-"calendar.start"="Start";
+"calendar.start"="Starts";
 "calendar.theme"="Theme nights";
 "calendar.time"="Schedule";
 "cancel"="Cancel";
@@ -72,8 +72,10 @@
 "distance.template.miles"="%@ miles";
 "distance.template.feet"="%@ feet";
 "edit.title"="Enter a name";
-"events.title"="Events";
+
 "events.addButton"="Create and promote an event";
+"events.new.placeholder"="Event Name";
+"events.title"="Events";
 "filters.hours.happy"="Happy hours now";
 "filters.hours.open"="Opened now";
 "filters.placeType.header"="Place types";

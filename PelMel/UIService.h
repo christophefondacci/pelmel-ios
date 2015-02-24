@@ -78,7 +78,6 @@
  * Builds the appropriate provider for the given CAL object
  */
 -(NSObject<DetailProvider>*)buildProviderFor:(CALObject*)object;
--(NSObject<MasterProvider>*)masterProviderFor:(CALObject*)object;
 -(NSObject<PMLInfoProvider>*)infoProviderFor:(CALObject*)object;
 /**
  * Provides the map marker icon for the given element

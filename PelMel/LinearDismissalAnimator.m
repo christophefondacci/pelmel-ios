@@ -49,8 +49,12 @@
         [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
         [_bgBlurred removeFromSuperview];
         _bgBlurred = nil;
-        [toVC viewWillAppear:YES];
-        [toVC viewDidAppear:YES];
+        if([toVC respondsToSelector:@selector(viewWillAppear:)]) {
+            [toVC viewWillAppear:YES];
+        }
+        if([toVC respondsToSelector:@selector(viewDidAppear:)]) {
+            [toVC viewDidAppear:YES];
+        }
     }];
 }
 

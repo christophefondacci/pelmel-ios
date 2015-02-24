@@ -15,8 +15,6 @@
 #import "PlaceDetailProvider.h"
 #import "EventDetailProvider.h"
 #import "UserDetailProvider.h"
-#import "PlaceMasterProvider.h"
-#import "EventMasterProvider.h"
 #import "CityDetailProvider.h"
 #import "PMLPlaceInfoProvider.h"
 #import "PMLUserInfoProvider.h"
@@ -175,15 +173,6 @@
         detailProvider = [[CityDetailProvider alloc] initWithCity:(City*)object];
     }
     return detailProvider;
-}
-- (NSObject<MasterProvider>*)masterProviderFor:(CALObject *)object {
-    if([object isKindOfClass:[Place class]]) {
-        return [[PlaceMasterProvider alloc] init];
-    } else if([object isKindOfClass:[Event class]]) {
-        return [[EventMasterProvider alloc] init];
-    } else {
-        return nil;
-    }
 }
 - (NSObject<PMLInfoProvider> *)infoProviderFor:(CALObject *)object {
     NSObject<PMLInfoProvider> *infoProvider;

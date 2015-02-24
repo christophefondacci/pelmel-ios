@@ -331,29 +331,20 @@
                            JSONObjectWithData:responseData //1
                            options:kNilOptions
                            error:&error];
-    NSMutableArray *docs = [[NSMutableArray alloc] initWithCapacity:[jsonEvents count]];
-    NSDictionary *obj;
+    NSMutableArray *events = [[NSMutableArray alloc] initWithCapacity:[jsonEvents count]];
     // Preparing the no image thumb (default for every place at first)
-    for(obj in jsonEvents) {
-        NSString *itemKey = [obj objectForKey:@"key"];
-        // Building JSON event
-        Event *data = [cacheService getObject:itemKey];
-        if(data == nil) {
-            data = [[Event alloc] init];
-            [cacheService putObject:data forKey:itemKey];
-        }
-        [jsonService fillEvent:data fromJson:obj];
+    for(NSDictionary *jsonEvent in jsonEvents) {
+        Event *event = [jsonService convertJsonEventToEvent:jsonEvent defaultEvent:nil];
         
         // Appending to the document list
-        [docs addObject:data];
+        [events addObject:event];
     }
     // Assigning to model holder for all-view synch
-    [_modelHolder setEvents:docs];
+    [_modelHolder setEvents:events];
+    
     // Callback on main thread
     [self performSelectorOnMainThread:@selector(doCallback)
                            withObject:nil waitUntilDone:NO];
-    // Downloading image if needed
-//    [imageService getThumbsMulti:_modelHolder.events mainImageOnly:YES callback:_imageCallback];
 }
 
 
@@ -466,7 +457,7 @@
     [messageService setUnreadMessageCount:[unreadMsgCount intValue]];
     
     // Building event from JSON
-    [jsonService fillEvent:event fromJson:json];
+    event = [jsonService convertJsonEventToEvent:json defaultEvent:event];
     NSString *description = [json objectForKey:@"description"];
     [event setMiniDesc:description];
     
@@ -916,5 +907,58 @@
             errorCallback(error.code,@"Cannot delete calendar");
         }];
     });
+}
+
+- (void)updateEvent:(Event *)event callback:(UpdateEventCompletionBlock)callback errorCallback:(ErrorCompletionBlock)errorCallback {
+    dispatch_async(kTopQueue, ^{
+        // Building the URL
+        
+        NSString *url = [[NSString alloc] initWithFormat:kCalendarUpdateUrlFormat,togaytherServer ];
+        
+        // Getting birth date components
+        NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
+        CurrentUser *user = userService.getCurrentUser;
+        [self setIfDefined:event.key     forKey:@"eventId"   fill:paramValues];
+        [self setIfDefined:event.name    forKey:@"name"      fill:paramValues];
+        
+        // Extracting date components
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        
+        [formatter setDateFormat:@"yyyy/MM/dd"];
+        NSString *startDay  = [formatter stringFromDate:event.startDate];
+        NSString *endDay    = [formatter stringFromDate:event.endDate];
+        
+        [formatter setDateFormat:@"HH"];
+        NSString *startHour = [formatter stringFromDate:event.startDate];
+        NSString *endHour   = [formatter stringFromDate:event.endDate];
+
+        [formatter setDateFormat:@"mm"];
+        NSString *startMinute   = [formatter stringFromDate:event.startDate];
+        NSString *endMinute     = [formatter stringFromDate:event.startDate];
+        
+        // Filling POST structure
+        [self setIfDefined:[NSString stringWithFormat:@"%@",startDay]    forKey:@"startDate"   fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%@",startHour]   forKey:@"startHour"   fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%@",startMinute] forKey:@"startMinute" fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%@",endDay]      forKey:@"endDate"     fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%@",endHour]     forKey:@"endHour"     fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%@",endMinute]   forKey:@"endMinute"   fill:paramValues];
+
+        
+        [self setIfDefined:event.place.key       forKey:@"placeId" fill:paramValues];
+        [self setIfDefined:user.token            forKey:@"nxtpUserToken" fill:paramValues];
+        
+        // Preparing POST request
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+            NSDictionary *json = (NSDictionary*)responseObject;
+            Event *newEvent = [jsonService convertJsonEventToEvent:json defaultEvent:event];
+            callback(newEvent);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            errorCallback(error.code,@"Cannot update event");
+        }];
+    });
+
 }
 @end

@@ -21,6 +21,7 @@
 - (id)initWithKey:(NSString*)key url:(NSString*)imageUrl thumbUrl:(NSString*)thumbUrl;
 // This constructor wraps a UIImage in a CALImage as an adapter
 + (instancetype)calImageWithImage:(UIImage*)image;
++ (instancetype)calImageWithImageName:(NSString *)imageName;
 - (BOOL)isDefaultImage;
 - (BOOL)isDefaultThumb;
 + (UIImage *)getDefaultImage;

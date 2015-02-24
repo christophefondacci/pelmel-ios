@@ -28,6 +28,8 @@
 #import "PMLEventTableViewCell.h"
 #import "PMLSectionTitleView.h"
 #import "PMLAddEventTableViewCell.h"
+#import "PMLEventTableViewController.h"
+#import "SpringTransitioningDelegate.h"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
@@ -116,7 +118,7 @@
 
 
 @interface PMLSnippetTableViewController ()
-
+@property (nonatomic, strong) SpringTransitioningDelegate *transitioningDelegate;
 @end
 
 @implementation PMLSnippetTableViewController {
@@ -127,7 +129,6 @@
     
     // Providers
     NSObject<PMLInfoProvider> *_infoProvider;
-    NSObject<MasterProvider> *_masterProvider;
     NSMutableArray *_observedProperties;
     
     // Cells
@@ -622,6 +623,11 @@
     }
 }
 -(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == kPMLSectionOvEvents) {
+        if([_infoProvider respondsToSelector:@selector(events)]) {
+            return YES;
+        }
+    }
     return indexPath.section == kPMLSectionTopPlaces || indexPath.section == kPMLSectionActivity;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -631,6 +637,11 @@
             break;
         case kPMLSectionActivity:
             [self activityTapped:indexPath.row];
+            break;
+        case kPMLSectionOvEvents:
+            if(indexPath.row == [[_infoProvider events] count]) {
+                [self addEventTapped];
+            }
             break;
     }
 }
@@ -1001,10 +1012,11 @@
 -(void)configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
     Event *event = [((Place*)_snippetItem).events objectAtIndex:row];
     cell.image.image = nil;
-    [_imageService load:event.mainImage to:cell.image thumb:NO];
+    CALImage *calImage = [[TogaytherService imageService] imageOrPlaceholderFor:event allowAdditions:YES];
+    [_imageService load:calImage to:cell.image thumb:NO];
     
     cell.titleLabel.text = [event.name uppercaseString];
-    cell.dateLabel.text = [_conversionService eventDateLabel:event];
+    cell.dateLabel.text = [_conversionService eventDateLabel:event isStart:YES];
     cell.locationIcon.image = [UIImage imageNamed:@"snpIconCity"]; // TODO: Change to marker pinpoint
     cell.locationLabel.text = _infoProvider.title;
     if(event.likeCount>0) {
@@ -1267,6 +1279,16 @@
         [self.navigationController pushViewController:childSnippet animated:YES];
     }
 }
+-(void)addEventTapped {
+        PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
+        eventController.event = [[Event alloc] initWithPlace:(Place*)self.snippetItem];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
+        
+        // Preparing transition
+        self.transitioningDelegate = [[SpringTransitioningDelegate alloc] initWithDelegate:self];
+        self.transitioningDelegate.transitioningDirection = TransitioningDirectionDown;
+        [self.transitioningDelegate presentViewController:navController];
+}
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
     [self toggleFullscreenGallery];
@@ -1355,7 +1377,6 @@
     [self clearObservers];
     _snippetItem = snippetItem;
     _infoProvider = [TogaytherService.uiService infoProviderFor:_snippetItem];
-    _masterProvider = [TogaytherService.uiService masterProviderFor:_snippetItem];
     _hoursTypeMap = [_conversionService hashHoursByType:snippetItem];
     
     

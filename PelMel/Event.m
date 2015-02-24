@@ -10,5 +10,15 @@
 
 @implementation Event
 
+- (instancetype)initWithPlace:(Place *)place
+{
+    self = [super init];
+    if (self) {
+        self.place = place;
+        self.startDate = [NSDate new];
+        self.endDate = [self.startDate dateByAddingTimeInterval:7200];
+    }
+    return self;
+}
 
 @end

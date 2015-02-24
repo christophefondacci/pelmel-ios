@@ -20,7 +20,6 @@
 #import "UITouchBehavior.h"
 #import "PMLSubNavigationController.h"
 #import "PMLMainNavBarView.h"
-#import "PMLSnippetViewController.h"
 #import "FiltersViewController.h"
 #import "MainMenuTableViewController.h"
 
@@ -671,17 +670,17 @@ static void *MyParentMenuControllerKey;
 -(void)keyboardWillShow:(NSNotification*)aNotification
 {
     _keyboardShown = YES;
-//    if( [((UIView*)aNotification.object) isDescendantOfView:_bottomView] ) {
-        NSDictionary* info = [aNotification userInfo];
-        _kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-        NSNumber *duration = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-        NSNumber *curve = [info objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-        
-        CGRect viewBounds = self.view.bounds;
-        CGRect snippetBounds = _bottomView.frame;
+    NSDictionary* info = [aNotification userInfo];
+    _kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    NSNumber *duration = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [info objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    CGRect viewBounds = self.view.bounds;
+    CGRect snippetBounds = _bottomView.frame;
+    if(snippetBounds.origin.y>_kbSize.height) {
         // Only if snippet is out
-        if(snippetBounds.origin.y<viewBounds.size.height) {
-            
+//        if(snippetBounds.origin.y<viewBounds.size.height) {
+        
             // Then we move it above keyboard
             [UIView beginAnimations:nil context:NULL];
             [UIView setAnimationDuration:duration.doubleValue];
@@ -689,13 +688,9 @@ static void *MyParentMenuControllerKey;
             [UIView setAnimationBeginsFromCurrentState:YES];
             _bottomView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.origin.y-_kbSize.height, snippetBounds.size.width, snippetBounds.size.height);
             
-            // Current snippet controller
-//            if([_currentSnippetViewController isKindOfClass:[UITableViewController class]]) {
-//                ((UITableViewController*)_currentSnippetViewController).tableView.contentOffset = CGPointMake(0,0);
-//            }
             [UIView commitAnimations];
-        }
-//    }
+//        }
+    }
 }
 -(void)keyboardWillBeHidden:(NSNotification*)aNotification
 {
@@ -707,15 +702,16 @@ static void *MyParentMenuControllerKey;
     
     CGRect snippetBounds = self.view.bounds;
 
-    
-    // Then we move it above keyboard
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:duration.doubleValue];
-    [UIView setAnimationCurve:curve.intValue];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    _bottomView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.size.height-kSnippetHeight, snippetBounds.size.width, snippetBounds.size.height);
-
-    [UIView commitAnimations];
+    if(snippetBounds.origin.y>0) {
+        // Then we move it above keyboard
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:duration.doubleValue];
+        [UIView setAnimationCurve:curve.intValue];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        _bottomView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.size.height-kSnippetHeight, snippetBounds.size.width, snippetBounds.size.height);
+        
+        [UIView commitAnimations];
+    }
     _kbSize.height = 0;
     _kbSize.width = 0;
 

@@ -54,6 +54,9 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -1158,6 +1161,117 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mDo-Ph-Ly0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2458" y="-934"/>
+        </scene>
+        <!--Event Table View Controller-->
+        <scene sceneID="OFh-A8-XSp">
+            <objects>
+                <tableViewController storyboardIdentifier="eventEditor" id="8Zm-Ct-3E1" customClass="PMLEventTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="SZC-Zy-PrJ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="dateCell" id="Phv-pi-Xgw" customClass="PMLDetailTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Phv-pi-Xgw" id="gZw-mO-ymU">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Starts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="h58-C3-qRO">
+                                            <rect key="frame" x="19" y="10" width="92" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="70e-Sz-Bam"/>
+                                                <constraint firstAttribute="width" constant="92" id="lyM-GX-UyI"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22 Novembre 2015 20:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Pn2-9m-3d4">
+                                            <rect key="frame" x="119" y="10" width="193" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="Ymx-Xu-bqu"/>
+                                                <constraint firstAttribute="width" constant="193" id="wcr-dP-CLc"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="centerY" secondItem="h58-C3-qRO" secondAttribute="centerY" id="0TP-aW-iMN"/>
+                                        <constraint firstItem="Pn2-9m-3d4" firstAttribute="trailing" secondItem="gZw-mO-ymU" secondAttribute="trailingMargin" id="Ly3-8Z-tME"/>
+                                        <constraint firstAttribute="centerY" secondItem="Pn2-9m-3d4" secondAttribute="centerY" id="Sbu-me-bGo"/>
+                                        <constraint firstItem="h58-C3-qRO" firstAttribute="leading" secondItem="gZw-mO-ymU" secondAttribute="leadingMargin" constant="11" id="WZo-qc-ILJ"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="detailIntroLabel" destination="h58-C3-qRO" id="hgR-ci-Z5Y"/>
+                                    <outlet property="detailValueLabel" destination="Pn2-9m-3d4" id="uMf-mt-ZGb"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="pickerCell" rowHeight="162" id="P3K-GB-Ro3" customClass="PMLDatePickerTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="P3K-GB-Ro3" id="Efz-7q-Jh1">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="qtj-SV-xEm">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
+                                            <date key="date" timeIntervalSinceReferenceDate="446360375.87055099">
+                                                <!--2015-02-23 04:59:35 +0000-->
+                                            </date>
+                                            <date key="minimumDate" timeIntervalSinceReferenceDate="-978267600">
+                                                <!--1970-01-01 11:00:00 +0000-->
+                                            </date>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                    <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </datePicker>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="datePicker" destination="qtj-SV-xEm" id="xAK-T1-G0s"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="nameCell" id="7v4-6d-hYG" customClass="PMLTextFieldTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7v4-6d-hYG" id="ojU-XW-Amm">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Event name" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="wlq-Bf-TZP">
+                                            <rect key="frame" x="8" y="7" width="304" height="30"/>
+                                            <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="19"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="wlq-Bf-TZP" secondAttribute="bottom" constant="-1" id="82A-sW-V7V"/>
+                                        <constraint firstItem="wlq-Bf-TZP" firstAttribute="leading" secondItem="ojU-XW-Amm" secondAttribute="leadingMargin" id="F9m-y7-va8"/>
+                                        <constraint firstItem="wlq-Bf-TZP" firstAttribute="top" secondItem="ojU-XW-Amm" secondAttribute="topMargin" constant="-1" id="UNm-2z-YdL"/>
+                                        <constraint firstItem="wlq-Bf-TZP" firstAttribute="trailing" secondItem="ojU-XW-Amm" secondAttribute="trailingMargin" id="gIF-2a-24G"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textField" destination="wlq-Bf-TZP" id="AGp-4n-NI4"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="8Zm-Ct-3E1" id="6SQ-dP-9Hx"/>
+                            <outlet property="delegate" destination="8Zm-Ct-3E1" id="mgi-1y-PnB"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dSu-xH-XRZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2799" y="-933"/>
         </scene>
         <!--Account Navigation Controller-->
         <scene sceneID="Z9U-Wf-Eq7">

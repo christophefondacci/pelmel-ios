@@ -15,6 +15,7 @@ static UIImage *defaultThumb;
 static UIImage *defaultUserThumb;
 static UIImage *defaultThumbLandscape;
 
+
 - (void)configure {
     if(defaultThumb == nil) {
         defaultThumb = [UIImage imageNamed:@"imgBlankMini"];
@@ -53,6 +54,9 @@ static UIImage *defaultThumbLandscape;
     calImage.thumbImage = image;
     return calImage;
 }
++ (instancetype)calImageWithImageName:(NSString *)imageName {
+    return [CALImage calImageWithImage:[UIImage imageNamed:imageName]];
+}
 - (BOOL)isDefaultImage {
     return _fullImage == defaultImage;
 }
@@ -84,6 +88,7 @@ static UIImage *defaultThumbLandscape;
     img.fullImage = [UIImage imageNamed:@"imgBlankUser"];
     return img;
 }
+
 +(CALImage *)defaultCityCalImage {
     CALImage *img = [[CALImage alloc] init];
     img.thumbImage = [UIImage imageNamed:@"imgBlankCityMini"];

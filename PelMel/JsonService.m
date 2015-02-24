@@ -250,12 +250,10 @@
     
     // Augmenting our collections of users
     [place.inUsers removeAllObjects];
-    NSMutableArray *thumbsDownloadList = [[NSMutableArray alloc] initWithCapacity:jsonInUsers.count+jsonLikeUsers.count];
     for(NSDictionary *jsonUser in jsonInUsers) {
         // Building user bean from JSON
         User *user= [self convertJsonUserToUser:jsonUser];
-        // Adding to the list of thumbs to download
-        [thumbsDownloadList addObject:user];
+
         // Adding to the list of users in the place
         [place.inUsers addObject:user];
     }
@@ -263,8 +261,7 @@
     for(NSDictionary *jsonUser in jsonLikeUsers) {
         // Building user bean from JSON
         User *user= [self convertJsonUserToUser:jsonUser];
-        // Adding to the list for thumbs download
-        [thumbsDownloadList addObject:user];
+
         // Adding to likers list
         [place addLiker:user];
     }
@@ -274,18 +271,11 @@
     
     // Processing upcoming events
     for(NSDictionary *jsonEvent in jsonEvents) {
-        NSString *itemKey = [jsonEvent objectForKey:@"key"];
-        Event *event = [cacheService objectForKey:itemKey];
-        if(event == nil) {
-            event = [[Event alloc] init];
-            [cacheService setObject:event forKey:itemKey];
-        }
-        // Filling event object from JSON data
-        [self fillEvent:event fromJson:jsonEvent];
+        Event *event = [self convertJsonEventToEvent:jsonEvent defaultEvent:nil];
+        
         // Adding event to place
         [place.events addObject:event];
-        // Adding to the list of thumbs to download
-        [thumbsDownloadList addObject:event];
+
     }
     
     // Processing hours
@@ -401,9 +391,16 @@
     }
     return activities;
 }
--(void)fillEvent:(Event*)event fromJson:(NSDictionary*)obj {
+-(Event*)convertJsonEventToEvent:(NSDictionary*)obj defaultEvent:(Event*)defaultEvent {
+    NSString *itemKey = [obj objectForKey:@"key"];
+    // Building JSON event
+    Event *event = [cacheService objectForKey:itemKey];
+    if(event == nil) {
+        event = defaultEvent == nil ? [[Event alloc] init] : defaultEvent;
+        [cacheService setObject:event forKey:itemKey];
+    }
+
     // Extracting information from JSON
-    NSString *itemKey       = [obj objectForKey:@"key"];
     NSString *name          = [obj objectForKey:@"name"];
     NSString *distance      = [obj objectForKey:@"distance"];
     NSNumber *rawDistance   = [obj objectForKey:@"rawDistance"];
@@ -413,31 +410,15 @@
     NSDictionary *place     = [obj objectForKey:@"place"];
     NSNumber *participants  = [obj objectForKey:@"participants"];
     
-    // Registering current event medias
-    NSMutableDictionary *mediaMap = [[NSMutableDictionary alloc] initWithCapacity:event.otherImages.count+1];
-    CALImage *mainImage = event.mainImage;
-    if(mainImage != nil && mainImage.key!=nil) {
-        [mediaMap setObject:event.mainImage forKey:event.mainImage.key];
-    }
-    for(CALImage *image in event.otherImages) {
-        if(image != nil) {
-            [mediaMap setObject:image forKey:image.key];
-        }
-    }
     
     // Building image array
     BOOL isFirst = YES;
     for(NSDictionary *jsonOtherImage in media) {
-        NSString *key = [jsonOtherImage objectForKey:@"key"];
-        
-        CALImage *image = [mediaMap objectForKey:key];
-        if(image == nil) {
-            image = [imageService convertJsonImageToImage:jsonOtherImage];
-            if(isFirst) {
-                [event setMainImage:image];
-            } else {
-                [event.otherImages addObject:image];
-            }
+        CALImage *image = [imageService convertJsonImageToImage:jsonOtherImage];
+        if(isFirst) {
+            [event setMainImage:image];
+        } else {
+            [event.otherImages addObject:image];
         }
         isFirst = NO;
     }
@@ -459,6 +440,7 @@
         }
         [event setPlace:p];
     }
+    return event;
 }
 #pragma mark - User JSON
 - (User*)convertJsonUserToUser:(NSDictionary*)jsonUser {

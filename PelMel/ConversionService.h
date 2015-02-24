@@ -56,5 +56,11 @@ typedef void(^AddressClosure)(NSString*address);
  */
 -(NSDictionary*)hashHoursByType:(CALObject*)object;
 
--(NSString *)eventDateLabel:(Event*)event;
+/**
+ * Generates the start/end date label for this event
+ * @param event the Event to generate a date label for
+ * @param start set to YES for start date label, or NO for end date label
+ * @return the corresponding date label
+ */
+-(NSString *)eventDateLabel:(Event*)event isStart:(BOOL)start;
 @end

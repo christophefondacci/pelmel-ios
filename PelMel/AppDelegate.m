@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "MasterViewController.h"
 #import "MapViewController.h"
 #import "MessageViewController.h"
 #import "FiltersViewController.h"

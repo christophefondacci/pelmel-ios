@@ -16,7 +16,6 @@
 #import "PMLPlaceAnnotationView.h"
 #import "PMLSnippetTableViewController.h"
 #import "MKNewPlaceAnnotationView.h"
-#import "PlaceMasterProvider.h"
 #import "PMLDataManager.h"
 #import "MKNumberBadgeView.h"
 #import "PMLInfoProvider.h"

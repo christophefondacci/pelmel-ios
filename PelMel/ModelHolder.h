@@ -20,36 +20,6 @@ typedef enum {
 
 
 
-@protocol MasterProvider
-
-// The title of the table line
--(NSString*)getTitle:(CALObject*)obj;
-// The label of the type of the table entry
--(NSString*)getTypeLabel:(CALObject*)obj;
-// The distance label
--(NSString*)getDistanceLabel:(CALObject*)obj;
-// Whether we show the number of men present
--(BOOL)isMenLabelVisible:(CALObject*)obj;
-// Whether we show the number of likes
--(BOOL)isLikeLabelVisible:(CALObject*)obj;
-// Provides the label for the men section
--(NSString*)getMenLabel:(CALObject*)obj;
-// Provides the label for the like section
--(NSString*)getLikeLabel:(CALObject*)obj;
-// Informs whether the specified object should be displayed or not
--(BOOL)isDisplayed:(CALObject*)obj;
-// Provides the raw distance as a double
--(double)getRawDistance:(CALObject*)obj;
-
-@optional
--(Special*)getSpecialFor:(CALObject*)obj;
--(Special*)getSpecialSubtitleFor:(CALObject*)obj currentBestSpecial:(Special*)currentBestSpecial;
--(NSString*)getSpecialIntroLabel:(Special*)special;
--(NSString*)getSpecialsMainLabel:(Special*)special;
--(UIColor*)getSpecialsColor:(Special*)special;
--(BOOL)hasSubtitle:(CALObject*)obj;
--(NSString*)getSpecialsSubtitleLabel:(Special*)obj;
-@end
 
 @interface ModelHolder : NSObject
 
@@ -68,6 +38,5 @@ typedef enum {
 
 -(void)updatePlaces:(NSArray *)places location:(CLLocation *)userLocation dataTime:(NSDate *)dataTime;
 -(NSArray*)getCALObjects;
--(NSObject<MasterProvider>*)getMasterProvider;
 
 @end

@@ -251,7 +251,23 @@
     return hoursTypeMap;
 }
 
-- (NSString *)eventDateLabel:(Event*)event {
-    return [_eventDateFormatter stringFromDate:event.startDate];
+- (NSString *)eventDateLabel:(Event*)event isStart:(BOOL)start {
+    NSString *template=@"EdMMMhmma";
+    NSDate *date;
+    if(start) {
+        date = event.startDate;
+    } else {
+        if(event.startDate != nil) {
+            NSTimeInterval delta = [event.endDate timeIntervalSinceDate:event.startDate];
+            if(delta < 86400) {
+                template = @"hmma";
+            }
+        }
+        date= event.endDate;
+    }
+    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:template options:0
+                                                              locale:[NSLocale currentLocale]];
+    [_eventDateFormatter setDateFormat:formatString];
+    return [_eventDateFormatter stringFromDate:date];
 }
 @end

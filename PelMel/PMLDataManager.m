@@ -9,7 +9,7 @@
 #import "PMLDataManager.h"
 #import "UIPopBehavior.h"
 #import "PMLMenuManagerController.h"
-#import "PMLSnippetViewController.h"
+#import "PMLSnippetTableViewController.h"
 #import "Constants.h"
 
 
@@ -99,7 +99,7 @@
         [self hideSpinner];
         
         UIService *uiService = TogaytherService.uiService;
-        PMLSnippetViewController *snippetController = (PMLSnippetViewController*)[uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+        PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
         
         [_menuController presentControllerSnippet:snippetController];
         

@@ -18,4 +18,5 @@
 @property (strong) NSString *distance;
 @property (nonatomic) double rawDistance;
 
+-(instancetype)initWithPlace:(Place*)place;
 @end

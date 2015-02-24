@@ -587,6 +587,8 @@
     } else {
         if([object isKindOfClass:[User class]]) {
             return [CALImage getDefaultUserCalImage];
+        } else if([object isKindOfClass:[Event class]]) {
+            return [CALImage calImageWithImageName:@"imgBlankEvent"];
         } else if([object isKindOfClass:[City class]]) {
             if(additionsAllowed) {
                 return [CALImage defaultCityAddCalImage];
