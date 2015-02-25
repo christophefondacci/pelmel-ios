@@ -100,7 +100,11 @@
     PMLPopupEditor *_currentEditor;
     NSObject<PMLInfoProvider> *_infoProvider;
     NSMutableSet *_observedProperties;
-
+    NSMutableDictionary *_actionTypes;
+    
+    // Navbar management
+    BOOL _navbarEdit;
+    UIBarButtonItem *_navbarLeftItem;
 }
 
 - (instancetype)init {
@@ -129,7 +133,14 @@
     _userService = [TogaytherService userService];
     [_dataService registerDataListener:self];
 }
+-(void)registerAction:(PopupAction*)action forType:(PMLActionType)type {
+    [_actionTypes setObject:action forKey:[NSNumber numberWithInt:type]];
+}
+-(PopupAction*)actionForType:(PMLActionType)type {
+    return [_actionTypes objectForKey:[NSNumber numberWithInt:type]];
+}
 -(void) initActions {
+    _actionTypes = [[NSMutableDictionary alloc] init];
     _checkinAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionCheckin"] titleCode:nil size:kPMLLikeSize command:^{
         NSLog(@"CHECKIN");
         if(_currentObject.key != nil) {
@@ -141,6 +152,8 @@
         }
     }];
     _checkinAction.color = UIColorFromRGB(kPMLCheckinColor);
+    [self registerAction:_checkinAction forType:PMLActionTypeCheckin];
+    
     _likeAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionLike"] titleCode:nil size:kPMLLikeSize command:^{
         NSLog(@"LIKE");
         if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
@@ -154,6 +167,7 @@
         }
     }];
     _likeAction.color = UIColorFromRGB(kPMLLikeColor);
+    [self registerAction:_likeAction forType:PMLActionTypeLike];
     
     
     _modifyAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
@@ -161,6 +175,7 @@
         [self initializeEditFor:_currentObject];
     }];
     _modifyAction.color = UIColorFromRGB(kPMLEditColor);
+    [self registerAction:_modifyAction forType:PMLActionTypeEdit];
     
     _photoAction = [[PopupAction alloc] initWithAngle:kPMLPhotoAngle distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionPhoto"] titleCode:nil size:kPMLPhotoSize command:^{
         NSLog(@"Photo");
@@ -170,13 +185,14 @@
         [dataManager promptUserForPhotoUploadOn:_currentObject];
     }];
     _photoAction.color = UIColorFromRGB(kPMLPhotoColor);
+    [self registerAction:_photoAction forType:PMLActionTypeAddPhoto];
     
     _confirmAction = [[PopupAction alloc] initWithAngle:kPMLConfirmAngle distance:kPMLConfirmDistance icon:[UIImage imageNamed:@"popActionCheck"] titleCode:nil size:kPMLConfirmSize command:^{
         NSLog(@"Confirm");
         [_currentEditor commit];
-        
     }];
     _confirmAction.color = UIColorFromRGB(kPMLConfirmColor);
+    [self registerAction:_confirmAction forType:PMLActionTypeConfirm];
     
     _commentAction = [[PopupAction alloc] initWithAngle:kPMLCommentAngle distance:kPMLCommentDistance icon:[UIImage imageNamed:@"popActionComment"] titleCode:nil size:kPMLCommentSize command:^{
         NSLog(@"COMMENT");
@@ -187,19 +203,29 @@
         }
     }];
     _commentAction.color = UIColorFromRGB(kPMLCommentColor);
+    [self registerAction:_commentAction forType:PMLActionTypeComment];
     
     _reportAction = [[PopupAction alloc] initWithAngle:kPMLReportAngle distance:kPMLReportDistance icon:[UIImage imageNamed:@"popActionReport"] titleCode:nil size:kPMLReportSize command:^{
         NSLog(@"REPORT");
         [self initializeReportFor:_currentObject];
     }];
     _reportAction.color = UIColorFromRGB(kPMLReportColor);
+    [self registerAction:_reportAction forType:PMLActionTypeReport];
     
     _cancelAction = [[PopupAction alloc] initWithAngle:kPMLCancelAngle distance:kPMLCancelDistance icon:[UIImage imageNamed:@"popActionCancel"] titleCode:nil size:kPMLCancelSize command:^{
         NSLog(@"Cancel");
         [_currentEditor cancel];
+        if(_navbarEdit) {
+            self.popupController.controller.parentMenuController.navigationItem.leftBarButtonItem = _navbarLeftItem;
+            [self installNavBarEdit];
+        }
     }];
     _cancelAction.color = UIColorFromRGB(kPMLCancelColor);
+    [self registerAction:_cancelAction forType:PMLActionTypeCancel];
     
+}
+-(void)setCurrentObject:(CALObject*)object {
+    _currentObject = object;
 }
 - (NSArray *)computeActionsFor:(CALObject *)object annotatedBy:(MapAnnotation*)annotation fromController:(PMLMapPopupViewController *)popupController {
     _popupController = popupController;
@@ -396,6 +422,7 @@
     if(!_currentObject.editing) {
         _currentObject.editing = YES;
         _currentObject.editingDesc=NO;
+        [self installNavBarCommitCancel];
         NSString *oldName = ((Place*)_currentObject).title;
         NSString *oldPlaceType= ((Place*)_currentObject).placeType;
         EditionAction cancelAction = ^{
@@ -403,15 +430,18 @@
             place.title = oldName;
             place.placeType = oldPlaceType;
             place.editing = NO;
+            [self uninstallNavBarCommitCancel];
         };
         EditionAction commitAction = ^{
             ((Place*)_currentObject).editing = NO;
+            [self uninstallNavBarCommitCancel];
         };
         [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
     }
 }
 -(void)editDescription {
     if(!_currentObject.editingDesc) {
+        [self installNavBarCommitCancel];
         NSString *sysLang = [TogaytherService getLanguageIso6391Code];
         BOOL noDescription = (_currentObject.miniDescKey == nil||_currentObject.miniDescKey.length==0);
         // If there is an existing description in another language
@@ -470,9 +500,11 @@
         _currentObject.miniDescKey = oldDescKey;
         _currentObject.miniDescLang = oldDescLang;
         _currentObject.editingDesc = NO;
+        [self uninstallNavBarCommitCancel];
     };
     EditionAction commitAction = ^{
         _currentObject.editingDesc = NO;
+        [self uninstallNavBarCommitCancel];
     };
     [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
 
@@ -599,6 +631,53 @@
     return saveAction;
 }
 
+#pragma mark - NavBar management
+- (void)installNavBarEdit {
+    UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeEdit selector:@selector(navbarEditTapped:)];
+    _navbarEdit = YES;
+    self.popupController.controller.parentMenuController.navigationItem.rightBarButtonItem = barItem;
+}
+-(void) installNavBarCommitCancel {
+    UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarCommitTapped:)];
+    self.popupController.controller.parentMenuController.navigationItem.rightBarButtonItem = commitItem;
+    UIBarButtonItem *cancelItem = [self barButtonItemFromAction:PMLActionTypeCancel selector:@selector(navbarCancelTapped:)];
+    self.popupController.controller.parentMenuController.navigationItem.leftBarButtonItem = cancelItem;
+}
+-(void)uninstallNavBarCommitCancel {
+    if(_navbarEdit) {
+        self.popupController.controller.parentMenuController.navigationItem.leftBarButtonItem = _navbarLeftItem;
+        [self installNavBarEdit];
+    }
+}
+-(UIBarButtonItem*)barButtonItemFromAction:(PMLActionType)actionType selector:(SEL)selector {
+    PopupAction *action = [self actionForType:actionType];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    button.layer.masksToBounds = YES;
+    button.layer.borderWidth=1;
+    button.layer.borderColor = [action.color CGColor];
+    button.layer.cornerRadius = 15;
+    [button setImage:action.icon forState:UIControlStateNormal];
+    [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    return barItem;
+}
+- (void)uninstallNavBarEdit {
+    UINavigationItem *navItem = self.popupController.controller.parentMenuController.navigationItem;
+    navItem.rightBarButtonItem = nil;
+    navItem.leftBarButtonItem = _navbarLeftItem;
+    _navbarEdit = NO;
+}
+-(void)navbarEditTapped:(id)source {
+    [self initializeEditFor:_currentObject];
+}
+-(void)navbarCommitTapped:(id)source {
+    PopupAction *action = [self actionForType:PMLActionTypeConfirm];
+    action.actionCommand();
+}
+-(void)navbarCancelTapped:(id)source {
+    PopupAction *action = [self actionForType:PMLActionTypeCancel];
+    action.actionCommand();
+}
 #pragma mark - PMLDataListener
 - (void)didLoadOverviewData:(CALObject *)object {
     if([object.key isEqualToString:_currentObject.key]) {

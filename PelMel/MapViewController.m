@@ -10,7 +10,6 @@
 #import "Place.h"
 #import "MapAnnotation.h"
 #import "TogaytherService.h"
-#import "DetailViewController.h"
 #import "Constants.h"
 #import "PMLMapPopupViewController.h"
 #import "PMLPlaceAnnotationView.h"
@@ -160,21 +159,6 @@
     return YES;
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
-    if([[segue identifier] isEqualToString:@"mapOverview"]) {
-        MapAnnotation *mapAnnotation = selectedAnnotation.annotation;
-        CALObject *object = mapAnnotation.object;
-        
-        DetailViewController *myDetailViewController = [segue destinationViewController];
-        myDetailViewController.detailItem = object;
-        [self.navigationController setToolbarHidden:YES animated:YES];
-    }
-    //        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:detailViewController];
-    //        [self presentViewController:navigationController animated:YES completion:nil];
-    //        [[self navigationController] presentViewController:detailViewController animated:YES completion:nil];
-    
-}
 
 #pragma mark - Zooming / Positioning helper methods
 /**
@@ -479,22 +463,6 @@
     }
 
     return annotation;
-}
-
-- (IBAction)showPlace:(id)sender {
-    NSLog(@"showPlace");
-    if(selectedAnnotation != nil) {
-        if(self.splitViewController == nil) {
-            [self performSegueWithIdentifier:@"mapOverview" sender:self];
-        } else {
-            DetailViewController *detailController = (DetailViewController*)[TogaytherService.uiService instantiateViewController:SB_ID_DETAIL_CONTROLLER];
-            MapAnnotation *mapAnnotation = selectedAnnotation.annotation;
-            CALObject *place = mapAnnotation.object;
-            detailController.detailItem = place;
-            [TogaytherService.uiService.splitMainNavController pushViewController:detailController animated:YES];
-        }
-    }
-    
 }
 
 //

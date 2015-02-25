@@ -205,7 +205,6 @@
 		B4A4667119A7518E004ADC7E /* PMLUserInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A4666F19A7518E004ADC7E /* PMLUserInfoProvider.m */; };
 		B4A6642F1695E32100732B6D /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */; };
 		B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6643416970EB700732B6D /* AccountNavigationController.m */; };
-		B4A8542516314404003649C8 /* UserDetailProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A8542416314404003649C8 /* UserDetailProvider.m */; };
 		B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A854281635416F003649C8 /* SizedTTLCacheService.m */; };
 		B4AC8ED9168C795C002E8381 /* MessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AC8ED8168C795C002E8381 /* MessageService.m */; };
 		B4B1FCF819E012BD0068894C /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B1FCF619E012BD0068894C /* NSString+HTML.h */; };
@@ -284,7 +283,6 @@
 		B4EECAEE162EB8C4005F80DE /* ClosableBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAED162EB8C4005F80DE /* ClosableBoxView.m */; };
 		B4EECAF3162FF140005F80DE /* UITableSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAF2162FF13F005F80DE /* UITableSearchViewCell.m */; };
 		B4EECAF616300218005F80DE /* UITableSegmentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAF516300218005F80DE /* UITableSegmentViewCell.m */; };
-		B4EECAFB16305160005F80DE /* PlaceDetailProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAFA16305160005F80DE /* PlaceDetailProvider.m */; };
 		B4FC957B19AF3B4B00269E74 /* PMLPopupEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4FC957919AF3B4B00269E74 /* PMLPopupEditor.h */; };
 		B4FC957C19AF3B4B00269E74 /* PMLPopupEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = B4FC957A19AF3B4B00269E74 /* PMLPopupEditor.m */; };
 		B4FC958019B1E28B00269E74 /* Sari-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */; };
@@ -553,8 +551,6 @@
 		B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
 		B4A6643316970EB700732B6D /* AccountNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountNavigationController.h; sourceTree = "<group>"; };
 		B4A6643416970EB700732B6D /* AccountNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountNavigationController.m; sourceTree = "<group>"; };
-		B4A8542316314404003649C8 /* UserDetailProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDetailProvider.h; sourceTree = "<group>"; };
-		B4A8542416314404003649C8 /* UserDetailProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDetailProvider.m; sourceTree = "<group>"; };
 		B4A854271635416F003649C8 /* SizedTTLCacheService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizedTTLCacheService.h; sourceTree = "<group>"; };
 		B4A854281635416F003649C8 /* SizedTTLCacheService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizedTTLCacheService.m; sourceTree = "<group>"; };
 		B4AC8ED7168C795C002E8381 /* MessageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageService.h; sourceTree = "<group>"; };
@@ -666,8 +662,6 @@
 		B4EECAF2162FF13F005F80DE /* UITableSearchViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableSearchViewCell.m; sourceTree = "<group>"; };
 		B4EECAF416300217005F80DE /* UITableSegmentViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableSegmentViewCell.h; sourceTree = "<group>"; };
 		B4EECAF516300218005F80DE /* UITableSegmentViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableSegmentViewCell.m; sourceTree = "<group>"; };
-		B4EECAF916305160005F80DE /* PlaceDetailProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceDetailProvider.h; sourceTree = "<group>"; };
-		B4EECAFA16305160005F80DE /* PlaceDetailProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceDetailProvider.m; sourceTree = "<group>"; };
 		B4FC957919AF3B4B00269E74 /* PMLPopupEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPopupEditor.h; sourceTree = "<group>"; };
 		B4FC957A19AF3B4B00269E74 /* PMLPopupEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPopupEditor.m; sourceTree = "<group>"; };
 		B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sari-ExtraBold.otf"; sourceTree = "<group>"; };
@@ -1268,10 +1262,6 @@
 			children = (
 				B4FE2A3116B047F5001BE53D /* ItemsThumbPreviewProvider.h */,
 				B4FE2A3216B047F5001BE53D /* ItemsThumbPreviewProvider.m */,
-				B4EECAF916305160005F80DE /* PlaceDetailProvider.h */,
-				B4EECAFA16305160005F80DE /* PlaceDetailProvider.m */,
-				B4A8542316314404003649C8 /* UserDetailProvider.h */,
-				B4A8542416314404003649C8 /* UserDetailProvider.m */,
 				B4A4666619A73A0B004ADC7E /* PMLInfoProvider.h */,
 				B4A4666A19A73A6A004ADC7E /* PMLPlaceInfoProvider.h */,
 				B4A4666B19A73A6A004ADC7E /* PMLPlaceInfoProvider.m */,
@@ -1744,8 +1734,6 @@
 				B4EECAF3162FF140005F80DE /* UITableSearchViewCell.m in Sources */,
 				B4EECAF616300218005F80DE /* UITableSegmentViewCell.m in Sources */,
 				B4BB9F0F19D4F9260070B03C /* HPTextViewInternal.m in Sources */,
-				B4EECAFB16305160005F80DE /* PlaceDetailProvider.m in Sources */,
-				B4A8542516314404003649C8 /* UserDetailProvider.m in Sources */,
 				B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */,
 				B40668BC19714CCE0012DF71 /* APLPositionToBoundsMapping.m in Sources */,
 				B41A13F91639662300827E04 /* TermsOfUseViewController.m in Sources */,

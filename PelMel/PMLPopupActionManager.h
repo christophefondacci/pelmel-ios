@@ -9,6 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
 #import "DataService.h"
+#import "PopupAction.h"
+
+typedef enum {
+    PMLActionTypeEdit = 10,
+    PMLActionTypeLike = 1,
+    PMLActionTypeAddPhoto = 2,
+    PMLActionTypeCheckin = 3,
+    PMLActionTypeComment = 4,
+    PMLActionTypeConfirm = 5,
+    PMLActionTypeCancel = 6,
+    PMLActionTypeReport = 7
+} PMLActionType;
 
 @class PMLMapPopupViewController;
 @class MapAnnotation;
@@ -32,6 +44,9 @@
  * Provides an array of all actions to display given the provided object context
  */
 -(NSArray*)computeActionsFor:(CALObject*)object annotatedBy:(MapAnnotation*)annotation fromController:(PMLMapPopupViewController*)popupController;
-
+-(PopupAction*)actionForType:(PMLActionType)type;
 -(void)dismiss;
+-(void)setCurrentObject:(CALObject*)object;
+-(void)installNavBarEdit;
+-(void)uninstallNavBarEdit;
 @end

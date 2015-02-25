@@ -283,6 +283,7 @@ static void *MyParentMenuControllerKey;
     
     // And dismissing menu
     [self dismissControllerMenu];
+    [self setSnippetFullyOpened:NO];
 
 }
 
@@ -337,6 +338,7 @@ static void *MyParentMenuControllerKey;
         self.navigationItem.titleView.alpha=0;
     } completion:^(BOOL finished) {
         self.navigationItem.titleView=nil;
+        [((MapViewController*)self.rootViewController).popupActionManager installNavBarEdit];
         if(![self hasFakeNavigation] && _snippetFullyOpened && ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count>1) {
             PMLFakeViewController *fakeViewController = [[PMLFakeViewController alloc] init];
             [self.navigationController setViewControllers:@[fakeViewController,self] animated:NO];
@@ -350,6 +352,9 @@ static void *MyParentMenuControllerKey;
     }
     if(!_snippetFullyOpened) {
         _mainNavBarView.alpha=0;
+        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = nil;
+        [((MapViewController*)self.rootViewController).popupActionManager uninstallNavBarEdit];
         self.navigationItem.titleView=_mainNavBarView;
         self.navigationItem.titleView.alpha=0;
         [UIView animateWithDuration:0.2 animations:^{

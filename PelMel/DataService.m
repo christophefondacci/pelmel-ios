@@ -647,7 +647,7 @@
 }
 -(void)startOp:(NSString*)msg {
     // Notifying that we are starting a data op
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners]) {
         
         // Only notifying if supported
         if([callback respondsToSelector:@selector(didStartDataOperation:)]) {
@@ -658,7 +658,7 @@
 
 
 - (void)notifyOverviewDataAvailable:(CALObject*)object {
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners]) {
         if([callback respondsToSelector:@selector(didLoadOverviewData:)]) {
             [callback didLoadOverviewData:object];
         }
@@ -672,7 +672,7 @@
     }
 }
 -(void)notifyLike:(CALObject*)object likes:(int)likes dislikes:(int)dislikes liked:(BOOL)liked {
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners]) {
         if([callback respondsToSelector:@selector(didLike:newLikes:newDislikes:liked:)]) {
             [callback didLike:object newLikes:likes newDislikes:dislikes liked:liked];
         }
@@ -681,7 +681,7 @@
 - (void) doCallback {
     
     // Iterating over all listeners
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners] ) {
         
         // Optional callback method
         if([callback respondsToSelector:@selector(didLoadData:)]) {
@@ -690,21 +690,21 @@
     }
 }
 -(void)notifyWillUpdatePlace:(Place*)place {
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners]) {
         if([callback respondsToSelector:@selector(willUpdatePlace:)]) {
             [callback willUpdatePlace:place];
         }
     }
 }
 -(void)notifyPlaceUpdated:(Place*)place {
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners]) {
         if([callback respondsToSelector:@selector(didUpdatePlace:)]) {
             [callback didUpdatePlace:place];
         }
     }
 }
 -(void)notifyObjectCreated:(CALObject*)object {
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners]) {
         if([callback respondsToSelector:@selector(objectCreated:)]) {
             [callback objectCreated:object];
         }
@@ -718,7 +718,7 @@
     }
 }
 -(void)notify:(SEL)selector with:(CALObject*)object mainThread:(BOOL)mainThread {
-    for(NSObject<PMLDataListener> *callback in dataListeners) {
+    for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners]) {
         if([callback respondsToSelector:selector]) {
             if(mainThread) {
                 [callback performSelectorOnMainThread:selector withObject:object waitUntilDone:NO];

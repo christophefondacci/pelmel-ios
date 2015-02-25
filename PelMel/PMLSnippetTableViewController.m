@@ -31,6 +31,7 @@
 #import "PMLEventTableViewController.h"
 #import "SpringTransitioningDelegate.h"
 #import "PMLFakeViewController.h"
+#import "PMLPopupActionManager.h"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
@@ -68,11 +69,11 @@
 #define kPMLThumbSize @42
 
 
-#define kPMLOvSummaryRows 4
-#define kPMLRowOvSeparator 0
-#define kPMLRowOvImage 1
-#define kPMLRowOvTitle 2
-#define kPMLRowOvPlaceType 3
+#define kPMLOvSummaryRows 3
+#define kPMLRowOvSeparator 40
+#define kPMLRowOvImage 0
+#define kPMLRowOvTitle 1
+#define kPMLRowOvPlaceType 2
 #define kPMLRowOvSeparatorId @"separator"
 #define kPMLRowOvImageId @"image"
 #define kPMLRowOvTitleId @"text"
@@ -131,6 +132,7 @@
     // Providers
     NSObject<PMLInfoProvider> *_infoProvider;
     NSMutableArray *_observedProperties;
+    PMLPopupActionManager *_actionManager;
     
     // Cells
     PMLSnippetTableViewCell *_snippetCell;
@@ -142,6 +144,7 @@
     
     // Headers
     PMLSectionTitleView *_sectionTitleView;
+    PMLSectionTitleView *_sectionSummaryTitleView;
     
     // Gallery
     BOOL _galleryFullscreen;
@@ -179,6 +182,8 @@
     _settingsService = [TogaytherService settingsService];
     _conversionService = [TogaytherService getConversionService];
     _observedProperties = [[NSMutableArray alloc] init];
+    _actionManager = [[PMLPopupActionManager alloc] init];
+    [_actionManager setCurrentObject:_snippetItem];
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
     _counterThumbControllers = [[NSMutableDictionary alloc] init];
@@ -195,6 +200,7 @@
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLAddEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
     // Loading header views
     _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    _sectionSummaryTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     
     self.title = [_infoProvider title];
 }
@@ -572,16 +578,14 @@
                 // Getting the section title from provider
                 NSString *sectionTitle = [_infoProvider eventsSectionTitle];
                 if(sectionTitle!=nil) {
-                    _sectionTitleView.titleLabel.text = sectionTitle;
-                    
-                    // Adjusting label width to fit label size
-                    CGSize fitSize = [_sectionTitleView.titleLabel sizeThatFits:CGSizeMake(MAXFLOAT, _sectionTitleView.titleLabel.bounds.size.height)];
-                    _sectionTitleView.titleLabelWidthConstraint.constant = fitSize.width;
-                    _sectionTitleView.backgroundColor=UIColorFromRGBAlpha(0x272a2e, 0.2f);
+                    [_sectionTitleView setTitle:sectionTitle];
                     return _sectionTitleView;
                 }
             }
             return nil;
+        case kPMLSectionOvSummary:
+            [_sectionSummaryTitleView setTitleLocalized:@"snippet.title.summary"];
+            return _sectionSummaryTitleView;
     }
     if(section != kPMLSectionOvDesc) {
         return [super tableView:tableView viewForHeaderInSection:section];
@@ -603,6 +607,8 @@
                     }
                 }
                 return 0;
+            case kPMLSectionOvSummary:
+                return _sectionSummaryTitleView.bounds.size.height;
             default:
                 break;
         }
@@ -1421,6 +1427,11 @@
     [self.tableView reloadData];
 }
 #pragma mark - UITextFieldDelegate
+- (void)titleTextChanged:(UITextField*) textField {
+    if([_snippetItem isKindOfClass:[Place class]]) {
+        ((Place*)_snippetItem).title = textField.text;
+    }
+}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     // Retrieving text
     NSString *inputText = textField.text;
@@ -1497,6 +1508,9 @@
         _snippetCell.titleTextField.hidden=NO;
         _snippetCell.titleTextField.text = _infoProvider.title;
         _snippetCell.titleTextField.placeholder = NSLocalizedString(@"snippet.edit.titlePlaceholder", @"Enter a name");
+        [_snippetCell.titleTextField addTarget:self
+                           action:@selector(titleTextChanged:)
+                 forControlEvents:UIControlEventEditingChanged];
 //        [_snippetCell.titleTextField becomeFirstResponder];
         
         // Toggling place type selection
