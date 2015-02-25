@@ -11,6 +11,7 @@
 #import "DynamicDismissalAnimator.h"
 #import "LinearDismissalAnimator.h"
 #import "TogaytherService.h"
+#import "PMLModalTransitionAnimator.h"
 
 @implementation SpringTransitioningDelegate {
     UIImageView *_bgBlurred;
@@ -47,6 +48,8 @@
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source
 {
     PresentingSpringAnimator *animator = [[PresentingSpringAnimator alloc] initWithTransitioningDirection:[self convertedTransitioningDirection]];
+//    animator.bgBlurred = _bgBlurred;
+//    PMLModalTransitionAnimator *animator = [[PMLModalTransitionAnimator alloc] initWithTransitioningDirection:[self convertedTransitioningDirection]];
     animator.bgBlurred = _bgBlurred;
     return animator;
 }

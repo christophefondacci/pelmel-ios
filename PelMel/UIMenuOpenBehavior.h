@@ -13,6 +13,7 @@ typedef void(^MenuOpenCompletion)();
 @interface UIMenuOpenBehavior : UIDynamicBehavior <UICollisionBehaviorDelegate>
 
 @property (nonatomic,copy) MenuOpenCompletion completion;
+@property (nonatomic,strong) UIGravityBehavior *gravityBehavior;
 
 - (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(int)yBoundary;
 

@@ -15,8 +15,6 @@
     BOOL _open;
     int _currentMainViewBoundary;
     
-    UIGravityBehavior *_gravityBehavior;
-    
 }
 
 - (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(int)yBoundary {

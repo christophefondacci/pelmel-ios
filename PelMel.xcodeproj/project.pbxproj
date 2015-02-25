@@ -124,6 +124,8 @@
 		B457A10B1A9D914100207D8E /* UIViewController+BackButtonHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = B457A1091A9D914100207D8E /* UIViewController+BackButtonHandler.m */; };
 		B457A1121A9D93D200207D8E /* PMLFakeViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B457A1101A9D93D200207D8E /* PMLFakeViewController.h */; };
 		B457A1131A9D93D200207D8E /* PMLFakeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B457A1111A9D93D200207D8E /* PMLFakeViewController.m */; };
+		B457A1161A9E374E00207D8E /* PMLModalTransitionAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = B457A1141A9E374E00207D8E /* PMLModalTransitionAnimator.h */; };
+		B457A1171A9E374E00207D8E /* PMLModalTransitionAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = B457A1151A9E374E00207D8E /* PMLModalTransitionAnimator.m */; };
 		B4592A861622CF35009688B8 /* UITableDescriptionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A851622CF35009688B8 /* UITableDescriptionViewCell.m */; };
 		B4592A8C1623090A009688B8 /* UIInteractiveLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A8B1623090A009688B8 /* UIInteractiveLabel.m */; };
 		B4592A93162314A3009688B8 /* PickerInputTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A92162314A3009688B8 /* PickerInputTableViewCell.m */; };
@@ -458,6 +460,8 @@
 		B457A1091A9D914100207D8E /* UIViewController+BackButtonHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackButtonHandler.m"; sourceTree = "<group>"; };
 		B457A1101A9D93D200207D8E /* PMLFakeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLFakeViewController.h; sourceTree = "<group>"; };
 		B457A1111A9D93D200207D8E /* PMLFakeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLFakeViewController.m; sourceTree = "<group>"; };
+		B457A1141A9E374E00207D8E /* PMLModalTransitionAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLModalTransitionAnimator.h; sourceTree = "<group>"; };
+		B457A1151A9E374E00207D8E /* PMLModalTransitionAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLModalTransitionAnimator.m; sourceTree = "<group>"; };
 		B4592A841622CF35009688B8 /* UITableDescriptionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableDescriptionViewCell.h; sourceTree = "<group>"; };
 		B4592A851622CF35009688B8 /* UITableDescriptionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableDescriptionViewCell.m; sourceTree = "<group>"; };
 		B4592A8A1623090A009688B8 /* UIInteractiveLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIInteractiveLabel.h; sourceTree = "<group>"; };
@@ -794,6 +798,8 @@
 				B43D116C1A97A12B008476C7 /* PresentingSpringAnimator.m */,
 				B43D116D1A97A12B008476C7 /* SpringTransitioningDelegate.h */,
 				B43D116E1A97A12B008476C7 /* SpringTransitioningDelegate.m */,
+				B457A1141A9E374E00207D8E /* PMLModalTransitionAnimator.h */,
+				B457A1151A9E374E00207D8E /* PMLModalTransitionAnimator.m */,
 			);
 			name = Transitions;
 			sourceTree = "<group>";
@@ -1430,6 +1436,7 @@
 				B405E65E1A93B71600C49F64 /* PMLCalendar.h in Headers */,
 				B4E8292918A9EE530063715C /* MainMenuTableViewController.h in Headers */,
 				B41DD75A197BD9DA008F09D9 /* UIMapOptionView.h in Headers */,
+				B457A1161A9E374E00207D8E /* PMLModalTransitionAnimator.h in Headers */,
 				B43FA67619866ECD008A1679 /* Activity.h in Headers */,
 				B43805B91A1D870100736051 /* PMLImagedTitleTableViewCell.h in Headers */,
 				B42F543F19873CC200C2371F /* MKNewPlaceAnnotationView.h in Headers */,
@@ -1625,6 +1632,7 @@
 				B452EDF819B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m in Sources */,
 				B457A1131A9D93D200207D8E /* PMLFakeViewController.m in Sources */,
 				B4BB9EFE19D4DE430070B03C /* PMLChatTableViewCell.m in Sources */,
+				B457A1171A9E374E00207D8E /* PMLModalTransitionAnimator.m in Sources */,
 				B41C63BD19B31581003C9B52 /* PMLActivityTableViewCell.m in Sources */,
 				B43D11721A97A12B008476C7 /* LinearDismissalAnimator.m in Sources */,
 				B495655D163EDBA6006A0451 /* ChatView.m in Sources */,

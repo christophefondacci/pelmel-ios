@@ -315,6 +315,7 @@
 #pragma mark - Image effects
 - (UIImage *)takeSnapshotOfView:(UIView *)view
 {
+//    return [view snapshotViewAfterScreenUpdates:YES]
     CGFloat reductionFactor = 1;
     UIGraphicsBeginImageContext(CGSizeMake(view.frame.size.width/reductionFactor, view.frame.size.height/reductionFactor));
     [view drawViewHierarchyInRect:CGRectMake(0, 0, view.frame.size.width/reductionFactor, view.frame.size.height/reductionFactor) afterScreenUpdates:YES];

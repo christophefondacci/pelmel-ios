@@ -27,7 +27,7 @@
 
 - (NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext
 {
-    return 1.0f;
+    return 0.6f;
 }
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
@@ -36,9 +36,7 @@
     UIViewController *toVC = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     CGRect fromVCFrame = [transitionContext initialFrameForViewController:fromVC];
-    
-    CGRect finalFrame = CGRectMake(20, 20, CGRectGetWidth(fromVCFrame) - 40, CGRectGetHeight(fromVCFrame) - 40);
-    
+    CGRect finalFrame = CGRectMake(10, 40, CGRectGetWidth(fromVCFrame) - 20, CGRectGetHeight(fromVCFrame) - 40);
     CGRect initialFrame = [self initialFrameFromFinalFrame:finalFrame inTransitionContext:transitionContext];
     
     toVC.view.frame = initialFrame;
@@ -46,8 +44,8 @@
     
     [UIView animateWithDuration:[self transitionDuration:transitionContext]
                           delay:0.0f
-         usingSpringWithDamping:0.6f
-          initialSpringVelocity:0.6f
+         usingSpringWithDamping:0.9f
+          initialSpringVelocity:0.7f
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          toVC.view.frame = finalFrame;
@@ -55,7 +53,8 @@
                      completion:^(BOOL finished) {
                          [transitionContext completeTransition:YES];
                      }];
-    [UIView animateWithDuration:[self transitionDuration:transitionContext]/2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+    [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        
         _bgBlurred.alpha=1;
     } completion:nil];
 }
