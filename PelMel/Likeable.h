@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
-#import "DataService.h"
+//#import "DataService.h"
+
+typedef void (^LikeCompletionBlock)(int likes,int dislikes, BOOL isLiked);
 
 @protocol Likeable <NSObject>
-
+@optional
 -(void)likeTapped:(CALObject*)likedObject callback:(LikeCompletionBlock)callback;
 
 @end

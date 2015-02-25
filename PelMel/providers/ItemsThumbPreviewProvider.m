@@ -8,8 +8,6 @@
 
 #import "ItemsThumbPreviewProvider.h"
 #import "TogaytherService.h"
-#import "MosaicListViewController.h"
-#import "DetailViewController.h"
 #import "Event.h"
 #import "DisplayHelper.h"
 
@@ -114,23 +112,7 @@
     NSString *label = [DisplayHelper getName:obj];
     return label;
 }
-- (void)prepareSegue:(UIViewController *)c {
-    if(isMoreTapped) {
-        MosaicListViewController *controller = (MosaicListViewController*)c;
-        [controller setObjects:[self items]];
-        [controller setParentObject:_parent];
-        if([_parent isKindOfClass:[Place class]]) {
-            [controller setViewTitle:((Place*)_parent).title];
-        } else if([_parent isKindOfClass:[User class]]) {
-            [controller setViewTitle:((User*)_parent).pseudo];
-        } else if([_parent isKindOfClass:[Event class]]) {
-            [controller setViewTitle:((Event*)_parent).name];
-        }
-    } else {
-        DetailViewController *controller = (DetailViewController*)c;
-        controller.detailItem = [_items objectAtIndex:lastTappedThumb];
-    }
-}
+
 - (NSString *)getPreviewSegueIdForThumb:(int)thumbIndex {
     isMoreTapped = NO;
     lastTappedThumb = thumbIndex;

@@ -10,7 +10,6 @@
 #import "CALObject.h"
 #import "SWRevealViewController.h"
 #import "MapViewController.h"
-#import "DetailViewController.h"
 #import "PMLInfoProvider.h"
 
 
@@ -77,7 +76,6 @@
 /**
  * Builds the appropriate provider for the given CAL object
  */
--(NSObject<DetailProvider>*)buildProviderFor:(CALObject*)object;
 -(NSObject<PMLInfoProvider>*)infoProviderFor:(CALObject*)object;
 /**
  * Provides the map marker icon for the given element

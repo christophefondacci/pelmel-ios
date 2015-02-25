@@ -77,8 +77,8 @@
                         <constraint firstAttribute="width" constant="17" id="JeH-jQ-lsl"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tacoma, WA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0D-fE-Ln6">
-                    <rect key="frame" x="183" y="86" width="129" height="17"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tacoma, WA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="i0D-fE-Ln6">
+                    <rect key="frame" x="183" y="84" width="129" height="17"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="17" id="ok9-00-dhz"/>
                     </constraints>
@@ -126,7 +126,7 @@
                 <constraint firstAttribute="trailing" secondItem="i0D-fE-Ln6" secondAttribute="trailing" constant="8" id="jax-TQ-Nsu"/>
                 <constraint firstAttribute="trailing" secondItem="YKj-0M-jIY" secondAttribute="trailing" id="p7o-r9-mTm"/>
                 <constraint firstItem="GfB-ho-Chj" firstAttribute="top" secondItem="7KN-BI-Y6W" secondAttribute="bottom" constant="-27" id="qe0-vO-zBd"/>
-                <constraint firstItem="i0D-fE-Ln6" firstAttribute="bottom" secondItem="LmS-eB-yuK" secondAttribute="bottom" constant="2" id="uUV-8F-R37"/>
+                <constraint firstItem="i0D-fE-Ln6" firstAttribute="bottom" secondItem="LmS-eB-yuK" secondAttribute="bottom" id="uUV-8F-R37"/>
                 <constraint firstItem="YKI-xQ-uTd" firstAttribute="bottom" secondItem="dpN-yg-0aO" secondAttribute="bottom" id="wSU-at-0bH"/>
                 <constraint firstItem="GfB-ho-Chj" firstAttribute="leading" secondItem="ptQ-QN-afT" secondAttribute="leading" constant="15" id="ymH-Oj-AWY"/>
                 <constraint firstItem="dpN-yg-0aO" firstAttribute="bottom" secondItem="GfB-ho-Chj" secondAttribute="bottom" id="zSG-M0-89y"/>

@@ -31,7 +31,11 @@
  */
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated; // Returns the popped controller.
 
-
+/**
+ * Provides the array of sub controllers, which might be different from childViewControllers as controllers
+ * are removed from the hierarchy after transition
+ */
+- (NSArray*)subControllers;
 @end
 
 

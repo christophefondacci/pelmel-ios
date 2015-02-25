@@ -26,6 +26,7 @@
  * already have an instance for it and we don't want to have 2 versions of a same object
  */
 -(Place*)convertJsonOverviewPlaceToPlace:(NSDictionary*)json  defaultPlace:(Place*)place;
+-(NSArray*)convertJsonEventsToEvents:(NSArray*)jsonEvents;
 -(Event*)convertJsonEventToEvent:(NSDictionary*)obj defaultEvent:(Event*)defaultEvent;
 -(City*)convertJsonCityToCity:(NSDictionary*)jsonCity ;
 -(Place*)convertFullJsonPlaceToPlace:(NSDictionary*)obj ;

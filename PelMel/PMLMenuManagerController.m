@@ -22,6 +22,8 @@
 #import "PMLMainNavBarView.h"
 #import "FiltersViewController.h"
 #import "MainMenuTableViewController.h"
+#import "PMLFakeViewController.h"
+#import "UIViewController+BackButtonHandler.h"
 
 #define kSnippetHeight 100
 
@@ -200,7 +202,7 @@ static void *MyParentMenuControllerKey;
     
     // Adding the badge view for messages
     MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
-    badgeView.frame = CGRectMake(_mainNavBarView.appIconView.frame.size.width-20, -10, 30, 20);
+    badgeView.frame = CGRectMake(_mainNavBarView.appIconView.frame.size.width-10, -10, 30, 20);
     badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
     badgeView.shadow = NO;
     badgeView.shine=NO;
@@ -242,7 +244,7 @@ static void *MyParentMenuControllerKey;
     // Dispose of any resources that can be recreated.
 }
 
-
+#pragma mark - Snippet management
 - (void)presentControllerSnippet:(UIViewController *)childViewController {
     CGRect myFrame = self.view.bounds;
     // Detaching current controller
@@ -312,14 +314,66 @@ static void *MyParentMenuControllerKey;
 
 - (void)openCurrentSnippet {
     if(_currentSnippetViewController != nil) {
-        _snippetFullyOpened = YES;
+        [self setSnippetFullyOpened:YES];
         NSInteger top = [self offsetForOpenedSnippet];
         UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:top];
         [_animator removeAllBehaviors];
         [_animator addBehavior:menuBehavior];
     }
 }
+- (void)setSnippetFullyOpened:(BOOL)snippetFullyOpened {
+    _snippetFullyOpened = snippetFullyOpened;
+    if(_snippetFullyOpened) {
+        NSArray *childControllers = _currentSnippetViewController.childViewControllers;
+        [self installNavigationFor:[childControllers objectAtIndex:childControllers.count-1]];
+    } else {
+        [self uninstallNavigation];
+    }
+}
+- (void)installNavigationFor:(UIViewController*)controller {
 
+    [UIView animateWithDuration:0.2 animations:^{
+        self.title = controller.title;
+        self.navigationItem.titleView.alpha=0;
+    } completion:^(BOOL finished) {
+        self.navigationItem.titleView=nil;
+        if(![self hasFakeNavigation] && _snippetFullyOpened && ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count>1) {
+            PMLFakeViewController *fakeViewController = [[PMLFakeViewController alloc] init];
+            [self.navigationController setViewControllers:@[fakeViewController,self] animated:NO];
+        }
+    }];
+    
+}
+-(void)uninstallNavigation {
+    if([self hasFakeNavigation] && (!_snippetFullyOpened || ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count<=1)) {
+        [self.navigationController setViewControllers:@[self] animated:NO];
+    }
+    if(!_snippetFullyOpened) {
+        _mainNavBarView.alpha=0;
+        self.navigationItem.titleView=_mainNavBarView;
+        self.navigationItem.titleView.alpha=0;
+        [UIView animateWithDuration:0.2 animations:^{
+            self.navigationItem.titleView.alpha=1;
+        }];
+    } else {
+        NSArray *ctrls =_currentSnippetViewController.childViewControllers;
+        self.title = ((UIViewController*)[ctrls objectAtIndex:ctrls.count-1]).title;
+    }
+}
+-(BOOL)hasFakeNavigation {
+    return [[self.navigationController.childViewControllers objectAtIndex:0] isKindOfClass:[PMLFakeViewController
+                                                                                            class]];
+}
+- (BOOL)navigationShouldPopOnBackButton {
+    if([self hasFakeNavigation]) {
+        [(PMLSubNavigationController*)_currentSnippetViewController popViewControllerAnimated:YES];
+        if(((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count==1) {
+            [self.navigationController setViewControllers:@[self] animated:NO];
+        }
+        return NO;
+    }
+    return YES;
+}
 - (void)presentControllerMenu:(UIViewController *)viewController from:(CGPoint)origin withHeightPct:(CGFloat)pctHeight {
 
     // Adjusting frame
@@ -506,11 +560,11 @@ static void *MyParentMenuControllerKey;
         // If our bottom frame, with added velocity, is above mid-page
         if (bottomFrame.origin.y + velocity.y/4 < midY) {
             // Then we open full page
-            _snippetFullyOpened = YES;
+            [self setSnippetFullyOpened:YES];
             offset = [self offsetForOpenedSnippet];
         } else {
             // Otherwise we close it back to snippet
-            _snippetFullyOpened = NO;
+            [self setSnippetFullyOpened:NO];
             CGRect myFrame = self.view.frame;
             offset = myFrame.size.height + _bottomView.frame.size.height - kSnippetHeight;
         }
@@ -675,7 +729,6 @@ static void *MyParentMenuControllerKey;
     NSNumber *duration = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [info objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     
-    CGRect viewBounds = self.view.bounds;
     CGRect snippetBounds = _bottomView.frame;
     if(snippetBounds.origin.y>_kbSize.height) {
         // Only if snippet is out

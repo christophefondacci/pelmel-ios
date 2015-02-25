@@ -57,7 +57,8 @@
 "cancel"="Annuler";
 "city.label"="Ville";
 "city.withbars"="%d lieux gays";
-"counters.like"="Likes";
+"counters.arein"="Y seront";
+"counters.likes"="Likes";
 "counters.checkins"="Check-ins";
 "counters.comments"="Comments";
 "counters.chat"="Chat";
@@ -260,6 +261,7 @@
 "specials.subtitleTemplate.current"="Reste %@ : %@";
 "time.days"="jrs";
 "time.formatter"="Il y a %d %@";
+"time.formatter.future"="Dans %d %@";
 "time.hours"="H";
 "time.minutes"="Min";
 "togayther.slogan"="Ton style, ton guide";

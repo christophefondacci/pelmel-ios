@@ -66,15 +66,15 @@
     return nil;
 }
 // Number of reviews
--(int)reviewsCount {
+-(NSInteger)reviewsCount {
     return 0;
 }
 // Number of likes
--(int)likesCount {
+-(NSInteger)likesCount {
     return 0;
 }
 // Number of checkins (if applicable)
--(int)checkinsCount {
+-(NSInteger)checkinsCount {
     return 0;
 }
 // Description of elements
@@ -126,5 +126,11 @@
 }
 -(NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode {
     return 0;
+}
+- (NSArray *)events {
+    return _modelHolder.events;
+}
+- (NSString *)eventsSectionTitle {
+    return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
 }
 @end

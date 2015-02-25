@@ -134,7 +134,8 @@ typedef void(^TextInputCallback)(NSString *text);
  *          (like a user input dialog)
  */
 -(BOOL)dismissControllerSnippet;
-
+- (void)installNavigationFor:(UIViewController*)controller;
+- (void)uninstallNavigation;
 /**
  * Displays the given warning message
  * @param message the message to display

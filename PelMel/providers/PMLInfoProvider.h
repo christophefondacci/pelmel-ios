@@ -11,6 +11,7 @@
 #import "ThumbsPreviewView.h"
 #import "Special.h"
 #import "Activity.h"
+#import "Likeable.h"
 
 @class PMLMenuManagerController;
 typedef enum {
@@ -19,7 +20,7 @@ typedef enum {
     ThumbPreviewModeCheckins
 } ThumbPreviewMode;
 
-@protocol PMLInfoProvider <NSObject>
+@protocol PMLInfoProvider <NSObject,Likeable>
 
 // The element being represented
 -(CALObject*) item;
@@ -37,11 +38,11 @@ typedef enum {
 // Implement to say how many rows of likes need to be displayed
 -(NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode;
 // Number of reviews
--(int)reviewsCount;
+-(NSInteger)reviewsCount;
 // Number of likes
--(int)likesCount;
+-(NSInteger)likesCount;
 // Number of checkins (if applicable)
--(int)checkinsCount;
+-(NSInteger)checkinsCount;
 // Description of elements
 -(NSString*)descriptionText;
 // Short text displayed with thumb
@@ -55,6 +56,8 @@ typedef enum {
 
 @optional
 - (NSString*)commentsCounterTitle;
+- (NSString*)checkinsCounterTitle;
+- (NSString*)likesCounterTitle;
 // When implemented, this method will be called and the component will replace
 // The thumbs view
 -(void)configureCustomViewIn:(UIView*)parentView forController:(UIViewController*)controller;
@@ -68,7 +71,6 @@ typedef enum {
 -(NSArray*)activities;
 // Action to implement to support action when the thumb of the snippet is tapped
 -(void)thumbTapped:(PMLMenuManagerController*)menuController;
-
 
 // Implement all or none
 -(BOOL)hasSnippetRightSection;

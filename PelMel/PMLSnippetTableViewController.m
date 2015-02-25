@@ -30,6 +30,7 @@
 #import "PMLAddEventTableViewCell.h"
 #import "PMLEventTableViewController.h"
 #import "SpringTransitioningDelegate.h"
+#import "PMLFakeViewController.h"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
@@ -195,6 +196,7 @@
     // Loading header views
     _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     
+    self.title = [_infoProvider title];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -270,10 +272,14 @@
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
                 return [[_infoProvider addressComponents] count]+1;
-            case kPMLSectionOvHours:
-                return [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count]+1;
-            case kPMLSectionOvHappyHours:
-                return [[_hoursTypeMap objectForKey:SPECIAL_TYPE_HAPPY] count]+1;
+            case kPMLSectionOvHours: {
+                NSInteger count = [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count];
+                return count == 0 ? 0 : count+1;
+            }
+            case kPMLSectionOvHappyHours: {
+                NSInteger count = [[_hoursTypeMap objectForKey:SPECIAL_TYPE_HAPPY] count];
+                return count == 0 ? 0 : count+1;
+            }
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(events)]) {
                     return [[_infoProvider events] count]+1;
@@ -294,6 +300,11 @@
                 return [[_infoProvider activities] count];
             case kPMLSectionTopPlaces:
                 return [[_infoProvider topPlaces] count];
+            case kPMLSectionOvEvents:
+                if([_infoProvider respondsToSelector:@selector(events)]) {
+                    return [[_infoProvider events] count]+1;
+                }
+                break;
         }
         
     }
@@ -566,7 +577,7 @@
                     // Adjusting label width to fit label size
                     CGSize fitSize = [_sectionTitleView.titleLabel sizeThatFits:CGSizeMake(MAXFLOAT, _sectionTitleView.titleLabel.bounds.size.height)];
                     _sectionTitleView.titleLabelWidthConstraint.constant = fitSize.width;
-                    
+                    _sectionTitleView.backgroundColor=UIColorFromRGBAlpha(0x272a2e, 0.2f);
                     return _sectionTitleView;
                 }
             }
@@ -600,6 +611,13 @@
             case kPMLSectionTopPlaces:
             case kPMLSectionActivity:
                 return 20;
+            case kPMLSectionOvEvents:
+                if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
+                    if([_infoProvider eventsSectionTitle]!=nil) {
+                        return _sectionTitleView.bounds.size.height;
+                    }
+                }
+                return 0;
         }
     }
     return [super tableView:tableView heightForHeaderInSection:section];
@@ -641,6 +659,9 @@
         case kPMLSectionOvEvents:
             if(indexPath.row == [[_infoProvider events] count]) {
                 [self addEventTapped];
+            } else {
+                Event *event = [[_infoProvider events] objectAtIndex:indexPath.row];
+                [self pushSnippetFor:event];
             }
             break;
     }
@@ -853,6 +874,16 @@
     } else {
         cell.commentsTitleLabel.text = NSLocalizedString(@"counters.comments", @"Comments");
     }
+    if([_infoProvider respondsToSelector:@selector(checkinsCounterTitle)]) {
+        cell.checkinsTitleLabel.text = [_infoProvider checkinsCounterTitle];
+    } else {
+        cell.checkinsTitleLabel.text = NSLocalizedString(@"counters.checkins", @"Check-ins");
+    }
+    if([_infoProvider respondsToSelector:@selector(likesCounterTitle)]) {
+        cell.likesTitleLabel.text = [_infoProvider likesCounterTitle];
+    } else {
+        cell.likesTitleLabel.text = NSLocalizedString(@"counters.likes", @"Likes");
+    }
 }
 /**
  * Updates the gradient of the counters view based on the selected tab
@@ -1010,15 +1041,15 @@
     cell.cellTextLabel.text = NSLocalizedString(@"snippet.title.happyhours", @"Happy hours");
 }
 -(void)configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
-    Event *event = [((Place*)_snippetItem).events objectAtIndex:row];
+    Event *event = [[_infoProvider events] objectAtIndex:row];
     cell.image.image = nil;
     CALImage *calImage = [[TogaytherService imageService] imageOrPlaceholderFor:event allowAdditions:YES];
     [_imageService load:calImage to:cell.image thumb:NO];
     
     cell.titleLabel.text = [event.name uppercaseString];
     cell.dateLabel.text = [_conversionService eventDateLabel:event isStart:YES];
-    cell.locationIcon.image = [UIImage imageNamed:@"snpIconCity"]; // TODO: Change to marker pinpoint
-    cell.locationLabel.text = _infoProvider.title;
+    cell.locationIcon.image = [UIImage imageNamed:@"snpIconMarker"];
+    cell.locationLabel.text = [NSString stringWithFormat:@"%@, %@",event.place.title,event.place.cityName];
     if(event.likeCount>0) {
         cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"snippet.event.inUsers","# guys are in"),event.likeCount];
         cell.countIcon.image=[UIImage imageNamed:@"snpIconEvent"];
@@ -1495,15 +1526,15 @@
         [_snippetCell.descriptionTextViewButton addTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
         [_snippetCell.descriptionTextView becomeFirstResponder];
         // Building placeholder
-        NSString *langCode = _snippetItem.miniDescLang;
-        if(langCode == nil) {
-            langCode = [TogaytherService getLanguageIso6391Code];
-        }
-        NSString *template = [NSString stringWithFormat:@"language.%@",langCode];
-        NSString *langLabel = NSLocalizedString(template, @"language name");
-        NSString *descPlaceholderTemplate = NSLocalizedString(@"description.placeholder", @"description placeholder");
-        NSString *descPlaceholder = [NSString stringWithFormat:descPlaceholderTemplate,langLabel];
-        
+//        NSString *langCode = _snippetItem.miniDescLang;
+//        if(langCode == nil) {
+//            langCode = [TogaytherService getLanguageIso6391Code];
+//        }
+//        NSString *template = [NSString stringWithFormat:@"language.%@",langCode];
+//        NSString *langLabel = NSLocalizedString(template, @"language name");
+//        NSString *descPlaceholderTemplate = NSLocalizedString(@"description.placeholder", @"description placeholder");
+//        NSString *descPlaceholder = [NSString stringWithFormat:descPlaceholderTemplate,langLabel];
+//        
 
     } else {
         _snippetCell.titleTextField.hidden=YES;
@@ -1515,7 +1546,8 @@
 }
 #pragma mark - Dragging control & scroll view
 - (void)tableViewPanned:(UIPanGestureRecognizer*)recognizer {
-    if(self.navigationController.childViewControllers.count>1) {
+    NSArray *childControllers = self.navigationController.childViewControllers;
+    if(childControllers.count>1 && !(childControllers.count==2 && [[childControllers objectAtIndex:0] isKindOfClass:[PMLFakeViewController class]])) {
         return;
     }
     switch(recognizer.state) {

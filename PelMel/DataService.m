@@ -297,6 +297,10 @@
     NSArray *jsonUsers = [json objectForKey:@"nearbyUsers"];
     NSArray *users = [jsonService convertJsonUsersToUsers:jsonUsers];
     
+    // Parsing events
+    NSArray *jsonEvents = [json objectForKey:@"nearbyEvents"];
+    NSArray *events = [jsonService convertJsonEventsToEvents:jsonEvents];
+    
     // Parsing localized city
     NSDictionary *jsonCity = [json objectForKey:@"localizedCity"];
     City *localizedCity = nil;
@@ -306,6 +310,7 @@
     
     // Assigning to model holder for all-view synch
     [_modelHolder setPlaces:docs];
+    [_modelHolder setEvents:events];
     [[_modelHolder allPlaces] addObjectsFromArray:docs];
     [_modelHolder setCities:cities];
     [_modelHolder setActivities:activities];

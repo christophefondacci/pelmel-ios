@@ -236,7 +236,16 @@
 -(void) dateChanged:(UIDatePicker*)datePicker {
     if(datePicker.tag==0) {
         [self.event setStartDate:datePicker.date];
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:kPMLSectionHours]] withRowAnimation:UITableViewRowAnimationNone];
+        
+        NSMutableArray *indexPathToReload = [NSMutableArray new];
+        [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:kPMLSectionHours]];
+        
+        // Adjusting end date if before start date
+        if([self.event.endDate timeIntervalSinceDate:datePicker.date]<0) {
+            self.event.endDate = [datePicker.date dateByAddingTimeInterval:7200];
+            [indexPathToReload addObject:[NSIndexPath indexPathForRow:2 inSection:kPMLSectionHours]];
+        }
+        [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationNone];
     } else {
         [self.event setEndDate:datePicker.date];
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:kPMLSectionHours]] withRowAnimation:UITableViewRowAnimationNone];

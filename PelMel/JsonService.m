@@ -391,6 +391,18 @@
     }
     return activities;
 }
+-(NSArray*)convertJsonEventsToEvents:(NSArray*)jsonEvents {
+    NSMutableArray *events = [[NSMutableArray alloc] initWithCapacity:[jsonEvents count]];
+
+    // Iterating over every event
+    for(NSDictionary *jsonEvent in jsonEvents) {
+        Event *event = [self convertJsonEventToEvent:jsonEvent defaultEvent:nil];
+        
+        // Appending to the document list
+        [events addObject:event];
+    }
+    return events;
+}
 -(Event*)convertJsonEventToEvent:(NSDictionary*)obj defaultEvent:(Event*)defaultEvent {
     NSString *itemKey = [obj objectForKey:@"key"];
     // Building JSON event

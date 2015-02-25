@@ -69,7 +69,7 @@ typedef enum {
 @end
 
 typedef void (^OverviewCompletionBlock)(CALObject*overviewObject);
-typedef void (^LikeCompletionBlock)(int likes,int dislikes, BOOL isLiked);
+
 typedef void (^UpdatePlaceCompletionBlock)(Place *place );
 typedef void (^UpdateCalendarCompletionBlock)(PMLCalendar *calendar );
 typedef void (^UpdateEventCompletionBlock)(Event *calendar );

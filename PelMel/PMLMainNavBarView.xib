@@ -20,8 +20,8 @@
                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f73-6r-4Qh">
                     <rect key="frame" x="0.0" y="0.0" width="49" height="44"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mnuIconReveal" translatesAutoresizingMaskIntoConstraints="NO" id="dPu-Hy-Zb2">
-                            <rect key="frame" x="1" y="7" width="47" height="30"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="navButtonMenu" translatesAutoresizingMaskIntoConstraints="NO" id="dPu-Hy-Zb2">
+                            <rect key="frame" x="13" y="11" width="22" height="22"/>
                         </imageView>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDe-Fc-NEL">
                             <rect key="frame" x="0.0" y="7" width="49" height="30"/>
@@ -78,8 +78,8 @@
         </view>
     </objects>
     <resources>
-        <image name="mnuIconReveal" width="32" height="32"/>
         <image name="navButtonFilter" width="23" height="23"/>
+        <image name="navButtonMenu" width="22" height="22"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

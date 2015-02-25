@@ -58,10 +58,11 @@
 "cancel"="Cancel";
 "city.label"="City";
 "city.withbars"="%d gay places";
-"counters.like"="Likes";
+"counters.arein"="Are going";
+"counters.chat"="Chat";
 "counters.checkins"="Check-ins";
 "counters.comments"="Comments";
-"counters.chat"="Chat";
+"counters.likes"="Likes";
 "description"="Description";
 "description.placeholder"="Write a description in %@";
 "description.edition.title"="Choose your language";
@@ -270,6 +271,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "specials.subtitleTemplate.soon"="In %@ : %@";
 "time.days"="days";
 "time.formatter"="%d %@ ago";
+"time.formatter.future"="In %d %@";
 "time.hours"="hrs";
 "time.minutes"="min";
 

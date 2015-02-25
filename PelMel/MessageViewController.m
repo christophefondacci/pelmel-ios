@@ -11,7 +11,6 @@
 #import "TogaytherService.h"
 #import "ChatView.h"
 #import "MessageService.h"
-#import "DetailViewController.h"
 #import "Event.h"
 #import "HPGrowingTextView.h"
 #import "PMLSnippetTableViewController.h"

@@ -58,15 +58,15 @@
     return nil;
 }
 // Number of reviews
--(int)reviewsCount {
+-(NSInteger)reviewsCount {
     return 0;
 }
 // Number of likes
--(int)likesCount {
-    return (int)_city.likeCount;
+-(NSInteger)likesCount {
+    return _city.likeCount;
 }
 // Number of checkins (if applicable)
--(int)checkinsCount {
+-(NSInteger)checkinsCount {
     return 0;
 }
 // Description of elements
@@ -95,6 +95,9 @@
 - (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
 #pragma mark Implement me
     return nil;
+}
+- (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
+    NSLog(@"City log tapped");
 }
 
 - (NSString *)itemTypeLabel {

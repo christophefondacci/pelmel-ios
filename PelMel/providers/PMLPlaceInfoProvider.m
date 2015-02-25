@@ -11,7 +11,7 @@
 #import "Place.h"
 #import "TogaytherService.h"
 #import "ItemsThumbPreviewProvider.h"
-//#import "PMLMenuManagerController.h"
+#import "LikeableStrategyObjectWithLikers.h"
 #import "PMLDataManager.h"
 
 @implementation PMLPlaceInfoProvider {
@@ -27,9 +27,11 @@
     // Related ingo
     Special *_bestSpecial;
     
-    
     // Address management
     NSArray *_addressComponents;
+    
+    // Strategies
+    id<Likeable> _likeableDelegate;
 }
 
 - (instancetype)initWith:(id)place
@@ -42,6 +44,9 @@
         [self configureSpecials];
         [self configureAddress];
         _initWithOverviewAvailable = _place.hasOverviewData;
+        
+        // Initializing like behaviour
+        _likeableDelegate = [[LikeableStrategyObjectWithLikers alloc] init];
     }
     return self;
 }
@@ -106,16 +111,16 @@
 
 
 // Number of reviews
--(int)reviewsCount {
-    return (int)_place.reviewsCount;
+-(NSInteger)reviewsCount {
+    return _place.reviewsCount;
 }
 // Number of likes
--(int)likesCount {
-    return (int)_place.likeCount;
+-(NSInteger)likesCount {
+    return _place.likeCount;
 }
 // Number of checkins (if applicable)
--(int)checkinsCount {
-    return (int)_place.inUsers.count;
+-(NSInteger)checkinsCount {
+    return _place.inUsers.count;
 }
 // Description of elements
 -(NSString*)descriptionText {
@@ -283,5 +288,10 @@
 }
 - (NSString *)eventsSectionTitle {
     return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
+}
+
+#pragma mark - Likeable
+- (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
+    [_likeableDelegate likeTapped:likedObject callback:callback];
 }
 @end

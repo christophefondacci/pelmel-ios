@@ -12,15 +12,12 @@
 #import "PlaceType.h"
 #import "Constants.h"
 #import "UIWaitingView.h"
-#import "PlaceDetailProvider.h"
-#import "EventDetailProvider.h"
-#import "UserDetailProvider.h"
-#import "CityDetailProvider.h"
 #import "PMLPlaceInfoProvider.h"
 #import "PMLUserInfoProvider.h"
 #import "PMLSnippetTableViewController.h"
 #import "PMLContextInfoProvider.h"
 #import "PMLCityInfoProvider.h"
+#import "PMLEventInfoProvider.h"
 #import "UIImage+ImageEffects.h"
 
 
@@ -161,19 +158,6 @@
     return [nibViews objectAtIndex:0];
 }
 #pragma mark - Providers
-- (NSObject<DetailProvider>*)buildProviderFor:(CALObject *)object {
-    id<DetailProvider> detailProvider = nil;
-    if([object isKindOfClass:[Place class]]) {
-        detailProvider = [[PlaceDetailProvider alloc] initWithPlace:(Place*)object];
-    } else if([object isKindOfClass:[User class]]) {
-        detailProvider = [[UserDetailProvider alloc] initWithUser:(User *)object];
-    } else if([object isKindOfClass:[Event class]]) {
-        detailProvider = [[EventDetailProvider alloc] initWithEvent:(Event*)object];
-    } else if([object isKindOfClass:[City class]]) {
-        detailProvider = [[CityDetailProvider alloc] initWithCity:(City*)object];
-    }
-    return detailProvider;
-}
 - (NSObject<PMLInfoProvider> *)infoProviderFor:(CALObject *)object {
     NSObject<PMLInfoProvider> *infoProvider;
     
@@ -181,6 +165,8 @@
         infoProvider = [[PMLPlaceInfoProvider alloc] initWith:(Place*)object];
     } else if([object isKindOfClass:[User class]]) {
         infoProvider = [[PMLUserInfoProvider alloc] initWithUser:(User *)object];
+    } else if([object isKindOfClass:[Event class]]) {
+        infoProvider = [[PMLEventInfoProvider alloc] initWithEvent:(Event*)object];
     } else if([object isKindOfClass:[City class]]) {
         infoProvider = [[PMLCityInfoProvider alloc] initWithCity:(City *)object];
     } else if(object== nil) {
@@ -244,6 +230,12 @@
     long now = [[NSDate date] timeIntervalSince1970];
     long locTime = [date timeIntervalSince1970];
     long delta = now -locTime;
+    NSString *template = NSLocalizedString(@"time.formatter", nil);
+    if(delta < 0) {
+        template = NSLocalizedString(@"time.formatter.future",nil);
+        delta = ABS(delta);
+    }
+    
     if(delta < 60) {
         delta = 60;
     }
@@ -262,7 +254,7 @@
         value = delta / 86400;
         timeScale = NSLocalizedString(@"user.loc.days", nil);
     }
-    NSString *template = NSLocalizedString(@"time.formatter", nil);
+    
     NSString *line = [NSString stringWithFormat:template,value,timeScale];
     return line;
 }

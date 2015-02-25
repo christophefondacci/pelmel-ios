@@ -98,7 +98,7 @@
     CALObject *_currentObject;
     BOOL _checkinEnabled;
     PMLPopupEditor *_currentEditor;
-    NSObject<DetailProvider> *_detailProvider;
+    NSObject<PMLInfoProvider> *_infoProvider;
     NSMutableSet *_observedProperties;
 
 }
@@ -143,9 +143,9 @@
     _checkinAction.color = UIColorFromRGB(kPMLCheckinColor);
     _likeAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionLike"] titleCode:nil size:kPMLLikeSize command:^{
         NSLog(@"LIKE");
-        if(_detailProvider) {
+        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
             [self.popupController.controller.parentMenuController.menuManagerDelegate loadingStart];
-            [_detailProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
+            [_infoProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
                 [self.popupController updateBadgeFor:_likeAction with:likes];
                 [self.popupController.controller.parentMenuController.menuManagerDelegate loadingEnd];
 
@@ -211,7 +211,7 @@
         _currentEditor = [PMLPopupEditor editorFor:_currentObject annotatedBy:annotation on:popupController.controller];
         annotation.popupEditor = _currentEditor;
     }
-    _detailProvider = [TogaytherService.uiService buildProviderFor:_currentObject];
+    _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
     
     // Preparing list of actions
     NSMutableArray *actions = [[NSMutableArray alloc] init];

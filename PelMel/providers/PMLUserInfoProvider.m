@@ -11,6 +11,7 @@
 #import "TogaytherService.h"
 #import "MessageViewController.h"
 #import "PMLUserActionsView.h"
+#import "LikeableStrategyObjectWithLiked.h"
 #import "PMLSnippetTableViewController.h"
 
 @implementation PMLUserInfoProvider {
@@ -19,6 +20,7 @@
     UIService *_uiService;
     PMLUserActionsView *_actionsView;
     PMLSnippetTableViewController *_snippetController;
+    id<Likeable> _likeableDelegate;
 }
 
 - (instancetype)initWithUser:(User *)user
@@ -27,6 +29,7 @@
     if (self) {
         _user = user;
         _uiService = TogaytherService.uiService;
+        _likeableDelegate = [[LikeableStrategyObjectWithLiked alloc] init];
 
     }
     return self;
@@ -123,16 +126,16 @@
 
 }
 // Number of reviews
--(int)reviewsCount {
-    return (int)_user.reviewsCount;
+-(NSInteger)reviewsCount {
+    return _user.reviewsCount;
 }
 // Number of likes
--(int)likesCount {
-    return (int)_user.likers.count + (int)_user.likedPlaces.count; //likeCount;
+-(NSInteger)likesCount {
+    return _user.likers.count + (int)_user.likedPlaces.count; //likeCount;
 }
 // Number of checkins (if applicable)
--(int)checkinsCount {
-    return (int)_user.checkedInPlaces.count;
+-(NSInteger)checkinsCount {
+    return _user.checkedInPlaces.count;
 }
 // Description of elements
 -(NSString*)descriptionText {
@@ -146,30 +149,9 @@
 }
 - (NSArray *)addressComponents {
     if(_user.lastLocation != nil) {
-        long now = [[NSDate date] timeIntervalSince1970];
-        long locTime = [_user.lastLocationDate timeIntervalSince1970];
-        long delta = now -locTime;
-        if(delta < 60) {
-            delta = 60;
-        }
-        NSString *timeScale;
-        long value;
-        if(delta < 3600 || delta > 999999999) {
-            // Display in minutes
-            value = delta / 60;
-            timeScale = NSLocalizedString(@"user.loc.minutes", nil);
-        } else if(delta < 86400) {
-            // Display in hours
-            value = delta / 3600;
-            timeScale = NSLocalizedString(@"user.loc.hours", nil);
-        } else {
-            // Display in days
-            value = delta / 86400;
-            timeScale = NSLocalizedString(@"user.loc.days", nil);
-        }
-        NSString *template = NSLocalizedString(@"user.lastlocation", nil);
-        NSString *line = [NSString stringWithFormat:template,_user.lastLocation.title,value,timeScale];
-        return @[line];
+        NSString *delayLabel = [_uiService delayStringFrom:_user.lastLocationDate];
+        
+        return @[delayLabel];
     }
     return @[];
 }
@@ -242,5 +224,10 @@
 }
 -(NSString *)snippetRightSubtitleText {
     return nil;
+}
+
+#pragma mark - Likeable
+- (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
+    [_likeableDelegate likeTapped:likedObject callback:callback];
 }
 @end

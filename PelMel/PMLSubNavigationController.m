@@ -7,6 +7,7 @@
 //
 
 #import "PMLSubNavigationController.h"
+#import "PMLMenuManagerController.h"
 #import <objc/runtime.h>
 
 @interface PMLSubNavigationController ()
@@ -72,6 +73,7 @@
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
     viewController.view.frame = self.view.bounds;
     [self switchToViewController:viewController fromViewController:[self topViewController] back:NO];
+
 }
 -(void)switchToViewController:(UIViewController*)toViewController fromViewController:(UIViewController*)fromViewController back:(BOOL)isBack {
     // Getting current controller
@@ -110,6 +112,12 @@
         
         // Subnavigation specifics
         fromViewController.subNavigationController = nil;
+        if(!isBack) {
+            [self.parentMenuController installNavigationFor:toViewController];
+        } else {
+            [self.parentMenuController uninstallNavigation];
+
+        }
     }];
 }
 
@@ -141,9 +149,14 @@
 #pragma mark - Back action
 - (void)backTapped:(id)sender {
     NSLog(@"Back");
-    [self popViewControllerAnimated:YES];
+    UIViewController *controller = [self popViewControllerAnimated:YES];
+    if(!self.parentMenuController.snippetFullyOpened && [controller isKindOfClass:[UITableViewController class]]) {
+        [((UITableViewController*)controller).tableView setContentOffset:CGPointMake(0, 0)];
+    }
 }
-
+- (NSArray *)subControllers {
+    return _viewControllers;
+}
 /*
 #pragma mark - Navigation
 
