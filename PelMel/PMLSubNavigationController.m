@@ -44,7 +44,7 @@
     
     // Do any additional setup after loading the view.
     _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _backButton.frame = CGRectMake(9, 60, 35, 35);
+//    _backButton.frame = CGRectMake(9, 60, 35, 35);
     [_backButton setBackgroundImage:[UIImage imageNamed:@"btnSubBack"] forState:UIControlStateNormal];
     [_backButton addTarget:self action:@selector(backTapped:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -92,10 +92,8 @@
     
     // Preparing to remove current
     [fromViewController willMoveToParentViewController:nil];
-    [_backButton removeFromSuperview];
-    if(_viewControllers.count>1) {
-        [toViewController.view addSubview:_backButton];
-    }
+    [self installBackButtonTo:toViewController];
+
     
     // Transitioning
     toViewController.subNavigationController =self;
@@ -156,6 +154,28 @@
 }
 - (NSArray *)subControllers {
     return _viewControllers;
+}
+-(void) installBackButtonTo:(UIViewController*)toViewController {
+    [_backButton removeFromSuperview];
+    if(_viewControllers.count>1) {
+        
+        UIView *backParentView;
+        
+        // If our target controller provides a container for the back button, we use it
+        if([toViewController conformsToProtocol:@protocol(PMLSubNavigationDelegate) ]) {
+            backParentView = [((id<PMLSubNavigationDelegate>)toViewController) subNavigationBackButtonContainer];
+            _backButton.frame = backParentView.bounds;
+        } else {
+            // Otherwise we use default location in target controller view
+            backParentView = toViewController.view;
+            _backButton.frame = CGRectMake(9, 60, 35, 35);
+        }
+        [backParentView addSubview:_backButton];
+    }
+}
+- (void)setDelegate:(id<PMLSubNavigationDelegate>)delegate {
+    _delegate = delegate;
+    [self installBackButtonTo:[_viewControllers objectAtIndex:_viewControllers.count-1]];
 }
 /*
 #pragma mark - Navigation

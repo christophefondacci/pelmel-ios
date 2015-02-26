@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet KIImagePager *galleryView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *addPhotoButton;
 
 @end

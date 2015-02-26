@@ -11,8 +11,10 @@
 #import "KIImagePager.h"
 #import "DataService.h"
 #import "ThumbTableViewController.h"
+#import "PMLMenuManagerController.h"
+#import "PMLSubNavigationController.h"
 
-@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, PMLThumbsTableViewActionDelegate, KIImagePagerDataSource, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate>
+@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, PMLThumbsTableViewActionDelegate, KIImagePagerDataSource, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate,PMLSubNavigationDelegate>
 
 @property (weak,nonatomic) CALObject *snippetItem;
 

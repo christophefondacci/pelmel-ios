@@ -32,6 +32,7 @@ typedef enum {
 @interface PMLPopupActionManager : NSObject <PMLDataListener,UIActionSheetDelegate, UIAlertViewDelegate>
 
 @property (nonatomic,retain) PMLMapPopupViewController *popupController;
+@property (nonatomic,retain) PMLMenuManagerController *menuManagerController;
 
 /**
  * Instantiates a new action manager using the specified popup controller.
@@ -41,12 +42,16 @@ typedef enum {
 //-(instancetype)initWith:(PMLMapPopupViewController*)popupController;
 
 /**
+ * Instantiates an action manager dedicated to the given object using the provided menu manager
+ */ 
+-(instancetype)initWithObject:(CALObject*)currentObject menuManager:(PMLMenuManagerController*)menuManager;
+
+/**
  * Provides an array of all actions to display given the provided object context
  */
 -(NSArray*)computeActionsFor:(CALObject*)object annotatedBy:(MapAnnotation*)annotation fromController:(PMLMapPopupViewController*)popupController;
 -(PopupAction*)actionForType:(PMLActionType)type;
 -(void)dismiss;
--(void)setCurrentObject:(CALObject*)object;
 -(void)installNavBarEdit;
 -(void)uninstallNavBarEdit;
 @end

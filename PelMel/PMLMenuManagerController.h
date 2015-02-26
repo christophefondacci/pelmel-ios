@@ -56,6 +56,18 @@
 
 @end
 
+/**
+ * A delegate that can be plugged to the menu manager so that the presented snippet
+ * could be informed of its presentation state change.
+ */
+@protocol PMLSnippetDelegate <NSObject>
+@optional
+-(void)snippetOpened;
+-(void)snippetMinimized;
+-(void)snippetDismissed;
+
+@end
+
 @class PMLMenuManagerController;
 
 /**
@@ -87,6 +99,7 @@ typedef void(^TextInputCallback)(NSString *text);
 @interface PMLMenuManagerController : UIViewController <UIGestureRecognizerDelegate, UITextFieldDelegate>
 
 @property (nonatomic,strong) NSObject<PMLMenuManagerDelegate> *menuManagerDelegate;
+@property (nonatomic,strong) NSObject<PMLSnippetDelegate> *snippetDelegate;
 @property (nonatomic,strong) UIViewController *rootViewController;
 @property (nonatomic,strong) UIViewController *menuViewController;
 @property (nonatomic,strong) PMLDataManager *dataManager; // Gives access to the data manager from children

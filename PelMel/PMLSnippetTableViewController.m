@@ -182,8 +182,7 @@
     _settingsService = [TogaytherService settingsService];
     _conversionService = [TogaytherService getConversionService];
     _observedProperties = [[NSMutableArray alloc] init];
-    _actionManager = [[PMLPopupActionManager alloc] init];
-    [_actionManager setCurrentObject:_snippetItem];
+    _actionManager = [[PMLPopupActionManager alloc] initWithObject:_snippetItem menuManager:[self parentMenuController]];
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
     _counterThumbControllers = [[NSMutableDictionary alloc] init];
@@ -204,8 +203,12 @@
     
     self.title = [_infoProvider title];
 }
+- (void)viewWillAppear:(BOOL)animated {
+    self.parentMenuController.snippetDelegate = self;
 
+}
 - (void)viewDidAppear:(BOOL)animated {
+    self.subNavigationController.delegate = self;
     // Getting data
     [_dataService registerDataListener:self];
     if(_snippetItem != nil) {
@@ -836,6 +839,26 @@
         [self updateTitleEdition];
     }
     
+    // Wiring like action
+    if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
+        cell.likeButton.hidden=NO;
+        cell.likeButtonSubtitle.hidden=NO;
+        PopupAction *action = [_actionManager actionForType:PMLActionTypeLike];
+        cell.likeButton.tag=PMLActionTypeLike;
+        cell.likeButton.layer.borderColor = [action.color CGColor];
+        [cell.likeButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if(_snippetItem.isLiked) {
+            cell.likeButtonSubtitle.text=NSLocalizedString(@"action.unlike",@"Unlike");
+        } else {
+            cell.likeButtonSubtitle.text=NSLocalizedString(@"action.like",@"Like");
+        }
+    } else {
+        cell.likeButton.hidden=YES;
+        cell.likeButtonSubtitle.hidden=YES;
+    }
+    
+    
 }
 
 -(void)configureRowCounters:(PMLCountersTableViewCell*)cell {
@@ -982,6 +1005,18 @@
     _galleryCell = cell;
     cell.galleryView.delegate=self;
     cell.galleryView.dataSource=self;
+    
+    // Wiring add photo action
+    PopupAction *action = [_actionManager actionForType:PMLActionTypeAddPhoto];
+    cell.addPhotoButton.tag=PMLActionTypeAddPhoto;
+    cell.addPhotoButton.layer.borderColor = [action.color CGColor];
+    [cell.addPhotoButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)actionButtonTapped:(UIButton*)source {
+    PopupAction *action = [_actionManager actionForType:source.tag];
+    if(action.actionCommand!=nil) {
+        action.actionCommand();
+    }
 }
 -(void)configureRowOvImage:(PMLImageTableViewCell*)cell {
     CALImage *image = [_imageService imageOrPlaceholderFor:_snippetItem allowAdditions:YES];
@@ -1619,4 +1654,28 @@
     }
 }
 
+#pragma  mark - PMLSnippetDelegate
+- (void)snippetOpened {
+    // Removing the thumb visibility when opened because it would overflow on the visible part
+    PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
+    [UIView animateWithDuration:0.5 animations:^{
+        cell.thumbView.alpha=0;
+        cell.backContainer.alpha=0;
+    }];
+}
+
+-(void)snippetMinimized {
+    // Restoring the thumb visibility when minimized
+    PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
+    [UIView animateWithDuration:0.5 animations:^{
+        cell.thumbView.alpha=1;
+        cell.backContainer.alpha=1;
+    }];
+}
+
+#pragma mark - PMLSubNavigationDelegate
+- (UIView *)subNavigationBackButtonContainer {
+    PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
+    return cell.backContainer;
+}
 @end

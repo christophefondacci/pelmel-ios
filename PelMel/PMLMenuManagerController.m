@@ -259,7 +259,7 @@ static void *MyParentMenuControllerKey;
     PMLSubNavigationController *viewController = [[PMLSubNavigationController alloc] initWithRootViewController:childViewController];
     
     // Placing the frame at the bottom of the visible current view, outside
-    CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height+1);
+    CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height+1-[self offsetForOpenedSnippet]);
     _bottomView.frame = bottomFrame;
 //    _bottomView.backgroundColor = [UIColor redColor];
     _bottomView.opaque=YES;
@@ -269,7 +269,7 @@ static void *MyParentMenuControllerKey;
     
     // Adding the view controller to our hierarchy
     [self addChildViewController:viewController];
-    viewController.view.frame = CGRectMake(0, 0, myFrame.size.width, myFrame.size.height+1);
+    viewController.view.frame = CGRectMake(0, 0, myFrame.size.width, myFrame.size.height+1-[self offsetForOpenedSnippet]);
     [_bottomView addSubview:viewController.view];
     [viewController didMoveToParentViewController:self];
     _currentSnippetViewController = viewController;
@@ -327,8 +327,14 @@ static void *MyParentMenuControllerKey;
     if(_snippetFullyOpened) {
         NSArray *childControllers = _currentSnippetViewController.childViewControllers;
         [self installNavigationFor:[childControllers objectAtIndex:childControllers.count-1]];
+        if([_snippetDelegate respondsToSelector:@selector(snippetOpened)]) {
+            [_snippetDelegate snippetOpened];
+        }
     } else {
         [self uninstallNavigation];
+        if([_snippetDelegate respondsToSelector:@selector(snippetMinimized)]) {
+            [_snippetDelegate snippetMinimized];
+        }
     }
 }
 - (void)installNavigationFor:(UIViewController*)controller {
@@ -550,7 +556,8 @@ static void *MyParentMenuControllerKey;
         
         // Adding a collision to the screen top edge to constraint snippet in view bounds
         UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[_bottomView]];
-        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-2000, 1) toPoint:CGPointMake(2000, 1)];
+        NSInteger top = [self offsetForOpenedSnippet];
+        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-2000, top+1) toPoint:CGPointMake(2000, top+1)];
         [_animator addBehavior:collision];
         
     } else if (state  == UIGestureRecognizerStateChanged) {
@@ -589,7 +596,7 @@ static void *MyParentMenuControllerKey;
 
 -(NSInteger)offsetForOpenedSnippet {
 //    CGRect bounds = self.view.bounds;
-    NSInteger top = 0;
+    NSInteger top = -self.navigationController.navigationBar.frame.size.height;
 //    if(bounds.size.height> 600) {
 //        top = MAX(bounds.size.height-600,0);
 //    }
@@ -831,6 +838,20 @@ static void *MyParentMenuControllerKey;
 
     }
     
+}
+#pragma mark - Snippet delegate
+- (void)setSnippetDelegate:(NSObject<PMLSnippetDelegate> *)snippetDelegate {
+    _snippetDelegate = snippetDelegate;
+    if(_snippetFullyOpened) {
+        if([_snippetDelegate respondsToSelector:@selector(snippetOpened)]) {
+            [_snippetDelegate snippetOpened];
+        }
+    } else {
+        if([_snippetDelegate respondsToSelector:@selector(snippetMinimized)]) {
+            [_snippetDelegate snippetMinimized];
+        }
+    }
+
 }
 //- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
 //    if(object == _bottomView) {

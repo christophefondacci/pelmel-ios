@@ -116,6 +116,21 @@
     }
     return self;
 }
+
+- (instancetype)initWithObject:(CALObject *)currentObject menuManager:(PMLMenuManagerController *)menuManager
+{
+    self = [self init];
+    if (self) {
+        _currentObject = currentObject;
+        _menuManagerController = menuManager;
+        _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
+    }
+    return self;
+}
+- (void)setPopupController:(PMLMapPopupViewController *)popupController {
+    _popupController = popupController;
+    _menuManagerController = popupController.controller.parentMenuController;
+}
 - (void)dealloc {
     [_dataService unregisterDataListener:self];
 }
@@ -144,9 +159,9 @@
     _checkinAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionCheckin"] titleCode:nil size:kPMLLikeSize command:^{
         NSLog(@"CHECKIN");
         if(_currentObject.key != nil) {
-            [self.popupController.controller.parentMenuController.menuManagerDelegate loadingStart];
+            [_menuManagerController.menuManagerDelegate loadingStart];
             [_userService checkin:_currentObject completion:^(id obj) {
-                [self.popupController.controller.parentMenuController.menuManagerDelegate loadingEnd];
+                [_menuManagerController.menuManagerDelegate loadingEnd];
                 [self updateBadge];
             }];
         }
@@ -157,10 +172,10 @@
     _likeAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionLike"] titleCode:nil size:kPMLLikeSize command:^{
         NSLog(@"LIKE");
         if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
-            [self.popupController.controller.parentMenuController.menuManagerDelegate loadingStart];
+            [_menuManagerController.menuManagerDelegate loadingStart];
             [_infoProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
                 [self.popupController updateBadgeFor:_likeAction with:likes];
-                [self.popupController.controller.parentMenuController.menuManagerDelegate loadingEnd];
+                [_menuManagerController.menuManagerDelegate loadingEnd];
 
                                 
             }];
@@ -181,7 +196,7 @@
         NSLog(@"Photo");
         
         // Asking our data manager to prompt for photo upload
-        PMLDataManager *dataManager = self.popupController.controller.parentMenuController.dataManager;
+        PMLDataManager *dataManager = _menuManagerController.dataManager;
         [dataManager promptUserForPhotoUploadOn:_currentObject];
     }];
     _photoAction.color = UIColorFromRGB(kPMLPhotoColor);
@@ -216,7 +231,7 @@
         NSLog(@"Cancel");
         [_currentEditor cancel];
         if(_navbarEdit) {
-            self.popupController.controller.parentMenuController.navigationItem.leftBarButtonItem = _navbarLeftItem;
+            _menuManagerController.navigationItem.leftBarButtonItem = _navbarLeftItem;
             [self installNavBarEdit];
         }
     }];
@@ -581,7 +596,7 @@
     PMLCalendarTableViewController *calendarController = (PMLCalendarTableViewController*)[_uiService instantiateViewController:@"calendarEditor"];
     if([_currentObject isKindOfClass:[Place class]]) {
     calendarController.place = (Place*)_currentObject;
-    [self.popupController.controller.parentMenuController.navigationController pushViewController:calendarController animated:YES];
+    [_menuManagerController.navigationController pushViewController:calendarController animated:YES];
     } else {
         NSLog(@"WARNING: Expected a Place object but got %@", NSStringFromClass([_currentObject class]) );
     }
@@ -635,17 +650,20 @@
 - (void)installNavBarEdit {
     UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeEdit selector:@selector(navbarEditTapped:)];
     _navbarEdit = YES;
-    self.popupController.controller.parentMenuController.navigationItem.rightBarButtonItem = barItem;
+    if(_menuManagerController == nil) {
+        _menuManagerController = _popupController.controller.parentMenuController;
+    }
+    _menuManagerController.navigationItem.rightBarButtonItem = barItem;
 }
 -(void) installNavBarCommitCancel {
     UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarCommitTapped:)];
-    self.popupController.controller.parentMenuController.navigationItem.rightBarButtonItem = commitItem;
+    _menuManagerController.navigationItem.rightBarButtonItem = commitItem;
     UIBarButtonItem *cancelItem = [self barButtonItemFromAction:PMLActionTypeCancel selector:@selector(navbarCancelTapped:)];
-    self.popupController.controller.parentMenuController.navigationItem.leftBarButtonItem = cancelItem;
+    _menuManagerController.navigationItem.leftBarButtonItem = cancelItem;
 }
 -(void)uninstallNavBarCommitCancel {
     if(_navbarEdit) {
-        self.popupController.controller.parentMenuController.navigationItem.leftBarButtonItem = _navbarLeftItem;
+        _menuManagerController.navigationItem.leftBarButtonItem = _navbarLeftItem;
         [self installNavBarEdit];
     }
 }
@@ -662,7 +680,7 @@
     return barItem;
 }
 - (void)uninstallNavBarEdit {
-    UINavigationItem *navItem = self.popupController.controller.parentMenuController.navigationItem;
+    UINavigationItem *navItem = _menuManagerController.navigationItem;
     navItem.rightBarButtonItem = nil;
     navItem.leftBarButtonItem = _navbarLeftItem;
     _navbarEdit = NO;

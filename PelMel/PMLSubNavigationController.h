@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol PMLSubNavigationDelegate <NSObject>
+
+/**
+ * Provides a container for the sub navigation back button
+ */
+- (UIView*)subNavigationBackButtonContainer;
+
+@end
 /**
  * This controller handles a mini navigation stack and a small back button for the snippet 
  * view. The interface matches UINavigationController for smooth migration.
@@ -15,6 +23,7 @@
  */
 @interface PMLSubNavigationController : UIViewController
 
+@property (nonatomic,weak) id<PMLSubNavigationDelegate> delegate;
 
 /*
  * Instantiates a sub navigation with the given root view controller
