@@ -169,28 +169,28 @@
     
 }
 
-- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
-    // Saving snippet controller for later
-    _snippetController = (PMLSnippetTableViewController*)controller;
-    
-    // Configuring custom view
-    if(_actionsView == nil) {
-        // Loading profile header view
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLUserActionsView" owner:self options:nil];
-        _actionsView = (PMLUserActionsView*)[views objectAtIndex:0];
-        [parentView addSubview:_actionsView];
-        [_actionsView.chatButton addTarget:self action:@selector(chatButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        [_actionsView.likeButton addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        // Right aligning view
-        CGRect parentBounds = parentView.bounds;
-        CGRect actionsFrame = _actionsView.frame;
-        _actionsView.frame = CGRectMake(parentBounds.size.width-actionsFrame.size.width, actionsFrame.origin.y, actionsFrame.size.width, actionsFrame.size.height);
-    } else if(_actionsView.superview != parentView) {
-        [_actionsView removeFromSuperview];
-        [parentView addSubview:_actionsView];
-    }
-    [self refreshLikeButton];
-}
+//- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
+//    // Saving snippet controller for later
+//    _snippetController = (PMLSnippetTableViewController*)controller;
+//    
+//    // Configuring custom view
+//    if(_actionsView == nil) {
+//        // Loading profile header view
+//        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLUserActionsView" owner:self options:nil];
+//        _actionsView = (PMLUserActionsView*)[views objectAtIndex:0];
+//        [parentView addSubview:_actionsView];
+//        [_actionsView.chatButton addTarget:self action:@selector(chatButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//        [_actionsView.likeButton addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//        // Right aligning view
+//        CGRect parentBounds = parentView.bounds;
+//        CGRect actionsFrame = _actionsView.frame;
+//        _actionsView.frame = CGRectMake(parentBounds.size.width-actionsFrame.size.width, actionsFrame.origin.y, actionsFrame.size.width, actionsFrame.size.height);
+//    } else if(_actionsView.superview != parentView) {
+//        [_actionsView removeFromSuperview];
+//        [parentView addSubview:_actionsView];
+//    }
+//    [self refreshLikeButton];
+//}
 
 -(void)chatButtonTapped:(id)sender {
     MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];

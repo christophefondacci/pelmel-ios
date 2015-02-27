@@ -768,6 +768,11 @@
     // Subtitle
     cell.subtitleLabel.text = [_infoProvider subtitle];
     cell.subtitleIcon.image = [_infoProvider subtitleIcon];
+    if([_infoProvider subtitle] == nil) {
+        cell.subtitleIcon.hidden = YES;
+    } else {
+        cell.subtitleIcon.hidden = NO;
+    }
     
     // Observing address
     if([_snippetItem isKindOfClass:[Place class]]) {

@@ -421,6 +421,7 @@
     NSNumber *endTime       = [obj objectForKey:@"endTime"];
     NSDictionary *place     = [obj objectForKey:@"place"];
     NSNumber *participants  = [obj objectForKey:@"participants"];
+
     
     
     // Building image array
@@ -452,6 +453,26 @@
         }
         [event setPlace:p];
     }
+    
+    NSString *description = [obj objectForKey:@"description"];
+    [event setMiniDesc:description];
+    
+    // Likes management
+
+    NSArray *jsonLikeUsers  = [obj objectForKey:@"likeUsers"];
+    NSNumber *liked         = [obj objectForKey:@"liked"];
+    [event setIsLiked:[liked boolValue]];
+    NSNumber *likeCount     = [obj objectForKey:@"likes"];
+    [event setLikeCount:MAX([likeCount integerValue],[participants integerValue])];
+    [event.likers removeAllObjects];
+    for(NSDictionary *jsonUser in jsonLikeUsers) {
+        // Building User bean (liked user) from JSON
+        User *likedUser = [self convertJsonUserToUser:jsonUser];
+        
+        // Adding this liked user
+        [event.likers addObject:likedUser];
+    }
+
     return event;
 }
 #pragma mark - User JSON

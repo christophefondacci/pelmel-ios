@@ -172,33 +172,24 @@
     
     _likeAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionLike"] titleCode:nil size:kPMLLikeSize command:^{
         NSLog(@"LIKE");
-        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
-            [_menuManagerController.menuManagerDelegate loadingStart];
-            [_infoProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
-                [self.popupController updateBadgeFor:_likeAction with:likes];
-                [_menuManagerController.menuManagerDelegate loadingEnd];
-
-                                
-            }];
-        }
+        [self likeAction];
     }];
     _likeAction.color = UIColorFromRGB(kPMLLikeColor);
     [self registerAction:_likeAction forType:PMLActionTypeLike];
     
     PopupAction *attendAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionCheckin"] titleCode:nil size:kPMLLikeSize command:^{
         NSLog(@"ATTEND");
-        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
-            [_menuManagerController.menuManagerDelegate loadingStart];
-            [_infoProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
-                [self.popupController updateBadgeFor:_likeAction with:likes];
-                [_menuManagerController.menuManagerDelegate loadingEnd];
-                
-                
-            }];
-        }
+        [self likeAction];
     }];
-    attendAction.color = UIColorFromRGB(kPMLLikeColor);
+    attendAction.color = UIColorFromRGB(kPMLCheckinColor);
     [self registerAction:attendAction forType:PMLActionTypeAttend];
+    
+    PopupAction *attendCancelAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionCancel"] titleCode:nil size:kPMLLikeSize command:^{
+        NSLog(@"Cancel ATTEND");
+        [self likeAction];
+    }];
+    attendCancelAction.color = UIColorFromRGB(kPMLCheckinColor);
+    [self registerAction:attendCancelAction forType:PMLActionTypeAttendCancel];
     
     _modifyAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
         NSLog(@"MODIFY PLACE");
@@ -280,6 +271,17 @@
     _cancelAction.color = UIColorFromRGB(kPMLCancelColor);
     [self registerAction:_cancelAction forType:PMLActionTypeCancel];
     
+}
+-(void) likeAction {
+    if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
+        [_menuManagerController.menuManagerDelegate loadingStart];
+        [_infoProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
+            [self.popupController updateBadgeFor:_likeAction with:likes];
+            [_menuManagerController.menuManagerDelegate loadingEnd];
+            
+            
+        }];
+    }
 }
 -(void)setCurrentObject:(CALObject*)object {
     _currentObject = object;

@@ -22,7 +22,9 @@ typedef enum {
     PMLActionTypeReport,
     PMLActionTypeEditPlace,
     PMLActionTypeEditEvent,
-    PMLActionTypeAttend
+    PMLActionTypeAttend,
+    PMLActionTypeAttendCancel
+
 } PMLActionType;
 
 /**

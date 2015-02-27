@@ -144,14 +144,19 @@
     return PMLActionTypeEditEvent;
 }
 - (PMLActionType)primaryActionType {
-    return PMLActionTypeAttend;
+    if([_event isLiked]) {
+        return PMLActionTypeAttendCancel;
+    } else {
+        return PMLActionTypeAttend;
+    }
 }
 - (NSString *)actionSubtitleFor:(PMLActionType)actionType {
     switch (actionType) {
         case PMLActionTypeAttend:
             return NSLocalizedString(@"action.attend",@"Attend");
             break;
-            
+        case PMLActionTypeAttendCancel:
+            return NSLocalizedString(@"cancel",@"Cancel");
         default:
             break;
     }

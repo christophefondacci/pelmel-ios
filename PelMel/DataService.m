@@ -465,21 +465,6 @@
     
     // Building event from JSON
     event = [jsonService convertJsonEventToEvent:json defaultEvent:event];
-    NSString *description = [json objectForKey:@"description"];
-    [event setMiniDesc:description];
-    
-    // Likes management
-    NSNumber *likeCount     = [json objectForKey:@"likes"];
-    NSArray *jsonLikeUsers  = [json objectForKey:@"likeUsers"];
-    [event setLikeCount:[likeCount integerValue]];
-    [event.likers removeAllObjects];
-    for(NSDictionary *jsonUser in jsonLikeUsers) {
-        // Building User bean (liked user) from JSON
-        User *likedUser = [jsonService convertJsonUserToUser:jsonUser];
-        
-        // Adding this liked user
-        [event.likers addObject:likedUser];
-    }
 
     // Flagging our bean as having overview data
     [event setHasOverviewData:YES];
