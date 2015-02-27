@@ -11,16 +11,6 @@
 #import "DataService.h"
 #import "PopupAction.h"
 
-typedef enum {
-    PMLActionTypeEdit = 10,
-    PMLActionTypeLike = 1,
-    PMLActionTypeAddPhoto = 2,
-    PMLActionTypeCheckin = 3,
-    PMLActionTypeComment = 4,
-    PMLActionTypeConfirm = 5,
-    PMLActionTypeCancel = 6,
-    PMLActionTypeReport = 7
-} PMLActionType;
 
 @class PMLMapPopupViewController;
 @class MapAnnotation;
@@ -44,7 +34,7 @@ typedef enum {
 /**
  * Instantiates an action manager dedicated to the given object using the provided menu manager
  */ 
--(instancetype)initWithObject:(CALObject*)currentObject menuManager:(PMLMenuManagerController*)menuManager;
+-(instancetype)initWithObject:(CALObject*)currentObject;
 
 /**
  * Provides an array of all actions to display given the provided object context
@@ -52,6 +42,6 @@ typedef enum {
 -(NSArray*)computeActionsFor:(CALObject*)object annotatedBy:(MapAnnotation*)annotation fromController:(PMLMapPopupViewController*)popupController;
 -(PopupAction*)actionForType:(PMLActionType)type;
 -(void)dismiss;
--(void)installNavBarEdit;
--(void)uninstallNavBarEdit;
+-(void)installNavBarEdit:(PMLMenuManagerController*)menuManager;
+-(void)uninstallNavBarEdit:(PMLMenuManagerController*)menuManager;
 @end

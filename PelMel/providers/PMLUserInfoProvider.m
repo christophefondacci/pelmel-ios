@@ -49,6 +49,12 @@
 -(NSString*) title {
     return _user.pseudo;
 }
+- (NSString *)subtitle {
+    return nil;
+}
+- (UIImage *)subtitleIcon {
+    return nil;
+}
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
     return [UIImage imageNamed:@"snpIconEvent"];

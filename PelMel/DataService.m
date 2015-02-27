@@ -18,6 +18,7 @@
 #import "Activity.h"
 #import "NSString+HTML.h"
 #import <AFNetworking.h>
+#import "PMLPopupEditor.h"
 
 #define kPlaceListUrlFormat @"%@/mapPlaces.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&searchLat=%f&searchLng=%f"
 #define kEventListUrlFormat @"%@/mobileEvents.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
@@ -120,6 +121,7 @@
  * Starting a refresh 
  */
 -(void)fetchPlacesFor:(CALObject *)parent searchTerm:(NSString *)searchTerm {
+    [PMLPopupEditor purgeEditors];
     dispatch_async(kBgQueue, ^{
         BOOL isLocalized = NO;
         while(!isLocalized) {

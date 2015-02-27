@@ -21,14 +21,14 @@ typedef void(^EditionAction)();
 @interface PMLPopupEditor : NSObject<UIActionSheetDelegate>
 
 @property (nonatomic,weak) CALObject *editedObject;
-@property (nonatomic,weak) MapAnnotation *mapAnnotation;
+//@property (nonatomic,weak) MapAnnotation *mapAnnotation;
 @property (nonatomic,readonly) NSArray *pendingConfirmActions;
 @property (nonatomic,readonly) NSArray *pendingCancelActions;
 @property (nonatomic,weak) MapViewController *mapViewController;
 @property (nonatomic) BOOL editing;
 
-+ (instancetype)editorFor:(CALObject*)editedObject annotatedBy:(MapAnnotation*)annotation on:(MapViewController*)mapViewController;
-
++ (instancetype)editorFor:(CALObject*)editedObject on:(MapViewController*)mapViewController;
++(void)purgeEditors;
 -(void)cancel;
 -(void)commit;
 -(void)startEditionWith:(EditionAction)commitAction cancelledBy:(EditionAction)cancelAction mapEdition:(BOOL)mapEdition;

@@ -61,7 +61,7 @@
 #define kPMLRowGalleryId @"gallery"
 #define kPMLRowCountersId @"counters"
 #define kPMLRowThumbPreviewId @"thumbsPreview"
-#define kPMLHeightSnippet 101
+#define kPMLHeightSnippet 110
 #define kPMLHeightGallery 240
 #define kPMLHeightCounters 97
 #define kPMLHeightThumbPreview 100
@@ -170,6 +170,7 @@
     BOOL _readMore;
     NSInteger _readMoreSize;
     ThumbPreviewMode _thumbPreviewMode;
+    BOOL _opened;
 }
 
 
@@ -182,7 +183,7 @@
     _settingsService = [TogaytherService settingsService];
     _conversionService = [TogaytherService getConversionService];
     _observedProperties = [[NSMutableArray alloc] init];
-    _actionManager = [[PMLPopupActionManager alloc] initWithObject:_snippetItem menuManager:[self parentMenuController]];
+    _actionManager = [[PMLPopupActionManager alloc] initWithObject:_snippetItem];
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
     _counterThumbControllers = [[NSMutableDictionary alloc] init];
@@ -204,15 +205,19 @@
     self.title = [_infoProvider title];
 }
 - (void)viewWillAppear:(BOOL)animated {
+
     self.parentMenuController.snippetDelegate = self;
 
 }
 - (void)viewDidAppear:(BOOL)animated {
+    _actionManager.menuManagerController = [self parentMenuController];
     self.subNavigationController.delegate = self;
     // Getting data
     [_dataService registerDataListener:self];
     if(_snippetItem != nil) {
         [_dataService getOverviewData:_snippetItem];
+    } else {
+        [self.tableView reloadData];
     }
     if([_snippetItem isKindOfClass:[Place class]]) {
         if(_snippetItem.lat!=0 && _snippetItem.lng!=0 && _snippetItem.key!=nil) {
@@ -760,15 +765,12 @@
         cell.thumbView.userInteractionEnabled=YES;
     }
     
-    // No subtitle
-    cell.subtitleLabel.text = nil;
+    // Subtitle
+    cell.subtitleLabel.text = [_infoProvider subtitle];
+    cell.subtitleIcon.image = [_infoProvider subtitleIcon];
     
     // Observing address
     if([_snippetItem isKindOfClass:[Place class]]) {
-        Place *place = (Place*)_snippetItem;
-        if(place.address != nil) {
-            cell.subtitleLabel.text = place.address;
-        }
         [self.snippetItem addObserver:self forKeyPath:@"address" options:   NSKeyValueObservingOptionNew context:NULL];
         [self.snippetItem addObserver:self forKeyPath:@"mainImage" options:   NSKeyValueObservingOptionNew context:NULL];
         [_observedProperties addObject:@"address"];
@@ -806,8 +808,7 @@
     cell.colorLineView.backgroundColor = [UIColor clearColor]; // color; // Removing color for grip
     // Thumb border
     cell.thumbView.layer.borderColor = color.CGColor;
-    // Subtitle
-    cell.subtitleLabel.textColor = color;
+
     
     // Fonts
     cell.hoursBadgeTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:10];
@@ -1344,6 +1345,7 @@
 -(void)pushSnippetFor:(CALObject*)item {
     PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)[TogaytherService.uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
     childSnippet.snippetItem = item;
+
     if(self.subNavigationController != nil) {
         [self.subNavigationController pushViewController:childSnippet animated:YES];
         [self.parentMenuController openCurrentSnippet];
@@ -1533,6 +1535,7 @@
         if(_snippetItem.key != nil && _snippetItem.editing) {
             [_snippetCell.titleTextField becomeFirstResponder];
         }
+
     } else if([keyPath isEqualToString:@"mainImage"]) {
         [self.tableView reloadData]; 
     }
@@ -1655,24 +1658,39 @@
 }
 
 #pragma  mark - PMLSnippetDelegate
-- (void)snippetOpened {
+- (void)menuManager:(PMLMenuManagerController *)menuManager snippetOpened:(BOOL)animated {
+    _opened = YES;
     // Removing the thumb visibility when opened because it would overflow on the visible part
     PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
-    [UIView animateWithDuration:0.5 animations:^{
-        cell.thumbView.alpha=0;
-        cell.backContainer.alpha=0;
-    }];
-}
+    if(animated) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [self snippetCell:cell setOptionalVisibility:0];
+        }];
+    } else {
+        [self snippetCell:cell setOptionalVisibility:0];
+    }
 
--(void)snippetMinimized {
+}
+-(void)snippetCell:(PMLSnippetTableViewCell*)cell setOptionalVisibility:(float)alpha {
+//    cell.thumbView.alpha=alpha;
+    cell.backContainer.alpha=alpha;
+}
+-(void)menuManager:(PMLMenuManagerController *)menuManager snippetMinimized:(BOOL)animated {
+    _opened = NO;
     // Restoring the thumb visibility when minimized
     PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
-    [UIView animateWithDuration:0.5 animations:^{
-        cell.thumbView.alpha=1;
-        cell.backContainer.alpha=1;
-    }];
-}
+    if(animated) {
+        [UIView animateWithDuration:0.5 animations:^{
+            [self snippetCell:cell setOptionalVisibility:1];
+        }];
+    } else {
+        [self snippetCell:cell setOptionalVisibility:1];
+    }
 
+}
+- (PMLPopupActionManager *)actionManager {
+    return _actionManager;
+}
 #pragma mark - PMLSubNavigationDelegate
 - (UIView *)subNavigationBackButtonContainer {
     PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];

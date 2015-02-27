@@ -557,10 +557,12 @@
                     calImage.fullImage = image;
                 }
                 imageView.image=image;
-                imageView.alpha=0;
-                [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    imageView.alpha=1;
-                } completion:nil];
+                if(imageView.alpha>0) {
+                    imageView.alpha=0;
+                    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                        imageView.alpha=1;
+                    } completion:nil];
+                }
                 
             } else {
                 if(error != nil) {

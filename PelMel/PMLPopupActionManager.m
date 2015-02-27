@@ -117,13 +117,14 @@
     return self;
 }
 
-- (instancetype)initWithObject:(CALObject *)currentObject menuManager:(PMLMenuManagerController *)menuManager
+- (instancetype)initWithObject:(CALObject *)currentObject
 {
     self = [self init];
     if (self) {
         _currentObject = currentObject;
-        _menuManagerController = menuManager;
+        _menuManagerController = [[TogaytherService uiService] menuManagerController];
         _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
+        _currentEditor = [PMLPopupEditor editorFor:_currentObject on:(MapViewController*)_menuManagerController.rootViewController];
     }
     return self;
 }
@@ -186,11 +187,25 @@
     
     
     _modifyAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
-        NSLog(@"MODIFY");
+        NSLog(@"MODIFY PLACE");
         [self initializeEditFor:_currentObject];
     }];
     _modifyAction.color = UIColorFromRGB(kPMLEditColor);
-    [self registerAction:_modifyAction forType:PMLActionTypeEdit];
+    [self registerAction:_modifyAction forType:PMLActionTypeEditPlace];
+    
+    PopupAction *genericEdit =[[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
+        NSLog(@"MODIFY GENERIC");
+        if([_infoProvider respondsToSelector:@selector(editActionType)]) {
+            PopupActionBlock block= [[self actionForType:[_infoProvider editActionType]] actionCommand];
+            if(block != nil) {
+                block();
+            }
+        }
+        [self initializeEditFor:_currentObject];
+    }];
+    genericEdit.color = UIColorFromRGB(kPMLEditColor);
+    [self registerAction:genericEdit forType:PMLActionTypeEdit];
+    
     
     _photoAction = [[PopupAction alloc] initWithAngle:kPMLPhotoAngle distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionPhoto"] titleCode:nil size:kPMLPhotoSize command:^{
         NSLog(@"Photo");
@@ -232,7 +247,7 @@
         [_currentEditor cancel];
         if(_navbarEdit) {
             _menuManagerController.navigationItem.leftBarButtonItem = _navbarLeftItem;
-            [self installNavBarEdit];
+            [self installNavBarEdit:_menuManagerController];
         }
     }];
     _cancelAction.color = UIColorFromRGB(kPMLCancelColor);
@@ -241,6 +256,7 @@
 }
 -(void)setCurrentObject:(CALObject*)object {
     _currentObject = object;
+    _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
 }
 - (NSArray *)computeActionsFor:(CALObject *)object annotatedBy:(MapAnnotation*)annotation fromController:(PMLMapPopupViewController *)popupController {
     _popupController = popupController;
@@ -249,7 +265,7 @@
     if(annotation.popupEditor!=nil) {
         _currentEditor = annotation.popupEditor;
     } else {
-        _currentEditor = [PMLPopupEditor editorFor:_currentObject annotatedBy:annotation on:popupController.controller];
+        _currentEditor = [PMLPopupEditor editorFor:_currentObject on:popupController.controller];
         annotation.popupEditor = _currentEditor;
     }
     _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
@@ -257,57 +273,57 @@
     // Preparing list of actions
     NSMutableArray *actions = [[NSMutableArray alloc] init];
     
-    if([object isKindOfClass:[Place class]]) {
-        Place *place = (Place*)object;
-        if(object.key != nil) {
-            // Preparing actions for a place
-            if(!_currentEditor.editing) {
-                // Computing distance from current location
-                PopupAction *likeOrCheckinAction = _likeAction;
-                if(_userService.currentLocation!=nil) {
-                    CLLocation *objectLocation = [[CLLocation alloc] initWithLatitude:object.lat longitude:object.lng];
-                    CLLocationDistance distance = [_userService.currentLocation distanceFromLocation:objectLocation];
-                    
-                    // If less than our checkin distance, we activate checkin action
-                    if(distance <= kCheckinDistanceMeters) {
-                        _checkinEnabled = YES;
-                        likeOrCheckinAction = _checkinAction;
-                    }
-                }
-                [actions addObjectsFromArray:@[likeOrCheckinAction,_modifyAction,_photoAction,_commentAction,_reportAction]];
-            } else {
-                [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];
-                [actions addObject:_modifyAction];
-            }
-            // Updates the badge on popup actions
-            [self updateBadge];
-            
-            // Loading overview data if not yet available
-            if(!object.hasOverviewData) {
-                [_dataService getOverviewData:object];
-            }
-            
-        } else {
-            // New place, we propose save if name defined
-
-            if(place.title!= nil) {
-                [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_modifyAction]];
-            } else {
-                [actions addObject:_cancelAction];
-            }
-            // Observing title changes
-            [place addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
-            [_observedProperties addObject:@"title"];
-        }
-
-    } else if( [object isKindOfClass:[City class]] ) {
-        PopupAction *searchInCityAction = [[PopupAction alloc] initWithAngle:M_PI/5 distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionSearch"] titleCode:nil size:kPMLLikeSize command:^{
-            _popupController.controller.zoomUpdateType = PMLZoomUpdateFitResults;
-            [_dataService fetchPlacesFor:object searchTerm:nil];
-        }];
-        searchInCityAction.color = UIColorFromRGB(0x344160);
-        [actions addObject:searchInCityAction];
-    }
+//    if([object isKindOfClass:[Place class]]) {
+//        Place *place = (Place*)object;
+//        if(object.key != nil) {
+//            // Preparing actions for a place
+//            if(!_currentEditor.editing) {
+//                // Computing distance from current location
+//                PopupAction *likeOrCheckinAction = _likeAction;
+//                if(_userService.currentLocation!=nil) {
+//                    CLLocation *objectLocation = [[CLLocation alloc] initWithLatitude:object.lat longitude:object.lng];
+//                    CLLocationDistance distance = [_userService.currentLocation distanceFromLocation:objectLocation];
+//                    
+//                    // If less than our checkin distance, we activate checkin action
+//                    if(distance <= kCheckinDistanceMeters) {
+//                        _checkinEnabled = YES;
+//                        likeOrCheckinAction = _checkinAction;
+//                    }
+//                }
+//                [actions addObjectsFromArray:@[likeOrCheckinAction,_modifyAction,_photoAction,_commentAction,_reportAction]];
+//            } else {
+//                [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];
+//                [actions addObject:_modifyAction];
+//            }
+//            // Updates the badge on popup actions
+//            [self updateBadge];
+//            
+//            // Loading overview data if not yet available
+//            if(!object.hasOverviewData) {
+//                [_dataService getOverviewData:object];
+//            }
+//            
+//        } else {
+//            // New place, we propose save if name defined
+//
+//            if(place.title!= nil) {
+//                [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_modifyAction]];
+//            } else {
+//                [actions addObject:_cancelAction];
+//            }
+//            // Observing title changes
+//            [place addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
+//            [_observedProperties addObject:@"title"];
+//        }
+//
+//    } else if( [object isKindOfClass:[City class]] ) {
+//        PopupAction *searchInCityAction = [[PopupAction alloc] initWithAngle:M_PI/5 distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionSearch"] titleCode:nil size:kPMLLikeSize command:^{
+//            _popupController.controller.zoomUpdateType = PMLZoomUpdateFitResults;
+//            [_dataService fetchPlacesFor:object searchTerm:nil];
+//        }];
+//        searchInCityAction.color = UIColorFromRGB(0x344160);
+//        [actions addObject:searchInCityAction];
+//    }
     return actions;
 }
 - (void)updateBadge {
@@ -385,6 +401,7 @@
 #pragma mark - ActionSheet Delegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(_reportActionSheet == actionSheet) {
+
         switch(buttonIndex) {
             case kPMLActionReportClosed:
                 [_dataService sendReportFor:_currentObject reportType:PMLReportTypeClosed];
@@ -404,6 +421,7 @@
         }
         _reportActionSheet = nil;
     } else if(_editActionSheet == actionSheet) {
+        
         switch(buttonIndex) {
             case kPMLActionEditName:
                 [self editName];
@@ -647,13 +665,16 @@
 }
 
 #pragma mark - NavBar management
-- (void)installNavBarEdit {
-    UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeEdit selector:@selector(navbarEditTapped:)];
-    _navbarEdit = YES;
-    if(_menuManagerController == nil) {
-        _menuManagerController = _popupController.controller.parentMenuController;
+- (void)installNavBarEdit:(PMLMenuManagerController *)menuManager {
+    _menuManagerController = menuManager;
+    // Info provider informs us whether edit is supported or not by providing the actual edit implementation
+    if([_infoProvider respondsToSelector:@selector(editActionType)]) {
+        UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarEditTapped:)];
+        _navbarEdit = YES;
+        menuManager.navigationItem.rightBarButtonItem = barItem;
+    } else {
+        menuManager.navigationItem.rightBarButtonItem = nil;
     }
-    _menuManagerController.navigationItem.rightBarButtonItem = barItem;
 }
 -(void) installNavBarCommitCancel {
     UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarCommitTapped:)];
@@ -664,7 +685,8 @@
 -(void)uninstallNavBarCommitCancel {
     if(_navbarEdit) {
         _menuManagerController.navigationItem.leftBarButtonItem = _navbarLeftItem;
-        [self installNavBarEdit];
+        _menuManagerController.navigationItem.rightBarButtonItem = nil;
+//        [self installNavBarEdit:_menuManagerController];
     }
 }
 -(UIBarButtonItem*)barButtonItemFromAction:(PMLActionType)actionType selector:(SEL)selector {
@@ -679,8 +701,9 @@
     UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     return barItem;
 }
-- (void)uninstallNavBarEdit {
-    UINavigationItem *navItem = _menuManagerController.navigationItem;
+- (void)uninstallNavBarEdit:(PMLMenuManagerController *)menuManager {
+    _menuManagerController = menuManager;
+    UINavigationItem *navItem = menuManager.navigationItem;
     navItem.rightBarButtonItem = nil;
     navItem.leftBarButtonItem = _navbarLeftItem;
     _navbarEdit = NO;

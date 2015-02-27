@@ -10,6 +10,9 @@
 #import "MenuAction.h"
 #import "DataService.h"
 #import "PMLMainNavBarView.h"
+#import "PMLPopupActionManager.h"
+
+#define kPMLSnippetTopOffset 0
 
 @class PMLDataManager;
 
@@ -61,10 +64,12 @@
  * could be informed of its presentation state change.
  */
 @protocol PMLSnippetDelegate <NSObject>
+-(PMLPopupActionManager*)actionManager;
 @optional
--(void)snippetOpened;
--(void)snippetMinimized;
--(void)snippetDismissed;
+-(void)menuManager:(PMLMenuManagerController*)menuManager snippetOpened:(BOOL)animated;
+-(void)menuManager:(PMLMenuManagerController*)menuManager snippetMinimized:(BOOL)animated;
+-(void)menuManager:(PMLMenuManagerController*)menuManager snippetDismissed:(BOOL)animated;
+
 
 @end
 
@@ -139,6 +144,8 @@ typedef void(^TextInputCallback)(NSString *text);
  * Opens the snippet which is currently being presented. Does nothing if no snippet is active
  */
 -(void)openCurrentSnippet;
+-(void)openCurrentSnippetForEdition;
+-(void)minimizeCurrentSnippet;
 
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state;
 /**
@@ -147,8 +154,9 @@ typedef void(^TextInputCallback)(NSString *text);
  *          (like a user input dialog)
  */
 -(BOOL)dismissControllerSnippet;
-- (void)installNavigationFor:(UIViewController*)controller;
-- (void)uninstallNavigation;
+-(void)refreshNavigationFor:(NSObject*)object;
+//- (void)installNavigationFor:(UIViewController*)controller;
+//- (void)uninstallNavigation;
 /**
  * Displays the given warning message
  * @param message the message to display

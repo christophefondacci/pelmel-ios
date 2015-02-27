@@ -9,6 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "CALImage.h"
 
+
+typedef enum {
+    PMLActionTypeEdit , // Generic edition
+    PMLActionTypeLike,
+    PMLActionTypeAddPhoto,
+    PMLActionTypeCheckin,
+    PMLActionTypeComment,
+    PMLActionTypeConfirm,
+    PMLActionTypeCancel,
+    PMLActionTypeReport,
+    PMLActionTypeEditPlace,
+    PMLActionTypeEditEvent,
+} PMLActionType;
+
 /**
  * A popup action block is the execution block passed to the popup
  * action and which will be executed when the action is triggerred.

@@ -31,6 +31,11 @@
 -(instancetype) initWithRootViewController: (UIViewController*)rootViewController;
 
 /**
+ * The current UIViewController being displayed
+ */
+- (UIViewController*)topViewController;
+
+/**
  * Pushes a new view controller on the stack.
  */
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;

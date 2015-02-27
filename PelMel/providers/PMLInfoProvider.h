@@ -12,6 +12,7 @@
 #import "Special.h"
 #import "Activity.h"
 #import "Likeable.h"
+#import "PopupAction.h"
 
 @class PMLMenuManagerController;
 typedef enum {
@@ -26,6 +27,9 @@ typedef enum {
 -(CALObject*) item;
 // Title of the element
 -(NSString*) title;
+// Subtitle of the element
+-(NSString*) subtitle;
+-(UIImage*) subtitleIcon;
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon;
 // The snippet image
@@ -55,6 +59,8 @@ typedef enum {
 - (NSString*)city;
 
 @optional
+// Whether or not the data could be edited, defaults to false if not implemented
+- (PMLActionType)editActionType;
 - (NSString*)commentsCounterTitle;
 - (NSString*)checkinsCounterTitle;
 - (NSString*)likesCounterTitle;

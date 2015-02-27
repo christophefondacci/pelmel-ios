@@ -48,9 +48,18 @@
 -(NSString*) title {
     return _event.name;
 }
+- (NSString *)subtitle {
+    return [_conversionService eventDateLabel:_event isStart:YES];
+}
+- (UIImage *)subtitleIcon {
+    return [UIImage imageNamed:@"snpIconTicket"];
+}
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
     return [UIImage imageNamed:@"snpIconEvent"];
+}
+- (PMLActionType)editActionType {
+    return PMLActionTypeEditEvent;
 }
 // The snippet image
 -(CALImage*) snippetImage {

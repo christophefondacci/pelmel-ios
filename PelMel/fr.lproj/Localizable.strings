@@ -235,7 +235,8 @@
 "snippet.activity"="Utilisateurs à proximité";
 "snippet.edit.descPlaceholder"="Entrez une description";
 "snippet.edit.titlePlaceholder"="Entrez un nom";
-"snippet.event.inUsers"="%@ mecs en sont";
+"snippet.event.count"="%d Evènements à venir";
+"snippet.event.inUsers"="%d mecs en sont";
 "snippet.header.topPlaces"="Lieux populaires";
 "snippet.header.activities"="Activité récente";
 "snippet.likes"="%d aiment";

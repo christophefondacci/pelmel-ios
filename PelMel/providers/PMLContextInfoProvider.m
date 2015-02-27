@@ -49,6 +49,16 @@
     return title;
 
 }
+- (NSString *)subtitle {
+    NSString *subtitle = nil;
+    if(_modelHolder.events.count>0) {
+         subtitle = [NSString stringWithFormat:NSLocalizedString(@"snippet.event.count","# Upcoming events"),_modelHolder.events.count ];
+    }
+    return subtitle;
+}
+- (UIImage *)subtitleIcon {
+    return [UIImage imageNamed:@"snpIconTicket"];
+}
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
     return [UIImage imageNamed:@"snpIconBar"];

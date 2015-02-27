@@ -86,10 +86,25 @@
 -(NSString*) title {
     return _place.title;
 }
+- (NSString *)subtitle {
+    NSArray *addrComp = [_place.address componentsSeparatedByString:@","];
+    int index = 0;
+    for(int i = 0 ; i < MIN(2,addrComp.count) ; i++) {
+        index = index + ((NSString*)addrComp[i]).length + (i>0 ? 1 : 0);
+    }
+    return [_place.address substringToIndex:index];
+}
+- (UIImage *)subtitleIcon {
+    return [UIImage imageNamed:@"snpIconMarker"];
+}
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
     PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
     return placeType.icon;
+}
+
+- (PMLActionType)editActionType {
+    return PMLActionTypeEditPlace;
 }
 - (NSString *)itemTypeLabel {
     PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];

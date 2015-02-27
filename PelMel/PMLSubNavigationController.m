@@ -97,6 +97,12 @@
     
     // Transitioning
     toViewController.subNavigationController =self;
+//    if(!isBack) {
+//        [self.parentMenuController installNavigationFor:toViewController];
+//    } else {
+//        [self.parentMenuController uninstallNavigation];
+//    }
+    [self.parentMenuController refreshNavigationFor:toViewController];
     [self transitionFromViewController:fromViewController toViewController:toViewController duration:0.5 options:UIViewAnimationOptionCurveEaseInOut /*| UIViewAnimationOptionTransitionCrossDissolve*/ animations:^{
         
         CGRect previousFrame = CGRectOffset(currentFrame, isBack ?currentFrame.size.width:-currentFrame.size.width, 0);
@@ -110,12 +116,7 @@
         
         // Subnavigation specifics
         fromViewController.subNavigationController = nil;
-        if(!isBack) {
-            [self.parentMenuController installNavigationFor:toViewController];
-        } else {
-            [self.parentMenuController uninstallNavigation];
 
-        }
     }];
 }
 

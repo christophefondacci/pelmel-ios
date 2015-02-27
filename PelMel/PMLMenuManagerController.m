@@ -25,7 +25,7 @@
 #import "PMLFakeViewController.h"
 #import "UIViewController+BackButtonHandler.h"
 
-#define kSnippetHeight 100
+#define kSnippetHeight 110
 
 @interface PMLMenuManagerController ()
 
@@ -322,65 +322,114 @@ static void *MyParentMenuControllerKey;
         [_animator addBehavior:menuBehavior];
     }
 }
+- (void)minimizeCurrentSnippet {
+    if(_currentSnippetViewController != nil) {
+        [self setSnippetFullyOpened:NO];
+        NSInteger top = [self offsetForMinimizedSnippet];
+        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:NO boundary:top];
+        [_animator removeAllBehaviors];
+        [_animator addBehavior:menuBehavior];
+    }
+}
 - (void)setSnippetFullyOpened:(BOOL)snippetFullyOpened {
-    _snippetFullyOpened = snippetFullyOpened;
-    if(_snippetFullyOpened) {
-        NSArray *childControllers = _currentSnippetViewController.childViewControllers;
-        [self installNavigationFor:[childControllers objectAtIndex:childControllers.count-1]];
-        if([_snippetDelegate respondsToSelector:@selector(snippetOpened)]) {
-            [_snippetDelegate snippetOpened];
-        }
-    } else {
-        [self uninstallNavigation];
-        if([_snippetDelegate respondsToSelector:@selector(snippetMinimized)]) {
-            [_snippetDelegate snippetMinimized];
-        }
-    }
-}
-- (void)installNavigationFor:(UIViewController*)controller {
+    // We are opening it from a non-opened state
+    if(!_snippetFullyOpened && snippetFullyOpened) {
+        // So we fade out the nav view
+        _snippetFullyOpened = snippetFullyOpened;
+        [UIView animateWithDuration:0.2 animations:^{
+            self.title = _currentSnippetViewController.title;
+            self.navigationItem.titleView.alpha=0;
+        } completion:^(BOOL finished) {
+            [self refreshNavigationFor:_currentSnippetViewController];
+        }];
 
-    [UIView animateWithDuration:0.2 animations:^{
-        self.title = controller.title;
-        self.navigationItem.titleView.alpha=0;
-    } completion:^(BOOL finished) {
-        self.navigationItem.titleView=nil;
-        [((MapViewController*)self.rootViewController).popupActionManager installNavBarEdit];
-        if(![self hasFakeNavigation] && _snippetFullyOpened && ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count>1) {
-            PMLFakeViewController *fakeViewController = [[PMLFakeViewController alloc] init];
-            [self.navigationController setViewControllers:@[fakeViewController,self] animated:NO];
-        }
-    }];
-    
-}
--(void)uninstallNavigation {
-    if([self hasFakeNavigation] && (!_snippetFullyOpened || ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count<=1)) {
-        [self.navigationController setViewControllers:@[self] animated:NO];
-    }
-    if(!_snippetFullyOpened) {
-        _mainNavBarView.alpha=0;
-        self.navigationItem.rightBarButtonItem = nil;
-        self.navigationItem.leftBarButtonItem = nil;
-        [((MapViewController*)self.rootViewController).popupActionManager uninstallNavBarEdit];
+    } else if( _snippetFullyOpened && !snippetFullyOpened) {
+        // We are minimizing the snippet from an opened state
+        _snippetFullyOpened = snippetFullyOpened;
+        [self refreshNavigationFor:_currentSnippetViewController];
+        self.navigationItem.leftBarButtonItem=nil;
+        self.navigationItem.rightBarButtonItem=nil;
         self.navigationItem.titleView=_mainNavBarView;
         self.navigationItem.titleView.alpha=0;
         [UIView animateWithDuration:0.2 animations:^{
             self.navigationItem.titleView.alpha=1;
+        } completion:^(BOOL finished) {
+            self.navigationItem.leftBarButtonItem=nil;
+            self.navigationItem.rightBarButtonItem=nil;
         }];
     } else {
-        NSArray *ctrls =_currentSnippetViewController.childViewControllers;
-        self.title = ((UIViewController*)[ctrls objectAtIndex:ctrls.count-1]).title;
+        [self refreshNavigationFor:_currentSnippetViewController];
     }
 }
+-(void)refreshNavigationFor:(NSObject*)object {
+    id<PMLSnippetDelegate> delegate = nil;
+    UIViewController *controller;
+    // Switching to topController if we have a subnavigation controller or navigation controller
+    if([object isKindOfClass:[PMLSubNavigationController class]]) {
+        controller = ((PMLSubNavigationController*)object).topViewController;
+    } else if([object isKindOfClass:[UINavigationController class]]) {
+        controller = ((UINavigationController*)object).topViewController;
+    } else if([object isKindOfClass:[UIViewController class]]) {
+        controller = (UIViewController*)object;
+    }
+    
+    // Extracting delegate
+    if([controller conformsToProtocol:@protocol(PMLSnippetDelegate)]) {
+        delegate = (id<PMLSnippetDelegate>)controller;
+    } else if([object conformsToProtocol:@protocol(PMLSnippetDelegate)]) {
+        delegate = (id<PMLSnippetDelegate>)object;
+    }
+    
+    
+    if(_snippetFullyOpened) {
+        self.title = controller.title;
+        self.navigationItem.titleView=nil;
+        if([controller conformsToProtocol:@protocol(PMLSnippetDelegate) ]) {
+            [delegate.actionManager installNavBarEdit:self];
+        }
+        if(![self hasFakeNavigation] && _snippetFullyOpened && ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count>1) {
+            PMLFakeViewController *fakeViewController = [[PMLFakeViewController alloc] init];
+            [self.navigationController setViewControllers:@[fakeViewController,self] animated:NO];
+        }
+        // Notifying delegate
+        [delegate menuManager:self snippetOpened:NO];
+    } else {
+        // Removing any fake "back" controller
+        if([self hasFakeNavigation] && (!_snippetFullyOpened || ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count<=1)) {
+            [self.navigationController setViewControllers:@[self] animated:NO];
+        }
+        
+        // Removing any action
+        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.leftBarButtonItem = nil;
+        
+        // Restoring title view
+        _mainNavBarView.alpha=1;
+        [delegate.actionManager uninstallNavBarEdit:self];
+        self.navigationItem.titleView=_mainNavBarView;
+        [delegate menuManager:self snippetMinimized:NO];
+    }
+}
+
 -(BOOL)hasFakeNavigation {
     return [[self.navigationController.childViewControllers objectAtIndex:0] isKindOfClass:[PMLFakeViewController
                                                                                             class]];
 }
 - (BOOL)navigationShouldPopOnBackButton {
     if([self hasFakeNavigation]) {
-        [(PMLSubNavigationController*)_currentSnippetViewController popViewControllerAnimated:YES];
+        // Popping previous controller from sub navigation
+        UIViewController *poppedController = [(PMLSubNavigationController*)_currentSnippetViewController popViewControllerAnimated:YES];
+        
+        // Adjusting edition controls
+        if([poppedController conformsToProtocol:@protocol(PMLSnippetDelegate) ]) {
+            [((id<PMLSnippetDelegate>)poppedController).actionManager installNavBarEdit:self];
+        }
+        
+        // Removing back if last controller popped
         if(((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count==1) {
             [self.navigationController setViewControllers:@[self] animated:NO];
         }
+        
         return NO;
     }
     return YES;
@@ -577,8 +626,8 @@ static void *MyParentMenuControllerKey;
         } else {
             // Otherwise we close it back to snippet
             [self setSnippetFullyOpened:NO];
-            CGRect myFrame = self.view.frame;
-            offset = myFrame.size.height + _bottomView.frame.size.height - kSnippetHeight;
+            
+            offset = [self offsetForMinimizedSnippet];
         }
     
         // Building the 'open' (or 'close') behavior
@@ -594,9 +643,13 @@ static void *MyParentMenuControllerKey;
     }
 }
 
+-(NSInteger)offsetForMinimizedSnippet {
+    CGRect myFrame = self.view.frame;
+    return myFrame.size.height + _bottomView.frame.size.height - kSnippetHeight;
+}
 -(NSInteger)offsetForOpenedSnippet {
 //    CGRect bounds = self.view.bounds;
-    NSInteger top = -self.navigationController.navigationBar.frame.size.height;
+    NSInteger top = kPMLSnippetTopOffset;
 //    if(bounds.size.height> 600) {
 //        top = MAX(bounds.size.height-600,0);
 //    }
@@ -743,18 +796,23 @@ static void *MyParentMenuControllerKey;
     
     CGRect snippetBounds = _bottomView.frame;
     if(snippetBounds.origin.y>_kbSize.height) {
-        // Only if snippet is out
-//        if(snippetBounds.origin.y<viewBounds.size.height) {
+        [_animator removeAllBehaviors];
+        // Then we move it above keyboard
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:duration.doubleValue];
+        [UIView setAnimationCurve:curve.intValue];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        // Computing proper Y
+        CGFloat snippetTop ;
+        if( _snippetFullyOpened ) {
+            snippetTop = [self offsetForOpenedSnippet]+_kbSize.height;
+        } else {
+            snippetTop = [self offsetForMinimizedSnippet];
+        }
+        _bottomView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.origin.y-_kbSize.height, snippetBounds.size.width, snippetBounds.size.height);
         
-            // Then we move it above keyboard
-            [UIView beginAnimations:nil context:NULL];
-            [UIView setAnimationDuration:duration.doubleValue];
-            [UIView setAnimationCurve:curve.intValue];
-            [UIView setAnimationBeginsFromCurrentState:YES];
-            _bottomView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.origin.y-_kbSize.height, snippetBounds.size.width, snippetBounds.size.height);
-            
-            [UIView commitAnimations];
-//        }
+        [UIView commitAnimations];
+        
     }
 }
 -(void)keyboardWillBeHidden:(NSNotification*)aNotification
@@ -842,15 +900,16 @@ static void *MyParentMenuControllerKey;
 #pragma mark - Snippet delegate
 - (void)setSnippetDelegate:(NSObject<PMLSnippetDelegate> *)snippetDelegate {
     _snippetDelegate = snippetDelegate;
-    if(_snippetFullyOpened) {
-        if([_snippetDelegate respondsToSelector:@selector(snippetOpened)]) {
-            [_snippetDelegate snippetOpened];
-        }
-    } else {
-        if([_snippetDelegate respondsToSelector:@selector(snippetMinimized)]) {
-            [_snippetDelegate snippetMinimized];
-        }
-    }
+    [self refreshNavigationFor:snippetDelegate];
+//    if(_snippetFullyOpened) {
+//        if([_snippetDelegate respondsToSelector:@selector(menuManager:snippetOpened:)]) {
+//            [_snippetDelegate menuManager:self snippetOpened:NO];
+//        }
+//    } else {
+//        if([_snippetDelegate respondsToSelector:@selector(menuManager:snippetMinimized:)]) {
+//            [_snippetDelegate menuManager:self snippetMinimized:NO];
+//        }
+//    }
 
 }
 //- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

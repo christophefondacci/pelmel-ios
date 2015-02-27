@@ -14,6 +14,9 @@
 #define kPMLActionSheetCancel 0
 #define kPMLActionSheetSubmit 1
 
+// A static map of all current editors
+static NSMutableDictionary *_editorsKeyMap;
+
 @implementation PMLPopupEditor {
     NSMutableArray *_confirmActions;
     NSMutableArray *_cancelActions;
@@ -24,6 +27,12 @@
     BOOL _mapEdition;
 }
 
++ (void)initialize {
+    _editorsKeyMap = [[NSMutableDictionary alloc] init];
+}
++(void)purgeEditors {
+    _editorsKeyMap = [[NSMutableDictionary alloc] init];
+}
 - (instancetype)init
 {
     self = [super init];
@@ -34,11 +43,17 @@
     }
     return self;
 }
-+ (instancetype)editorFor:(CALObject *)editedObject annotatedBy:(MapAnnotation *)annotation on:(MapViewController *)mapViewController {
-    PMLPopupEditor *editor = [[PMLPopupEditor alloc] init];
++ (instancetype)editorFor:(CALObject *)editedObject on:(MapViewController *)mapViewController {
+    PMLPopupEditor *editor = [_editorsKeyMap objectForKey:editedObject.key];
+    if(editor == nil ) {
+        editor = [[PMLPopupEditor alloc] init];
+    }
     editor.editedObject = editedObject;
-    editor.mapAnnotation = annotation;
+//    editor.mapAnnotation = annotation;
     editor.mapViewController = mapViewController;
+    if(editedObject.key != nil) {
+        [_editorsKeyMap setObject:editor forKey:editedObject.key];
+    }
     return editor;
 }
 
@@ -80,6 +95,9 @@
     [_cancelActions removeAllObjects];
     [_confirmActions removeAllObjects];
 
+    // Purging editor
+    [_editorsKeyMap removeObjectForKey:self.editedObject.key];
+    
 //    if(!_mapEdition) {
 //        [self.mapViewController.popupController refreshActions];
 //    }
