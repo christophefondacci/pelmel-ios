@@ -518,17 +518,25 @@ static void *MyParentMenuControllerKey;
 }
 - (void)dismissControllerMenu {
     if(_menuView != nil) {
-        [self removeConstraints:_menuView];
-        UIPopBehavior *popBehavior = [[UIPopBehavior alloc] initWithViews:@[_menuView] pop:NO delay:NO completion:^{
+//        [self removeConstraints:_menuView];
+//        UIPopBehavior *popBehavior = [[UIPopBehavior alloc] initWithViews:@[_menuView] pop:NO delay:NO completion:^{
+//            [_menuView removeFromSuperview];
+//            _menuView = nil;
+//            _menuViewController = nil;
+//            _menuViewController.parentMenuController=nil;
+//        }];
+//        popBehavior.elasticity=0.3;
+        UIMenuOpenBehavior *behavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_menuView] open:NO boundary:-_menuView.bounds.size.width horizontal:YES];
+        [behavior setIntensity:3];
+        [behavior setCompletion:^{
             [_menuView removeFromSuperview];
-            _menuView = nil;
-            _menuViewController = nil;
-            _menuViewController.parentMenuController=nil;
+                        _menuView = nil;
+                        _menuViewController = nil;
+                        _menuViewController.parentMenuController=nil;
         }];
-        popBehavior.elasticity=0.3;
-
+        
         [_menuAnimator removeAllBehaviors];
-        [_menuAnimator addBehavior:popBehavior];
+        [_menuAnimator addBehavior:behavior];
     }
 }
 #pragma mark - Warning label
@@ -846,15 +854,7 @@ static void *MyParentMenuControllerKey;
 
     // Clearing any menu
     if(_menuViewController !=nil) {
-        if(_menuView != nil) {
-            UIMenuOpenBehavior *popBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_menuView] open:NO boundary:-self.view.frame.size.width horizontal:YES];
-            [popBehavior setIntensity:3.0];
-            
-            [_menuAnimator removeAllBehaviors];
-            [_menuAnimator addBehavior:popBehavior];
-        }
-
-        _menuViewController = nil;
+        [self dismissControllerMenu];
     } else {
         // Just in case we have residual animation artefacts
         [_menuView removeFromSuperview];

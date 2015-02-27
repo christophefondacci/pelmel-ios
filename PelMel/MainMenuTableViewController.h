@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainMenuTableViewController : UITableViewController
+@interface MainMenuTableViewController : UITableViewController <UIGestureRecognizerDelegate>
 
 @end
