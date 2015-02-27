@@ -236,4 +236,32 @@
 - (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
     [_likeableDelegate likeTapped:likedObject callback:callback];
 }
+
+#pragma mark - Actions
+- (BOOL)canAddPhoto {
+    return NO;
+}
+- (NSString *)actionSubtitleFor:(PMLActionType)actionType {
+    switch (actionType) {
+        case PMLActionTypeLike:
+            if(_user.isLiked) {
+                return NSLocalizedString(@"action.unlike",@"Unlike");
+            } else {
+                return NSLocalizedString(@"action.like",@"Like");
+            }
+            break;
+        case PMLActionTypeComment:
+            return NSLocalizedString(@"action.chat",@"Chat");
+        default:
+            break;
+    }
+    return nil;
+}
+- (PMLActionType)secondaryActionType {
+    if(![_user.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
+        return PMLActionTypeComment;
+    } else {
+        return -1;
+    }
+}
 @end

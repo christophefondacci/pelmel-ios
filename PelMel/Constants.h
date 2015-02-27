@@ -40,6 +40,7 @@
 #define kPMLKeyLastLatitude @"lastLatitude"
 #define kPMLKeyLastLongitude @"lastLongitude"
 
+#define kPMLCheckinDistanceMeters 10000
 
 #define MAP_HACK_TAG 24681357
 

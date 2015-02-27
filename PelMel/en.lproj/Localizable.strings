@@ -6,8 +6,14 @@
   Copyright (c) 2012 Christophe Fondacci. All rights reserved.
 */
 "account.button"="Account";
+"action.attend"="Attend";
+"action.attend.feedbackMessage"="You will officially attend this event!";
+"action.attend.feedbackTitle"="Here you go!";
+"action.attendCancel.feedbackMessage"="We removed you from the list of participants of this event.";
+"action.attendCancel.feedbackTitle"="Sorry to hear that";
 "action.modify"="Modify";
-"action.checkin"="Check In";
+"action.chat"="Chat";
+"action.checkin"="Check in";
 "action.checkin.feedbackTitle"="You checked in!";
 "action.checkin.feedbackMessage"="You checked in %@, other users will know you are here! You will soon be able to tell us what is going on and share it with your PelMel network.";
 "action.edit.title"="Choose an item to edit";

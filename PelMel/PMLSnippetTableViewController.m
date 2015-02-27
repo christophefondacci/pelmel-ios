@@ -120,7 +120,7 @@
 
 
 @interface PMLSnippetTableViewController ()
-@property (nonatomic, strong) SpringTransitioningDelegate *transitioningDelegate;
+
 @end
 
 @implementation PMLSnippetTableViewController {
@@ -266,11 +266,11 @@
             case kPMLSectionSnippet:
                 return kPMLSnippetRows;
             case kPMLSectionGallery:
-                if(_snippetItem.mainImage!=nil) {
+//                if(_snippetItem.mainImage!=nil) {
                     return 1;
-                } else {
-                    return 0;
-                }
+//                } else {
+//                    return 0;
+//                }
                 break;
             case kPMLSectionCounters:
                 switch (_thumbPreviewMode) {
@@ -841,19 +841,31 @@
     }
     
     // Wiring like action
-    if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
+    PMLActionType primaryAction = PMLActionTypeNoAction;
+    NSString *primaryActionTitle = nil;
+    if([_infoProvider respondsToSelector:@selector(primaryActionType)]) {
+        primaryAction = [_infoProvider primaryActionType];
+        primaryActionTitle = [_infoProvider actionSubtitleFor:primaryAction];
+    } else {
+        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
+            primaryAction = PMLActionTypeLike;
+            if(_snippetItem.isLiked) {
+                primaryActionTitle = NSLocalizedString(@"action.unlike",@"Unlike");
+            } else {
+                primaryActionTitle = NSLocalizedString(@"action.like",@"Like");
+            }
+        }
+    }
+    if(primaryAction!=PMLActionTypeNoAction) {
         cell.likeButton.hidden=NO;
         cell.likeButtonSubtitle.hidden=NO;
-        PopupAction *action = [_actionManager actionForType:PMLActionTypeLike];
-        cell.likeButton.tag=PMLActionTypeLike;
+        PopupAction *action = [_actionManager actionForType:primaryAction];
+        cell.likeButton.tag=primaryAction;
+        [cell.likeButton setImage:action.icon forState:UIControlStateNormal];
         cell.likeButton.layer.borderColor = [action.color CGColor];
         [cell.likeButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        cell.likeButtonSubtitle.text = primaryActionTitle;
         
-        if(_snippetItem.isLiked) {
-            cell.likeButtonSubtitle.text=NSLocalizedString(@"action.unlike",@"Unlike");
-        } else {
-            cell.likeButtonSubtitle.text=NSLocalizedString(@"action.like",@"Like");
-        }
     } else {
         cell.likeButton.hidden=YES;
         cell.likeButtonSubtitle.hidden=YES;
@@ -1007,11 +1019,42 @@
     cell.galleryView.delegate=self;
     cell.galleryView.dataSource=self;
     
-    // Wiring add photo action
-    PopupAction *action = [_actionManager actionForType:PMLActionTypeAddPhoto];
-    cell.addPhotoButton.tag=PMLActionTypeAddPhoto;
-    cell.addPhotoButton.layer.borderColor = [action.color CGColor];
-    [cell.addPhotoButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    // Wiring add photo action (default is YES if not implemented)
+    BOOL canAddPhoto = YES;
+    if([_infoProvider respondsToSelector:@selector(canAddPhoto)]) {
+        canAddPhoto = [_infoProvider canAddPhoto];
+    }
+    if(canAddPhoto) {
+        PopupAction *action = [_actionManager actionForType:PMLActionTypeAddPhoto];
+        cell.addPhotoButton.hidden=NO;
+        cell.addPhotoButton.tag=PMLActionTypeAddPhoto;
+        cell.addPhotoButton.layer.borderColor = [action.color CGColor];
+        [cell.addPhotoButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        cell.addPhotoButton.hidden=YES;
+    }
+    
+    // Wiring secondary action
+    if([_infoProvider respondsToSelector:@selector(secondaryActionType)]) {
+        PMLActionType actionType = [_infoProvider secondaryActionType];
+        PopupAction *action = [_actionManager actionForType:actionType];
+        if(action != nil) {
+            cell.secondaryButton.hidden=NO;
+            cell.secondaryButtonTitle.hidden=NO;
+            
+            cell.secondaryButtonTitle.text = [_infoProvider actionSubtitleFor:actionType];
+            [cell.secondaryButton setImage:action.icon forState:UIControlStateNormal];
+            cell.secondaryButton.layer.borderColor = [action.color CGColor];
+            cell.secondaryButton.tag = actionType;
+            [cell.secondaryButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            cell.secondaryButton.hidden=YES;
+            cell.secondaryButtonTitle.hidden=YES;
+        }
+    } else {
+        cell.secondaryButton.hidden=YES;
+        cell.secondaryButtonTitle.hidden=YES;
+    }
 }
 -(void)actionButtonTapped:(UIButton*)source {
     PopupAction *action = [_actionManager actionForType:source.tag];
@@ -1354,14 +1397,12 @@
     }
 }
 -(void)addEventTapped {
-        PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
-        eventController.event = [[Event alloc] initWithPlace:(Place*)self.snippetItem];
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
-        
-        // Preparing transition
-        self.transitioningDelegate = [[SpringTransitioningDelegate alloc] initWithDelegate:self];
-        self.transitioningDelegate.transitioningDirection = TransitioningDirectionDown;
-        [self.transitioningDelegate presentViewController:navController];
+    PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
+    eventController.event = [[Event alloc] initWithPlace:(Place*)self.snippetItem];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
+    
+    // Preparing transition
+    [self.parentMenuController presentModal:navController];
 }
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {

@@ -196,11 +196,12 @@
 #pragma mark - Row configuration
 -(void)configureNameCell:(PMLTextFieldTableViewCell*)cell {
     cell.textField.attributedPlaceholder =
-    [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"events.new.placeholder",@"Event Name") attributes: @{NSForegroundColorAttributeName :[UIColor whiteColor]}];
+    [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"events.new.placeholder",@"Event Name") attributes: @{NSForegroundColorAttributeName :[UIColor colorWithRed:1 green:1 blue:1 alpha:0.2]}];
     cell.textField.delegate=self;
     [cell.textField addTarget:self
                   action:@selector(textChanged:)
         forControlEvents:UIControlEventEditingChanged];
+    cell.textField.text = _event.name;
 }
 -(void)configureDateCell:(PMLDetailTableViewCell*)detailCell forIndex:(NSInteger)row {
     if(row == 0) {

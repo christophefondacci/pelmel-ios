@@ -12,6 +12,8 @@
 #import "UIPopBehavior.h"
 #import "UITouchBehavior.h"
 #import "MainMenuTableViewController.h"
+#import "PMLSnippetTableViewController.h"
+#import "TogaytherService.h"
 #import "MKNumberBadgeView.h"
 
 #define kPMLLoaderSize 55
@@ -92,7 +94,11 @@
 //        // Registering it
 //        [[TogaytherService getMessageService] setMessageCountBadgeView:badgeView];
 
-        _pelmelLogo = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"logoMob"] pctWidth:0 pctHeight:1 action:nil];
+        _pelmelLogo = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"logoMob"] pctWidth:0 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+            PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+            
+            [menuManagerController presentControllerSnippet:snippetController];
+        }];
         _pelmelLogo.bottomMargin=5;
         _pelmelLogo.leftMargin = 5;
     }

@@ -6,7 +6,13 @@
   Copyright (c) 2012 Christophe Fondacci. All rights reserved.
 */
 "account.button"="Compte";
+"action.attend"="J'y vais";
+"action.attend.feedbackMessage"="Vous allez officiellement aller à cet évènement !";
+"action.attend.feedbackTitle"="C'est parti !";
+"action.attendCancel.feedbackMessage"="Nous vous avons supprimer de la liste des participants à cet évènement.";
+"action.attendCancel.feedbackTitle"="C'est dommage !";
 "action.modify"="Modifier";
+"action.chat"="Chatter";
 "action.checkin"="Check In";
 "action.checkin.feedbackTitle"="Vous avez checkiné!";
 "action.checkin.feedbackMessage"="Vous avez partagé votre présence à %@, les autres utilisateurs peuvent savoir que vous êtes ici! Vous pourrez bientôt nous dire ce qu'il se passe et partager l'information avec votre réseau PelMel.";

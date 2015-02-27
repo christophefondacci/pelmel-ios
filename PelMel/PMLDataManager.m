@@ -228,11 +228,21 @@
     NSString *title;
     NSString *message;
     if(likedObject.isLiked) {
-        title = NSLocalizedString(@"action.like.feedbackTitle", @"action.like.feedbackTitle");
-        message = NSLocalizedString(@"action.like.feedbackMessage", @"action.like.feedbackMessage");
+        if([[likedObject.key substringToIndex:4] isEqualToString:@"EVNT"]) {
+            title = NSLocalizedString(@"action.attend.feedbackTitle", @"action.attend.feedbackTitle");
+            message = NSLocalizedString(@"action.attend.feedbackMessage", @"action.attend.feedbackMessage");
+        } else {
+            title = NSLocalizedString(@"action.like.feedbackTitle", @"action.like.feedbackTitle");
+            message = NSLocalizedString(@"action.like.feedbackMessage", @"action.like.feedbackMessage");
+        }
     } else {
-        title = NSLocalizedString(@"action.unlike.feedbackTitle", @"action.unlike.feedbackTitle");
-        message = NSLocalizedString(@"action.unlike.feedbackMessage", @"action.unlike.feedbackMessage");
+        if([[likedObject.key substringToIndex:4] isEqualToString:@"EVNT"]) {
+            title = NSLocalizedString(@"action.attendCancel.feedbackTitle", @"action.attendCancel.feedbackTitle");
+            message = NSLocalizedString(@"action.attendCancel.feedbackMessage", @"action.attendCancel.feedbackMessage");
+        } else {
+            title = NSLocalizedString(@"action.unlike.feedbackTitle", @"action.unlike.feedbackTitle");
+            message = NSLocalizedString(@"action.unlike.feedbackMessage", @"action.unlike.feedbackMessage");
+        }
     }
     
     // Displaying the alert

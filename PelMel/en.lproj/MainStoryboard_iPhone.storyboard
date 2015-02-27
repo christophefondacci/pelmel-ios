@@ -59,6 +59,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -2741,7 +2742,7 @@
                                     <outlet property="titleTextField" destination="oU2-1c-ViE" id="fNh-jY-dD3"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="gallery" id="kPa-mK-keB" customClass="PMLGalleryTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="gallery" rowHeight="200" id="kPa-mK-keB" customClass="PMLGalleryTableViewCell">
                                 <rect key="frame" x="0.0" y="122" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kPa-mK-keB" id="tHk-nU-W36">
@@ -2749,7 +2750,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0lj-4h-2sZ" userLabel="galleryView" customClass="KIImagePager">
-                                            <rect key="frame" x="48" y="4" width="224" height="36"/>
+                                            <rect key="frame" x="48" y="4" width="224" height="192"/>
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
@@ -2764,7 +2765,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="atE-0a-bcp">
-                                            <rect key="frame" x="278" y="4" width="36" height="36"/>
+                                            <rect key="frame" x="278" y="160" width="36" height="36"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="36" id="cA8-bW-M8o"/>
                                                 <constraint firstAttribute="height" constant="36" id="zGa-yx-0b9"/>
@@ -2782,13 +2783,46 @@
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                             </userDefinedRuntimeAttributes>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LP0-kS-ZhJ">
+                                            <rect key="frame" x="278" y="14" width="36" height="36"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="36" id="fhd-xX-8jF"/>
+                                                <constraint firstAttribute="width" constant="36" id="w3N-Mc-327"/>
+                                            </constraints>
+                                            <state key="normal" image="popActionCheckin">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="18"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                        </button>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checkin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="CEW-To-9vN">
+                                            <rect key="frame" x="278" y="50" width="36" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="yzQ-ra-aTf"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="12"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="0lj-4h-2sZ" secondAttribute="trailing" constant="48" id="2dt-SO-cab"/>
                                         <constraint firstItem="atE-0a-bcp" firstAttribute="leading" secondItem="0lj-4h-2sZ" secondAttribute="trailing" constant="6" id="6GJ-sk-ecn"/>
+                                        <constraint firstItem="CEW-To-9vN" firstAttribute="trailing" secondItem="LP0-kS-ZhJ" secondAttribute="trailing" id="Hav-cv-Ptn"/>
+                                        <constraint firstItem="0lj-4h-2sZ" firstAttribute="top" secondItem="LP0-kS-ZhJ" secondAttribute="top" constant="-10" id="Kbp-nq-5Ki"/>
+                                        <constraint firstItem="CEW-To-9vN" firstAttribute="top" secondItem="LP0-kS-ZhJ" secondAttribute="bottom" id="N85-ME-dMU"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="leading" secondItem="tHk-nU-W36" secondAttribute="leading" constant="48" id="Uvp-Mz-h2e"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="top" secondItem="tHk-nU-W36" secondAttribute="top" constant="4" id="Z5g-aB-HMf"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="bottom" secondItem="atE-0a-bcp" secondAttribute="bottom" id="a1O-lq-z2A"/>
+                                        <constraint firstItem="CEW-To-9vN" firstAttribute="leading" secondItem="LP0-kS-ZhJ" secondAttribute="leading" id="dZo-S0-Nsk"/>
+                                        <constraint firstItem="atE-0a-bcp" firstAttribute="centerX" secondItem="LP0-kS-ZhJ" secondAttribute="centerX" id="o5t-f9-W1c"/>
                                         <constraint firstAttribute="bottom" secondItem="0lj-4h-2sZ" secondAttribute="bottom" constant="4" id="t2M-gb-rke"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -2798,6 +2832,8 @@
                                     <outlet property="galleryView" destination="0lj-4h-2sZ" id="L1V-AJ-Gyk"/>
                                     <outlet property="leftConstraint" destination="Uvp-Mz-h2e" id="8Yv-iT-sSf"/>
                                     <outlet property="rightConstraint" destination="2dt-SO-cab" id="osI-Jm-vdv"/>
+                                    <outlet property="secondaryButton" destination="LP0-kS-ZhJ" id="wXF-wk-sy8"/>
+                                    <outlet property="secondaryButtonTitle" destination="CEW-To-9vN" id="u6x-Vs-nam"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="counters" rowHeight="87" id="c5j-nT-EGe" customClass="PMLCountersTableViewCell">
@@ -3574,6 +3610,7 @@
         <image name="ovvSeparatorInfo" width="62" height="23"/>
         <image name="ovvTypeBar" width="17" height="17"/>
         <image name="place-marker.png" width="284" height="77"/>
+        <image name="popActionCheckin" width="60" height="60"/>
         <image name="popActionLike" width="60" height="60"/>
         <image name="popActionPhoto" width="52" height="52"/>
         <image name="snpActionButton" width="12" height="14"/>

@@ -11,6 +11,7 @@
 
 
 typedef enum {
+    PMLActionTypeNoAction,
     PMLActionTypeEdit , // Generic edition
     PMLActionTypeLike,
     PMLActionTypeAddPhoto,
@@ -21,6 +22,7 @@ typedef enum {
     PMLActionTypeReport,
     PMLActionTypeEditPlace,
     PMLActionTypeEditEvent,
+    PMLActionTypeAttend
 } PMLActionType;
 
 /**

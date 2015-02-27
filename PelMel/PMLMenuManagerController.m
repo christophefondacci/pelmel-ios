@@ -24,11 +24,12 @@
 #import "MainMenuTableViewController.h"
 #import "PMLFakeViewController.h"
 #import "UIViewController+BackButtonHandler.h"
+#import "SpringTransitioningDelegate.h"
 
 #define kSnippetHeight 110
 
 @interface PMLMenuManagerController ()
-
+@property (nonatomic, strong) SpringTransitioningDelegate *transitioningDelegate;
 @end
 
 static void *MyParentMenuControllerKey;
@@ -917,4 +918,12 @@ static void *MyParentMenuControllerKey;
 //        [self updateMenuActions];
 //    }
 //}
+
+#pragma mark - Modal
+- (void)presentModal:(UIViewController *)controller {
+    // Preparing transition
+    self.transitioningDelegate = [[SpringTransitioningDelegate alloc] initWithDelegate:self];
+    self.transitioningDelegate.transitioningDirection = TransitioningDirectionDown;
+    [self.transitioningDelegate presentViewController:controller];
+}
 @end

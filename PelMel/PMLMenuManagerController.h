@@ -144,7 +144,6 @@ typedef void(^TextInputCallback)(NSString *text);
  * Opens the snippet which is currently being presented. Does nothing if no snippet is active
  */
 -(void)openCurrentSnippet;
--(void)openCurrentSnippetForEdition;
 -(void)minimizeCurrentSnippet;
 
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state;
@@ -169,5 +168,5 @@ typedef void(^TextInputCallback)(NSString *text);
  * Clears any warning message currently shown, has no effect when no warning message is displayed
  */
 -(void)clearWarningMessage;
-
+-(void)presentModal:(UIViewController*)controller;
 @end

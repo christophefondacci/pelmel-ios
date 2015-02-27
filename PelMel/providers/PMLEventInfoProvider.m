@@ -58,9 +58,7 @@
 -(UIImage*) titleIcon {
     return [UIImage imageNamed:@"snpIconEvent"];
 }
-- (PMLActionType)editActionType {
-    return PMLActionTypeEditEvent;
-}
+
 // The snippet image
 -(CALImage*) snippetImage {
     return [_imageService imageOrPlaceholderFor:_event allowAdditions:YES];
@@ -139,5 +137,24 @@
 #pragma mark - Likeable
 - (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
     [_likeableDelegate likeTapped:likedObject callback:callback];
+}
+
+#pragma mark - Actions
+- (PMLActionType)editActionType {
+    return PMLActionTypeEditEvent;
+}
+- (PMLActionType)primaryActionType {
+    return PMLActionTypeAttend;
+}
+- (NSString *)actionSubtitleFor:(PMLActionType)actionType {
+    switch (actionType) {
+        case PMLActionTypeAttend:
+            return NSLocalizedString(@"action.attend",@"Attend");
+            break;
+            
+        default:
+            break;
+    }
+    return nil;
 }
 @end

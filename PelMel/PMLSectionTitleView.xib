@@ -33,28 +33,40 @@
                         <constraint firstAttribute="height" constant="1" id="d8p-M4-fA1"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aef-dD-bFU">
-                    <rect key="frame" x="0.0" y="27" width="17" height="1"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aef-dD-bFU">
+                    <rect key="frame" x="0.0" y="26" width="17" height="1"/>
                     <color key="backgroundColor" red="0.31764705879999999" green="0.3294117647" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="17" id="Aim-Aa-fJt"/>
                         <constraint firstAttribute="height" constant="1" id="OSg-es-Cfl"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nx6-ku-WAZ">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nx6-ku-WAZ">
                     <rect key="frame" x="290" y="2" width="22" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="1Vt-pi-T0I"/>
+                        <constraint firstAttribute="width" constant="22" id="TyB-DU-E2L"/>
+                    </constraints>
                     <state key="normal" title="Button" image="popActionEdit">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dzv-Wo-P1L">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dzv-Wo-P1L">
                     <rect key="frame" x="260" y="2" width="22" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="22" id="tMl-ie-Zbf"/>
+                        <constraint firstAttribute="height" constant="22" id="x6P-WF-kew"/>
+                    </constraints>
                     <state key="normal" title="Button" image="popActionEdit">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JbN-hi-OqI">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JbN-hi-OqI">
                     <rect key="frame" x="230" y="2" width="22" height="22"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="22" id="59I-Sh-DaJ"/>
+                        <constraint firstAttribute="height" constant="22" id="ekc-ay-bFU"/>
+                    </constraints>
                     <state key="normal" title="Button" image="popActionEdit">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -63,12 +75,18 @@
             <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="2p5-i6-WXd" firstAttribute="leading" secondItem="bid-Z9-TZu" secondAttribute="trailing" constant="8" id="Fyq-3w-ndS"/>
+                <constraint firstItem="dzv-Wo-P1L" firstAttribute="bottom" secondItem="nx6-ku-WAZ" secondAttribute="bottom" id="KJO-uS-dzr"/>
                 <constraint firstAttribute="bottom" secondItem="bid-Z9-TZu" secondAttribute="bottom" constant="6" id="LKR-TA-FuL"/>
                 <constraint firstAttribute="bottom" secondItem="2p5-i6-WXd" secondAttribute="bottom" constant="11" id="dGz-tQ-QNB"/>
+                <constraint firstItem="dzv-Wo-P1L" firstAttribute="leading" secondItem="JbN-hi-OqI" secondAttribute="trailing" constant="8" id="ezG-Kj-1K6"/>
+                <constraint firstItem="nx6-ku-WAZ" firstAttribute="leading" secondItem="dzv-Wo-P1L" secondAttribute="trailing" constant="8" id="frl-kO-ojY"/>
                 <constraint firstItem="bid-Z9-TZu" firstAttribute="leading" secondItem="aef-dD-bFU" secondAttribute="trailing" constant="7" id="h7d-9M-0eX"/>
                 <constraint firstAttribute="trailing" secondItem="2p5-i6-WXd" secondAttribute="trailing" constant="8" id="kJO-ha-2MS"/>
+                <constraint firstItem="2p5-i6-WXd" firstAttribute="top" secondItem="nx6-ku-WAZ" secondAttribute="bottom" constant="2" id="l8f-z3-ZSN"/>
                 <constraint firstItem="aef-dD-bFU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="uOC-4d-IT5"/>
                 <constraint firstAttribute="bottom" secondItem="aef-dD-bFU" secondAttribute="bottom" constant="11" id="v0a-7B-uOX"/>
+                <constraint firstItem="JbN-hi-OqI" firstAttribute="bottom" secondItem="dzv-Wo-P1L" secondAttribute="bottom" id="vhl-2I-vnY"/>
+                <constraint firstAttribute="trailing" secondItem="nx6-ku-WAZ" secondAttribute="trailing" constant="8" id="zUl-rj-pNN"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

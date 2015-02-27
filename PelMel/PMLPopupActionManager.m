@@ -15,8 +15,8 @@
 #import "MapAnnotation.h"
 #import "MessageViewController.h"
 #import "PMLCalendarTableViewController.h"
+#import "PMLEventTableViewController.h"
 
-#define kCheckinDistanceMeters 100
 
 #define kPMLLikeDistance 32.0
 #define kPMLLikeSize 60.0
@@ -185,6 +185,20 @@
     _likeAction.color = UIColorFromRGB(kPMLLikeColor);
     [self registerAction:_likeAction forType:PMLActionTypeLike];
     
+    PopupAction *attendAction = [[PopupAction alloc] initWithAngle:kPMLLikeAngle distance:kPMLLikeDistance icon:[UIImage imageNamed:@"popActionCheckin"] titleCode:nil size:kPMLLikeSize command:^{
+        NSLog(@"ATTEND");
+        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
+            [_menuManagerController.menuManagerDelegate loadingStart];
+            [_infoProvider likeTapped:_currentObject callback:^(int likes, int dislikes, BOOL liked) {
+                [self.popupController updateBadgeFor:_likeAction with:likes];
+                [_menuManagerController.menuManagerDelegate loadingEnd];
+                
+                
+            }];
+        }
+    }];
+    attendAction.color = UIColorFromRGB(kPMLLikeColor);
+    [self registerAction:attendAction forType:PMLActionTypeAttend];
     
     _modifyAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
         NSLog(@"MODIFY PLACE");
@@ -192,6 +206,19 @@
     }];
     _modifyAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:_modifyAction forType:PMLActionTypeEditPlace];
+    
+    PopupAction *editEventAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
+        NSLog(@"MODIFY EVENT");
+        [_menuManagerController currentSnippetViewController];
+        PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
+        eventController.event = (Event*)_currentObject;
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
+        
+        // Preparing transition
+        [_menuManagerController presentModal:navController];
+    }];
+    editEventAction.color = UIColorFromRGB(kPMLEditColor);
+    [self registerAction:editEventAction forType:PMLActionTypeEditEvent];
     
     PopupAction *genericEdit =[[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
         NSLog(@"MODIFY GENERIC");
@@ -229,7 +256,7 @@
         if(_currentObject!= nil) {
             MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
             msgController.withObject = _currentObject;
-            [_popupController.controller.navigationController pushViewController:msgController animated:YES];
+            [_menuManagerController.navigationController pushViewController:msgController animated:YES];
         }
     }];
     _commentAction.color = UIColorFromRGB(kPMLCommentColor);
@@ -669,7 +696,7 @@
     _menuManagerController = menuManager;
     // Info provider informs us whether edit is supported or not by providing the actual edit implementation
     if([_infoProvider respondsToSelector:@selector(editActionType)]) {
-        UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarEditTapped:)];
+        UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
         _navbarEdit = YES;
         menuManager.navigationItem.rightBarButtonItem = barItem;
     } else {
@@ -677,9 +704,9 @@
     }
 }
 -(void) installNavBarCommitCancel {
-    UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarCommitTapped:)];
+    UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarActionTapped:)];
     _menuManagerController.navigationItem.rightBarButtonItem = commitItem;
-    UIBarButtonItem *cancelItem = [self barButtonItemFromAction:PMLActionTypeCancel selector:@selector(navbarCancelTapped:)];
+    UIBarButtonItem *cancelItem = [self barButtonItemFromAction:PMLActionTypeCancel selector:@selector(navbarActionTapped:)];
     _menuManagerController.navigationItem.leftBarButtonItem = cancelItem;
 }
 -(void)uninstallNavBarCommitCancel {
@@ -698,7 +725,9 @@
     button.layer.cornerRadius = 15;
     [button setImage:action.icon forState:UIControlStateNormal];
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    button.tag = actionType;
     UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+
     return barItem;
 }
 - (void)uninstallNavBarEdit:(PMLMenuManagerController *)menuManager {
@@ -708,17 +737,18 @@
     navItem.leftBarButtonItem = _navbarLeftItem;
     _navbarEdit = NO;
 }
--(void)navbarEditTapped:(id)source {
-    [self initializeEditFor:_currentObject];
-}
--(void)navbarCommitTapped:(id)source {
-    PopupAction *action = [self actionForType:PMLActionTypeConfirm];
+-(void)navbarActionTapped:(UIButton*)source {
+    PopupAction *action = [self actionForType:source.tag];
     action.actionCommand();
 }
--(void)navbarCancelTapped:(id)source {
-    PopupAction *action = [self actionForType:PMLActionTypeCancel];
-    action.actionCommand();
-}
+//-(void)navbarCommitTapped:(id)source {
+//    PopupAction *action = [self actionForType:PMLActionTypeConfirm];
+//    action.actionCommand();
+//}
+//-(void)navbarCancelTapped:(id)source {
+//    PopupAction *action = [self actionForType:PMLActionTypeCancel];
+//    action.actionCommand();
+//}
 #pragma mark - PMLDataListener
 - (void)didLoadOverviewData:(CALObject *)object {
     if([object.key isEqualToString:_currentObject.key]) {

@@ -61,6 +61,12 @@ typedef enum {
 @optional
 // Whether or not the data could be edited, defaults to false if not implemented
 - (PMLActionType)editActionType;
+- (BOOL)canAddPhoto;    // Default is YES
+- (PMLActionType)primaryActionType; // Default is Like
+- (PMLActionType)secondaryActionType; // Default is none
+// The subtitle to display
+- (NSString*)actionSubtitleFor:(PMLActionType)actionType;
+
 - (NSString*)commentsCounterTitle;
 - (NSString*)checkinsCounterTitle;
 - (NSString*)likesCounterTitle;

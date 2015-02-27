@@ -59,7 +59,12 @@
         return [[NSString alloc] initWithFormat:@"%d kg",(int)weightInKg];
     }
 }
+- (CLLocationDistance)numericDistanceTo:(CALObject*)object {
+    CLLocation *objectLocation = [[CLLocation alloc] initWithLatitude:object.lat longitude:object.lng];
+    CLLocationDistance distance = [[[TogaytherService userService] currentLocation] distanceFromLocation:objectLocation];
+    return distance;
 
+}
 - (NSString *)distanceTo:(CALObject *)p {
     CLLocation *placeLoc = [[CLLocation alloc] initWithLatitude:p.lat longitude:p.lng];
     CLLocation *userLoc = TogaytherService.userService.currentLocation;

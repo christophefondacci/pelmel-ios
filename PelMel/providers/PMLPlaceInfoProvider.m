@@ -103,9 +103,6 @@
     return placeType.icon;
 }
 
-- (PMLActionType)editActionType {
-    return PMLActionTypeEditPlace;
-}
 - (NSString *)itemTypeLabel {
     PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
     return placeType.label;
@@ -308,5 +305,36 @@
 #pragma mark - Likeable
 - (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
     [_likeableDelegate likeTapped:likedObject callback:callback];
+}
+
+#pragma mark - Actions
+
+- (PMLActionType)editActionType {
+    return PMLActionTypeEditPlace;
+}
+
+- (PMLActionType)secondaryActionType {
+    CLLocationDistance distance = [_conversionService numericDistanceTo:_place];
+    if(distance < kPMLCheckinDistanceMeters) {
+        return PMLActionTypeCheckin;
+    } else {
+        return -1;
+    }
+}
+- (NSString *)actionSubtitleFor:(PMLActionType)actionType {
+    switch (actionType) {
+        case PMLActionTypeLike:
+            if(_place.isLiked) {
+                return NSLocalizedString(@"action.unlike",@"Unlike");
+            } else {
+                return NSLocalizedString(@"action.like",@"Like");
+            }
+            break;
+        case PMLActionTypeCheckin:
+            return NSLocalizedString(@"action.checkin",@"Checkin");
+        default:
+            break;
+    }
+    return nil;
 }
 @end

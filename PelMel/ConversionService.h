@@ -10,6 +10,7 @@
 #import "Place.h"
 #import "Special.h"
 #import "Event.h"
+#import <CoreLocation/CoreLocation.h>
 
 typedef enum {
     CURRENT, SOON, PAST
@@ -30,6 +31,7 @@ typedef void(^AddressClosure)(NSString*address);
  * The result is a distance string to be used in UILabel
  */
 -(NSString*)distanceTo:(CALObject*)object;
+- (CLLocationDistance)numericDistanceTo:(CALObject*)object;
 /**
  * Computes the address at the location of the given object and invokes the block passing
  * the resolved and formatted address.
