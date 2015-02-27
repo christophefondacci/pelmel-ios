@@ -824,7 +824,7 @@ static void *MyParentMenuControllerKey;
     NSNumber *duration = [info objectForKey:UIKeyboardAnimationDurationUserInfoKey];
     NSNumber *curve = [info objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     
-    CGRect snippetBounds = self.view.bounds;
+    CGRect snippetBounds = _bottomView.frame;
 
     if(snippetBounds.origin.y>0) {
         // Then we move it above keyboard

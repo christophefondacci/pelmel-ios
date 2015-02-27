@@ -300,10 +300,10 @@
     // Preparing list of actions
     NSMutableArray *actions = [[NSMutableArray alloc] init];
     
-//    if([object isKindOfClass:[Place class]]) {
-//        Place *place = (Place*)object;
-//        if(object.key != nil) {
-//            // Preparing actions for a place
+    if([object isKindOfClass:[Place class]]) {
+        Place *place = (Place*)object;
+        if(object.key != nil) {
+            // Preparing actions for a place
 //            if(!_currentEditor.editing) {
 //                // Computing distance from current location
 //                PopupAction *likeOrCheckinAction = _likeAction;
@@ -312,36 +312,37 @@
 //                    CLLocationDistance distance = [_userService.currentLocation distanceFromLocation:objectLocation];
 //                    
 //                    // If less than our checkin distance, we activate checkin action
-//                    if(distance <= kCheckinDistanceMeters) {
+//                    if(distance <= kPMLCheckinDistanceMeters) {
 //                        _checkinEnabled = YES;
 //                        likeOrCheckinAction = _checkinAction;
 //                    }
 //                }
 //                [actions addObjectsFromArray:@[likeOrCheckinAction,_modifyAction,_photoAction,_commentAction,_reportAction]];
 //            } else {
-//                [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];
-//                [actions addObject:_modifyAction];
-//            }
-//            // Updates the badge on popup actions
-//            [self updateBadge];
-//            
+            if(_currentEditor.editing) {
+                [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];
+                [actions addObject:_modifyAction];
+            }
+            // Updates the badge on popup actions
+            [self updateBadge];
 //            // Loading overview data if not yet available
 //            if(!object.hasOverviewData) {
 //                [_dataService getOverviewData:object];
 //            }
 //            
-//        } else {
+        } else {
 //            // New place, we propose save if name defined
 //
-//            if(place.title!= nil) {
-//                [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_modifyAction]];
-//            } else {
-//                [actions addObject:_cancelAction];
-//            }
-//            // Observing title changes
-//            [place addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
-//            [_observedProperties addObject:@"title"];
-//        }
+            if(place.title!= nil) {
+                [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_modifyAction]];
+            } else {
+                [actions addObject:_cancelAction];
+            }
+            // Observing title changes
+            [place addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
+            [_observedProperties addObject:@"title"];
+        }
+    }
 //
 //    } else if( [object isKindOfClass:[City class]] ) {
 //        PopupAction *searchInCityAction = [[PopupAction alloc] initWithAngle:M_PI/5 distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionSearch"] titleCode:nil size:kPMLLikeSize command:^{
@@ -694,13 +695,17 @@
 #pragma mark - NavBar management
 - (void)installNavBarEdit:(PMLMenuManagerController *)menuManager {
     _menuManagerController = menuManager;
-    // Info provider informs us whether edit is supported or not by providing the actual edit implementation
-    if([_infoProvider respondsToSelector:@selector(editActionType)]) {
-        UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
-        _navbarEdit = YES;
-        menuManager.navigationItem.rightBarButtonItem = barItem;
+    if(_currentEditor.editing) {
+        [self installNavBarCommitCancel];
     } else {
-        menuManager.navigationItem.rightBarButtonItem = nil;
+        // Info provider informs us whether edit is supported or not by providing the actual edit implementation
+        if([_infoProvider respondsToSelector:@selector(editActionType)]) {
+            UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
+            _navbarEdit = YES;
+            menuManager.navigationItem.rightBarButtonItem = barItem;
+        } else {
+            menuManager.navigationItem.rightBarButtonItem = nil;
+        }
     }
 }
 -(void) installNavBarCommitCancel {

@@ -87,6 +87,8 @@ static NSMutableDictionary *_editorsKeyMap;
 -(void)endEdition {
     // Removing edited object from map view controller
     self.mapViewController.editedObject = nil;
+    // Purging editor
+    [_editorsKeyMap removeObjectForKey:self.editedObject.key];
 //    [self.mapViewController selectCALObject:self.editedObject];
     [self.mapViewController reselectPlace:(Place*)self.editedObject];
     
@@ -95,8 +97,7 @@ static NSMutableDictionary *_editorsKeyMap;
     [_cancelActions removeAllObjects];
     [_confirmActions removeAllObjects];
 
-    // Purging editor
-    [_editorsKeyMap removeObjectForKey:self.editedObject.key];
+
     
 //    if(!_mapEdition) {
 //        [self.mapViewController.popupController refreshActions];
