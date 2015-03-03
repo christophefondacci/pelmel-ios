@@ -105,24 +105,29 @@
     return 0;
 }
 
+- (BOOL)isAddRow:(NSIndexPath*)indexPath {
+    NSString *calType = [self calendarTypeFromSection:indexPath.section];
+    NSInteger count = [[_hoursTypeMap objectForKey:calType] count];
+    return indexPath.row == count;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *reuseId = indexPath.row == 0 ? @"addModify" : @"hours";
+    
+    // Is it the addition row?
+    BOOL isAddRow = [self isAddRow:indexPath];
+    NSString *reuseId = isAddRow ? @"addNew" : @"hours";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId forIndexPath:indexPath];
     
     // Configure the cell...
     cell.backgroundColor = UIColorFromRGB(0x272a2e);
-    if(indexPath.row == 0) {
-        PMLAddTableViewCell *addCell = (PMLAddTableViewCell*)cell;
-        addCell.tag = indexPath.section;
-        addCell.delegate=self;
-    } else {
+
+    if(!isAddRow) {
         PMLCalendar *cal = [self calendarForIndexPath:indexPath];
         if(cal != nil) {
             NSString *calendarLabel = [_conversionService stringFromCalendar:cal ];
             
             PMLImagedTitleTableViewCell *titledCell = (PMLImagedTitleTableViewCell*)cell;
             titledCell.titleLabel.text = calendarLabel;
-            
+            [titledCell.deleteButton addTarget:self action:@selector(removeHoursTapped:) forControlEvents:UIControlEventTouchUpInside];
             UIImage *icon = nil;
             switch(indexPath.section) {
                 case kPMLSectionHappy:
@@ -146,7 +151,7 @@
     if(calType != nil) {
         // Getting the calendar from its index
         NSArray *calendars = [_hoursTypeMap objectForKey:calType];
-        cal = [calendars objectAtIndex:indexPath.row-1];
+        cal = [calendars objectAtIndex:indexPath.row];
     }
     // Returning what we found
     return cal;
@@ -205,9 +210,11 @@
     return 50;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.row>0) {
+    if(![self isAddRow:indexPath]) {
         PMLCalendar *calendar = [self calendarForIndexPath:indexPath];
         [self presentCalendarEditorFor:calendar];
+    } else {
+        [self addTapped:indexPath.section];
     }
 }
 - (void)presentCalendarEditorFor:(PMLCalendar*)calendar {
@@ -230,23 +237,7 @@
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        PMLCalendar *calendar = [self calendarForIndexPath:indexPath];
-        if(calendar != nil) {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            hud.mode = MBProgressHUDModeDeterminate;
-            hud.labelText = NSLocalizedString(@"action.wait", @"Please wait");
-            [[TogaytherService dataService] deleteCalendar:calendar callback:^(PMLCalendar *calendar) {
-                [hud hide:YES];
-                [_place.hours removeObject:calendar];
-                [self refresh];
-                // Delete the row from the data source
-                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            } errorCallback:^(NSInteger errorCode, NSString *errorMessage) {
-                [hud hide:YES];
-                [_uiService alertError];
-            }];
-
-        }
+        
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
@@ -291,12 +282,34 @@
 }
 
 #pragma mark - PMLAddModifyDelegate
-- (void)addTapped:(PMLAddTableViewCell *)sourceCell {
-    NSString *type = [self calendarTypeFromSection:sourceCell.tag];
+- (void)addTapped:(NSInteger)section {
+    NSString *type = [self calendarTypeFromSection:section];
     PMLCalendar *calendar = [[PMLCalendar alloc] init];
     calendar.place = _place;
     calendar.calendarType = type;
     [self presentCalendarEditorFor:calendar];
+}
+- (void)removeHoursTapped:(UIButton*)source {
+    CGPoint center= source.center;
+    CGPoint rootViewPoint = [source.superview convertPoint:center toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:rootViewPoint];
+    PMLCalendar *calendar = [self calendarForIndexPath:indexPath];
+    if(calendar != nil) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.mode = MBProgressHUDModeDeterminate;
+        hud.labelText = NSLocalizedString(@"action.wait", @"Please wait");
+        [[TogaytherService dataService] deleteCalendar:calendar callback:^(PMLCalendar *calendar) {
+            [hud hide:YES];
+            [_place.hours removeObject:calendar];
+            [self refresh];
+            // Delete the row from the data source
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        } errorCallback:^(NSInteger errorCode, NSString *errorMessage) {
+            [hud hide:YES];
+            [_uiService alertError];
+        }];
+        
+    }
 }
 - (void)modifyTapped:(PMLAddTableViewCell *)sourceCell {
     BOOL wasEditing = (_editingSections >0);

@@ -271,6 +271,7 @@
         [hud hide:YES];
         [self dismissViewControllerAnimated:YES completion:nil];
     } errorCallback:^(NSInteger errorCode, NSString *errorMessage) {
+        [hud hide:YES];
         [[TogaytherService uiService] alertError];
     }];
 }

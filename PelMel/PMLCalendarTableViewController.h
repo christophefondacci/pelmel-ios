@@ -9,7 +9,7 @@
 #import "PMLAddTableViewCell.h"
 #import <UIKit/UIKit.h>
 
-@interface PMLCalendarTableViewController : UITableViewController <PMLAddModifyDelegate>
+@interface PMLCalendarTableViewController : UITableViewController 
 
 // The parent place which this calendar editor is handling
 @property (nonatomic,retain) Place *place;
