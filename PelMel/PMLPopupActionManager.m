@@ -745,7 +745,7 @@
     _navbarEdit = NO;
 }
 -(void)navbarActionTapped:(UIButton*)source {
-    PopupAction *action = [self actionForType:source.tag];
+    PopupAction *action = [self actionForType:(PMLActionType)source.tag];
     action.actionCommand();
 }
 //-(void)navbarCommitTapped:(id)source {

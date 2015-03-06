@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="Ch1-aD-2T8" customClass="PMLThumbView">
+            <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1b4-yv-bo9" userLabel="thumb">
+                    <rect key="frame" x="6" y="0.0" width="58" height="58"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="1b4-yv-bo9" secondAttribute="height" multiplier="1:1" id="ilR-cK-0Ew"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="15"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
+                            <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EI6-MK-eIF" userLabel="bottomRightDecorator">
+                    <rect key="frame" x="55" y="0.0" width="15" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="5JQ-eb-6cQ"/>
+                        <constraint firstAttribute="width" constant="15" id="9Yf-Yx-dtN"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="7"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IvW-Db-erL">
+                    <rect key="frame" x="0.0" y="54" width="70" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="r5T-nK-edH"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="9"/>
+                    <color key="textColor" red="1" green="0.99997437" blue="0.99999129769999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="IvW-Db-erL" secondAttribute="trailing" id="34G-e0-TR0"/>
+                <constraint firstAttribute="centerX" secondItem="1b4-yv-bo9" secondAttribute="centerX" id="8L0-pj-Ta6"/>
+                <constraint firstAttribute="trailing" secondItem="1b4-yv-bo9" secondAttribute="trailing" constant="9" id="KC7-Og-qn4"/>
+                <constraint firstAttribute="trailing" secondItem="EI6-MK-eIF" secondAttribute="trailing" id="Pvi-jq-3Lj"/>
+                <constraint firstItem="IvW-Db-erL" firstAttribute="leading" secondItem="Ch1-aD-2T8" secondAttribute="leading" id="Q1y-qg-8RH"/>
+                <constraint firstItem="1b4-yv-bo9" firstAttribute="top" secondItem="Ch1-aD-2T8" secondAttribute="top" id="X5p-OI-Znw"/>
+                <constraint firstItem="1b4-yv-bo9" firstAttribute="leading" secondItem="Ch1-aD-2T8" secondAttribute="leading" constant="9" id="eQA-Da-yJW"/>
+                <constraint firstAttribute="bottom" secondItem="1b4-yv-bo9" secondAttribute="bottom" constant="12" id="m6U-ID-lK7"/>
+                <constraint firstItem="EI6-MK-eIF" firstAttribute="top" secondItem="Ch1-aD-2T8" secondAttribute="top" id="sEX-63-mGA"/>
+                <constraint firstAttribute="width" secondItem="Ch1-aD-2T8" secondAttribute="height" multiplier="1:1" id="tnK-kZ-5oM"/>
+                <constraint firstAttribute="bottom" secondItem="IvW-Db-erL" secondAttribute="bottom" id="zBo-wl-BmY"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="KC7-Og-qn4"/>
+                    <exclude reference="eQA-Da-yJW"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="bottomDecorator" destination="EI6-MK-eIF" id="nff-gU-Pc7"/>
+                <outlet property="thumbImage" destination="1b4-yv-bo9" id="33d-BI-g2n"/>
+                <outlet property="titleLabel" destination="IvW-Db-erL" id="2g2-nU-hOV"/>
+            </connections>
+            <point key="canvasLocation" x="139" y="154"/>
+        </view>
+    </objects>
+</document>

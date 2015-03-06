@@ -257,6 +257,8 @@
         // Adding to the list of users in the place
         [place.inUsers addObject:user];
     }
+    // TODO: Provide the total count from server
+    place.inUserCount = jsonInUsers.count;
     [place.likers removeAllObjects];
     for(NSDictionary *jsonUser in jsonLikeUsers) {
         // Building user bean from JSON
@@ -681,6 +683,7 @@
         NSDate* lastLocDate = [[NSDate alloc] initWithTimeIntervalSince1970:pTime];
         [user setLastLocationDate:lastLocDate];
     }
+    [cacheService setObject:user forKey:user.key];
 }
 -(NSString*)getMiniDesc:(NSArray*)descriptions {
     NSMutableDictionary *descLangMap = [[NSMutableDictionary alloc] init];

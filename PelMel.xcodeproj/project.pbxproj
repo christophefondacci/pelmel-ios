@@ -158,6 +158,24 @@
 		B46C4C3B19D2D27A00C81DA3 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */; };
 		B470F429199D800500A03CAD /* KIImagePager.h in Headers */ = {isa = PBXBuildFile; fileRef = B470F427199D800500A03CAD /* KIImagePager.h */; };
 		B470F42A199D800500A03CAD /* KIImagePager.m in Sources */ = {isa = PBXBuildFile; fileRef = B470F428199D800500A03CAD /* KIImagePager.m */; };
+		B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */; };
+		B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69C01AA64AC200877B58 /* PMLCountersView.h */; };
+		B47A69C31AA64AC200877B58 /* PMLCountersView.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69C11AA64AC200877B58 /* PMLCountersView.m */; };
+		B47A69C61AA6927D00877B58 /* PMLThumbCollectionViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69C41AA6927D00877B58 /* PMLThumbCollectionViewController.h */; };
+		B47A69C71AA6927D00877B58 /* PMLThumbCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69C51AA6927D00877B58 /* PMLThumbCollectionViewController.m */; };
+		B47A69C91AA6931A00877B58 /* PMLThumbView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47A69C81AA6931A00877B58 /* PMLThumbView.xib */; };
+		B47A69CC1AA693EA00877B58 /* PMLThumbView.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69CA1AA693EA00877B58 /* PMLThumbView.h */; };
+		B47A69CD1AA693EA00877B58 /* PMLThumbView.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69CB1AA693EA00877B58 /* PMLThumbView.m */; };
+		B47A69D11AA764CE00877B58 /* PMLHorizontalFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69CF1AA764CE00877B58 /* PMLHorizontalFlowLayout.h */; };
+		B47A69D21AA764CE00877B58 /* PMLHorizontalFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69D01AA764CE00877B58 /* PMLHorizontalFlowLayout.m */; };
+		B47A69D41AA7837200877B58 /* PMLThumbHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47A69D31AA7837200877B58 /* PMLThumbHeaderView.xib */; };
+		B47A69D71AA7843B00877B58 /* PMLThumbHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69D51AA7843B00877B58 /* PMLThumbHeaderView.h */; };
+		B47A69D81AA7843B00877B58 /* PMLThumbHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69D61AA7843B00877B58 /* PMLThumbHeaderView.m */; };
+		B47A69DB1AA7992500877B58 /* StickyHeaderFlowLayout.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69D91AA7992500877B58 /* StickyHeaderFlowLayout.h */; };
+		B47A69DC1AA7992500877B58 /* StickyHeaderFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69DA1AA7992500877B58 /* StickyHeaderFlowLayout.m */; };
+		B47A69DF1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69DD1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h */; };
+		B47A69E31AA7FF6B00877B58 /* UIImage+IPImageUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69E11AA7FF6B00877B58 /* UIImage+IPImageUtils.h */; };
+		B47A69E41AA7FF6B00877B58 /* UIImage+IPImageUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69E21AA7FF6B00877B58 /* UIImage+IPImageUtils.m */; };
 		B4859DB8197FC6810036D8FF /* PopupAction.h in Headers */ = {isa = PBXBuildFile; fileRef = B4859DB6197FC6810036D8FF /* PopupAction.h */; };
 		B4859DB9197FC6810036D8FF /* PopupAction.m in Sources */ = {isa = PBXBuildFile; fileRef = B4859DB7197FC6810036D8FF /* PopupAction.m */; };
 		B4859DBC197FC7FF0036D8FF /* PMLPopupActionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B4859DBA197FC7FF0036D8FF /* PMLPopupActionManager.h */; };
@@ -277,8 +295,6 @@
 		B4E9120C169ACD4E005D3CAF /* TogaytherTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4E9120B169ACD4E005D3CAF /* TogaytherTitleView.xib */; };
 		B4E91223169B226F005D3CAF /* TogaytherTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4E91222169B226F005D3CAF /* TogaytherTabBarController.m */; };
 		B4EECADC162C15F9005F80DE /* UITableGridImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECADB162C15F9005F80DE /* UITableGridImageCell.m */; };
-		B4EECAE6162D3FB8005F80DE /* ThumbsPreviewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4EECAE5162D3FB8005F80DE /* ThumbsPreviewView.xib */; };
-		B4EECAE9162D4046005F80DE /* ThumbsPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAE8162D4046005F80DE /* ThumbsPreviewView.m */; };
 		B4EECAEB162EB6EE005F80DE /* ClosableBoxView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4EECAEA162EB6ED005F80DE /* ClosableBoxView.xib */; };
 		B4EECAEE162EB8C4005F80DE /* ClosableBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAED162EB8C4005F80DE /* ClosableBoxView.m */; };
 		B4EECAF3162FF140005F80DE /* UITableSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAF2162FF13F005F80DE /* UITableSearchViewCell.m */; };
@@ -494,6 +510,24 @@
 		B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
 		B470F427199D800500A03CAD /* KIImagePager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIImagePager.h; sourceTree = "<group>"; };
 		B470F428199D800500A03CAD /* KIImagePager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIImagePager.m; sourceTree = "<group>"; };
+		B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLCountersView.xib; sourceTree = "<group>"; };
+		B47A69C01AA64AC200877B58 /* PMLCountersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLCountersView.h; sourceTree = "<group>"; };
+		B47A69C11AA64AC200877B58 /* PMLCountersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLCountersView.m; sourceTree = "<group>"; };
+		B47A69C41AA6927D00877B58 /* PMLThumbCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLThumbCollectionViewController.h; sourceTree = "<group>"; };
+		B47A69C51AA6927D00877B58 /* PMLThumbCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLThumbCollectionViewController.m; sourceTree = "<group>"; };
+		B47A69C81AA6931A00877B58 /* PMLThumbView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLThumbView.xib; sourceTree = "<group>"; };
+		B47A69CA1AA693EA00877B58 /* PMLThumbView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLThumbView.h; sourceTree = "<group>"; };
+		B47A69CB1AA693EA00877B58 /* PMLThumbView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLThumbView.m; sourceTree = "<group>"; };
+		B47A69CF1AA764CE00877B58 /* PMLHorizontalFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLHorizontalFlowLayout.h; sourceTree = "<group>"; };
+		B47A69D01AA764CE00877B58 /* PMLHorizontalFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLHorizontalFlowLayout.m; sourceTree = "<group>"; };
+		B47A69D31AA7837200877B58 /* PMLThumbHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLThumbHeaderView.xib; sourceTree = "<group>"; };
+		B47A69D51AA7843B00877B58 /* PMLThumbHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLThumbHeaderView.h; sourceTree = "<group>"; };
+		B47A69D61AA7843B00877B58 /* PMLThumbHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLThumbHeaderView.m; sourceTree = "<group>"; };
+		B47A69D91AA7992500877B58 /* StickyHeaderFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyHeaderFlowLayout.h; sourceTree = "<group>"; };
+		B47A69DA1AA7992500877B58 /* StickyHeaderFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyHeaderFlowLayout.m; sourceTree = "<group>"; };
+		B47A69DD1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLThumbsPreviewProvider.h; sourceTree = "<group>"; };
+		B47A69E11AA7FF6B00877B58 /* UIImage+IPImageUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+IPImageUtils.h"; sourceTree = "<group>"; };
+		B47A69E21AA7FF6B00877B58 /* UIImage+IPImageUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+IPImageUtils.m"; sourceTree = "<group>"; };
 		B4859DB6197FC6810036D8FF /* PopupAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupAction.h; sourceTree = "<group>"; };
 		B4859DB7197FC6810036D8FF /* PopupAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupAction.m; sourceTree = "<group>"; };
 		B4859DBA197FC7FF0036D8FF /* PMLPopupActionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPopupActionManager.h; sourceTree = "<group>"; };
@@ -652,9 +686,6 @@
 		B4E91224169B23D0005D3CAF /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		B4EECADA162C15F9005F80DE /* UITableGridImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableGridImageCell.h; sourceTree = "<group>"; };
 		B4EECADB162C15F9005F80DE /* UITableGridImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableGridImageCell.m; sourceTree = "<group>"; };
-		B4EECAE5162D3FB8005F80DE /* ThumbsPreviewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThumbsPreviewView.xib; sourceTree = "<group>"; };
-		B4EECAE7162D4046005F80DE /* ThumbsPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbsPreviewView.h; sourceTree = "<group>"; };
-		B4EECAE8162D4046005F80DE /* ThumbsPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbsPreviewView.m; sourceTree = "<group>"; };
 		B4EECAEA162EB6ED005F80DE /* ClosableBoxView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClosableBoxView.xib; sourceTree = "<group>"; };
 		B4EECAEC162EB8C4005F80DE /* ClosableBoxView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClosableBoxView.h; sourceTree = "<group>"; };
 		B4EECAED162EB8C4005F80DE /* ClosableBoxView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClosableBoxView.m; sourceTree = "<group>"; };
@@ -801,8 +832,23 @@
 		B43E76231997661B00153B46 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				B47A69DD1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h */,
 				B43E7628199781D200153B46 /* PMLImageTableViewController.h */,
 				B43E7629199781D200153B46 /* PMLImageTableViewController.m */,
+				B47A69C41AA6927D00877B58 /* PMLThumbCollectionViewController.h */,
+				B47A69C51AA6927D00877B58 /* PMLThumbCollectionViewController.m */,
+				B41CF0A51895CE3E0031FD7C /* ThumbTableViewController.h */,
+				B41CF0A61895CE3E0031FD7C /* ThumbTableViewController.m */,
+				B47A69C81AA6931A00877B58 /* PMLThumbView.xib */,
+				B47A69CA1AA693EA00877B58 /* PMLThumbView.h */,
+				B47A69CB1AA693EA00877B58 /* PMLThumbView.m */,
+				B47A69CF1AA764CE00877B58 /* PMLHorizontalFlowLayout.h */,
+				B47A69D01AA764CE00877B58 /* PMLHorizontalFlowLayout.m */,
+				B47A69D31AA7837200877B58 /* PMLThumbHeaderView.xib */,
+				B47A69D51AA7843B00877B58 /* PMLThumbHeaderView.h */,
+				B47A69D61AA7843B00877B58 /* PMLThumbHeaderView.m */,
+				B47A69D91AA7992500877B58 /* StickyHeaderFlowLayout.h */,
+				B47A69DA1AA7992500877B58 /* StickyHeaderFlowLayout.m */,
 			);
 			name = Controls;
 			sourceTree = "<group>";
@@ -1085,8 +1131,6 @@
 				B4A6643416970EB700732B6D /* AccountNavigationController.m */,
 				B4E91221169B226F005D3CAF /* TogaytherTabBarController.h */,
 				B4E91222169B226F005D3CAF /* TogaytherTabBarController.m */,
-				B41CF0A51895CE3E0031FD7C /* ThumbTableViewController.h */,
-				B41CF0A61895CE3E0031FD7C /* ThumbTableViewController.m */,
 				B405E6641A93C04900C49F64 /* PMLCalendarTableViewController.h */,
 				B405E6651A93C04900C49F64 /* PMLCalendarTableViewController.m */,
 				B405E66E1A953F9400C49F64 /* PMLCalendarEditorTableViewController.h */,
@@ -1167,6 +1211,8 @@
 				B4D560D0160CBB70003A738E /* UIImageExtras.m */,
 				B4A6642D1695E32100732B6D /* MKNumberBadgeView.h */,
 				B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */,
+				B47A69E11AA7FF6B00877B58 /* UIImage+IPImageUtils.h */,
+				B47A69E21AA7FF6B00877B58 /* UIImage+IPImageUtils.m */,
 			);
 			name = Extras;
 			sourceTree = "<group>";
@@ -1199,9 +1245,6 @@
 				B4592A8B1623090A009688B8 /* UIInteractiveLabel.m */,
 				B4EECADA162C15F9005F80DE /* UITableGridImageCell.h */,
 				B4EECADB162C15F9005F80DE /* UITableGridImageCell.m */,
-				B4EECAE5162D3FB8005F80DE /* ThumbsPreviewView.xib */,
-				B4EECAE7162D4046005F80DE /* ThumbsPreviewView.h */,
-				B4EECAE8162D4046005F80DE /* ThumbsPreviewView.m */,
 				B4EECAEA162EB6ED005F80DE /* ClosableBoxView.xib */,
 				B4EECAEC162EB8C4005F80DE /* ClosableBoxView.h */,
 				B4EECAED162EB8C4005F80DE /* ClosableBoxView.m */,
@@ -1311,6 +1354,9 @@
 				B457A0EB1A9A658A00207D8E /* PMLSectionTitleView.xib */,
 				B457A0ED1A9A689100207D8E /* PMLSectionTitleView.h */,
 				B457A0EE1A9A689100207D8E /* PMLSectionTitleView.m */,
+				B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */,
+				B47A69C01AA64AC200877B58 /* PMLCountersView.h */,
+				B47A69C11AA64AC200877B58 /* PMLCountersView.m */,
 			);
 			name = Snippet;
 			sourceTree = "<group>";
@@ -1352,6 +1398,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B47A69CC1AA693EA00877B58 /* PMLThumbView.h in Headers */,
 				B406CA43197D0F8300A7FFE2 /* PMLPlaceAnnotationView.h in Headers */,
 				B43D11791A97A603008476C7 /* UIImage+ImageEffects.h in Headers */,
 				B4BB9F1219D7E8840070B03C /* PMLCityInfoProvider.h in Headers */,
@@ -1368,6 +1415,7 @@
 				B4A4666C19A73A6A004ADC7E /* PMLPlaceInfoProvider.h in Headers */,
 				B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */,
 				B4B560AB18B76CD0006E6D90 /* UIPelmelTitleView.h in Headers */,
+				B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */,
 				B45CAB3219721BD40089C7E8 /* DynamicObject.h in Headers */,
 				B4FC958A19B1EFAC00269E74 /* PMLSnippetTableViewCell.h in Headers */,
 				B470F429199D800500A03CAD /* KIImagePager.h in Headers */,
@@ -1376,6 +1424,7 @@
 				B4E8293B18AC6F4C0063715C /* PostDelegate.h in Headers */,
 				B4FC959B19B1F2E300269E74 /* PMLSnippetTableViewController.h in Headers */,
 				B40668BB19714CCE0012DF71 /* APLPositionToBoundsMapping.h in Headers */,
+				B47A69E31AA7FF6B00877B58 /* UIImage+IPImageUtils.h in Headers */,
 				B457A10A1A9D914100207D8E /* UIViewController+BackButtonHandler.h in Headers */,
 				B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */,
 				B406CA47197D126300A7FFE2 /* MKCustomMapView.h in Headers */,
@@ -1385,15 +1434,19 @@
 				B405E6701A953F9400C49F64 /* PMLCalendarEditorTableViewController.h in Headers */,
 				B457A0FA1A9AF00A00207D8E /* PMLTextFieldTableViewCell.h in Headers */,
 				B41DD754197B5FA5008F09D9 /* UIAttachmentView.h in Headers */,
+				B47A69D71AA7843B00877B58 /* PMLThumbHeaderView.h in Headers */,
 				B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */,
 				B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */,
 				B405E66C1A953C9600C49F64 /* PMLDetailTableViewCell.h in Headers */,
 				B405E6661A93C04900C49F64 /* PMLCalendarTableViewController.h in Headers */,
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
+				B47A69DF1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h in Headers */,
 				B43D11731A97A12B008476C7 /* PresentingSpringAnimator.h in Headers */,
 				B46AD73519E509580021E1DE /* PMLSnippetLikeTableViewCell.h in Headers */,
 				B457A1121A9D93D200207D8E /* PMLFakeViewController.h in Headers */,
 				B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */,
+				B47A69D11AA764CE00877B58 /* PMLHorizontalFlowLayout.h in Headers */,
+				B47A69C61AA6927D00877B58 /* PMLThumbCollectionViewController.h in Headers */,
 				B43E9ADE19F47F5300F91FC1 /* PMLAddTableViewCell.h in Headers */,
 				B46AD72C19E0E1E50021E1DE /* SettingsTableViewController.h in Headers */,
 				B41DD750197B4F5E008F09D9 /* APLDecorationView.h in Headers */,
@@ -1429,6 +1482,7 @@
 				B457A1161A9E374E00207D8E /* PMLModalTransitionAnimator.h in Headers */,
 				B43FA67619866ECD008A1679 /* Activity.h in Headers */,
 				B43805B91A1D870100736051 /* PMLImagedTitleTableViewCell.h in Headers */,
+				B47A69DB1AA7992500877B58 /* StickyHeaderFlowLayout.h in Headers */,
 				B42F543F19873CC200C2371F /* MKNewPlaceAnnotationView.h in Headers */,
 				B43D116F1A97A12B008476C7 /* DynamicDismissalAnimator.h in Headers */,
 				B4BB9EFD19D4DE430070B03C /* PMLChatTableViewCell.h in Headers */,
@@ -1533,10 +1587,12 @@
 				B41CF0AE1899C0F40031FD7C /* PelMel-config.plist in Resources */,
 				B4859DCB1984C1060036D8FF /* UITextInputView.xib in Resources */,
 				B457A0E61A980DDA00207D8E /* PMLEventTableViewCell.xib in Resources */,
+				B47A69C91AA6931A00877B58 /* PMLThumbView.xib in Resources */,
 				B457A0EC1A9A658A00207D8E /* PMLSectionTitleView.xib in Resources */,
 				B4FC958219B1E28B00269E74 /* Sari-Medium.otf in Resources */,
 				B4270E1919F62E5C00620773 /* PMLUserActionsView.xib in Resources */,
 				B4B560A818B76C41006E6D90 /* UIPelmelTitleView.xib in Resources */,
+				B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */,
 				B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */,
 				B41830C2197CA89900B7E2DD /* UIMapPopupView.xib in Resources */,
 				B406AB4C1613881E0053E067 /* Localizable.strings in Resources */,
@@ -1547,9 +1603,9 @@
 				B4FC958119B1E28B00269E74 /* Sari-Light.otf in Resources */,
 				B4FC958519B1E64A00269E74 /* OpenSans-Bold.ttf in Resources */,
 				B4B5040F1621CE4C002D5669 /* DescriptionHeader.xib in Resources */,
-				B4EECAE6162D3FB8005F80DE /* ThumbsPreviewView.xib in Resources */,
 				B4EECAEB162EB6EE005F80DE /* ClosableBoxView.xib in Resources */,
 				B41A13F2163942C600827E04 /* TogaytherHeaderView.xib in Resources */,
+				B47A69D41AA7837200877B58 /* PMLThumbHeaderView.xib in Resources */,
 				B4E9120C169ACD4E005D3CAF /* TogaytherTitleView.xib in Resources */,
 				B4FC958619B1E64A00269E74 /* OpenSans-Regular.ttf in Resources */,
 				B4A290B916A5AC9F007F5AA9 /* hd_logo_small.gif in Resources */,
@@ -1673,13 +1729,16 @@
 				B457A0FF1A9AF08A00207D8E /* PMLDatePickerTableViewCell.m in Sources */,
 				B41CF0AA1895E1700031FD7C /* DisplayHelper.m in Sources */,
 				B457A1071A9CECE800207D8E /* PMLEventInfoProvider.m in Sources */,
+				B47A69E41AA7FF6B00877B58 /* UIImage+IPImageUtils.m in Sources */,
 				B4B82B3719FBB69900895C57 /* PMLPickerTableViewCell.m in Sources */,
 				B496661F1612250800911FE5 /* UITablePlaceTypeViewCell.m in Sources */,
 				B457A1031A9AF1B100207D8E /* PMLEventTableViewController.m in Sources */,
 				B4966622161227C400911FE5 /* FiltersViewController.m in Sources */,
 				B41CF0B11899C20A0031FD7C /* UIService.m in Sources */,
 				B406AB421613793B0053E067 /* PlaceType.m in Sources */,
+				B47A69D81AA7843B00877B58 /* PMLThumbHeaderView.m in Sources */,
 				B40779BA16149D2E00D02F66 /* UserService.m in Sources */,
+				B47A69D21AA764CE00877B58 /* PMLHorizontalFlowLayout.m in Sources */,
 				B40779BD16149D9700D02F66 /* CurrentUser.m in Sources */,
 				B4FC959C19B1F2E300269E74 /* PMLSnippetTableViewController.m in Sources */,
 				B457A0F01A9A689100207D8E /* PMLSectionTitleView.m in Sources */,
@@ -1688,9 +1747,11 @@
 				B4E8293C18AC6F4C0063715C /* PostDelegate.m in Sources */,
 				B43E76211991BD5C00153B46 /* PMLMainNavBarView.m in Sources */,
 				B405E66D1A953C9600C49F64 /* PMLDetailTableViewCell.m in Sources */,
+				B47A69CD1AA693EA00877B58 /* PMLThumbView.m in Sources */,
 				B40779C6161592FD00D02F66 /* CALObject.m in Sources */,
 				B42D2D401618D8C400159EBD /* GalleryService.m in Sources */,
 				B42D2D43161970DD00159EBD /* Imaged.m in Sources */,
+				B47A69C71AA6927D00877B58 /* PMLThumbCollectionViewController.m in Sources */,
 				B41CF0A41895BF6D0031FD7C /* ThumbCell.m in Sources */,
 				B4E8292618A9BCFF0063715C /* SWRevealViewController.m in Sources */,
 				B457A0FB1A9AF00A00207D8E /* PMLTextFieldTableViewCell.m in Sources */,
@@ -1702,6 +1763,7 @@
 				B4B50401161EF150002D5669 /* DatePickerDataSource.m in Sources */,
 				B4B50404161F0194002D5669 /* ProfileHeaderView.m in Sources */,
 				B4B50407161F25F7002D5669 /* ConversionService.m in Sources */,
+				B47A69C31AA64AC200877B58 /* PMLCountersView.m in Sources */,
 				B4B5040A161F39C6002D5669 /* LanguagePickerDataSource.m in Sources */,
 				B41DD755197B5FA5008F09D9 /* UIAttachmentView.m in Sources */,
 				B4B5040D1621CE2E002D5669 /* DescriptionHeaderView.m in Sources */,
@@ -1729,7 +1791,6 @@
 				B4EECADC162C15F9005F80DE /* UITableGridImageCell.m in Sources */,
 				B4859DB9197FC6810036D8FF /* PopupAction.m in Sources */,
 				B4B560AC18B76CD0006E6D90 /* UIPelmelTitleView.m in Sources */,
-				B4EECAE9162D4046005F80DE /* ThumbsPreviewView.m in Sources */,
 				B4EECAEE162EB8C4005F80DE /* ClosableBoxView.m in Sources */,
 				B4EECAF3162FF140005F80DE /* UITableSearchViewCell.m in Sources */,
 				B4EECAF616300218005F80DE /* UITableSegmentViewCell.m in Sources */,
@@ -1763,6 +1824,7 @@
 				B405E6671A93C04900C49F64 /* PMLCalendarTableViewController.m in Sources */,
 				B457A10B1A9D914100207D8E /* UIViewController+BackButtonHandler.m in Sources */,
 				B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */,
+				B47A69DC1AA7992500877B58 /* StickyHeaderFlowLayout.m in Sources */,
 				B406CA48197D126300A7FFE2 /* MKCustomMapView.m in Sources */,
 				B4859DBD197FC7FF0036D8FF /* PMLPopupActionManager.m in Sources */,
 				B46AD73619E509580021E1DE /* PMLSnippetLikeTableViewCell.m in Sources */,

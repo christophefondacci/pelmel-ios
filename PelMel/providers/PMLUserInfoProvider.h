@@ -10,7 +10,7 @@
 #import "User.h"
 #import "PMLInfoProvider.h"
 
-@interface PMLUserInfoProvider : NSObject<PMLInfoProvider>
+@interface PMLUserInfoProvider : NSObject<PMLInfoProvider, PMLCountersDatasource>
 
 - (instancetype)initWithUser:(User*)user;
 

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PMLThumbCollectionViewController.h"
 #import "PMLInfoProvider.h"
 
-@interface PMLContextInfoProvider : NSObject<PMLInfoProvider>
+@interface PMLContextInfoProvider : NSObject<PMLInfoProvider, PMLThumbsCollectionViewActionDelegate>
 
 @end

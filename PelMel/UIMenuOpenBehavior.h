@@ -15,9 +15,9 @@ typedef void(^MenuOpenCompletion)();
 @property (nonatomic,copy) MenuOpenCompletion completion;
 @property (nonatomic,strong) UIGravityBehavior *gravityBehavior;
 
-- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(int)yBoundary;
+- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(NSInteger)yBoundary;
 
-- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(int)yBoundary horizontal:(BOOL)horizontal;
+- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(NSInteger)yBoundary horizontal:(BOOL)horizontal;
 
 /**
  * A list of menu actions which might be pushed (or pulled) by the menu when it opens or closes

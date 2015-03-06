@@ -69,7 +69,8 @@
 -(void)menuManager:(PMLMenuManagerController*)menuManager snippetOpened:(BOOL)animated;
 -(void)menuManager:(PMLMenuManagerController*)menuManager snippetMinimized:(BOOL)animated;
 -(void)menuManager:(PMLMenuManagerController*)menuManager snippetDismissed:(BOOL)animated;
-
+// Callback method called when snippet is panned
+-(void)menuManager:(PMLMenuManagerController*)menuManager snippetPanned:(float)pctOpened;
 
 @end
 

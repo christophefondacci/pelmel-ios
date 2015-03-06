@@ -12,7 +12,7 @@
 #import "MKNumberBadgeView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NSData+Conversion.h"
-
+#import <AFNetworking/AFNetworking.h>
 #define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
 #define kMyMessagesListUrlFormat @"%@/mobileMyMessages?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
 #define kReviewsListUrlFormat @"%@/mobileComments?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&id=%@"
@@ -211,21 +211,6 @@
     }
     NSString *url = [[NSString alloc] initWithFormat:template,togaytherServer];
 
-    // Building request
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    [request setCachePolicy:NSURLRequestReloadIgnoringLocalCacheData];
-    [request setHTTPShouldHandleCookies:NO];
-    [request setTimeoutInterval:30];
-    [request setHTTPMethod:@"POST"];
-    
-    // Preparing post data
-    NSString *boundary= @"----WebKitFormBoundaryr6P6NJ5NfEfBhSCe";
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-    
-    // Initializing HTTP header
-    [request addValue:contentType forHTTPHeaderField:@"Content-Type"];
-    
-    NSMutableData *body = [NSMutableData data];
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     [params setObject:currentUser.token forKey:@"nxtpUserToken"];
     if(isComment) {
@@ -235,107 +220,21 @@
         [params setObject:object.key forKey:@"to"];
         [params setObject:message forKey:@"msgText"];
     }
-    
-    // Adding parameters
-    for (NSString *param in params) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [params objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    
-    // Closing our body
-    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    [request setHTTPBody:body];
-    NSString *postLength = [NSString stringWithFormat:@"%ld", (long)[body length]];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    
-    // Sending request
-    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
-    NSString *cacheKey =[self buildKeyFromPointer:conn];
-    [uploadConnectionCallbacksMap setValue:callback forKey:cacheKey];
-    Message *msg = [[Message alloc] init];
-    [msg setFrom:currentUser];
-    [msg setTo:object];
-    [msg setText:message];
-    [msg setDate:[NSDate date]];
-    [uploadMessagesMap setValue:msg forKey:cacheKey];
-    NSLog(@"Sending message...");
-    [conn start];
-}
-- (NSURLRequest *)connection:(NSURLConnection *)connection willSendRequest:(NSURLRequest *)request redirectResponse:(NSURLResponse *)response {
-    NSLog(@"WillSendRequest");
-    return request;
-}
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        Message *msg = [[Message alloc] init];
+        [msg setFrom:currentUser];
+        [msg setTo:object];
+        [msg setText:message];
+        [msg setDate:[NSDate date]];
 
-
-- (NSInputStream *)connection:(NSURLConnection *)connection needNewBodyStream:(NSURLRequest *)request {
-    NSLog(@"needNewBodyStream");
-    return nil;
-}
-
-- (NSCachedURLResponse *)connection:(NSURLConnection *)connection willCacheResponse:(NSCachedURLResponse *)cachedResponse {
-    NSLog(@"willCacheResponse");
-    return cachedResponse;
-}
-
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
-    NSLog(@"Can authenticate against");
-    return NO;
-}
-- (void)connection:(NSURLConnection *)connection didCancelAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-    NSLog(@"Did cancel auth challenge");
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"Fail with error");
-    NSString *cacheKey = [self buildKeyFromPointer:connection];
-    id<MessageCallback> callback = [uploadConnectionCallbacksMap objectForKey:cacheKey];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [callback messageSendFailed];
-    });
-    if(cacheKey != nil) {
-        [uploadConnectionCallbacksMap removeObjectForKey:cacheKey];
-        [uploadMessagesMap removeObjectForKey:cacheKey];
-    }
-}
--(void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-    NSLog(@"Authentication challenge");
-}
--(void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-    NSLog(@"Will send for auth challenge");
-}
-- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection {
-    NSLog(@"Should use credential storage");
-    return NO;
-}
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    NSLog(@"Did receive response");
-}
-
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)receivedData {
-    NSLog(@"Did receive data");
-}
--(void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"Did finish loading");
-    NSString *cacheKey = [self buildKeyFromPointer:connection];
-    id<MessageCallback> callback = [uploadConnectionCallbacksMap objectForKey:cacheKey];
-    Message *msg = [uploadMessagesMap objectForKey:cacheKey];
-    dispatch_async(dispatch_get_main_queue(), ^{
         [callback messageSent:msg];
-    });
-    if(cacheKey != nil) {
-        [uploadConnectionCallbacksMap removeObjectForKey:cacheKey];
-        [uploadMessagesMap removeObjectForKey:cacheKey];
-    }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [callback messageSendFailed];
+    }];
+    
+}
 
-}
-- (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
-    NSLog(@"Did send body data");
-}
--(NSString*)buildKeyFromPointer:(id)pointer {
-    return [[NSString alloc] initWithFormat:@"%p",pointer];
-}
 -(void)handleToolbar:(UIViewController *)view {
 
     

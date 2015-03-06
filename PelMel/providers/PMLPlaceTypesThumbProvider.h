@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ThumbsPreviewView.h"
 #import "PlaceType.h"
-#import "ThumbTableViewController.h"
+#import "PMLThumbsPreviewProvider.h"
 @class Place;
-@interface PMLPlaceTypesThumbProvider : NSObject<ThumbsPreviewProvider>
+@interface PMLPlaceTypesThumbProvider : NSObject<PMLThumbsPreviewProvider>
 
 -(instancetype)initWithPlace:(Place*)place;
 @end

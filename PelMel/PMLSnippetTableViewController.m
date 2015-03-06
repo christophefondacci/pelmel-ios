@@ -12,6 +12,7 @@
 #import "PMLDataManager.h"
 #import "KIImagePager.h"
 #import "ThumbTableViewController.h"
+#import "PMLThumbCollectionViewController.h"
 #import "PMLSubNavigationController.h"
 #import "PMLSnippetTableViewCell.h"
 #import "PMLGalleryTableViewCell.h"
@@ -32,13 +33,17 @@
 #import "SpringTransitioningDelegate.h"
 #import "PMLFakeViewController.h"
 #import "PMLPopupActionManager.h"
+#import "PMLCountersView.h"
+#import "UIImage+IPImageUtils.h"
+#import "UITouchBehavior.h"
+
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
 #define kPMLSectionsCount 12
 
-#define kPMLSectionSnippet 0
-#define kPMLSectionGallery 1
+#define kPMLSectionSnippet 1
+#define kPMLSectionGallery 0
 #define kPMLSectionCounters 2
 #define kPMLSectionOvSummary 3
 #define kPMLSectionOvAddress 4
@@ -62,14 +67,14 @@
 #define kPMLRowCountersId @"counters"
 #define kPMLRowThumbPreviewId @"thumbsPreview"
 #define kPMLHeightSnippet 110
-#define kPMLHeightGallery 240
+#define kPMLHeightGallery 180
 #define kPMLHeightCounters 97
-#define kPMLHeightThumbPreview 100
+#define kPMLHeightThumbPreview 75
 #define kPMLHeightThumbPreviewContainer 65
-#define kPMLThumbSize @42
+#define kPMLThumbSize @62
 
 
-#define kPMLOvSummaryRows 3
+#define kPMLOvSummaryRows 0
 #define kPMLRowOvSeparator 40
 #define kPMLRowOvImage 0
 #define kPMLRowOvTitle 1
@@ -126,8 +131,9 @@
 @implementation PMLSnippetTableViewController {
     
     // Inner controller for thumb listview
-    ThumbTableViewController *_thumbController;
-    NSMutableDictionary *_counterThumbControllers; // map of ThumbTableViewController for likes/checkins preview
+    PMLThumbCollectionViewController *_thumbController;
+    PMLThumbCollectionViewController *_typesThumbController;
+    PMLCountersView *_countersView;
     
     // Providers
     NSObject<PMLInfoProvider> *_infoProvider;
@@ -149,6 +155,8 @@
     // Gallery
     BOOL _galleryFullscreen;
     CGRect _galleryFrame;
+    float _galleryPctHeight;
+    BOOL _hasGallery;
     
     
     // Services
@@ -161,6 +169,9 @@
     // Pre-computing
     NSDictionary *_hoursTypeMap;
     
+    // Animations
+    UIDynamicAnimator *_animator;
+    
     // Dragging
     BOOL _parentDragging;
     CGPoint _dragStartPoint;
@@ -171,6 +182,7 @@
     NSInteger _readMoreSize;
     ThumbPreviewMode _thumbPreviewMode;
     BOOL _opened;
+    
 }
 
 
@@ -186,12 +198,16 @@
     _actionManager = [[PMLPopupActionManager alloc] initWithObject:_snippetItem];
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
-    _counterThumbControllers = [[NSMutableDictionary alloc] init];
+    _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
     _heightsMap = [[NSMutableDictionary alloc] init];
     _hoursTypeMap = [[NSMutableDictionary alloc] init];
+    _galleryPctHeight = 0;
+    
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.showsHorizontalScrollIndicator = NO;
 
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
     
@@ -203,6 +219,9 @@
     _sectionSummaryTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     
     self.title = [_infoProvider title];
+    
+    // Animation init
+    _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
 }
 - (void)viewWillAppear:(BOOL)animated {
 
@@ -214,6 +233,7 @@
     self.subNavigationController.delegate = self;
     // Getting data
     [_dataService registerDataListener:self];
+    [[TogaytherService userService] registerListener:self];
     if(_snippetItem != nil) {
         [_dataService getOverviewData:_snippetItem];
     } else {
@@ -227,6 +247,7 @@
 }
 -(void)viewDidDisappear:(BOOL)animated {
     [_dataService unregisterDataListener:self];
+    [[TogaytherService userService] unregisterListener:self];
 }
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     if(parent == nil) {
@@ -267,20 +288,22 @@
                 return kPMLSnippetRows;
             case kPMLSectionGallery:
 //                if(_snippetItem.mainImage!=nil) {
-                    return 1;
+                return _hasGallery ? 1 : 0;
 //                } else {
 //                    return 0;
 //                }
                 break;
             case kPMLSectionCounters:
-                switch (_thumbPreviewMode) {
-                    case ThumbPreviewModeCheckins:
-                    case ThumbPreviewModeLikes:
-                        return 1+[_infoProvider thumbsRowCountForMode:_thumbPreviewMode];
-                    case ThumbPreviewModeNone:
-                    default:
-                        return 1;
-                }
+                return [_infoProvider thumbsRowCountForMode:ThumbPreviewModeLikes]+[_infoProvider thumbsRowCountForMode:ThumbPreviewModeCheckins] >0 ? 1 : 0;
+//                return 0;
+//                switch (_thumbPreviewMode) {
+//                    case ThumbPreviewModeCheckins:
+//                    case ThumbPreviewModeLikes:
+//                        return 1+[_infoProvider thumbsRowCountForMode:_thumbPreviewMode];
+//                    case ThumbPreviewModeNone:
+//                    default:
+//                        return 1;
+//                }
                 break;
             case kPMLSectionOvSummary:
                 return kPMLOvSummaryRows;
@@ -336,12 +359,12 @@
         case kPMLSectionGallery:
             return kPMLRowGalleryId;
         case kPMLSectionCounters:
-            switch(indexPath.row) {
-                case kPMLRowCounters:
-                    return kPMLRowCountersId;
-                default:
+//            switch(indexPath.row) {
+//                case kPMLRowCounters:
+//                    return kPMLRowCountersId;
+//                default:
                     return kPMLRowThumbPreviewId;
-            }
+//            }
             break;
         case kPMLSectionOvEvents:
             if(indexPath.row<[[_infoProvider events] count]) {
@@ -403,14 +426,14 @@
             [self configureRowGallery:(PMLGalleryTableViewCell*)cell];
             break;
         case kPMLSectionCounters:
-            switch(indexPath.row) {
-                case kPMLRowCounters:
-                    [self configureRowCounters:(PMLCountersTableViewCell*)cell];
-                    break;
-                default:
+//            switch(indexPath.row) {
+//                case kPMLRowCounters:
+//                    [self configureRowCounters:(PMLCountersTableViewCell*)cell];
+//                    break;
+//                default:
                     [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:indexPath.row];
-                    break;
-            }
+//                    break;
+//            }
             break;
         case kPMLSectionOvSummary:
             switch(indexPath.row) {
@@ -479,10 +502,15 @@
                     return kPMLHeightSnippet;
             }
             break;
-        case kPMLSectionGallery:
+        case kPMLSectionGallery: {
+//            return kPMLHeightGallery;
+//            CGFloat height = _galleryPctHeight * (float)kPMLHeightGallery;
+//            NSLog(@"Gallery height: %.02f",height);
+//            return height > 0 ? height : 1;
+        }
             if(!_galleryFullscreen) {
                 // Substract 5 for #44 little truncation
-                return (tableView.bounds.size.width-5)-(48*2);
+                return kPMLHeightGallery; //(tableView.bounds.size.width-5)-(48*2);
             } else {
                 return tableView.bounds.size.height;
             }
@@ -594,6 +622,8 @@
         case kPMLSectionOvSummary:
             [_sectionSummaryTitleView setTitleLocalized:@"snippet.title.summary"];
             return _sectionSummaryTitleView;
+
+
     }
     if(section != kPMLSectionOvDesc) {
         return [super tableView:tableView viewForHeaderInSection:section];
@@ -617,6 +647,8 @@
                 return 0;
             case kPMLSectionOvSummary:
                 return _sectionSummaryTitleView.bounds.size.height;
+            case kPMLSectionCounters:
+                return 5;
             default:
                 break;
         }
@@ -640,6 +672,7 @@
 -(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     switch(section) {
         case kPMLSectionOvDesc:
+        case kPMLSectionCounters:
             for(UIView *childView in view.subviews) {
                 childView.backgroundColor = UIColorFromRGB(0x272a2e);
             }
@@ -773,6 +806,8 @@
     } else {
         cell.subtitleIcon.hidden = NO;
     }
+    CGSize subtitleSize = [cell.subtitleLabel sizeThatFits:CGSizeMake(MAXFLOAT, cell.subtitleLabel.bounds.size.height)];
+    cell.subtitleWidthConstraint.constant = subtitleSize.width;
     
     // Observing address
     if([_snippetItem isKindOfClass:[Place class]]) {
@@ -790,6 +825,7 @@
         cell.hoursBadgeTitleLabel.textColor = [_infoProvider snippetRightColor];
         cell.hoursBadgeSubtitleLabel.textColor = [_infoProvider snippetRightColor];
         cell.hoursBadgeImageView.image = [_infoProvider snippetRightIcon];
+        cell.hoursBadgeImageView.hidden=YES;
 
         if([_infoProvider respondsToSelector:@selector(snippetRightActionTapped:)]) {
             UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightSnippetTapped:)];
@@ -825,19 +861,62 @@
     if([_infoProvider respondsToSelector:@selector(configureCustomViewIn:forController:)]) {
         [_infoProvider configureCustomViewIn:cell.peopleView forController:self];
     } else {
-        // Configuring thumb controller
-        if(cell.peopleView.subviews.count == 0) {
-            // Initializing thumb controller
-            _thumbController = (ThumbTableViewController*)[_uiService instantiateViewController:SB_ID_THUMBS_CONTROLLER];
-            [self addChildViewController:_thumbController];
-            [cell.peopleView addSubview:_thumbController.view];
-            [_thumbController didMoveToParentViewController:self];
+        if(_countersView.superview != cell.peopleView) {
+            if(_countersView.superview) {
+                [_countersView removeFromSuperview];
+            }
+            CGRect frame = cell.peopleView.bounds;
+            _countersView.frame = CGRectMake(frame.origin.x,frame.origin.y,frame.size.width-15,frame.size.height);
+            [cell.peopleView addSubview:_countersView];
         }
-        // Building provider
-        _thumbController.thumbProvider = _infoProvider.thumbsProvider;
-        [self configureThumbController];
-        //    [self.tableView reloadData];
-        [_thumbController.tableView reloadData];
+        _countersView.backgroundColor=[UIColor clearColor];
+        id<PMLCountersDatasource> datasource = [_infoProvider countersDatasource:self.actionManager];
+        _countersView.datasource = datasource;
+        [_countersView reloadData];
+//        // Setting up like counter
+//        NSString *likeCounterLabel = nil;
+//        if([_infoProvider respondsToSelector:@selector(likesCounterTitle)]) {
+//            likeCounterLabel = [_infoProvider likesCounterTitle];
+//        } else {
+//            likeCounterLabel = [_uiService localizedString:@"counters.likes" forCount:[_infoProvider likesCount]];
+//        }
+//        _countersView.likeTitleLabel.text = likeCounterLabel;
+//        
+//        // Setting up checkin counter
+//        NSString *checkinCounterLabel = nil;
+//        if([_infoProvider respondsToSelector:@selector(checkinsCounterTitle)]) {
+//            checkinCounterLabel = [_infoProvider checkinsCounterTitle];
+//        } else {
+//            checkinCounterLabel = [_uiService localizedString:@"counters.checkins" forCount:[_infoProvider checkinsCount]];
+//        }
+//        _countersView.checkinTitleLabel.text = checkinCounterLabel;
+//        
+//        //Setting up comments counter
+//        NSString *commentsCounterLabel = nil;
+//        if([_infoProvider respondsToSelector:@selector(commentsCounterTitle)]) {
+//            commentsCounterLabel = [_infoProvider commentsCounterTitle];
+//        } else {
+//            commentsCounterLabel = [_uiService localizedString:@"counters.comments" forCount:[_infoProvider reviewsCount]];
+//        }
+//        _countersView.commentsTitleLabel.text = commentsCounterLabel;
+//        
+//        // Wrapping Actions
+//        [_countersView.likeContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(likeTapped)]];
+//        [_countersView.checkinsContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(checkinTapped)]];
+//        [_countersView.commentsContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(commentTapped)]];
+//        
+//        // Visibility
+//
+//        
+//        
+//        if(_snippetItem.isLiked) {
+//            _countersView.likeIcon.image = [UIImage ipMaskedImageNamed:@"ovvIconLike" color:UIColorFromRGB(0x039be5)];
+//            _countersView.likeTitleLabel.textColor =UIColorFromRGB(0x039be5);
+//        } else {
+//            _countersView.likeIcon.image = [UIImage imageNamed:@"ovvIconLike"];
+//            _countersView.likeTitleLabel.textColor =[UIColor whiteColor];
+//        }
+        
     }
     
     // If edit mode we activate it
@@ -845,93 +924,93 @@
         [self updateTitleEdition];
     }
     
-    // Wiring like action
-    PMLActionType primaryAction = PMLActionTypeNoAction;
-    NSString *primaryActionTitle = nil;
-    if([_infoProvider respondsToSelector:@selector(primaryActionType)]) {
-        primaryAction = [_infoProvider primaryActionType];
-        primaryActionTitle = [_infoProvider actionSubtitleFor:primaryAction];
-    } else {
-        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
-            primaryAction = PMLActionTypeLike;
-            if(_snippetItem.isLiked) {
-                primaryActionTitle = NSLocalizedString(@"action.unlike",@"Unlike");
-            } else {
-                primaryActionTitle = NSLocalizedString(@"action.like",@"Like");
-            }
-        }
-    }
-    if(primaryAction!=PMLActionTypeNoAction) {
-        cell.likeButton.hidden=NO;
-        cell.likeButtonSubtitle.hidden=NO;
-        PopupAction *action = [_actionManager actionForType:primaryAction];
-        cell.likeButton.tag=primaryAction;
-        [cell.likeButton setImage:action.icon forState:UIControlStateNormal];
-        cell.likeButton.layer.borderColor = [action.color CGColor];
-        [cell.likeButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        cell.likeButtonSubtitle.text = primaryActionTitle;
-        
-    } else {
+//    // Wiring like action
+//    PMLActionType primaryAction = PMLActionTypeNoAction;
+//    NSString *primaryActionTitle = nil;
+//    if([_infoProvider respondsToSelector:@selector(primaryActionType)]) {
+//        primaryAction = [_infoProvider primaryActionType];
+//        primaryActionTitle = [_infoProvider actionSubtitleFor:primaryAction];
+//    } else {
+//        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
+//            primaryAction = PMLActionTypeLike;
+//            if(_snippetItem.isLiked) {
+//                primaryActionTitle = NSLocalizedString(@"action.unlike",@"Unlike");
+//            } else {
+//                primaryActionTitle = NSLocalizedString(@"action.like",@"Like");
+//            }
+//        }
+//    }
+//    if(primaryAction!=PMLActionTypeNoAction) {
+//        cell.likeButton.hidden=NO;
+//        cell.likeButtonSubtitle.hidden=NO;
+//        PopupAction *action = [_actionManager actionForType:primaryAction];
+//        cell.likeButton.tag=primaryAction;
+//        [cell.likeButton setImage:action.icon forState:UIControlStateNormal];
+//        cell.likeButton.layer.borderColor = [action.color CGColor];
+//        [cell.likeButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//        cell.likeButtonSubtitle.text = primaryActionTitle;
+//        
+//    } else {
         cell.likeButton.hidden=YES;
         cell.likeButtonSubtitle.hidden=YES;
-    }
+//    }
     
     
 }
 
--(void)configureRowCounters:(PMLCountersTableViewCell*)cell {
-    _countersCell = cell;
-    // Counters
-    cell.likesCounterLabel.text = [NSString stringWithFormat:@"%d",_infoProvider.likesCount];
-    cell.checkinsCounterLabel.text = [NSString stringWithFormat:@"%d",_infoProvider.checkinsCount];
-    cell.commentsCounterLabel.text = [NSString stringWithFormat:@"%d",_infoProvider.reviewsCount];
-    // Adding tap gestures
-    UITapGestureRecognizer *likesTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(likesCounterTapped:)];
-    [cell.likesContainerView addGestureRecognizer:likesTapRecognizer];
-    cell.likesContainerView.userInteractionEnabled=YES;
-
-    UITapGestureRecognizer *checkinsTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(checkinsCounterTapped:)];
-    [cell.checkinsContainerView addGestureRecognizer:checkinsTapRecognizer];
-    cell.checkinsContainerView.userInteractionEnabled=YES;
-    
-    UITapGestureRecognizer *commentsTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(commentsCounterTapped:)];
-    [cell.commentsContainerView addGestureRecognizer:commentsTapRecognizer];
-    cell.commentsContainerView.userInteractionEnabled=YES;
-    
-    // Gradient on counters view
-    if(_countersGradient == nil) {
-        _countersGradient = [CAGradientLayer layer];
-        
-        [cell.countersView.layer insertSublayer:_countersGradient atIndex:0];
-        cell.countersView.layer.masksToBounds=YES;
-    }
-    
-    // Setting gradient length base on selected tab (if any)
-    [self updateGradient:cell];
-    
-    // Setting up fonts
-    cell.likesCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
-    cell.checkinsCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
-    cell.commentsCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
-    cell.likesTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
-    cell.checkinsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
-    cell.commentsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
-    if([_infoProvider respondsToSelector:@selector(commentsCounterTitle)]) {
-        cell.commentsTitleLabel.text = [_infoProvider commentsCounterTitle];
-    } else {
-        cell.commentsTitleLabel.text = NSLocalizedString(@"counters.comments", @"Comments");
-    }
-    if([_infoProvider respondsToSelector:@selector(checkinsCounterTitle)]) {
-        cell.checkinsTitleLabel.text = [_infoProvider checkinsCounterTitle];
-    } else {
-        cell.checkinsTitleLabel.text = NSLocalizedString(@"counters.checkins", @"Check-ins");
-    }
-    if([_infoProvider respondsToSelector:@selector(likesCounterTitle)]) {
-        cell.likesTitleLabel.text = [_infoProvider likesCounterTitle];
-    } else {
-        cell.likesTitleLabel.text = NSLocalizedString(@"counters.likes", @"Likes");
-    }
-}
+//-(void)configureRowCounters:(PMLCountersTableViewCell*)cell {
+//    _countersCell = cell;
+//    // Counters
+//    cell.likesCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_infoProvider.likesCount];
+//    cell.checkinsCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_infoProvider.checkinsCount];
+//    cell.commentsCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_infoProvider.reviewsCount];
+//    // Adding tap gestures
+//    UITapGestureRecognizer *likesTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(likesCounterTapped:)];
+//    [cell.likesContainerView addGestureRecognizer:likesTapRecognizer];
+//    cell.likesContainerView.userInteractionEnabled=YES;
+//
+//    UITapGestureRecognizer *checkinsTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(checkinsCounterTapped:)];
+//    [cell.checkinsContainerView addGestureRecognizer:checkinsTapRecognizer];
+//    cell.checkinsContainerView.userInteractionEnabled=YES;
+//    
+//    UITapGestureRecognizer *commentsTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(commentsCounterTapped:)];
+//    [cell.commentsContainerView addGestureRecognizer:commentsTapRecognizer];
+//    cell.commentsContainerView.userInteractionEnabled=YES;
+//    
+//    // Gradient on counters view
+//    if(_countersGradient == nil) {
+//        _countersGradient = [CAGradientLayer layer];
+//        
+//        [cell.countersView.layer insertSublayer:_countersGradient atIndex:0];
+//        cell.countersView.layer.masksToBounds=YES;
+//    }
+//    
+//    // Setting gradient length base on selected tab (if any)
+//    [self updateGradient:cell];
+//    
+//    // Setting up fonts
+////    cell.likesCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
+////    cell.checkinsCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
+////    cell.commentsCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
+////    cell.likesTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
+////    cell.checkinsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
+////    cell.commentsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
+//    if([_infoProvider respondsToSelector:@selector(commentsCounterTitle)]) {
+//        cell.commentsTitleLabel.text = [_infoProvider commentsCounterTitle];
+//    } else {
+//        cell.commentsTitleLabel.text = [_uiService localizedString:@"counters.comments" forCount:_infoProvider.reviewsCount];
+//    }
+//    if([_infoProvider respondsToSelector:@selector(checkinsCounterTitle)]) {
+//        cell.checkinsTitleLabel.text = [_infoProvider checkinsCounterTitle];
+//    } else {
+//        cell.checkinsTitleLabel.text = [_uiService localizedString:@"counters.checkins" forCount:_infoProvider.checkinsCount];
+//    }
+//    if([_infoProvider respondsToSelector:@selector(likesCounterTitle)]) {
+//        cell.likesTitleLabel.text = [_infoProvider likesCounterTitle];
+//    } else {
+//        cell.likesTitleLabel.text = [_uiService localizedString:@"counters.likes" forCount:_infoProvider.likesCount];
+//    }
+//}
 /**
  * Updates the gradient of the counters view based on the selected tab
  */
@@ -968,53 +1047,30 @@
 
 }
 -(void)configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:(NSInteger)index {
-    NSObject<ThumbsPreviewProvider> *provider = [_infoProvider thumbsProviderFor:_thumbPreviewMode atIndex:index];
-    // Setting intro label
-    if([provider respondsToSelector:@selector(getLabel)]) {
-        cell.introLabel.text = [provider getLabel];
-    } else {
-        cell.introLabel.text = nil;
-    }
+    NSObject<PMLThumbsPreviewProvider> *provider = [_infoProvider thumbsProvider];
     
     // Numeric row key
-    NSNumber *key = [NSNumber numberWithInt:(int)index];
-    
-    // Purging any previous gradient
-    CAGradientLayer *countersPreviewGradient = [_countersPreviewGradients objectForKey:key];
-    if(countersPreviewGradient != nil) {
-        [countersPreviewGradient removeFromSuperlayer];
-    }
-    // Registering a new one
-    countersPreviewGradient = [CAGradientLayer layer];
-    [_countersPreviewGradients setObject:countersPreviewGradient forKey:key];
-    
-    // Setting up
-    countersPreviewGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x4b4d53).CGColor, (id)UIColorFromRGB(0x33363e).CGColor, nil];
-    [cell.tabView.layer insertSublayer:countersPreviewGradient atIndex:0];
-    cell.tabView.layer.masksToBounds=YES;
-    [cell.tabView layoutIfNeeded];
-    CGRect frame = cell.tabView.bounds;
-    countersPreviewGradient.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, kPMLHeightThumbPreview);
+    cell.backgroundColor = [UIColor clearColor];
 
     // Thumb controller
     if(provider != nil) {
-        ThumbTableViewController *counterThumbController = [_counterThumbControllers objectForKey:key];
-        if(counterThumbController != nil) {
-            [counterThumbController willMoveToParentViewController:nil];
-            [counterThumbController.view removeFromSuperview];
-            [counterThumbController removeFromParentViewController];
+        if(_thumbController != nil) {
+            [_thumbController willMoveToParentViewController:nil];
+            [_thumbController.view removeFromSuperview];
+            [_thumbController removeFromParentViewController];
         } else {
-            counterThumbController = (ThumbTableViewController*)[_uiService instantiateViewController:SB_ID_THUMBS_CONTROLLER];
-            [_counterThumbControllers setObject:counterThumbController forKey:key];
+            _thumbController = (PMLThumbCollectionViewController*)[_uiService instantiateViewController:@"thumbCollectionCtrl"];
         }
-        [self addChildViewController:counterThumbController];
-        [cell.thumbsContainer addSubview:counterThumbController.view];
-        [counterThumbController didMoveToParentViewController:self];
-        counterThumbController.size = kPMLThumbSize;
+        [self addChildViewController:_thumbController];
+        _thumbController.actionDelegate=self;
+        _thumbController.size = kPMLThumbSize;
+        [_thumbController setThumbProvider:provider];
+        [cell layoutIfNeeded];
+        _thumbController.view.frame = cell.thumbsContainer.bounds;
+        [cell.thumbsContainer addSubview:_thumbController.view];
+        [_thumbController didMoveToParentViewController:self];
 
-        counterThumbController.view.frame = cell.thumbsContainer.bounds;
-        counterThumbController.actionDelegate=self;
-        [counterThumbController setThumbProvider:provider];
+
     }
     
 }
@@ -1039,30 +1095,30 @@
         cell.addPhotoButton.hidden=YES;
     }
     
-    // Wiring secondary action
-    if([_infoProvider respondsToSelector:@selector(secondaryActionType)]) {
-        PMLActionType actionType = [_infoProvider secondaryActionType];
-        PopupAction *action = [_actionManager actionForType:actionType];
-        if(action != nil) {
-            cell.secondaryButton.hidden=NO;
-            cell.secondaryButtonTitle.hidden=NO;
-            
-            cell.secondaryButtonTitle.text = [_infoProvider actionSubtitleFor:actionType];
-            [cell.secondaryButton setImage:action.icon forState:UIControlStateNormal];
-            cell.secondaryButton.layer.borderColor = [action.color CGColor];
-            cell.secondaryButton.tag = actionType;
-            [cell.secondaryButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-        } else {
-            cell.secondaryButton.hidden=YES;
-            cell.secondaryButtonTitle.hidden=YES;
-        }
-    } else {
+//    // Wiring secondary action
+//    if([_infoProvider respondsToSelector:@selector(secondaryActionType)]) {
+//        PMLActionType actionType = [_infoProvider secondaryActionType];
+//        PopupAction *action = [_actionManager actionForType:actionType];
+//        if(action != nil) {
+//            cell.secondaryButton.hidden=NO;
+//            cell.secondaryButtonTitle.hidden=NO;
+//            
+//            cell.secondaryButtonTitle.text = [_infoProvider actionSubtitleFor:actionType];
+//            [cell.secondaryButton setImage:action.icon forState:UIControlStateNormal];
+//            cell.secondaryButton.layer.borderColor = [action.color CGColor];
+//            cell.secondaryButton.tag = actionType;
+//            [cell.secondaryButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+//        } else {
+//            cell.secondaryButton.hidden=YES;
+//            cell.secondaryButtonTitle.hidden=YES;
+//        }
+//    } else {
         cell.secondaryButton.hidden=YES;
         cell.secondaryButtonTitle.hidden=YES;
-    }
+//    }
 }
 -(void)actionButtonTapped:(UIButton*)source {
-    PopupAction *action = [_actionManager actionForType:source.tag];
+    PopupAction *action = [_actionManager actionForType:(PMLActionType)source.tag];
     if(action.actionCommand!=nil) {
         action.actionCommand();
     }
@@ -1260,14 +1316,34 @@
         s = [s stringByReplacingCharactersInRange:r withString:@""];
     return s;
 }
+
+#pragma mark - InfoProvider helpers
+-(PMLActionType)checkinAction {
+    PMLActionType type = PMLActionTypeCheckin;
+    if([_infoProvider respondsToSelector:@selector(checkinActionType)]) {
+        type = [_infoProvider checkinActionType];
+    }
+    return type;
+}
+-(PMLActionType)likeAction {
+    PMLActionType type = PMLActionTypeLike;
+    if([_infoProvider respondsToSelector:@selector(likeActionType)]) {
+        type = [_infoProvider likeActionType];
+    }
+    return type;
+}
+-(PMLActionType)commentAction {
+    PMLActionType type = PMLActionTypeComment;
+    if([_infoProvider respondsToSelector:@selector(commentActionType)]) {
+        type = [_infoProvider commentActionType];
+    }
+    return type;
+}
+
 #pragma mark - Actions callback
 - (void) labelTapped:(UIGestureRecognizer*)sender {
     _snippetItem.editing = YES;
     [self updateTitleEdition];
-//    self.titleTextField.placeholder = NSLocalizedString(@"edit.title",@"Enter a name");
-//    self.titleTextField.hidden=NO;
-//    self.titleTextField.delegate = self;
-//    [self.titleTextField becomeFirstResponder];
     
 }
 -(void)imageTapped:(UITapGestureRecognizer*)sender {
@@ -1285,13 +1361,42 @@
     }
 }
 
--(void)likesCounterTapped:(UIGestureRecognizer*)sender {
-    [self counterTappedForMode:ThumbPreviewModeLikes];
+-(void)likeTapped {
+    PMLActionType type = [self likeAction];
+    if(type != PMLActionTypeNoAction) {
+        PopupAction *action = [self.actionManager actionForType:type];
+        UITouchBehavior *touch = [[UITouchBehavior alloc] initWithTarget:_countersView.likeIcon];
+        [touch setMagnitude:0.5];
+        [_animator removeAllBehaviors];
+        [_animator addBehavior:touch];
+        
+        action.actionCommand();
+    }
 }
--(void)checkinsCounterTapped:(UIGestureRecognizer*)sender {
-    [self counterTappedForMode:ThumbPreviewModeCheckins];
+-(void)checkinTapped {
+    PMLActionType type = [self checkinAction];
+    if(type != PMLActionTypeNoAction) {
+        PopupAction *action = [self.actionManager actionForType:type];
+        UITouchBehavior *touch = [[UITouchBehavior alloc] initWithTarget:_countersView.checkinIcon];
+        [touch setMagnitude:0.5];
+        [_animator removeAllBehaviors];
+        [_animator addBehavior:touch];
+        
+        action.actionCommand();
+    }
 }
-
+-(void)commentTapped {
+    PMLActionType type = [self commentAction];
+    if(type != PMLActionTypeNoAction) {
+        PopupAction *action = [self.actionManager actionForType:type];
+        UITouchBehavior *touch = [[UITouchBehavior alloc] initWithTarget:_countersView.commentsIcon];
+        [touch setMagnitude:0.5];
+        [_animator removeAllBehaviors];
+        [_animator addBehavior:touch];
+        
+        action.actionCommand();
+    }
+}
 -(NSArray*)indexPathArrayForMode:(ThumbPreviewMode)mode {
     
     // Building array of index path (to insert or delete)
@@ -1300,87 +1405,6 @@
         [paths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
     }
     return paths;
-}
-
--(void)counterTappedForMode:(ThumbPreviewMode)mode {
-    BOOL insert = _thumbPreviewMode == ThumbPreviewModeNone;
-    ThumbPreviewMode currentMode = _thumbPreviewMode;
-    _thumbPreviewMode = (_thumbPreviewMode == mode) ? ThumbPreviewModeNone : mode;
-    
-    
-    // if new mode is empty then we consider no mode
-    if(_thumbPreviewMode!=ThumbPreviewModeNone && [_infoProvider thumbsRowCountForMode:_thumbPreviewMode] == 0) {
-        _thumbPreviewMode = ThumbPreviewModeNone;
-    }
-
-    
-    // Unallocating thumbs preview resources
-    // Getting number of rows previously displayed
-//    NSInteger previousRows = [_infoProvider thumbsRowCountForMode:currentMode];
-    for(int i = 0 ; i < 5 ; i++) {
-        NSNumber *key = [NSNumber numberWithInt:i];
-        ThumbTableViewController *counterThumbController = [_counterThumbControllers objectForKey:key];
-        if(counterThumbController != nil) {
-            [counterThumbController willMoveToParentViewController:nil];
-            [counterThumbController.view removeFromSuperview];
-            [counterThumbController removeFromParentViewController];
-        }
-        [_counterThumbControllers removeObjectForKey:key];
-    }
-    
-    
-    if(insert && _thumbPreviewMode == mode) {
-        NSArray *paths = [self indexPathArrayForMode:_thumbPreviewMode];
-        [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else if (_thumbPreviewMode == ThumbPreviewModeNone) {
-        NSArray *paths = [self indexPathArrayForMode:currentMode];
-        [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else {
-        NSInteger currentRows = [_infoProvider thumbsRowCountForMode:currentMode];
-        NSInteger newRows = [_infoProvider thumbsRowCountForMode:_thumbPreviewMode];
-
-        NSMutableArray *oldPaths = [[NSMutableArray alloc] init];
-        for(int i = kPMLRowThumbPreview ; i < kPMLRowThumbPreview + currentRows ; i++) {
-            [oldPaths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
-        }
-        NSMutableArray *newPaths = [[NSMutableArray alloc] init];
-        for(int i = kPMLRowThumbPreview ; i < kPMLRowThumbPreview + newRows ; i++) {
-            [newPaths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
-        }
-        [self.tableView beginUpdates];
-        [self.tableView deleteRowsAtIndexPaths:oldPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView insertRowsAtIndexPaths:newPaths withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
-//        if(currentRows>newRows) {
-//            [paths removeAllObjects];
-//            for(int i = (int)newRows ; i < currentRows ; i++) {
-//                [paths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
-//            }
-//            [self.tableView deleteRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
-//        } else if(newRows > currentRows) {
-//            [paths removeAllObjects];
-//            for(int i = (int)currentRows ; i < newRows ; i++) {
-//                [paths addObject:[NSIndexPath indexPathForRow:i inSection:kPMLSectionCounters]];
-//            }
-//            [self.tableView insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
-//        } else {
-//            [self.tableView reloadRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
-//        }
-    }
-    
-
-    
-    [self updateGradient:_countersCell];
-    
-}
--(void)commentsCounterTapped:(UIGestureRecognizer*)sender {
-    MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
-    msgController.withObject = _snippetItem;
-//    if(self.subNavigationController) {
-//        [self.subNavigationController pushViewController:msgController animated:YES];
-//    } else {
-    [self.navigationController pushViewController:msgController animated:YES];
-//    }
 }
 -(void)topPlaceTapped:(NSInteger)index {
      CALObject *item = [[_infoProvider topPlaces] objectAtIndex:index];
@@ -1417,14 +1441,6 @@
 
     _galleryFullscreen = !_galleryFullscreen;
     NSLog(@"Animating Fullscreen = %@",_galleryFullscreen ? @"FULLSCREEN" : @"normal");
-
-    if(_galleryCell.leftConstraint.constant == 0) {
-        _galleryCell.leftConstraint.constant = 48;
-        _galleryCell.rightConstraint.constant = 48;
-    } else {
-        _galleryCell.leftConstraint.constant = 0;
-        _galleryCell.rightConstraint.constant = 0;
-    }
     
     NSIndexPath *galleryPath = [NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery];
     [self.tableView scrollToRowAtIndexPath:galleryPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -1444,7 +1460,8 @@
     return _images;
 }
 - (UIViewContentMode)contentModeForImage:(NSUInteger)image {
-    return UIViewContentModeScaleAspectFit;
+//    return  UIViewContentModeScaleAspectFill;
+        return  _galleryFullscreen ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
 }
 -(UIImage *)placeHolderImageForImagePager {
     return [CALImage getDefaultImage];
@@ -1453,14 +1470,14 @@
     [self imageTappedAtIndex:(int)index image:nil];
 }
 #pragma mark - ThumbPreviewActionDelegate
-- (void)thumbsTableView:(ThumbTableViewController*)controller thumbTapped:(int)thumbIndex {
-    id selectedItem = [[controller.thumbProvider items] objectAtIndex:thumbIndex];
+- (void)thumbsTableView:(PMLThumbCollectionViewController*)controller thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {
+    id selectedItem = [[controller.thumbProvider itemsForType:type] objectAtIndex:thumbIndex];
     if(_snippetItem.editing) {
         if([selectedItem isKindOfClass:[PlaceType class]]) {
             // Assigning new place
             ((Place*)_snippetItem).placeType = ((PlaceType*)selectedItem).code;
             // Refreshing table
-            [controller.tableView reloadData];
+            [controller.collectionView reloadData];
         }
     } else {
         [self pushSnippetFor:(CALObject*)selectedItem];
@@ -1473,7 +1490,6 @@
         // Building provider
         _thumbController.thumbProvider = _infoProvider.thumbsProvider;
         _hoursTypeMap = [_conversionService hashHoursByType:object];
-        [self configureThumbController];
         [self.tableView reloadData];
         
         // Updating gallery
@@ -1488,11 +1504,7 @@
         }
     }
 }
-- (void) configureThumbController {
-    _thumbController.actionDelegate = self;
-    _thumbController.view.frame = _snippetCell.peopleView.bounds;
-    _thumbController.size = @30;
-}
+
 - (void)setSnippetItem:(CALObject *)snippetItem {
     [self clearObservers];
     _snippetItem = snippetItem;
@@ -1509,6 +1521,12 @@
 - (void)didLike:(CALObject *)likedObject newLikes:(int)likeCount newDislikes:(int)dislikesCount liked:(BOOL)liked {
     [self.tableView reloadData];
 }
+
+#pragma mark PMLUserCallback
+- (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object {
+    [self.tableView reloadData];
+}
+
 #pragma mark - UITextFieldDelegate
 - (void)titleTextChanged:(UITextField*) textField {
     if([_snippetItem isKindOfClass:[Place class]]) {
@@ -1609,8 +1627,9 @@
             // Initilizing with this selection
             PMLPlaceTypesThumbProvider *provider = [[PMLPlaceTypesThumbProvider alloc] initWithPlace:(Place*)_snippetItem];
             // Registering new provider
-            _thumbController.thumbProvider = provider;
-            [self configureThumbController];
+        //TODO:NEW CELL FOR EDITION
+//            _thumbController.thumbProvider = provider;
+//            [self configureThumbController];
         }
     } else if(_snippetItem.editingDesc) {
         _snippetCell.descriptionTextView.delegate = self;
@@ -1715,6 +1734,13 @@
     } else {
         [self snippetCell:cell setOptionalVisibility:0];
     }
+    
+    // Gallery management
+    BOOL shouldAddGallery = !_hasGallery && _snippetItem!=nil;
+    _hasGallery = YES;
+    if(shouldAddGallery) {
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationFade];
+    }
 
 }
 -(void)snippetCell:(PMLSnippetTableViewCell*)cell setOptionalVisibility:(float)alpha {
@@ -1732,7 +1758,23 @@
     } else {
         [self snippetCell:cell setOptionalVisibility:1];
     }
-
+    
+    // Gallery management
+    BOOL shouldRemoveGallery = _hasGallery && _snippetItem!=nil;
+    _hasGallery = NO;
+    if(shouldRemoveGallery) {
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+- (void)menuManager:(PMLMenuManagerController *)menuManager snippetPanned:(float)pctOpened {
+//    BOOL insert = (_galleryPctHeight == 0);
+    _galleryPctHeight = pctOpened;
+//    insert = insert &&_galleryPctHeight>0;
+//    if(insert) {
+//        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationNone];
+//    } else {
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationNone];
+//    }
 }
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;

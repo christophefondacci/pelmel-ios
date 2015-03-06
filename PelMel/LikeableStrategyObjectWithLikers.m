@@ -25,21 +25,26 @@
 }
 
 - (void)likeTapped:(CALObject*)likedObject callback:(LikeCompletionBlock)callback {
-    BOOL isLiked = likedObject.isLiked;
-    User *likedUser;
-    CurrentUser *currentUser = [userService getCurrentUser];
-    for(User *user in likedObject.likers) {
-        if([user.key isEqualToString:currentUser.key]) {
-            likedUser = user;
-            break;
+
+    [dataService genericLike:likedObject like:!likedObject.isLiked callback:^(int likes, int dislikes, BOOL isLiked) {
+        User *likedUser;
+        CurrentUser *currentUser = [userService getCurrentUser];
+        for(User *user in likedObject.likers) {
+            if([user.key isEqualToString:currentUser.key]) {
+                likedUser = user;
+                break;
+            }
         }
-    }
-    if(!isLiked) {
-        [likedObject.likers addObject:currentUser];
-    } else {
-        [likedObject.likers removeObject:likedUser];
-    }
-    [dataService genericLike:likedObject like:!isLiked callback:callback];
+        if(isLiked) {
+            [likedObject.likers addObject:currentUser];
+        } else {
+            [likedObject.likers removeObject:likedUser];
+        }
+        likedObject.likeCount = likes;
+        
+        // Calling back our real callback
+        callback(likes,dislikes,isLiked);
+    }];
 }
 
 @end

@@ -87,6 +87,7 @@
     for(int i = 0 ; i < _dataSource.arrayWithImages.count ; i++) {
         CGRect imageFrame = CGRectMake(_scrollView.frame.size.width * i, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
         UIImageView *imageView = [_imageViews objectForKey:[NSNumber numberWithInt:i]];
+        imageView.contentMode = [self.dataSource contentModeForImage:i];
         imageView.frame = imageFrame;
     }
 //    int currentWidth = _scrollView.contentSize.width;
@@ -107,7 +108,7 @@
     [self initializeScrollView];
     [self initializePageControl];
     if(!_imageCounterDisabled) {
-        [self initalizeImageCounter];
+//        [self initalizeImageCounter];
     }
     [self initializeCaption];
     [self loadData];
@@ -234,6 +235,7 @@
         _pageControl.numberOfPages = [(NSArray *)[_dataSource arrayWithImages] count];
     } else {
         UIImageView *blankImage = [[UIImageView alloc] initWithFrame:_scrollView.frame];
+        blankImage.contentMode = UIViewContentModeScaleAspectFill;
         if ([_dataSource respondsToSelector:@selector(placeHolderImageForImagePager)]) {
             [blankImage setImage:[_dataSource placeHolderImageForImagePager]];
         }

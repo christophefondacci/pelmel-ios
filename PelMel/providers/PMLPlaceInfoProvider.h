@@ -11,7 +11,7 @@
 #import "Place.h"
 #import "ItemsThumbPreviewProvider.h"
 
-@interface PMLPlaceInfoProvider : NSObject<PMLInfoProvider>
+@interface PMLPlaceInfoProvider : NSObject<PMLInfoProvider, PMLCountersDatasource>
 
 @property (nonatomic,strong) ItemsThumbPreviewProvider *thumbsProvider;
 - (instancetype)initWith:(Place*)place;

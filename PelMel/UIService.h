@@ -126,4 +126,15 @@
  * @return an UIImage of the same view after applying a blur filter on it
  */
 - (UIImage *)blurWithImageEffects:(UIView *)view;
+
+/**
+ * A generic method handling variations of a localized string based on a number.
+ * This method only handles localized templates accepting one single integer argument.
+ * The template will be suffixed by ".singular" if singular and optionally by ".zero" for
+ * a 0 version.
+ *
+ * @param translateKey the translation key of the template to use for the translation
+ * @param count the count that will be injected in the template
+ */
+-(NSString*)localizedString:(NSString*)translateKey forCount:(NSInteger)count;
 @end

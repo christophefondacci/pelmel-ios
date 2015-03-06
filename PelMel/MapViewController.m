@@ -267,7 +267,7 @@
         }
     }];
     _menuMyPositionAction.rightMargin = 5;
-    _menuMyPositionAction.topMargin = 40; //topMargin = 50;
+    _menuMyPositionAction.topMargin = 84; //topMargin = 50;
     
 }
 

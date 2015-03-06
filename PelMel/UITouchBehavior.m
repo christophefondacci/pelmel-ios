@@ -9,7 +9,9 @@
 #import "UITouchBehavior.h"
 #import "APLPositionToBoundsMapping.h"
 
-@implementation UITouchBehavior
+@implementation UITouchBehavior {
+    UIPushBehavior *_pushBehavior;
+}
 
 - (instancetype)initWithTarget:(UIView *)view
 {
@@ -29,13 +31,17 @@
         [attachmentBehavior setDamping:0.3];
         [self addChildBehavior:attachmentBehavior];
         
-        UIPushBehavior *pushBehavior = [[UIPushBehavior alloc] initWithItems:@[buttonBoundsDynamicItem] mode:UIPushBehaviorModeInstantaneous];
-        pushBehavior.angle = M_PI_4;
-        pushBehavior.magnitude = 1.0;
-        [self addChildBehavior:pushBehavior];
+        _pushBehavior = [[UIPushBehavior alloc] initWithItems:@[buttonBoundsDynamicItem] mode:UIPushBehaviorModeInstantaneous];
+        _pushBehavior.angle = M_PI_4;
+        _pushBehavior.magnitude = 1.0;
+        [self addChildBehavior:_pushBehavior];
         
-        [pushBehavior setActive:TRUE];
+        [_pushBehavior setActive:TRUE];
     }
     return self;
+}
+
+-(void)setMagnitude:(CGFloat)magnitude {
+    _pushBehavior.magnitude = magnitude;
 }
 @end

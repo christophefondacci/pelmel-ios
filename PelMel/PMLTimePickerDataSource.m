@@ -61,9 +61,9 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if(component == 0) {
-        return [ NSString stringWithFormat:@"%02d",row ];
+        return [ NSString stringWithFormat:@"%02ld",(long)row ];
     } else {
-        return [NSString stringWithFormat:@"%02d",row*5];
+        return [NSString stringWithFormat:@"%02d",(int)row*5];
     }
 }
 - (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component {

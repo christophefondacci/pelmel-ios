@@ -17,32 +17,24 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upcoming events" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bid-Z9-TZu">
-                    <rect key="frame" x="24" y="11" width="114" height="21"/>
+                    <rect key="frame" x="15" y="11" width="114" height="21"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="114" id="ZTT-0K-zee"/>
                         <constraint firstAttribute="height" constant="21" id="wMg-7P-TxE"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.53333336114883423" green="0.53333336114883423" blue="0.53333336114883423" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2p5-i6-WXd">
-                    <rect key="frame" x="146" y="26" width="166" height="1"/>
+                    <rect key="frame" x="15" y="31" width="290" height="1"/>
                     <color key="backgroundColor" red="0.31764705882352939" green="0.32941176470588235" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="d8p-M4-fA1"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aef-dD-bFU">
-                    <rect key="frame" x="0.0" y="26" width="17" height="1"/>
-                    <color key="backgroundColor" red="0.31764705879999999" green="0.3294117647" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="17" id="Aim-Aa-fJt"/>
-                        <constraint firstAttribute="height" constant="1" id="OSg-es-Cfl"/>
-                    </constraints>
-                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nx6-ku-WAZ">
-                    <rect key="frame" x="290" y="2" width="22" height="22"/>
+                    <rect key="frame" x="283" y="7" width="22" height="22"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="22" id="1Vt-pi-T0I"/>
                         <constraint firstAttribute="width" constant="22" id="TyB-DU-E2L"/>
@@ -52,7 +44,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dzv-Wo-P1L">
-                    <rect key="frame" x="260" y="2" width="22" height="22"/>
+                    <rect key="frame" x="253" y="7" width="22" height="22"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="22" id="tMl-ie-Zbf"/>
                         <constraint firstAttribute="height" constant="22" id="x6P-WF-kew"/>
@@ -62,7 +54,7 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JbN-hi-OqI">
-                    <rect key="frame" x="230" y="2" width="22" height="22"/>
+                    <rect key="frame" x="223" y="7" width="22" height="22"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="22" id="59I-Sh-DaJ"/>
                         <constraint firstAttribute="height" constant="22" id="ekc-ay-bFU"/>
@@ -77,21 +69,24 @@
                 <constraint firstItem="2p5-i6-WXd" firstAttribute="leading" secondItem="bid-Z9-TZu" secondAttribute="trailing" constant="8" id="Fyq-3w-ndS"/>
                 <constraint firstItem="dzv-Wo-P1L" firstAttribute="bottom" secondItem="nx6-ku-WAZ" secondAttribute="bottom" id="KJO-uS-dzr"/>
                 <constraint firstAttribute="bottom" secondItem="bid-Z9-TZu" secondAttribute="bottom" constant="6" id="LKR-TA-FuL"/>
-                <constraint firstAttribute="bottom" secondItem="2p5-i6-WXd" secondAttribute="bottom" constant="11" id="dGz-tQ-QNB"/>
+                <constraint firstAttribute="bottom" secondItem="2p5-i6-WXd" secondAttribute="bottom" constant="6" id="dGz-tQ-QNB"/>
                 <constraint firstItem="dzv-Wo-P1L" firstAttribute="leading" secondItem="JbN-hi-OqI" secondAttribute="trailing" constant="8" id="ezG-Kj-1K6"/>
                 <constraint firstItem="nx6-ku-WAZ" firstAttribute="leading" secondItem="dzv-Wo-P1L" secondAttribute="trailing" constant="8" id="frl-kO-ojY"/>
-                <constraint firstItem="bid-Z9-TZu" firstAttribute="leading" secondItem="aef-dD-bFU" secondAttribute="trailing" constant="7" id="h7d-9M-0eX"/>
-                <constraint firstAttribute="trailing" secondItem="2p5-i6-WXd" secondAttribute="trailing" constant="8" id="kJO-ha-2MS"/>
+                <constraint firstAttribute="trailing" secondItem="2p5-i6-WXd" secondAttribute="trailing" constant="15" id="kJO-ha-2MS"/>
                 <constraint firstItem="2p5-i6-WXd" firstAttribute="top" secondItem="nx6-ku-WAZ" secondAttribute="bottom" constant="2" id="l8f-z3-ZSN"/>
-                <constraint firstItem="aef-dD-bFU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="uOC-4d-IT5"/>
-                <constraint firstAttribute="bottom" secondItem="aef-dD-bFU" secondAttribute="bottom" constant="11" id="v0a-7B-uOX"/>
+                <constraint firstItem="bid-Z9-TZu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="s5t-vQ-Gkn"/>
+                <constraint firstItem="2p5-i6-WXd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="tv2-gs-Opn"/>
                 <constraint firstItem="JbN-hi-OqI" firstAttribute="bottom" secondItem="dzv-Wo-P1L" secondAttribute="bottom" id="vhl-2I-vnY"/>
-                <constraint firstAttribute="trailing" secondItem="nx6-ku-WAZ" secondAttribute="trailing" constant="8" id="zUl-rj-pNN"/>
+                <constraint firstAttribute="trailing" secondItem="nx6-ku-WAZ" secondAttribute="trailing" constant="15" id="zUl-rj-pNN"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="Fyq-3w-ndS"/>
+                </mask>
+            </variation>
             <connections>
-                <outlet property="leftSeparator" destination="aef-dD-bFU" id="r9v-U3-xEZ"/>
                 <outlet property="primaryAction" destination="nx6-ku-WAZ" id="LUc-jr-BBN"/>
                 <outlet property="rightSeparator" destination="2p5-i6-WXd" id="Yh8-ox-exd"/>
                 <outlet property="secondaryAction" destination="dzv-Wo-P1L" id="4ud-ZZ-mL3"/>

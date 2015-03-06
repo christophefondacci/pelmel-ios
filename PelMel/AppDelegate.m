@@ -42,11 +42,11 @@
     UINavigationController *rootNavMenuController = [[UINavigationController alloc] initWithRootViewController:menuManagerController];
     self.window.rootViewController = rootNavMenuController;
     
-    CGRect winFrame = self.window.frame;
-    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0,winFrame.size.width, 20)];
-    view.backgroundColor=[UIColor blackColor];
-    view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    [self.window.rootViewController.view addSubview:view];
+//    CGRect winFrame = self.window.frame;
+//    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0,winFrame.size.width, 20)];
+//    view.backgroundColor=[UIColor blackColor];
+//    view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+//    [self.window.rootViewController.view addSubview:view];
     
     [TogaytherService.uiService start:self.window];
     TogaytherService.uiService.menuManagerController = menuManagerController;

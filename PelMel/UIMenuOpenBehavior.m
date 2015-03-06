@@ -10,17 +10,17 @@
 #import "MenuAction.h"
 
 @implementation UIMenuOpenBehavior {
-    int _boundary;
+    NSInteger _boundary;
     BOOL _horizontal;
     BOOL _open;
-    int _currentMainViewBoundary;
+    NSInteger _currentMainViewBoundary;
     
 }
 
-- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(int)yBoundary {
+- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(NSInteger)yBoundary {
     return [self initWithViews:views open:shouldOpenMenu boundary:yBoundary horizontal:NO];
 }
-- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(int)yBoundary horizontal:(BOOL)horizontal {
+- (instancetype)initWithViews:(NSArray *)views open:(BOOL)shouldOpenMenu boundary:(NSInteger)yBoundary horizontal:(BOOL)horizontal {
     self = [super init];
     if (self) {
         // Storing values we need
@@ -37,11 +37,11 @@
         CGPoint fromPoint,toPoint;
         if(horizontal) {
             _gravityBehavior.gravityDirection = CGVectorMake(-gravityDirectionY,0.0);
-            fromPoint=CGPointMake(boundaryPointY,0);
+            fromPoint=CGPointMake(boundaryPointY,-4000);
             toPoint=CGPointMake(boundaryPointY,4000);
         } else {
             _gravityBehavior.gravityDirection = CGVectorMake(0.0,gravityDirectionY);
-            fromPoint=CGPointMake(0,boundaryPointY);
+            fromPoint=CGPointMake(-4000,boundaryPointY);
             toPoint=CGPointMake(4000,boundaryPointY);
         }
         [self addChildBehavior:_gravityBehavior];

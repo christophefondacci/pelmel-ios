@@ -162,7 +162,7 @@ static void *MyParentMenuControllerKey;
     _progressView = [_uiService addProgressTo:self.navigationController];
     
     // Initializing bottom view
-    CGRect myFrame = self.view.frame;
+    CGRect myFrame = self.rootViewController.view.bounds;
     CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height, myFrame.size.width, myFrame.size.height);
     
     // Initializing the bottom view and adding to our controller view
@@ -228,6 +228,9 @@ static void *MyParentMenuControllerKey;
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
     [_uiService setProgressView:_progressView];
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
 //    [self dismissControllerMenu];
 }
 
@@ -247,7 +250,7 @@ static void *MyParentMenuControllerKey;
 
 #pragma mark - Snippet management
 - (void)presentControllerSnippet:(UIViewController *)childViewController {
-    CGRect myFrame = self.view.bounds;
+    CGRect myFrame = self.rootViewController.view.bounds;
     // Detaching current controller
     if(_currentSnippetViewController) {
         [_currentSnippetViewController willMoveToParentViewController:nil];
@@ -319,6 +322,9 @@ static void *MyParentMenuControllerKey;
         [self setSnippetFullyOpened:YES];
         NSInteger top = [self offsetForOpenedSnippet];
         UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:top];
+        menuBehavior.action =^{
+            [self snippetPannedCallback];
+        };
         [_animator removeAllBehaviors];
         [_animator addBehavior:menuBehavior];
     }
@@ -340,7 +346,9 @@ static void *MyParentMenuControllerKey;
         [UIView animateWithDuration:0.2 animations:^{
             self.title = _currentSnippetViewController.title;
             self.navigationItem.titleView.alpha=0;
+            self.navigationController.navigationBar.alpha=0;
         } completion:^(BOOL finished) {
+            self.navigationController.navigationBar.alpha=1;
             [self refreshNavigationFor:_currentSnippetViewController];
         }];
 
@@ -352,8 +360,10 @@ static void *MyParentMenuControllerKey;
         self.navigationItem.rightBarButtonItem=nil;
         self.navigationItem.titleView=_mainNavBarView;
         self.navigationItem.titleView.alpha=0;
+        self.navigationController.navigationBar.alpha=0;
         [UIView animateWithDuration:0.2 animations:^{
             self.navigationItem.titleView.alpha=1;
+            self.navigationController.navigationBar.alpha=1;
         } completion:^(BOOL finished) {
             self.navigationItem.leftBarButtonItem=nil;
             self.navigationItem.rightBarButtonItem=nil;
@@ -384,6 +394,9 @@ static void *MyParentMenuControllerKey;
     
     if(_snippetFullyOpened) {
         self.title = controller.title;
+        self.navigationItem.titleView.alpha=1;
+        self.navigationController.navigationBar.alpha=1;
+        
         self.navigationItem.titleView=nil;
         if([controller conformsToProtocol:@protocol(PMLSnippetDelegate) ]) {
             [delegate.actionManager installNavBarEdit:self];
@@ -394,7 +407,17 @@ static void *MyParentMenuControllerKey;
         }
         // Notifying delegate
         [delegate menuManager:self snippetOpened:NO];
+        
+        
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                      forBarMetrics:UIBarMetricsDefault];
+        self.navigationController.navigationBar.shadowImage = [UIImage new];
+        self.navigationController.navigationBar.translucent = YES;
+        self.navigationController.view.backgroundColor = [UIColor clearColor];
+        self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+        self.navigationItem.title=nil;
     } else {
+        [TogaytherService applyCommonLookAndFeel:self];
         // Removing any fake "back" controller
         if([self hasFakeNavigation] && (!_snippetFullyOpened || ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count<=1)) {
             [self.navigationController setViewControllers:@[self] animated:NO];
@@ -605,7 +628,7 @@ static void *MyParentMenuControllerKey;
 #pragma mark - PanGestureRecognizer
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state {
 
-    location.x = CGRectGetMidX(_bottomView.bounds);
+    location.x = CGRectGetMidX(self.view.bounds);
     if ( state == UIGestureRecognizerStateBegan) {
         [_animator removeAllBehaviors];
         
@@ -615,11 +638,14 @@ static void *MyParentMenuControllerKey;
         // Adding a collision to the screen top edge to constraint snippet in view bounds
         UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[_bottomView]];
         NSInteger top = [self offsetForOpenedSnippet];
-        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-2000, top+1) toPoint:CGPointMake(2000, top+1)];
+        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-4000, top+1) toPoint:CGPointMake(4000, top+1)];
         [_animator addBehavior:collision];
         
     } else if (state  == UIGestureRecognizerStateChanged) {
         _panAttachmentBehaviour.anchorPoint = location;
+        NSLog(@"Attachment X=%.02f Y=%.02f / Behaviors=%d",location.x,location.y,_animator.behaviors.count);
+        [self snippetPannedCallback];
+
     } else if (state  == UIGestureRecognizerStateEnded) {
         // Getting frames for whole view and bottom 'sliding' view
         CGRect bottomFrame = _bottomView.frame;
@@ -644,14 +670,27 @@ static void *MyParentMenuControllerKey;
 
         [_animator removeAllBehaviors];
         [_animator addBehavior:menuBehavior];
-        
+        menuBehavior.action = ^{
+            [self snippetPannedCallback];
+        };
         // Adding the user velocity
         UIPushBehavior *pushBehavior = [[UIPushBehavior alloc] initWithItems:@[_bottomView] mode:UIPushBehaviorModeInstantaneous];
         pushBehavior.pushDirection = CGVectorMake(0, velocity.y / 20.0f);
         [_animator addBehavior:pushBehavior];
     }
 }
+- (void)snippetPannedCallback {
+    
+    // Callbacking delegate
+//    if([self.snippetDelegate respondsToSelector:@selector(menuManager:snippetPanned:)]) {
+//        CGPoint location = _bottomView.frame.origin;
+//        CGSize size = self.view.bounds.size;
 
+//        float pctOpened = 1.0f - ((float)(location.y-kPMLSnippetTopOffset) / (float)(size.height- (kSnippetHeight-kPMLSnippetTopOffset)));
+//                NSLog(@"PCT=%.02f / Loc y= %.02f / Height= %.02f",pctOpened, location.y,size.height);
+//        [self.snippetDelegate menuManager:self snippetPanned:pctOpened];
+//    }
+}
 -(NSInteger)offsetForMinimizedSnippet {
     CGRect myFrame = self.view.frame;
     return myFrame.size.height + _bottomView.frame.size.height - kSnippetHeight;
@@ -863,7 +902,7 @@ static void *MyParentMenuControllerKey;
         CGRect frame = self.view.window.frame;
         frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
         frame.size.height -= self.navigationController.navigationBar.frame.size.height;
-        frame = CGRectOffset(frame, -frame.size.width, 0);
+        frame = CGRectOffset(frame, -frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height);
         
         // Building standard menu
         _menuView = [[UIView alloc] initWithFrame:frame];

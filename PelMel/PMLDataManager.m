@@ -217,12 +217,12 @@
     likedObject.isLiked = liked;
     
     // Updating likers
-    CurrentUser *user = [_userService getCurrentUser];
-    if(liked) {
-        [likedObject.likers addObject:user];
-    } else {
-        [likedObject.likers removeObject:user];
-    }
+//    CurrentUser *user = [_userService getCurrentUser];
+//    if(liked) {
+//        [likedObject.likers addObject:user];
+//    } else {
+//        [likedObject.likers removeObject:user];
+//    }
     
     // Feedback message
     NSString *title;

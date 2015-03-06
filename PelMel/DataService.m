@@ -849,10 +849,10 @@
         CurrentUser *user = userService.getCurrentUser;
         [self setIfDefined:calendar.key     forKey:@"eventId"   fill:paramValues];
         [self setIfDefined:calendar.name    forKey:@"name"      fill:paramValues];
-        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.startHour]   forKey:@"startHour"   fill:paramValues];
-        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.startMinute] forKey:@"startMinute" fill:paramValues];
-        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.endHour]     forKey:@"endHour"     fill:paramValues];
-        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.endMinute]   forKey:@"endMinute"   fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",(int)calendar.startHour]   forKey:@"startHour"   fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",(int)calendar.startMinute] forKey:@"startMinute" fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",(int)calendar.endHour]     forKey:@"endHour"     fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",(int)calendar.endMinute]   forKey:@"endMinute"   fill:paramValues];
         
         [self setIfTrue:calendar.isMonday       forKey:@"monday"    fill:paramValues];
         [self setIfTrue:calendar.isTuesday      forKey:@"tuesday"   fill:paramValues];

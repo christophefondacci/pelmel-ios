@@ -10,16 +10,27 @@
 #import "TogaytherService.h"
 #import "Activity.h"
 #import "ItemsThumbPreviewProvider.h"
+#import "PMLThumbCollectionViewController.h"
+#import "PMLSnippetTableViewController.h"
 
 @implementation PMLContextInfoProvider {
+    
+    // Services
+    UIService *_uiService;
     DataService *_dataService;
     ModelHolder *_modelHolder;
+    
+    // Controllers
+    PMLSnippetTableViewController *_snippetController;
+    PMLThumbCollectionViewController *_thumbController;
+    
 }
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
+        _uiService = [TogaytherService uiService];
         _dataService = [TogaytherService dataService];
         _modelHolder = _dataService.modelHolder;
     }
@@ -39,40 +50,41 @@
 // Title of the element
 -(NSString*) title {
     NSString *title;
-    if(_modelHolder.users.count == 0) {
+    if(_modelHolder.events.count == 0) {
         NSString *titleTemplate = @"places.section.inZone";
         title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count];
     } else {
-        NSString *titleTemplate = @"places.section.inZoneWithUsers";
-        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count,_modelHolder.users.count];
+        NSString *titleTemplate = @"places.section.inZoneWithEvents";
+        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count,_modelHolder.events.count];
     }
     return title;
 
 }
 - (NSString *)subtitle {
     NSString *subtitle = nil;
-    if(_modelHolder.events.count>0) {
-         subtitle = [NSString stringWithFormat:NSLocalizedString(@"snippet.event.count","# Upcoming events"),_modelHolder.events.count ];
+    if(_modelHolder.users.count>0) {
+         subtitle = [NSString stringWithFormat:NSLocalizedString(@"snippet.users.count","# guys nearby"),_modelHolder.users.count ];
     }
     return subtitle;
 }
 - (UIImage *)subtitleIcon {
-    return [UIImage imageNamed:@"snpIconTicket"];
+    return [UIImage imageNamed:@"snpIconEvent"];
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
-    return [UIImage imageNamed:@"snpIconBar"];
+//    return [UIImage imageNamed:@"snpIconBar"];
+    return nil;
 }
 // Global theme color for element
 -(UIColor*) color {
     return UIColorFromRGB(0xec7700);
 }
 // Provider of thumb displayed in the main snippet section
--(NSObject<ThumbsPreviewProvider>*) thumbsProvider {
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
     // Building provider
     return [[ItemsThumbPreviewProvider alloc] initWithParent:nil items:_modelHolder.users moreSegueId:nil labelKey:nil icon:nil];
 }
-- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+- (NSObject<PMLThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
     return nil;
 }
 // Number of reviews
@@ -121,10 +133,10 @@
     }
 }
 
-- (NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
+- (NSObject<PMLThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
     return nil;
 }
--(NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
+-(NSObject<PMLThumbsPreviewProvider> *)checkinsThumbsProvider {
     return nil;
 }
 
@@ -142,5 +154,33 @@
 }
 - (NSString *)eventsSectionTitle {
     return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
+}
+-(id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
+    return nil;
+}
+#pragma mark - Custom view
+- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
+    _snippetController = (PMLSnippetTableViewController*)controller;
+    // Configuring thumb controller
+    if(parentView.subviews.count == 0) {
+        // Initializing thumb controller
+        _thumbController = (PMLThumbCollectionViewController*)[_uiService instantiateViewController:@"thumbCollectionCtrl"];
+        [controller addChildViewController:_thumbController];
+        [parentView addSubview:_thumbController.view];
+        [_thumbController didMoveToParentViewController:controller];
+    }
+    // Building provider
+    _thumbController.thumbProvider = [self thumbsProvider];
+    _thumbController.actionDelegate = self;
+    _thumbController.view.frame = parentView.bounds;
+    _thumbController.size = @30;
+    [_thumbController.collectionView reloadData];
+
+}
+
+#pragma mark - ThumbPreviewActionDelegate
+- (void)thumbsTableView:(PMLThumbCollectionViewController*)controller thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {
+    id selectedItem = [[controller.thumbProvider itemsForType:type] objectAtIndex:thumbIndex];
+    [_snippetController pushSnippetFor:(CALObject*)selectedItem];
 }
 @end

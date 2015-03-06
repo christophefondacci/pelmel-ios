@@ -14,6 +14,7 @@
 #import "Event.h"
 #import "HPGrowingTextView.h"
 #import "PMLSnippetTableViewController.h"
+#import "PMLFakeViewController.h"
 
 @interface MessageViewController ()
 
@@ -49,6 +50,7 @@
     
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [TogaytherService applyCommonLookAndFeel:self];
+
     self.view.backgroundColor =UIColorFromRGB(0x272a2e);
     self.scrollView.backgroundColor = UIColorFromRGB(0x272a2e);
 
@@ -479,7 +481,11 @@
         [self.navigationController popToRootViewControllerAnimated:NO];
         [menuController dismissControllerMenu];
     } else {
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        UIViewController *rootController =[[self.navigationController childViewControllers] objectAtIndex:0];
+        if([rootController isKindOfClass:[PMLFakeViewController class]]) {
+            rootController = [[self.navigationController childViewControllers] objectAtIndex:1];
+        }
+        [self.navigationController popToViewController:rootController animated:YES];
     }
 }
 - (void)appBecameActive:(NSNotification*)notification {

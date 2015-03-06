@@ -13,6 +13,8 @@
 #import "PMLUserActionsView.h"
 #import "LikeableStrategyObjectWithLiked.h"
 #import "PMLSnippetTableViewController.h"
+#import "PMLCountersView.h"
+#import "UIImage+IPImageUtils.h"
 
 @implementation PMLUserInfoProvider {
     User *_user;
@@ -20,7 +22,9 @@
     UIService *_uiService;
     PMLUserActionsView *_actionsView;
     PMLSnippetTableViewController *_snippetController;
+    PMLPopupActionManager *_actionManager;
     id<Likeable> _likeableDelegate;
+    PMLCountersView *_countersView;
 }
 
 - (instancetype)initWithUser:(User *)user
@@ -30,6 +34,7 @@
         _user = user;
         _uiService = TogaytherService.uiService;
         _likeableDelegate = [[LikeableStrategyObjectWithLiked alloc] init];
+        _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
 
     }
     return self;
@@ -50,14 +55,15 @@
     return _user.pseudo;
 }
 - (NSString *)subtitle {
-    return nil;
+    return _user.isOnline ? NSLocalizedString(@"user.status.online", @"online") : NSLocalizedString(@"user.status.offline",@"offline");
 }
 - (UIImage *)subtitleIcon {
-    return nil;
+    NSString *imageName = _user.isOnline ? @"online" : @"offline";
+    return [UIImage imageNamed:imageName];
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
-    return [UIImage imageNamed:@"snpIconEvent"];
+    return nil;
 }
 - (NSString *)itemTypeLabel {
     return [self snippetRightTitleText];
@@ -70,13 +76,15 @@
     return [self thumbSubtitleColor];
 }
 // Provider of thumb displayed in the main snippet section
--(NSObject<ThumbsPreviewProvider>*) thumbsProvider {
-    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likers forType:PMLThumbsLike];
-    [_thumbsProvider addItems:_user.likedPlaces forType:PMLThumbsCheckin];
-
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
+    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likers forType:PMLThumbsUserLike];
+    [_thumbsProvider addItems:_user.likedPlaces forType:PMLThumbsLike];
+    [_thumbsProvider addItems:_user.checkedInPlaces forType:PMLThumbsCheckin];
+    [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.checkin" forType:PMLThumbsCheckin];
+    [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.like" forType:PMLThumbsLike];
     return _thumbsProvider;
 }
-- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+- (NSObject<PMLThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
     switch(mode) {
         case ThumbPreviewModeLikes:
             return [self likesThumbsProviderAtIndex:row];
@@ -86,7 +94,7 @@
             return nil;
     }
 }
-- (NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
+- (NSObject<PMLThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
     NSArray *items;
     NSString *labelCode;
     switch(row-1) {
@@ -107,7 +115,6 @@
     
     
     ItemsThumbPreviewProvider *provider =  [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:items forType:PMLThumbsLike];
-    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(labelCode,@"he likes"),_user.pseudo]];
     return provider;
 }
 - (NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode {
@@ -125,9 +132,8 @@
     likeCount += _user.likedPlaces.count>0 ? 1 : 0;
     return likeCount;
 }
-- (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
+- (NSObject<PMLThumbsPreviewProvider> *)checkinsThumbsProvider {
     ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.checkedInPlaces forType:PMLThumbsCheckin];
-    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.userCheckins",@"he likes"),_user.pseudo]];
     return provider;
 
 }
@@ -168,7 +174,34 @@
 - (void)snippetRightActionTapped:(UIViewController *)controller {
     
 }
-
+//- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
+//    // Saving snippet controller for later
+//    _snippetController = (PMLSnippetTableViewController*)controller;
+//    if(_countersView.superview != parentView) {
+//        if(_countersView.superview) {
+//            [_countersView removeFromSuperview];
+//        }
+//        CGRect frame = parentView.bounds;
+//        _countersView.frame = CGRectMake(frame.origin.x,frame.origin.y,frame.size.width-15,frame.size.height);
+//        [parentView addSubview:_countersView];
+//    }
+//    _countersView.backgroundColor=[UIColor clearColor];
+//    _countersView.likeCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_user.likeCount];
+//    _countersView.likeTitleLabel.text = [_uiService localizedString:@"counters.likes" forCount:_user.likeCount];
+//    _countersView.checkinCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_user.checkedInPlacesCount];
+//    _countersView.checkinTitleLabel.text = [_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
+//    _countersView.commentsCounterLabel.text = [NSString stringWithFormat:@"%d",0];
+//    _countersView.commentsTitleLabel.text = [_uiService localizedString:@"counters.chat" forCount:0];
+//    [_countersView.likeContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(likeTapped)]];
+//    if(_user.isLiked) {
+//        _countersView.likeIcon.image = [UIImage ipMaskedImageNamed:@"ovvIconLike" color:UIColorFromRGB(0x039be5)];
+//        _countersView.likeTitleLabel.textColor =UIColorFromRGB(0x039be5);
+//    } else {
+//        _countersView.likeIcon.image = [UIImage imageNamed:@"ovvIconLike"];
+//        _countersView.likeTitleLabel.textColor =[UIColor whiteColor];
+//    }
+//    
+//}
 //- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
 //    // Saving snippet controller for later
 //    _snippetController = (PMLSnippetTableViewController*)controller;
@@ -212,18 +245,19 @@
     }];
 }
 - (NSString *)commentsCounterTitle {
-    return NSLocalizedString(@"counters.chat",@"Chat");
+    //TODO: implement message count
+    return [_uiService localizedString:@"counters.chat" forCount:0];
+
 }
 #pragma mark - right section
 - (BOOL)hasSnippetRightSection {
     return YES;
 }
 -(UIImage *)snippetRightIcon {
-    NSString *imageName = _user.isOnline ? @"online" : @"offline";
-    return [UIImage imageNamed:imageName];
+    return nil;
 }
 - (NSString *)snippetRightTitleText {
-    return _user.isOnline ? NSLocalizedString(@"user.status.online", @"online") : NSLocalizedString(@"user.status.offline",@"offline");
+    return nil;
 }
 -(UIColor *)snippetRightColor {
     return [_uiService colorForObject:_user];
@@ -233,6 +267,10 @@
 }
 
 #pragma mark - Likeable
+- (void)likeTapped {
+    PopupAction *action = [_snippetController.actionManager actionForType:PMLActionTypeLike];
+    action.actionCommand();
+}
 - (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
     [_likeableDelegate likeTapped:likedObject callback:callback];
 }
@@ -263,5 +301,47 @@
     } else {
         return -1;
     }
+}
+#pragma mark - PMLCounterDataSource
+- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
+    _actionManager = actionManager;
+    return self;
+}
+- (NSString *)counterLabelAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return [_uiService localizedString:@"counters.likes" forCount:_user.likeCount];
+        case kPMLCounterIndexCheckin:
+            return [_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
+        case kPMLCounterIndexComment:
+            return [_uiService localizedString:@"counters.chat" forCount:0];
+    }
+    return nil;
+}
+- (PMLActionType)counterActionAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return PMLActionTypeLike;
+        case kPMLCounterIndexCheckin:
+            return PMLActionTypeCheckin;
+        case kPMLCounterIndexComment:
+            return PMLActionTypeComment;
+    }
+    return PMLActionTypeNoAction;
+}
+- (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return _user.isLiked;
+        case kPMLCounterIndexCheckin:
+            return NO;
+        case kPMLCounterIndexComment:
+            // TODO return selected when messages with user
+            return NO;
+    }
+    return NO;
+}
+- (PMLPopupActionManager *)actionManager {
+    return _actionManager;
 }
 @end

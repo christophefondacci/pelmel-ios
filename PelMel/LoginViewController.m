@@ -229,7 +229,7 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    NSLog(@"Section %d - row %d", indexPath.section,indexPath.row );
+    NSLog(@"Section %ld - row %ld", (long)indexPath.section,(long)indexPath.row );
     switch(indexPath.section) {
         case kSectionSocial:
             switch(indexPath.row) {

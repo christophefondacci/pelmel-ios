@@ -36,7 +36,7 @@
     }
     return self;
 }
-- (CALImage*)imageAtIndex:(NSInteger)index {
+- (CALImage*)imageAtIndex:(NSInteger)index forType:(PMLThumbType)type {
     PlaceType *placeType = [_placeTypes objectAtIndex:index];
     CALImage *calImage;
     if(placeType.icon) {
@@ -44,17 +44,17 @@
     }
     return calImage;
 }
-- (UIImage*)topLeftDecoratorForIndex:(NSInteger)index {
+- (UIImage*)topLeftDecoratorForIndex:(NSInteger)index forType:(PMLThumbType)type{
     return nil;
 }
-- (UIImage*)bottomRightDecoratorForIndex:(NSInteger)index {
+- (UIImage*)bottomRightDecoratorForIndex:(NSInteger)index forType:(PMLThumbType)type {
     return nil;
 }
 
-- (NSArray*)items {
+- (NSArray*)itemsForType:(PMLThumbType)thumbType {
     return  _placeTypes;
 }
-- (NSString*)titleAtIndex:(NSInteger)index {
+- (NSString*)titleAtIndex:(NSInteger)index forType:(PMLThumbType)type{
     PlaceType *placeType = [_placeTypes objectAtIndex:index];
     return placeType.label;
 }
@@ -63,7 +63,13 @@
     return NO;
 }
 
--(BOOL)isSelected:(NSInteger)index {
+- (NSArray *)thumbTypes {
+    return @[[NSNumber numberWithInt:PMLThumbsOther]];
+}
+- (PMLThumbType)thumbTypeAtIndex:(NSInteger)index {
+    return PMLThumbsOther;
+}
+-(BOOL)isSelected:(NSInteger)index forType:(PMLThumbType)type{
     PlaceType *placeType = [_placeTypes objectAtIndex:index];
     return [placeType.code isEqualToString:_place.placeType];
 }

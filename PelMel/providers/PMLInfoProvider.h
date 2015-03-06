@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
-#import "ThumbsPreviewView.h"
 #import "Special.h"
 #import "Activity.h"
 #import "Likeable.h"
 #import "PopupAction.h"
+#import "PMLThumbsPreviewProvider.h"
+#import "PMLCountersView.h"
 
 @class PMLMenuManagerController;
 typedef enum {
@@ -37,8 +38,8 @@ typedef enum {
 // Global theme color for element
 -(UIColor*) color;
 // Provider of thumb displayed in the main snippet section
--(NSObject<ThumbsPreviewProvider>*) thumbsProvider;
--(NSObject<ThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row;
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider;
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row;
 // Implement to say how many rows of likes need to be displayed
 -(NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode;
 // Number of reviews
@@ -57,13 +58,15 @@ typedef enum {
 // The label of the type of element being displayed
 - (NSString*)itemTypeLabel;
 - (NSString*)city;
+- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager*)actionManager;
 
 @optional
 // Whether or not the data could be edited, defaults to false if not implemented
 - (PMLActionType)editActionType;
 - (BOOL)canAddPhoto;    // Default is YES
-- (PMLActionType)primaryActionType; // Default is Like
-- (PMLActionType)secondaryActionType; // Default is none
+- (PMLActionType)likeActionType; // Default is Like
+- (PMLActionType)checkinActionType; // Default is Checkin
+- (PMLActionType)commentActionType; // Default is Comment
 // The subtitle to display
 - (NSString*)actionSubtitleFor:(PMLActionType)actionType;
 

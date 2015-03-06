@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumbView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subtitleWidthConstraint;
 @property (weak, nonatomic) IBOutlet UIImageView *subtitleIcon;
 @property (weak, nonatomic) IBOutlet UIView *peopleView;
 @property (weak, nonatomic) IBOutlet UIView *colorLineView;

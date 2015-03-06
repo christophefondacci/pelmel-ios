@@ -10,7 +10,7 @@
 #import "PMLInfoProvider.h"
 #import "Event.h"
 
-@interface PMLEventInfoProvider : NSObject<PMLInfoProvider>
+@interface PMLEventInfoProvider : NSObject<PMLInfoProvider,PMLCountersDatasource>
 
 -(instancetype)initWithEvent:(Event*)event;
 

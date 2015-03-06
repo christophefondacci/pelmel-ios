@@ -15,5 +15,5 @@
 @interface UITouchBehavior : UIDynamicBehavior
 
 - (instancetype)initWithTarget:(UIView *)view;
-
+-(void)setMagnitude:(CGFloat)magnitude;
 @end

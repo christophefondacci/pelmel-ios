@@ -11,6 +11,7 @@
 #import "UserService.h"
 #import "ImageService.h"
 #import "MessageService.h"
+#import "PMLMenuManagerController.h"
 
 #define CONFIG_FILE_NAME @"PelMel-config"
 
@@ -20,6 +21,7 @@
 #define kCacheMaxImages 300
 
 #define kHDModeKey @"hdEnabled"
+
 
 @implementation TogaytherService
     static DataService *_dataService;
@@ -126,7 +128,9 @@
     return _messageService;
 }
 + (void)applyCommonLookAndFeel:(UIViewController *)controller {
-    if ([controller respondsToSelector:@selector(edgesForExtendedLayout)]) {
+    if([controller isKindOfClass:[PMLMenuManagerController class]]) {
+        controller.edgesForExtendedLayout = UIRectEdgeAll;
+    } else {
         controller.edgesForExtendedLayout = UIRectEdgeNone;
     }
     if([controller respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
@@ -136,8 +140,10 @@
     controller.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     // Adjusting tint
     controller.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [controller.navigationController.navigationBar setBackgroundImage:nil
+                                                  forBarMetrics:UIBarMetricsDefault];
     if([controller.navigationController.navigationBar respondsToSelector:@selector(setBarTintColor:)]) {
-        [controller.navigationController.navigationBar setTranslucent:NO];
+        [controller.navigationController.navigationBar setTranslucent:YES];
         [controller.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
         [controller.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     } else {

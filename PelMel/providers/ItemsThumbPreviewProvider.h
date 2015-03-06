@@ -9,14 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
 
-#import "ThumbTableViewController.h"
+#import "PMLThumbsPreviewProvider.h"
 
 
-typedef enum {
-        PMLThumbsLike, PMLThumbsCheckin,PMLThumbsOther
-} PMLThumbType;
 
-@interface ItemsThumbPreviewProvider : NSObject <ThumbsPreviewProvider>
+
+@interface ItemsThumbPreviewProvider : NSObject <PMLThumbsPreviewProvider>
 - (id)initWithParent:(CALObject *)place items:(NSArray*)items moreSegueId:(NSString*)segueId labelKey:(NSString*)labelKey icon:(UIImage*)icon;
 
 /**
@@ -31,7 +29,7 @@ typedef enum {
  * Defines the label to use as an intro when displaying the contents
  * @param label the label to use as intro text
  */
--(void)setIntroLabel:(NSString*)label;
+-(void)setIntroLabelCode:(NSString*)label forType:(PMLThumbType)thumbType;
 
 /**
  * Adds items to this thumb provider under a specific type. If type is unknown, use the PMLThumbsOther enum.

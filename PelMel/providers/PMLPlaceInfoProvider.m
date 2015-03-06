@@ -13,12 +13,18 @@
 #import "ItemsThumbPreviewProvider.h"
 #import "LikeableStrategyObjectWithLikers.h"
 #import "PMLDataManager.h"
+#import "PMLCountersView.h"
+#import "PMLSnippetTableViewController.h"
 
 @implementation PMLPlaceInfoProvider {
     
     // Services
     ConversionService *_conversionService;
     UIService *_uiService;
+    
+    // Parent controller
+    PMLSnippetTableViewController *_snippetController;
+    PMLPopupActionManager *_actionManager;
     
     // Main place object
     Place *_place;
@@ -32,6 +38,7 @@
     
     // Strategies
     id<Likeable> _likeableDelegate;
+    PMLCountersView *_countersView;
 }
 
 - (instancetype)initWith:(id)place
@@ -47,6 +54,9 @@
         
         // Initializing like behaviour
         _likeableDelegate = [[LikeableStrategyObjectWithLikers alloc] init];
+        
+        // Pre-loading custom view
+        _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
     }
     return self;
 }
@@ -87,20 +97,16 @@
     return _place.title;
 }
 - (NSString *)subtitle {
-    NSArray *addrComp = [_place.address componentsSeparatedByString:@","];
-    int index = 0;
-    for(int i = 0 ; i < MIN(2,addrComp.count) ; i++) {
-        index = index + ((NSString*)addrComp[i]).length + (i>0 ? 1 : 0);
-    }
-    return [_place.address substringToIndex:index];
+    return [self itemTypeLabel];
 }
 - (UIImage *)subtitleIcon {
-    return [UIImage imageNamed:@"snpIconMarker"];
+    PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
+    return placeType.icon;
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
-    PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
-    return placeType.icon;
+
+    return nil;
 }
 
 - (NSString *)itemTypeLabel {
@@ -115,9 +121,9 @@
     return [_uiService colorForObject:_place];
 }
 // Provider of thumb displayed in the main snippet section
--(NSObject<ThumbsPreviewProvider>*) thumbsProvider {
-    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.inUsers forType:PMLThumbsCheckin];
-    [_thumbsProvider addItems:_place.likers forType:PMLThumbsLike];
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
+    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.likers forType:PMLThumbsLike];
+    [_thumbsProvider addItems:_place.inUsers forType:PMLThumbsCheckin];
     return _thumbsProvider;
 }
 
@@ -184,8 +190,8 @@
             }
             break;
             case SOON: {
-                NSString *deltaStr = [self getDeltaString:special.nextStart];
-                return deltaStr;
+//                NSString *deltaStr = [self getDeltaString:special.nextStart];
+                return NSLocalizedString(@"specials.closed", @"specials.closed");;
             }
             default:
             return nil;
@@ -241,16 +247,19 @@
                 label = [NSString stringWithFormat:NSLocalizedString(@"specials.open.leftHours",@"specials.open.leftHours"),deltaStr];
                 break;
             }
-            case SOON:
-            if([_bestSpecial.type isEqualToString:SPECIAL_TYPE_OPENING]) {
-                label = NSLocalizedString(@"specials.open.in",@"specials.open.in");
-            } else {
-                label = NSLocalizedString(@"specials.start.in",@"specials.start.in");
+            case SOON: {
+                if([_bestSpecial.type isEqualToString:SPECIAL_TYPE_OPENING]) {
+                    label = NSLocalizedString(@"specials.open.in",@"specials.open.in");
+                } else {
+                    label = NSLocalizedString(@"specials.start.in",@"specials.start.in");
+                }
+                NSString *deltaStr = [self getDeltaString:_bestSpecial.nextStart];
+                label = [NSString stringWithFormat:@"%@ %@",label,deltaStr];
+                break;
             }
-            break;
             default:
-            label = nil;
-            break;
+                label = nil;
+                break;
         }
     }
     return label;
@@ -262,7 +271,7 @@
 }
 
 #pragma mark - Thumbs preview management
-- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+- (NSObject<PMLThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
     switch(mode) {
         case ThumbPreviewModeLikes:
             return [self likesThumbsProviderAtIndex:row];
@@ -273,15 +282,13 @@
     }
 }
 
-- (NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
+- (NSObject<PMLThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
     ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.likers forType:PMLThumbsLike];
-    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeLikes",@"he likes"),_place.title]];
     return provider;
     
 }
-- (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
+- (NSObject<PMLThumbsPreviewProvider> *)checkinsThumbsProvider {
     ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.inUsers forType:PMLThumbsCheckin];
-    [provider setIntroLabel:[NSString stringWithFormat:NSLocalizedString(@"snippet.thumbIntro.placeCheckins",@"he likes"),_place.title]];
     return provider;
 }
 
@@ -312,7 +319,9 @@
 - (PMLActionType)editActionType {
     return PMLActionTypeEditPlace;
 }
-
+- (PMLActionType)primaryActionType {
+    return PMLActionTypeNoAction;
+}
 - (PMLActionType)secondaryActionType {
     CLLocationDistance distance = [_conversionService numericDistanceTo:_place];
     if(distance < kPMLCheckinDistanceMeters) {
@@ -336,5 +345,50 @@
             break;
     }
     return nil;
+}
+#pragma mark - PMLCounterDataSource
+- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
+    _actionManager = actionManager;
+    return self;
+}
+- (NSString *)counterLabelAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return [_uiService localizedString:@"counters.likes" forCount:_place.likeCount];
+        case kPMLCounterIndexCheckin:
+            return [_uiService localizedString:@"counters.checkins" forCount:_place.inUserCount];
+        case kPMLCounterIndexComment:
+            return [_uiService localizedString:@"counters.comments" forCount:_place.reviewsCount];
+    }
+    return nil;
+}
+- (PMLActionType)counterActionAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return PMLActionTypeLike;
+        case kPMLCounterIndexCheckin:
+            return PMLActionTypeCheckin;
+        case kPMLCounterIndexComment:
+            return PMLActionTypeComment;
+    }
+    return PMLActionTypeNoAction;
+}
+- (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return _place.isLiked;
+        case kPMLCounterIndexCheckin: {
+            CurrentUser *user=[[TogaytherService userService] getCurrentUser];
+            return [user.lastLocation.key isEqualToString:_place.key] && [user.lastLocationDate timeIntervalSinceNow]>-3600;
+            break;
+        }
+        case kPMLCounterIndexComment:
+            // TODO return selected when messages with user
+            return NO;
+    }
+    return NO;
+}
+- (PMLPopupActionManager *)actionManager {
+    return _actionManager;
 }
 @end

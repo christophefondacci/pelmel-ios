@@ -10,12 +10,16 @@
 #import "CALObject.h"
 #import "KIImagePager.h"
 #import "DataService.h"
-#import "ThumbTableViewController.h"
+#import "PMLThumbCollectionViewController.h"
 #import "PMLMenuManagerController.h"
 #import "PMLSubNavigationController.h"
 
-@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, PMLThumbsTableViewActionDelegate, KIImagePagerDataSource, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate,PMLSubNavigationDelegate>
+@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, KIImagePagerDataSource, PMLThumbsCollectionViewActionDelegate, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate,PMLSubNavigationDelegate, PMLUserCallback>
 
 @property (weak,nonatomic) CALObject *snippetItem;
 
+/**
+ * Pushes a new snippet controller for the given CAL object and presents it
+ */
+-(void)pushSnippetFor:(CALObject*)item;
 @end

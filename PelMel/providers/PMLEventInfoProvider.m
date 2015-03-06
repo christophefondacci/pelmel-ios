@@ -20,6 +20,7 @@
     NSObject<PMLInfoProvider> *_placeInfoProvider;
     Event *_event;
     id<Likeable> _likeableDelegate;
+    PMLPopupActionManager *_actionManager;
 }
 
 - (instancetype)initWithEvent:(Event *)event
@@ -56,7 +57,7 @@
 }
 // Icon representing the type of item being displayed
 -(UIImage*) titleIcon {
-    return [UIImage imageNamed:@"snpIconEvent"];
+    return nil;
 }
 
 // The snippet image
@@ -69,10 +70,10 @@
 }
 
 // Provider of thumb displayed in the main snippet section
--(NSObject<ThumbsPreviewProvider>*) thumbsProvider {
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:_event.likers moreSegueId:@"showLikers" labelKey:@"overview.event.inUser" icon:nil];
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
+    return [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:_event.likers forType:PMLThumbsUsersInEvent];
 }
--(NSObject<ThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
     switch(mode) {
         case ThumbPreviewModeCheckins:
             return [self thumbsProvider];
@@ -132,7 +133,7 @@
 }
 #pragma mark - Counters
 -(NSString *)checkinsCounterTitle {
-    return NSLocalizedString(@"counters.arein", @"Are in");
+    return [_uiService localizedString:@"counters.arein" forCount:_event.likeCount];
 }
 #pragma mark - Likeable
 - (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
@@ -161,5 +162,47 @@
             break;
     }
     return nil;
+}
+#pragma mark - PMLCounterDataSource
+- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
+    _actionManager = actionManager;
+    return self;
+}
+- (NSString *)counterLabelAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return [_uiService localizedString:@"counters.arein" forCount:_event.likeCount];
+        case kPMLCounterIndexCheckin:
+            return nil;
+        case kPMLCounterIndexComment:
+            return [_uiService localizedString:@"counters.comments" forCount:_event.reviewsCount];
+    }
+    return nil;
+}
+- (PMLActionType)counterActionAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return PMLActionTypeAttend;
+        case kPMLCounterIndexCheckin:
+            return PMLActionTypeNoAction;
+        case kPMLCounterIndexComment:
+            return PMLActionTypeComment;
+    }
+    return PMLActionTypeNoAction;
+}
+- (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return _event.isLiked;
+        case kPMLCounterIndexCheckin:
+            return NO;
+        case kPMLCounterIndexComment:
+            // TODO return selected when messages with user
+            return NO;
+    }
+    return NO;
+}
+- (PMLPopupActionManager *)actionManager {
+    return _actionManager;
 }
 @end

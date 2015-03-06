@@ -56,11 +56,11 @@
     return UIColorFromRGB(0xec7700);
 }
 // Provider of thumb displayed in the main snippet section
--(NSObject<ThumbsPreviewProvider>*) thumbsProvider {
+-(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_city items:_city.likers forType:PMLThumbsLike];
     return _thumbsProvider;
 }
-- (NSObject<ThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
+- (NSObject<PMLThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
     return nil;
 }
 // Number of reviews
@@ -94,11 +94,11 @@
     return nil;
 }
 
--(NSObject<ThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
+-(NSObject<PMLThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
 #pragma mark Implement me
     return nil;
 }
-- (NSObject<ThumbsPreviewProvider> *)checkinsThumbsProvider {
+- (NSObject<PMLThumbsPreviewProvider> *)checkinsThumbsProvider {
 #pragma mark Implement me
     return nil;
 }
@@ -119,5 +119,8 @@
         default:
             return 0;
     }
+}
+- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
+    return nil;
 }
 @end

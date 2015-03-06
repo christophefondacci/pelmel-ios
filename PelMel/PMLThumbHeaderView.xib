@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PMLThumbHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="263" height="19"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="They like" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXi-SI-gi3">
+                    <rect key="frame" x="35" y="-1" width="213" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Rjv-Ou-KRZ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                    <color key="textColor" red="0.53333336114883423" green="0.53333336114883423" blue="0.53333336114883423" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconLike" translatesAutoresizingMaskIntoConstraints="NO" id="AhG-PL-u5J">
+                    <rect key="frame" x="15" y="1" width="17" height="17"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="17" id="8SE-8d-GPf"/>
+                        <constraint firstAttribute="width" constant="17" id="vt8-VZ-b6k"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nnM-Ti-TH6">
+                    <rect key="frame" x="15" y="18" width="235" height="1"/>
+                    <color key="backgroundColor" red="0.3006101847" green="0.2994126379" blue="0.29342496400000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="Ngx-Vv-aU1"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="oQX-ql-n8J"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="AhG-PL-u5J" firstAttribute="centerY" secondItem="dXi-SI-gi3" secondAttribute="centerY" id="1Py-FX-vhH"/>
+                <constraint firstItem="nnM-Ti-TH6" firstAttribute="leading" secondItem="AhG-PL-u5J" secondAttribute="leading" id="2dA-af-0TF"/>
+                <constraint firstItem="dXi-SI-gi3" firstAttribute="leading" secondItem="AhG-PL-u5J" secondAttribute="trailing" constant="3" id="5Ct-Ku-hDS"/>
+                <constraint firstAttribute="bottom" secondItem="dXi-SI-gi3" secondAttribute="bottom" constant="-2" id="ceU-Zx-FVu"/>
+                <constraint firstAttribute="centerY" secondItem="AhG-PL-u5J" secondAttribute="centerY" id="d7L-vJ-6KU"/>
+                <constraint firstItem="AhG-PL-u5J" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="eFP-ah-H4k"/>
+                <constraint firstAttribute="trailing" secondItem="dXi-SI-gi3" secondAttribute="trailing" constant="15" id="g7N-zw-PEd"/>
+                <constraint firstAttribute="trailing" secondItem="nnM-Ti-TH6" secondAttribute="trailing" constant="13" id="hH6-Xz-yhG"/>
+                <constraint firstItem="dXi-SI-gi3" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="nfR-s1-7Uw"/>
+                <constraint firstAttribute="bottom" secondItem="nnM-Ti-TH6" secondAttribute="bottom" id="vmR-46-3od"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="ceU-Zx-FVu"/>
+                    <exclude reference="nfR-s1-7Uw"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="titleIcon" destination="AhG-PL-u5J" id="VaT-aw-b8q"/>
+                <outlet property="titleLabel" destination="dXi-SI-gi3" id="r9V-m7-JXc"/>
+            </connections>
+            <point key="canvasLocation" x="121.5" y="-54.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="snpIconLike" width="30" height="30"/>
+    </resources>
+</document>

@@ -224,7 +224,7 @@
     NSDateFormatter *fullClockFormatter = [[NSDateFormatter alloc]init];
     [fullClockFormatter setDateFormat:@"HH:mm"];
 
-    NSDate *startTime = [fullClockFormatter dateFromString:[NSString stringWithFormat:@"%02d:%02d",hours%24,minutes]];
+    NSDate *startTime = [fullClockFormatter dateFromString:[NSString stringWithFormat:@"%02d:%02ld",(int)hours%24,(long)minutes]];
 
     [fullClockFormatter setDateStyle:NSDateFormatterNoStyle];
     [fullClockFormatter setTimeStyle:NSDateFormatterShortStyle];

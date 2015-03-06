@@ -470,6 +470,8 @@
         // Posting to server
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            _currentUser.lastLocation = (Place*)place;
+            _currentUser.lastLocationDate = [NSDate new];
             [self notifyUserCheckedIn:completor to:place];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self notifyUserFailedCheckedInTo:place];

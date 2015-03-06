@@ -312,6 +312,18 @@
 - (void)alertError {
     [self alertWithTitle:NSLocalizedString(@"action.failure.title", "Error") text:NSLocalizedString(@"action.failure.message", @"An error has occurred")];
 }
+
+- (NSString *)localizedString:(NSString *)translateKey forCount:(NSInteger)count {
+    NSString *template = NSLocalizedString(translateKey,translateKey);
+    if(count==1) {
+        NSString *singularKey = [translateKey stringByAppendingString:@".singular"];
+        NSString *singular = NSLocalizedString(singularKey,@"singular");
+        if(![singular isEqualToString:singularKey]) {
+            template = singular;
+        }
+    }
+    return [NSString stringWithFormat:template,count];
+}
 #pragma mark - Image effects
 - (UIImage *)takeSnapshotOfView:(UIView *)view
 {
