@@ -1606,9 +1606,11 @@
             [self.tableView reloadData]; //reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionOvAddress] withRowAnimation:UITableViewRowAnimationAutomatic];
         });
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
-        [self.tableView setContentOffset:CGPointMake(0, 0)];
-        [self.parentMenuController minimizeCurrentSnippet];
-        [self.tableView reloadData];
+        if(_snippetItem.editing || _snippetItem.editingDesc) {
+            [self.tableView setContentOffset:CGPointMake(0, 0)];
+            [self.parentMenuController minimizeCurrentSnippet];
+            [self.tableView reloadData];
+        }
 //        [self updateTitleEdition];
         // If place is already created we show the keyboard, otherwise it stays hidden
         if(_snippetItem.key != nil && _snippetItem.editing) {

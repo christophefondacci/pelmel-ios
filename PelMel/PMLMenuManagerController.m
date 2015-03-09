@@ -396,7 +396,7 @@ static void *MyParentMenuControllerKey;
     if(_snippetFullyOpened) {
         self.navigationItem.titleView.alpha=1;
         self.navigationController.navigationBar.alpha=1;
-        
+        [delegate menuManager:self snippetOpened:NO];
         self.navigationItem.titleView=nil;
         [delegate.actionManager installNavBarEdit:self];
         if(![self hasFakeNavigation] && _snippetFullyOpened && ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count>1) {
