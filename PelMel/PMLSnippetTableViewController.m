@@ -259,7 +259,9 @@
         
         [self clearObservers];
         // No more editing
-        _snippetItem.editing=NO;
+        if([_snippetItem respondsToSelector:@selector(editing)]) {
+            _snippetItem.editing=NO;
+        }
         
 
     }
@@ -1471,6 +1473,9 @@
 - (UIViewContentMode)contentModeForImage:(NSUInteger)image {
 //    return  UIViewContentModeScaleAspectFill;
         return  _galleryFullscreen ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+}
+- (BOOL)alignTop {
+    return !_galleryFullscreen;
 }
 -(UIImage *)placeHolderImageForImagePager {
     return [CALImage getDefaultImage];

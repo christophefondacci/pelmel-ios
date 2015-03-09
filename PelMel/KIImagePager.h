@@ -16,7 +16,7 @@
 @required
 - (NSArray *) arrayWithImages;
 - (UIViewContentMode) contentModeForImage:(NSUInteger)image;
-
+- (BOOL)alignTop;
 @optional
 - (UIImage *) placeHolderImageForImagePager;
 - (NSString *) captionForImageAtIndex:(NSUInteger)index;

@@ -134,6 +134,8 @@
 		B4592A991623255B009688B8 /* DescriptionEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A96162324BD009688B8 /* DescriptionEditorViewController.m */; };
 		B4592A9C16233120009688B8 /* UITableTagViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A9B16233120009688B8 /* UITableTagViewCell.m */; };
 		B4592A9E16233261009688B8 /* UITableTagViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A9B16233120009688B8 /* UITableTagViewCell.m */; };
+		B45B381E1AAE1D6C00730313 /* UIImageViewAligned.h in Headers */ = {isa = PBXBuildFile; fileRef = B45B381C1AAE1D6C00730313 /* UIImageViewAligned.h */; };
+		B45B381F1AAE1D6C00730313 /* UIImageViewAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = B45B381D1AAE1D6C00730313 /* UIImageViewAligned.m */; };
 		B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */; };
 		B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */ = {isa = PBXBuildFile; fileRef = B45BBF00196AB883001C1DF5 /* UIWaitingView.h */; };
 		B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = B45BBF01196AB883001C1DF5 /* UIWaitingView.m */; };
@@ -486,6 +488,8 @@
 		B4592A96162324BD009688B8 /* DescriptionEditorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DescriptionEditorViewController.m; sourceTree = "<group>"; };
 		B4592A9A1623311F009688B8 /* UITableTagViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableTagViewCell.h; sourceTree = "<group>"; };
 		B4592A9B16233120009688B8 /* UITableTagViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableTagViewCell.m; sourceTree = "<group>"; };
+		B45B381C1AAE1D6C00730313 /* UIImageViewAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageViewAligned.h; sourceTree = "<group>"; };
+		B45B381D1AAE1D6C00730313 /* UIImageViewAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageViewAligned.m; sourceTree = "<group>"; };
 		B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWaitingView.xib; sourceTree = "<group>"; };
 		B45BBF00196AB883001C1DF5 /* UIWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWaitingView.h; sourceTree = "<group>"; };
 		B45BBF01196AB883001C1DF5 /* UIWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWaitingView.m; sourceTree = "<group>"; };
@@ -978,6 +982,8 @@
 				B4B82B3819FC6CBA00895C57 /* PMLPickerProvider.h */,
 				B405E6721A9542AB00C49F64 /* PMLTimePickerDataSource.h */,
 				B405E6731A9542AB00C49F64 /* PMLTimePickerDataSource.m */,
+				B45B381C1AAE1D6C00730313 /* UIImageViewAligned.h */,
+				B45B381D1AAE1D6C00730313 /* UIImageViewAligned.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -1460,6 +1466,7 @@
 				B457A0EF1A9A689100207D8E /* PMLSectionTitleView.h in Headers */,
 				B49F989F19A2131100BD3B2F /* PMLDynamicActionObject.h in Headers */,
 				B46AD73119E4FDD00021E1DE /* PMLLikeStatistic.h in Headers */,
+				B45B381E1AAE1D6C00730313 /* UIImageViewAligned.h in Headers */,
 				B42408E418F8EA9500B8B898 /* EGORefreshTableHeaderView.h in Headers */,
 				B41C6FF6198903ED00210474 /* CALayer+XibConfiguration.h in Headers */,
 				B40668B7197149B50012DF71 /* UIMenuManagerMainDelegate.h in Headers */,
@@ -1768,6 +1775,7 @@
 				B41DD755197B5FA5008F09D9 /* UIAttachmentView.m in Sources */,
 				B4B5040D1621CE2E002D5669 /* DescriptionHeaderView.m in Sources */,
 				B40668B8197149B50012DF71 /* UIMenuManagerMainDelegate.m in Sources */,
+				B45B381F1AAE1D6C00730313 /* UIImageViewAligned.m in Sources */,
 				B4A4667119A7518E004ADC7E /* PMLUserInfoProvider.m in Sources */,
 				B406CA44197D0F8300A7FFE2 /* PMLPlaceAnnotationView.m in Sources */,
 				B4B504121621D0FD002D5669 /* Description.m in Sources */,

@@ -72,10 +72,10 @@
                 <constraint firstAttribute="bottom" secondItem="2p5-i6-WXd" secondAttribute="bottom" constant="6" id="dGz-tQ-QNB"/>
                 <constraint firstItem="dzv-Wo-P1L" firstAttribute="leading" secondItem="JbN-hi-OqI" secondAttribute="trailing" constant="8" id="ezG-Kj-1K6"/>
                 <constraint firstItem="nx6-ku-WAZ" firstAttribute="leading" secondItem="dzv-Wo-P1L" secondAttribute="trailing" constant="8" id="frl-kO-ojY"/>
-                <constraint firstAttribute="trailing" secondItem="2p5-i6-WXd" secondAttribute="trailing" constant="15" id="kJO-ha-2MS"/>
+                <constraint firstAttribute="trailing" secondItem="2p5-i6-WXd" secondAttribute="trailing" priority="750" constant="15" id="kJO-ha-2MS"/>
                 <constraint firstItem="2p5-i6-WXd" firstAttribute="top" secondItem="nx6-ku-WAZ" secondAttribute="bottom" constant="2" id="l8f-z3-ZSN"/>
                 <constraint firstItem="bid-Z9-TZu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="s5t-vQ-Gkn"/>
-                <constraint firstItem="2p5-i6-WXd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="tv2-gs-Opn"/>
+                <constraint firstItem="2p5-i6-WXd" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="750" constant="15" id="tv2-gs-Opn"/>
                 <constraint firstItem="JbN-hi-OqI" firstAttribute="bottom" secondItem="dzv-Wo-P1L" secondAttribute="bottom" id="vhl-2I-vnY"/>
                 <constraint firstAttribute="trailing" secondItem="nx6-ku-WAZ" secondAttribute="trailing" constant="15" id="zUl-rj-pNN"/>
             </constraints>

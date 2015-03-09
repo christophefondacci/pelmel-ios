@@ -139,6 +139,8 @@
 
     controller.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     // Adjusting tint
+    controller.navigationController.navigationBar.alpha=1;
+    controller.navigationController.navigationBar.backgroundColor =[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1];
     controller.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [controller.navigationController.navigationBar setBackgroundImage:nil
                                                   forBarMetrics:UIBarMetricsDefault];

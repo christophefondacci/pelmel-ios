@@ -13,6 +13,7 @@
 #import "KIImagePager.h"
 #import "TogaytherService.h"
 #import "ImageService.h"
+#import "UIImageViewAligned.h"
 
 @interface KIImagePager () <UIScrollViewDelegate>
 {
@@ -86,8 +87,9 @@
 //    _imageCounterBackground.frame = bgFrame;
     for(int i = 0 ; i < _dataSource.arrayWithImages.count ; i++) {
         CGRect imageFrame = CGRectMake(_scrollView.frame.size.width * i, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
-        UIImageView *imageView = [_imageViews objectForKey:[NSNumber numberWithInt:i]];
+        UIImageViewAligned *imageView = [_imageViews objectForKey:[NSNumber numberWithInt:i]];
         imageView.contentMode = [self.dataSource contentModeForImage:i];
+        imageView.alignTop = [self.dataSource alignTop];
         imageView.frame = imageFrame;
     }
 //    int currentWidth = _scrollView.contentSize.width;
@@ -198,9 +200,10 @@
         
         for (int i = 0; i < [_datasourceImages count]; i++) {
             CGRect imageFrame = CGRectMake(_scrollView.frame.size.width * i, 0, _scrollView.frame.size.width, _scrollView.frame.size.height);
-            UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
+            UIImageViewAligned *imageView = [[UIImageViewAligned alloc] initWithFrame:imageFrame];
             [imageView setBackgroundColor:[UIColor clearColor]];
             [imageView setContentMode:[_dataSource contentModeForImage:i]];
+            imageView.alignTop = [self.dataSource alignTop];
             [imageView setTag:i];
             [_imageViews setObject:imageView forKey:[NSNumber numberWithInt:i]];
 
