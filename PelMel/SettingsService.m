@@ -108,6 +108,7 @@
     self.allFiltersActive = allFiltersActive || noFilterActive;
     self.allFiltersActive &= ![self isFilterEnabled:PMLFilterHappyHours];
     self.allFiltersActive &= ![self isFilterEnabled:PMLFilterOpeningHours];
+    self.allFiltersActive &= ![self isFilterEnabled:PMLFilterEvents];
 }
 -(BOOL)isPlaceTypeActive:(NSString*)code {
 
@@ -142,6 +143,10 @@
                 filtersActive = YES;
                 placeActive = [self isHappyHour:place];
             }
+            if([self isFilterEnabled:PMLFilterEvents] && (placeActive|| !filtersActive)) {
+                filtersActive = YES;
+                placeActive = [self hasEvent:place];;
+            }
         }
     }
     // If nothing filtered, everything visible, else we check place type filter
@@ -158,6 +163,18 @@
     Special *special = [_conversionService specialFor:place ofType:SPECIAL_TYPE_HAPPY];
     SpecialMode mode = [_conversionService specialModeFor:special];
     return mode == CURRENT;
+}
+-(BOOL)hasEvent:(Place*)place {
+    if(place.events.count>0) {
+        return YES;
+    } else {
+        for(Event *e in [[[TogaytherService dataService] modelHolder] events]) {
+            if([e.place.key isEqualToString:place.key]){
+                return YES;
+            }
+        }
+    }
+    return NO;
 }
 -(void)storePlaceTypeFilter:(PlaceType*)placeType {
     NSNumber *val = [NSNumber numberWithBool:placeType.visible];

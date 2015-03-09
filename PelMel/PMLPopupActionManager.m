@@ -705,6 +705,7 @@
             UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
             _navbarEdit = YES;
             menuManager.navigationItem.rightBarButtonItem = barItem;
+            menuManager.navigationController.navigationBar.alpha=0;
         } else {
             menuManager.navigationItem.rightBarButtonItem = nil;
         }
@@ -715,6 +716,7 @@
     _menuManagerController.navigationItem.rightBarButtonItem = commitItem;
     UIBarButtonItem *cancelItem = [self barButtonItemFromAction:PMLActionTypeCancel selector:@selector(navbarActionTapped:)];
     _menuManagerController.navigationItem.leftBarButtonItem = cancelItem;
+    _menuManagerController.navigationController.navigationBar.alpha=1;
 }
 -(void)uninstallNavBarCommitCancel {
     if(_navbarEdit) {
@@ -730,6 +732,7 @@
     button.layer.borderWidth=1;
     button.layer.borderColor = [action.color CGColor];
     button.layer.cornerRadius = 15;
+    button.alpha=1;
     [button setImage:action.icon forState:UIControlStateNormal];
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     button.tag = actionType;

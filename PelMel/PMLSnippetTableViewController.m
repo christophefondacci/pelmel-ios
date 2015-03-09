@@ -182,6 +182,7 @@
     NSInteger _readMoreSize;
     ThumbPreviewMode _thumbPreviewMode;
     BOOL _opened;
+    BOOL _editVisible;
     
 }
 
@@ -413,6 +414,7 @@
     NSString *reuseCellId = [self rowIdForIndexPath:indexPath];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseCellId forIndexPath:indexPath];
     cell.backgroundColor = BACKGROUND_COLOR;
+    cell.opaque=YES;
     // Configure the cell...
     switch(indexPath.section) {
         case kPMLSectionSnippet:
@@ -869,7 +871,7 @@
             _countersView.frame = CGRectMake(frame.origin.x,frame.origin.y,frame.size.width-15,frame.size.height);
             [cell.peopleView addSubview:_countersView];
         }
-        _countersView.backgroundColor=[UIColor clearColor];
+        _countersView.backgroundColor=BACKGROUND_COLOR;
         id<PMLCountersDatasource> datasource = [_infoProvider countersDatasource:self.actionManager];
         _countersView.datasource = datasource;
         [_countersView reloadData];
@@ -1050,7 +1052,7 @@
     NSObject<PMLThumbsPreviewProvider> *provider = [_infoProvider thumbsProvider];
     
     // Numeric row key
-    cell.backgroundColor = [UIColor clearColor];
+    cell.backgroundColor = BACKGROUND_COLOR; //[UIColor clearColor];
 
     // Thumb controller
     if(provider != nil) {
@@ -1688,19 +1690,23 @@
                 CGPoint location = [recognizer locationInView:self.parentMenuController.view];
                 
                 // Flag to check drag direction
+                CGFloat delta = location.y - _dragStartPoint.y;
                 if(_dragStartPoint.x == MAXFLOAT) {
-                    CGFloat delta = location.y - _dragStartPoint.y;
+
                     BOOL snippetOpened = self.parentMenuController.snippetFullyOpened;
                     if((delta>0 && !snippetOpened) || (delta < 0 && snippetOpened)) {
                         _parentDragging = NO;
                         [self.parentMenuController dragSnippet:_dragStartPoint velocity:CGPointMake(0, 0) state:UIGestureRecognizerStateEnded];
                     }
                     _dragStartPoint.x=0;
+                    
+
                 }
                 if(_parentDragging) {
                     [self.parentMenuController dragSnippet:location velocity:scrollVelocity state:recognizer.state];
                     self.tableView.contentOffset = CGPointMake(0,0);
                 }
+                
             }
             break;
         default:
@@ -1708,6 +1714,34 @@
     }
     if(recognizer.state == UIGestureRecognizerStateEnded) {
         _parentDragging = NO;
+    }
+}
+- (void)adjustEditVisibility {
+    
+    // Computing if we are at the bottom of the scroll view
+    CGPoint offset = self.tableView.contentOffset;
+    CGRect bounds = self.tableView.bounds;
+    CGSize size = self.tableView.contentSize;
+    UIEdgeInsets inset = self.tableView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+    
+    float reload_distance = 50;
+    BOOL bottom = NO;
+    if(y > (h - reload_distance)) {
+        bottom = YES;
+    }
+    // Showing edit button if scrolled beyond gallery OR if already at the bottom of the screen
+    if(!_editVisible && (self.tableView.contentOffset.y >kPMLHeightGallery || bottom)) {
+        _editVisible = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.parentMenuController.navigationController.navigationBar.alpha=1;
+        }];
+    } else if(_editVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom) {
+        _editVisible = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.parentMenuController.navigationController.navigationBar.alpha=0;
+        }];
     }
 }
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
@@ -1720,26 +1754,22 @@
     if(_snippetItem.editing) {
         self.tableView.contentOffset = CGPointMake(0, 0);
     }
+    // Setting edit button to appear / disappear
+    [self adjustEditVisibility];
+
 }
 
 #pragma  mark - PMLSnippetDelegate
 - (void)menuManager:(PMLMenuManagerController *)menuManager snippetOpened:(BOOL)animated {
     _opened = YES;
-    // Removing the thumb visibility when opened because it would overflow on the visible part
-    PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
-    if(animated) {
-        [UIView animateWithDuration:0.5 animations:^{
-            [self snippetCell:cell setOptionalVisibility:0];
-        }];
-    } else {
-        [self snippetCell:cell setOptionalVisibility:0];
-    }
     
     // Gallery management
     BOOL shouldAddGallery = !_hasGallery && _snippetItem!=nil;
     _hasGallery = YES;
     if(shouldAddGallery) {
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationMiddle];
+        // Setting edit button to appear / disappear
+        [self adjustEditVisibility];
     }
 
 }
@@ -1763,18 +1793,11 @@
     BOOL shouldRemoveGallery = _hasGallery && _snippetItem!=nil;
     _hasGallery = NO;
     if(shouldRemoveGallery) {
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationFade];
+        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationTop];
     }
 }
 - (void)menuManager:(PMLMenuManagerController *)menuManager snippetPanned:(float)pctOpened {
-//    BOOL insert = (_galleryPctHeight == 0);
     _galleryPctHeight = pctOpened;
-//    insert = insert &&_galleryPctHeight>0;
-//    if(insert) {
-//        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationNone];
-//    } else {
-        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationNone];
-//    }
 }
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;

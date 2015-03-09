@@ -115,6 +115,7 @@ typedef void(^TextInputCallback)(NSString *text);
 @property (weak, nonatomic) IBOutlet UIView *topWarningView;
 @property (weak, nonatomic) IBOutlet UILabel *topWarningLabel;
 @property (weak, nonatomic) UIViewController *currentSnippetViewController;
+@property (nonatomic,strong) UIView *bottomView;
 //@property (nonatomic,strong) UILabel *topWarningLabel;
 /**
  * Initializes this menu manager with the given root UIViewController

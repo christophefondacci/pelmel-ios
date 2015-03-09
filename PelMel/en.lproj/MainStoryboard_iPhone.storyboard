@@ -2760,20 +2760,26 @@
                                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </view>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="atE-0a-bcp">
-                                            <rect key="frame" x="278" y="158" width="36" height="36"/>
+                                            <rect key="frame" x="273" y="163" width="31" height="31"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="36" id="cA8-bW-M8o"/>
-                                                <constraint firstAttribute="height" constant="36" id="zGa-yx-0b9"/>
+                                                <constraint firstAttribute="width" constant="31" id="cA8-bW-M8o"/>
+                                                <constraint firstAttribute="height" constant="31" id="zGa-yx-0b9"/>
                                             </constraints>
                                             <state key="normal" image="popActionPhoto">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="18"/>
+                                                </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LP0-kS-ZhJ">
-                                            <rect key="frame" x="278" y="10" width="36" height="36"/>
+                                            <rect key="frame" x="270.5" y="10" width="36" height="36"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="36" id="fhd-xX-8jF"/>
                                                 <constraint firstAttribute="width" constant="36" id="w3N-Mc-327"/>
@@ -2786,7 +2792,7 @@
                                             </userDefinedRuntimeAttributes>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checkin" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="CEW-To-9vN">
-                                            <rect key="frame" x="278" y="46" width="36" height="16"/>
+                                            <rect key="frame" x="270.5" y="46" width="36" height="16"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="16" id="yzQ-ra-aTf"/>
                                             </constraints>
@@ -2804,7 +2810,7 @@
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="top" secondItem="tHk-nU-W36" secondAttribute="top" id="Z5g-aB-HMf"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="bottom" secondItem="atE-0a-bcp" secondAttribute="bottom" constant="6" id="a1O-lq-z2A"/>
                                         <constraint firstItem="CEW-To-9vN" firstAttribute="leading" secondItem="LP0-kS-ZhJ" secondAttribute="leading" id="dZo-S0-Nsk"/>
-                                        <constraint firstAttribute="trailing" secondItem="atE-0a-bcp" secondAttribute="trailing" constant="6" id="fpz-lc-hdq"/>
+                                        <constraint firstAttribute="trailing" secondItem="atE-0a-bcp" secondAttribute="trailing" constant="16" id="fpz-lc-hdq"/>
                                         <constraint firstItem="atE-0a-bcp" firstAttribute="centerX" secondItem="LP0-kS-ZhJ" secondAttribute="centerX" id="o5t-f9-W1c"/>
                                         <constraint firstAttribute="bottom" secondItem="0lj-4h-2sZ" secondAttribute="bottom" id="t2M-gb-rke"/>
                                     </constraints>

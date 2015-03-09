@@ -114,6 +114,7 @@ static NSString * const reuseIdentifier = @"Cell";
     cell.thumbImage.image=nil;
     CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
     if(image.thumbImage == nil) {
+        NSLog(@"Image for %p with %@",cell.thumbImage,image.key);
         [_imageService load:image to:cell.thumbImage thumb:YES];
     } else {
         cell.thumbImage.image = image.thumbImage;

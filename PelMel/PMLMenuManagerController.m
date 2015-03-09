@@ -25,6 +25,7 @@
 #import "PMLFakeViewController.h"
 #import "UIViewController+BackButtonHandler.h"
 #import "SpringTransitioningDelegate.h"
+#import "PMLSnippetTableViewController.h"
 
 #define kSnippetHeight 110
 
@@ -67,7 +68,7 @@ static void *MyParentMenuControllerKey;
     UIDynamicAnimator *_menuAnimator;
     
     // Bottom view for cover view
-    UIView *_bottomView;
+//    UIView *_bottomView;
     
     // Menu view for left slide interaction
     UIView *_menuView;
@@ -321,21 +322,14 @@ static void *MyParentMenuControllerKey;
     if(_currentSnippetViewController != nil) {
         [self setSnippetFullyOpened:YES];
         NSInteger top = [self offsetForOpenedSnippet];
-        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:top];
-        menuBehavior.action =^{
-            [self snippetPannedCallback];
-        };
-        [_animator removeAllBehaviors];
-        [_animator addBehavior:menuBehavior];
+        [self animateSnippetToOffset:top];
     }
 }
 - (void)minimizeCurrentSnippet {
     if(_currentSnippetViewController != nil) {
         [self setSnippetFullyOpened:NO];
-        NSInteger top = [self offsetForMinimizedSnippet];
-        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:NO boundary:top];
-        [_animator removeAllBehaviors];
-        [_animator addBehavior:menuBehavior];
+        NSInteger offset = [self offsetForMinimizedSnippet];
+        [self animateSnippetToOffset:offset];
     }
 }
 - (void)setSnippetFullyOpened:(BOOL)snippetFullyOpened {
@@ -343,7 +337,10 @@ static void *MyParentMenuControllerKey;
     if(!_snippetFullyOpened && snippetFullyOpened) {
         // So we fade out the nav view
         _snippetFullyOpened = snippetFullyOpened;
-        [UIView animateWithDuration:0.2 animations:^{
+        id<PMLSnippetDelegate> delegate = [self snippetDelegateFor:_currentSnippetViewController];
+        [delegate menuManager:self snippetOpened:NO];
+        // Notifying delegate
+        [UIView animateWithDuration:0.5 animations:^{
             self.title = _currentSnippetViewController.title;
             self.navigationItem.titleView.alpha=0;
             self.navigationController.navigationBar.alpha=0;
@@ -361,7 +358,7 @@ static void *MyParentMenuControllerKey;
         self.navigationItem.titleView=_mainNavBarView;
         self.navigationItem.titleView.alpha=0;
         self.navigationController.navigationBar.alpha=0;
-        [UIView animateWithDuration:0.2 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             self.navigationItem.titleView.alpha=1;
             self.navigationController.navigationBar.alpha=1;
         } completion:^(BOOL finished) {
@@ -372,7 +369,7 @@ static void *MyParentMenuControllerKey;
         [self refreshNavigationFor:_currentSnippetViewController];
     }
 }
--(void)refreshNavigationFor:(NSObject*)object {
+- (id<PMLSnippetDelegate>)snippetDelegateFor:(NSObject*)object {
     id<PMLSnippetDelegate> delegate = nil;
     UIViewController *controller;
     // Switching to topController if we have a subnavigation controller or navigation controller
@@ -390,23 +387,23 @@ static void *MyParentMenuControllerKey;
     } else if([object conformsToProtocol:@protocol(PMLSnippetDelegate)]) {
         delegate = (id<PMLSnippetDelegate>)object;
     }
+    return delegate;
+}
+-(void)refreshNavigationFor:(NSObject*)object {
+    id<PMLSnippetDelegate> delegate = [self snippetDelegateFor:object];
     
     
     if(_snippetFullyOpened) {
-        self.title = controller.title;
         self.navigationItem.titleView.alpha=1;
         self.navigationController.navigationBar.alpha=1;
         
         self.navigationItem.titleView=nil;
-        if([controller conformsToProtocol:@protocol(PMLSnippetDelegate) ]) {
-            [delegate.actionManager installNavBarEdit:self];
-        }
+        [delegate.actionManager installNavBarEdit:self];
         if(![self hasFakeNavigation] && _snippetFullyOpened && ((PMLSubNavigationController*)_currentSnippetViewController).subControllers.count>1) {
             PMLFakeViewController *fakeViewController = [[PMLFakeViewController alloc] init];
             [self.navigationController setViewControllers:@[fakeViewController,self] animated:NO];
         }
-        // Notifying delegate
-        [delegate menuManager:self snippetOpened:NO];
+
         
         
         [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
@@ -664,20 +661,20 @@ static void *MyParentMenuControllerKey;
             
             offset = [self offsetForMinimizedSnippet];
         }
-    
-        // Building the 'open' (or 'close') behavior
-        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:_snippetFullyOpened boundary:offset];
-
-        [_animator removeAllBehaviors];
-        [_animator addBehavior:menuBehavior];
-        menuBehavior.action = ^{
-            [self snippetPannedCallback];
-        };
-        // Adding the user velocity
-        UIPushBehavior *pushBehavior = [[UIPushBehavior alloc] initWithItems:@[_bottomView] mode:UIPushBehaviorModeInstantaneous];
-        pushBehavior.pushDirection = CGVectorMake(0, velocity.y / 20.0f);
-        [_animator addBehavior:pushBehavior];
+        
+        // Animating snippet
+        [self animateSnippetToOffset:offset];
     }
+}
+-(void)animateSnippetToOffset:(NSInteger)offset {
+    // Building the 'open' (or 'close') behavior
+    [_animator removeAllBehaviors];
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = _bottomView.frame;
+        frame.origin.y=offset;
+        
+        _bottomView.frame = frame;
+    }];
 }
 - (void)snippetPannedCallback {
     
@@ -693,7 +690,7 @@ static void *MyParentMenuControllerKey;
 }
 -(NSInteger)offsetForMinimizedSnippet {
     CGRect myFrame = self.view.frame;
-    return myFrame.size.height + _bottomView.frame.size.height - kSnippetHeight;
+    return myFrame.size.height  - kSnippetHeight;
 }
 -(NSInteger)offsetForOpenedSnippet {
 //    CGRect bounds = self.view.bounds;

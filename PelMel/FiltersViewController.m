@@ -14,10 +14,11 @@
 #define kSectionHours 0
 #define kSectionPlaceType 1
 #define kRowCountSettings 2
-#define kRowCountHours 2
+#define kRowCountHours 3
 
 #define kRowHoursOpening 0
 #define kRowHoursSpecials 1
+#define kRowHoursEvents 2
 
 #define kCellIdPlaceType @"placeTypeCell"
 
@@ -132,6 +133,9 @@
                 case kRowHoursSpecials:
                     [settingsService enableFilter:PMLFilterHappyHours enablement:![settingsService isFilterEnabled:PMLFilterHappyHours]];
                     break;
+                case kRowHoursEvents:
+                    [settingsService enableFilter:PMLFilterEvents enablement:![settingsService isFilterEnabled:PMLFilterEvents]];
+                    break;
                 default:
                     break;
             }
@@ -231,6 +235,12 @@
             cell.accessoryType = [settingsService isFilterEnabled:PMLFilterHappyHours] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
 
             break;
+        case kRowHoursEvents:
+            cell.image.image = [UIImage imageNamed:@"snpIconEvent"];
+            cell.label.text = NSLocalizedString(@"filters.hours.events", @"WithEvents");
+            cell.accessoryType = [settingsService isFilterEnabled:PMLFilterEvents] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            
+
     }
 }
 

@@ -25,7 +25,7 @@
 
 
 typedef enum {
-    PMLFilterOpeningHours, PMLFilterHappyHours
+    PMLFilterOpeningHours, PMLFilterHappyHours, PMLFilterEvents
 } FilterCode;
 
 @interface SettingsService : NSObject
