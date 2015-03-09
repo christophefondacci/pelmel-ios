@@ -98,6 +98,7 @@ static NSString * const reuseIdentifier = @"Cell";
     PMLThumbView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    cell.backgroundColor = [UIColor clearColor];
     PMLThumbType type = [self.thumbProvider thumbTypeAtIndex:indexPath.section];
     cell.backgroundColor = [UIColor clearColor];
     if([self.thumbProvider respondsToSelector:@selector(isSelected:forType:)]) {
@@ -108,8 +109,8 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }
     
-    cell.backgroundColor = [UIColor clearColor];
-//            cell.backgroundColor = UIColorFromRGB(0xf48020);    
+//    cell.backgroundColor = [UIColor clearColor];
+//            cell.backgroundColor = UIColorFromRGB(0xf48020);
     // Configuring image
     cell.thumbImage.image=nil;
     CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];

@@ -63,6 +63,7 @@
 #define kPMLRowCounters 0
 #define kPMLRowThumbPreview 1
 #define kPMLRowSnippetId @"snippet"
+#define kPMLRowSnippetEditorId @"snippetEditor"
 #define kPMLRowGalleryId @"gallery"
 #define kPMLRowCountersId @"counters"
 #define kPMLRowThumbPreviewId @"thumbsPreview"
@@ -72,6 +73,7 @@
 #define kPMLHeightThumbPreview 75
 #define kPMLHeightThumbPreviewContainer 65
 #define kPMLThumbSize @62
+#define kPMLThumbTypesSize @45
 
 
 #define kPMLOvSummaryRows 0
@@ -354,7 +356,7 @@
         case kPMLSectionSnippet:
             switch(indexPath.row) {
                 case kPMLRowSnippet:
-                    return kPMLRowSnippetId;
+                    return _snippetItem.editing ? kPMLRowSnippetEditorId : kPMLRowSnippetId;
             }
             break;
         case kPMLSectionGallery:
@@ -420,7 +422,11 @@
         case kPMLSectionSnippet:
             switch(indexPath.row) {
                 case kPMLRowSnippet:
-                    [self configureRowSnippet:(PMLSnippetTableViewCell*)cell];
+                    if(_snippetItem.editing) {
+                        [self configureRowSnippetEditor:(PMLSnippetTableViewCell*)cell];
+                    } else {
+                        [self configureRowSnippet:(PMLSnippetTableViewCell*)cell];
+                    }
                     break;
             }
             break;
@@ -428,14 +434,7 @@
             [self configureRowGallery:(PMLGalleryTableViewCell*)cell];
             break;
         case kPMLSectionCounters:
-//            switch(indexPath.row) {
-//                case kPMLRowCounters:
-//                    [self configureRowCounters:(PMLCountersTableViewCell*)cell];
-//                    break;
-//                default:
-                    [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:indexPath.row];
-//                    break;
-//            }
+            [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:indexPath.row];
             break;
         case kPMLSectionOvSummary:
             switch(indexPath.row) {
@@ -504,12 +503,7 @@
                     return kPMLHeightSnippet;
             }
             break;
-        case kPMLSectionGallery: {
-//            return kPMLHeightGallery;
-//            CGFloat height = _galleryPctHeight * (float)kPMLHeightGallery;
-//            NSLog(@"Gallery height: %.02f",height);
-//            return height > 0 ? height : 1;
-        }
+        case kPMLSectionGallery:
             if(!_galleryFullscreen) {
                 // Substract 5 for #44 little truncation
                 return kPMLHeightGallery; //(tableView.bounds.size.width-5)-(48*2);
@@ -715,51 +709,59 @@
             break;
     }
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - Cell configuration
+
+- (void)configureRowSnippetEditor:(PMLSnippetTableViewCell*)cell {
+
+    cell.titleTextField.delegate = self;
+    cell.titleTextField.hidden=NO;
+    cell.titleTextField.text = _infoProvider.title;
+    cell.titleTextField.placeholder = NSLocalizedString(@"snippet.edit.titlePlaceholder", @"Enter a name");
+    [cell.titleTextField addTarget:self
+                                    action:@selector(titleTextChanged:)
+                          forControlEvents:UIControlEventEditingChanged];
+
+    // Toggling place type selection
+    if([_snippetItem isKindOfClass:[Place class]]) {
+        // Initializing default type
+        PlaceType *selectedPlaceType = [_settingsService defaultPlaceType];
+        // Getting place type for current place
+        NSString *typeCode =((Place*)_snippetItem).placeType;
+        if(typeCode != nil) {
+            selectedPlaceType = [_settingsService getPlaceType:typeCode];
+        }
+        // Initilizing with this selection
+        PMLPlaceTypesThumbProvider *provider = [[PMLPlaceTypesThumbProvider alloc] initWithPlace:(Place*)_snippetItem];
+        [cell layoutIfNeeded];
+        _typesThumbController = [self thumbControllerIn:cell.peopleView provider:provider using:_typesThumbController size:kPMLThumbTypesSize];
+        
+    }
+    cell.subtitleLabel.text = NSLocalizedString(@"snippet.edit.placeType",@"Select the kind of venue:");
+}
+-(void)configureRowSnippetDescriptionEditor:(PMLSnippetTableViewCell*)cell {
+    _snippetCell.descriptionTextView.delegate = self;
+    _snippetCell.descriptionTextView.hidden=NO;
+    _snippetCell.descriptionTextView.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
+    _snippetCell.descriptionTextView.text = _infoProvider.descriptionText;
+    _snippetCell.descriptionTextViewButton.hidden=NO;
+    _snippetCell.descriptionTextViewButton.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:17];
+    _snippetCell.peopleView.hidden=YES;
+    _snippetCell.hoursBadgeView.hidden=YES;
+    [_snippetCell.descriptionTextViewButton addTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
+    [_snippetCell.descriptionTextView becomeFirstResponder];
+    // Building placeholder
+    //        NSString *langCode = _snippetItem.miniDescLang;
+    //        if(langCode == nil) {
+    //            langCode = [TogaytherService getLanguageIso6391Code];
+    //        }
+    //        NSString *template = [NSString stringWithFormat:@"language.%@",langCode];
+    //        NSString *langLabel = NSLocalizedString(template, @"language name");
+    //        NSString *descPlaceholderTemplate = NSLocalizedString(@"description.placeholder", @"description placeholder");
+    //        NSString *descPlaceholder = [NSString stringWithFormat:descPlaceholderTemplate,langLabel];
+    //
+}
 - (void)configureRowSnippet:(PMLSnippetTableViewCell*)cell {
     _snippetCell = cell;
     // Title
@@ -1055,28 +1057,33 @@
     cell.backgroundColor = BACKGROUND_COLOR; //[UIColor clearColor];
 
     // Thumb controller
-    if(provider != nil) {
-        if(_thumbController != nil) {
-            [_thumbController willMoveToParentViewController:nil];
-            [_thumbController.view removeFromSuperview];
-            [_thumbController removeFromParentViewController];
-        } else {
-            _thumbController = (PMLThumbCollectionViewController*)[_uiService instantiateViewController:@"thumbCollectionCtrl"];
-        }
-        [self addChildViewController:_thumbController];
-        _thumbController.actionDelegate=self;
-        _thumbController.size = kPMLThumbSize;
-        [_thumbController setThumbProvider:provider];
-        [cell layoutIfNeeded];
-        _thumbController.view.frame = cell.thumbsContainer.bounds;
-        [cell.thumbsContainer addSubview:_thumbController.view];
-        [_thumbController didMoveToParentViewController:self];
-
-
-    }
-    
+    [cell layoutIfNeeded];
+    _thumbController = [self thumbControllerIn:cell.thumbsContainer provider:provider using:_thumbController size:kPMLThumbSize];
 }
-
+/**
+ * Instantiates a new controller or readjusts the current controller using given providers and parent views
+ */
+-(PMLThumbCollectionViewController*)thumbControllerIn:(UIView*)parentView provider:(NSObject<PMLThumbsPreviewProvider>*)provider using:(PMLThumbCollectionViewController*)sourceController size:(NSNumber*)thumbSize {
+    
+    PMLThumbCollectionViewController *controller = sourceController;
+    if(provider != nil) {
+        if(controller != nil) {
+            [controller willMoveToParentViewController:nil];
+            [controller.view removeFromSuperview];
+            [controller removeFromParentViewController];
+        } else {
+            controller = (PMLThumbCollectionViewController*)[_uiService instantiateViewController:@"thumbCollectionCtrl"];
+        }
+        [self addChildViewController:controller];
+        controller.actionDelegate=self;
+        controller.size = thumbSize;
+        [controller setThumbProvider:provider];
+        controller.view.frame = parentView.bounds;
+        [parentView addSubview:controller.view];
+        [controller didMoveToParentViewController:self];
+    }
+    return controller;
+}
 -(void)configureRowGallery:(PMLGalleryTableViewCell*)cell {
     _galleryCell = cell;
     cell.galleryView.delegate=self;
@@ -1554,6 +1561,9 @@
     }
     [_snippetCell.titleTextField resignFirstResponder];
     [self.tableView reloadData];
+    
+    PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
+    action.actionCommand();
     return YES;
 }
 #pragma mark - UITextViewDelegate
@@ -1596,7 +1606,10 @@
             [self.tableView reloadData]; //reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionOvAddress] withRowAnimation:UITableViewRowAnimationAutomatic];
         });
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
-        [self updateTitleEdition];
+        [self.tableView setContentOffset:CGPointMake(0, 0)];
+        [self.parentMenuController minimizeCurrentSnippet];
+        [self.tableView reloadData];
+//        [self updateTitleEdition];
         // If place is already created we show the keyboard, otherwise it stays hidden
         if(_snippetItem.key != nil && _snippetItem.editing) {
             [_snippetCell.titleTextField becomeFirstResponder];
@@ -1607,61 +1620,7 @@
     }
 }
 -(void)updateTitleEdition {
-    if(_snippetItem.editing) {
-        _snippetCell.titleTextField.delegate = self;
-        _snippetCell.titleTextField.hidden=NO;
-        _snippetCell.titleTextField.text = _infoProvider.title;
-        _snippetCell.titleTextField.placeholder = NSLocalizedString(@"snippet.edit.titlePlaceholder", @"Enter a name");
-        [_snippetCell.titleTextField addTarget:self
-                           action:@selector(titleTextChanged:)
-                 forControlEvents:UIControlEventEditingChanged];
-//        [_snippetCell.titleTextField becomeFirstResponder];
-        
-        // Toggling place type selection
-        if([_snippetItem isKindOfClass:[Place class]]) {
-            // Initializing default type
-            PlaceType *selectedPlaceType = [_settingsService defaultPlaceType];
-            // Getting place type for current place
-            NSString *typeCode =((Place*)_snippetItem).placeType;
-            if(typeCode != nil) {
-                selectedPlaceType = [_settingsService getPlaceType:typeCode];
-            }
-            // Initilizing with this selection
-            PMLPlaceTypesThumbProvider *provider = [[PMLPlaceTypesThumbProvider alloc] initWithPlace:(Place*)_snippetItem];
-            // Registering new provider
-        //TODO:NEW CELL FOR EDITION
-//            _thumbController.thumbProvider = provider;
-//            [self configureThumbController];
-        }
-    } else if(_snippetItem.editingDesc) {
-        _snippetCell.descriptionTextView.delegate = self;
-        _snippetCell.descriptionTextView.hidden=NO;
-        _snippetCell.descriptionTextView.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
-        _snippetCell.descriptionTextView.text = _infoProvider.descriptionText;
-        _snippetCell.descriptionTextViewButton.hidden=NO;
-        _snippetCell.descriptionTextViewButton.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:17];
-        _snippetCell.peopleView.hidden=YES;
-        _snippetCell.hoursBadgeView.hidden=YES;
-        [_snippetCell.descriptionTextViewButton addTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
-        [_snippetCell.descriptionTextView becomeFirstResponder];
-        // Building placeholder
-//        NSString *langCode = _snippetItem.miniDescLang;
-//        if(langCode == nil) {
-//            langCode = [TogaytherService getLanguageIso6391Code];
-//        }
-//        NSString *template = [NSString stringWithFormat:@"language.%@",langCode];
-//        NSString *langLabel = NSLocalizedString(template, @"language name");
-//        NSString *descPlaceholderTemplate = NSLocalizedString(@"description.placeholder", @"description placeholder");
-//        NSString *descPlaceholder = [NSString stringWithFormat:descPlaceholderTemplate,langLabel];
-//        
 
-    } else {
-        _snippetCell.titleTextField.hidden=YES;
-        _snippetCell.titleLabel.text = _infoProvider.title;
-        
-        // Restoring thumbs provider
-        _thumbController.thumbProvider = _infoProvider.thumbsProvider;
-    }
 }
 #pragma mark - Dragging control & scroll view
 - (void)tableViewPanned:(UIPanGestureRecognizer*)recognizer {
