@@ -43,11 +43,19 @@
     
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
-    self.tableView.separatorColor = [UIColor clearColor];
+    self.tableView.separatorColor = UIColorFromRGB(0x3e4146);
+    self.tableView.separatorInset = UIEdgeInsetsZero;
+    if([self.tableView respondsToSelector:@selector(layoutMargins)]){
+        self.tableView.layoutMargins = UIEdgeInsetsZero;
+    }
     
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTapped:)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(saveTapped:)];
     self.navigationItem.rightBarButtonItem.enabled = self.event.name!=nil && self.event.name.length>0;
+    
+    self.navigationController.view.layer.cornerRadius = 10;
+    self.navigationController.view.layer.masksToBounds = YES;
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -104,7 +112,7 @@
             return nil;
     }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-    
+    cell.backgroundColor = cell.contentView.backgroundColor;
     switch(indexPath.section) {
         case kPMLSectionGeneral:
             [self configureNameCell:(PMLTextFieldTableViewCell*)cell];
@@ -196,7 +204,7 @@
 #pragma mark - Row configuration
 -(void)configureNameCell:(PMLTextFieldTableViewCell*)cell {
     cell.textField.attributedPlaceholder =
-    [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"events.new.placeholder",@"Event Name") attributes: @{NSForegroundColorAttributeName :[UIColor colorWithRed:1 green:1 blue:1 alpha:0.2]}];
+    [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"events.new.placeholder",@"Event Name") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x4d4e52)}];
     cell.textField.delegate=self;
     [cell.textField addTarget:self
                   action:@selector(textChanged:)

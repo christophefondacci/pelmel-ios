@@ -11,6 +11,8 @@
 #import "MapAnnotation.h"
 #import "MKNumberBadgeView.h"
 #import "UIPopBehavior.h"
+#import "TogaytherService.h"
+
 
 @implementation PMLPlaceAnnotationView {
     UIImageView *_imageView;
@@ -19,6 +21,7 @@
     UIDynamicAnimator *_animator;
     
     NSMutableArray *_actionViews;
+    BOOL _showLabel;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -118,9 +121,11 @@
             _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-30, -20, 60+scaledSize.width, 20)];
             _titleLabel.textAlignment = NSTextAlignmentCenter;
             _titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:11];
+            _titleLabel.textColor = UIColorFromRGB(0xf48020);
             _titleLabel.text = ((Place*)annotation.object).title;
-            _titleLabel.hidden=YES;
-//            _titleLabel.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.4];
+            _titleLabel.hidden=NO;
+            _titleLabel.alpha=0;
+//            _titleLabel.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.2];
             self.showLabel = NO;
             [_imageView addSubview:_titleLabel];
         }
@@ -134,9 +139,13 @@
 }
 
 -(void)setShowLabel:(BOOL)showLabel {
-    _titleLabel.hidden = !showLabel;
+    float alpha = showLabel ? 1 : 0;
+    _showLabel = showLabel;
+    [UIView animateWithDuration:0.5 animations:^{
+        _titleLabel.alpha=alpha;
+    }];
 }
 - (BOOL)showLabel {
-    return _titleLabel.hidden;
+    return _showLabel;
 }
 @end

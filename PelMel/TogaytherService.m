@@ -146,6 +146,9 @@
     [controller.navigationController.navigationBar setTranslucent:YES];
     [controller.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
     [controller.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    
+    NSDictionary *barButtonAppearanceDict = @{NSFontAttributeName : [UIFont fontWithName:PML_FONT_DEFAULT size:19.0], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    [[UIBarButtonItem appearance] setTitleTextAttributes:barButtonAppearanceDict forState:UIControlStateNormal];
 }
 
 + (void)setHDMode:(BOOL)hdEnabled {

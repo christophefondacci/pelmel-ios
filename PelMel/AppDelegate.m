@@ -25,6 +25,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    for (NSString* family in [UIFont familyNames])
+    {
+        NSLog(@"%@", family);
+        
+        for (NSString* name in [UIFont fontNamesForFamilyName: family])
+        {
+            NSLog(@"  %@", name);
+        }
+    }
+    
     // Starting services
     [TogaytherService start];
     UIService *uiService = TogaytherService.uiService;
@@ -61,6 +71,17 @@
             [menuManagerController.dataManager setInitialContext:object isSearch:NO];
         }];
     }
+    
+    
+    [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
+    [[UITableViewCell appearance] setSeparatorInset:UIEdgeInsetsZero];
+    
+    if ([UITableView instancesRespondToSelector:@selector(setLayoutMargins:)]) {
+        [[UITableView appearance] setLayoutMargins:UIEdgeInsetsZero];
+        [[UITableViewCell appearance] setLayoutMargins:UIEdgeInsetsZero];
+        [[UITableViewCell appearance] setPreservesSuperviewLayoutMargins:NO];
+    }
+    
     return YES;
 }
 							
