@@ -12,6 +12,7 @@
 #import "ImageService.h"
 #import "MessageService.h"
 #import "PMLMenuManagerController.h"
+#import "PMLSnippetTableViewController.h"
 
 #define CONFIG_FILE_NAME @"PelMel-config"
 
@@ -128,14 +129,12 @@
     return _messageService;
 }
 + (void)applyCommonLookAndFeel:(UIViewController *)controller {
-    if([controller isKindOfClass:[PMLMenuManagerController class]]) {
+    if([controller isKindOfClass:[PMLMenuManagerController class]] || [controller isKindOfClass:[PMLSnippetTableViewController class]]) {
         controller.edgesForExtendedLayout = UIRectEdgeAll;
     } else {
         controller.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    if([controller respondsToSelector:@selector(automaticallyAdjustsScrollViewInsets)]) {
-        controller.automaticallyAdjustsScrollViewInsets=NO;
-    }
+    controller.automaticallyAdjustsScrollViewInsets=NO;
 
     controller.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     // Adjusting tint
@@ -144,13 +143,9 @@
     controller.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     [controller.navigationController.navigationBar setBackgroundImage:nil
                                                   forBarMetrics:UIBarMetricsDefault];
-    if([controller.navigationController.navigationBar respondsToSelector:@selector(setBarTintColor:)]) {
-        [controller.navigationController.navigationBar setTranslucent:YES];
-        [controller.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
-        [controller.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    } else {
-        [controller.navigationController.navigationBar setTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
-    }
+    [controller.navigationController.navigationBar setTranslucent:YES];
+    [controller.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
+    [controller.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
 }
 
 + (void)setHDMode:(BOOL)hdEnabled {

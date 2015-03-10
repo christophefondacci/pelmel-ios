@@ -134,6 +134,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [self configureChatInput];
@@ -284,6 +285,8 @@
     [_activityBackground setHidden:YES];
     
     _messagesList = messagesList;
+    // In case it is empty, generating a first message
+    [self autoFillMessageList];
     int totalHeight = 0;
     if(messagesFetchedCount == 0) {
         
@@ -297,7 +300,7 @@
     // A map of all image views hashed by the image key
 //    NSMutableArray *images = [[NSMutableArray alloc] init];
     int i = 0;
-    for(Message *message in messagesList) {
+    for(Message *message in _messagesList) {
         NSInteger messageHeight = [self addMessageToScrollView:message atHeight:totalHeight forIndex:i++];
         totalHeight+= messageHeight;
     }
@@ -305,12 +308,33 @@
     // Updating our scroll view
     if(![_withObject.key isEqualToString:[[userService getCurrentUser] key]]) {
         CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
-        [scrollView setContentOffset:bottomOffset animated:NO];
+        if(bottomOffset.y>0) {
+            [scrollView setContentOffset:bottomOffset animated:NO];
+        }
     }
     
 
 }
-
+- (void) autoFillMessageList {
+    if(_messagesList.count == 0) {
+        id<PMLInfoProvider> provider  = [[TogaytherService uiService] infoProviderFor:_withObject];
+        NSString *msg;
+        if([_withObject isKindOfClass:[User class]]) {
+            CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+            // Only if not listing our own message (inbox)
+            if(![currentUser.key isEqualToString:_withObject.key]) {
+                msg = NSLocalizedString(@"message.user.dummyMessage", @"Intro message");
+            }
+        } else if([_withObject isKindOfClass:[Place class]]) {
+            msg = NSLocalizedString(@"message.place.dummyMessage", @"Intro message");
+        }
+        Message *message = [[Message alloc] init];
+        message.from = nil;
+        message.date = [NSDate new];
+        message.text = [NSString stringWithFormat:msg,[provider title] ];
+        _messagesList = @[message];
+    }
+}
 - (NSInteger)addMessageToScrollView:(Message*)message atHeight:(NSInteger)height forIndex:(NSInteger)index {
     CurrentUser *currentUser = [userService getCurrentUser];
     BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
@@ -320,14 +344,17 @@
         // Instantiating the Chat view to display current message
         NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
         view = [views objectAtIndex:0];
-        // TODO: Uncomment me when server sends message primary keys
-//        [_messagesViewsKeys setObject:view forKey:message.key];
+        // Registering view
+        if(message.key!=nil) {
+            [_messagesViewsKeys setObject:view forKey:message.key];
+        }
     }
     
     // Adjusting position (mostly width because it is used for height computation
     CGRect frame = view.frame;
     [view setFrame:CGRectMake(frame.origin.x, height, scrollView.bounds.size.width, frame.size.height)];
     [view layoutIfNeeded];
+    
     // Setuping chat view
     [view setup:message forObject:message.from snippet:isAllMessageView];
     if(isAllMessageView) {
@@ -337,13 +364,14 @@
     
     // Handling tap on thumb
     UIButton *thumbButton;
-    if(![message.from.key isEqualToString:currentUser.key]) {
-        thumbButton = view.leftThumbButton;
-    } else {
-        thumbButton = view.rightThumbButton;
+    if(message.from != nil) {
+        if(![message.from.key isEqualToString:currentUser.key]) {
+            thumbButton = view.leftThumbButton;
+        } else {
+            thumbButton = view.rightThumbButton;
+        }
+        [thumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
-    [thumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
     // Adding
     [scrollView addSubview:view];
     

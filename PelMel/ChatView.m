@@ -43,7 +43,6 @@
     imageService = [TogaytherService imageService];
     _uiService = [TogaytherService uiService];
 
-    UIImageView *currentBubbleImage;
     UIImageView *currentThumb;
     UITextView *currentBubbleText;
     UIActivityIndicatorView *currentActivity;
@@ -57,8 +56,6 @@
         [_thumbImage setHidden:YES];
         [_leftActivity setHidden:YES];
         [dateLabel setTextAlignment:NSTextAlignmentLeft];
-        UIEdgeInsets insets = UIEdgeInsetsMake(27, 2, 27, 17);
-        currentBubbleImage.image = [[UIImage imageNamed:@"bubble-gradient-right.png"] resizableImageWithCapInsets:insets];
         currentActivity = _rightActivity;
     } else {
         currentThumb = _thumbImage;
@@ -67,14 +64,8 @@
         [_thumbImageSelf setHidden:YES];
         [_rightActivity setHidden:YES];
         [dateLabel setTextAlignment:NSTextAlignmentRight];
-        UIEdgeInsets insets = UIEdgeInsetsMake(27, 13, 27, 2);
-        currentBubbleImage.image = [[UIImage imageNamed:@"bubble-gradient-left.png"] resizableImageWithCapInsets:insets];
         currentActivity = _leftActivity;
     }
-
-//    NSDateFormatter* dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-//    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
     
     dateLabel.text = [_uiService delayStringFrom:message.date]; //[dateFormatter stringFromDate:message.date];
     
@@ -83,7 +74,12 @@
         currentThumb.image = object.mainImage.thumbImage;
         [currentActivity setHidden:YES];
     } else {
-        currentThumb.image = [CALImage getDefaultUserThumb];
+        if(object == nil) {
+            currentThumb.image = [UIImage imageNamed:@"logoMob"];
+            currentThumb.contentMode = UIViewContentModeScaleAspectFit;
+        } else {
+            currentThumb.image = [CALImage getDefaultUserThumb];
+        }
         [currentActivity setHidden:NO];
         [currentActivity startAnimating];
     }
@@ -92,8 +88,6 @@
     User *fromUser = (User*)message.from;
     if(fromUser.isOnline) {
         currentThumb.layer.borderColor = [_uiService colorForObject:fromUser].CGColor;
-//        UIImage *decorator = [imageService getOnlineImage:fromUser.isOnline];
-//        [imageService decorate:currentThumb decorator:decorator];
     }
     
     // Setting the message's textual contents

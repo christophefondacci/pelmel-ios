@@ -530,7 +530,7 @@
             if([object isKindOfClass:[City class] ]) {
                 ratio = 2;
             }
-            placeAnnotation.sizeRatio = @(ratio*0.3+0.7);
+            placeAnnotation.sizeRatio = @(MIN(ratio*0.3+0.7,1));
             placeAnnotation.enabled = YES;
             placeAnnotation.canShowCallout = NO;
             

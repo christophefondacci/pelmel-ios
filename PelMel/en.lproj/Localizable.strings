@@ -143,8 +143,10 @@
 "menu.settings.title"="Settings";
 "messages.wait"="Loading...";
 "message.action.send"="Send";
+"message.place.dummyMessage"="Tell the PELMEL community what you think about %@, why you like this place, when is the best time to go, did you have fun? Was there a cover? What kind of crowd? Would you go back?";
+"message.user.dummyMessage"="Send a message to %@, ask him about the places he likes, the upcoming events he is going to. Or just say hi! But always be courteous.";
 "message.placeholder"="Enter your message";
-"message.placeholder.comment"="Write your comment on %@";
+"message.placeholder.comment"="Write your comment";
 "message.reviews.title"="Comments";
 "message.sending"="Sending message...";
 "messages.my.title"="Messages";

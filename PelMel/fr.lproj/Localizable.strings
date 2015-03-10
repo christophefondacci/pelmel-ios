@@ -139,8 +139,10 @@
 "menu.settings.title"="Paramètres";
 "messages.wait"="Chargement...";
 "message.action.send"="Envoyer";
+"message.place.dummyMessage"="Racontez à la communauté PELMEL ce que vous pensez de %@, pourquoi vous aimez ce lieu, quand recommanderiez vous d'y aller, avez-vous eu du plaisir ? L'entrée était-elle payante ? Quel type de clientèle ? Vous y retourneriez ?";
+"message.user.dummyMessage"="Envoyez un message à %@, demandez-lui les lieux où il aime sortir, où les prochains évènements où il sera. Ou dites juste bonjour ! Mais restez toujours courtois :)";
 "message.placeholder"="Entrez votre message";
-"message.placeholder.comment"="Ecrivez votre commentaire sur %@";
+"message.placeholder.comment"="Ecrivez votre commentaire";
 "message.reviews.title"="Commentaires";
 "message.sending"="Envoi du message...";
 "messages.my.title"="Messages";

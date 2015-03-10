@@ -46,7 +46,12 @@ static void *MyParentMenuControllerKey;
         if(self.subNavigationController != nil) {
             return self.subNavigationController.parentMenuController;
         } else if(self.navigationController != nil) {
-            return self.navigationController.parentMenuController;
+            parentController = self.navigationController.parentMenuController;
+            if(parentController == nil) {
+                return [[TogaytherService uiService] menuManagerController];
+            } else {
+                return parentController;
+            }
         } 
     }
     return nil;

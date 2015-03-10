@@ -211,7 +211,7 @@
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
-
+    [TogaytherService applyCommonLookAndFeel:self];
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
     
     // Initializing external table view cells
@@ -227,7 +227,7 @@
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
 }
 - (void)viewWillAppear:(BOOL)animated {
-
+    self.actionManager.menuManagerController = self.parentMenuController;
     self.parentMenuController.snippetDelegate = self;
 
 }
