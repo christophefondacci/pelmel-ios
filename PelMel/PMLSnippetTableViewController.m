@@ -125,7 +125,11 @@
 #define kPMLRowActivityId @"activity"
 #define kPMLHeightActivityRows 60
 
-
+typedef enum {
+    PMLVisibityStateTransitioning,
+    PMLVisibityStateVisible,
+    PMLVisibityStateInvisible
+} PMLVisibityState;
 @interface PMLSnippetTableViewController ()
 
 @end
@@ -184,7 +188,7 @@
     NSInteger _readMoreSize;
     ThumbPreviewMode _thumbPreviewMode;
     BOOL _opened;
-    BOOL _editVisible;
+    PMLVisibityState _editVisible;
     
 }
 
@@ -204,6 +208,7 @@
     _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
     _heightsMap = [[NSMutableDictionary alloc] init];
     _hoursTypeMap = [[NSMutableDictionary alloc] init];
+    _editVisible = PMLVisibityStateInvisible;
     _galleryPctHeight = 0;
     
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
@@ -220,8 +225,6 @@
     // Loading header views
     _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionSummaryTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
-    
-    self.title = [_infoProvider title];
     
     // Animation init
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
@@ -1451,7 +1454,6 @@
 -(void)toggleFullscreenGallery {
 
     _galleryFullscreen = !_galleryFullscreen;
-    NSLog(@"Animating Fullscreen = %@",_galleryFullscreen ? @"FULLSCREEN" : @"normal");
     
     NSIndexPath *galleryPath = [NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery];
     [self.tableView scrollToRowAtIndexPath:galleryPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -1623,7 +1625,10 @@
         }
 
     } else if([keyPath isEqualToString:@"mainImage"]) {
-        [self.tableView reloadData]; 
+        if(_opened) {
+            [_galleryCell.galleryView reloadData];
+//            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationNone];
+        }
     }
 }
 -(void)updateTitleEdition {
@@ -1683,13 +1688,17 @@
     }
 }
 - (void)adjustEditVisibility {
-    
+    // TODO Avoid the class test here
+    if([_snippetItem isKindOfClass:[User class]]) {
+        return;
+    }
     // Computing if we are at the bottom of the scroll view
     CGPoint offset = self.tableView.contentOffset;
     CGRect bounds = self.tableView.bounds;
     CGSize size = self.tableView.contentSize;
     UIEdgeInsets inset = self.tableView.contentInset;
-    float y = offset.y + bounds.size.height - inset.bottom;
+    CGRect snippetFrame = self.parentMenuController.bottomView.frame;
+    float y = offset.y + bounds.size.height - inset.bottom - snippetFrame.origin.y;
     float h = size.height;
     
     float reload_distance = 50;
@@ -1698,15 +1707,21 @@
         bottom = YES;
     }
     // Showing edit button if scrolled beyond gallery OR if already at the bottom of the screen
-    if(!_editVisible && (self.tableView.contentOffset.y >kPMLHeightGallery || bottom)) {
-        _editVisible = YES;
+    if(_editVisible == PMLVisibityStateInvisible && (self.tableView.contentOffset.y >kPMLHeightGallery || bottom) && _opened) {
+        _editVisible = PMLVisibityStateTransitioning;
+        NSLog(@"VISIBLE anim");
         [UIView animateWithDuration:0.3 animations:^{
             self.parentMenuController.navigationController.navigationBar.alpha=1;
+        } completion:^(BOOL finished) {
+            _editVisible = PMLVisibityStateVisible;
         }];
-    } else if(_editVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom) {
-        _editVisible = NO;
+    } else if(_editVisible == PMLVisibityStateVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom && _opened) {
+        _editVisible = PMLVisibityStateTransitioning;
+        NSLog(@"INVISIBLE anim");
         [UIView animateWithDuration:0.3 animations:^{
             self.parentMenuController.navigationController.navigationBar.alpha=0;
+        } completion:^(BOOL finished) {
+            _editVisible = PMLVisibityStateInvisible;
         }];
     }
 }
@@ -1737,7 +1752,6 @@
         // Setting edit button to appear / disappear
         [self adjustEditVisibility];
     }
-
 }
 -(void)snippetCell:(PMLSnippetTableViewCell*)cell setOptionalVisibility:(float)alpha {
 //    cell.thumbView.alpha=alpha;

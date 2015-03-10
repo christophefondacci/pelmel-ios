@@ -113,6 +113,14 @@
         return nil;
     }
 }
+- (CALObject *)objectAtIndex:(NSInteger)index forType:(PMLThumbType)type {
+    NSArray *typedItems = [self itemsForType:type ];
+    if(typedItems.count>index) {
+        CALObject *item = [typedItems objectAtIndex:index];
+        return item;
+    }
+    return nil;
+}
 - (UIImage*)topLeftDecoratorForIndex:(NSInteger)index forType:(PMLThumbType)type{
     NSArray *typedItems = [self itemsForType:type ];
     if(typedItems.count>index) {

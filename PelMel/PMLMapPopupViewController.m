@@ -55,6 +55,7 @@
     UIPopBehavior *_popBehavior;
     BOOL _likeDisplayed;
     CGPoint _center;
+    CALImage *_currentMainImage;
 }
 
 - (instancetype)initWithObject:(CALObject *)object inParentView:(MKAnnotationView *)view withController:(MapViewController *)controller
@@ -99,6 +100,7 @@
         objectMainView = [[UIImageView alloc] initWithFrame:_mainButton.bounds];
         [_object addObserver:self forKeyPath:@"mainImage" options:NSKeyValueObservingOptionNew context:NULL];
         CALImage *calImage = [[TogaytherService imageService] imageOrPlaceholderFor:_object allowAdditions:YES];
+        _currentMainImage = calImage;
         [[TogaytherService imageService] load:calImage to:objectMainView thumb:NO];
 
         objectMainView.layer.cornerRadius = kPMLMainRadius/2-2;
@@ -116,6 +118,12 @@
         [_mainButton addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         // Adding to parent view
+        UIImageView *background = [[UIImageView alloc] initWithFrame:_mainButton.bounds];
+        background.layer.cornerRadius = kPMLMainRadius/2;
+        background.layer.masksToBounds=YES;
+        background.image = [UIImage imageNamed:@"imgBlankAdd"];
+        background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [_mainButton addSubview:background];
         [_mainButton addSubview:objectMainView];
         [_parentView addSubview:_mainButton];
         
@@ -469,7 +477,10 @@
 #pragma mark - KVO observation callback
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if([keyPath isEqualToString:@"mainImage"]) {
-        [[TogaytherService imageService] load:((CALObject*)object).mainImage to:objectMainView thumb:NO];
+        CALImage *image = ((CALObject*)object).mainImage;
+        if(![image.key isEqualToString:_currentMainImage.key]) {
+            [[TogaytherService imageService] load:((CALObject*)object).mainImage to:objectMainView thumb:NO];
+        }
     }
 }
 

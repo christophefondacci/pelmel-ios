@@ -511,12 +511,13 @@
         imageView.image = defaultImage;
         //    } else {
     }
-    
+
     if(calImage.fullImage && !thumb) {
         imageView.image = calImage.fullImage;
         if(callback) {
             callback(calImage);
         }
+        [self checkCurrentImageViewTask:imageView url:url];
         return ;
     } else if(calImage.thumbImage) {
         imageView.image = calImage.thumbImage;
@@ -524,6 +525,7 @@
             if(callback) {
                 callback(calImage);
             }
+            [self checkCurrentImageViewTask:imageView url:url];
             return ;
         }
     }
@@ -531,24 +533,15 @@
     if(url!=nil) {
         __block ImageLoaderBlock localCallback = callback;
         
-        // Checking if any other operation is running for this image view
-        __block NSString *imageViewId = [self buildKeyFromPointer:imageView];
-        id<SDWebImageOperation> operation = [operationsMap objectForKey:imageViewId];
-        if(operation != nil) {
-            // If old operation is for same url then we have nothing to do (same image view + same url)
-            NSString *oldUrl = [urlMap objectForKey:imageViewId];
-            if([url isEqualToString:oldUrl]) {
-                NSLog(@"Process already running for imageView %p",imageView);
-                return ;
-            } else {
-                NSLog(@"Cancelled task for imageView %p",imageView);
-                [operation cancel];
-            }
+        // If a task is already running for same URL we return,
+        // Any pre-existing task for a different URL will be cancelled here
+        if([self checkCurrentImageViewTask:imageView url:url]) {
+            return;
         }
-//        NSLog(@"Download %@ for imageView %p",url,imageView);
+
         // Async load
-        operation = [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:url] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-//            NSLog(@"Loaded %@ for imageView %p from %@",url,imageView, (cacheType == SDImageCacheTypeMemory ? @"memory" : (cacheType == SDImageCacheTypeDisk ? @"disk" : @"download")));
+        __block NSString *imageViewId = [self buildKeyFromPointer:imageView];
+        id<SDWebImageOperation> operation = [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:url] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
             // If everything is fine, we store thumb as we may need it for first preview
             if(image != nil) {
                 if(thumb) {
@@ -582,6 +575,28 @@
         [operationsMap setObject:operation forKey:imageViewId];
         [urlMap setObject:url forKey:imageViewId];
     }
+}
+/**
+ * This method checks if any operation is already associated with this image view.
+ * If there is one for the same URL, then it returns YES to indicate no further action
+ * should be made. If one is found for a different URL it cancels it.
+ */
+-(BOOL)checkCurrentImageViewTask:(UIImageView*)imageView url:(NSString*)url{
+    // Checking if any other operation is running for this image view
+    __block NSString *imageViewId = [self buildKeyFromPointer:imageView];
+    id<SDWebImageOperation> operation = [operationsMap objectForKey:imageViewId];
+    if(operation != nil) {
+        // If old operation is for same url then we have nothing to do (same image view + same url)
+        NSString *oldUrl = [urlMap objectForKey:imageViewId];
+        if([url isEqualToString:oldUrl]) {
+            NSLog(@"Process already running for imageView %p",imageView);
+            return YES;
+        } else {
+            NSLog(@"Cancelled task for imageView %p",imageView);
+            [operation cancel];
+        }
+    }
+    return NO;
 }
 - (CALImage *)imageOrPlaceholderFor:(CALObject *)object allowAdditions:(BOOL)additionsAllowed{
     if(object.mainImage!=nil) {

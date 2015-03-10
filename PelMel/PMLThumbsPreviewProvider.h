@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CALImage.h"
+#import "CALObject.h"
 
 typedef enum {
     PMLThumbNone, PMLThumbsLike,PMLThumbsCheckin,PMLThumbsUserLike, PMLThumbsUsersInEvent, PMLThumbsOther
@@ -26,6 +27,7 @@ typedef enum {
 
 // Optional
 @optional
+- (CALObject*)objectAtIndex:(NSInteger)index forType:(PMLThumbType)type;
 - (NSString*)labelForType:(PMLThumbType)type;
 - (UIImage*)imageForType:(PMLThumbType)type;
 - (NSInteger)fontSize;

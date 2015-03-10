@@ -200,6 +200,8 @@ static void *MySubNavigationControllerKey;
     // If we have it defined, we return it
     if(parentController!= nil) {
         return parentController;
+    } else if( [self isKindOfClass:[PMLSubNavigationController class]]){
+        return (PMLSubNavigationController*)self;
     } else {
         // Otherwise, we pass the call to our parent navigation controller
         if(self.navigationController != nil) {

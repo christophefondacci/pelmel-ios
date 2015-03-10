@@ -1939,7 +1939,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cuT-Gk-A2S">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cuT-Gk-A2S" userLabel="WarningView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="zjH-Jg-o3c">
@@ -1964,13 +1964,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="cuT-Gk-A2S" secondAttribute="trailing" id="056-CF-gvY"/>
+                            <constraint firstItem="cuT-Gk-A2S" firstAttribute="top" secondItem="1fS-GB-UBV" secondAttribute="topMargin" id="3kc-NQ-7oG"/>
                             <constraint firstItem="cuT-Gk-A2S" firstAttribute="leading" secondItem="1fS-GB-UBV" secondAttribute="leading" id="FZi-Q8-Gxt"/>
-                            <constraint firstItem="cuT-Gk-A2S" firstAttribute="top" secondItem="1fS-GB-UBV" secondAttribute="top" id="gbd-Gt-bnI"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="topWarningLabel" destination="zjH-Jg-o3c" id="oWz-HA-AOl"/>
                         <outlet property="topWarningView" destination="cuT-Gk-A2S" id="u8I-HU-dXD"/>
+                        <outlet property="topWarningViewTopContraint" destination="3kc-NQ-7oG" id="vHF-gK-8F4"/>
                         <segue destination="9hg-XG-APo" kind="modal" identifier="login" id="enc-VM-87F"/>
                         <segue destination="eon-Zp-bcj" kind="push" identifier="editHours" id="FhV-fD-oJT"/>
                     </connections>

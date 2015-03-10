@@ -234,6 +234,7 @@ static void *MyParentMenuControllerKey;
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
     [_uiService setProgressView:_progressView];
+    self.topWarningViewTopContraint.constant=self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height;
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
     }
@@ -370,8 +371,8 @@ static void *MyParentMenuControllerKey;
             self.navigationItem.leftBarButtonItem=nil;
             self.navigationItem.rightBarButtonItem=nil;
         }];
-    } else {
-        [self refreshNavigationFor:_currentSnippetViewController];
+//    } else {
+//        [self refreshNavigationFor:_currentSnippetViewController];
     }
 }
 - (id<PMLSnippetDelegate>)snippetDelegateFor:(NSObject*)object {
@@ -396,9 +397,12 @@ static void *MyParentMenuControllerKey;
 }
 -(void)refreshNavigationFor:(NSObject*)object {
     id<PMLSnippetDelegate> delegate = [self snippetDelegateFor:object];
+    UIViewController *controller = nil;
+    if([object isKindOfClass:[UIViewController class]]) {
+        controller = (UIViewController*)object;
+    }
     
-    
-    if(_snippetFullyOpened) {
+    if(_snippetFullyOpened || controller.subNavigationController==nil) {
         self.navigationItem.titleView.alpha=1;
         self.navigationController.navigationBar.alpha=1;
         [delegate menuManager:self snippetOpened:NO];
@@ -645,7 +649,6 @@ static void *MyParentMenuControllerKey;
         
     } else if (state  == UIGestureRecognizerStateChanged) {
         _panAttachmentBehaviour.anchorPoint = location;
-        NSLog(@"Attachment X=%.02f Y=%.02f / Behaviors=%d",location.x,location.y,_animator.behaviors.count);
         [self snippetPannedCallback];
 
     } else if (state  == UIGestureRecognizerStateEnded) {

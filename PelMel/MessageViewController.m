@@ -134,6 +134,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [TogaytherService applyCommonLookAndFeel:self];
     self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];

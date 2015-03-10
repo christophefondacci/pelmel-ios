@@ -705,7 +705,11 @@
             UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
             _navbarEdit = YES;
             menuManager.navigationItem.rightBarButtonItem = barItem;
-            menuManager.navigationController.navigationBar.alpha=0;
+            if(![_currentObject isKindOfClass:[User class]]) {
+                menuManager.navigationController.navigationBar.alpha=0;
+            } else {
+                menuManager.navigationController.navigationBar.alpha=1;
+            }
         } else {
             menuManager.navigationItem.rightBarButtonItem = nil;
         }
