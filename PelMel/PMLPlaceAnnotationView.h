@@ -14,5 +14,6 @@
 @property (nonatomic) NSNumber *sizeRatio;
 // The center off
 @property (nonatomic) CGPoint imageCenterOffset;
+@property (nonatomic) BOOL showLabel;
 
 @end

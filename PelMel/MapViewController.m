@@ -53,6 +53,7 @@
     NSMutableDictionary *_annotationsViewMap;
     NSMutableSet *_placeKeys;
     MapAnnotation *_editedAnnotation;
+    BOOL _labelsVisible;
     
     long maxLikes;
     
@@ -267,7 +268,7 @@
         }
     }];
     _menuMyPositionAction.rightMargin = 5;
-    _menuMyPositionAction.topMargin = 84; //topMargin = 50;
+    _menuMyPositionAction.topMargin = 84+64; //topMargin = 50;
     
 }
 
@@ -508,6 +509,7 @@
             }
         } else {
             PMLPlaceAnnotationView *placeAnnotation = (PMLPlaceAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:defaultPinID];
+
             placeAnnotation.alpha = 1;
             placeAnnotation.hidden=NO;
             if ( placeAnnotation == nil ) {
@@ -561,6 +563,7 @@
 
             placeAnnotation.imageCenterOffset = [_uiService mapMarkerCenterOffsetFor:object];
             placeAnnotation.image = markerImage;
+            a.annotationView = placeAnnotation;
             //            pinAnnotation.centerOffset = CGPointMake(9, -18);
 
 
@@ -641,7 +644,6 @@
     }
     
 }
-
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
     CLLocation *currentLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
     if(_zoomAnimation) {
@@ -662,6 +664,32 @@
                 [UIView animateWithDuration:0.2 animations:^{
                     _menuRefreshAction.menuActionView.transform = CGAffineTransformRotate(_menuRefreshAction.menuActionView.transform, M_PI_2);
                 }];
+            }
+        }
+    }
+    MKCoordinateRegion region = self.mapView.region;
+    if(region.span.latitudeDelta<0.1 ) {
+        NSSet *annotations = [self.mapView annotationsInMapRect:self.mapView.visibleMapRect];
+        if(annotations.count < 20) {
+            _labelsVisible = YES;
+            [self toggleLabelsVisibility:YES forAnnotations:annotations];
+        } else {
+            [self toggleLabelsVisibility:NO forAnnotations:annotations];
+        }
+    } else if(_labelsVisible) {
+        _labelsVisible = NO;
+        NSArray *annotations = [self.mapView annotations];
+        [self toggleLabelsVisibility:NO forAnnotations:annotations];
+    }
+}
+
+-(void)toggleLabelsVisibility:(BOOL)labelsVisible forAnnotations:(id<NSFastEnumeration>)annotations {
+
+    for(id<MKAnnotation> annotation in annotations) {
+        if([annotation isKindOfClass:[MapAnnotation class]]) {
+            MKAnnotationView *mapAnnotationView = ((MapAnnotation*)annotation).annotationView;
+            if([mapAnnotationView isKindOfClass:[PMLPlaceAnnotationView class]]) {
+                ((PMLPlaceAnnotationView*)mapAnnotationView).showLabel = labelsVisible;
             }
         }
     }

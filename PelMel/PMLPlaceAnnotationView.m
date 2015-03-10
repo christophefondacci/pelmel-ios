@@ -14,6 +14,7 @@
 
 @implementation PMLPlaceAnnotationView {
     UIImageView *_imageView;
+    UILabel *_titleLabel;
     MKNumberBadgeView *_badgeView;
     UIDynamicAnimator *_animator;
     
@@ -111,6 +112,18 @@
         } else {
             [_badgeView removeFromSuperview];
         }
+        
+        if([annotation.object isKindOfClass:[Place class]]) {
+            [_titleLabel removeFromSuperview];
+            _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-30, -20, 60+scaledSize.width, 20)];
+            _titleLabel.textAlignment = NSTextAlignmentCenter;
+            _titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:11];
+            _titleLabel.text = ((Place*)annotation.object).title;
+            _titleLabel.hidden=YES;
+//            _titleLabel.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.4];
+            self.showLabel = NO;
+            [_imageView addSubview:_titleLabel];
+        }
     } else {
         [super setImage:image];
     }
@@ -120,4 +133,10 @@
     // Doing nothing
 }
 
+-(void)setShowLabel:(BOOL)showLabel {
+    _titleLabel.hidden = !showLabel;
+}
+- (BOOL)showLabel {
+    return _titleLabel.hidden;
+}
 @end

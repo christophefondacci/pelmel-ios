@@ -287,10 +287,11 @@ static void *MyParentMenuControllerKey;
     
     // Now animating
     [_animator removeAllBehaviors];
-
-    UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:myFrame.size.height-kSnippetHeight-_kbSize.height];
-    [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
-    [_animator addBehavior:menuBehavior];
+    [self animateSnippetToOffset:myFrame.size.height-kSnippetHeight-_kbSize.height];
+//
+//    UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:myFrame.size.height-kSnippetHeight-_kbSize.height];
+//    [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
+//    [_animator addBehavior:menuBehavior];
     
     // And dismissing menu
     [self dismissControllerMenu];
@@ -644,7 +645,7 @@ static void *MyParentMenuControllerKey;
         // Adding a collision to the screen top edge to constraint snippet in view bounds
         UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[_bottomView]];
         NSInteger top = [self offsetForOpenedSnippet];
-        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-4000, top+1) toPoint:CGPointMake(4000, top+1)];
+        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-4000, top) toPoint:CGPointMake(4000, top)];
         [_animator addBehavior:collision];
         
     } else if (state  == UIGestureRecognizerStateChanged) {
@@ -680,6 +681,7 @@ static void *MyParentMenuControllerKey;
     [UIView animateWithDuration:0.3 animations:^{
         CGRect frame = _bottomView.frame;
         frame.origin.y=offset;
+        frame.origin.x=0;
         
         _bottomView.frame = frame;
     }];
