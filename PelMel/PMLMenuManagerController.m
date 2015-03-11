@@ -87,7 +87,7 @@ static void *MyParentMenuControllerKey;
     CGSize _kbSize;
     BOOL _keyboardShown;
 
-    UIProgressView *_progressView;
+    UIView *_progressView;
     
     // State
     BOOL _initialized;
@@ -321,14 +321,8 @@ static void *MyParentMenuControllerKey;
     } else if(_currentSnippetViewController) {
         // Animating (real de-allocation will be made if a new view controller is presented)
         [_animator removeAllBehaviors];
-        CGRect myFrame = self.view.frame;
-
-        // Dismissing and pushing menu views
-//        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:NO boundary:myFrame.size.height+_bottomView.frame.size.height];
-//        [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
-//        [_animator addBehavior:menuBehavior];
         
-        [self animateSnippetToOffset:self.view.bounds.size.height+kSnippetHeight + _gripView.frame.size.height];
+        [self animateSnippetToOffset:self.view.bounds.size.height+_gripView.frame.size.height];
         dismissed= YES;
     } else {
         // No snippet equals dismissed

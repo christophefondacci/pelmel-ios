@@ -320,7 +320,7 @@
     
     // AFNetworking version
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
+    [_uiService reportProgress:(float)0.05f];
     AFHTTPRequestOperation *operation = [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSData *imageData = UIImageJPEGRepresentation(image.fullImage, 1.0);
         NSString *fileParam = @"media";
@@ -358,7 +358,11 @@
     [_uiService reportProgress:(float)0.1f];
     [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
         double progressPct = (double)totalBytesWritten/(double)totalBytesExpectedToWrite;
-        [_uiService reportProgress:0.1f+0.9f*(float)progressPct];
+        [_uiService reportProgress:0.1f+0.5f*(float)progressPct];
+    }];
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        double progressPct = (double)totalBytesRead/(double)totalBytesExpectedToRead;
+        [_uiService reportProgress:0.6f+0.4f*(float)progressPct];
     }];
     
     

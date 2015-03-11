@@ -19,7 +19,7 @@
 #import "PMLCityInfoProvider.h"
 #import "PMLEventInfoProvider.h"
 #import "UIImage+ImageEffects.h"
-
+#import <MBProgressHUD.h>
 
 #define kColorPrefKeyTemplate @"color.%@"
 #define kPMLMarkerPrefKeyTemplate @"marker.%@"
@@ -42,7 +42,8 @@
     BOOL isWaiting;
     
     UIDynamicAnimator *animator;
-    UIProgressView *_progressView;
+    UIView *_progressView;
+    MBProgressHUD *_progressHUD;
 }
 
 - (id)init
@@ -259,38 +260,49 @@
     return line;
 }
 
--(UIProgressView*)addProgressTo:(UINavigationController *)controller {
+-(UIView*)addProgressTo:(UINavigationController *)controller {
     // Do any additional setup after loading the view.
-    
-    _progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    _progressView = controller.view;
 
-    UINavigationBar *navBar = [controller navigationBar];
-    [navBar layoutIfNeeded];
-    [controller.view addSubview:_progressView];
-    
-    NSLayoutConstraint *constraint;
-    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeBottom multiplier:1 constant:-0.5];
-    [controller.view addConstraint:constraint];
-    
-    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
-    [controller.view addConstraint:constraint];
-    
-    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-    [controller.view addConstraint:constraint];
-    
-    [_progressView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    _progressView.hidden = YES;
+//    _progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+//
+//    UINavigationBar *navBar = [controller navigationBar];
+//    [navBar layoutIfNeeded];
+//    [controller.view addSubview:_progressView];
+//    
+//    NSLayoutConstraint *constraint;
+//    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeBottom multiplier:1 constant:-0.5];
+//    [controller.view addConstraint:constraint];
+//    
+//    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+//    [controller.view addConstraint:constraint];
+//    
+//    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+//    [controller.view addConstraint:constraint];
+//    
+//    [_progressView setTranslatesAutoresizingMaskIntoConstraints:NO];
+//    _progressView.hidden = YES;
     return _progressView;
 }
--(void)setProgressView:(UIProgressView *)progressView {
+-(void)setProgressView:(UIView *)progressView {
     _progressView = progressView;
 }
 - (void)reportProgress:(float)progress {
-    _progressView.hidden=NO;
-    [_progressView setProgress:progress];
+    if(_progressHUD == nil) {
+        _progressHUD = [MBProgressHUD showHUDAddedTo:_progressView animated:YES];
+        _progressHUD.mode = MBProgressHUDModeAnnularDeterminate;
+    }
+    _progressHUD.progress = progress;
+    if(progress >= 1.0f) {
+        [self progressDone];
+    }
+//    [_progressView setProgress:progress];
 }
 -(void)progressDone {
-    _progressView.hidden=YES;
+    if(_progressHUD != nil) {
+        [MBProgressHUD hideHUDForView:_progressView animated:YES];
+        _progressHUD = nil;
+    }
 }
 
 - (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened {

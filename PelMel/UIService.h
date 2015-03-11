@@ -98,8 +98,8 @@
  * Adds a global progress bar on this controller and registers it as the current
  * progress view to report progress to
  */
--(UIProgressView*)addProgressTo:(UINavigationController*)controller;
--(void)setProgressView:(UIProgressView*)progressView;
+-(UIView*)addProgressTo:(UINavigationController*)controller;
+-(void)setProgressView:(UIView*)progressView;
 -(void)reportProgress:(float)progress;
 -(void)progressDone;
 
