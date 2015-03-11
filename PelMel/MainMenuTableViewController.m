@@ -86,11 +86,7 @@
                                                                        NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
                                                                        NSForegroundColorAttributeName:[UIColor whiteColor]}];
     
-    UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(menuPanned:)];
-    [recognizer setMaximumNumberOfTouches:1];
-    [recognizer setMinimumNumberOfTouches:1];
-    recognizer.delegate=self;
-    [self.tableView addGestureRecognizer:recognizer];
+
 
     //NSLocalizedString(@"rearMenu.title", @"rearMenu.title");
 //    self.tableView.backgroundColor = [UIColor colorWithRed:0.078 green:0.102 blue:0.184 alpha:1];

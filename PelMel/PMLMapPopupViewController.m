@@ -112,9 +112,10 @@
         objectMainView.layer.borderColor = [[UIColor whiteColor] CGColor];
         
         _mainButton.layer.cornerRadius = kPMLMainRadius/2;
-        _mainButton.layer.shadowOffset = CGSizeMake(5, 5);
-        _mainButton.layer.shadowRadius = 5;
-        _mainButton.layer.shadowOpacity = 0.5;
+        _mainButton.layer.shadowOffset = CGSizeMake(1, 1);
+        _mainButton.layer.shadowRadius = 4;
+        _mainButton.layer.shadowOpacity = 0.7;
+//        _mainButton.layer.shadowPath = [[UIBezierPath bezierPathWithRoundedRect:_mainButton.bounds cornerRadius:kPMLMainRadius/2] CGPath];
         [_mainButton addTarget:self action:@selector(imageTapped:) forControlEvents:UIControlEventTouchUpInside];
         
         // Adding to parent view
@@ -429,8 +430,9 @@
     } else {
         NSLog(@"WARN: NOTHING TO DISMISS");
     }
-
-
+}
+- (void)dealloc {
+    [self dismiss];
 }
 -(void)cleanActions:(NSArray*)actions {
     for(PopupAction *action in [NSArray arrayWithArray:actions]) {

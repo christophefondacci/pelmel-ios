@@ -507,7 +507,7 @@
 -(void)closeMenu:(id)sender {
     if(self.parentMenuController!=nil) {
         PMLMenuManagerController *menuController = self.parentMenuController;
-        [self.navigationController popToRootViewControllerAnimated:NO];
+//        [self.navigationController popToRootViewControllerAnimated:NO];
         [menuController dismissControllerMenu];
     } else {
         UIViewController *rootController =[[self.navigationController childViewControllers] objectAtIndex:0];

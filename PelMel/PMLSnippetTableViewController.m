@@ -277,6 +277,9 @@ typedef enum {
     [_dataService unregisterDataListener:self];
     [[TogaytherService userService] unregisterListener:self];
 }
+- (void)dealloc {
+    [self clearObservers];
+}
 - (void)willMoveToParentViewController:(UIViewController *)parent {
     if(parent == nil) {
         // Unregistering data listener

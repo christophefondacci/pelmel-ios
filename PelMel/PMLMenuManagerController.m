@@ -210,8 +210,8 @@ static void *MyParentMenuControllerKey;
     
     // Binding reveal menu
     tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(revealLeftMenu:)];
-    [_mainNavBarView.appIconView addGestureRecognizer:tapRecognizer];
-    _mainNavBarView.appIconView.userInteractionEnabled=YES;
+    [_mainNavBarView.leftContainerView addGestureRecognizer:tapRecognizer];
+    _mainNavBarView.leftContainerView.userInteractionEnabled=YES;
     
     // Adding the badge view for messages
     MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
@@ -355,7 +355,6 @@ static void *MyParentMenuControllerKey;
     }
 }
 - (void)setSnippetFullyOpened:(BOOL)snippetFullyOpened {
-    id<PMLSnippetDelegate> delegate = [self snippetDelegateFor:_currentSnippetViewController];
     // We are opening it from a non-opened state
     if(!_snippetFullyOpened && snippetFullyOpened) {
         
@@ -433,6 +432,8 @@ static void *MyParentMenuControllerKey;
         _menuView.clipsToBounds = YES;
         [self.view insertSubview:_menuView belowSubview:_bottomView];
         
+
+        
         // Injecting content
         if(viewController!=nil && ![self.childViewControllers containsObject:viewController]) {
             _menuViewController = viewController;
@@ -443,33 +444,26 @@ static void *MyParentMenuControllerKey;
             [_menuViewController didMoveToParentViewController:self];
         }
         
+
+        
         // Displaying menu
-//        CGPoint menuCenter = [_menuView convertPoint:origin fromView:self.view];
         NSLog(@"Center x=%d Y=%d",(int)_menuView.center.x,(int)_menuView.center.y);
         _menuView.layer.anchorPoint = anchorPoint;
         _menuView.frame = frame;
         NSLog(@"NEW Center x=%d Y=%d",(int)_menuView.center.x,(int)_menuView.center.y);
-//        _menuView.translatesAutoresizingMaskIntoConstraints = NO;
-        UIPopBehavior *popBehavior = [[UIPopBehavior alloc] initWithViews:@[_menuView] pop:YES delay:NO completion:^{
-//            _menuView.translatesAutoresizingMaskIntoConstraints = YES;
-//            [_menuView layoutIfNeeded];
-        }];
+        UIPopBehavior *popBehavior = [[UIPopBehavior alloc] initWithViews:@[_menuView] pop:YES delay:NO completion:nil];
         popBehavior.elasticity=0.3;
         [_menuAnimator removeAllBehaviors];
         [_menuAnimator addBehavior:popBehavior];
-        //    UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_menuView] open:YES boundary:bounds.size.width*3/4 horizontal:YES];
-        //    [menuBehavior addPushedViews:self.menuManagerDelegate.menuViews inBounds:self.view.bounds];
-        //
-        //    [_menuAnimator removeAllBehaviors];
-        //    [_menuAnimator addBehavior:menuBehavior];
+
     }
 }
--(void) removeConstraints:(UIView*)view {
-    [view removeConstraints:view.constraints];
-    for(UIView *childView in view.subviews) {
-        [self removeConstraints:childView];
-    }
-}
+//-(void) removeConstraints:(UIView*)view {
+//    [view removeConstraints:view.constraints];
+//    for(UIView *childView in view.subviews) {
+//        [self removeConstraints:childView];
+//    }
+//}
 - (void)dismissControllerMenu {
     if(_menuView != nil) {
 //        [self removeConstraints:_menuView];
@@ -642,10 +636,17 @@ static void *MyParentMenuControllerKey;
     return top;
 }
 #pragma mark - UIPanGestureRecognizerDelegate
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+//    return YES;
+//}
+#pragma mark Menu
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    CGPoint velocity = [(UIPanGestureRecognizer*)gestureRecognizer velocityInView:_menuView];
+    return (fabs(velocity.x)>fabs(velocity.y) && velocity.x <0);
 }
-
+- (void)menuPanned:(UITapGestureRecognizer*)gestureRecognizer {
+    [self dismissControllerMenu];
+}
 
 #pragma mark - UINavigationDelegate
 - (void)transitionFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController duration:(NSTimeInterval)duration options:(UIViewAnimationOptions)options animations:(void (^)(void))animations completion:(void (^)(BOOL))completion {
@@ -841,16 +842,21 @@ static void *MyParentMenuControllerKey;
         // Instantiating menu view if needed
         CGRect frame = self.view.window.frame;
         frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
-        frame.size.height -= self.navigationController.navigationBar.frame.size.height;
+        frame.size.height -= self.navigationController.navigationBar.frame.size.height-[UIApplication sharedApplication].statusBarFrame.size.height;
         frame = CGRectOffset(frame, -frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height);
         
         // Building standard menu
         _menuView = [[UIView alloc] initWithFrame:frame];
         _menuView.backgroundColor = UIColorFromRGB(0x272a2e);
         _menuView.opaque=YES;
+        _menuView.layer.shadowOffset = CGSizeMake(1, 1);
+        _menuView.layer.shadowColor = [[UIColor blackColor] CGColor];
+        _menuView.layer.shadowRadius = 2;
+        _menuView.layer.shadowOpacity = 0.7;
+        _menuView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:_menuView.layer.bounds] CGPath];
         _menuView.layer.borderColor = UIColorFromRGB(0xf36523).CGColor;
-        _menuView.layer.borderWidth=2;
-        _menuView.clipsToBounds = YES;
+        _menuView.layer.borderWidth=1;
+        _menuView.clipsToBounds = NO;
         [self.view addSubview:_menuView];
         
         // Building contents
@@ -865,14 +871,18 @@ static void *MyParentMenuControllerKey;
         [_menuView addSubview:_menuViewController.view];
         [_menuViewController didMoveToParentViewController:self];
         
-   
+        // Pan gesture for dismissing menu
+        UIPanGestureRecognizer *recognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(menuPanned:)];
+        [recognizer setMaximumNumberOfTouches:1];
+        [recognizer setMinimumNumberOfTouches:1];
+        recognizer.delegate=self;
+        [_menuView addGestureRecognizer:recognizer];
         
         // Displaying menu
-        UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_menuView] open:YES boundary:frame.size.width-2 horizontal:YES];
-        [menuBehavior setIntensity:3.0f];
-        
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            _menuView.frame = CGRectMake(-2, frame.origin.y, frame.size.width, frame.size.height);
+        } completion:nil];
         [_menuAnimator removeAllBehaviors];
-        [_menuAnimator addBehavior:menuBehavior];
 
     }
     

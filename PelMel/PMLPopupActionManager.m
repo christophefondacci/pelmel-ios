@@ -133,9 +133,14 @@
 }
 - (void)dealloc {
     [_dataService unregisterDataListener:self];
+    [self clearObservers];
 }
 -(void)dismiss {
 //    [_dataService unregisterDataListener:self];
+    [self clearObservers];
+}
+
+-(void)clearObservers {
     // Cleaning any property change listener
     for(NSString *prop in _observedProperties) {
         [_currentObject removeObserver:self forKeyPath:prop];
