@@ -12,6 +12,8 @@
 #import "PMLPickerTableViewCell.h"
 #import "PMLDetailTableViewCell.h"
 #import <MBProgressHUD.h>
+#import "UIPelmelTitleView.h"
+#import "PMLDatePickerTableViewCell.h"
 
 #define kSectionsCount 2
 #define kSectionTime 0
@@ -32,6 +34,10 @@
     // Services
     ConversionService *_conversionService;
     NSArray *_weekdays;
+    
+    // Header views
+    UIPelmelTitleView *_scheduleHeaderView;
+    UIPelmelTitleView *_daysHeaderView;
     
     // Time picker vars
     PMLTimePickerDataSource *_timePickerDatasource;
@@ -57,26 +63,15 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSave target:self action:@selector(save:)];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    // Header views
+    _scheduleHeaderView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
+    _daysHeaderView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
+
+    self.navigationController.view.layer.cornerRadius = 10;
+    self.navigationController.view.layer.masksToBounds = YES;
 }
-//- (void)viewWillAppear:(BOOL)animated {
-//    CGSize size = CGSizeMake(self.tableView.frame.size.width*.9f, self.tableView.frame.size.height*.9f);
-//    CGRect frame = self.navigationController.view.superview.frame;
-//    frame.size.width = size.width;
-//    frame.size.height = size.height;
-//    self.navigationController.view.superview.frame = frame;
-////    // Form sheet presentation
-////    CGRect rect = self.navigationController.view.superview.bounds;
-////    rect.size.width = self.preferredContentSize.width;
-////    rect.size.height = self.preferredContentSize.height;
-////    self.navigationController.view.bounds = rect;
-////    self.navigationController.preferredContentSize = self.preferredContentSize;
-////    self.view.backgroundColor = [UIColor clearColor];
-//}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -106,7 +101,7 @@
     switch (indexPath.section) {
         case kSectionTime:
             if(_pickerIndexPath != nil && [indexPath isEqual:_pickerIndexPath]) {
-                cellId = @"pickerCell";
+                cellId = @"datePickerCell";
             } else {
                 cellId = @"timeCell";
             }
@@ -125,17 +120,9 @@
     switch (indexPath.section) {
         case kSectionTime:
             if(_pickerIndexPath != nil && [indexPath isEqual:_pickerIndexPath]) {
-                PMLPickerTableViewCell *pickerCell = (PMLPickerTableViewCell*)cell;
-                [_timePickerDatasource setPickerView:pickerCell.pickerView];
+                [self configureDatePickerCell:(PMLDatePickerTableViewCell*)cell];
             } else {
-                PMLDetailTableViewCell *detailCell = (PMLDetailTableViewCell*)cell;
-                if(indexPath.row == 0) {
-                    detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.start", @"Start");
-                    detailCell.detailValueLabel.text = [_conversionService stringForHours:[_calendar startHour] minutes:[_calendar startMinute]];
-                } else {
-                    detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.end", @"End");
-                    detailCell.detailValueLabel.text = [_conversionService stringForHours:[_calendar endHour] minutes:[_calendar endMinute]];
-                }
+                [self configureStartEndCell:(PMLDetailTableViewCell*)cell isStart:(indexPath.row == 0)];
             }
             break;
         case kSectionDays: {
@@ -151,6 +138,34 @@
     }
     
     return cell;
+}
+- (void)configureDatePickerCell:(PMLDatePickerTableViewCell*)datePickerCell {
+    [datePickerCell.datePicker removeTarget:self action:NULL forControlEvents:UIControlEventAllEvents];
+    [datePickerCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+    
+    NSDate *date = nil;
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+    if(_pickerIndexPath.row == 1) {
+        [components setHour:[_calendar startHour]];
+        [components setMinute:[_calendar startMinute]];
+    } else {
+        [components setHour:[_calendar endHour]];
+        [components setMinute:[_calendar endMinute]];
+    }
+    date = [gregorian dateFromComponents:components];
+    [datePickerCell.datePicker setDate:date];
+
+}
+-(void)configureStartEndCell:(PMLDetailTableViewCell*)detailCell isStart:(BOOL)isStart {
+
+    if(isStart) {
+        detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.start", @"Start");
+        detailCell.detailValueLabel.text = [_conversionService stringForHours:[_calendar startHour] minutes:[_calendar startMinute]];
+    } else {
+        detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.end", @"End");
+        detailCell.detailValueLabel.text = [_conversionService stringForHours:[_calendar endHour] minutes:[_calendar endMinute]];
+    }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSIndexPath *editedPath = [NSIndexPath indexPathForRow:_pickerIndexPath.row-1 inSection:_pickerIndexPath.section];
@@ -192,25 +207,22 @@
     return 44;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch(section) {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 38;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    switch (section) {
         case kSectionTime:
-            return NSLocalizedString(@"calendar.time",@"Schedule");
+            _scheduleHeaderView.titleLabel.text = NSLocalizedString(@"calendar.time",@"Schedule");
+            return _scheduleHeaderView;
         case kSectionDays:
-            return NSLocalizedString(@"calendar.days", @"Days of week");
+            _daysHeaderView.titleLabel.text = NSLocalizedString(@"calendar.days", @"Days of week");
+            return _daysHeaderView;
+        default:
+            break;
     }
     return nil;
 }
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
-    headerView.textLabel.textColor = [UIColor whiteColor];
-    headerView.textLabel.font = [UIFont fontWithDescriptor:[UIFontDescriptor fontDescriptorWithFontAttributes:@{@"NSCTFontUIUsageAttribute" : UIFontTextStyleBody,
-                                                                                                                @"NSFontNameAttribute" : PML_FONT_DEFAULT}] size:17.0];
-    //            [UIFont fontWithName:PML_FONT_DEFAULT size:15];
-    headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
-    
-}
-
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -295,5 +307,20 @@
         [hud hide:YES];
         [[TogaytherService uiService] alertError];
     }];
+}
+-(void)dateChanged:(UIDatePicker*)datePicker {
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+    NSDateComponents *components = [gregorian components: (NSCalendarUnitHour | NSCalendarUnitMinute) fromDate: datePicker.date];
+    NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
+    if(_pickerIndexPath.row == 1) {
+        _calendar.startHour = components.hour;
+        _calendar.startMinute = components.minute;
+        [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:kSectionTime]];
+    } else {
+        _calendar.endHour = components.hour;
+        _calendar.endMinute = components.minute;
+        [indexPathToReload addObject:[NSIndexPath indexPathForRow:1 inSection:kSectionTime]];
+    }
+    [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationNone];
 }
 @end

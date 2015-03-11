@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="UIPelmelTitleView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mJk-Xg-0Ob">
+                    <rect key="frame" x="22" y="6" width="276" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="jsv-65-gf9"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sXB-mT-bvH">
+                    <rect key="frame" x="17" y="0.0" width="286" height="1"/>
+                    <color key="backgroundColor" red="0.24313725490196078" green="0.25490196078431371" blue="0.27450980392156865" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="VH3-Ni-maD"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JPb-5Q-DSn">
+                    <rect key="frame" x="17" y="33" width="286" height="1"/>
+                    <color key="backgroundColor" red="0.24313725489999999" green="0.25490196079999999" blue="0.27450980390000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="9oe-I1-gIS"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="JPb-5Q-DSn" secondAttribute="trailing" constant="17" id="Ag4-n8-r7v"/>
+                <constraint firstAttribute="bottom" secondItem="JPb-5Q-DSn" secondAttribute="bottom" id="Ak0-1v-o2G"/>
+                <constraint firstAttribute="trailing" secondItem="mJk-Xg-0Ob" secondAttribute="trailing" constant="22" id="bh9-a6-SrA"/>
+                <constraint firstItem="sXB-mT-bvH" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="c2d-0k-aEd"/>
+                <constraint firstItem="sXB-mT-bvH" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eMB-uB-Me8"/>
+                <constraint firstAttribute="trailing" secondItem="sXB-mT-bvH" secondAttribute="trailing" constant="17" id="er7-2E-6by"/>
+                <constraint firstAttribute="centerY" secondItem="mJk-Xg-0Ob" secondAttribute="centerY" id="gTg-T3-pVi"/>
+                <constraint firstItem="mJk-Xg-0Ob" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="22" id="kW6-TZ-DZs"/>
+                <constraint firstItem="JPb-5Q-DSn" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="17" id="peg-uC-dQd"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="titleLabel" destination="mJk-Xg-0Ob" id="Wpq-Nf-RMR"/>
+            </connections>
+            <point key="canvasLocation" x="242" y="-28"/>
+        </view>
+    </objects>
+</document>

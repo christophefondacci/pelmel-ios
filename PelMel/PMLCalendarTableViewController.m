@@ -15,6 +15,7 @@
 #import "SpringTransitioningDelegate.h"
 #import <MBProgressHUD.h>
 #import "PMLMenuManagerController.h"
+#import "UIPelmelTitleView.h"
 
 #define kPMLSectionCount 4
 
@@ -37,6 +38,9 @@
     
     // Views
     ProfileHeaderView *_headerView;
+    UIPelmelTitleView *_hoursTitleView;
+    UIPelmelTitleView *_happyHoursTitleView;
+    UIPelmelTitleView *_themeNightsTitleView;
     
     // Services
     ConversionService *_conversionService;
@@ -59,6 +63,9 @@
     
     // Loading views
     _headerView = (ProfileHeaderView*)[[TogaytherService uiService] loadView:@"ProfileHeader"];
+    _hoursTitleView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
+    _happyHoursTitleView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
+    _themeNightsTitleView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
     
     // Registering external table view cells
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLAddModifyViewCell" bundle:nil] forCellReuseIdentifier:@"addModify"];
@@ -156,27 +163,27 @@
     // Returning what we found
     return cal;
 }
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch(section) {
-        case kPMLSectionOpening:
-            return NSLocalizedString(@"calendar.opening",@"Opening hours");
-        case kPMLSectionHappy:
-            return NSLocalizedString(@"calendar.happy",@"Happy hours");
-        case kPMLSectionTheme:
-            return NSLocalizedString(@"calendar.theme",@"Theme nights");
-    }
-    return nil;
-}
+
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if(section == kPMLSectionIntro) {
-        [_headerView setNickname:self.place.title parentWidth:self.tableView.frame.size.width];
-        _headerView.editButtonIcon.hidden=YES;
-        _headerView.profileImageView.image= nil;
-        if(self.place.mainImage) {
-            [_imageService load:self.place.mainImage to:_headerView.profileImageView thumb:YES];
-        }
-        return _headerView;
+    switch(section){
+        case kPMLSectionIntro:
+            [_headerView setNickname:self.place.title parentWidth:self.tableView.frame.size.width];
+            _headerView.editButtonIcon.hidden=YES;
+            _headerView.profileImageView.image= nil;
+            if(self.place.mainImage) {
+                [_imageService load:self.place.mainImage to:_headerView.profileImageView thumb:YES];
+            }
+            return _headerView;
+        case kPMLSectionOpening:
+            _hoursTitleView.titleLabel.text = NSLocalizedString(@"calendar.opening",@"Opening hours");
+            return _hoursTitleView;
+        case kPMLSectionHappy:
+            _happyHoursTitleView.titleLabel.text = NSLocalizedString(@"calendar.happy",@"Happy hours");
+            return _happyHoursTitleView;
+        case kPMLSectionTheme:
+            _themeNightsTitleView.titleLabel.text = NSLocalizedString(@"calendar.theme",@"Theme nights");
+            return _themeNightsTitleView;
     }
     return [super tableView:tableView viewForHeaderInSection:section];
 }
@@ -184,28 +191,10 @@
     if(section == kPMLSectionIntro) {
         return _headerView.bounds.size.height;
     } else {
-        return 30;
+        return 38;
     }
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    switch (section) {
-        case kPMLSectionOpening:
-        case kPMLSectionHappy:
-        case kPMLSectionTheme: {
-            UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
-            headerView.textLabel.textColor = [UIColor whiteColor];
-            headerView.textLabel.font = [UIFont fontWithDescriptor:[UIFontDescriptor fontDescriptorWithFontAttributes:@{@"NSCTFontUIUsageAttribute" : UIFontTextStyleBody,
-                                                                                                                        @"NSFontNameAttribute" : PML_FONT_DEFAULT}] size:17.0];
-            //            [UIFont fontWithName:PML_FONT_DEFAULT size:15];
-            headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
-            break;
-        }
-        default:
-            break;
-    }
-    
-}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 50;
 }

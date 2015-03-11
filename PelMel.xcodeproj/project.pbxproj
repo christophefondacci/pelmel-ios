@@ -136,6 +136,7 @@
 		B4592A9E16233261009688B8 /* UITableTagViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4592A9B16233120009688B8 /* UITableTagViewCell.m */; };
 		B45B381E1AAE1D6C00730313 /* UIImageViewAligned.h in Headers */ = {isa = PBXBuildFile; fileRef = B45B381C1AAE1D6C00730313 /* UIImageViewAligned.h */; };
 		B45B381F1AAE1D6C00730313 /* UIImageViewAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = B45B381D1AAE1D6C00730313 /* UIImageViewAligned.m */; };
+		B45B38211AAF9F5000730313 /* PMLHoursSectionTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45B38201AAF9F5000730313 /* PMLHoursSectionTitleView.xib */; };
 		B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */; };
 		B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */ = {isa = PBXBuildFile; fileRef = B45BBF00196AB883001C1DF5 /* UIWaitingView.h */; };
 		B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = B45BBF01196AB883001C1DF5 /* UIWaitingView.m */; };
@@ -490,6 +491,7 @@
 		B4592A9B16233120009688B8 /* UITableTagViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableTagViewCell.m; sourceTree = "<group>"; };
 		B45B381C1AAE1D6C00730313 /* UIImageViewAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageViewAligned.h; sourceTree = "<group>"; };
 		B45B381D1AAE1D6C00730313 /* UIImageViewAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageViewAligned.m; sourceTree = "<group>"; };
+		B45B38201AAF9F5000730313 /* PMLHoursSectionTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLHoursSectionTitleView.xib; sourceTree = "<group>"; };
 		B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWaitingView.xib; sourceTree = "<group>"; };
 		B45BBF00196AB883001C1DF5 /* UIWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWaitingView.h; sourceTree = "<group>"; };
 		B45BBF01196AB883001C1DF5 /* UIWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWaitingView.m; sourceTree = "<group>"; };
@@ -885,6 +887,7 @@
 				B457A0F91A9AF00A00207D8E /* PMLTextFieldTableViewCell.m */,
 				B457A0FC1A9AF08A00207D8E /* PMLDatePickerTableViewCell.h */,
 				B457A0FD1A9AF08A00207D8E /* PMLDatePickerTableViewCell.m */,
+				B45B38201AAF9F5000730313 /* PMLHoursSectionTitleView.xib */,
 			);
 			name = Event;
 			sourceTree = "<group>";
@@ -1598,6 +1601,7 @@
 				B457A0EC1A9A658A00207D8E /* PMLSectionTitleView.xib in Resources */,
 				B4FC958219B1E28B00269E74 /* Sari-Medium.otf in Resources */,
 				B4270E1919F62E5C00620773 /* PMLUserActionsView.xib in Resources */,
+				B45B38211AAF9F5000730313 /* PMLHoursSectionTitleView.xib in Resources */,
 				B4B560A818B76C41006E6D90 /* UIPelmelTitleView.xib in Resources */,
 				B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */,
 				B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */,

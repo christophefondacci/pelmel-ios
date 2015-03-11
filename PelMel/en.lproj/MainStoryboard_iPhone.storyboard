@@ -7,8 +7,10 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Italic.ttf">
+            <string>OpenSans-Italic</string>
+        </mutableArray>
         <mutableArray key="OpenSans-Regular.ttf">
-            <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
@@ -1105,28 +1107,28 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="140" id="lOD-KH-MpF"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="26"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gFl-DY-8nJ">
-                                            <rect key="frame" x="8" y="11" width="109" height="21"/>
+                                            <rect key="frame" x="42" y="11" width="109" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="109" id="J0g-lw-75q"/>
                                                 <constraint firstAttribute="height" constant="21" id="eQJ-YI-yCc"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" red="0.15294118225574493" green="0.16470588743686676" blue="0.18039216101169586" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstItem="5YF-u8-eE9" firstAttribute="top" secondItem="iLF-az-7Eh" secondAttribute="top" id="Djm-Hx-f1N"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="5YF-u8-eE9" secondAttribute="trailing" constant="16" id="N4Y-aT-kmY"/>
-                                        <constraint firstItem="gFl-DY-8nJ" firstAttribute="leading" secondItem="iLF-az-7Eh" secondAttribute="leadingMargin" id="Zni-Z4-qZu"/>
                                         <constraint firstAttribute="centerY" secondItem="gFl-DY-8nJ" secondAttribute="centerY" id="f8r-1q-KJM"/>
+                                        <constraint firstItem="gFl-DY-8nJ" firstAttribute="leading" secondItem="iLF-az-7Eh" secondAttribute="leading" constant="42" id="pvI-JV-SmB"/>
                                         <constraint firstAttribute="bottom" secondItem="5YF-u8-eE9" secondAttribute="bottom" constant="-0.5" id="qkD-XZ-vzR"/>
+                                        <constraint firstAttribute="trailing" secondItem="5YF-u8-eE9" secondAttribute="trailing" constant="24" id="uWN-4M-Bkj"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.1764705882" green="0.1843137255" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -1135,41 +1137,25 @@
                                     <outlet property="detailValueLabel" destination="5YF-u8-eE9" id="cCz-cK-GOa"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="pickerCell" rowHeight="162" id="cuf-QL-oRN" customClass="PMLPickerTableViewCell">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cuf-QL-oRN" id="M0h-S1-n29">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dS9-CQ-D7c">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
-                                        </pickerView>
-                                    </subviews>
-                                    <color key="backgroundColor" red="0.15294118225574493" green="0.16470588743686676" blue="0.18039216101169586" alpha="1" colorSpace="calibratedRGB"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.1764705882" green="0.1843137255" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outlet property="pickerView" destination="dS9-CQ-D7c" id="LDo-5r-n4b"/>
-                                </connections>
-                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="dayCell" id="HFq-rS-Srh" customClass="PMLDetailTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HFq-rS-Srh" id="ZQk-z9-tSy">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Monday" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BDi-4F-2As">
-                                            <rect key="frame" x="8" y="10" width="253" height="24"/>
+                                            <rect key="frame" x="43" y="10" width="218" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="kRm-Z1-HUz"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
-                                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" red="0.15294118225574493" green="0.16470588743686676" blue="0.18039216101169586" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="tintColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstItem="BDi-4F-2As" firstAttribute="leading" secondItem="ZQk-z9-tSy" secondAttribute="leadingMargin" id="2rZ-iv-xyi"/>
+                                        <constraint firstItem="BDi-4F-2As" firstAttribute="leading" secondItem="ZQk-z9-tSy" secondAttribute="leading" constant="43" id="B9a-sV-uJc"/>
                                         <constraint firstAttribute="trailing" secondItem="BDi-4F-2As" secondAttribute="trailing" constant="20" id="P7G-ZN-dUR"/>
                                         <constraint firstAttribute="centerY" secondItem="BDi-4F-2As" secondAttribute="centerY" id="f3b-fW-All"/>
                                     </constraints>
@@ -1178,6 +1164,49 @@
                                 <color key="tintColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="detailIntroLabel" destination="BDi-4F-2As" id="EyE-96-Aq8"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="datePickerCell" rowHeight="162" id="GcV-2Y-t99" customClass="PMLDatePickerTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GcV-2Y-t99" id="6sa-dR-RKN">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="1Ie-bi-WgX">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
+                                            <date key="date" timeIntervalSinceReferenceDate="446360375.87055099">
+                                                <!--2015-02-23 04:59:35 +0000-->
+                                            </date>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                                                    <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </datePicker>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="datePicker" destination="1Ie-bi-WgX" id="xJf-xc-HY6"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="titleCell" id="Cgt-Xd-Oe1" customClass="PMLTextFieldTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Cgt-Xd-Oe1" id="LPz-RG-2eR">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title (Optional)" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="nQj-u0-Yhw">
+                                            <rect key="frame" x="8" y="7" width="304" height="30"/>
+                                            <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
+                                        </textField>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="textField" destination="nQj-u0-Yhw" id="TvU-9P-k3Q"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -3572,31 +3601,23 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2KO-ap-Oye" id="dVi-Dq-ahR">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ovvIconHours" translatesAutoresizingMaskIntoConstraints="NO" id="hNP-r2-FS2">
-                                            <rect key="frame" x="80" y="11" width="18" height="21"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="18" id="fxK-pL-48W"/>
-                                                <constraint firstAttribute="height" constant="21" id="zx7-Pr-UDs"/>
-                                            </constraints>
-                                        </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ay-ou-hOg">
-                                            <rect key="frame" x="106" y="11" width="173" height="21"/>
+                                            <rect key="frame" x="56" y="11" width="230" height="21"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="GEy-bw-yA3"/>
+                                                <constraint firstAttribute="height" constant="21" id="EIe-Cw-Wje"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Vx-mq-BDA">
-                                            <rect key="frame" x="8" y="7" width="64" height="30"/>
-                                            <color key="backgroundColor" red="0.90196079019999997" green="0.059346810210000003" blue="0.0073946128409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Vx-mq-BDA">
+                                            <rect key="frame" x="16" y="10" width="24" height="24"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="64" id="CzL-nf-wU5"/>
-                                                <constraint firstAttribute="height" constant="30" id="FDz-0i-Ffm"/>
+                                                <constraint firstAttribute="width" constant="24" id="lWi-eL-bhY"/>
+                                                <constraint firstAttribute="height" constant="24" id="voo-pz-j7x"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
-                                            <state key="normal" title="Delete">
+                                            <state key="normal" image="edtIconDelete">
                                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -3609,19 +3630,16 @@
                                         </button>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="centerY" secondItem="7Vx-mq-BDA" secondAttribute="centerY" id="07X-JY-vJN"/>
-                                        <constraint firstItem="7ay-ou-hOg" firstAttribute="trailing" secondItem="dVi-Dq-ahR" secondAttribute="trailingMargin" id="8Ei-Uz-6Nb"/>
-                                        <constraint firstItem="7Vx-mq-BDA" firstAttribute="leading" secondItem="dVi-Dq-ahR" secondAttribute="leadingMargin" id="IJu-Ah-96c"/>
-                                        <constraint firstItem="7ay-ou-hOg" firstAttribute="leading" secondItem="hNP-r2-FS2" secondAttribute="trailing" constant="8" id="PF8-bS-Qdv"/>
-                                        <constraint firstAttribute="centerY" secondItem="7ay-ou-hOg" secondAttribute="centerY" id="Py4-8x-5vc"/>
-                                        <constraint firstAttribute="centerY" secondItem="hNP-r2-FS2" secondAttribute="centerY" id="aMK-l8-UV9"/>
-                                        <constraint firstItem="hNP-r2-FS2" firstAttribute="leading" secondItem="7Vx-mq-BDA" secondAttribute="trailing" constant="8" id="h0S-BF-z6O"/>
+                                        <constraint firstAttribute="centerY" secondItem="7Vx-mq-BDA" secondAttribute="centerY" id="CT8-C8-pT8"/>
+                                        <constraint firstAttribute="centerY" secondItem="7ay-ou-hOg" secondAttribute="centerY" id="Dzb-St-C2i"/>
+                                        <constraint firstItem="7ay-ou-hOg" firstAttribute="leading" secondItem="7Vx-mq-BDA" secondAttribute="trailing" constant="16" id="XNn-uf-2Q4"/>
+                                        <constraint firstItem="7Vx-mq-BDA" firstAttribute="leading" secondItem="dVi-Dq-ahR" secondAttribute="leading" constant="16" id="a2i-MC-i4E"/>
+                                        <constraint firstAttribute="trailing" secondItem="7ay-ou-hOg" secondAttribute="trailing" constant="1" id="xjs-hz-MBn"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.1764705882" green="0.1843137255" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="deleteButton" destination="7Vx-mq-BDA" id="8aI-t8-Iew"/>
-                                    <outlet property="titleImage" destination="hNP-r2-FS2" id="n9D-Ax-YRJ"/>
                                     <outlet property="titleLabel" destination="7ay-ou-hOg" id="IF6-hX-kOS"/>
                                 </connections>
                             </tableViewCell>
@@ -3630,20 +3648,29 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pGX-W4-VLN" id="IfW-AC-dCv">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a new time range" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lab-vU-Nh2">
-                                            <rect key="frame" x="13" y="11" width="294" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a new time range" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lab-vU-Nh2">
+                                            <rect key="frame" x="77" y="11" width="222" height="21"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="21" id="dCF-NA-vEU"/>
+                                                <constraint firstAttribute="height" constant="21" id="eX4-bK-o3B"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" name="OpenSans-Italic" family="Open Sans" pointSize="14"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edtIconAdd" translatesAutoresizingMaskIntoConstraints="NO" id="cRh-cD-zMg">
+                                            <rect key="frame" x="56" y="16" width="12" height="12"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="12" id="Qvf-dY-ZJX"/>
+                                                <constraint firstAttribute="width" constant="12" id="fHQ-hx-vr7"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="lab-vU-Nh2" secondAttribute="trailing" constant="5" id="Rii-gO-Cfa"/>
-                                        <constraint firstAttribute="centerY" secondItem="lab-vU-Nh2" secondAttribute="centerY" id="b16-Gx-6Op"/>
-                                        <constraint firstItem="lab-vU-Nh2" firstAttribute="leading" secondItem="IfW-AC-dCv" secondAttribute="leadingMargin" constant="5" id="lnQ-Lp-6AJ"/>
+                                        <constraint firstItem="cRh-cD-zMg" firstAttribute="leading" secondItem="IfW-AC-dCv" secondAttribute="leading" constant="56" id="D1j-ih-i0E"/>
+                                        <constraint firstItem="lab-vU-Nh2" firstAttribute="leading" secondItem="cRh-cD-zMg" secondAttribute="trailing" constant="9" id="Jiv-jK-xwK"/>
+                                        <constraint firstAttribute="trailing" secondItem="lab-vU-Nh2" secondAttribute="trailing" constant="21" id="Kom-lA-qYe"/>
+                                        <constraint firstAttribute="centerY" secondItem="lab-vU-Nh2" secondAttribute="centerY" id="ZwU-E2-EGv"/>
+                                        <constraint firstAttribute="centerY" secondItem="cRh-cD-zMg" secondAttribute="centerY" id="qih-hb-zuK"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.1764705882" green="0.1843137255" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -3666,6 +3693,8 @@
     </scenes>
     <resources>
         <image name="chat.png" width="30" height="30"/>
+        <image name="edtIconAdd" width="24" height="24"/>
+        <image name="edtIconDelete" width="24" height="24"/>
         <image name="hd_logo_small.gif" width="40" height="27"/>
         <image name="logo-thumb.png" width="100" height="100"/>
         <image name="ovvIconCheckin" width="35" height="35"/>
