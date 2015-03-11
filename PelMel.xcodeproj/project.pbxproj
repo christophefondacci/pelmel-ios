@@ -137,6 +137,8 @@
 		B45B381E1AAE1D6C00730313 /* UIImageViewAligned.h in Headers */ = {isa = PBXBuildFile; fileRef = B45B381C1AAE1D6C00730313 /* UIImageViewAligned.h */; };
 		B45B381F1AAE1D6C00730313 /* UIImageViewAligned.m in Sources */ = {isa = PBXBuildFile; fileRef = B45B381D1AAE1D6C00730313 /* UIImageViewAligned.m */; };
 		B45B38211AAF9F5000730313 /* PMLHoursSectionTitleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45B38201AAF9F5000730313 /* PMLHoursSectionTitleView.xib */; };
+		B45B38241AB0C1F200730313 /* PMLSnippetDescTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B45B38221AB0C1F200730313 /* PMLSnippetDescTableViewCell.h */; };
+		B45B38251AB0C1F200730313 /* PMLSnippetDescTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B45B38231AB0C1F200730313 /* PMLSnippetDescTableViewCell.m */; };
 		B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */; };
 		B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */ = {isa = PBXBuildFile; fileRef = B45BBF00196AB883001C1DF5 /* UIWaitingView.h */; };
 		B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = B45BBF01196AB883001C1DF5 /* UIWaitingView.m */; };
@@ -492,6 +494,8 @@
 		B45B381C1AAE1D6C00730313 /* UIImageViewAligned.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageViewAligned.h; sourceTree = "<group>"; };
 		B45B381D1AAE1D6C00730313 /* UIImageViewAligned.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImageViewAligned.m; sourceTree = "<group>"; };
 		B45B38201AAF9F5000730313 /* PMLHoursSectionTitleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLHoursSectionTitleView.xib; sourceTree = "<group>"; };
+		B45B38221AB0C1F200730313 /* PMLSnippetDescTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLSnippetDescTableViewCell.h; sourceTree = "<group>"; };
+		B45B38231AB0C1F200730313 /* PMLSnippetDescTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLSnippetDescTableViewCell.m; sourceTree = "<group>"; };
 		B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWaitingView.xib; sourceTree = "<group>"; };
 		B45BBF00196AB883001C1DF5 /* UIWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWaitingView.h; sourceTree = "<group>"; };
 		B45BBF01196AB883001C1DF5 /* UIWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWaitingView.m; sourceTree = "<group>"; };
@@ -1366,6 +1370,8 @@
 				B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */,
 				B47A69C01AA64AC200877B58 /* PMLCountersView.h */,
 				B47A69C11AA64AC200877B58 /* PMLCountersView.m */,
+				B45B38221AB0C1F200730313 /* PMLSnippetDescTableViewCell.h */,
+				B45B38231AB0C1F200730313 /* PMLSnippetDescTableViewCell.m */,
 			);
 			name = Snippet;
 			sourceTree = "<group>";
@@ -1442,6 +1448,7 @@
 				B4FC957B19AF3B4B00269E74 /* PMLPopupEditor.h in Headers */,
 				B405E6701A953F9400C49F64 /* PMLCalendarEditorTableViewController.h in Headers */,
 				B457A0FA1A9AF00A00207D8E /* PMLTextFieldTableViewCell.h in Headers */,
+				B45B38241AB0C1F200730313 /* PMLSnippetDescTableViewCell.h in Headers */,
 				B41DD754197B5FA5008F09D9 /* UIAttachmentView.h in Headers */,
 				B47A69D71AA7843B00877B58 /* PMLThumbHeaderView.h in Headers */,
 				B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */,
@@ -1836,6 +1843,7 @@
 				B405E6671A93C04900C49F64 /* PMLCalendarTableViewController.m in Sources */,
 				B457A10B1A9D914100207D8E /* UIViewController+BackButtonHandler.m in Sources */,
 				B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */,
+				B45B38251AB0C1F200730313 /* PMLSnippetDescTableViewCell.m in Sources */,
 				B47A69DC1AA7992500877B58 /* StickyHeaderFlowLayout.m in Sources */,
 				B406CA48197D126300A7FFE2 /* MKCustomMapView.m in Sources */,
 				B4859DBD197FC7FF0036D8FF /* PMLPopupActionManager.m in Sources */,

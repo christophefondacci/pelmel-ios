@@ -18,8 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *subtitleIcon;
 @property (weak, nonatomic) IBOutlet UIView *peopleView;
 @property (weak, nonatomic) IBOutlet UIView *colorLineView;
-@property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
-@property (weak, nonatomic) IBOutlet UIButton *descriptionTextViewButton;
 @property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UIView *hoursBadgeView;
 @property (weak, nonatomic) IBOutlet UILabel *hoursBadgeTitleLabel;

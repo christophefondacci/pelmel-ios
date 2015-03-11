@@ -15,6 +15,7 @@
 #import "PMLThumbCollectionViewController.h"
 #import "PMLSubNavigationController.h"
 #import "PMLSnippetTableViewCell.h"
+#import "PMLSnippetDescTableViewCell.h"
 #import "PMLGalleryTableViewCell.h"
 #import "PMLCountersTableViewCell.h"
 #import "PMLImageTableViewCell.h"
@@ -64,6 +65,7 @@
 #define kPMLRowThumbPreview 1
 #define kPMLRowSnippetId @"snippet"
 #define kPMLRowSnippetEditorId @"snippetEditor"
+#define kPMLRowSnippetDescEditorId @"snippetDescEditor"
 #define kPMLRowGalleryId @"gallery"
 #define kPMLRowCountersId @"counters"
 #define kPMLRowThumbPreviewId @"thumbsPreview"
@@ -152,6 +154,7 @@ typedef enum {
     
     // Cells
     PMLSnippetTableViewCell *_snippetCell;
+    PMLSnippetDescTableViewCell *_snippetDescCell;
     PMLGalleryTableViewCell *_galleryCell;
     PMLCountersTableViewCell *_countersCell;
     CAGradientLayer *_countersGradient;
@@ -380,7 +383,12 @@ typedef enum {
         case kPMLSectionSnippet:
             switch(indexPath.row) {
                 case kPMLRowSnippet:
-                    return _snippetItem.editing ? kPMLRowSnippetEditorId : kPMLRowSnippetId;
+                    if(_snippetItem.editing) {
+                        return kPMLRowSnippetEditorId;
+                    } else if(_snippetItem.editingDesc) {
+                        return kPMLRowSnippetDescEditorId;
+                    }
+                    return kPMLRowSnippetId;
             }
             break;
         case kPMLSectionGallery:
@@ -448,6 +456,8 @@ typedef enum {
                 case kPMLRowSnippet:
                     if(_snippetItem.editing) {
                         [self configureRowSnippetEditor:(PMLSnippetTableViewCell*)cell];
+                    } else if(_snippetItem.editingDesc) {
+                        [self configureRowSnippetDescriptionEditor:(PMLSnippetDescTableViewCell*)cell];
                     } else {
                         [self configureRowSnippet:(PMLSnippetTableViewCell*)cell];
                     }
@@ -752,17 +762,13 @@ typedef enum {
     }
     cell.subtitleLabel.text = NSLocalizedString(@"snippet.edit.placeType",@"Select the kind of venue:");
 }
--(void)configureRowSnippetDescriptionEditor:(PMLSnippetTableViewCell*)cell {
-    _snippetCell.descriptionTextView.delegate = self;
-    _snippetCell.descriptionTextView.hidden=NO;
-    _snippetCell.descriptionTextView.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
-    _snippetCell.descriptionTextView.text = _infoProvider.descriptionText;
-    _snippetCell.descriptionTextViewButton.hidden=NO;
-    _snippetCell.descriptionTextViewButton.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:17];
-    _snippetCell.peopleView.hidden=YES;
-    _snippetCell.hoursBadgeView.hidden=YES;
-    [_snippetCell.descriptionTextViewButton addTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
-    [_snippetCell.descriptionTextView becomeFirstResponder];
+-(void)configureRowSnippetDescriptionEditor:(PMLSnippetDescTableViewCell*)cell {
+    _snippetDescCell = cell;
+    cell.descriptionTextView.delegate = self;
+    cell.descriptionTextView.text = _infoProvider.descriptionText;
+    cell.descriptionLanguageLabel.text = [_snippetItem.miniDescLang uppercaseString];
+    [cell.descriptionTextViewButton addTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.descriptionTextView becomeFirstResponder];
     // Building placeholder
     //        NSString *langCode = _snippetItem.miniDescLang;
     //        if(langCode == nil) {
@@ -1435,16 +1441,17 @@ typedef enum {
     [self pushSnippetFor:activity.user];
 }
 -(void)pushSnippetFor:(CALObject*)item {
+    // Instantiating controller
     PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)[TogaytherService.uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+    
+    // Injecting item to display
     childSnippet.snippetItem = item;
+    
+    // Registering parent menu view controller to present the relationship
     [childSnippet setParentMenuController:self.parentMenuController];
 
-//    if(self.subNavigationController != nil) {
-//        [self.subNavigationController pushViewController:childSnippet animated:YES];
-//        [self.parentMenuController openCurrentSnippet];
-//    } else {
-        [self.navigationController pushViewController:childSnippet animated:YES];
-//    }
+    // Pushing new view controller
+    [self.navigationController pushViewController:childSnippet animated:YES];
 }
 -(void)addEventTapped {
     PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
@@ -1454,6 +1461,32 @@ typedef enum {
     // Preparing transition
     [self.parentMenuController presentModal:navController];
 }
+
+-(void)descriptionDone:(id)sender {
+    UITextView *textView = _snippetDescCell.descriptionTextView;
+    NSString *inputText = textView.text;
+    
+    // Removing current input
+    textView.hidden=YES;
+    textView.text = nil;
+    
+    [_snippetDescCell.descriptionTextViewButton removeTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Only doing something if we have a valid text
+    NSString *desc = [inputText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if(desc.length>0) {
+        _snippetItem.editingDesc=NO;
+        _snippetItem.miniDesc = inputText;
+        
+        // Commiting changes
+        PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
+        action.actionCommand();
+    }
+    [_snippetCell.titleTextField resignFirstResponder];
+    [self.tableView reloadData];
+    
+}
+
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
     [self toggleFullscreenGallery];
@@ -1571,44 +1604,20 @@ typedef enum {
         if(title.length>0) {
             ((Place*)_snippetItem).title = inputText;
             _snippetCell.titleLabel.text = inputText;
+            PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
+            action.actionCommand();
         }
     }
     [_snippetCell.titleTextField resignFirstResponder];
     [self.tableView reloadData];
     
-    PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
-    action.actionCommand();
+
     return YES;
 }
 #pragma mark - UITextViewDelegate
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {
     [self descriptionDone:textView];
     return YES;
-}
--(void)descriptionDone:(id)sender {
-    UITextView *textView = _snippetCell.descriptionTextView;
-    NSString *inputText = textView.text;
-    
-    // Removing current input
-    textView.hidden=YES;
-    _snippetCell.peopleView.hidden=NO;
-    _snippetCell.hoursBadgeView.hidden=NO;
-    _snippetCell.descriptionTextViewButton.hidden=YES;
-    textView.text = nil;
-
-    [_snippetCell.descriptionTextViewButton removeTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
-    
-    // Only doing something if we have a valid text
-    NSString *desc = [inputText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if(desc.length>0) {
-        _snippetItem.editingDesc=NO;
-        _snippetItem.miniDesc = inputText;
-        
-//        self.editing=NO;
-    }
-    [_snippetCell.titleTextField resignFirstResponder];
-    [self.tableView reloadData];
-
 }
 #pragma mark - KVO Observing implementation
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -1825,21 +1834,9 @@ typedef enum {
         }
     }
 }
--(void)snippetCell:(PMLSnippetTableViewCell*)cell setOptionalVisibility:(float)alpha {
-//    cell.thumbView.alpha=alpha;
-    cell.backContainer.alpha=alpha;
-}
+
 -(void)menuManager:(PMLMenuManagerController *)menuManager snippetMinimized:(BOOL)animated {
     _opened = NO;
-    // Restoring the thumb visibility when minimized
-    PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
-    if(animated) {
-        [UIView animateWithDuration:0.5 animations:^{
-            [self snippetCell:cell setOptionalVisibility:1];
-        }];
-    } else {
-        [self snippetCell:cell setOptionalVisibility:1];
-    }
     
     // Hiding NAV BAR
     [self.navigationController setNavigationBarHidden:YES animated:YES];
