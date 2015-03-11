@@ -14,7 +14,7 @@
 #import "PMLMenuManagerController.h"
 #import "PMLSubNavigationController.h"
 
-@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, KIImagePagerDataSource, PMLThumbsCollectionViewActionDelegate, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate,PMLSubNavigationDelegate, PMLUserCallback>
+@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, KIImagePagerDataSource, PMLThumbsCollectionViewActionDelegate, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate, PMLUserCallback>
 
 @property (weak,nonatomic) CALObject *snippetItem;
 

@@ -75,8 +75,9 @@
             
             [menuManagerController presentControllerSnippet:snippetController];
         }];
-        _pelmelLogo.bottomMargin=5;
-        _pelmelLogo.leftMargin = 5;
+        _pelmelLogo.bottomMargin= 5;
+        _pelmelLogo.pctWidthPosition=1;
+        _pelmelLogo.rightMargin = 5;
     }
     [self setupMenuAction:_pelmelLogo];
     

@@ -50,11 +50,11 @@
         labelView.text = label;
         if(imageName != nil) {
             if([_datasource isCounterSelectedAtIndex:i]) {
-                imageView.image = [UIImage ipMaskedImageNamed:imageName color:UIColorFromRGB(0xf48020)];
-                labelView.textColor =UIColorFromRGB(0xf48020);
+                imageView.image = [UIImage ipMaskedImageNamed:imageName color:UIColorFromRGB(0xef6c00)];
+                labelView.textColor =UIColorFromRGB(0xef6c00);
             } else {
                 imageView.image = [UIImage imageNamed:imageName];
-                labelView.textColor = [UIColor whiteColor];
+                labelView.textColor = UIColorFromRGB(0xc3c3c4);
             }
         } else {
             imageView.image = nil;

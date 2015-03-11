@@ -12,7 +12,7 @@
 #import "PMLMainNavBarView.h"
 #import "PMLPopupActionManager.h"
 
-#define kPMLSnippetTopOffset 0
+#define kPMLSnippetTopOffset 20
 
 @class PMLDataManager;
 
@@ -156,7 +156,6 @@ typedef void(^TextInputCallback)(NSString *text);
  *          (like a user input dialog)
  */
 -(BOOL)dismissControllerSnippet;
--(void)refreshNavigationFor:(NSObject*)object;
 //- (void)installNavigationFor:(UIViewController*)controller;
 //- (void)uninstallNavigation;
 /**

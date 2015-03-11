@@ -10,7 +10,7 @@
 #import "CALObject.h"
 #import "DataService.h"
 #import "PopupAction.h"
-
+#import "PMLPopupEditor.h"
 
 @class PMLMapPopupViewController;
 @class MapAnnotation;
@@ -23,6 +23,7 @@
 
 @property (nonatomic,retain) PMLMapPopupViewController *popupController;
 @property (nonatomic,retain) PMLMenuManagerController *menuManagerController;
+@property (nonatomic,retain) PMLPopupEditor *currentEditor;
 
 /**
  * Instantiates a new action manager using the specified popup controller.
@@ -42,6 +43,4 @@
 -(NSArray*)computeActionsFor:(CALObject*)object annotatedBy:(MapAnnotation*)annotation fromController:(PMLMapPopupViewController*)popupController;
 -(PopupAction*)actionForType:(PMLActionType)type;
 -(void)dismiss;
--(void)installNavBarEdit:(PMLMenuManagerController*)menuManager;
--(void)uninstallNavBarEdit:(PMLMenuManagerController*)menuManager;
 @end

@@ -77,7 +77,7 @@
     [[UITableViewCell appearance] setSeparatorInset:UIEdgeInsetsZero];
     
     if ([UITableView instancesRespondToSelector:@selector(setLayoutMargins:)]) {
-        [[UITableView appearance] setLayoutMargins:UIEdgeInsetsZero];
+//        [[UITableView appearance] setLayoutMargins:UIEdgeInsetsZero];
         [[UITableViewCell appearance] setLayoutMargins:UIEdgeInsetsZero];
         [[UITableViewCell appearance] setPreservesSuperviewLayoutMargins:NO];
     }

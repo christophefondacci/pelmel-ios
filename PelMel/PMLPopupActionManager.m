@@ -97,7 +97,6 @@
     
     CALObject *_currentObject;
     BOOL _checkinEnabled;
-    PMLPopupEditor *_currentEditor;
     NSObject<PMLInfoProvider> *_infoProvider;
     NSMutableSet *_observedProperties;
     NSMutableDictionary *_actionTypes;
@@ -265,7 +264,7 @@
         [_currentEditor cancel];
         if(_navbarEdit) {
             _menuManagerController.navigationItem.leftBarButtonItem = _navbarLeftItem;
-            [self installNavBarEdit:_menuManagerController];
+//            [self installNavBarEdit:_menuManagerController];
         }
     }];
     _cancelAction.color = UIColorFromRGB(kPMLCancelColor);
@@ -485,7 +484,7 @@
     if(!_currentObject.editing) {
         _currentObject.editing = YES;
         _currentObject.editingDesc=NO;
-        [self installNavBarCommitCancel];
+//        [self installNavBarCommitCancel];
         NSString *oldName = ((Place*)_currentObject).title;
         NSString *oldPlaceType= ((Place*)_currentObject).placeType;
         EditionAction cancelAction = ^{
@@ -493,18 +492,18 @@
             place.title = oldName;
             place.placeType = oldPlaceType;
             place.editing = NO;
-            [self uninstallNavBarCommitCancel];
+//            [self uninstallNavBarCommitCancel];
         };
         EditionAction commitAction = ^{
             ((Place*)_currentObject).editing = NO;
-            [self uninstallNavBarCommitCancel];
+//            [self uninstallNavBarCommitCancel];
         };
         [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
     }
 }
 -(void)editDescription {
     if(!_currentObject.editingDesc) {
-        [self installNavBarCommitCancel];
+//        [self installNavBarCommitCancel];
         NSString *sysLang = [TogaytherService getLanguageIso6391Code];
         BOOL noDescription = (_currentObject.miniDescKey == nil||_currentObject.miniDescKey.length==0);
         // If there is an existing description in another language
@@ -563,11 +562,11 @@
         _currentObject.miniDescKey = oldDescKey;
         _currentObject.miniDescLang = oldDescLang;
         _currentObject.editingDesc = NO;
-        [self uninstallNavBarCommitCancel];
+//        [self uninstallNavBarCommitCancel];
     };
     EditionAction commitAction = ^{
         _currentObject.editingDesc = NO;
-        [self uninstallNavBarCommitCancel];
+//        [self uninstallNavBarCommitCancel];
     };
     [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
 
@@ -643,8 +642,8 @@
 -(void)editHours {
     PMLCalendarTableViewController *calendarController = (PMLCalendarTableViewController*)[_uiService instantiateViewController:@"calendarEditor"];
     if([_currentObject isKindOfClass:[Place class]]) {
-    calendarController.place = (Place*)_currentObject;
-    [_menuManagerController.navigationController pushViewController:calendarController animated:YES];
+        calendarController.place = (Place*)_currentObject;
+        [(UINavigationController*)_menuManagerController.currentSnippetViewController pushViewController:calendarController animated:YES];
     } else {
         NSLog(@"WARNING: Expected a Place object but got %@", NSStringFromClass([_currentObject class]) );
     }
@@ -694,67 +693,7 @@
     return saveAction;
 }
 
-#pragma mark - NavBar management
-- (void)installNavBarEdit:(PMLMenuManagerController *)menuManager {
-    _menuManagerController = menuManager;
-    if(_currentEditor.editing) {
-        [self installNavBarCommitCancel];
-    } else {
-        // Info provider informs us whether edit is supported or not by providing the actual edit implementation
-        if([_infoProvider respondsToSelector:@selector(editActionType)]) {
-            UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
-            _navbarEdit = YES;
-            menuManager.navigationItem.rightBarButtonItem = barItem;
-            if(![_currentObject isKindOfClass:[User class]]) {
-                menuManager.navigationController.navigationBar.alpha=0;
-            } else {
-                menuManager.navigationController.navigationBar.alpha=1;
-            }
-        } else {
-            menuManager.navigationItem.rightBarButtonItem = nil;
-        }
-    }
-}
--(void) installNavBarCommitCancel {
-    UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarActionTapped:)];
-    _menuManagerController.navigationItem.rightBarButtonItem = commitItem;
-    UIBarButtonItem *cancelItem = [self barButtonItemFromAction:PMLActionTypeCancel selector:@selector(navbarActionTapped:)];
-    _menuManagerController.navigationItem.leftBarButtonItem = cancelItem;
-    _menuManagerController.navigationController.navigationBar.alpha=1;
-}
--(void)uninstallNavBarCommitCancel {
-    if(_navbarEdit) {
-        _menuManagerController.navigationItem.leftBarButtonItem = _navbarLeftItem;
-        _menuManagerController.navigationItem.rightBarButtonItem = nil;
-//        [self installNavBarEdit:_menuManagerController];
-    }
-}
--(UIBarButtonItem*)barButtonItemFromAction:(PMLActionType)actionType selector:(SEL)selector {
-    PopupAction *action = [self actionForType:actionType];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-    button.layer.masksToBounds = YES;
-    button.layer.borderWidth=1;
-    button.layer.borderColor = [action.color CGColor];
-    button.layer.cornerRadius = 15;
-    button.alpha=1;
-    [button setImage:action.icon forState:UIControlStateNormal];
-    [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
-    button.tag = actionType;
-    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
 
-    return barItem;
-}
-- (void)uninstallNavBarEdit:(PMLMenuManagerController *)menuManager {
-    _menuManagerController = menuManager;
-    UINavigationItem *navItem = menuManager.navigationItem;
-    navItem.rightBarButtonItem = nil;
-    navItem.leftBarButtonItem = _navbarLeftItem;
-    _navbarEdit = NO;
-}
--(void)navbarActionTapped:(UIButton*)source {
-    PopupAction *action = [self actionForType:(PMLActionType)source.tag];
-    action.actionCommand();
-}
 //-(void)navbarCommitTapped:(id)source {
 //    PopupAction *action = [self actionForType:PMLActionTypeConfirm];
 //    action.actionCommand();

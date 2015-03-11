@@ -109,18 +109,10 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }
     
-//    cell.backgroundColor = [UIColor clearColor];
-//            cell.backgroundColor = UIColorFromRGB(0xf48020);
     // Configuring image
         cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
         CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
-//        if(image.thumbImage == nil) {
-    NSLog(@"Image for %p with %@ (section=%d, row=%d) %@",cell.thumbImage,image.key,indexPath.section,indexPath.row,image.thumbImage!= nil ? @"LOADED" : @"");
             [_imageService load:image to:cell.thumbImage thumb:YES];
-//        } else {
-//            NSLog(@"Image for %p with %@ (section=%d, row=%d) LOADED",cell.thumbImage,image.key,indexPath.section,indexPath.row);
-//            cell.thumbImage.image = image.thumbImage;
-//        }
     // Setting rounded corners (or not)
     BOOL rounded= YES;
     if([self.thumbProvider respondsToSelector:@selector(rounded)]) {

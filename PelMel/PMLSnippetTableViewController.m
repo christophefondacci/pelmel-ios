@@ -124,6 +124,10 @@
 
 #define kPMLRowActivityId @"activity"
 #define kPMLHeightActivityRows 60
+#define kPMLHeightActivityHeader 30
+
+#define kPMLHeightTopPlacesHeader 30
+
 
 typedef enum {
     PMLVisibityStateTransitioning,
@@ -157,6 +161,8 @@ typedef enum {
     // Headers
     PMLSectionTitleView *_sectionTitleView;
     PMLSectionTitleView *_sectionSummaryTitleView;
+    PMLSectionTitleView *_sectionTopPlacesTitleView;
+    PMLSectionTitleView *_sectionActivityTitleView;
     
     // Gallery
     BOOL _galleryFullscreen;
@@ -216,7 +222,18 @@ typedef enum {
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
+    // Navigation
     [TogaytherService applyCommonLookAndFeel:self];
+    self.navigationController.edgesForExtendedLayout=UIRectEdgeAll;
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+    self.navigationItem.rightBarButtonItem=nil;
+    [self.navigationController setNavigationBarHidden:YES];
+    
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
     
     // Initializing external table view cells
@@ -225,6 +242,8 @@ typedef enum {
     // Loading header views
     _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionSummaryTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    _sectionTopPlacesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    _sectionActivityTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     
     // Animation init
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
@@ -236,7 +255,7 @@ typedef enum {
 }
 - (void)viewDidAppear:(BOOL)animated {
     _actionManager.menuManagerController = [self parentMenuController];
-    self.subNavigationController.delegate = self;
+
     // Getting data
     [_dataService registerDataListener:self];
     [[TogaytherService userService] registerListener:self];
@@ -595,17 +614,6 @@ typedef enum {
 
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch(section) {
-        case kPMLSectionTopPlaces:
-            return NSLocalizedString(@"snippet.header.topPlaces", @"Popular places");
-            break;
-        case kPMLSectionActivity:
-            return NSLocalizedString(@"snippet.header.activities", @"Recent activity");
-            break;
-    }
-    return nil;
-}
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     switch(section) {
         case kPMLSectionOvEvents:
@@ -623,7 +631,12 @@ typedef enum {
         case kPMLSectionOvSummary:
             [_sectionSummaryTitleView setTitleLocalized:@"snippet.title.summary"];
             return _sectionSummaryTitleView;
-
+        case kPMLSectionTopPlaces:
+            [_sectionTopPlacesTitleView setTitleLocalized:@"snippet.header.topPlaces"];
+            return _sectionTopPlacesTitleView;
+        case kPMLSectionActivity:
+            [_sectionActivityTitleView setTitleLocalized:@"snippet.header.activities"];
+            return _sectionActivityTitleView;
 
     }
     if(section != kPMLSectionOvDesc) {
@@ -655,9 +668,10 @@ typedef enum {
         }
     } else {
         switch(section) {
-            case kPMLSectionTopPlaces:
             case kPMLSectionActivity:
-                return 20;
+                return kPMLHeightActivityHeader;
+            case kPMLSectionTopPlaces:
+                return kPMLHeightTopPlacesHeader;
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
                     if([_infoProvider eventsSectionTitle]!=nil) {
@@ -670,6 +684,7 @@ typedef enum {
     return [super tableView:tableView heightForHeaderInSection:section];
 }
 
+
 -(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     switch(section) {
         case kPMLSectionOvDesc:
@@ -677,14 +692,6 @@ typedef enum {
             for(UIView *childView in view.subviews) {
                 childView.backgroundColor = UIColorFromRGB(0x272a2e);
             }
-            break;
-        case kPMLSectionActivity:
-        case kPMLSectionTopPlaces: {
-            UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
-            headerView.textLabel.textColor = [UIColor whiteColor];
-            headerView.textLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:15];
-            //                headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
-        }
             break;
     }
 }
@@ -1257,8 +1264,7 @@ typedef enum {
     cell.activityTitleLabel.text = place.title;
     
     // Subtitle (like count)
-    NSString *likeTemplate = NSLocalizedString(@"snippet.likes",@"snippet.likes");
-    cell.activitySubtitleLabel.text = [NSString stringWithFormat:likeTemplate,place.likeCount];
+    cell.activitySubtitleLabel.text = [_uiService localizedString:@"counters.likes" forCount:place.likeCount];
     CGSize size = [cell.activitySubtitleLabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
     cell.widthSubtitleLabelConstraint.constant = size.width;
     
@@ -1431,13 +1437,14 @@ typedef enum {
 -(void)pushSnippetFor:(CALObject*)item {
     PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)[TogaytherService.uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
     childSnippet.snippetItem = item;
+    [childSnippet setParentMenuController:self.parentMenuController];
 
-    if(self.subNavigationController != nil) {
-        [self.subNavigationController pushViewController:childSnippet animated:YES];
-        [self.parentMenuController openCurrentSnippet];
-    } else {
+//    if(self.subNavigationController != nil) {
+//        [self.subNavigationController pushViewController:childSnippet animated:YES];
+//        [self.parentMenuController openCurrentSnippet];
+//    } else {
         [self.navigationController pushViewController:childSnippet animated:YES];
-    }
+//    }
 }
 -(void)addEventTapped {
     PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
@@ -1617,13 +1624,16 @@ typedef enum {
             [self.tableView setContentOffset:CGPointMake(0, 0)];
             [self.parentMenuController minimizeCurrentSnippet];
             [self.tableView reloadData];
+            [self installNavBarCommitCancel];
+        } else if(!_snippetItem.editing && !_snippetItem.editingDesc && self.navigationItem.leftBarButtonItem!=self.navigationItem.backBarButtonItem) {
+            [self uninstallNavBarCommitCancel];
         }
-//        [self updateTitleEdition];
         // If place is already created we show the keyboard, otherwise it stays hidden
         if(_snippetItem.key != nil && _snippetItem.editing) {
             [_snippetCell.titleTextField becomeFirstResponder];
         }
 
+        
     } else if([keyPath isEqualToString:@"mainImage"]) {
         if(_opened) {
             [_galleryCell.galleryView reloadData];
@@ -1636,10 +1646,7 @@ typedef enum {
 }
 #pragma mark - Dragging control & scroll view
 - (void)tableViewPanned:(UIPanGestureRecognizer*)recognizer {
-    NSArray *childControllers = self.navigationController.childViewControllers;
-    if(childControllers.count>1 && !(childControllers.count==2 && [[childControllers objectAtIndex:0] isKindOfClass:[PMLFakeViewController class]])) {
-        return;
-    }
+
     switch(recognizer.state) {
         case UIGestureRecognizerStateBegan:
             if (abs(self.tableView.contentOffset.y) < kPMLHeightSnippet) {
@@ -1665,9 +1672,12 @@ typedef enum {
                 if(_dragStartPoint.x == MAXFLOAT) {
 
                     BOOL snippetOpened = self.parentMenuController.snippetFullyOpened;
-                    if((delta>0 && !snippetOpened) || (delta < 0 && snippetOpened)) {
+                    if(delta>0 && !snippetOpened) {
+//                        [self.parentMenuController dismissControllerSnippet];
+//                        return;
+                    } else if(delta < 0 && snippetOpened) {
                         _parentDragging = NO;
-                        [self.parentMenuController dragSnippet:_dragStartPoint velocity:CGPointMake(0, 0) state:UIGestureRecognizerStateEnded];
+//                        [self.parentMenuController dragSnippet:_dragStartPoint velocity:CGPointMake(0, 0) state:UIGestureRecognizerStateEnded];
                     }
                     _dragStartPoint.x=0;
                     
@@ -1709,9 +1719,13 @@ typedef enum {
     // Showing edit button if scrolled beyond gallery OR if already at the bottom of the screen
     if(_editVisible == PMLVisibityStateInvisible && (self.tableView.contentOffset.y >kPMLHeightGallery || bottom) && _opened) {
         _editVisible = PMLVisibityStateTransitioning;
+        if(self.navigationItem.rightBarButtonItem==nil) {
+            [self installNavBarEdit];
+        }
         NSLog(@"VISIBLE anim");
         [UIView animateWithDuration:0.3 animations:^{
-            self.parentMenuController.navigationController.navigationBar.alpha=1;
+//            self.parentMenuController.navigationController.navigationBar.alpha=1;
+            self.navigationItem.rightBarButtonItem.customView.alpha=1;
         } completion:^(BOOL finished) {
             _editVisible = PMLVisibityStateVisible;
         }];
@@ -1719,7 +1733,7 @@ typedef enum {
         _editVisible = PMLVisibityStateTransitioning;
         NSLog(@"INVISIBLE anim");
         [UIView animateWithDuration:0.3 animations:^{
-            self.parentMenuController.navigationController.navigationBar.alpha=0;
+            self.navigationItem.rightBarButtonItem.customView.alpha=0;
         } completion:^(BOOL finished) {
             _editVisible = PMLVisibityStateInvisible;
         }];
@@ -1739,7 +1753,62 @@ typedef enum {
     [self adjustEditVisibility];
 
 }
+#pragma mark - NavBar management
+- (void)installNavBarEdit {
 
+    if(_actionManager.currentEditor.editing) {
+        [self installNavBarCommitCancel];
+    } else {
+        // Info provider informs us whether edit is supported or not by providing the actual edit implementation
+        if([_infoProvider respondsToSelector:@selector(editActionType)]) {
+            UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
+//            _navbarEdit = YES;
+            self.navigationItem.rightBarButtonItem = barItem;
+            barItem.customView.alpha=0;
+        } else {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+    }
+}
+-(void) installNavBarCommitCancel {
+    UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarActionTapped:)];
+    self.navigationItem.rightBarButtonItem = commitItem;
+    UIBarButtonItem *cancelItem = [self barButtonItemFromAction:PMLActionTypeCancel selector:@selector(navbarActionTapped:)];
+    self.navigationItem.leftBarButtonItem = cancelItem;
+    self.navigationController.navigationBar.alpha=1;
+}
+-(void)uninstallNavBarCommitCancel {
+//    if(_navbarEdit) {
+        self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;;
+    [self installNavBarEdit];
+//        self.navigationItem.rightBarButtonItem = nil;
+        //        [self installNavBarEdit:_menuManagerController];
+//    }
+}
+-(UIBarButtonItem*)barButtonItemFromAction:(PMLActionType)actionType selector:(SEL)selector {
+    PopupAction *action = [_actionManager actionForType:actionType];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+    button.layer.masksToBounds = YES;
+    button.layer.borderWidth=1;
+    button.layer.borderColor = [action.color CGColor];
+    button.layer.cornerRadius = 15;
+    button.alpha=1;
+    [button setImage:action.icon forState:UIControlStateNormal];
+    [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
+    button.tag = actionType;
+    UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    
+    return barItem;
+}
+- (void)uninstallNavBarEdit {
+    UINavigationItem *navItem = self.navigationItem;
+    navItem.rightBarButtonItem = nil;
+    navItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
+}
+-(void)navbarActionTapped:(UIButton*)source {
+    PopupAction *action = [_actionManager actionForType:(PMLActionType)source.tag];
+    action.actionCommand();
+}
 #pragma  mark - PMLSnippetDelegate
 - (void)menuManager:(PMLMenuManagerController *)menuManager snippetOpened:(BOOL)animated {
     _opened = YES;
@@ -1749,8 +1818,11 @@ typedef enum {
     _hasGallery = YES;
     if(shouldAddGallery) {
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationMiddle];
-        // Setting edit button to appear / disappear
-        [self adjustEditVisibility];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        if(animated) {
+            // Setting edit button to appear / disappear
+            [self adjustEditVisibility];
+        }
     }
 }
 -(void)snippetCell:(PMLSnippetTableViewCell*)cell setOptionalVisibility:(float)alpha {
@@ -1769,6 +1841,11 @@ typedef enum {
         [self snippetCell:cell setOptionalVisibility:1];
     }
     
+    // Hiding NAV BAR
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    if(animated) {
+        self.navigationItem.rightBarButtonItem=nil;
+    }
     // Gallery management
     BOOL shouldRemoveGallery = _hasGallery && _snippetItem!=nil;
     _hasGallery = NO;
@@ -1782,9 +1859,5 @@ typedef enum {
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;
 }
-#pragma mark - PMLSubNavigationDelegate
-- (UIView *)subNavigationBackButtonContainer {
-    PMLSnippetTableViewCell *cell = (PMLSnippetTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
-    return cell.backContainer;
-}
+
 @end

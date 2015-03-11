@@ -188,6 +188,10 @@
         }
         _datePickerIndexPath = [NSIndexPath indexPathForRow:pickerRow inSection:indexPath.section];
 
+        // Resigning any keyboard
+        PMLTextFieldTableViewCell *cell = (PMLTextFieldTableViewCell*)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowName inSection:kPMLSectionGeneral]];
+        [cell.textField resignFirstResponder];
+        
         // Inserting picker
         // Deleting any previous picker
         [self.tableView beginUpdates];

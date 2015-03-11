@@ -160,11 +160,11 @@
     return [_uiService colorForObject:_user];
 }
 - (NSArray *)addressComponents {
-    if(_user.lastLocation != nil) {
-        NSString *delayLabel = [_uiService delayStringFrom:_user.lastLocationDate];
-        
-        return @[delayLabel];
-    }
+//    if(_user.lastLocation != nil) {
+//        NSString *delayLabel = [_uiService delayStringFrom:_user.lastLocationDate];
+//        
+//        return @[delayLabel];
+//    }
     return @[];
 }
 - (NSString*)addressLine2 {
@@ -174,56 +174,7 @@
 - (void)snippetRightActionTapped:(UIViewController *)controller {
     
 }
-//- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
-//    // Saving snippet controller for later
-//    _snippetController = (PMLSnippetTableViewController*)controller;
-//    if(_countersView.superview != parentView) {
-//        if(_countersView.superview) {
-//            [_countersView removeFromSuperview];
-//        }
-//        CGRect frame = parentView.bounds;
-//        _countersView.frame = CGRectMake(frame.origin.x,frame.origin.y,frame.size.width-15,frame.size.height);
-//        [parentView addSubview:_countersView];
-//    }
-//    _countersView.backgroundColor=[UIColor clearColor];
-//    _countersView.likeCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_user.likeCount];
-//    _countersView.likeTitleLabel.text = [_uiService localizedString:@"counters.likes" forCount:_user.likeCount];
-//    _countersView.checkinCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_user.checkedInPlacesCount];
-//    _countersView.checkinTitleLabel.text = [_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
-//    _countersView.commentsCounterLabel.text = [NSString stringWithFormat:@"%d",0];
-//    _countersView.commentsTitleLabel.text = [_uiService localizedString:@"counters.chat" forCount:0];
-//    [_countersView.likeContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(likeTapped)]];
-//    if(_user.isLiked) {
-//        _countersView.likeIcon.image = [UIImage ipMaskedImageNamed:@"ovvIconLike" color:UIColorFromRGB(0x039be5)];
-//        _countersView.likeTitleLabel.textColor =UIColorFromRGB(0x039be5);
-//    } else {
-//        _countersView.likeIcon.image = [UIImage imageNamed:@"ovvIconLike"];
-//        _countersView.likeTitleLabel.textColor =[UIColor whiteColor];
-//    }
-//    
-//}
-//- (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
-//    // Saving snippet controller for later
-//    _snippetController = (PMLSnippetTableViewController*)controller;
-//    
-//    // Configuring custom view
-//    if(_actionsView == nil) {
-//        // Loading profile header view
-//        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLUserActionsView" owner:self options:nil];
-//        _actionsView = (PMLUserActionsView*)[views objectAtIndex:0];
-//        [parentView addSubview:_actionsView];
-//        [_actionsView.chatButton addTarget:self action:@selector(chatButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//        [_actionsView.likeButton addTarget:self action:@selector(likeButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//        // Right aligning view
-//        CGRect parentBounds = parentView.bounds;
-//        CGRect actionsFrame = _actionsView.frame;
-//        _actionsView.frame = CGRectMake(parentBounds.size.width-actionsFrame.size.width, actionsFrame.origin.y, actionsFrame.size.width, actionsFrame.size.height);
-//    } else if(_actionsView.superview != parentView) {
-//        [_actionsView removeFromSuperview];
-//        [parentView addSubview:_actionsView];
-//    }
-//    [self refreshLikeButton];
-//}
+
 
 -(void)chatButtonTapped:(id)sender {
     MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];

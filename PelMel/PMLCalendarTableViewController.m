@@ -51,7 +51,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [TogaytherService applyCommonLookAndFeel:self];
+//    [TogaytherService applyCommonLookAndFeel:self];
+//    [self.navigationController setNavigationBarHidden:NO ];
     self.view.backgroundColor =UIColorFromRGB(0x272a2e);
     self.tableView.backgroundColor =  UIColorFromRGB(0x272a2e);
     self.tableView.separatorColor = [UIColor clearColor];
