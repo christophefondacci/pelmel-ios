@@ -137,4 +137,5 @@
  * @param count the count that will be injected in the template
  */
 -(NSString*)localizedString:(NSString*)translateKey forCount:(NSInteger)count;
+-(NSString*)nameForSpecial:(Special*)special;
 @end

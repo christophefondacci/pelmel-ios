@@ -303,8 +303,24 @@
     }
 }
 - (NSArray *)events {
-    return _place.events;
+    NSMutableArray *allEvents = [_place.events mutableCopy];
+    for(Special *special in _place.specials) {
+        if(![special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
+            Event *event = [[Event alloc] initWithPlace:_place];
+            event.startDate = special.nextStart;
+            event.endDate = special.nextEnd;
+            event.name = [_uiService nameForSpecial:special];
+            [allEvents addObject:event];
+        }
+    }
+    [allEvents sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Event *e1 = (Event*)obj1;
+        Event *e2 = (Event*)obj2;
+        return [e1.startDate compare:e2.startDate];
+    }];
+    return allEvents;
 }
+
 - (NSString *)eventsSectionTitle {
     return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
 }

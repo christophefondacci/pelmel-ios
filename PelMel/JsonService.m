@@ -271,14 +271,17 @@
     // Like flag
     place.isLiked = [jsonLiked boolValue];
     
+    NSMutableArray *events = [[NSMutableArray alloc] init];
+    
     // Processing upcoming events
     for(NSDictionary *jsonEvent in jsonEvents) {
         Event *event = [self convertJsonEventToEvent:jsonEvent defaultEvent:nil];
         
         // Adding event to place
-        [place.events addObject:event];
-
+        [events addObject:event];
     }
+
+    place.events = events;
     
     // Processing hours
     NSMutableArray *hours = [[NSMutableArray alloc] init];

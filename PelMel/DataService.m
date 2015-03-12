@@ -277,11 +277,23 @@
     NSArray *jsonPlaces = [json objectForKey:@"places"];
     NSMutableArray *docs = [[NSMutableArray alloc] initWithCapacity:[jsonPlaces count]];
     
+    NSMutableArray *happyHoursEvents = [[NSMutableArray alloc] init];
     // Preparing the no image thumb (default for every place at first)
     for(NSDictionary *jsonPlace in jsonPlaces) {
         Place *place = [jsonService convertFullJsonPlaceToPlace:jsonPlace];
         // Appending to the document list
         [docs addObject:place];
+
+        // Building specials as events
+        for(Special *special in place.specials) {
+            if(![special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
+                Event *event = [[Event alloc] initWithPlace:place];
+                event.startDate = special.nextStart;
+                event.endDate = special.nextEnd;
+                event.name = [[TogaytherService uiService] nameForSpecial:special];
+                [happyHoursEvents addObject:event];
+            }
+        }
     }
     
     NSArray *jsonCities = [json objectForKey:@"cities"];
@@ -301,8 +313,12 @@
     
     // Parsing events
     NSArray *jsonEvents = [json objectForKey:@"nearbyEvents"];
-    NSArray *events = [jsonService convertJsonEventsToEvents:jsonEvents];
-    
+    NSMutableArray *events = [[[jsonService convertJsonEventsToEvents:jsonEvents] arrayByAddingObjectsFromArray:happyHoursEvents] mutableCopy];
+    [events sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Event *e1 = (Event*)obj1;
+        Event *e2 = (Event*)obj2;
+        return [e1.startDate compare:e2.startDate];
+    }];
     // Parsing localized city
     NSDictionary *jsonCity = [json objectForKey:@"localizedCity"];
     City *localizedCity = nil;

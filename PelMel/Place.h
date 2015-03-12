@@ -19,8 +19,8 @@
 @property (nonatomic) double rawDistance;
 @property (strong) NSString *placeType;
 @property (nonatomic) NSInteger inUserCount; // Number of users currently in this place
-@property (readonly) NSMutableArray *inUsers;
-@property (readonly) NSMutableArray *events;
+@property (strong,nonatomic) NSMutableArray *inUsers;
+@property (strong,nonatomic) NSMutableArray *events;
 @property (strong,nonatomic) NSArray *specials;
 @property (nonatomic) int closedReportsCount;
 @property (strong,nonatomic) NSMutableArray *hours;

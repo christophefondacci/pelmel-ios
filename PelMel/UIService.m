@@ -385,4 +385,14 @@
     // Bluring
     return [image applyBlurWithRadius:5 tintColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2] saturationDeltaFactor:1.0 maskImage:nil];
 }
+
+#pragma mark - Naming
+-(NSString*)nameForSpecial:(Special*)special {
+    if(special.name && special.name.length>3) {
+        return special.name;
+    } else {
+        NSString *template = [NSString stringWithFormat:@"special.label.%@",special.type];
+        return NSLocalizedString(template,template);
+    }
+}
 @end
