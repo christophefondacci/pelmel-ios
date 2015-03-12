@@ -9,6 +9,7 @@
 #import "FiltersViewController.h"
 #import "TogaytherService.h"
 #import "UITablePlaceTypeViewCell.h"
+#import "PMLSectionTitleView.h"
 
 #define kSectionsCount 2
 #define kSectionHours 0
@@ -30,6 +31,8 @@
     NSArray *placeTypes;
     
     SettingsService *settingsService;
+    
+    PMLSectionTitleView *_sectionTitleTypeHeaderView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -64,7 +67,8 @@
     [self.navigationController.navigationBar setTitleTextAttributes: @{
                                                                        NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
                                                                        NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    
+    // Preloading headers
+    _sectionTitleTypeHeaderView = [[TogaytherService uiService] loadView:@"PMLSectionTitleView"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -115,14 +119,15 @@
 }
 
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     switch(section) {
         case kSectionPlaceType:
-            return NSLocalizedString(@"filters.placeType.header",@"filters.placeType.header");
+            _sectionTitleTypeHeaderView.titleLabel.text = NSLocalizedString(@"filters.placeType.header",@"filters.placeType.header");
+            return _sectionTitleTypeHeaderView;
     }
     return nil;
 }
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
         case kSectionHours:
@@ -165,10 +170,12 @@
 
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
-    headerView.textLabel.textColor = [UIColor whiteColor];
-    headerView.textLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:15];
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    switch(section) {
+        case kSectionPlaceType:
+            return _sectionTitleTypeHeaderView.frame.size.height;
+    }
+    return 0;
 }
 /*
  // Override to support conditional editing of the table view.

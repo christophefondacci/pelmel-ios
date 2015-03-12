@@ -545,7 +545,7 @@ static void *MyParentMenuControllerKey;
 - (void)filtersTapped:(UITapGestureRecognizer*)sender {
     
     FiltersViewController *filtersController = (FiltersViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_MENU];
-    CGPoint topRight = CGPointMake(self.view.bounds.size.width-5, 5);
+    CGPoint topRight = CGPointMake(self.view.bounds.size.width-5, 5+self.navigationController.navigationBar.frame.size.height+20);
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:filtersController];
     [self presentControllerMenu:navController from:topRight withHeightPct:0.7];
 }
@@ -658,7 +658,9 @@ static void *MyParentMenuControllerKey;
     }
 }
 - (void)menuPanned:(UITapGestureRecognizer*)gestureRecognizer {
-    [self dismissControllerMenu:YES];
+    if(gestureRecognizer.state == UIGestureRecognizerStateEnded) {
+        [self dismissControllerMenu:YES];
+    }
 }
 
 #pragma mark - UINavigationDelegate
