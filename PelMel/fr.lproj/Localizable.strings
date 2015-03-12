@@ -85,8 +85,8 @@
 "edit.title"="Entrez un nom";
 "events.title"="Evènements";
 "events.addButton"="Créer et promouvoir un évènement";
-"filters.hours.events"="Avec Evènement";
-"filters.hours.happy"="Happy hours maintenant";
+"filters.hours.events"="Evènements";
+"filters.hours.happy"="Happy hour maintenant";
 "filters.hours.open"="Ouvert maintenant";
 "filters.placeType.header"="Types de lieu";
 "filters.title"="Filtres";
@@ -138,6 +138,8 @@
 "menu.filters.title"="Filtres";
 "menu.main.title"="Menu";
 "menu.settings.title"="Paramètres";
+"menu.section.network"="Mon Réseau";
+"menu.section.settings"="Mes Paramètres";
 "messages.wait"="Chargement...";
 "message.action.send"="Envoyer";
 "message.place.dummyMessage"="Racontez à la communauté PELMEL ce que vous pensez de %@, pourquoi vous aimez ce lieu, quand recommanderiez vous d'y aller, avez-vous eu du plaisir ? L'entrée était-elle payante ? Quel type de clientèle ? Vous y retourneriez ?";
@@ -285,6 +287,7 @@
 "thumbView.section.like"="Ils aiment";
 "thumbView.section.like.singular"="Il aime";
 "thumbView.section.checkin"="Ils étaient là";
+"thumbView.section.location"="Lieu";
 "thumbView.section.checkin.singular"="Il était là";
 "thumbView.section.user.checkin"="Il est allé";
 "thumbView.section.user.likeUser"="Son réseau";

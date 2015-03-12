@@ -263,29 +263,14 @@
 -(UIView*)addProgressTo:(UINavigationController *)controller {
     // Do any additional setup after loading the view.
     _progressView = controller.view;
-
-//    _progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
-//
-//    UINavigationBar *navBar = [controller navigationBar];
-//    [navBar layoutIfNeeded];
-//    [controller.view addSubview:_progressView];
-//    
-//    NSLayoutConstraint *constraint;
-//    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeBottom multiplier:1 constant:-0.5];
-//    [controller.view addConstraint:constraint];
-//    
-//    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
-//    [controller.view addConstraint:constraint];
-//    
-//    constraint = [NSLayoutConstraint constraintWithItem:_progressView attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:navBar attribute:NSLayoutAttributeRight multiplier:1 constant:0];
-//    [controller.view addConstraint:constraint];
-//    
-//    [_progressView setTranslatesAutoresizingMaskIntoConstraints:NO];
-//    _progressView.hidden = YES;
-    return _progressView;
+    return nil;
 }
 -(void)setProgressView:(UIView *)progressView {
-    _progressView = progressView;
+    if(progressView == nil) {
+        _progressView = _menuManagerController.view;
+    } else {
+        _progressView = progressView;
+    }
 }
 - (void)reportProgress:(float)progress {
     if(_progressHUD == nil) {
@@ -296,7 +281,6 @@
     if(progress >= 1.0f) {
         [self progressDone];
     }
-//    [_progressView setProgress:progress];
 }
 -(void)progressDone {
     if(_progressHUD != nil) {
@@ -333,6 +317,7 @@
         } else {
             if(_menuManagerController.currentSnippetViewController != nil) {
                 [(UINavigationController*)_menuManagerController.currentSnippetViewController pushViewController:snippetController animated:YES];
+                [_menuManagerController dismissControllerMenu:YES];
             } else {
                 [_menuManagerController presentControllerSnippet:snippetController];
             }

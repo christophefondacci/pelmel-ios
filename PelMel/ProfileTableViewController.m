@@ -24,6 +24,7 @@
 #import "PhotoPreviewViewController.h"
 #import "PMLPickerTableViewCell.h"
 #import "PMLPickerProvider.h"
+#import "UIPelmelTitleView.h"
 
 #define kSectionCount 5
 #define kSectionBirthday 0
@@ -69,6 +70,10 @@
     
     ProfileHeaderView *profileHeaderView;
     DescriptionHeaderView *descriptionHeaderView;
+    UIPelmelTitleView *_sectionProfileHeaderView;
+    UIPelmelTitleView *_sectionDescriptionHeaderView;
+    UIPelmelTitleView *_sectionPhotosHeaderView;
+    UIPelmelTitleView *_sectionTagsHeaderView;
     
     // Progress
     UIView *_progressView;
@@ -142,8 +147,11 @@
     }
 
     // Loading profile header view
-    NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ProfileHeader" owner:self options:nil];
-    profileHeaderView = [views objectAtIndex:0];
+    profileHeaderView = (ProfileHeaderView*)[_uiService loadView:@"ProfileHeader"];
+    _sectionProfileHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
+    _sectionDescriptionHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
+    _sectionPhotosHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
+    _sectionTagsHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
     
     // Height management
     _descPathMap = [[NSMutableDictionary alloc] init];
@@ -163,12 +171,13 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     NSLog(@"Will appear");
+    [TogaytherService applyCommonLookAndFeel:self];
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     if(_progressView == nil) {
         // Progress view
         _progressView = [_uiService addProgressTo:self.navigationController];
     } else {
-        [_progressView removeFromSuperview];
+//        [_progressView removeFromSuperview];
         _progressView = [_uiService addProgressTo:self.navigationController];
         [_uiService setProgressView:_progressView];
     }
@@ -529,45 +538,22 @@
             [profileHeaderView.editButton addTarget:self action:@selector(editNicknameTapped:) forControlEvents:UIControlEventTouchUpInside];
             return profileHeaderView;
         }
-//        case 2: {
-//            return descriptionHeaderView;
-//        }
+        case kSectionMeasure:
+            _sectionProfileHeaderView.titleLabel.text =NSLocalizedString(@"settings.account.cell", @"settings.account.cell");
+            return _sectionProfileHeaderView;
+        case kSectionDescriptions:
+            _sectionDescriptionHeaderView.titleLabel.text = NSLocalizedString(@"profile.description", @"profile.description");
+            return _sectionDescriptionHeaderView;
+        case kSectionPhotos:
+            _sectionPhotosHeaderView.titleLabel.text = NSLocalizedString(@"profile.photo.header", "Title of the tags section in profile page");
+            return _sectionPhotosHeaderView;
+        case kSectionTags:
+            _sectionTagsHeaderView.titleLabel.text = NSLocalizedString(@"profile.tags.title", "Title of the tags section in profile page");
+            return _sectionTagsHeaderView;
     }
     return [super tableView:tableView viewForHeaderInSection:section];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch(section) {
-        case kSectionMeasure:
-            return NSLocalizedString(@"settings.account.cell", @"settings.account.cell");
-        case kSectionDescriptions:
-            return NSLocalizedString(@"profile.description", @"profile.description");
-        case 3:
-            return NSLocalizedString(@"profile.photo.header", "Title of the tags section in profile page");
-        case 4:
-            return NSLocalizedString(@"profile.tags.title", "Title of the tags section in profile page");
-    }
-    return [super tableView:tableView titleForHeaderInSection:section];
-}
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
-    switch (section) {
-        case kSectionMeasure:
-        case kSectionDescriptions:
-        case kSectionPhotos:
-        case kSectionTags: {
-            UITableViewHeaderFooterView *headerView = (UITableViewHeaderFooterView*)view;
-            headerView.textLabel.textColor = [UIColor whiteColor];
-            headerView.textLabel.font = [UIFont fontWithDescriptor:[UIFontDescriptor fontDescriptorWithFontAttributes:@{@"NSCTFontUIUsageAttribute" : UIFontTextStyleBody,
-                                                                                                                        @"NSFontNameAttribute" : PML_FONT_DEFAULT}] size:17.0];
-//            [UIFont fontWithName:PML_FONT_DEFAULT size:15];
-            headerView.backgroundView.backgroundColor = UIColorFromRGB(0x2d2f31);
-            break;
-        }
-        default:
-            break;
-    }
-
-}
 -(BOOL)hasDescriptionFor:(NSString*)language {
     CurrentUser *user = [userService getCurrentUser];
     BOOL hasLang = NO;
@@ -583,18 +569,11 @@
     switch(section) {
         case 0:
             return profileHeaderView.bounds.size.height;
-
-//        case kSectionDescriptions:
-//            return 40;
-//        case kSectionPhotos:
-//            return 40;
-//        case kSectionTags:
-//            return 40;
         case kSectionMeasure:
         case kSectionDescriptions:
         case kSectionPhotos:
         case kSectionTags:
-            return 30;
+            return _sectionProfileHeaderView.bounds.size.height;
         default:
             return [super tableView:tableView heightForHeaderInSection:section];
     }

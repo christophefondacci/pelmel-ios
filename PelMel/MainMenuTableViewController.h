@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ImageService.h"
 
-@interface MainMenuTableViewController : UITableViewController <UIGestureRecognizerDelegate>
+@interface MainMenuTableViewController : UITableViewController <UIGestureRecognizerDelegate,PMLImagePickerCallback, PMLImageUploadCallback>
 
 @end

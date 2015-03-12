@@ -1799,10 +1799,15 @@ typedef enum {
     } else {
         // Info provider informs us whether edit is supported or not by providing the actual edit implementation
         if([_infoProvider respondsToSelector:@selector(editActionType)]) {
-            UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
+            PMLActionType editType = [_infoProvider editActionType];
+            if(editType!=PMLActionTypeNoAction) {
+                UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
 //            _navbarEdit = YES;
-            self.navigationItem.rightBarButtonItem = barItem;
-            barItem.customView.alpha=0;
+                self.navigationItem.rightBarButtonItem = barItem;
+                barItem.customView.alpha=0;
+            } else {
+                self.navigationItem.rightBarButtonItem=nil;
+            }
         } else {
             self.navigationItem.rightBarButtonItem = nil;
         }

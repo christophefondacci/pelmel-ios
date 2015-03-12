@@ -87,9 +87,9 @@
 "events.addButton"="Create and promote an event";
 "events.new.placeholder"="Event Name";
 "events.title"="Events";
-"filters.hours.events"="With events";
-"filters.hours.happy"="Happy hours now";
-"filters.hours.open"="Opened now";
+"filters.hours.events"="Events";
+"filters.hours.happy"="Happy hour now";
+"filters.hours.open"="Open now";
 "filters.placeType.header"="Place types";
 "filters.title"="Filters";
 "filters.warning"="Filters may hide some results";
@@ -140,6 +140,8 @@
 "map.title"="Map";
 "menu.filters.title"="Filters";
 "menu.main.title"="Menu";
+"menu.section.network"="My Network";
+"menu.section.settings"="My Settings";
 "menu.settings.title"="Settings";
 "messages.wait"="Loading...";
 "message.action.send"="Send";
@@ -295,6 +297,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "thumbView.section.like.singular"="He Likes";
 "thumbView.section.checkin"="They Went";
 "thumbView.section.checkin.singular"="He Went";
+"thumbView.section.location"="Venue";
 "thumbView.section.user.checkin"="He's been";
 "thumbView.section.user.likeUser"="His network";
 "thumbView.section.user.like"="He Likes";

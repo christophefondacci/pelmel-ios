@@ -10,6 +10,7 @@
 
 @interface Special : NSObject
 
+@property (strong,nonatomic) NSString *key;
 @property (strong,nonatomic) NSString *name;
 @property (strong,nonatomic) NSDate *nextStart;
 @property (strong,nonatomic) NSDate *nextEnd;

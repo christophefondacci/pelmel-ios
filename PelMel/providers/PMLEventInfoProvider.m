@@ -71,7 +71,8 @@
 
 // Provider of thumb displayed in the main snippet section
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:_event.likers forType:PMLThumbsUsersInEvent];
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:_event.likers forType:PMLThumbsLocation];
+    return provider;
 }
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
     switch(mode) {
@@ -142,7 +143,8 @@
 
 #pragma mark - Actions
 - (PMLActionType)editActionType {
-    return PMLActionTypeEditEvent;
+
+    return _event.key!=nil ? PMLActionTypeEditEvent : PMLActionTypeNoAction;
 }
 - (PMLActionType)primaryActionType {
     if([_event isLiked]) {

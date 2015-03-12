@@ -581,7 +581,7 @@ static void *MyParentMenuControllerKey;
             // Then we open full page
             [self setSnippetFullyOpened:YES];
             offset = [self offsetForOpenedSnippet];
-        } else if(bottomFrame.origin.y > self.view.bounds.size.height-kSnippetHeight) {
+        } else if(bottomFrame.origin.y > self.view.bounds.size.height-(kSnippetHeight/2)) {
 //            [self setSnippetFullyOpened:NO];
 //            offset=self.view.bounds.size.height-kSnippetHeight+_gripView.frame.size.height;
             [self dismissControllerSnippet];

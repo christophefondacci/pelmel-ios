@@ -116,6 +116,7 @@
     NSMutableArray *placeSpecials = [[NSMutableArray alloc] initWithCapacity:specials.count];
     for(NSDictionary *jsonSpecial in specials) {
         // Extracting from JSON
+        NSString *key       = [jsonSpecial objectForKey:@"key"];
         NSString *name      = [jsonSpecial objectForKey:@"name"];
         NSString *desc      = [jsonSpecial objectForKey:@"description"];
         NSNumber *nextStart = [jsonSpecial objectForKey:@"nextStart"];

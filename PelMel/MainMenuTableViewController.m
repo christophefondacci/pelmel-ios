@@ -13,20 +13,24 @@
 #import "PMLSnippetLikesTableViewController.h"
 #import "PMLMenuManagerController.h"
 #import "ProfileHeaderView.h"
+#import "UIPelmelTitleView.h"
 
-#define kSectionsCount 1
+#define kSectionsCount 3
 
-#define kSectionSettings 0
-#define kSectionPlaceType 1
+#define kSectionHeading 0
+#define kSectionNetwork 1
+#define kSectionSettings 2
 
-#define kRowCountSettings 6
+#define kRowCountNetwork 3
+#define kRowSettingMessages 0
+#define kRowSettingLikes 1
+#define kRowSettingLikers 2
 
+#define kRowCountSettings 3
 #define kRowSettingProfile 0
-#define kRowSettingMessages 1
-#define kRowSettingSettings 2
-#define kRowSettingLikes 3
-#define kRowSettingLikers 4
-#define kRowSettingDisconnect 5
+#define kRowSettingSettings 1
+
+#define kRowSettingDisconnect 2
 
 #define kCellIdPlaceType @"placeTypeCell"
 #define kCellIdProfile @"profileTableCell"
@@ -46,7 +50,11 @@
     ImageService *_imageService;
     
     PMLLikeStatistic *_likeStat;
+    
+    // Header views
     ProfileHeaderView *_profileHeaderView;
+    UIPelmelTitleView *_sectionNetworkHeaderView;
+    UIPelmelTitleView *_sectionSettingsHeaderView;
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -72,7 +80,8 @@
     
     // Preparing header view
     _profileHeaderView = (ProfileHeaderView*)[_uiService loadView:@"ProfileHeader"];
-    
+    _sectionNetworkHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
+    _sectionSettingsHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
     placeTypes = [_settingsService listPlaceTypes];
 
     // Setting title
@@ -120,8 +129,8 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch(section) {
-        case kSectionPlaceType:
-            return placeTypes.count;
+        case kSectionNetwork:
+            return kRowCountNetwork;
         case kSectionSettings:
             return kRowCountSettings;
     }
@@ -130,62 +139,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *CellIdentifier;
-    switch(indexPath.section) {
-        case kSectionPlaceType:
-            CellIdentifier = kCellIdPlaceType;
-            break;
-        case kSectionSettings:
-            switch(indexPath.row) {
-                case kRowSettingProfile:
-                    CellIdentifier = kCellIdProfile;
-                    break;
-                case kRowSettingSettings:
-                    CellIdentifier = kCellIdHD;
-                    break;
-                case kRowSettingMessages:
-                case kRowSettingLikes:
-                case kRowSettingLikers:
-                case kRowSettingDisconnect:
-                    CellIdentifier = kCellIdHD;
-
-                    
-            }
-            break;
-    }
+    NSString *CellIdentifier = kCellIdHD;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITablePlaceTypeViewCell *placeTypeCell = (UITablePlaceTypeViewCell*)cell;
     cell.backgroundColor = UIColorFromRGB(0x272a2e);
-//    cell.contentView.translatesAutoresizingMaskIntoConstraints = NO;
+
     switch(indexPath.section) {
-//        case kSectionPlaceType: {
-//            
-//            // Getting place type to display
-//            PlaceType *placeType = [placeTypes objectAtIndex:indexPath.row];
-//            
-//            // Getting current table cell
-//            UITablePlaceTypeViewCell *placeTypeCell = (UITablePlaceTypeViewCell*)cell;
-//            
-//            // Getting color to display
-//            UIColor *placeTypeColor = [TogaytherService.uiService colorForObject:placeType];
-//            
-//            // Filling cell info
-//            placeTypeCell.colorView.backgroundColor = placeTypeColor;
-//            placeTypeCell.label.text = placeType.label;
-//            placeTypeCell.enablementSwitch.on = !placeType.filtered;
-//            placeTypeCell.enablementSwitch.tag=indexPath.row;
-//            [placeTypeCell.enablementSwitch addTarget:self action:@selector(switchedEnablement:) forControlEvents:UIControlEventTouchUpInside];
-//        }
-//            break;
-        case kSectionSettings: {
-            UITablePlaceTypeViewCell *placeTypeCell = (UITablePlaceTypeViewCell*)cell;
+        case kSectionNetwork:
             switch(indexPath.row) {
-                case kRowSettingSettings: {
-                    placeTypeCell.label.text = NSLocalizedString(@"settings.settings","Settings");
-                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconSettings"];
-                    placeTypeCell.badgeLabel.hidden=YES;
-                }
-                    break;
                 case kRowSettingMessages: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.messages","Messages");
                     placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconMessage"];
@@ -196,13 +157,6 @@
                     } else {
                         placeTypeCell.badgeLabel.hidden=YES;
                     }
-                }
-                    break;
-                case kRowSettingProfile: {
-                    placeTypeCell.label.text = NSLocalizedString(@"settings.account.cell", @"Edit my profile");
-                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconProfile"];
-                    placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
                 case kRowSettingLikes: {
@@ -219,6 +173,27 @@
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
+
+            }
+            break;
+        case kSectionSettings: {
+
+            switch(indexPath.row) {
+                case kRowSettingSettings: {
+                    placeTypeCell.label.text = NSLocalizedString(@"settings.settings","Settings");
+                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconSettings"];
+                    placeTypeCell.badgeLabel.hidden=YES;
+                }
+                    break;
+                case kRowSettingProfile: {
+                    placeTypeCell.label.text = NSLocalizedString(@"settings.account.cell", @"Edit my profile");
+                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconProfile"];
+                    placeTypeCell.badgeLabel.hidden=YES;
+                }
+                    break;
+
                 case kRowSettingDisconnect: {
                     placeTypeCell.label.text = NSLocalizedString(@"disconnect", @"disconnect");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryNone;
@@ -235,86 +210,83 @@
     
     return cell;
 }
-//
-//- (IBAction)switchedEnablement:(id)sender {
-//    UISwitch *s = (UISwitch *)sender;
-//    NSInteger index = [s tag];
-//    
-//    PlaceType *editedPlaceType  = [placeTypes objectAtIndex:index];
-//    [editedPlaceType setFiltered:![editedPlaceType filtered]];
-//    [settingsService storePlaceTypeFilter:editedPlaceType];
-//}
-
-//- (IBAction)switchedHD:(id)sender {
-//    UISwitch *s = (UISwitch*)sender;
-//    
-//    [TogaytherService setHDMode:s.on];
-//    s.on = [TogaytherService isRetina];
-//}
-
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if(section == 0) {
-        // Filling nickname and image of header view
-        CurrentUser *user = [_userService getCurrentUser];
-        [_profileHeaderView setNickname:user.pseudo parentWidth:self.tableView.frame.size.width];
-        _profileHeaderView.editButtonIcon.hidden=YES;
-        _profileHeaderView.profileImageView.image= nil;
-        if(user.mainImage) {
-            [_imageService load:user.mainImage to:_profileHeaderView.profileImageView thumb:YES];
+    switch(section) {
+        case kSectionHeading: {
+            // Filling nickname and image of header view
+            CurrentUser *user = [_userService getCurrentUser];
+            [_profileHeaderView setNickname:user.pseudo parentWidth:self.tableView.frame.size.width];
+            _profileHeaderView.editButtonIcon.hidden=YES;
+            _profileHeaderView.profileImageView.image= nil;
+            [[TogaytherService imageService] registerTappable:_profileHeaderView.profileImageView forViewController:self callback:self];
+            if(user.mainImage) {
+                [_imageService load:user.mainImage to:_profileHeaderView.profileImageView thumb:YES];
+            }
+            return _profileHeaderView;
         }
-        return _profileHeaderView;
+        case kSectionNetwork:
+            _sectionNetworkHeaderView.titleLabel.text = NSLocalizedString(@"menu.section.network",@"My network");
+            return _sectionNetworkHeaderView;
+        case kSectionSettings:
+            _sectionSettingsHeaderView.titleLabel.text = NSLocalizedString(@"menu.section.settings",@"My Settings");
+            return _sectionSettingsHeaderView;
+            
     }
     return nil;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if(section==0) {
-        return _profileHeaderView.bounds.size.height;
+    switch(section) {
+        case kSectionHeading:
+            return _profileHeaderView.bounds.size.height;
+        case kSectionNetwork:
+            return _sectionNetworkHeaderView.bounds.size.height;
+        case kSectionSettings:
+            return _sectionSettingsHeaderView.bounds.size.height;
     }
     return [super tableView:tableView heightForHeaderInSection:section];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    switch(section) {
-        case kSectionPlaceType:
-            return NSLocalizedString(@"rearMenu.placeType.header",@"rearMenu.placeType.header");
-    }
-    return nil;
-}
-
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
-        case kSectionSettings:
+        case kSectionNetwork:
             switch(indexPath.row) {
-                case kRowSettingSettings:
-//                    [TogaytherService setHDMode:![TogaytherService isRetina]];
-//                    [self tableView:tableView cellForRowAtIndexPath:indexPath];
-                    [self performSegueWithIdentifier:@"settings" sender:self];
-                    break;
+                    
                 case kRowSettingMessages:
                     [self performSegueWithIdentifier:@"directMsg" sender:self];
                     break;
-                case kRowSettingProfile: {
-                    UIViewController *accountController = [[TogaytherService uiService] instantiateViewController:SB_ID_MYACCOUNT];
-                    [self.parentMenuController.navigationController pushViewController:accountController animated:YES];
-                }
-                    break;
+                    
                 case kRowSettingLikes:
                     [self performSegueWithIdentifier:@"likes" sender:self];
                     break;
                 case kRowSettingLikers:
                     [self performSegueWithIdentifier:@"likers" sender:self];
                     break;
+            }
+            break;
+        case kSectionSettings:
+            switch(indexPath.row) {
+                case kRowSettingSettings:
+                    [self performSegueWithIdentifier:@"settings" sender:self];
+                    break;
+                
+                case kRowSettingProfile: {
+                    UIViewController *accountController = [[TogaytherService uiService] instantiateViewController:SB_ID_MYACCOUNT];
+                    [self.parentMenuController.navigationController pushViewController:accountController animated:YES];
+//                    [self.parentMenuController.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:accountController] animated:YES completion:NULL ];
+//                    [self.navigationController pushViewController:accountController animated:YES];
+                }
+                    break;
+
                 case kRowSettingDisconnect:
                     // Disconnecting
                     [_userService disconnect];
-//                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        // Dismissing this view and immediately
-                        UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
-                        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                        [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
+                    // Dismissing this view and immediately
+                    UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
+                    
 
-//                    });
                     break;
             }
     }
@@ -401,5 +373,25 @@
 }
 - (void)menuPanned:(UITapGestureRecognizer*)gestureRecognizer {
     [self.parentMenuController dismissControllerMenu:YES];
+}
+#pragma mark - PMLImagePickerCallback
+- (void)imagePicked:(CALImage *)image {
+    [[TogaytherService imageService] upload:image forObject:[_userService getCurrentUser] callback:self];
+}
+#pragma mark - PMLImageUploadCallback
+- (void)imageUploaded:(CALImage *)image {
+    CurrentUser *currentUser = _userService.getCurrentUser;
+    if(currentUser.otherImages == nil) {
+        [currentUser setOtherImages:[[NSMutableArray alloc] init]];
+    }
+    CALImage *oldImage = currentUser.mainImage;
+    currentUser.mainImage = image;
+    if(oldImage != nil) {
+        [currentUser.otherImages insertObject:oldImage atIndex:0];
+    }
+    _profileHeaderView.profileImageView.image = image.fullImage;
+}
+- (void)imageUploadFailed:(CALImage *)image {
+    [_uiService alertWithTitle:@"upload.failed.title" text:@"upload.failed"];
 }
 @end
