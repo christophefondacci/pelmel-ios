@@ -204,7 +204,15 @@
     // Selecting
     _snippetDisabledOnSelection = !snippetEnabled;
     if(annotation) {
-        [_mapView selectAnnotation:annotation animated:YES];
+        if([_mapView.selectedAnnotations containsObject:annotation]) {
+            if([annotation isKindOfClass:[MapAnnotation class]]) {
+                CALObject *obj = ((MapAnnotation*)annotation).object;
+                CLLocationCoordinate2D coords = CLLocationCoordinate2DMake(obj.lat, obj.lng);
+                [_mapView setCenterCoordinate:coords animated:YES];
+            }
+        } else {
+            [_mapView selectAnnotation:annotation animated:YES];
+        }
     } else {
         MapAnnotation *placeAnnotation = [self buildMapAnnotationFor:calObject];
         [_mapView selectAnnotation:placeAnnotation animated:YES];

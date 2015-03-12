@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ioq-7z-Wfd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ioq-7z-Wfd">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -11,6 +11,8 @@
             <string>OpenSans-Italic</string>
         </mutableArray>
         <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+            <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
@@ -3661,6 +3663,75 @@
                                     <outlet property="titleLabel" destination="lab-vU-Nh2" id="j5D-aI-V7k"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="titledHours" rowHeight="64" id="8t1-tu-i2r" customClass="PMLImagedTitleTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8t1-tu-i2r" id="Ifn-jK-hYs">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNK-rm-vlc">
+                                            <rect key="frame" x="56" y="11.5" width="230" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="AhW-0U-5sL"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1IV-yy-J97">
+                                            <rect key="frame" x="16" y="10" width="24" height="24"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="24T-PC-BTB"/>
+                                                <constraint firstAttribute="width" constant="24" id="Qbg-Xl-i6C"/>
+                                            </constraints>
+                                            <state key="normal" image="edtIconDelete">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="11"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                        </button>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edtArrowLeft" translatesAutoresizingMaskIntoConstraints="NO" id="Kld-5f-z3V">
+                                            <rect key="frame" x="43" y="17.5" width="10" height="10"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="10" id="NXf-aR-Dcg"/>
+                                                <constraint firstAttribute="height" constant="10" id="x1a-B7-nr6"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S78-fP-LBI">
+                                            <rect key="frame" x="56" y="32.5" width="230" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="vWL-T7-7cy"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="UNK-rm-vlc" firstAttribute="leading" secondItem="1IV-yy-J97" secondAttribute="trailing" constant="16" id="Ivi-0C-Eru"/>
+                                        <constraint firstAttribute="trailing" secondItem="UNK-rm-vlc" secondAttribute="trailing" constant="1" id="OAw-1A-IcV"/>
+                                        <constraint firstItem="UNK-rm-vlc" firstAttribute="centerY" secondItem="Kld-5f-z3V" secondAttribute="centerY" id="PI1-X5-yH8"/>
+                                        <constraint firstItem="UNK-rm-vlc" firstAttribute="leading" secondItem="Kld-5f-z3V" secondAttribute="trailing" constant="3" id="SYm-sy-Hd4"/>
+                                        <constraint firstItem="1IV-yy-J97" firstAttribute="leading" secondItem="Ifn-jK-hYs" secondAttribute="leading" constant="16" id="SjE-zF-58G"/>
+                                        <constraint firstItem="S78-fP-LBI" firstAttribute="top" secondItem="UNK-rm-vlc" secondAttribute="bottom" id="TJA-dC-Eax"/>
+                                        <constraint firstItem="UNK-rm-vlc" firstAttribute="leading" secondItem="S78-fP-LBI" secondAttribute="leading" id="VCU-pT-UZ3"/>
+                                        <constraint firstItem="1IV-yy-J97" firstAttribute="centerY" secondItem="UNK-rm-vlc" secondAttribute="centerY" id="kb7-e5-UiF"/>
+                                        <constraint firstItem="UNK-rm-vlc" firstAttribute="trailing" secondItem="S78-fP-LBI" secondAttribute="trailing" id="twA-1y-RSN"/>
+                                        <constraint firstAttribute="centerY" secondItem="1IV-yy-J97" secondAttribute="centerY" constant="10" id="wFz-gW-OpI"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.1764705882" green="0.1843137255" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="deleteButton" destination="1IV-yy-J97" id="NVK-5z-wXC"/>
+                                    <outlet property="subtitleLabel" destination="S78-fP-LBI" id="Dsy-wU-JOR"/>
+                                    <outlet property="titleLabel" destination="UNK-rm-vlc" id="fAA-p2-s74"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="eon-Zp-bcj" id="lzc-hX-yVU"/>
@@ -3676,6 +3747,7 @@
     </scenes>
     <resources>
         <image name="chat.png" width="30" height="30"/>
+        <image name="edtArrowLeft" width="24" height="24"/>
         <image name="edtIconAdd" width="24" height="24"/>
         <image name="edtIconDelete" width="24" height="24"/>
         <image name="hd_logo_small.gif" width="40" height="27"/>

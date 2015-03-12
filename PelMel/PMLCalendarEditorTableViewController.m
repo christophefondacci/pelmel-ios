@@ -14,10 +14,15 @@
 #import <MBProgressHUD.h>
 #import "UIPelmelTitleView.h"
 #import "PMLDatePickerTableViewCell.h"
+#import "PMLTextFieldTableViewCell.h"
 
-#define kSectionsCount 2
-#define kSectionTime 0
-#define kSectionDays 1
+#define kSectionsCount 3
+#define kSectionTitle 0
+#define kSectionTime 1
+#define kSectionDays 2
+
+#define kRowCountTitle 1
+#define kRowTitle 0
 
 #define kRowCountTime 2
 #define kRowStartTime 0
@@ -42,6 +47,9 @@
     // Time picker vars
     PMLTimePickerDataSource *_timePickerDatasource;
     NSIndexPath *_pickerIndexPath;
+    
+    // Cells
+    PMLTextFieldTableViewCell *_titleCell;
 }
 
 - (void)viewDidLoad {
@@ -86,7 +94,11 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
+        case kSectionTitle:
+            // Only a title for hours different than opening hours
+            return [self.calendar.calendarType isEqualToString:SPECIAL_TYPE_OPENING] ? 0 : kRowCountTitle;
         case kSectionTime:
+            // Start / End time rows + optional time picker
             return kRowCountTime + (_pickerIndexPath != nil ? 1 : 0);
         case kSectionDays:
             return kRowCountDays;
@@ -99,6 +111,9 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *cellId;
     switch (indexPath.section) {
+        case kSectionTitle:
+            cellId = @"titleCell";
+            break;
         case kSectionTime:
             if(_pickerIndexPath != nil && [indexPath isEqual:_pickerIndexPath]) {
                 cellId = @"datePickerCell";
@@ -118,6 +133,9 @@
     cell.backgroundColor = UIColorFromRGB(0x272a2e);
     // Configure the cell...
     switch (indexPath.section) {
+        case kSectionTitle:
+            [self configureTitleCell:(PMLTextFieldTableViewCell*)cell];
+            break;
         case kSectionTime:
             if(_pickerIndexPath != nil && [indexPath isEqual:_pickerIndexPath]) {
                 [self configureDatePickerCell:(PMLDatePickerTableViewCell*)cell];
@@ -139,6 +157,68 @@
     
     return cell;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSIndexPath *editedPath = [NSIndexPath indexPathForRow:_pickerIndexPath.row-1 inSection:_pickerIndexPath.section];
+    if([editedPath isEqual:indexPath]) {
+        NSIndexPath *oldIndexPath = _pickerIndexPath;
+        _pickerIndexPath = nil;
+        [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    } else if(indexPath.section == kSectionTime) {
+        NSIndexPath *oldIndexPath = _pickerIndexPath;
+        NSInteger pickerRow = indexPath.row;
+        if(oldIndexPath == nil || oldIndexPath.row>indexPath.row ) {
+            pickerRow ++;
+        }
+        _pickerIndexPath = [NSIndexPath indexPathForRow:pickerRow inSection:indexPath.section];
+        
+        if(indexPath.row == 0) {
+            [_timePickerDatasource setHours:_calendar.startHour minutes:_calendar.startMinute forTag:0];
+        } else {
+            [_timePickerDatasource setHours:_calendar.endHour minutes:_calendar.endMinute forTag:1];
+        }
+        [_titleCell.textField resignFirstResponder];
+        // Inserting picker
+        // Deleting any previous picker
+        [self.tableView beginUpdates];
+        if(oldIndexPath) {
+            [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+        [self.tableView insertRowsAtIndexPaths:@[_pickerIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    } else if(indexPath.section == kSectionDays) {
+        [_calendar toggleEnablementFor:(indexPath.row+1)%7];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    }
+    
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if([indexPath isEqual:_pickerIndexPath]) {
+        return 162;
+    }
+    return 44;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if(section>kSectionTitle) {
+        return 38;
+    } else {
+        return 0;
+    }
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    switch (section) {
+        case kSectionTime:
+            _scheduleHeaderView.titleLabel.text = NSLocalizedString(@"calendar.time",@"Schedule");
+            return _scheduleHeaderView;
+        case kSectionDays:
+            _daysHeaderView.titleLabel.text = NSLocalizedString(@"calendar.days", @"Days of week");
+            return _daysHeaderView;
+        default:
+            break;
+    }
+    return nil;
+}
+#pragma mark - Cell configuration
 - (void)configureDatePickerCell:(PMLDatePickerTableViewCell*)datePickerCell {
     [datePickerCell.datePicker removeTarget:self action:NULL forControlEvents:UIControlEventAllEvents];
     [datePickerCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
@@ -167,62 +247,28 @@
         detailCell.detailValueLabel.text = [_conversionService stringForHours:[_calendar endHour] minutes:[_calendar endMinute]];
     }
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSIndexPath *editedPath = [NSIndexPath indexPathForRow:_pickerIndexPath.row-1 inSection:_pickerIndexPath.section];
-    if([editedPath isEqual:indexPath]) {
-        NSIndexPath *oldIndexPath = _pickerIndexPath;
-        _pickerIndexPath = nil;
-        [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    } else if(indexPath.section == kSectionTime) {
-        NSIndexPath *oldIndexPath = _pickerIndexPath;
-        NSInteger pickerRow = indexPath.row;
-        if(oldIndexPath == nil || oldIndexPath.row>indexPath.row ) {
-            pickerRow ++;
-        }
-        _pickerIndexPath = [NSIndexPath indexPathForRow:pickerRow inSection:indexPath.section];
-        
-        if(indexPath.row == 0) {
-            [_timePickerDatasource setHours:_calendar.startHour minutes:_calendar.startMinute forTag:0];
-        } else {
-            [_timePickerDatasource setHours:_calendar.endHour minutes:_calendar.endMinute forTag:1];
-        }
-        // Inserting picker
-        // Deleting any previous picker
-        [self.tableView beginUpdates];
-        if(oldIndexPath) {
-            [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-        [self.tableView insertRowsAtIndexPaths:@[_pickerIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
-    } else if(indexPath.section == kSectionDays) {
-        [_calendar toggleEnablementFor:(indexPath.row+1)%7];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if([indexPath isEqual:_pickerIndexPath]) {
-        return 162;
-    }
-    return 44;
+-(void)configureTitleCell:(PMLTextFieldTableViewCell*)cell {
+    _titleCell = cell;
+    cell.textField.text = self.calendar.name;
+    cell.textField.returnKeyType = UIReturnKeyNext;
+    cell.textField.delegate = self;
+    cell.textField.attributedPlaceholder = 
+        [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"calendar.title.placeholder",@"Name (optional)") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x4d4e52)}];
+    [cell.textField addTarget:self
+                       action:@selector(titleDidChange:)
+             forControlEvents:UIControlEventEditingChanged];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 38;
+#pragma mark - UITextFieldDelegate
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:kRowStartTime inSection:kSectionTime];
+    
+    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+    [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
+    return YES;
 }
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    switch (section) {
-        case kSectionTime:
-            _scheduleHeaderView.titleLabel.text = NSLocalizedString(@"calendar.time",@"Schedule");
-            return _scheduleHeaderView;
-        case kSectionDays:
-            _daysHeaderView.titleLabel.text = NSLocalizedString(@"calendar.days", @"Days of week");
-            return _daysHeaderView;
-        default:
-            break;
-    }
-    return nil;
-}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -289,7 +335,11 @@
 -(void)cancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+-(void)titleDidChange:(UITextField*)textField {
+    self.calendar.name = textField.text;
+}
 -(void)save:(id)sender {
+    // Filling title
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"calendar.editor.saving", @"Saving...");
     hud.mode = MBProgressHUDModeIndeterminate;

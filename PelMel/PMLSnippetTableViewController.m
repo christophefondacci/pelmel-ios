@@ -217,7 +217,6 @@ typedef enum {
     _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
     _heightsMap = [[NSMutableDictionary alloc] init];
     _hoursTypeMap = [[NSMutableDictionary alloc] init];
-    _editVisible = PMLVisibityStateInvisible;
     _galleryPctHeight = 0;
     
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
@@ -253,7 +252,10 @@ typedef enum {
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+    
+    // Edit visibility
     self.navigationItem.rightBarButtonItem=nil;
+    _editVisible = PMLVisibityStateInvisible;
 
 }
 - (void)viewDidAppear:(BOOL)animated {
@@ -267,9 +269,12 @@ typedef enum {
     } else {
         [self.tableView reloadData];
     }
-    if([_snippetItem isKindOfClass:[Place class]]) {
-        if(_snippetItem.lat!=0 && _snippetItem.lng!=0 && _snippetItem.key!=nil) {
-            [((MapViewController*)self.parentMenuController.rootViewController) selectCALObject:_snippetItem];
+    
+    // Map location
+    if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
+        CALObject *mapObject = [_infoProvider mapObjectForLocalization];
+        if(mapObject!=nil) {
+            [((MapViewController*)self.parentMenuController.rootViewController) selectCALObject:mapObject];
         }
     }
 }
@@ -287,9 +292,9 @@ typedef enum {
         
         [self clearObservers];
         // No more editing
-        if([_snippetItem respondsToSelector:@selector(editing)]) {
-            _snippetItem.editing=NO;
-        }
+//        if([_snippetItem respondsToSelector:@selector(editing)]) {
+//            _snippetItem.editing=NO;
+//        }
         
 
     }
@@ -714,7 +719,15 @@ typedef enum {
             return YES;
         }
     }
-    return indexPath.section == kPMLSectionTopPlaces || indexPath.section == kPMLSectionActivity;
+    switch(indexPath.section) {
+        case kPMLSectionTopPlaces:
+        case kPMLSectionActivity:
+            return YES;
+        case kPMLSectionOvAddress:
+            // Address lines are selectable only if we have something to display on the map
+            return [_infoProvider respondsToSelector:@selector(mapObjectForLocalization)];
+    }
+    return NO;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
@@ -723,6 +736,14 @@ typedef enum {
             break;
         case kPMLSectionActivity:
             [self activityTapped:indexPath.row];
+            break;
+        case kPMLSectionOvAddress:
+            self.tableView.contentOffset = CGPointMake(0,0);
+            if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
+                [self.parentMenuController minimizeCurrentSnippet:YES];
+                [self.parentMenuController.rootViewController selectCALObject:[_infoProvider mapObjectForLocalization]];
+            }
+            [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kPMLSectionOvEvents:
             if(indexPath.row == [[_infoProvider events] count]) {
@@ -1182,6 +1203,7 @@ typedef enum {
     cell.cellTextLabel.text = (NSString*)[components objectAtIndex:row];
     cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
     cell.cellTextLabel.textColor = [UIColor whiteColor];
+
 }
 -(void)configureRowOvCity:(PMLImagedTitleTableViewCell*)cell {
     cell.titleLabel.text = [_infoProvider city];
@@ -1561,6 +1583,10 @@ typedef enum {
         if([object isKindOfClass:[Place class]] && object.lat!=0 && object.lng!=0) {
             [((MapViewController*)self.parentMenuController.rootViewController) selectCALObject:_snippetItem];
         }
+    } else {
+        // If something else, we reload everything
+        NSLog(@"Reloading table view for external overview data: %@",object.key);
+        [self.tableView reloadData];
     }
 }
 

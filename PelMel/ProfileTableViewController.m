@@ -71,7 +71,7 @@
     DescriptionHeaderView *descriptionHeaderView;
     
     // Progress
-    UIProgressView *_progressView;
+    UIView *_progressView;
     // State
     BOOL operationInProgress;
     

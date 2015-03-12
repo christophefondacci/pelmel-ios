@@ -119,7 +119,7 @@ static void *MyParentMenuControllerKey;
     return self;
 }
 
-- (instancetype)initWithViewController:(UIViewController *)rootViewController with:(NSObject<PMLMenuManagerDelegate> *)menuManagerDelegate
+- (instancetype)initWithViewController:(MapViewController *)rootViewController with:(NSObject<PMLMenuManagerDelegate> *)menuManagerDelegate
 {
     self = [super init];
     if (self) {
@@ -131,7 +131,7 @@ static void *MyParentMenuControllerKey;
     }
     return self;
 }
-- (void)setRootViewController:(UIViewController *)rootViewController {
+- (void)setRootViewController:(MapViewController *)rootViewController {
     _rootViewController = rootViewController;
     // Assigning ourselves to the navigation hierarchy
     rootViewController.parentMenuController = self;

@@ -118,11 +118,30 @@
     NSInteger count = [[_hoursTypeMap objectForKey:calType] count];
     return indexPath.row == count;
 }
+-(NSString*)rowIdAtIndexPath:(NSIndexPath*)indexPath {
+    // Is it the addition row?
+    NSString *rowId;
+    BOOL isAddRow = [self isAddRow:indexPath];
+    if(!isAddRow) {
+        PMLCalendar *cal = [self calendarForIndexPath:indexPath];
+        if([self isTitledCalendar:cal]) {
+            rowId = @"titledHours";
+        } else {
+            rowId = @"hours";
+        }
+    } else {
+        rowId = @"addNew";
+    }
+    return rowId;
+}
+- (BOOL)isTitledCalendar:(PMLCalendar*)cal {
+    return ![cal.calendarType isEqualToString:SPECIAL_TYPE_OPENING] && cal.name != nil && cal.name.length>0;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     // Is it the addition row?
     BOOL isAddRow = [self isAddRow:indexPath];
-    NSString *reuseId = isAddRow ? @"addNew" : @"hours";
+    NSString *reuseId = [self rowIdAtIndexPath:indexPath];
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId forIndexPath:indexPath];
     
     // Configure the cell...
@@ -134,7 +153,12 @@
             NSString *calendarLabel = [_conversionService stringFromCalendar:cal ];
             
             PMLImagedTitleTableViewCell *titledCell = (PMLImagedTitleTableViewCell*)cell;
-            titledCell.titleLabel.text = calendarLabel;
+            if([self isTitledCalendar:cal]) {
+                titledCell.titleLabel.text = cal.name;
+                titledCell.subtitleLabel.text = calendarLabel;
+            } else {
+                titledCell.titleLabel.text = calendarLabel;
+            }
             [titledCell.deleteButton addTarget:self action:@selector(removeHoursTapped:) forControlEvents:UIControlEventTouchUpInside];
             UIImage *icon = nil;
             switch(indexPath.section) {
@@ -197,6 +221,12 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(![self isAddRow:indexPath]) {
+        PMLCalendar *cal = [self calendarForIndexPath:indexPath];
+        if([self isTitledCalendar:cal]) {
+            return 68;
+        }
+    }
     return 50;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

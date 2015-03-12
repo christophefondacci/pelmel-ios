@@ -291,6 +291,8 @@
                 event.startDate = special.nextStart;
                 event.endDate = special.nextEnd;
                 event.name = [[TogaytherService uiService] nameForSpecial:special];
+                event.mainImage = place.mainImage;
+                event.otherImages = place.otherImages;
                 [happyHoursEvents addObject:event];
             }
         }

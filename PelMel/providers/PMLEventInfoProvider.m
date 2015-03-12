@@ -85,7 +85,7 @@
 -(NSInteger)thumbsRowCountForMode:(ThumbPreviewMode)mode {
     switch(mode) {
         case ThumbPreviewModeCheckins:
-            return 1;
+            return _event.likers.count>0 ? 1 : 0;
         default:
             return 0;
     }
@@ -204,5 +204,8 @@
 }
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;
+}
+-(CALObject *)mapObjectForLocalization {
+    return [_placeInfoProvider mapObjectForLocalization];
 }
 @end

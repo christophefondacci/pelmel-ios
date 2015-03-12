@@ -61,6 +61,7 @@
 "calendar.start"="Starts";
 "calendar.theme"="Theme nights";
 "calendar.time"="Schedule";
+"calendar.title.placeholder"="Name (optional)";
 "cancel"="Cancel";
 "city.label"="City";
 "city.withbars"="%d gay places";
@@ -83,7 +84,6 @@
 "distance.template.miles"="%@ miles";
 "distance.template.feet"="%@ feet";
 "edit.title"="Enter a name";
-
 "events.addButton"="Create and promote an event";
 "events.new.placeholder"="Event Name";
 "events.title"="Events";

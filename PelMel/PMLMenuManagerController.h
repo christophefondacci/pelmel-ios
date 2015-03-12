@@ -106,7 +106,7 @@ typedef void(^TextInputCallback)(NSString *text);
 
 @property (nonatomic,strong) NSObject<PMLMenuManagerDelegate> *menuManagerDelegate;
 @property (nonatomic,strong) NSObject<PMLSnippetDelegate> *snippetDelegate;
-@property (nonatomic,strong) UIViewController *rootViewController;
+@property (nonatomic,strong) MapViewController *rootViewController;
 @property (nonatomic,strong) UIViewController *menuViewController;
 @property (nonatomic,strong) PMLDataManager *dataManager; // Gives access to the data manager from children
 @property (nonatomic,retain) CALObject *contextObject; // Current context object
@@ -123,7 +123,7 @@ typedef void(^TextInputCallback)(NSString *text);
  * @param rootViewController the root UIViewController that will first be displayed 
  * @param menuManagerDelegate the delegate of menu actions
  */
--(id)initWithViewController:(UIViewController*)rootViewController with:(NSObject<PMLMenuManagerDelegate>*)menuManagerDelegate;
+-(id)initWithViewController:(MapViewController*)rootViewController with:(NSObject<PMLMenuManagerDelegate>*)menuManagerDelegate;
 
 /**
  * Presents the provided UIViewController as a snippet (meaning we present only the top part at the very

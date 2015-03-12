@@ -61,6 +61,7 @@ typedef enum {
 - (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager*)actionManager;
 
 @optional
+- (CALObject*)mapObjectForLocalization;
 // Whether or not the data could be edited, defaults to false if not implemented
 - (PMLActionType)editActionType;
 - (BOOL)canAddPhoto;    // Default is YES

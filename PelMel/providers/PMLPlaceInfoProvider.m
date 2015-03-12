@@ -310,6 +310,8 @@
             event.startDate = special.nextStart;
             event.endDate = special.nextEnd;
             event.name = [_uiService nameForSpecial:special];
+            event.mainImage = _place.mainImage;
+            event.otherImages = _place.otherImages;
             [allEvents addObject:event];
         }
     }
@@ -406,5 +408,13 @@
 }
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;
+}
+#pragma mark Localization
+-(CALObject *)mapObjectForLocalization {
+    if(_place.lat!=0 && _place.lng!=0 && _place.key!=nil) {
+        return _place;
+    } else {
+        return nil;
+    }
 }
 @end

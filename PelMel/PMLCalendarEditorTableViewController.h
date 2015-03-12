@@ -10,7 +10,7 @@
 #import "PMLCalendar.h"
 #import "PMLTimePickerDataSource.h"
 
-@interface PMLCalendarEditorTableViewController : UITableViewController <PMLTimePickerCallback>
+@interface PMLCalendarEditorTableViewController : UITableViewController <PMLTimePickerCallback, UITextFieldDelegate>
 
 @property (nonatomic,retain) PMLCalendar *calendar;
 
