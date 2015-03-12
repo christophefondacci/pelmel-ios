@@ -130,7 +130,7 @@ typedef void(^TextInputCallback)(NSString *text);
  * bottom of the screen, letting the user to expand or dismiss it.
  */
 -(void)presentControllerSnippet:(UIViewController*)viewController;
-
+- (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated;
 /**
  * Presents the given menu popping from the given point.
  * @param viewController the view controller to present
@@ -141,13 +141,13 @@ typedef void(^TextInputCallback)(NSString *text);
 /**
  * Dismisses any menu currently presented and does nothing if no menu is shown
  */
--(void)dismissControllerMenu;
+-(void)dismissControllerMenu:(BOOL)animated;
 
 /**
  * Opens the snippet which is currently being presented. Does nothing if no snippet is active
  */
--(void)openCurrentSnippet;
--(void)minimizeCurrentSnippet;
+-(void)openCurrentSnippet:(BOOL)animated;
+-(void)minimizeCurrentSnippet:(BOOL)animated;
 
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state;
 /**

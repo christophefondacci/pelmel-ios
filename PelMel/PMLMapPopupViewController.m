@@ -461,7 +461,7 @@
             [self.controller.parentMenuController.dataManager promptUserForPhotoUploadOn:_object];
         }
     } else {
-        [_controller.parentMenuController openCurrentSnippet];
+        [_controller.parentMenuController openCurrentSnippet:YES];
     }
 }
 -(void)actionTapped:(UIButton*)sender {

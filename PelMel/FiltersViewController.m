@@ -261,7 +261,7 @@
 
 #pragma mark - Action callback
 -(void)closeMenu:(id)sender {
-    [self.parentMenuController dismissControllerMenu];
+    [self.parentMenuController dismissControllerMenu:YES];
 }
 
 @end

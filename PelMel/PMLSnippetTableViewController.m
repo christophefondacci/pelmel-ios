@@ -226,15 +226,6 @@ typedef enum {
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
     // Navigation
-    [TogaytherService applyCommonLookAndFeel:self];
-    self.navigationController.edgesForExtendedLayout=UIRectEdgeAll;
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
-                                                  forBarMetrics:UIBarMetricsDefault];
-    self.navigationController.navigationBar.shadowImage = [UIImage new];
-    self.navigationController.navigationBar.translucent = YES;
-    self.navigationController.view.backgroundColor = [UIColor clearColor];
-    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
-    self.navigationItem.rightBarButtonItem=nil;
     [self.navigationController setNavigationBarHidden:YES];
     
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
@@ -254,6 +245,15 @@ typedef enum {
 - (void)viewWillAppear:(BOOL)animated {
     self.actionManager.menuManagerController = self.parentMenuController;
     self.parentMenuController.snippetDelegate = self;
+    [TogaytherService applyCommonLookAndFeel:self];
+    self.navigationController.edgesForExtendedLayout=UIRectEdgeAll;
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+    self.navigationItem.rightBarButtonItem=nil;
 
 }
 - (void)viewDidAppear:(BOOL)animated {
@@ -1634,7 +1634,7 @@ typedef enum {
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         if(_snippetItem.editing || _snippetItem.editingDesc) {
             [self.tableView setContentOffset:CGPointMake(0, 0)];
-            [self.parentMenuController minimizeCurrentSnippet];
+            [self.parentMenuController minimizeCurrentSnippet:YES];
             [self.tableView reloadData];
             [self installNavBarCommitCancel];
         } else if(!_snippetItem.editing && !_snippetItem.editingDesc && self.navigationItem.leftBarButtonItem!=self.navigationItem.backBarButtonItem) {

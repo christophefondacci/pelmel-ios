@@ -621,7 +621,7 @@
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     NSLog(@"didDeselect");
     if(!_snippetDisabledOnSelection) {
-        [self.parentMenuController dismissControllerSnippet];
+//        [self.parentMenuController dismissControllerSnippet];
     }
     if(_popupController != nil) {
         [_popupController dismiss];

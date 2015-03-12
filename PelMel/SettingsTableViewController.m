@@ -51,7 +51,7 @@
 - (IBAction)leftHandedTapped:(id)sender {
     [_settingsService setLeftHandedMode:_leftHandedSwitch.on];
     [self.parentMenuController.menuManagerDelegate layoutMenuActions];
-    [self.parentMenuController dismissControllerMenu];
+    [self.parentMenuController dismissControllerMenu:YES];
 }
 
 -(void)setPushMode:(BOOL)active {
@@ -84,6 +84,6 @@
 }
 
 -(void)closeMenu:(id)sender {
-    [self.parentMenuController dismissControllerMenu];
+    [self.parentMenuController dismissControllerMenu:YES];
 }
 @end

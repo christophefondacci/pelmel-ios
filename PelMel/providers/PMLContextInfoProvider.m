@@ -181,6 +181,6 @@
 #pragma mark - ThumbPreviewActionDelegate
 - (void)thumbsTableView:(PMLThumbCollectionViewController*)controller thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {
     id selectedItem = [[controller.thumbProvider itemsForType:type] objectAtIndex:thumbIndex];
-    [_snippetController pushSnippetFor:(CALObject*)selectedItem];
+    [_uiService presentSnippetFor:(CALObject*)selectedItem opened:YES];
 }
 @end

@@ -11,6 +11,7 @@
 #import "UITablePlaceTypeViewCell.h"
 #import "PMLLikeStatistic.h"
 #import "PMLSnippetLikesTableViewController.h"
+#import "PMLMenuManagerController.h"
 #import "ProfileHeaderView.h"
 
 #define kSectionsCount 1
@@ -363,6 +364,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
         [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [segue.destinationViewController setParentMenuController:self.parentMenuController];
     if([segue.identifier isEqualToString:@"likes"] || [segue.identifier isEqualToString:@"likers"]) {
         if(_likeStat != nil) {
             [self configureSegue:segue stat:_likeStat];
@@ -389,7 +391,7 @@
 
 #pragma mark - Action callback
 -(void)closeMenu:(id)sender {
-    [self.parentMenuController dismissControllerMenu];
+    [self.parentMenuController dismissControllerMenu:YES];
 }
 
 #pragma mark - UIGestureRecognizerDelegate
@@ -398,6 +400,6 @@
     return (fabs(velocity.x)>fabs(velocity.y) && velocity.x <0);
 }
 - (void)menuPanned:(UITapGestureRecognizer*)gestureRecognizer {
-    [self.parentMenuController dismissControllerMenu];
+    [self.parentMenuController dismissControllerMenu:YES];
 }
 @end

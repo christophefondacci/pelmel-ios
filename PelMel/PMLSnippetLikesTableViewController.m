@@ -152,9 +152,10 @@
     Activity *activity = [self.activities objectAtIndex:indexPath.row];
     
     CALObject *activityObject = [self activityObjectFor:activity];
-    PMLSnippetTableViewController *controller = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-    controller.snippetItem = activityObject;
-    [self.parentMenuController.navigationController pushViewController:controller animated:YES ];
+    [_uiService presentSnippetFor:activityObject opened:YES];
+//    PMLSnippetTableViewController *controller = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+//    controller.snippetItem = activityObject;
+//    [self.parentMenuController.navigationController pushViewController:controller animated:YES ];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {

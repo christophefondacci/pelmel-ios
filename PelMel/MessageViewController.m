@@ -457,11 +457,12 @@
 //        [self performSegueWithIdentifier:@"showDetailMessage" sender:message.from];
         MessageViewController *targetController = (MessageViewController*)[uiService instantiateViewController:SB_ID_MESSAGES];
         [targetController setWithObject:message.from];
-        if(self.parentMenuController) {
-            [self.parentMenuController.navigationController pushViewController:targetController animated:YES];
-        } else {
+        if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
             [self.navigationController pushViewController:targetController animated:YES];
+        } else {
+            [self.parentMenuController.navigationController pushViewController:targetController animated:YES];
         }
+
     }
 }
 -(void)showFromUserTapped:(UIView*)sender {
@@ -475,7 +476,8 @@
         if([view isKindOfClass:[ChatView class]]) {
             ChatView *chatView = (ChatView*)view;
             Message *message = chatView.getMessage;
-            [self performSegueWithIdentifier:@"showUserSnippet" sender:message.from];
+
+            [[TogaytherService uiService] presentSnippetFor:message.from opened:YES];
         }
     }
 }
@@ -505,16 +507,13 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)closeMenu:(id)sender {
-    if(self.parentMenuController!=nil) {
-        PMLMenuManagerController *menuController = self.parentMenuController;
-//        [self.navigationController popToRootViewControllerAnimated:NO];
-        [menuController dismissControllerMenu];
+    if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
+//        PMLMenuManagerController *menuController = self.parentMenuController;
+//        [self.parentMenuController dismissControllerSnippet];
+        [[TogaytherService uiService] presentSnippetFor:nil opened:NO];
     } else {
-        UIViewController *rootController =[[self.navigationController childViewControllers] objectAtIndex:0];
-        if([rootController isKindOfClass:[PMLFakeViewController class]]) {
-            rootController = [[self.navigationController childViewControllers] objectAtIndex:1];
-        }
-        [self.navigationController popToViewController:rootController animated:YES];
+        [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
+        [self.parentMenuController dismissControllerMenu:YES];
     }
 }
 - (void)appBecameActive:(NSNotification*)notification {

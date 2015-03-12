@@ -308,9 +308,38 @@
 - (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened {
     PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[self instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
     snippetController.snippetItem = object;
-    [_menuManagerController presentControllerSnippet:snippetController];
-    if(opened) {
-        [_menuManagerController openCurrentSnippet];
+    
+//    if(self.parentMenuController) {
+//        PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+//        snippetController.snippetItem = message.from;
+//        snippetController.parentMenuController = self.parentMenuController;
+//        [self.navigationController pushViewController:snippetController animated:YES];
+//    } else {
+//        [self.navigationController popToRootViewControllerAnimated:NO];
+//        [[TogaytherService uiService] presentSnippetFor:message.from opened:YES];
+//    }
+    if(_menuManagerController.navigationController.topViewController != _menuManagerController) {
+        [_menuManagerController presentControllerSnippet:snippetController animated:NO];
+        [_menuManagerController openCurrentSnippet:NO];
+        [_menuManagerController.navigationController popToRootViewControllerAnimated:YES];
+    } else {
+        BOOL isOpened = _menuManagerController.snippetFullyOpened;
+        if(isOpened) {
+            if(opened) {
+                [(UINavigationController*)_menuManagerController.currentSnippetViewController pushViewController:snippetController animated:YES];
+            } else {
+                [_menuManagerController presentControllerSnippet:snippetController animated:YES];
+            }
+        } else {
+            if(_menuManagerController.currentSnippetViewController != nil) {
+                [(UINavigationController*)_menuManagerController.currentSnippetViewController pushViewController:snippetController animated:YES];
+            } else {
+                [_menuManagerController presentControllerSnippet:snippetController];
+            }
+            if(opened) {
+                [_menuManagerController openCurrentSnippet:!isOpened];
+            }
+        }
     }
 }
 

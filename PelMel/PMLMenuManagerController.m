@@ -263,18 +263,26 @@ static void *MyParentMenuControllerKey;
 
 #pragma mark - Snippet management
 - (void)presentControllerSnippet:(UIViewController *)childViewController {
-    CGRect myFrame = self.rootViewController.view.bounds;
+    [self presentControllerSnippet:childViewController animated:YES];
+}
+-(void)removeCurrentSnippetController {
     // Detaching current controller
     if(_currentSnippetViewController) {
         [_currentSnippetViewController willMoveToParentViewController:nil];
         [_currentSnippetViewController.view removeFromSuperview];
         [_currentSnippetViewController removeFromParentViewController];
         [self.menuManagerDelegate layoutMenuActions];
+        _currentSnippetViewController = nil;
     }
-    
+}
+- (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated {
+    CGRect myFrame = self.rootViewController.view.bounds;
+
+    [self removeCurrentSnippetController];
     // Initializing child inside a sub navigation
-//    PMLSubNavigationController *viewController = [[PMLSubNavigationController alloc] initWithRootViewController:childViewController];
+    //    PMLSubNavigationController *viewController = [[PMLSubNavigationController alloc] initWithRootViewController:childViewController];
     UINavigationController *viewController = [[UINavigationController alloc] initWithRootViewController:childViewController];
+    [viewController.interactivePopGestureRecognizer setDelegate:self];
     
     // Placing the frame at the bottom of the visible current view, outside
     CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height+1-[self offsetForOpenedSnippet]);
@@ -297,19 +305,15 @@ static void *MyParentMenuControllerKey;
     [_bottomView addSubview:viewController.view];
     [viewController didMoveToParentViewController:self];
     _currentSnippetViewController = viewController;
-    
+    [self setSnippetFullyOpened:NO];
     // Now animating
     [_animator removeAllBehaviors];
-    [self animateSnippetToOffset:myFrame.size.height-kSnippetHeight-_kbSize.height];
-//
-//    UIMenuOpenBehavior *menuBehavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_bottomView] open:YES boundary:myFrame.size.height-kSnippetHeight-_kbSize.height];
-//    [menuBehavior addPushedActions:self.menuManagerDelegate.menuActions inBounds:self.view.bounds];
-//    [_animator addBehavior:menuBehavior];
     
-    // And dismissing menu
-    [self dismissControllerMenu];
-    [self setSnippetFullyOpened:NO];
-
+    // Positioning snippet
+    NSInteger offset = myFrame.size.height-kSnippetHeight-_kbSize.height;
+    [self animateSnippetToOffset:offset animated:animated];
+    [self dismissControllerMenu:animated];
+    
 }
 
 - (BOOL)dismissControllerSnippet {
@@ -322,30 +326,31 @@ static void *MyParentMenuControllerKey;
         // Animating (real de-allocation will be made if a new view controller is presented)
         [_animator removeAllBehaviors];
         
-        [self animateSnippetToOffset:self.view.bounds.size.height+_gripView.frame.size.height];
+        [self animateSnippetToOffset:self.view.bounds.size.height+_gripView.frame.size.height animated:YES];
         dismissed= YES;
     } else {
         // No snippet equals dismissed
         dismissed = YES;
     }
-    
+    [self setSnippetFullyOpened:NO];
     // Dismissing menu
-    [self dismissControllerMenu];
+    [self dismissControllerMenu:YES];
     return dismissed;
 }
 
-- (void)openCurrentSnippet {
+
+- (void)openCurrentSnippet:(BOOL)animated {
     if(_currentSnippetViewController != nil) {
         [self setSnippetFullyOpened:YES];
         NSInteger top = [self offsetForOpenedSnippet];
-        [self animateSnippetToOffset:top];
+        [self animateSnippetToOffset:top animated:animated];
     }
 }
-- (void)minimizeCurrentSnippet {
+- (void)minimizeCurrentSnippet:(BOOL)animated {
     if(_currentSnippetViewController != nil) {
         [self setSnippetFullyOpened:NO];
         NSInteger offset = [self offsetForMinimizedSnippet];
-        [self animateSnippetToOffset:offset];
+        [self animateSnippetToOffset:offset animated:animated];
     }
 }
 - (void)setSnippetFullyOpened:(BOOL)snippetFullyOpened {
@@ -389,7 +394,7 @@ static void *MyParentMenuControllerKey;
 //    CGRect menuFrame = CGRectMake(-bounds.size.width*3/4, 0, bounds.size.width*3/4, bounds.size.height);
     
     if(_menuViewController !=nil && [_menuViewController isKindOfClass:[viewController class]]) {
-        [self dismissControllerMenu];
+        [self dismissControllerMenu:YES];
         _menuViewController = nil;
     } else {
         [_menuView removeFromSuperview];
@@ -458,27 +463,27 @@ static void *MyParentMenuControllerKey;
 //        [self removeConstraints:childView];
 //    }
 //}
-- (void)dismissControllerMenu {
+- (void)dismissControllerMenu:(BOOL)animated {
     if(_menuView != nil) {
-//        [self removeConstraints:_menuView];
-//        UIPopBehavior *popBehavior = [[UIPopBehavior alloc] initWithViews:@[_menuView] pop:NO delay:NO completion:^{
-//            [_menuView removeFromSuperview];
-//            _menuView = nil;
-//            _menuViewController = nil;
-//            _menuViewController.parentMenuController=nil;
-//        }];
-//        popBehavior.elasticity=0.3;
-        UIMenuOpenBehavior *behavior = [[UIMenuOpenBehavior alloc] initWithViews:@[_menuView] open:NO boundary:-_menuView.bounds.size.width horizontal:YES];
-        [behavior setIntensity:3];
-        [behavior setCompletion:^{
-            [_menuView removeFromSuperview];
-                        _menuView = nil;
-                        _menuViewController = nil;
-                        _menuViewController.parentMenuController=nil;
-        }];
-        
+        CGRect frame = _menuView.frame;
+        frame = CGRectMake(-frame.size.width-1, frame.origin.y, frame.size.width, frame.size.height);
         [_menuAnimator removeAllBehaviors];
-        [_menuAnimator addBehavior:behavior];
+        if(animated) {
+            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                _menuView.frame = frame;
+            } completion:^(BOOL finished) {
+                [_menuView removeFromSuperview];
+                _menuView = nil;
+                _menuViewController = nil;
+                _menuViewController.parentMenuController=nil;
+            }];
+        } else {
+            [_menuView removeFromSuperview];
+            _menuView = nil;
+            _menuViewController = nil;
+            _menuViewController.parentMenuController=nil;
+        }
+        
     }
 }
 #pragma mark - Warning label
@@ -589,20 +594,30 @@ static void *MyParentMenuControllerKey;
         }
         
         // Animating snippet
-        [self animateSnippetToOffset:offset];
+        [self animateSnippetToOffset:offset animated:YES];
     }
 }
--(void)animateSnippetToOffset:(NSInteger)offset {
+-(void)animateSnippetToOffset:(NSInteger)offset animated:(BOOL)animated {
     // Building the 'open' (or 'close') behavior
     [_animator removeAllBehaviors];
     if(_bottomView.frame.origin.y!=offset) {
-        [UIView animateWithDuration:0.3 animations:^{
-            CGRect frame = _bottomView.frame;
-            frame.origin.y=offset;
-            frame.origin.x=0;
-            
+        CGRect frame = _bottomView.frame;
+        frame.origin.y=offset;
+        frame.origin.x=0;
+        if(animated) {
+            [UIView animateWithDuration:0.3 animations:^{
+                _bottomView.frame = frame;
+            } completion:^(BOOL finished) {
+                if(frame.origin.y>self.view.bounds.size.height) {
+                    [self removeCurrentSnippetController];
+                }
+            }];
+        } else {
             _bottomView.frame = frame;
-        }];
+            if(frame.origin.y>self.view.bounds.size.height) {
+                [self removeCurrentSnippetController];
+            }
+        }
     }
 }
 - (void)snippetPannedCallback {
@@ -635,11 +650,15 @@ static void *MyParentMenuControllerKey;
 //}
 #pragma mark Menu
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
-    CGPoint velocity = [(UIPanGestureRecognizer*)gestureRecognizer velocityInView:_menuView];
-    return (fabs(velocity.x)>fabs(velocity.y) && velocity.x <0);
+    if(gestureRecognizer == ((UINavigationController*)_currentSnippetViewController).interactivePopGestureRecognizer) {
+        return ((UINavigationController*)_currentSnippetViewController).childViewControllers.count>1;
+    } else {
+        CGPoint velocity = [(UIPanGestureRecognizer*)gestureRecognizer velocityInView:_menuView];
+        return (fabs(velocity.x)>fabs(velocity.y) && velocity.x <0);
+    }
 }
 - (void)menuPanned:(UITapGestureRecognizer*)gestureRecognizer {
-    [self dismissControllerMenu];
+    [self dismissControllerMenu:YES];
 }
 
 #pragma mark - UINavigationDelegate
@@ -828,7 +847,7 @@ static void *MyParentMenuControllerKey;
 
     // Clearing any menu
     if(_menuViewController !=nil) {
-        [self dismissControllerMenu];
+        [self dismissControllerMenu:YES];
     } else {
         // Just in case we have residual animation artefacts
         [_menuView removeFromSuperview];
@@ -855,6 +874,7 @@ static void *MyParentMenuControllerKey;
         
         // Building contents
         MainMenuTableViewController *rearView = (MainMenuTableViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_CONTROLLER];
+        rearView.parentMenuController = self;
 //        rearView.view.bounds=CGRectMake(0,0,frame.size.width, frame.size.height);
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:rearView];
         
