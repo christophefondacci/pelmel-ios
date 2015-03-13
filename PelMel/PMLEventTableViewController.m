@@ -282,6 +282,7 @@
         }
         [hud hide:YES];
         [self dismissViewControllerAnimated:YES completion:nil];
+        [[TogaytherService uiService] presentSnippetFor:event opened:YES];
     } errorCallback:^(NSInteger errorCode, NSString *errorMessage) {
         [hud hide:YES];
         [[TogaytherService uiService] alertError];

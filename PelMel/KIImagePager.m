@@ -203,6 +203,7 @@
             UIImageViewAligned *imageView = [[UIImageViewAligned alloc] initWithFrame:imageFrame];
             [imageView setBackgroundColor:[UIColor clearColor]];
             [imageView setContentMode:[_dataSource contentModeForImage:i]];
+            imageView.clipsToBounds = YES;
             imageView.alignTop = [self.dataSource alignTop];
             [imageView setTag:i];
             [_imageViews setObject:imageView forKey:[NSNumber numberWithInt:i]];
