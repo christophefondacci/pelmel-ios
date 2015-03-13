@@ -69,10 +69,12 @@ static NSMutableDictionary *_editorsKeyMap;
         for(EditionAction action in [self.pendingCancelActions reverseObjectEnumerator]) {
             action();
         }
-        [self endEdition];
-    } else if(_editedObject.key == nil) {
-        [_mapViewController setEditedObject:nil];
     }
+    if(_editedObject.key == nil) {
+        [_mapViewController setEditedObject:nil];
+        [_mapViewController.parentMenuController dismissControllerSnippet];
+    }
+    [self endEdition];
 }
 -(void)commit {
     // Confirm action that prompts user for confirmation
@@ -88,15 +90,15 @@ static NSMutableDictionary *_editorsKeyMap;
     // Removing edited object from map view controller
     self.mapViewController.editedObject = nil;
     // Purging editor
-    [_editorsKeyMap removeObjectForKey:self.editedObject.key];
-//    [self.mapViewController selectCALObject:self.editedObject];
-    [self.mapViewController reselectPlace:(Place*)self.editedObject];
-    
+    if(self.editedObject.key != nil) {
+        [_editorsKeyMap removeObjectForKey:self.editedObject.key];
+        [self.mapViewController reselectPlace:(Place*)self.editedObject];
+    }
     // Cleanup and setting new state
     self.editing = NO;
     [_cancelActions removeAllObjects];
     [_confirmActions removeAllObjects];
-
+    self.editedObject.editing = NO;
 
     
 //    if(!_mapEdition) {

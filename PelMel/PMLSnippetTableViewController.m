@@ -496,7 +496,7 @@ typedef enum {
             }
             break;
         case kPMLSectionOvAddress:
-            if(indexPath.row < [[_infoProvider addressComponents] count]) {
+            if(indexPath.row < [[_infoProvider addressComponents] count] && [cell isKindOfClass:[PMLTextTableViewCell class]]) {
                 [self configureRowOvAddress:(PMLTextTableViewCell*)cell atIndex:indexPath.row];
             } else {
                 [self configureRowOvCity:(PMLImagedTitleTableViewCell*)cell];
@@ -1698,7 +1698,6 @@ typedef enum {
         if(_snippetItem.editing || _snippetItem.editingDesc) {
             [self.tableView setContentOffset:CGPointMake(0, 0)];
             [self.parentMenuController minimizeCurrentSnippet:YES];
-            [self.tableView reloadData];
             [self installNavBarCommitCancel];
         } else if(!_snippetItem.editing && !_snippetItem.editingDesc && self.navigationItem.leftBarButtonItem!=self.navigationItem.backBarButtonItem) {
             [self uninstallNavBarCommitCancel];
@@ -1707,7 +1706,7 @@ typedef enum {
         if(_snippetItem.key != nil && _snippetItem.editing) {
             [_snippetCell.titleTextField becomeFirstResponder];
         }
-
+        [self.tableView reloadData];
         
     } else if([keyPath isEqualToString:@"mainImage"]) {
 //        if(_opened) {
