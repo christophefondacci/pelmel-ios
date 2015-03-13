@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CALImage.h"
 
 @interface Special : NSObject
 
@@ -16,5 +17,5 @@
 @property (strong,nonatomic) NSDate *nextEnd;
 @property (strong,nonatomic) NSString *type;
 @property (strong,nonatomic) NSString *descriptionText;
-
+@property (strong,nonatomic) CALImage *thumb;
 @end

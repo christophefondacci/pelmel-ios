@@ -122,6 +122,7 @@
         NSNumber *nextStart = [jsonSpecial objectForKey:@"nextStart"];
         NSNumber *nextEnd   = [jsonSpecial objectForKey:@"nextEnd"];
         NSString *type      = [jsonSpecial objectForKey:@"type"];
+        NSDictionary  *thumb= [jsonSpecial objectForKey:@"thumb"];
         
         NSDate *startDate   = [[NSDate alloc] initWithTimeIntervalSince1970:[nextStart longValue]];
         NSDate *endDate     = [[NSDate alloc] initWithTimeIntervalSince1970:[nextEnd longValue]];
@@ -134,6 +135,10 @@
         special.nextStart   = startDate;
         special.nextEnd     = endDate;
         special.type        = type;
+        
+        // Filling media
+        CALImage *calThumb = [imageService convertJsonImageToImage:thumb];
+        special.thumb = calThumb;
         
         // Adding to our list
         [placeSpecials addObject:special];
@@ -744,11 +749,11 @@
         event.startDate = special.nextStart;
         event.endDate = special.nextEnd;
         event.name = [[TogaytherService uiService] nameForSpecial:special];
-        if(event.mainImage == nil) {
+        if(special.thumb!= nil) {
+            event.mainImage = special.thumb;
+        } else if(event.mainImage == nil) {
             event.mainImage = place.mainImage;
         }
-//        if(event.oth)
-//        event.otherImages = place.otherImages;
         event.place = place;
     }
     return event;
