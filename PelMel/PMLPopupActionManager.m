@@ -269,7 +269,6 @@
         NSLog(@"Cancel");
         [_currentEditor cancel];
         if(_navbarEdit) {
-            _menuManagerController.navigationItem.leftBarButtonItem = _navbarLeftItem;
 //            [self installNavBarEdit:_menuManagerController];
         }
     }];
@@ -343,11 +342,11 @@
             if(place.title!= nil) {
                 [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_modifyAction]];
             } else {
-                [actions addObject:_cancelAction];
+                [actions addObjectsFromArray:@[_cancelAction,_confirmAction ]];
             }
             // Observing title changes
-            [place addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
-            [_observedProperties addObject:@"title"];
+//            [place addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
+//            [_observedProperties addObject:@"title"];
         }
     }
 //
@@ -724,8 +723,8 @@
 }
 #pragma mark - KVO Observing
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if([@"title" isEqualToString:keyPath]) {
-        [self.popupController refreshActions ]; //buildActions:@[[self buildSaveActionFor:(Place*)object]]];
-    }
+//    if([@"title" isEqualToString:keyPath]) {
+//        [self.popupController refreshActions ]; //buildActions:@[[self buildSaveActionFor:(Place*)object]]];
+//    }
 }
 @end

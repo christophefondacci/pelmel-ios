@@ -52,6 +52,12 @@
             if([_datasource isCounterSelectedAtIndex:i]) {
                 imageView.image = [UIImage ipMaskedImageNamed:imageName color:UIColorFromRGB(0xef6c00)];
                 labelView.textColor =UIColorFromRGB(0xef6c00);
+                
+                if([_datasource counterActionAtIndex:i]!=PMLActionTypeNoAction) {
+                    imageView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
+                    imageView.layer.cornerRadius = 5;
+                    imageView.layer.masksToBounds = YES;
+                }
             } else {
                 imageView.image = [UIImage imageNamed:imageName];
                 labelView.textColor = UIColorFromRGB(0xc3c3c4);
@@ -86,17 +92,21 @@
     return nil;
 }
 -(NSString *)counterImageNameAtIndex:(NSInteger)index {
-    PMLActionType action = [_datasource counterActionAtIndex:index];
-    switch(action) {
-        case PMLActionTypeCheckin:
-        case PMLActionTypeAttend:
-            return @"ovvIconCheckin";
-        case PMLActionTypeComment:
-            return @"ovvIconComment";
-        case PMLActionTypeLike:
-            return @"snpIconLikeWhite";
-        default:
-            return nil;
+    if([_datasource respondsToSelector:@selector(counterImageNameAtIndex:)]) {
+        return [_datasource counterImageNameAtIndex:index];
+    } else {
+        PMLActionType action = [_datasource counterActionAtIndex:index];
+        switch(action) {
+            case PMLActionTypeCheckin:
+            case PMLActionTypeAttend:
+                return @"ovvIconCheckin";
+            case PMLActionTypeComment:
+                return @"ovvIconComment";
+            case PMLActionTypeLike:
+                return @"snpIconLikeWhite";
+            default:
+                return nil;
+        }
     }
 }
 - (void)actionTapped:(UIGestureRecognizer*)recognizer {

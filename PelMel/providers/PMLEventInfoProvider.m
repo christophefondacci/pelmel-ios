@@ -51,7 +51,7 @@
         PMLCalendar *calendar = (PMLCalendar*)[[TogaytherService getJsonService] objectForKey:_event.key];
         if(calendar != nil) {
             NSString *template = [NSString stringWithFormat:@"special.label.%@",calendar.calendarType];
-            return NSLocalizedString(template,template);
+            _event.name = NSLocalizedString(template,template);
         }
     }
     return _event.name;

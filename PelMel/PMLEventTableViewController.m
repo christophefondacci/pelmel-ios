@@ -10,19 +10,24 @@
 #import "PMLDatePickerTableViewCell.h"
 #import "PMLDetailTableViewCell.h"
 #import "PMLTextFieldTableViewCell.h"
+#import "PMLEventDescriptionTableViewCell.h"
 #import "TogaytherService.h"
 #import <MBProgressHUD.h>
 
-#define kPMLSectionsCount 2
+#define kPMLSectionsCount 3
 
 #define kPMLSectionGeneral 0
 #define kPMLSectionHours 1
+#define kPMLSectionDescription 2
 
 #define kPMLRowName 0
 
 #define kPMLRowsCountHours 2
 #define kPMLRowStart 0
 #define kPMLRowEnd 1
+
+#define kPMLRowsCountDescription 1
+#define kPMLRowDescription 0
 
 @interface PMLEventTableViewController ()
 
@@ -32,6 +37,8 @@
     NSIndexPath *_datePickerIndexPath;
     
     ConversionService *_conversionService;
+    
+    PMLEventDescriptionTableViewCell *_descriptionCell;
 }
 
 - (void)viewDidLoad {
@@ -85,6 +92,8 @@
             return 1;
         case kPMLSectionHours:
             return kPMLRowsCountHours + (_datePickerIndexPath ? 1 : 0);
+        case kPMLSectionDescription:
+            return kPMLRowsCountDescription;
             
     }
     // Return the number of rows in the section.
@@ -108,6 +117,9 @@
                     cellId = @"nameCell";
             }
             break;
+        case kPMLSectionDescription:
+            cellId = @"descCell";
+            break;
         default:
             return nil;
     }
@@ -126,6 +138,9 @@
                 [self configureDateCell:detailCell forIndex:indexPath.row];
             }
             break;
+        case kPMLSectionDescription:
+            [self configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell];
+            break;
 
     }
     // Configure the cell...
@@ -134,6 +149,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == kPMLSectionDescription) {
+        return 100;
+    }
     if(_datePickerIndexPath != nil && [indexPath isEqual:_datePickerIndexPath]) {
         return 162;
     } else {
@@ -235,6 +253,11 @@
         [datePickerCell.datePicker setDate:self.event.endDate];
     }
 }
+-(void)configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell {
+    cell.descriptionTextView.text = self.event.miniDesc;
+    cell.placeholderLocalizedCode = @"calendar.desc.placeholder";
+    _descriptionCell = cell;
+}
 /*
 #pragma mark - Navigation
 
@@ -273,6 +296,7 @@
 }
 -(void)saveTapped:(id)sender {
     BOOL newEvent = self.event.key == nil;
+    self.event.miniDesc = _descriptionCell.descriptionTextView.text;
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = NSLocalizedString(@"action.wait", @"Please wait...");

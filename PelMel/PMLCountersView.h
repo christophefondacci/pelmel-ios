@@ -20,7 +20,7 @@
 //- (NSInteger)countersCount; // For future use
 
 // Provides icon and label for the counter
-//- (NSString*)counterImageNameAtIndex:(NSInteger)index;
+- (NSString*)counterImageNameAtIndex:(NSInteger)index;
 - (NSString*)counterLabelAtIndex:(NSInteger)index;
 - (BOOL)isCounterSelectedAtIndex:(NSInteger)index;
 /**
@@ -29,6 +29,8 @@
  */
 - (PMLActionType)counterActionAtIndex:(NSInteger)index;
 - (PMLPopupActionManager*)actionManager;
+@optional
+- (UIImage *)counterImageAtIndex:(NSInteger)index;
 @end
 
 @interface PMLCountersView : UIView

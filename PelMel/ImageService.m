@@ -153,6 +153,8 @@
 }
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
+    pickerController.navigationBar.tintColor = [UIColor blackColor];
+    pickerController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     // We set ourselves as delegate
     pickerController.delegate = self;
     

@@ -746,6 +746,17 @@
         [dic setObject:@"true" forKey:key];
     }
 }
+-(void)fillDescriptionsFor:(CALObject*)object inParams:(NSMutableDictionary*)paramValues {
+    [self setIfDefined:object.miniDesc   forKey:@"description" fill:paramValues];
+    if(object.miniDesc) {
+        NSString *key = object.miniDescKey == nil ? @"" : object.miniDescKey;
+        [paramValues setObject:key forKey:@"descriptionKey"];
+    }
+    if(object.miniDescLang==nil) {
+        object.miniDescLang= [TogaytherService getLanguageIso6391Code];
+    }
+    [self setIfDefined:object.miniDescLang forKey:@"descriptionLanguageCode" fill:paramValues];
+}
 - (void)updatePlace:(Place *)place callback:(UpdatePlaceCompletionBlock)callback {
     NSLog(@"updatePlace called");
     [self notifyWillUpdatePlace:place];
@@ -771,16 +782,8 @@
         [self setIfDefined:user.token       forKey:@"nxtpUserToken" fill:paramValues];
         
 
-        [self setIfDefined:place.miniDesc   forKey:@"description" fill:paramValues];
-        if(place.miniDesc) {
-            NSString *key = place.miniDescKey == nil ? @"" : place.miniDescKey;
-            [paramValues setObject:key forKey:@"descriptionKey"];
-        }
-        if(place.miniDescLang==nil) {
-            place.miniDescLang= [TogaytherService getLanguageIso6391Code];
-        }
-        [self setIfDefined:place.miniDescLang forKey:@"descriptionLanguageCode" fill:paramValues];
-        
+        // Filling descriptions
+        [self fillDescriptionsFor:place inParams:paramValues];
         // Preparing POST request
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -952,6 +955,9 @@
         
         [self setIfDefined:event.place.key       forKey:@"placeId" fill:paramValues];
         [self setIfDefined:user.token            forKey:@"nxtpUserToken" fill:paramValues];
+        
+        // Filling descriptions
+        [self fillDescriptionsFor:event inParams:paramValues];
         
         // Preparing POST request
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

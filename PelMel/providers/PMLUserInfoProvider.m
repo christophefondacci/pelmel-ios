@@ -77,8 +77,8 @@
 }
 // Provider of thumb displayed in the main snippet section
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
-    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likers forType:PMLThumbsUserLike];
-    [_thumbsProvider addItems:_user.likedPlaces forType:PMLThumbsLike];
+    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likedPlaces forType:PMLThumbsLike];
+    [_thumbsProvider addItems:_user.likers forType:PMLThumbsUserLike];
     [_thumbsProvider addItems:_user.checkedInPlaces forType:PMLThumbsCheckin];
     [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.checkin" forType:PMLThumbsCheckin];
     [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.like" forType:PMLThumbsLike];
@@ -261,7 +261,7 @@
 - (NSString *)counterLabelAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:
-            return [_uiService localizedString:@"counters.likes" forCount:_user.likeCount];
+            return [_uiService localizedString:@"counters.likes.user" forCount:_user.likeCount];
         case kPMLCounterIndexCheckin:
             return [_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
         case kPMLCounterIndexComment:
@@ -274,11 +274,22 @@
         case kPMLCounterIndexLike:
             return PMLActionTypeLike;
         case kPMLCounterIndexCheckin:
-            return PMLActionTypeCheckin;
+            return PMLActionTypeNoAction;
         case kPMLCounterIndexComment:
             return PMLActionTypeComment;
     }
     return PMLActionTypeNoAction;
+}
+- (NSString *)counterImageNameAtIndex:(NSInteger)index {
+    switch(index) {
+        case kPMLCounterIndexLike:
+            return PML_ICON_LIKE;
+        case kPMLCounterIndexCheckin:
+            return PML_ICON_CHECKIN;
+        case kPMLCounterIndexComment:
+            return PML_ICON_COMMENT;
+    }
+    return nil;
 }
 - (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
     switch(index) {

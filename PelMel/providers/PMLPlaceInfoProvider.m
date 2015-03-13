@@ -38,7 +38,6 @@
     
     // Strategies
     id<Likeable> _likeableDelegate;
-    PMLCountersView *_countersView;
 }
 
 - (instancetype)initWith:(id)place
@@ -54,9 +53,7 @@
         
         // Initializing like behaviour
         _likeableDelegate = [[LikeableStrategyObjectWithLikers alloc] init];
-        
-        // Pre-loading custom view
-        _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
+
     }
     return self;
 }

@@ -69,6 +69,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -1282,6 +1284,45 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="textField" destination="wlq-Bf-TZP" id="AGp-4n-NI4"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descCell" rowHeight="100" id="osg-bm-to7" customClass="PMLEventDescriptionTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="osg-bm-to7" id="aNT-3M-gr1">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iZr-SF-QNJ">
+                                            <rect key="frame" x="25" y="19" width="275" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="ajh-jp-yBQ"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cBA-FA-LZf">
+                                            <rect key="frame" x="20" y="12" width="280" height="76"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="cBA-FA-LZf" firstAttribute="trailing" secondItem="iZr-SF-QNJ" secondAttribute="trailing" id="8iu-Sf-11I"/>
+                                        <constraint firstAttribute="trailing" secondItem="cBA-FA-LZf" secondAttribute="trailing" constant="20" id="KRw-OS-iFE"/>
+                                        <constraint firstItem="cBA-FA-LZf" firstAttribute="top" secondItem="aNT-3M-gr1" secondAttribute="top" constant="12" id="RqX-8l-vNt"/>
+                                        <constraint firstItem="cBA-FA-LZf" firstAttribute="top" secondItem="iZr-SF-QNJ" secondAttribute="top" constant="-7" id="pYf-64-lHg"/>
+                                        <constraint firstAttribute="bottom" secondItem="cBA-FA-LZf" secondAttribute="bottom" constant="12" id="qdf-gl-etm"/>
+                                        <constraint firstItem="cBA-FA-LZf" firstAttribute="leading" secondItem="aNT-3M-gr1" secondAttribute="leading" constant="20" id="rJM-iq-9eV"/>
+                                        <constraint firstItem="cBA-FA-LZf" firstAttribute="leading" secondItem="iZr-SF-QNJ" secondAttribute="leading" constant="-5" id="w8F-t8-Lkx"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionPlaceholderLabel" destination="iZr-SF-QNJ" id="w3p-29-enX"/>
+                                    <outlet property="descriptionTextView" destination="cBA-FA-LZf" id="cCf-9u-jm7"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

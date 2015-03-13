@@ -214,6 +214,8 @@
 		B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B49892F3199B839500F51B8F /* PMLImageTableViewCell.h */; };
 		B49892F6199B839500F51B8F /* PMLImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B49892F4199B839500F51B8F /* PMLImageTableViewCell.m */; };
 		B49C97231AB2AEE7009B9F8F /* JsonService in Resources */ = {isa = PBXBuildFile; fileRef = B49C97221AB2AEE7009B9F8F /* JsonService */; };
+		B49C97261AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B49C97241AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.h */; };
+		B49C97271AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B49C97251AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.m */; };
 		B49F989F19A2131100BD3B2F /* PMLDynamicActionObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B49F989D19A2131100BD3B2F /* PMLDynamicActionObject.h */; };
 		B49F98A019A2131100BD3B2F /* PMLDynamicActionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B49F989E19A2131100BD3B2F /* PMLDynamicActionObject.m */; };
 		B49F98A319A2186300BD3B2F /* PMLOpenActionBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = B49F98A119A2186300BD3B2F /* PMLOpenActionBehavior.h */; };
@@ -577,6 +579,8 @@
 		B49892F3199B839500F51B8F /* PMLImageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLImageTableViewCell.h; sourceTree = "<group>"; };
 		B49892F4199B839500F51B8F /* PMLImageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLImageTableViewCell.m; sourceTree = "<group>"; };
 		B49C97221AB2AEE7009B9F8F /* JsonService */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JsonService; sourceTree = "<group>"; };
+		B49C97241AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLEventDescriptionTableViewCell.h; sourceTree = "<group>"; };
+		B49C97251AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLEventDescriptionTableViewCell.m; sourceTree = "<group>"; };
 		B49F989D19A2131100BD3B2F /* PMLDynamicActionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLDynamicActionObject.h; sourceTree = "<group>"; };
 		B49F989E19A2131100BD3B2F /* PMLDynamicActionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLDynamicActionObject.m; sourceTree = "<group>"; };
 		B49F98A119A2186300BD3B2F /* PMLOpenActionBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLOpenActionBehavior.h; sourceTree = "<group>"; };
@@ -894,6 +898,8 @@
 				B457A0FC1A9AF08A00207D8E /* PMLDatePickerTableViewCell.h */,
 				B457A0FD1A9AF08A00207D8E /* PMLDatePickerTableViewCell.m */,
 				B45B38201AAF9F5000730313 /* PMLHoursSectionTitleView.xib */,
+				B49C97241AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.h */,
+				B49C97251AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.m */,
 			);
 			name = Event;
 			sourceTree = "<group>";
@@ -1498,6 +1504,7 @@
 				B4BB9F0C19D4F9260070B03C /* HPGrowingTextView.h in Headers */,
 				B405E65E1A93B71600C49F64 /* PMLCalendar.h in Headers */,
 				B4E8292918A9EE530063715C /* MainMenuTableViewController.h in Headers */,
+				B49C97261AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.h in Headers */,
 				B41DD75A197BD9DA008F09D9 /* UIMapOptionView.h in Headers */,
 				B457A1161A9E374E00207D8E /* PMLModalTransitionAnimator.h in Headers */,
 				B43FA67619866ECD008A1679 /* Activity.h in Headers */,
@@ -1567,7 +1574,7 @@
 				ORGANIZATIONNAME = "Christophe Fondacci";
 				TargetAttributes = {
 					B4D56070160B673F003A738E = {
-						DevelopmentTeam = V485FK94U3;
+						DevelopmentTeam = KZF9RFFF3M;
 					};
 				};
 			};
@@ -1819,6 +1826,7 @@
 				B4EECAF616300218005F80DE /* UITableSegmentViewCell.m in Sources */,
 				B4BB9F0F19D4F9260070B03C /* HPTextViewInternal.m in Sources */,
 				B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */,
+				B49C97271AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.m in Sources */,
 				B40668BC19714CCE0012DF71 /* APLPositionToBoundsMapping.m in Sources */,
 				B41A13F91639662300827E04 /* TermsOfUseViewController.m in Sources */,
 				B4CDDB0D1680D140002C01C0 /* Event.m in Sources */,
@@ -2049,7 +2057,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: FGP Digital LLC (KZF9RFFF3M)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/cfondacci/Dev/iOS/togayther.mobile,

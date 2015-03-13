@@ -27,6 +27,11 @@
 #define PML_FONT_BADGES @"OpenSans"
 
 
+#define PML_ICON_LIKE @"snpIconLikeWhite"
+#define PML_ICON_CHECKIN @"ovvIconCheckin"
+#define PML_ICON_COMMENT @"ovvIconComment"
+
+
 #import "Constants.h"
 
 #define SYSTEM_VERSION_EQUAL_TO(v)                  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
