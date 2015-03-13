@@ -47,6 +47,13 @@
 }
 // Title of the element
 -(NSString*) title {
+    if(_event.name.length==0 && [_event.key hasPrefix:@"SERI"]) {
+        PMLCalendar *calendar = (PMLCalendar*)[[TogaytherService getJsonService] objectForKey:_event.key];
+        if(calendar != nil) {
+            NSString *template = [NSString stringWithFormat:@"special.label.%@",calendar.calendarType];
+            return NSLocalizedString(template,template);
+        }
+    }
     return _event.name;
 }
 - (NSString *)subtitle {
@@ -71,7 +78,7 @@
 
 // Provider of thumb displayed in the main snippet section
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
-    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:_event.likers forType:PMLThumbsLocation];
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:_event.likers forType:PMLThumbsUsersInEvent];
     return provider;
 }
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {

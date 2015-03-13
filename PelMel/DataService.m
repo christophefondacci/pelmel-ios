@@ -286,13 +286,8 @@
 
         // Building specials as events
         for(Special *special in place.specials) {
-            if(![special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
-                Event *event = [[Event alloc] initWithPlace:place];
-                event.startDate = special.nextStart;
-                event.endDate = special.nextEnd;
-                event.name = [[TogaytherService uiService] nameForSpecial:special];
-                event.mainImage = place.mainImage;
-                event.otherImages = place.otherImages;
+            Event *event = [jsonService convertSpecial:special toEventForPlace:place];
+            if(event != nil) {
                 [happyHoursEvents addObject:event];
             }
         }

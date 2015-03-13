@@ -218,11 +218,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "177"
-            endingLineNumber = "177"
+            startingLineNumber = "178"
+            endingLineNumber = "178"
             landmarkName = "-updateKeyboard:up:"
             landmarkType = "5">
          </BreakpointContent>
@@ -234,11 +234,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "-updateKeyboard:up:"
             landmarkType = "5">
          </BreakpointContent>
@@ -360,11 +360,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "452"
-            endingLineNumber = "452"
+            startingLineNumber = "454"
+            endingLineNumber = "454"
             landmarkName = "-showMessageTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -424,11 +424,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "694"
-            endingLineNumber = "694"
+            startingLineNumber = "698"
+            endingLineNumber = "698"
             landmarkName = "-tableView:heightForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -520,11 +520,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "666"
-            endingLineNumber = "666"
+            startingLineNumber = "661"
+            endingLineNumber = "661"
             landmarkName = "-notifyOverviewDataAvailable:"
             landmarkType = "5">
          </BreakpointContent>
@@ -568,11 +568,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "401"
-            endingLineNumber = "401"
+            startingLineNumber = "396"
+            endingLineNumber = "396"
             landmarkName = "-locationManager:didUpdateToLocation:fromLocation:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1048,11 +1048,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "600"
-            endingLineNumber = "600"
+            startingLineNumber = "604"
+            endingLineNumber = "604"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1064,11 +1064,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1624"
-            endingLineNumber = "1624"
+            startingLineNumber = "1661"
+            endingLineNumber = "1661"
             landmarkName = "-textFieldShouldReturn:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1080,11 +1080,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915277.019137"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "816"
-            endingLineNumber = "816"
+            startingLineNumber = "826"
+            endingLineNumber = "826"
             landmarkName = "-configureRowSnippet:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1112,11 +1112,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "475"
-            endingLineNumber = "475"
+            startingLineNumber = "474"
+            endingLineNumber = "474"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1144,11 +1144,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1361"
-            endingLineNumber = "1361"
+            startingLineNumber = "1398"
+            endingLineNumber = "1398"
             landmarkName = "-configureRowTags:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1160,11 +1160,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1357"
-            endingLineNumber = "1357"
+            startingLineNumber = "1394"
+            endingLineNumber = "1394"
             landmarkName = "-configureRowTags:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1192,11 +1192,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1265"
-            endingLineNumber = "1265"
+            startingLineNumber = "1302"
+            endingLineNumber = "1302"
             landmarkName = "-configureRowOvDesc:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1208,11 +1208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
+            startingLineNumber = "360"
+            endingLineNumber = "360"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1240,11 +1240,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1097"
-            endingLineNumber = "1097"
+            startingLineNumber = "1106"
+            endingLineNumber = "1106"
             landmarkName = "-configureRowThumbPreview:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1368,11 +1368,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447810442.359601"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "469"
-            endingLineNumber = "469"
+            startingLineNumber = "471"
+            endingLineNumber = "471"
             landmarkName = "-showFromUserTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1432,11 +1432,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1672"
-            endingLineNumber = "1672"
+            startingLineNumber = "1709"
+            endingLineNumber = "1709"
             landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1448,11 +1448,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915277.019137"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "832"
-            endingLineNumber = "832"
+            startingLineNumber = "842"
+            endingLineNumber = "842"
             landmarkName = "-configureRowSnippet:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1670,11 +1670,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "791"
-            endingLineNumber = "791"
+            startingLineNumber = "786"
+            endingLineNumber = "786"
             landmarkName = "-updatePlace:callback:"
             landmarkType = "5">
             <Locations>
@@ -1716,11 +1716,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "821"
-            endingLineNumber = "821"
+            startingLineNumber = "816"
+            endingLineNumber = "816"
             landmarkName = "-updatePlace:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1732,11 +1732,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "792"
-            endingLineNumber = "792"
+            startingLineNumber = "787"
+            endingLineNumber = "787"
             landmarkName = "-updatePlace:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1780,11 +1780,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "414"
-            endingLineNumber = "414"
+            startingLineNumber = "416"
+            endingLineNumber = "416"
             landmarkName = "-messageSent:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1908,11 +1908,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "568"
-            endingLineNumber = "568"
+            startingLineNumber = "572"
+            endingLineNumber = "572"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1972,11 +1972,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "351"
-            endingLineNumber = "351"
+            startingLineNumber = "348"
+            endingLineNumber = "348"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1988,11 +1988,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/JsonService.m"
-            timestampString = "447832643.304745"
+            timestampString = "447893125.654904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "361"
-            endingLineNumber = "361"
+            startingLineNumber = "363"
+            endingLineNumber = "363"
             landmarkName = "-convertJsonActivityToActivity:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2004,11 +2004,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1309"
-            endingLineNumber = "1309"
+            startingLineNumber = "1346"
+            endingLineNumber = "1346"
             landmarkName = "-configureRowTopPlace:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2020,11 +2020,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "396"
-            endingLineNumber = "396"
+            startingLineNumber = "391"
+            endingLineNumber = "391"
             landmarkName = "-locationManager:didUpdateToLocation:fromLocation:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2036,11 +2036,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "489"
-            endingLineNumber = "489"
+            startingLineNumber = "491"
+            endingLineNumber = "491"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2052,11 +2052,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "427"
-            endingLineNumber = "427"
+            startingLineNumber = "426"
+            endingLineNumber = "426"
             landmarkName = "-rowIdForIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2148,11 +2148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447829647.577668"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "520"
-            endingLineNumber = "520"
+            startingLineNumber = "522"
+            endingLineNumber = "522"
             landmarkName = "-appBecameActive:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2974,11 +2974,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/JsonService.m"
-            timestampString = "447832643.304745"
+            timestampString = "447893125.654904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "287"
-            endingLineNumber = "287"
+            startingLineNumber = "289"
+            endingLineNumber = "289"
             landmarkName = "-convertJsonOverviewPlaceToPlace:defaultPlace:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2990,11 +2990,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/JsonService.m"
-            timestampString = "447832643.304745"
+            timestampString = "447893125.654904"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
             landmarkName = "-convertJsonOverviewPlaceToPlace:defaultPlace:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3288,11 +3288,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "883"
-            endingLineNumber = "883"
+            startingLineNumber = "878"
+            endingLineNumber = "878"
             landmarkName = "-updateCalendar:callback:errorCallback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3336,11 +3336,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "645"
-            endingLineNumber = "645"
+            startingLineNumber = "649"
+            endingLineNumber = "649"
             landmarkName = "-tableView:viewForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3352,11 +3352,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "647"
-            endingLineNumber = "647"
+            startingLineNumber = "651"
+            endingLineNumber = "651"
             landmarkName = "-tableView:viewForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3368,11 +3368,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915277.019137"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "750"
-            endingLineNumber = "750"
+            startingLineNumber = "760"
+            endingLineNumber = "760"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3400,11 +3400,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
+            startingLineNumber = "265"
+            endingLineNumber = "265"
             landmarkName = "-viewDidAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3448,11 +3448,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "941"
-            endingLineNumber = "941"
+            startingLineNumber = "936"
+            endingLineNumber = "936"
             landmarkName = "-updateEvent:callback:errorCallback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3480,11 +3480,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3496,11 +3496,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1244"
-            endingLineNumber = "1244"
+            startingLineNumber = "1253"
+            endingLineNumber = "1253"
             landmarkName = "-configureRowOvEvents:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3512,11 +3512,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "640"
-            endingLineNumber = "640"
+            startingLineNumber = "644"
+            endingLineNumber = "644"
             landmarkName = "-tableView:viewForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3528,11 +3528,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "637"
-            endingLineNumber = "637"
+            startingLineNumber = "641"
+            endingLineNumber = "641"
             landmarkName = "-tableView:viewForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3576,11 +3576,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "651"
-            endingLineNumber = "651"
+            startingLineNumber = "655"
+            endingLineNumber = "655"
             landmarkName = "-tableView:viewForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3608,11 +3608,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915078.693964"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "651"
-            endingLineNumber = "651"
+            startingLineNumber = "655"
+            endingLineNumber = "655"
             landmarkName = "-tableView:viewForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3624,11 +3624,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "755"
-            endingLineNumber = "755"
+            startingLineNumber = "750"
+            endingLineNumber = "750"
             landmarkName = "-updatePlace:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3640,11 +3640,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "756"
-            endingLineNumber = "756"
+            startingLineNumber = "751"
+            endingLineNumber = "751"
             landmarkName = "-updatePlace:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3688,11 +3688,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1901"
-            endingLineNumber = "1901">
+            startingLineNumber = "1938"
+            endingLineNumber = "1938">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -3718,11 +3718,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447791949.013438"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "214"
-            endingLineNumber = "214"
+            startingLineNumber = "215"
+            endingLineNumber = "215"
             landmarkName = "-viewDidLoad"
             landmarkType = "5">
          </BreakpointContent>
@@ -3910,11 +3910,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1252"
-            endingLineNumber = "1252"
+            startingLineNumber = "1261"
+            endingLineNumber = "1261"
             landmarkName = "-configureRowOvEvents:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3926,11 +3926,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/JsonService.m"
-            timestampString = "447832643.304745"
+            timestampString = "447916560.973363"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "453"
-            endingLineNumber = "453"
+            startingLineNumber = "462"
+            endingLineNumber = "462"
             landmarkName = "-convertJsonEventToEvent:defaultEvent:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3942,11 +3942,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "485"
-            endingLineNumber = "485"
+            startingLineNumber = "480"
+            endingLineNumber = "480"
             landmarkName = "-eventOverviewDataFetched:object:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3958,11 +3958,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "488"
-            endingLineNumber = "488"
+            startingLineNumber = "483"
+            endingLineNumber = "483"
             landmarkName = "-eventOverviewDataFetched:object:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3990,11 +3990,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1544"
-            endingLineNumber = "1544"
+            startingLineNumber = "1581"
+            endingLineNumber = "1581"
             landmarkName = "-alignTop"
             landmarkType = "5">
          </BreakpointContent>
@@ -4006,11 +4006,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "334"
-            endingLineNumber = "334"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4418,11 +4418,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/providers/PMLPlaceInfoProvider.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
+            startingLineNumber = "327"
+            endingLineNumber = "327"
             landmarkName = "-likeTapped:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4434,11 +4434,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/providers/PMLPlaceInfoProvider.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "333"
-            endingLineNumber = "333"
+            startingLineNumber = "328"
+            endingLineNumber = "328"
             landmarkName = "-likeTapped:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4466,11 +4466,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915277.019137"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "809"
-            endingLineNumber = "809"
+            startingLineNumber = "819"
+            endingLineNumber = "819"
             landmarkName = "-configureRowSnippet:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4482,11 +4482,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1654"
-            endingLineNumber = "1654"
+            startingLineNumber = "1691"
+            endingLineNumber = "1691"
             landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4498,11 +4498,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "557"
-            endingLineNumber = "557"
+            startingLineNumber = "552"
+            endingLineNumber = "552"
             landmarkName = "-like:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4514,11 +4514,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "561"
-            endingLineNumber = "561"
+            startingLineNumber = "556"
+            endingLineNumber = "556"
             landmarkName = "-dislike:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4530,11 +4530,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "589"
-            endingLineNumber = "589"
+            startingLineNumber = "584"
+            endingLineNumber = "584"
             landmarkName = "-genericLike:like:callback:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4546,11 +4546,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/DataService.m"
-            timestampString = "447873360.652696"
+            timestampString = "447918381.801619"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "682"
-            endingLineNumber = "682"
+            startingLineNumber = "677"
+            endingLineNumber = "677"
             landmarkName = "-notifyLike:likes:dislikes:liked:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4738,11 +4738,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1887"
-            endingLineNumber = "1887"
+            startingLineNumber = "1924"
+            endingLineNumber = "1924"
             landmarkName = "-menuManager:snippetPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4754,11 +4754,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "551"
-            endingLineNumber = "551"
+            startingLineNumber = "553"
+            endingLineNumber = "553"
             landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4770,11 +4770,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1869"
-            endingLineNumber = "1869"
+            startingLineNumber = "1906"
+            endingLineNumber = "1906"
             landmarkName = "-menuManager:snippetOpened:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4818,11 +4818,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1880"
-            endingLineNumber = "1880"
+            startingLineNumber = "1917"
+            endingLineNumber = "1917"
             landmarkName = "-menuManager:snippetMinimized:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4834,11 +4834,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1887"
-            endingLineNumber = "1887"
+            startingLineNumber = "1924"
+            endingLineNumber = "1924"
             landmarkName = "-menuManager:snippetPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4850,11 +4850,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1692"
-            endingLineNumber = "1692"
+            startingLineNumber = "1729"
+            endingLineNumber = "1729"
             landmarkName = "-tableViewPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4866,11 +4866,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1872"
-            endingLineNumber = "1872"
+            startingLineNumber = "1909"
+            endingLineNumber = "1909"
             landmarkName = "-menuManager:snippetMinimized:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4882,11 +4882,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1888"
-            endingLineNumber = "1888"
+            startingLineNumber = "1925"
+            endingLineNumber = "1925"
             landmarkName = "-menuManager:snippetPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4898,11 +4898,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1724"
-            endingLineNumber = "1724"
+            startingLineNumber = "1761"
+            endingLineNumber = "1761"
             landmarkName = "-tableViewPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4914,11 +4914,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1753"
-            endingLineNumber = "1753"
+            startingLineNumber = "1790"
+            endingLineNumber = "1790"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -4930,11 +4930,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1758"
-            endingLineNumber = "1758"
+            startingLineNumber = "1795"
+            endingLineNumber = "1795"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -4946,11 +4946,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1754"
-            endingLineNumber = "1754"
+            startingLineNumber = "1791"
+            endingLineNumber = "1791"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -4962,11 +4962,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1760"
-            endingLineNumber = "1760"
+            startingLineNumber = "1797"
+            endingLineNumber = "1797"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -5010,11 +5010,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1774"
-            endingLineNumber = "1774"
+            startingLineNumber = "1811"
+            endingLineNumber = "1811"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -5026,11 +5026,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1764"
-            endingLineNumber = "1764"
+            startingLineNumber = "1801"
+            endingLineNumber = "1801"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
             <Locations>
@@ -5088,11 +5088,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1857"
-            endingLineNumber = "1857"
+            startingLineNumber = "1894"
+            endingLineNumber = "1894"
             landmarkName = "-menuManager:snippetOpened:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5104,11 +5104,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "290"
-            endingLineNumber = "290"
+            startingLineNumber = "286"
+            endingLineNumber = "286"
             landmarkName = "-messagesFetched:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5120,11 +5120,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "150"
-            endingLineNumber = "150"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "-viewWillDisappear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5136,27 +5136,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "283"
-            endingLineNumber = "283"
-            landmarkName = "-messagesFetched:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "311"
-            endingLineNumber = "311"
+            startingLineNumber = "307"
+            endingLineNumber = "307"
             landmarkName = "-messagesFetched:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5168,11 +5152,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1440"
-            endingLineNumber = "1440"
+            startingLineNumber = "1477"
+            endingLineNumber = "1477"
             landmarkName = "-commentTapped"
             landmarkType = "5">
          </BreakpointContent>
@@ -5184,11 +5168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "246"
+            endingLineNumber = "246"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5378,11 +5362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1744"
-            endingLineNumber = "1744"
+            startingLineNumber = "1781"
+            endingLineNumber = "1781"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -5394,11 +5378,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1750"
-            endingLineNumber = "1750"
+            startingLineNumber = "1787"
+            endingLineNumber = "1787"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -5410,11 +5394,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1771"
-            endingLineNumber = "1771"
+            startingLineNumber = "1808"
+            endingLineNumber = "1808"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -5442,11 +5426,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447654404.904046"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
+            startingLineNumber = "139"
+            endingLineNumber = "139"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5584,11 +5568,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1690"
-            endingLineNumber = "1690"
+            startingLineNumber = "1727"
+            endingLineNumber = "1727"
             landmarkName = "-tableViewPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5600,11 +5584,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1696"
-            endingLineNumber = "1696"
+            startingLineNumber = "1733"
+            endingLineNumber = "1733"
             landmarkName = "-tableViewPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5616,11 +5600,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1808"
-            endingLineNumber = "1808"
+            startingLineNumber = "1845"
+            endingLineNumber = "1845"
             landmarkName = "-installNavBarEdit"
             landmarkType = "5">
          </BreakpointContent>
@@ -5632,11 +5616,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1766"
-            endingLineNumber = "1766"
+            startingLineNumber = "1803"
+            endingLineNumber = "1803"
             landmarkName = "-adjustEditVisibility"
             landmarkType = "5">
          </BreakpointContent>
@@ -5664,11 +5648,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1849"
-            endingLineNumber = "1849"
+            startingLineNumber = "1886"
+            endingLineNumber = "1886"
             landmarkName = "-uninstallNavBarEdit"
             landmarkType = "5">
          </BreakpointContent>
@@ -5680,11 +5664,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1825"
-            endingLineNumber = "1825"
+            startingLineNumber = "1862"
+            endingLineNumber = "1862"
             landmarkName = "-uninstallNavBarCommitCancel"
             landmarkType = "5">
          </BreakpointContent>
@@ -5824,11 +5808,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1717"
-            endingLineNumber = "1717"
+            startingLineNumber = "1754"
+            endingLineNumber = "1754"
             landmarkName = "-tableViewPanned:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5840,11 +5824,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915277.019137"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "791"
-            endingLineNumber = "791"
+            startingLineNumber = "801"
+            endingLineNumber = "801"
             landmarkName = "-configureRowSnippetDescriptionEditor:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5856,11 +5840,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "465"
-            endingLineNumber = "465"
+            startingLineNumber = "464"
+            endingLineNumber = "464"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5872,11 +5856,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915277.019137"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "835"
-            endingLineNumber = "835"
+            startingLineNumber = "845"
+            endingLineNumber = "845"
             landmarkName = "-configureRowSnippet:"
             landmarkType = "5">
          </BreakpointContent>
@@ -5888,11 +5872,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1441"
-            endingLineNumber = "1441"
+            startingLineNumber = "1478"
+            endingLineNumber = "1478"
             landmarkName = "-commentTapped"
             landmarkType = "5">
          </BreakpointContent>
@@ -6046,11 +6030,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447828175.037384"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "489"
-            endingLineNumber = "489"
+            startingLineNumber = "491"
+            endingLineNumber = "491"
             landmarkName = "-prepareForSegue:sender:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6062,11 +6046,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447828175.037384"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "480"
-            endingLineNumber = "480"
+            startingLineNumber = "482"
+            endingLineNumber = "482"
             landmarkName = "-showFromUserTapped:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6078,11 +6062,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447829647.577668"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "513"
-            endingLineNumber = "513"
+            startingLineNumber = "515"
+            endingLineNumber = "515"
             landmarkName = "-closeMenu:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6094,11 +6078,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MessageViewController.m"
-            timestampString = "447829106.96756"
+            timestampString = "447913723.694691"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "510"
-            endingLineNumber = "510"
+            startingLineNumber = "512"
+            endingLineNumber = "512"
             landmarkName = "-closeMenu:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6158,11 +6142,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447883119.083303"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1884"
-            endingLineNumber = "1884"
+            startingLineNumber = "1921"
+            endingLineNumber = "1921"
             landmarkName = "-menuManager:snippetMinimized:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6174,11 +6158,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447915024.734407"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "349"
-            endingLineNumber = "349"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
             landmarkName = "-tableView:numberOfRowsInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6190,11 +6174,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "447875395.638265"
+            timestampString = "447916788.148565"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1588"
-            endingLineNumber = "1588"
+            startingLineNumber = "1625"
+            endingLineNumber = "1625"
             landmarkName = "-didLoadOverviewData:"
             landmarkType = "5">
          </BreakpointContent>
@@ -6340,6 +6324,309 @@
             startingLineNumber = "794"
             endingLineNumber = "794"
             landmarkName = "-imageUploadFailed:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1608"
+            endingLineNumber = "1608"
+            landmarkName = "-didLoadOverviewData:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1609"
+            endingLineNumber = "1609"
+            landmarkName = "-didLoadOverviewData:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1607"
+            endingLineNumber = "1607"
+            landmarkName = "-didLoadOverviewData:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447915277.019137"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "759"
+            endingLineNumber = "759"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447915024.734407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "-viewDidAppear:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.SymbolicBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = ""
+            moduleName = "">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            condition = "[cell isKindOfClass:[PMLImagedTitleTableViewCell class]]"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1198"
+            endingLineNumber = "1198"
+            landmarkName = "-configureRowOvTitle:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            condition = "[cell isKindOfClass:[PMLImagedTitleTableViewCell class]]"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1212"
+            endingLineNumber = "1212"
+            landmarkName = "-configureRowOvAddress:atIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            condition = "[cell isKindOfClass:[PMLImagedTitleTableViewCell class]]"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1233"
+            endingLineNumber = "1233"
+            landmarkName = "-configureRowOvHours:atIndex:forType:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            condition = "[cell isKindOfClass:[PMLImagedTitleTableViewCell class]]"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1241"
+            endingLineNumber = "1241"
+            landmarkName = "-configureRowOvHoursTitle:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            condition = "[cell isKindOfClass:[PMLImagedTitleTableViewCell class]]"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1246"
+            endingLineNumber = "1246"
+            landmarkName = "-configureRowOvHappyHoursTitle:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/DataService.m"
+            timestampString = "447918381.801619"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "564"
+            endingLineNumber = "564"
+            landmarkName = "-genericLike:like:callback:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/ImageService.m"
+            timestampString = "447915557.019676"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "316"
+            endingLineNumber = "316"
+            landmarkName = "-upload:forObject:callback:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1713"
+            endingLineNumber = "1713"
+            landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSectionTitleView.m"
+            timestampString = "447916035.838647"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "-awakeFromNib"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLDataManager.m"
+            timestampString = "447916696.754435"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "378"
+            endingLineNumber = "378"
+            landmarkName = "-imageUploaded:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLSnippetTableViewController.m"
+            timestampString = "447916788.148565"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1714"
+            endingLineNumber = "1714"
+            landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/providers/PMLEventInfoProvider.m"
+            timestampString = "447919933.834181"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "51"
+            endingLineNumber = "51"
+            landmarkName = "-title"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/providers/PMLEventInfoProvider.m"
+            timestampString = "447919935.028148"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "-title"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

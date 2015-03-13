@@ -13,7 +13,6 @@
 #import "Event.h"
 #import "User.h"
 #import "Activity.h"
-#import "Special.h"
 
 @interface JsonService : NSObject
 
@@ -60,15 +59,8 @@
 
 /**
  * Converts the given special information to an event, using cache to seamlessly 
- * reuse already converted instances.
- * This method may return a nil object when no event could be generated for the given
- * special so callers should always check the result for nullity
- * @param special the Special instance to convert, generally coming from a nearby search
- * @param place the place to which the event needs to be associated (the current parent of the special)
+ * reuse already converted instances
  */
 - (Event*)convertSpecial:(Special*)special toEventForPlace:(Place*)place;
-/**
- * Retrieves an object instance from its key
- */
-- (CALObject*)objectForKey:(NSString*)key;
+
 @end

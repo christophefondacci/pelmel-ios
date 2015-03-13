@@ -15,6 +15,7 @@
 #import "HPGrowingTextView.h"
 #import "PMLSnippetTableViewController.h"
 #import "PMLFakeViewController.h"
+#import <MBProgressHUD.h>
 
 @interface MessageViewController ()
 
@@ -76,9 +77,9 @@
         }];
     }
     // Displaying wait message and animation
-    [_activityIndicator setHidden:NO];
-    [_activityIndicator startAnimating];
-    [_activityText setText:NSLocalizedString(@"messages.wait", @"The wait message which appears while loading messages")];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString(@"messages.wait", @"The wait message which appears while loading messages");
 
     // Checking if we have an input, otherwise current user is our input
     if(_withObject == nil) {
@@ -280,11 +281,6 @@
 
 #pragma mark - MessageCallback
 - (void)messagesFetched:(NSArray *)messagesList {
-    [_activityIndicator stopAnimating];
-    [_activityIndicator setHidden:YES];
-    [_activityText setHidden:YES];
-    [_activityBackground setHidden:YES];
-    
     _messagesList = messagesList;
     // In case it is empty, generating a first message
     [self autoFillMessageList];
@@ -314,7 +310,8 @@
         }
     }
     
-
+    // Dismissing progress
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 - (void) autoFillMessageList {
     if(_messagesList.count == 0) {
@@ -328,12 +325,17 @@
             }
         } else if([_withObject isKindOfClass:[Place class]]) {
             msg = NSLocalizedString(@"message.place.dummyMessage", @"Intro message");
+        } else if([_withObject isKindOfClass:[Event class]]) {
+            msg = NSLocalizedString(@"message.event.dummyMessage", @"Intro message");
         }
-        Message *message = [[Message alloc] init];
-        message.from = nil;
-        message.date = [NSDate new];
-        message.text = [NSString stringWithFormat:msg,[provider title] ];
-        _messagesList = @[message];
+        if(msg != nil) {
+            Message *message = [[Message alloc] init];
+            message.from = nil;
+            message.date = [NSDate new];
+            NSString *title = [provider title];
+            message.text = [NSString stringWithFormat:msg,title == nil ? @"" : title ];
+            _messagesList = @[message];
+        }
     }
 }
 - (NSInteger)addMessageToScrollView:(Message*)message atHeight:(NSInteger)height forIndex:(NSInteger)index {

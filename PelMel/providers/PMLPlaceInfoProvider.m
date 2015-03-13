@@ -305,13 +305,8 @@
 - (NSArray *)events {
     NSMutableArray *allEvents = [_place.events mutableCopy];
     for(Special *special in _place.specials) {
-        if(![special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
-            Event *event = [[Event alloc] initWithPlace:_place];
-            event.startDate = special.nextStart;
-            event.endDate = special.nextEnd;
-            event.name = [_uiService nameForSpecial:special];
-            event.mainImage = _place.mainImage;
-            event.otherImages = _place.otherImages;
+        Event *event = [[TogaytherService getJsonService] convertSpecial:special toEventForPlace:_place];
+        if(event != nil) {
             [allEvents addObject:event];
         }
     }

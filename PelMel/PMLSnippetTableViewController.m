@@ -43,18 +43,19 @@
 
 #define kPMLSectionsCount 12
 
-#define kPMLSectionSnippet 1
 #define kPMLSectionGallery 0
+#define kPMLSectionSnippet 1
 #define kPMLSectionCounters 2
-#define kPMLSectionOvSummary 3
-#define kPMLSectionOvAddress 4
-#define kPMLSectionOvHours 5
-#define kPMLSectionOvHappyHours 6
-#define kPMLSectionOvEvents 7
-#define kPMLSectionOvDesc 8
-#define kPMLSectionOvTags 9
-#define kPMLSectionTopPlaces 10
-#define kPMLSectionActivity 11
+#define kPMLSectionLocalization 3
+#define kPMLSectionOvSummary 4
+#define kPMLSectionOvAddress 5
+#define kPMLSectionOvHours 6
+#define kPMLSectionOvHappyHours 7
+#define kPMLSectionOvEvents 8
+#define kPMLSectionOvDesc 9
+#define kPMLSectionOvTags 10
+#define kPMLSectionTopPlaces 11
+#define kPMLSectionActivity 12
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -325,24 +326,20 @@ typedef enum {
             case kPMLSectionSnippet:
                 return kPMLSnippetRows;
             case kPMLSectionGallery:
-//                if(_snippetItem.mainImage!=nil) {
                 return _hasGallery ? 1 : 0;
-//                } else {
-//                    return 0;
-//                }
-                break;
             case kPMLSectionCounters:
                 return [_infoProvider thumbsRowCountForMode:ThumbPreviewModeLikes]+[_infoProvider thumbsRowCountForMode:ThumbPreviewModeCheckins] >0 ? 1 : 0;
-//                return 0;
-//                switch (_thumbPreviewMode) {
-//                    case ThumbPreviewModeCheckins:
-//                    case ThumbPreviewModeLikes:
-//                        return 1+[_infoProvider thumbsRowCountForMode:_thumbPreviewMode];
-//                    case ThumbPreviewModeNone:
-//                    default:
-//                        return 1;
-//                }
+            case kPMLSectionLocalization: {
+                if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
+                    CALObject *locationObject = [_infoProvider mapObjectForLocalization];
+                    if(locationObject != _snippetItem && locationObject != nil) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
                 break;
+            }
             case kPMLSectionOvSummary:
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
@@ -409,6 +406,8 @@ typedef enum {
                     return kPMLRowThumbPreviewId;
 //            }
             break;
+        case kPMLSectionLocalization:
+            return kPMLRowEventId;
         case kPMLSectionOvEvents:
             if(indexPath.row<[[_infoProvider events] count]) {
                 return kPMLRowEventId;
@@ -477,6 +476,9 @@ typedef enum {
             break;
         case kPMLSectionCounters:
             [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:indexPath.row];
+            break;
+        case kPMLSectionLocalization:
+            [self configureRowLocalization:(PMLEventTableViewCell*)cell];
             break;
         case kPMLSectionOvSummary:
             switch(indexPath.row) {
@@ -561,6 +563,8 @@ typedef enum {
                     return kPMLHeightThumbPreview;
             }
             break;
+        case kPMLSectionLocalization:
+            return kPMLHeightOvEventRows;
         case kPMLSectionOvSummary:
             switch(indexPath.row) {
                 case kPMLRowOvSeparator:
@@ -722,6 +726,7 @@ typedef enum {
     switch(indexPath.section) {
         case kPMLSectionTopPlaces:
         case kPMLSectionActivity:
+        case kPMLSectionLocalization:
             return YES;
         case kPMLSectionOvAddress:
             // Address lines are selectable only if we have something to display on the map
@@ -745,6 +750,11 @@ typedef enum {
             }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
+        case kPMLSectionLocalization: {
+            CALObject *locationObject = [_infoProvider mapObjectForLocalization];
+            [_uiService presentSnippetFor:locationObject opened:YES];
+            break;
+        }
         case kPMLSectionOvEvents:
             if(indexPath.row == [[_infoProvider events] count]) {
                 [self addEventTapped];
@@ -858,11 +868,10 @@ typedef enum {
     // Observing address
     if([_snippetItem isKindOfClass:[Place class]]) {
         [self.snippetItem addObserver:self forKeyPath:@"address" options:   NSKeyValueObservingOptionNew context:NULL];
-        [self.snippetItem addObserver:self forKeyPath:@"mainImage" options:   NSKeyValueObservingOptionNew context:NULL];
         [_observedProperties addObject:@"address"];
-        [_observedProperties addObject:@"mainImage"];
     }
-    
+    [self.snippetItem addObserver:self forKeyPath:@"mainImage" options:   NSKeyValueObservingOptionNew context:NULL];
+    [_observedProperties addObject:@"mainImage"];
     // Setting opening hours badge
     if([_infoProvider respondsToSelector:@selector(hasSnippetRightSection)] && [_infoProvider hasSnippetRightSection]) {
         cell.hoursBadgeView.hidden=NO;
@@ -1249,7 +1258,7 @@ typedef enum {
     cell.locationIcon.image = [UIImage imageNamed:@"snpIconMarker"];
     cell.locationLabel.text = [NSString stringWithFormat:@"%@, %@",event.place.title,event.place.cityName];
     if(event.likeCount>0) {
-        cell.countLabel.text = [NSString stringWithFormat:NSLocalizedString(@"snippet.event.inUsers","# guys are in"),event.likeCount];
+        cell.countLabel.text = [_uiService localizedString:@"snippet.event.inUsers" forCount:event.likeCount];
         cell.countIcon.image=[UIImage imageNamed:@"snpIconEvent"];
     } else {
         cell.countIcon.image = nil;
@@ -1259,6 +1268,34 @@ typedef enum {
 }
 -(void)configureRowOvAddEvent:(PMLAddEventTableViewCell*)cell {
     cell.addEventLabel.text = NSLocalizedString(@"events.addButton", @"Create and promote an event");
+}
+-(void)configureRowLocalization:(PMLEventTableViewCell*)cell {
+
+    // Getting provider of location object
+    CALObject *mapObject = [_infoProvider mapObjectForLocalization];
+    id<PMLInfoProvider> provider = [_uiService infoProviderFor:mapObject];
+    
+    // Image
+    cell.image.image = nil;
+    CALImage *calImage = [[TogaytherService imageService] imageOrPlaceholderFor:mapObject allowAdditions:NO];
+    [_imageService load:calImage to:cell.image thumb:NO];
+    
+    cell.dateLabel.text = [@"@ " stringByAppendingString:[[provider title] uppercaseString]];
+    if([[provider addressComponents] count]>0) {
+        cell.titleLabel.text = [[provider addressComponents] objectAtIndex:0];
+    } else {
+        cell.titleLabel.text = nil;
+    }
+    cell.locationIcon.image = [provider subtitleIcon];
+    cell.locationLabel.text = [provider subtitle];
+    if([provider likesCount]>0) {
+        cell.countLabel.text = [_uiService localizedString:@"counters.likes" forCount:[provider likesCount]];
+        cell.countIcon.image=[UIImage imageNamed:@"snpIconLike"];
+    } else {
+        cell.countIcon.image = nil;
+        cell.countLabel.text = nil;
+    }
+    
 }
 -(void)configureRowOvDesc:(PMLDescriptionTableViewCell*)cell {
     cell.descriptionLabel.text = [_infoProvider descriptionText];
@@ -1673,10 +1710,10 @@ typedef enum {
 
         
     } else if([keyPath isEqualToString:@"mainImage"]) {
-        if(_opened) {
+//        if(_opened) {
             [_galleryCell.galleryView reloadData];
 //            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationNone];
-        }
+//        }
     }
 }
 -(void)updateTitleEdition {

@@ -213,6 +213,7 @@
 		B4966622161227C400911FE5 /* FiltersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4966621161227C400911FE5 /* FiltersViewController.m */; };
 		B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B49892F3199B839500F51B8F /* PMLImageTableViewCell.h */; };
 		B49892F6199B839500F51B8F /* PMLImageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B49892F4199B839500F51B8F /* PMLImageTableViewCell.m */; };
+		B49C97231AB2AEE7009B9F8F /* JsonService in Resources */ = {isa = PBXBuildFile; fileRef = B49C97221AB2AEE7009B9F8F /* JsonService */; };
 		B49F989F19A2131100BD3B2F /* PMLDynamicActionObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B49F989D19A2131100BD3B2F /* PMLDynamicActionObject.h */; };
 		B49F98A019A2131100BD3B2F /* PMLDynamicActionObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B49F989E19A2131100BD3B2F /* PMLDynamicActionObject.m */; };
 		B49F98A319A2186300BD3B2F /* PMLOpenActionBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = B49F98A119A2186300BD3B2F /* PMLOpenActionBehavior.h */; };
@@ -575,6 +576,7 @@
 		B4966621161227C400911FE5 /* FiltersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FiltersViewController.m; sourceTree = "<group>"; };
 		B49892F3199B839500F51B8F /* PMLImageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLImageTableViewCell.h; sourceTree = "<group>"; };
 		B49892F4199B839500F51B8F /* PMLImageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLImageTableViewCell.m; sourceTree = "<group>"; };
+		B49C97221AB2AEE7009B9F8F /* JsonService */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JsonService; sourceTree = "<group>"; };
 		B49F989D19A2131100BD3B2F /* PMLDynamicActionObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLDynamicActionObject.h; sourceTree = "<group>"; };
 		B49F989E19A2131100BD3B2F /* PMLDynamicActionObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLDynamicActionObject.m; sourceTree = "<group>"; };
 		B49F98A119A2186300BD3B2F /* PMLOpenActionBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLOpenActionBehavior.h; sourceTree = "<group>"; };
@@ -944,6 +946,7 @@
 				B4AC8ED7168C795C002E8381 /* MessageService.h */,
 				B4AC8ED8168C795C002E8381 /* MessageService.m */,
 				B48EEE1216CBDDE700D08711 /* JsonService.h */,
+				B49C97221AB2AEE7009B9F8F /* JsonService */,
 				B48EEE1316CBDDE700D08711 /* JsonService.m */,
 				B41CF0AF1899C20A0031FD7C /* UIService.h */,
 				B41CF0B01899C20A0031FD7C /* UIService.m */,
@@ -1622,6 +1625,7 @@
 				B4FC958519B1E64A00269E74 /* OpenSans-Bold.ttf in Resources */,
 				B4B5040F1621CE4C002D5669 /* DescriptionHeader.xib in Resources */,
 				B4EECAEB162EB6EE005F80DE /* ClosableBoxView.xib in Resources */,
+				B49C97231AB2AEE7009B9F8F /* JsonService in Resources */,
 				B41A13F2163942C600827E04 /* TogaytherHeaderView.xib in Resources */,
 				B47A69D41AA7837200877B58 /* PMLThumbHeaderView.xib in Resources */,
 				B4E9120C169ACD4E005D3CAF /* TogaytherTitleView.xib in Resources */,

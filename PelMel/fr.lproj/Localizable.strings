@@ -7,10 +7,10 @@
 */
 "account.button"="Compte";
 "action.attend"="J'y vais";
-"action.attend.feedbackMessage"="Vous allez officiellement aller à cet évènement !";
-"action.attend.feedbackTitle"="C'est parti !";
-"action.attendCancel.feedbackMessage"="Nous vous avons supprimer de la liste des participants à cet évènement.";
-"action.attendCancel.feedbackTitle"="C'est dommage !";
+"action.attend.feedbackMessage"="Les autres utilisateurs pourront voir que vous serez à cet évènement !";
+"action.attend.feedbackTitle"="Vous en serez !";
+"action.attendCancel.feedbackMessage"="Nous vous avons retirer de la liste des participants à cet évènement.";
+"action.attendCancel.feedbackTitle"="Vous n'y allez plus";
 "action.modify"="Modifier";
 "action.chat"="Chatter";
 "action.checkin"="Check In";
@@ -144,6 +144,7 @@
 "message.action.send"="Envoyer";
 "message.place.dummyMessage"="Racontez à la communauté PELMEL ce que vous pensez de %@, pourquoi vous aimez ce lieu, quand recommanderiez vous d'y aller, avez-vous eu du plaisir ? L'entrée était-elle payante ? Quel type de clientèle ? Vous y retourneriez ?";
 "message.user.dummyMessage"="Envoyez un message à %@, demandez-lui les lieux où il aime sortir, où les prochains évènements où il sera. Ou dites juste bonjour ! Mais restez toujours courtois :)";
+"message.event.dummyMessage"="Dîtes nous ce que vous pensez de cet évènement, si vous comptez y aller, ou encore si vous avez des informations ou précisions utiles à partager.";
 "message.placeholder"="Entrez votre message";
 "message.placeholder.comment"="Ecrivez votre commentaire";
 "message.reviews.title"="Commentaires";
@@ -253,7 +254,8 @@
 "snippet.edit.placeType"="Sélectionnez le type de lieu :";
 "snippet.edit.titlePlaceholder"="Entrez un nom";
 "snippet.event.count"="%d Evènements à venir";
-"snippet.event.inUsers"="%d mecs en sont";
+"snippet.event.inUsers"="%d mecs en seront";
+"snippet.event.inUsers.singular"="%d mec en sera";
 "snippet.header.topPlaces"="Lieux populaires";
 "snippet.header.activities"="Activité récente";
 "snippet.likes"="%d aiment";

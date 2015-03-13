@@ -62,7 +62,7 @@
     [_typedLabels setObject: @"thumbView.section.like" forKey:[NSNumber numberWithInt:PMLThumbsLike]];
     [_typedLabels setObject: @"thumbView.section.checkin" forKey:[NSNumber numberWithInt:PMLThumbsCheckin]];
     [_typedLabels setObject: @"thumbView.section.user.likeUser" forKey:[NSNumber numberWithInt:PMLThumbsUserLike]];
-    [_typedLabels setObject: @"thumbView.section.user.likeUser" forKey:[NSNumber numberWithInt:PMLThumbsUsersInEvent]];
+    [_typedLabels setObject: @"thumbView.section.event.users" forKey:[NSNumber numberWithInt:PMLThumbsUsersInEvent]];
     [_typedLabels setObject: @"thumbView.section.location" forKey:[NSNumber numberWithInt:PMLThumbsLocation]];
 }
 -(NSMutableArray*)internalItemsForType:(PMLThumbType)type {
@@ -212,6 +212,7 @@
             return [UIImage imageNamed:@"snpIconLikeWhite"];
             break;
         case PMLThumbsUserLike:
+        case PMLThumbsUsersInEvent:
             return [UIImage imageNamed:@"snpIconEvent"];
         case PMLThumbsCheckin:
         case PMLThumbsLocation:

@@ -128,6 +128,7 @@
         
         // Creating and filling bean
         Special *special = [[Special alloc] init];
+        special.key         = key;
         special.name        = name;
         special.descriptionText = desc;
         special.nextStart   = startDate;
@@ -411,11 +412,17 @@
 }
 -(Event*)convertJsonEventToEvent:(NSDictionary*)obj defaultEvent:(Event*)defaultEvent {
     NSString *itemKey = [obj objectForKey:@"key"];
+    
+    // Because we convert series (SERI) into events, the cache may return a PMLCalendar object
+    NSString *cacheKey = itemKey;
+    if(![cacheKey hasPrefix:@"EVNT"]) {
+        cacheKey = [@"EVNT" stringByAppendingString:itemKey];
+    }
     // Building JSON event
-    Event *event = [cacheService objectForKey:itemKey];
+    Event *event = [cacheService objectForKey:cacheKey];
     if(event == nil) {
         event = defaultEvent == nil ? [[Event alloc] init] : defaultEvent;
-        [cacheService setObject:event forKey:itemKey];
+        [cacheService setObject:event forKey:cacheKey];
     }
 
     // Extracting information from JSON
@@ -427,7 +434,7 @@
     NSNumber *endTime       = [obj objectForKey:@"endTime"];
     NSDictionary *place     = [obj objectForKey:@"place"];
     NSNumber *participants  = [obj objectForKey:@"participants"];
-
+    NSNumber *reviewsCount  = [obj objectForKey:@"commentsCount"];
     
     
     // Building image array
@@ -451,6 +458,7 @@
     NSDate *endDate = [[NSDate alloc] initWithTimeIntervalSince1970:[endTime longValue]];
     [event setStartDate:startDate];
     [event setEndDate:endDate];
+    [event setReviewsCount:[reviewsCount intValue]];
     [event setLikeCount:[participants intValue]];
     if(place != nil && place!=(id)[NSNull null]) {
         Place *p = [self convertJsonPlaceToPlace:place];
@@ -718,5 +726,34 @@
         }
     }
     return miniDesc;
+}
+- (NSString*)specialCacheEventKey:(Special*)special {
+    return [@"EVNT" stringByAppendingString:special.key];
+}
+- (Event*)convertSpecial:(Special*)special toEventForPlace:(Place*)place {
+    Event *event = nil;
+    if(![special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
+        NSString *cacheKey = [self specialCacheEventKey:special];
+        event = [cacheService objectForKey:cacheKey];
+        if(event == nil) {
+            event = [[Event alloc] initWithPlace:place];
+            [cacheService setObject:event forKey:cacheKey];
+        }
+        [event setPlace: place];
+        event.key = special.key;
+        event.startDate = special.nextStart;
+        event.endDate = special.nextEnd;
+        event.name = [[TogaytherService uiService] nameForSpecial:special];
+        if(event.mainImage == nil) {
+            event.mainImage = place.mainImage;
+        }
+//        if(event.oth)
+//        event.otherImages = place.otherImages;
+        event.place = place;
+    }
+    return event;
+}
+- (CALObject *)objectForKey:(NSString *)key {
+    return [cacheService objectForKey:key];
 }
 @end
