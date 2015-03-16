@@ -920,6 +920,7 @@ typedef enum {
             if(_countersView.superview) {
                 [_countersView removeFromSuperview];
             }
+            [cell layoutIfNeeded];
             CGRect frame = cell.peopleView.bounds;
             _countersView.frame = CGRectMake(frame.origin.x,frame.origin.y,frame.size.width-15,frame.size.height);
             [cell.peopleView addSubview:_countersView];
@@ -928,178 +929,18 @@ typedef enum {
         id<PMLCountersDatasource> datasource = [_infoProvider countersDatasource:self.actionManager];
         _countersView.datasource = datasource;
         [_countersView reloadData];
-//        // Setting up like counter
-//        NSString *likeCounterLabel = nil;
-//        if([_infoProvider respondsToSelector:@selector(likesCounterTitle)]) {
-//            likeCounterLabel = [_infoProvider likesCounterTitle];
-//        } else {
-//            likeCounterLabel = [_uiService localizedString:@"counters.likes" forCount:[_infoProvider likesCount]];
-//        }
-//        _countersView.likeTitleLabel.text = likeCounterLabel;
-//        
-//        // Setting up checkin counter
-//        NSString *checkinCounterLabel = nil;
-//        if([_infoProvider respondsToSelector:@selector(checkinsCounterTitle)]) {
-//            checkinCounterLabel = [_infoProvider checkinsCounterTitle];
-//        } else {
-//            checkinCounterLabel = [_uiService localizedString:@"counters.checkins" forCount:[_infoProvider checkinsCount]];
-//        }
-//        _countersView.checkinTitleLabel.text = checkinCounterLabel;
-//        
-//        //Setting up comments counter
-//        NSString *commentsCounterLabel = nil;
-//        if([_infoProvider respondsToSelector:@selector(commentsCounterTitle)]) {
-//            commentsCounterLabel = [_infoProvider commentsCounterTitle];
-//        } else {
-//            commentsCounterLabel = [_uiService localizedString:@"counters.comments" forCount:[_infoProvider reviewsCount]];
-//        }
-//        _countersView.commentsTitleLabel.text = commentsCounterLabel;
-//        
-//        // Wrapping Actions
-//        [_countersView.likeContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(likeTapped)]];
-//        [_countersView.checkinsContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(checkinTapped)]];
-//        [_countersView.commentsContainerView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(commentTapped)]];
-//        
-//        // Visibility
-//
-//        
-//        
-//        if(_snippetItem.isLiked) {
-//            _countersView.likeIcon.image = [UIImage ipMaskedImageNamed:@"ovvIconLike" color:UIColorFromRGB(0x039be5)];
-//            _countersView.likeTitleLabel.textColor =UIColorFromRGB(0x039be5);
-//        } else {
-//            _countersView.likeIcon.image = [UIImage imageNamed:@"ovvIconLike"];
-//            _countersView.likeTitleLabel.textColor =[UIColor whiteColor];
-//        }
-        
     }
     
     // If edit mode we activate it
     if(_snippetItem.editing) {
         [self updateTitleEdition];
     }
-    
-//    // Wiring like action
-//    PMLActionType primaryAction = PMLActionTypeNoAction;
-//    NSString *primaryActionTitle = nil;
-//    if([_infoProvider respondsToSelector:@selector(primaryActionType)]) {
-//        primaryAction = [_infoProvider primaryActionType];
-//        primaryActionTitle = [_infoProvider actionSubtitleFor:primaryAction];
-//    } else {
-//        if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
-//            primaryAction = PMLActionTypeLike;
-//            if(_snippetItem.isLiked) {
-//                primaryActionTitle = NSLocalizedString(@"action.unlike",@"Unlike");
-//            } else {
-//                primaryActionTitle = NSLocalizedString(@"action.like",@"Like");
-//            }
-//        }
-//    }
-//    if(primaryAction!=PMLActionTypeNoAction) {
-//        cell.likeButton.hidden=NO;
-//        cell.likeButtonSubtitle.hidden=NO;
-//        PopupAction *action = [_actionManager actionForType:primaryAction];
-//        cell.likeButton.tag=primaryAction;
-//        [cell.likeButton setImage:action.icon forState:UIControlStateNormal];
-//        cell.likeButton.layer.borderColor = [action.color CGColor];
-//        [cell.likeButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//        cell.likeButtonSubtitle.text = primaryActionTitle;
-//        
-//    } else {
-        cell.likeButton.hidden=YES;
-        cell.likeButtonSubtitle.hidden=YES;
-//    }
-    
-    
-}
 
-//-(void)configureRowCounters:(PMLCountersTableViewCell*)cell {
-//    _countersCell = cell;
-//    // Counters
-//    cell.likesCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_infoProvider.likesCount];
-//    cell.checkinsCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_infoProvider.checkinsCount];
-//    cell.commentsCounterLabel.text = [NSString stringWithFormat:@"%ld",(long)_infoProvider.reviewsCount];
-//    // Adding tap gestures
-//    UITapGestureRecognizer *likesTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(likesCounterTapped:)];
-//    [cell.likesContainerView addGestureRecognizer:likesTapRecognizer];
-//    cell.likesContainerView.userInteractionEnabled=YES;
-//
-//    UITapGestureRecognizer *checkinsTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(checkinsCounterTapped:)];
-//    [cell.checkinsContainerView addGestureRecognizer:checkinsTapRecognizer];
-//    cell.checkinsContainerView.userInteractionEnabled=YES;
-//    
-//    UITapGestureRecognizer *commentsTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(commentsCounterTapped:)];
-//    [cell.commentsContainerView addGestureRecognizer:commentsTapRecognizer];
-//    cell.commentsContainerView.userInteractionEnabled=YES;
-//    
-//    // Gradient on counters view
-//    if(_countersGradient == nil) {
-//        _countersGradient = [CAGradientLayer layer];
-//        
-//        [cell.countersView.layer insertSublayer:_countersGradient atIndex:0];
-//        cell.countersView.layer.masksToBounds=YES;
-//    }
-//    
-//    // Setting gradient length base on selected tab (if any)
-//    [self updateGradient:cell];
-//    
-//    // Setting up fonts
-////    cell.likesCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
-////    cell.checkinsCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
-////    cell.commentsCounterLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:22];
-////    cell.likesTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
-////    cell.checkinsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
-////    cell.commentsTitleLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:17];
-//    if([_infoProvider respondsToSelector:@selector(commentsCounterTitle)]) {
-//        cell.commentsTitleLabel.text = [_infoProvider commentsCounterTitle];
-//    } else {
-//        cell.commentsTitleLabel.text = [_uiService localizedString:@"counters.comments" forCount:_infoProvider.reviewsCount];
-//    }
-//    if([_infoProvider respondsToSelector:@selector(checkinsCounterTitle)]) {
-//        cell.checkinsTitleLabel.text = [_infoProvider checkinsCounterTitle];
-//    } else {
-//        cell.checkinsTitleLabel.text = [_uiService localizedString:@"counters.checkins" forCount:_infoProvider.checkinsCount];
-//    }
-//    if([_infoProvider respondsToSelector:@selector(likesCounterTitle)]) {
-//        cell.likesTitleLabel.text = [_infoProvider likesCounterTitle];
-//    } else {
-//        cell.likesTitleLabel.text = [_uiService localizedString:@"counters.likes" forCount:_infoProvider.likesCount];
-//    }
-//}
-/**
- * Updates the gradient of the counters view based on the selected tab
- */
--(void)updateGradient:(PMLCountersTableViewCell*)cell {
-    CGRect countersFrame = cell.countersView.bounds;
-    CGRect likeFrame = cell.likesContainerView.frame;
-    CGRect checkinFrame = cell.checkinsContainerView.frame;
-    switch(_thumbPreviewMode) {
-        case ThumbPreviewModeLikes:
-            _countersGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x6c6d71).CGColor, (id)UIColorFromRGB(0x33363e).CGColor, nil];
-            _countersGradient.frame = CGRectMake(likeFrame.origin.x, countersFrame.origin.y, likeFrame.size.width, countersFrame.size.height+kPMLHeightThumbPreview);
-            cell.likesContainerView.alpha=1;
-            cell.checkinsContainerView.alpha=0.4;
-            cell.commentsContainerView.alpha=0.4;
-            cell.bottomMargin.constant=-5;
-            break;
-        case ThumbPreviewModeCheckins:
-            _countersGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x6c6d71).CGColor, (id)UIColorFromRGB(0x33363e).CGColor, nil];
-            _countersGradient.frame = CGRectMake(checkinFrame.origin.x, countersFrame.origin.y, checkinFrame.size.width, countersFrame.size.height+kPMLHeightThumbPreview);
-            cell.likesContainerView.alpha=0.4;
-            cell.checkinsContainerView.alpha=1;
-            cell.commentsContainerView.alpha=0.4;
-            cell.bottomMargin.constant=-5;
-            break;
-        default:
-            _countersGradient.colors = [NSArray arrayWithObjects:(id)UIColorFromRGB(0x636466).CGColor, (id)UIColorFromRGB(0x2c2d2f).CGColor, nil];
-            _countersGradient.frame = cell.countersView.bounds;
-            cell.likesContainerView.alpha=1;
-            cell.checkinsContainerView.alpha=1;
-            cell.commentsContainerView.alpha=1;
-            cell.bottomMargin.constant=0;
-            break;
-    }
+    cell.likeButton.hidden=YES;
+    cell.likeButtonSubtitle.hidden=YES;
 
+    
+    
 }
 -(void)configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:(NSInteger)index {
     NSObject<PMLThumbsPreviewProvider> *provider = [_infoProvider thumbsProvider];

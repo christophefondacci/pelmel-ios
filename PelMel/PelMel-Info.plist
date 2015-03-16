@@ -48,6 +48,7 @@
 	<string>PelMel would like to access your location to tell you what's around</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Cooper Black.ttf</string>
 		<string>OpenSans-Bold.ttf</string>
 		<string>OpenSans-Italic.ttf</string>
 		<string>Sari-Medium.otf</string>
@@ -59,6 +60,8 @@
 	<array>
 		<string>remote-notification</string>
 	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>Launch Screen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>MainStoryboard_iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>

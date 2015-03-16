@@ -68,7 +68,7 @@
                                                                        NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
                                                                        NSForegroundColorAttributeName:[UIColor whiteColor]}];
     // Preloading headers
-    _sectionTitleTypeHeaderView = [[TogaytherService uiService] loadView:@"PMLSectionTitleView"];
+    _sectionTitleTypeHeaderView = (PMLSectionTitleView*)[[TogaytherService uiService] loadView:@"PMLSectionTitleView"];
 }
 
 - (void)didReceiveMemoryWarning

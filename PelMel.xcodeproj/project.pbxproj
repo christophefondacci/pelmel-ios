@@ -142,6 +142,8 @@
 		B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */; };
 		B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */ = {isa = PBXBuildFile; fileRef = B45BBF00196AB883001C1DF5 /* UIWaitingView.h */; };
 		B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = B45BBF01196AB883001C1DF5 /* UIWaitingView.m */; };
+		B45C3C5C1AB757B700D8B321 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45C3C5B1AB757B700D8B321 /* Launch Screen.xib */; };
+		B45C3C5E1AB75C6F00D8B321 /* Cooper Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */; };
 		B45CAB3219721BD40089C7E8 /* DynamicObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B45CAB2E19721BD40089C7E8 /* DynamicObject.h */; };
 		B45CAB3319721BD40089C7E8 /* DynamicObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B45CAB2F19721BD40089C7E8 /* DynamicObject.m */; };
 		B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = B45CAB3019721BD40089C7E8 /* UIPopBehavior.h */; };
@@ -502,6 +504,8 @@
 		B45BBEFA196AB76C001C1DF5 /* UIWaitingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIWaitingView.xib; sourceTree = "<group>"; };
 		B45BBF00196AB883001C1DF5 /* UIWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIWaitingView.h; sourceTree = "<group>"; };
 		B45BBF01196AB883001C1DF5 /* UIWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWaitingView.m; sourceTree = "<group>"; };
+		B45C3C5B1AB757B700D8B321 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
+		B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cooper Black.ttf"; sourceTree = "<group>"; };
 		B45CAB2E19721BD40089C7E8 /* DynamicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicObject.h; sourceTree = "<group>"; };
 		B45CAB2F19721BD40089C7E8 /* DynamicObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicObject.m; sourceTree = "<group>"; };
 		B45CAB3019721BD40089C7E8 /* UIPopBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPopBehavior.h; sourceTree = "<group>"; };
@@ -1218,6 +1222,7 @@
 				B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */,
 				B4FC958419B1E64A00269E74 /* OpenSans-Regular.ttf */,
 				B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */,
+				B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */,
 				B4FC957E19B1E28B00269E74 /* Sari-Light.otf */,
 				B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */,
 				B4A290B816A5AC9F007F5AA9 /* hd_logo_small.gif */,
@@ -1309,6 +1314,7 @@
 				B405E6681A93C5CF00C49F64 /* PMLAddModifyViewCell.xib */,
 				B405E66A1A953C9600C49F64 /* PMLDetailTableViewCell.h */,
 				B405E66B1A953C9600C49F64 /* PMLDetailTableViewCell.m */,
+				B45C3C5B1AB757B700D8B321 /* Launch Screen.xib */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1605,6 +1611,7 @@
 				B46C4C3B19D2D27A00C81DA3 /* OpenSans-Italic.ttf in Resources */,
 				B4956561163EDC73006A0451 /* bubble-orange.png in Resources */,
 				B4956560163EDC22006A0451 /* ChatView.xib in Resources */,
+				B45C3C5E1AB75C6F00D8B321 /* Cooper Black.ttf in Resources */,
 				B4D56080160B673F003A738E /* InfoPlist.strings in Resources */,
 				B457A0F21A9A9B7700207D8E /* PMLAddEventTableViewCell.xib in Resources */,
 				B4D56089160B673F003A738E /* MainStoryboard_iPhone.storyboard in Resources */,
@@ -1624,6 +1631,7 @@
 				B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */,
 				B41830C2197CA89900B7E2DD /* UIMapPopupView.xib in Resources */,
 				B406AB4C1613881E0053E067 /* Localizable.strings in Resources */,
+				B45C3C5C1AB757B700D8B321 /* Launch Screen.xib in Resources */,
 				B405E6691A93C5CF00C49F64 /* PMLAddModifyViewCell.xib in Resources */,
 				B4FC958019B1E28B00269E74 /* Sari-ExtraBold.otf in Resources */,
 				B41DD757197BD844008F09D9 /* UIMapOptionView.xib in Resources */,

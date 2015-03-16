@@ -187,6 +187,8 @@
 #pragma mark - Chat Button
 -(void)configureChatInput {
     _chatTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+    CGSize viewSize = self.view.frame.size;
+//    _chatTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, viewSize.width-80, 40)];
     _chatTextView.isScrollable = NO;
     _chatTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
@@ -226,7 +228,8 @@
     UIImage *rawEntryBackground = [UIImage imageNamed:@"MessageEntryInputField"];
     UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
     UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-    entryImageView.frame = CGRectMake(5, 0, 248, 40);
+//    entryImageView.frame = CGRectMake(5, 0, 248, 40);
+    entryImageView.frame = CGRectMake(5, 0, viewSize.width - 72, 40);
     entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight; // | UIViewAutoresizingFlexibleWidth;
     
     UIImage *rawBackground = [UIImage imageNamed:@"MessageEntryBackground"];
