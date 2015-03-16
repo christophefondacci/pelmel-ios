@@ -31,8 +31,10 @@
 }
 
 -(void)updatePlaceholder {
-    if(self.descriptionTextView.text.length == 0) {
+    if(self.descriptionTextView.text.length == 0 && self.placeholderLocalizedCode!=nil) {
         self.descriptionPlaceholderLabel.text = NSLocalizedString(self.placeholderLocalizedCode, @"Description placeholder");
+    } else {
+        self.descriptionPlaceholderLabel.text=nil;
     }
 }
 - (void)setPlaceholderLocalizedCode:(NSString *)placeholderLocalizedCode {

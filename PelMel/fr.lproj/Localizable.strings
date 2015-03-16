@@ -8,14 +8,16 @@
 "account.button"="Compte";
 "action.attend"="J'y vais";
 "action.attend.feedbackMessage"="Les autres utilisateurs pourront voir que vous serez à cet évènement !";
-"action.attend.feedbackTitle"="Vous en serez !";
+"action.attend.feedbackTitle"="Vous y serez !";
 "action.attendCancel.feedbackMessage"="Nous vous avons retirer de la liste des participants à cet évènement.";
 "action.attendCancel.feedbackTitle"="Vous n'y allez plus";
 "action.modify"="Modifier";
 "action.chat"="Chatter";
+"action.checkedin"="Checked in";
 "action.checkin"="Check In";
 "action.checkin.feedbackTitle"="Vous avez checkiné!";
 "action.checkin.feedbackMessage"="Vous avez partagé votre présence à %@, les autres utilisateurs peuvent savoir que vous êtes ici! Vous pourrez bientôt nous dire ce qu'il se passe et partager l'information avec votre réseau PelMel.";
+"action.comment"="Commenter";
 "action.edit.title"="Information à modifier";
 "action.edit.name"="Nom / Type";
 "action.edit.description"="Description";
@@ -322,7 +324,7 @@
 "push.yes"="Oui";
 "push.no"="Pas maintenant";
 "terms.title"="Conditions";
-"terms"="These Terms of Use will apply to the use of the Service. Please read these Terms of Use carefully so that you know what your rights and obligations are when using the Service. The acceptance of these Terms of Use constitutes a valid and binding agreement between 'NeXtep Softwares' (the COMPANY) and you (the USER) for the use of the Service. If you make any use of the Service you agree to be bound by these terms and conditions. You must be 18 years of age or older to use this service and must be registered as a member. If we discover that you are not over 18, we reserve our right to suspend and remove you account without any notice.
+"terms"="These Terms of Use will apply to the use of the Service. Please read these Terms of Use carefully so that you know what your rights and obligations are when using the Service. The acceptance of these Terms of Use constitutes a valid and binding agreement between 'FGP Digital LLC' (the COMPANY) and you (the USER) for the use of the Service. If you make any use of the Service you agree to be bound by these terms and conditions. You must be 18 years of age or older to use this service and must be registered as a member. If we discover that you are not over 18, we reserve our right to suspend and remove you account without any notice.
     
     Article 1
 The email address of the user is only used as a unique login identifier and is never exposed to anyone. The COMPANY may use it to communicate important information to the USER.

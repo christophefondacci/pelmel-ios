@@ -69,12 +69,13 @@ static NSMutableDictionary *_editorsKeyMap;
         for(EditionAction action in [self.pendingCancelActions reverseObjectEnumerator]) {
             action();
         }
+        [self endEdition];
     }
     if(_editedObject.key == nil) {
         [_mapViewController setEditedObject:nil];
         [_mapViewController.parentMenuController dismissControllerSnippet];
     }
-    [self endEdition];
+
 }
 -(void)commit {
     // Confirm action that prompts user for confirmation

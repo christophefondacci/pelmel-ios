@@ -263,9 +263,9 @@
         case kPMLCounterIndexLike:
             return [_uiService localizedString:@"counters.likes.user" forCount:_user.likeCount];
         case kPMLCounterIndexCheckin:
-            return [_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
+            return nil; //[_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
         case kPMLCounterIndexComment:
-            return [_uiService localizedString:@"counters.chat" forCount:0];
+            return nil; //[_uiService localizedString:@"counters.chat" forCount:0];
     }
     return nil;
 }
@@ -280,12 +280,47 @@
     }
     return PMLActionTypeNoAction;
 }
+- (NSString *)counterActionLabelAtIndex:(NSInteger)index {
+    NSString *code;
+    switch(index) {
+        case kPMLCounterIndexLike:
+            code = _user.isLiked ? @"action.unlike" : @"action.like";
+            break;
+        case kPMLCounterIndexCheckin:
+            code = nil;
+            break;
+        case kPMLCounterIndexComment:
+            code= @"counters.chat";
+    }
+    if(code!=nil) {
+        return NSLocalizedString(code,code);
+    }
+    return nil;
+}
+- (UIColor *)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected {
+    if(selected) {
+        switch(index) {
+            case kPMLCounterIndexLike:
+                return UIColorFromRGB(0xffcc80);
+            default:
+                return [UIColor colorWithWhite:1 alpha:0.3];
+                
+        }
+    } else {
+        switch (index) {
+            case kPMLCounterIndexLike:
+                return UIColorFromRGB(0xe9791e);
+            default:
+                return [UIColor colorWithWhite:1 alpha:0.3];
+        }
+    }
+}
 - (NSString *)counterImageNameAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:
             return PML_ICON_LIKE;
         case kPMLCounterIndexCheckin:
-            return PML_ICON_CHECKIN;
+            return nil;// PML_ICON_CHECKIN;
         case kPMLCounterIndexComment:
             return PML_ICON_COMMENT;
     }

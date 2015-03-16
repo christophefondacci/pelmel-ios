@@ -227,8 +227,10 @@
     // Feedback message
     NSString *title;
     NSString *message;
+    NSString *keyPrefix =[likedObject.key substringToIndex:4];
+    BOOL isEvent = [keyPrefix isEqualToString:@"EVNT"] || [keyPrefix isEqualToString:@"SERI"];
     if(likedObject.isLiked) {
-        if([[likedObject.key substringToIndex:4] isEqualToString:@"EVNT"]) {
+        if(isEvent) {
             title = NSLocalizedString(@"action.attend.feedbackTitle", @"action.attend.feedbackTitle");
             message = NSLocalizedString(@"action.attend.feedbackMessage", @"action.attend.feedbackMessage");
         } else {
@@ -236,7 +238,7 @@
             message = NSLocalizedString(@"action.like.feedbackMessage", @"action.like.feedbackMessage");
         }
     } else {
-        if([[likedObject.key substringToIndex:4] isEqualToString:@"EVNT"]) {
+        if(isEvent) {
             title = NSLocalizedString(@"action.attendCancel.feedbackTitle", @"action.attendCancel.feedbackTitle");
             message = NSLocalizedString(@"action.attendCancel.feedbackMessage", @"action.attendCancel.feedbackMessage");
         } else {

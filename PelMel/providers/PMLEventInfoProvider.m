@@ -199,6 +199,23 @@
     }
     return PMLActionTypeNoAction;
 }
+- (NSString *)counterActionLabelAtIndex:(NSInteger)index {
+    NSString *code;
+    switch(index) {
+        case kPMLCounterIndexLike:
+            code = _event.isLiked ? @"action.attend.cancel" : @"action.attend";
+            break;
+        case kPMLCounterIndexCheckin:
+            code = nil;
+            break;
+        case kPMLCounterIndexComment:
+            code= @"action.comment";
+    }
+    if(code!=nil) {
+        return NSLocalizedString(code,code);
+    }
+    return nil;
+}
 - (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:

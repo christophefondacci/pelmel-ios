@@ -22,6 +22,8 @@
 // Provides icon and label for the counter
 - (NSString*)counterImageNameAtIndex:(NSInteger)index;
 - (NSString*)counterLabelAtIndex:(NSInteger)index;
+- (NSString*)counterActionLabelAtIndex:(NSInteger)index;
+- (UIColor*)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected;
 - (BOOL)isCounterSelectedAtIndex:(NSInteger)index;
 /**
  * Action to wire on the counter at this position. If no action should
@@ -35,16 +37,19 @@
 
 @interface PMLCountersView : UIView
 @property (weak, nonatomic) IBOutlet UIView *likeContainerView;
-@property (weak, nonatomic) IBOutlet UILabel *likeCounterLabel;
+@property (weak, nonatomic) IBOutlet UILabel *likeActionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *likeTitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *likeIconContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *likeIcon;
 @property (weak, nonatomic) IBOutlet UIView *checkinsContainerView;
-@property (weak, nonatomic) IBOutlet UILabel *checkinCounterLabel;
+@property (weak, nonatomic) IBOutlet UILabel *checkinActionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *checkinTitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *checkinIconContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *checkinIcon;
 @property (weak, nonatomic) IBOutlet UIView *commentsContainerView;
-@property (weak, nonatomic) IBOutlet UILabel *commentsCounterLabel;
+@property (weak, nonatomic) IBOutlet UILabel *commentsActionLabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentsTitleLabel;
+@property (weak, nonatomic) IBOutlet UIView *commentsIconContainerView;
 @property (weak, nonatomic) IBOutlet UIImageView *commentsIcon;
 
 @property (weak,nonatomic) NSObject<PMLCountersDatasource> *datasource;

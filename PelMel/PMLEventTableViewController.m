@@ -226,7 +226,7 @@
 #pragma mark - Row configuration
 -(void)configureNameCell:(PMLTextFieldTableViewCell*)cell {
     cell.textField.attributedPlaceholder =
-    [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"events.new.placeholder",@"Event Name") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x4d4e52)}];
+    [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"events.new.placeholder",@"Event Name") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x939597)}];
     cell.textField.delegate=self;
     [cell.textField addTarget:self
                   action:@selector(textChanged:)
@@ -255,7 +255,11 @@
 }
 -(void)configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell {
     cell.descriptionTextView.text = self.event.miniDesc;
-    cell.placeholderLocalizedCode = @"calendar.desc.placeholder";
+    if(self.event.miniDesc.length==0) {
+        cell.placeholderLocalizedCode = @"calendar.desc.placeholder";
+    } else {
+        cell.placeholderLocalizedCode = nil;
+    }
     _descriptionCell = cell;
 }
 /*

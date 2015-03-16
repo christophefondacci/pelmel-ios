@@ -283,7 +283,6 @@
         Place *place = [jsonService convertFullJsonPlaceToPlace:jsonPlace];
         // Appending to the document list
         [docs addObject:place];
-
         // Building specials as events
         for(Special *special in place.specials) {
             Event *event = [jsonService convertSpecial:special toEventForPlace:place];

@@ -15,18 +15,24 @@
 #import "UIPelmelTitleView.h"
 #import "PMLDatePickerTableViewCell.h"
 #import "PMLTextFieldTableViewCell.h"
+#import "PMLEventDescriptionTableViewCell.h"
 
 #define kSectionsCount 3
 #define kSectionTitle 0
 #define kSectionTime 1
+//#define kSectionDescription 2
 #define kSectionDays 2
 
-#define kRowCountTitle 1
+#define kRowCountTitle 2
 #define kRowTitle 0
+#define kRowDescription 1
 
 #define kRowCountTime 2
 #define kRowStartTime 0
 #define kRowEndTime 1
+
+#define kRowCountDescription 0
+
 
 #define kRowCountDays 7
 
@@ -50,6 +56,7 @@
     
     // Cells
     PMLTextFieldTableViewCell *_titleCell;
+    PMLEventDescriptionTableViewCell *_descriptionCell;
 }
 
 - (void)viewDidLoad {
@@ -100,6 +107,8 @@
         case kSectionTime:
             // Start / End time rows + optional time picker
             return kRowCountTime + (_pickerIndexPath != nil ? 1 : 0);
+//        case kSectionDescription:
+//            return kRowCountDescription;
         case kSectionDays:
             return kRowCountDays;
     }
@@ -112,7 +121,11 @@
     NSString *cellId;
     switch (indexPath.section) {
         case kSectionTitle:
-            cellId = @"titleCell";
+            if(indexPath.row==kRowTitle) {
+                cellId = @"titleCell";
+            } else {
+                cellId = @"descCell";
+            }
             break;
         case kSectionTime:
             if(_pickerIndexPath != nil && [indexPath isEqual:_pickerIndexPath]) {
@@ -121,6 +134,9 @@
                 cellId = @"timeCell";
             }
             break;
+//        case kSectionDescription:
+//            cellId = @"descCell";
+//            break;
         case kSectionDays:
             cellId = @"dayCell";
             break;
@@ -134,7 +150,11 @@
     // Configure the cell...
     switch (indexPath.section) {
         case kSectionTitle:
-            [self configureTitleCell:(PMLTextFieldTableViewCell*)cell];
+            if(indexPath.row == kRowTitle) {
+                [self configureTitleCell:(PMLTextFieldTableViewCell*)cell];
+            } else {
+                [self configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell];
+            }
             break;
         case kSectionTime:
             if(_pickerIndexPath != nil && [indexPath isEqual:_pickerIndexPath]) {
@@ -143,6 +163,9 @@
                 [self configureStartEndCell:(PMLDetailTableViewCell*)cell isStart:(indexPath.row == 0)];
             }
             break;
+//        case kSectionDescription:
+//
+//            break;
         case kSectionDays: {
             PMLDetailTableViewCell *detailCell = (PMLDetailTableViewCell*)cell;
             detailCell.detailIntroLabel.text = [_weekdays objectAtIndex:(indexPath.row+1)%7];
@@ -195,15 +218,21 @@
     if([indexPath isEqual:_pickerIndexPath]) {
         return 162;
     }
+    if(indexPath.section == kSectionTitle && indexPath.row == kRowDescription) {
+        return 60;
+    }
     return 44;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if(section>kSectionTitle) {
-        return 38;
-    } else {
-        return 0;
+    switch(section) {
+        case kSectionDays:
+        case kSectionTime:
+            return 38;
+        default:
+            return 0;
     }
+
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     switch (section) {
@@ -253,12 +282,20 @@
     cell.textField.returnKeyType = UIReturnKeyNext;
     cell.textField.delegate = self;
     cell.textField.attributedPlaceholder = 
-        [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"calendar.title.placeholder",@"Name (optional)") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x4d4e52)}];
+        [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"calendar.title.placeholder",@"Name (optional)") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x939597)}];
     [cell.textField addTarget:self
                        action:@selector(titleDidChange:)
              forControlEvents:UIControlEventEditingChanged];
 }
-
+-(void)configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell {
+    cell.descriptionTextView.text = self.calendar.miniDesc;
+    if(self.calendar.miniDesc.length==0) {
+        cell.placeholderLocalizedCode = @"calendar.desc.placeholder";
+    } else {
+        cell.placeholderLocalizedCode = nil;
+    }
+    _descriptionCell = cell;
+}
 #pragma mark - UITextFieldDelegate
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
@@ -269,49 +306,6 @@
     return YES;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - PMLTimePickerCallback
 - (void)timePickerChangedForTag:(NSInteger)tag hours:(NSInteger)hours minutes:(NSInteger)minutes {
@@ -339,6 +333,7 @@
     self.calendar.name = textField.text;
 }
 -(void)save:(id)sender {
+    self.calendar.miniDesc = _descriptionCell.descriptionTextView.text;
     // Filling title
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.labelText = NSLocalizedString(@"calendar.editor.saving", @"Saving...");

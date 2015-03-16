@@ -7,15 +7,18 @@
 */
 "account.button"="Account";
 "action.attend"="Attend";
+"action.attend.cancel"="Cancel";
 "action.attend.feedbackMessage"="Other users will be able to see that you will be at this event!";
-"action.attend.feedbackTitle"="You're in!";
+"action.attend.feedbackTitle"="You will attend!";
 "action.attendCancel.feedbackMessage"="We removed you from the list of participants of this event.";
-"action.attendCancel.feedbackTitle"="You no longer go";
+"action.attendCancel.feedbackTitle"="You will not attend";
 "action.modify"="Modify";
 "action.chat"="Chat";
+"action.checkedin"="Checked in";
 "action.checkin"="Check in";
 "action.checkin.feedbackTitle"="You checked in!";
 "action.checkin.feedbackMessage"="You checked in %@, other users will know you are here! You will soon be able to tell us what is going on and share it with your PelMel network.";
+"action.comment"="Comment";
 "action.edit.title"="Choose an item to edit";
 "action.edit.name"="Name / place type";
 "action.edit.description"="Description";
@@ -68,7 +71,7 @@
 "city.withbars"="%d gay places";
 "counters.arein"="%d Are in";
 "counters.arein.singular"="%d Is in";
-"counters.chat"="Message him";
+"counters.chat"="Chat";
 "counters.checkins"="%d Check-ins";
 "counters.checkins.singular"="%d Check-in";
 "counters.comments"="%d Comments";
@@ -325,7 +328,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "profile.mustBe18.title"="Age restriction";
 "profile.mustBe18"="You must be over 12 to be able to use togayther, please define your correct birth date so that you can log in.";
 "terms.title"="Terms of use";
-"terms"="These Terms of Use will apply to the use of the Service. Please read these Terms of Use carefully so that you know what your rights and obligations are when using the Service. The acceptance of these Terms of Use constitutes a valid and binding agreement between 'NeXtep Softwares' (the COMPANY) and you (the USER) for the use of the Service. If you make any use of the Service you agree to be bound by these terms and conditions. You must be 18 years of age or older to use this service and must be registered as a member. If we discover that you are not over 18, we reserve our right to suspend and remove you account without any notice.
+"terms"="These Terms of Use will apply to the use of the Service. Please read these Terms of Use carefully so that you know what your rights and obligations are when using the Service. The acceptance of these Terms of Use constitutes a valid and binding agreement between 'FGP Digital LLC' (the COMPANY) and you (the USER) for the use of the Service. If you make any use of the Service you agree to be bound by these terms and conditions. You must be 18 years of age or older to use this service and must be registered as a member. If we discover that you are not over 18, we reserve our right to suspend and remove you account without any notice.
     
     Article 1
 The email address of the user is only used as a unique login identifier and is never exposed to anyone. The COMPANY may use it to communicate important information to the USER.

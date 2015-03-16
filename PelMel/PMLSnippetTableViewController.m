@@ -867,8 +867,8 @@ typedef enum {
     
     // Observing address
     if([_snippetItem isKindOfClass:[Place class]]) {
-        [self.snippetItem addObserver:self forKeyPath:@"address" options:   NSKeyValueObservingOptionNew context:NULL];
-        [_observedProperties addObject:@"address"];
+//        [self.snippetItem addObserver:self forKeyPath:@"address" options:   NSKeyValueObservingOptionNew context:NULL];
+//        [_observedProperties addObject:@"address"];
     }
     [self.snippetItem addObserver:self forKeyPath:@"mainImage" options:   NSKeyValueObservingOptionNew context:NULL];
     [_observedProperties addObject:@"mainImage"];
@@ -1682,19 +1682,19 @@ typedef enum {
 }
 #pragma mark - UITextViewDelegate
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {
-    [self descriptionDone:textView];
+    if(_snippetItem.editingDesc) {
+        _snippetItem.miniDesc = textView.text;
+    }
     return YES;
 }
 #pragma mark - KVO Observing implementation
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if([@"address" isEqualToString:keyPath]) {
-//        if([object isKindOfClass:[Place class]]) {
-//            _snippetCell.subtitleLabel.text = ((Place*)object).address;
-//        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.tableView reloadData]; //reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionOvAddress] withRowAnimation:UITableViewRowAnimationAutomatic];
-        });
-    } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
+//    if([@"address" isEqualToString:keyPath]) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [self.tableView reloadData];
+//        });
+//    } else
+        if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         if(_snippetItem.editing || _snippetItem.editingDesc) {
             [self.tableView setContentOffset:CGPointMake(0, 0)];
             [self.parentMenuController minimizeCurrentSnippet:YES];

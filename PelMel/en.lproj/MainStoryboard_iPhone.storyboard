@@ -71,6 +71,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -1069,7 +1071,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="140" id="lOD-KH-MpF"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="18"/>
                                             <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1079,7 +1081,7 @@
                                                 <constraint firstAttribute="width" constant="109" id="J0g-lw-75q"/>
                                                 <constraint firstAttribute="height" constant="21" id="eQJ-YI-yCc"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
                                             <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1109,7 +1111,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="kRm-Z1-HUz"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
                                             <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1160,7 +1162,7 @@
                                             <rect key="frame" x="8" y="7" width="304" height="30"/>
                                             <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
                                         </textField>
@@ -1169,6 +1171,45 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="textField" destination="nQj-u0-Yhw" id="TvU-9P-k3Q"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="descCell" rowHeight="100" id="Oxs-UE-heE" customClass="PMLEventDescriptionTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oxs-UE-heE" id="WBE-QH-GvF">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5iX-6M-Z05">
+                                            <rect key="frame" x="25" y="12" width="275" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="8M6-oS-Dsk"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QiY-tB-4Ng">
+                                            <rect key="frame" x="20" y="5" width="280" height="89.5"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="QiY-tB-4Ng" firstAttribute="leading" secondItem="5iX-6M-Z05" secondAttribute="leading" constant="-5" id="1sK-Uc-3fz"/>
+                                        <constraint firstItem="QiY-tB-4Ng" firstAttribute="top" secondItem="5iX-6M-Z05" secondAttribute="top" constant="-7" id="OvC-gb-ZyT"/>
+                                        <constraint firstAttribute="trailing" secondItem="QiY-tB-4Ng" secondAttribute="trailing" constant="20" id="Q1n-tR-Z0o"/>
+                                        <constraint firstItem="QiY-tB-4Ng" firstAttribute="top" secondItem="WBE-QH-GvF" secondAttribute="top" constant="5" id="Y1n-zI-cRF"/>
+                                        <constraint firstItem="QiY-tB-4Ng" firstAttribute="trailing" secondItem="5iX-6M-Z05" secondAttribute="trailing" id="fyi-ds-v7w"/>
+                                        <constraint firstItem="QiY-tB-4Ng" firstAttribute="leading" secondItem="WBE-QH-GvF" secondAttribute="leading" constant="20" id="sQn-8C-zTY"/>
+                                        <constraint firstAttribute="bottom" secondItem="QiY-tB-4Ng" secondAttribute="bottom" constant="5" id="yvl-oy-8oe"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="descriptionPlaceholderLabel" destination="5iX-6M-Z05" id="gxn-VF-MnE"/>
+                                    <outlet property="descriptionTextView" destination="QiY-tB-4Ng" id="Xvr-yO-m86"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1206,7 +1247,7 @@
                                                 <constraint firstAttribute="height" constant="24" id="70e-Sz-Bam"/>
                                                 <constraint firstAttribute="width" constant="92" id="lyM-GX-UyI"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
                                             <color key="textColor" red="0.57647058823529407" green="0.58431372549019611" blue="0.59215686274509804" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1216,7 +1257,7 @@
                                                 <constraint firstAttribute="height" constant="24" id="Ymx-Xu-bqu"/>
                                                 <constraint firstAttribute="width" constant="193" id="wcr-dP-CLc"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
                                             <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1269,7 +1310,7 @@
                                             <rect key="frame" x="8" y="7" width="304" height="30"/>
                                             <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="next"/>
                                         </textField>
@@ -1296,7 +1337,7 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="ajh-jp-yBQ"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                             <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -1305,7 +1346,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <color key="textColor" red="0.57647058819999997" green="0.58431372550000005" blue="0.59215686270000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                     </subviews>
@@ -2559,7 +2600,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AoI-bv-Qdx" userLabel="OpeningsView">
-                                            <rect key="frame" x="218" y="30" width="87" height="25"/>
+                                            <rect key="frame" x="218" y="28" width="87" height="25"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5PL-OK-dQT">
                                                     <rect key="frame" x="99" y="-99" width="82" height="60"/>
@@ -2657,7 +2698,7 @@
                                         <constraint firstItem="nlv-ZZ-SbG" firstAttribute="leading" secondItem="DDp-c6-bah" secondAttribute="leading" constant="15" id="64Z-zQ-mQk"/>
                                         <constraint firstItem="rNc-Jo-fwg" firstAttribute="centerY" secondItem="Abu-lq-gQu" secondAttribute="centerY" id="6fa-ij-PWP"/>
                                         <constraint firstAttribute="bottom" secondItem="Mzf-FI-IZq" secondAttribute="bottom" constant="2" id="7As-dv-vcI"/>
-                                        <constraint firstItem="Abu-lq-gQu" firstAttribute="centerY" secondItem="AoI-bv-Qdx" secondAttribute="centerY" constant="1" id="85l-5d-49U"/>
+                                        <constraint firstItem="Abu-lq-gQu" firstAttribute="centerY" secondItem="AoI-bv-Qdx" secondAttribute="centerY" constant="3" id="85l-5d-49U"/>
                                         <constraint firstItem="nlv-ZZ-SbG" firstAttribute="top" secondItem="DDp-c6-bah" secondAttribute="top" constant="9" id="8Qr-eM-zgo"/>
                                         <constraint firstItem="rNc-Jo-fwg" firstAttribute="leading" secondItem="nlv-ZZ-SbG" secondAttribute="leading" id="Efd-up-Eql"/>
                                         <constraint firstAttribute="trailing" secondItem="Mzf-FI-IZq" secondAttribute="trailing" id="FgW-No-YT2"/>

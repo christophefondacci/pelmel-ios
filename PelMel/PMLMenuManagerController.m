@@ -835,7 +835,7 @@ static void *MyParentMenuControllerKey;
         [UIView setAnimationDuration:duration.doubleValue];
         [UIView setAnimationCurve:curve.intValue];
         [UIView setAnimationBeginsFromCurrentState:YES];
-        _bottomView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.size.height-kSnippetHeight, snippetBounds.size.width, snippetBounds.size.height);
+        _bottomView.frame = CGRectMake(snippetBounds.origin.x, self.view.frame.size.height-kSnippetHeight, snippetBounds.size.width, snippetBounds.size.height);
         
         [UIView commitAnimations];
     }

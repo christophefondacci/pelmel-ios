@@ -383,15 +383,54 @@
     }
     return PMLActionTypeNoAction;
 }
+- (UIColor *)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected {
+//    if(selected) {
+//        switch(index) {
+//            case kPMLCounterIndexLike:
+//            case kPMLCounterIndexCheckin:
+//                return UIColorFromRGB(0xffcc80);
+//            default:
+//                return [UIColor colorWithWhite:1 alpha:0.3];
+//
+//        }
+//    } else {
+    if(!selected) {
+        switch (index) {
+            case kPMLCounterIndexLike:
+            case kPMLCounterIndexCheckin:
+                return UIColorFromRGB(0xe9791e);
+        }
+    }
+    return [UIColor colorWithWhite:1 alpha:0.3];
+//    }
+}
+- (NSString *)counterActionLabelAtIndex:(NSInteger)index {
+    NSString *code;
+    switch(index) {
+        case kPMLCounterIndexLike:
+            code = _place.isLiked ? @"action.unlike" : @"action.like";
+            break;
+        case kPMLCounterIndexCheckin:
+            code = [self isCheckedIn] ? @"action.checkedin" : @"action.checkin";
+            break;
+        case kPMLCounterIndexComment:
+            code= @"action.comment";
+    }
+    if(code!=nil) {
+        return NSLocalizedString(code,code);
+    }
+    return nil;
+}
+-(BOOL)isCheckedIn {
+    CurrentUser *user=[[TogaytherService userService] getCurrentUser];
+    return [user.lastLocation.key isEqualToString:_place.key] && [user.lastLocationDate timeIntervalSinceNow]>-3600;
+}
 - (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:
             return _place.isLiked;
-        case kPMLCounterIndexCheckin: {
-            CurrentUser *user=[[TogaytherService userService] getCurrentUser];
-            return [user.lastLocation.key isEqualToString:_place.key] && [user.lastLocationDate timeIntervalSinceNow]>-3600;
-            break;
-        }
+        case kPMLCounterIndexCheckin:
+            return [self isCheckedIn];
         case kPMLCounterIndexComment:
             // TODO return selected when messages with user
             return NO;
