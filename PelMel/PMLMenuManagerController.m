@@ -273,6 +273,7 @@ static void *MyParentMenuControllerKey;
         [_currentSnippetViewController removeFromParentViewController];
         [self.menuManagerDelegate layoutMenuActions];
         _currentSnippetViewController = nil;
+        [_gripView removeFromSuperview];
     }
 }
 - (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated {
