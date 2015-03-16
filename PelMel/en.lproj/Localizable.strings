@@ -22,6 +22,9 @@
 "action.edit.title"="Choose an item to edit";
 "action.edit.name"="Name / place type";
 "action.edit.description"="Description";
+"action.edit.eventType"="What kind of event?";
+"action.edit.event.onetime"="One time event";
+"action.edit.event.recurring"="Recurring weekly event";
 "action.edit.hours"="Opening hours / events";
 "action.edit.location"="Location";
 "action.edit.mylocation"="Relocate to my location";

@@ -1516,12 +1516,16 @@ typedef enum {
     [self.navigationController pushViewController:childSnippet animated:YES];
 }
 -(void)addEventTapped {
-    PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
-    eventController.event = [[Event alloc] initWithPlace:(Place*)self.snippetItem];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
-    
-    // Preparing transition
-    [self.parentMenuController presentModal:navController];
+    // Getting edit event action
+    PopupAction *action = [_actionManager actionForType:PMLActionTypeEditEvent];
+    action.actionCommand();
+//    
+//    PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
+//    eventController.event = [[Event alloc] initWithPlace:(Place*)self.snippetItem];
+//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
+//    
+//    // Preparing transition
+//    [self.parentMenuController presentModal:navController];
 }
 
 -(void)descriptionDone:(id)sender {

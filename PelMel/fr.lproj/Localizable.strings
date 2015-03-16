@@ -21,6 +21,9 @@
 "action.edit.title"="Information à modifier";
 "action.edit.name"="Nom / Type";
 "action.edit.description"="Description";
+"action.edit.eventType"="Quel type d'évènement ?";
+"action.edit.event.onetime"="Evènement Ponctuel";
+"action.edit.event.recurring"="Récurrent & hebdomadaire";
 "action.edit.hours"="Heures d'ouverture / évènements";
 "action.edit.location"="Position";
 "action.edit.mylocation"="Placer sur ma position";

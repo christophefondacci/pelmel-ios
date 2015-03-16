@@ -92,6 +92,7 @@
     // Report
     UIActionSheet *_reportActionSheet;
     UIActionSheet *_editActionSheet;
+    UIActionSheet *_eventEditActionSheet;
     UIActionSheet *_relocationConfirmActionSheet;
     UIActionSheet *_descriptionActionSheet;
     
@@ -205,12 +206,13 @@
     PopupAction *editEventAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
         NSLog(@"MODIFY EVENT");
         [_menuManagerController currentSnippetViewController];
-        PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
-        eventController.event = (Event*)_currentObject;
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
         
-        // Preparing transition
-        [_menuManagerController presentModal:navController];
+        // Displaying event editor if event is current object
+        if([_currentObject isKindOfClass:[Event class]]) {
+            [self editEvent:(Event*)_currentObject];
+        } else if([_currentObject isKindOfClass:[Place class]]) {
+            [self initializeEventEditFor:_currentObject];
+        }
     }];
     editEventAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:editEventAction forType:PMLActionTypeEditEvent];
@@ -432,6 +434,18 @@
     _editActionSheet.cancelButtonIndex=5;
     [_editActionSheet showInView:_popupController.controller.parentMenuController.view];
 }
+-(void)initializeEventEditFor:(CALObject*)object {
+    // Ask the user the photo source
+    NSString *title = NSLocalizedString(@"action.edit.eventType",@"Type of event");
+    NSString *cancel= NSLocalizedString(@"cancel","cancel");
+    _eventEditActionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+    [_eventEditActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.event.onetime", @"One time")];
+    [_eventEditActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.event.recurring", @"Recurring")];
+    [_eventEditActionSheet addButtonWithTitle:cancel];
+    _eventEditActionSheet.cancelButtonIndex=2;
+    [_eventEditActionSheet showInView:_popupController.controller.parentMenuController.view];
+}
+
 #pragma mark - ActionSheet Delegate
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     if(_reportActionSheet == actionSheet) {
@@ -480,6 +494,17 @@
                 break;
             case 1:
                 [self editDescriptionWithCurrentLanguage:YES];
+                break;
+        }
+    } else if(_eventEditActionSheet == actionSheet) {
+        switch(buttonIndex) {
+            case 0: {
+                Event *event = [[Event alloc] initWithPlace:(Place*)_currentObject];
+                [self editEvent:event];
+                break;
+            }
+            case 1:
+                [self editHours];
                 break;
         }
     }
@@ -653,7 +678,18 @@
         NSLog(@"WARNING: Expected a Place object but got %@", NSStringFromClass([_currentObject class]) );
     }
 }
-
+-(void)editEvent:(Event*)event {
+    
+    // Building event editor
+    PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
+    eventController.event = event;
+    
+    // Wrapping inside a nav controller
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
+    
+    // Preparing transition
+    [_menuManagerController presentModal:navController];
+}
 #pragma mark - Dynamic actions generation
 -(NSArray *)buildLikeActions:(CALObject*)object {
 //    NSMutableArray *likeActions = [[NSMutableArray alloc] initWithCapacity:object.likers.count];
