@@ -292,16 +292,7 @@
 - (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened {
     PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[self instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
     snippetController.snippetItem = object;
-    
-//    if(self.parentMenuController) {
-//        PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-//        snippetController.snippetItem = message.from;
-//        snippetController.parentMenuController = self.parentMenuController;
-//        [self.navigationController pushViewController:snippetController animated:YES];
-//    } else {
-//        [self.navigationController popToRootViewControllerAnimated:NO];
-//        [[TogaytherService uiService] presentSnippetFor:message.from opened:YES];
-//    }
+
     if(_menuManagerController.navigationController.topViewController != _menuManagerController) {
         [_menuManagerController presentControllerSnippet:snippetController animated:NO];
         [_menuManagerController openCurrentSnippet:NO];
@@ -310,13 +301,13 @@
         BOOL isOpened = _menuManagerController.snippetFullyOpened;
         if(isOpened) {
             if(opened) {
-                [(UINavigationController*)_menuManagerController.currentSnippetViewController pushViewController:snippetController animated:YES];
+                [self pushSnippetNavigationController:snippetController];
             } else {
                 [_menuManagerController presentControllerSnippet:snippetController animated:YES];
             }
         } else {
             if(_menuManagerController.currentSnippetViewController != nil) {
-                [(UINavigationController*)_menuManagerController.currentSnippetViewController pushViewController:snippetController animated:YES];
+                [self pushSnippetNavigationController:snippetController];
                 [_menuManagerController dismissControllerMenu:YES];
             } else {
                 [_menuManagerController presentControllerSnippet:snippetController];
@@ -325,6 +316,40 @@
                 [_menuManagerController openCurrentSnippet:!isOpened];
             }
         }
+    }
+}
+/**
+ * Pushes the snippet controller on the current navigation stack presented in the snippet. It handles
+ * situations when a view controller with the same object may already be presented by removing it from hierarchy 
+ * and places it on top
+ */
+-(void)pushSnippetNavigationController:(PMLSnippetTableViewController*)snippetController {
+    UINavigationController *navigationController = (UINavigationController*)_menuManagerController.currentSnippetViewController;
+    PMLSnippetTableViewController *controllerToPush = snippetController;
+    BOOL isRoot = navigationController.childViewControllers.count == 1;
+    for(UIViewController *controller in navigationController.childViewControllers) {
+        
+        // Checking snippet controllers
+        if([controller isKindOfClass:[PMLSnippetTableViewController class]]) {
+            PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)controller;
+            
+            // Is this controller presenting the same object?
+            if([childSnippet.snippetItem.key isEqualToString:snippetController.snippetItem.key]) {
+                
+                // Just in case we have 2 different objects (memory NSCache flush maybe)
+                // This call will also do a refresh
+                childSnippet.snippetItem = snippetController.snippetItem;
+                if(!isRoot && childSnippet!=navigationController.topViewController) {
+                    [childSnippet removeFromParentViewController];
+                    controllerToPush = childSnippet;
+                } else {
+                    controllerToPush = nil;
+                }
+            }
+        }
+    }
+    if(controllerToPush != nil) {
+        [navigationController pushViewController:controllerToPush animated:YES];
     }
 }
 

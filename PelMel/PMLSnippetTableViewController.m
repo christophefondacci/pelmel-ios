@@ -37,6 +37,7 @@
 #import "PMLCountersView.h"
 #import "UIImage+IPImageUtils.h"
 #import "UITouchBehavior.h"
+#import "PMLSnippetEditTableViewCell.h"
 
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
@@ -154,7 +155,6 @@ typedef enum {
     PMLPopupActionManager *_actionManager;
     
     // Cells
-    PMLSnippetTableViewCell *_snippetCell;
     PMLSnippetDescTableViewCell *_snippetDescCell;
     PMLGalleryTableViewCell *_galleryCell;
     PMLCountersTableViewCell *_countersCell;
@@ -462,7 +462,7 @@ typedef enum {
             switch(indexPath.row) {
                 case kPMLRowSnippet:
                     if(_snippetItem.editing) {
-                        [self configureRowSnippetEditor:(PMLSnippetTableViewCell*)cell];
+                        [self configureRowSnippetEditor:(PMLSnippetEditTableViewCell*)cell];
                     } else if(_snippetItem.editingDesc) {
                         [self configureRowSnippetDescriptionEditor:(PMLSnippetDescTableViewCell*)cell];
                     } else {
@@ -769,7 +769,7 @@ typedef enum {
 
 #pragma mark - Cell configuration
 
-- (void)configureRowSnippetEditor:(PMLSnippetTableViewCell*)cell {
+- (void)configureRowSnippetEditor:(PMLSnippetEditTableViewCell*)cell {
 
     cell.titleTextField.delegate = self;
     cell.titleTextField.hidden=NO;
@@ -795,6 +795,8 @@ typedef enum {
         
     }
     cell.subtitleLabel.text = NSLocalizedString(@"snippet.edit.placeType",@"Select the kind of venue:");
+    [cell.okButton addTarget:self  action:@selector(editOkTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.cancelButton addTarget:self  action:@selector(editCancelTapped:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)configureRowSnippetDescriptionEditor:(PMLSnippetDescTableViewCell*)cell {
     _snippetDescCell = cell;
@@ -802,6 +804,7 @@ typedef enum {
     cell.descriptionTextView.text = _infoProvider.descriptionText;
     cell.descriptionLanguageLabel.text = [_snippetItem.miniDescLang uppercaseString];
     [cell.descriptionTextViewButton addTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.descriptionTextViewCancelButton addTarget:self action:@selector(editCancelTapped:) forControlEvents:UIControlEventTouchUpInside];
     [cell.descriptionTextView becomeFirstResponder];
     // Building placeholder
     //        NSString *langCode = _snippetItem.miniDescLang;
@@ -815,7 +818,6 @@ typedef enum {
     //
 }
 - (void)configureRowSnippet:(PMLSnippetTableViewCell*)cell {
-    _snippetCell = cell;
     // Title
 //    NSLog(@"%d places",(int)_dataService.modelHolder.places.count);
 //    for(Place *p in _dataService.modelHolder.places) {
@@ -935,12 +937,6 @@ typedef enum {
     if(_snippetItem.editing) {
         [self updateTitleEdition];
     }
-
-    cell.likeButton.hidden=YES;
-    cell.likeButtonSubtitle.hidden=YES;
-
-    
-    
 }
 -(void)configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:(NSInteger)index {
     NSObject<PMLThumbsPreviewProvider> *provider = [_infoProvider thumbsProvider];
@@ -1389,11 +1385,17 @@ typedef enum {
         PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
         action.actionCommand();
     }
-    [_snippetCell.titleTextField resignFirstResponder];
     [self.tableView reloadData];
     
 }
-
+-(void)editOkTapped:(id)sender {
+    PopupAction *okAction = [_actionManager actionForType:PMLActionTypeConfirm];
+    okAction.actionCommand();
+}
+-(void)editCancelTapped:(id)sender {
+    PopupAction *okAction = [_actionManager actionForType:PMLActionTypeCancel];
+    okAction.actionCommand();
+}
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
     [self toggleFullscreenGallery];
@@ -1514,12 +1516,10 @@ typedef enum {
         NSString *title = [inputText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         if(title.length>0) {
             ((Place*)_snippetItem).title = inputText;
-            _snippetCell.titleLabel.text = inputText;
             PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
             action.actionCommand();
         }
     }
-    [_snippetCell.titleTextField resignFirstResponder];
     [self.tableView reloadData];
     
 
@@ -1548,9 +1548,9 @@ typedef enum {
             [self uninstallNavBarCommitCancel];
         }
         // If place is already created we show the keyboard, otherwise it stays hidden
-        if(_snippetItem.key != nil && _snippetItem.editing) {
-            [_snippetCell.titleTextField becomeFirstResponder];
-        }
+//        if(_snippetItem.key != nil && _snippetItem.editing) {
+//            [_snippetCell.titleTextField becomeFirstResponder];
+//        }
         [self.tableView reloadData];
         
     } else if([keyPath isEqualToString:@"mainImage"]) {

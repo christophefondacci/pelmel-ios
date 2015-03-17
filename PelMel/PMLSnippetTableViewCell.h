@@ -18,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *subtitleIcon;
 @property (weak, nonatomic) IBOutlet UIView *peopleView;
 @property (weak, nonatomic) IBOutlet UIView *colorLineView;
-@property (weak, nonatomic) IBOutlet UITextField *titleTextField;
 @property (weak, nonatomic) IBOutlet UIView *hoursBadgeView;
 @property (weak, nonatomic) IBOutlet UILabel *hoursBadgeTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *hoursBadgeSubtitleLabel;
@@ -26,8 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *hoursBadgeImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightLabelHeight;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightIconHeight;
-@property (weak, nonatomic) IBOutlet UIView *backContainer;
-@property (weak, nonatomic) IBOutlet UIButton *likeButton;
-@property (weak, nonatomic) IBOutlet UILabel *likeButtonSubtitle;
+
 
 @end

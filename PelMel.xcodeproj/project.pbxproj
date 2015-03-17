@@ -144,6 +144,8 @@
 		B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = B45BBF01196AB883001C1DF5 /* UIWaitingView.m */; };
 		B45C3C5C1AB757B700D8B321 /* Launch Screen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B45C3C5B1AB757B700D8B321 /* Launch Screen.xib */; };
 		B45C3C5E1AB75C6F00D8B321 /* Cooper Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */; };
+		B45C3C611AB7A61800D8B321 /* PMLSnippetEditTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B45C3C5F1AB7A61800D8B321 /* PMLSnippetEditTableViewCell.h */; };
+		B45C3C621AB7A61800D8B321 /* PMLSnippetEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B45C3C601AB7A61800D8B321 /* PMLSnippetEditTableViewCell.m */; };
 		B45CAB3219721BD40089C7E8 /* DynamicObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B45CAB2E19721BD40089C7E8 /* DynamicObject.h */; };
 		B45CAB3319721BD40089C7E8 /* DynamicObject.m in Sources */ = {isa = PBXBuildFile; fileRef = B45CAB2F19721BD40089C7E8 /* DynamicObject.m */; };
 		B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = B45CAB3019721BD40089C7E8 /* UIPopBehavior.h */; };
@@ -506,6 +508,8 @@
 		B45BBF01196AB883001C1DF5 /* UIWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIWaitingView.m; sourceTree = "<group>"; };
 		B45C3C5B1AB757B700D8B321 /* Launch Screen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "Launch Screen.xib"; sourceTree = "<group>"; };
 		B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Cooper Black.ttf"; sourceTree = "<group>"; };
+		B45C3C5F1AB7A61800D8B321 /* PMLSnippetEditTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLSnippetEditTableViewCell.h; sourceTree = "<group>"; };
+		B45C3C601AB7A61800D8B321 /* PMLSnippetEditTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLSnippetEditTableViewCell.m; sourceTree = "<group>"; };
 		B45CAB2E19721BD40089C7E8 /* DynamicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicObject.h; sourceTree = "<group>"; };
 		B45CAB2F19721BD40089C7E8 /* DynamicObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicObject.m; sourceTree = "<group>"; };
 		B45CAB3019721BD40089C7E8 /* UIPopBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIPopBehavior.h; sourceTree = "<group>"; };
@@ -1387,6 +1391,8 @@
 				B47A69C11AA64AC200877B58 /* PMLCountersView.m */,
 				B45B38221AB0C1F200730313 /* PMLSnippetDescTableViewCell.h */,
 				B45B38231AB0C1F200730313 /* PMLSnippetDescTableViewCell.m */,
+				B45C3C5F1AB7A61800D8B321 /* PMLSnippetEditTableViewCell.h */,
+				B45C3C601AB7A61800D8B321 /* PMLSnippetEditTableViewCell.m */,
 			);
 			name = Snippet;
 			sourceTree = "<group>";
@@ -1496,6 +1502,7 @@
 				B41C6FF6198903ED00210474 /* CALayer+XibConfiguration.h in Headers */,
 				B40668B7197149B50012DF71 /* UIMenuManagerMainDelegate.h in Headers */,
 				B41C63BC19B31581003C9B52 /* PMLActivityTableViewCell.h in Headers */,
+				B45C3C611AB7A61800D8B321 /* PMLSnippetEditTableViewCell.h in Headers */,
 				B4FC959F19B1F85D00269E74 /* PMLDescriptionTableViewCell.h in Headers */,
 				B41C63B819B311BE003C9B52 /* PMLContextInfoProvider.h in Headers */,
 				B4859DB8197FC6810036D8FF /* PopupAction.h in Headers */,
@@ -1719,6 +1726,7 @@
 				B41C63BD19B31581003C9B52 /* PMLActivityTableViewCell.m in Sources */,
 				B43D11721A97A12B008476C7 /* LinearDismissalAnimator.m in Sources */,
 				B495655D163EDBA6006A0451 /* ChatView.m in Sources */,
+				B45C3C621AB7A61800D8B321 /* PMLSnippetEditTableViewCell.m in Sources */,
 				B49892F6199B839500F51B8F /* PMLImageTableViewCell.m in Sources */,
 				B495655E163EDBA6006A0451 /* Message.m in Sources */,
 				B49F98A419A2186300BD3B2F /* PMLOpenActionBehavior.m in Sources */,

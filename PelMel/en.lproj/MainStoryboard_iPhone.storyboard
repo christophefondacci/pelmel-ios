@@ -73,6 +73,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -3475,15 +3477,15 @@
                                     <outlet property="widthTitleConstraint" destination="uf1-Sj-Y2L" id="4as-kC-pBn"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="snippetEditor" rowHeight="110" id="xvU-Vo-lc6" customClass="PMLSnippetTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="snippetEditor" rowHeight="110" id="xvU-Vo-lc6" customClass="PMLSnippetEditTableViewCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xvU-Vo-lc6" id="GsE-iX-vfr">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="18D-Jh-qur">
-                                            <rect key="frame" x="15" y="4" width="291" height="30"/>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="18D-Jh-qur">
+                                            <rect key="frame" x="15" y="5" width="243" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="30" id="g47-UD-f46"/>
                                             </constraints>
@@ -3491,14 +3493,14 @@
                                             <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                         </textField>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wUF-8j-l7S" userLabel="peopleView">
-                                            <rect key="frame" x="15" y="59" width="290" height="49"/>
+                                            <rect key="frame" x="15" y="59" width="243" height="49"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="49" id="sRS-fh-Ek7"/>
                                             </constraints>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the kind of venue:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JKw-Op-QxN" userLabel="subtitle">
-                                            <rect key="frame" x="15" y="36" width="291" height="21"/>
+                                            <rect key="frame" x="15" y="37" width="291" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="zPc-VR-NMx"/>
                                             </constraints>
@@ -3506,24 +3508,67 @@
                                             <color key="textColor" red="1" green="0.83529411760000005" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NPb-2b-7Ky">
+                                            <rect key="frame" x="266" y="5" width="46" height="30"/>
+                                            <color key="backgroundColor" red="0.0043040084219999998" green="0.43849374400000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="46" id="5wM-C2-Ysv"/>
+                                                <constraint firstAttribute="height" constant="30" id="fdm-Nv-klW"/>
+                                            </constraints>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <state key="normal" title="Ok">
+                                                <color key="titleColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="4"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJK-vs-Nec">
+                                            <rect key="frame" x="266" y="59" width="46" height="49"/>
+                                            <color key="backgroundColor" red="0.90196079019999997" green="0.059346810210000003" blue="0.0073946128409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="46" id="Pp9-LP-fhN"/>
+                                                <constraint firstAttribute="height" constant="49" id="tZz-ei-Z2b"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <state key="normal" title="Cancel">
+                                                <color key="titleColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="4"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="wUF-8j-l7S" secondAttribute="bottom" constant="2" id="0Lk-wn-ZFh"/>
                                         <constraint firstItem="JKw-Op-QxN" firstAttribute="leading" secondItem="GsE-iX-vfr" secondAttribute="leadingMargin" constant="7" id="4NT-Y3-BRo"/>
-                                        <constraint firstAttribute="trailing" secondItem="wUF-8j-l7S" secondAttribute="trailing" constant="15" id="6xk-4l-X9Q"/>
                                         <constraint firstItem="JKw-Op-QxN" firstAttribute="top" secondItem="18D-Jh-qur" secondAttribute="bottom" constant="2" id="7If-Rw-8dL"/>
                                         <constraint firstItem="18D-Jh-qur" firstAttribute="leading" secondItem="GsE-iX-vfr" secondAttribute="leadingMargin" constant="7" id="98Z-LM-SC3"/>
+                                        <constraint firstAttribute="trailing" secondItem="NPb-2b-7Ky" secondAttribute="trailing" constant="8" id="ADP-ZH-wAa"/>
+                                        <constraint firstItem="NPb-2b-7Ky" firstAttribute="top" secondItem="GsE-iX-vfr" secondAttribute="top" constant="5" id="BES-ny-1nT"/>
+                                        <constraint firstItem="aJK-vs-Nec" firstAttribute="leading" secondItem="wUF-8j-l7S" secondAttribute="trailing" constant="8" id="HZv-Gj-wwQ"/>
+                                        <constraint firstAttribute="trailing" secondItem="aJK-vs-Nec" secondAttribute="trailing" constant="8" id="ZBD-ZH-2Tx"/>
                                         <constraint firstAttribute="trailing" secondItem="JKw-Op-QxN" secondAttribute="trailing" constant="14" id="cdX-QW-svc"/>
+                                        <constraint firstAttribute="bottom" secondItem="aJK-vs-Nec" secondAttribute="bottom" constant="2" id="hmn-0O-lNi"/>
+                                        <constraint firstItem="NPb-2b-7Ky" firstAttribute="leading" secondItem="18D-Jh-qur" secondAttribute="trailing" constant="8" id="jm4-dB-Cst"/>
                                         <constraint firstItem="wUF-8j-l7S" firstAttribute="leading" secondItem="GsE-iX-vfr" secondAttribute="leading" constant="15" id="qmw-6p-5w4"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="18D-Jh-qur" secondAttribute="trailing" constant="6" id="r1F-V8-BFo"/>
-                                        <constraint firstItem="18D-Jh-qur" firstAttribute="top" secondItem="GsE-iX-vfr" secondAttribute="top" constant="4" id="zOo-G6-Duw"/>
+                                        <constraint firstItem="18D-Jh-qur" firstAttribute="top" secondItem="GsE-iX-vfr" secondAttribute="top" constant="5" id="zOo-G6-Duw"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
-                                    <outlet property="peopleView" destination="wUF-8j-l7S" id="8uF-MH-aX2"/>
-                                    <outlet property="subtitleLabel" destination="JKw-Op-QxN" id="dlR-Yv-ziR"/>
-                                    <outlet property="titleTextField" destination="18D-Jh-qur" id="Rzf-UJ-b9i"/>
+                                    <outlet property="cancelButton" destination="aJK-vs-Nec" id="7k4-DB-jI0"/>
+                                    <outlet property="okButton" destination="NPb-2b-7Ky" id="nr3-Q9-XSL"/>
+                                    <outlet property="peopleView" destination="wUF-8j-l7S" id="PY4-Zq-EWM"/>
+                                    <outlet property="subtitleLabel" destination="JKw-Op-QxN" id="INA-aB-jVe"/>
+                                    <outlet property="titleTextField" destination="18D-Jh-qur" id="1UG-MT-FLt"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="snippetDescEditor" rowHeight="110" id="pll-yl-k5e" customClass="PMLSnippetDescTableViewCell">
@@ -3534,16 +3579,17 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xkc-aL-eLu">
-                                            <rect key="frame" x="15" y="8" width="263" height="98"/>
+                                            <rect key="frame" x="15" y="8" width="243" height="98"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WwH-p6-Mfa">
-                                            <rect key="frame" x="281" y="76" width="36" height="30"/>
+                                            <rect key="frame" x="266" y="76" width="46" height="30"/>
                                             <color key="backgroundColor" red="0.0043040084219999998" green="0.43849374400000002" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
+                                                <constraint firstAttribute="width" constant="46" id="VQY-iz-6gb"/>
                                                 <constraint firstAttribute="height" constant="30" id="fKL-RO-qpG"/>
                                             </constraints>
                                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -3565,7 +3611,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FR" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="5" translatesAutoresizingMaskIntoConstraints="NO" id="83s-An-FkW">
-                                            <rect key="frame" x="281" y="8" width="36" height="14"/>
+                                            <rect key="frame" x="266" y="8" width="46" height="14"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="14" id="FDZ-dY-dWn"/>
                                             </constraints>
@@ -3573,20 +3619,41 @@
                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UQn-qW-JVG">
+                                            <rect key="frame" x="266" y="26" width="46" height="38"/>
+                                            <color key="backgroundColor" red="0.90196079019999997" green="0.059346810210000003" blue="0.0073946128409999997" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="46" id="ew9-BL-dPd"/>
+                                                <constraint firstAttribute="height" constant="38" id="fL7-eN-2mv"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <state key="normal" title="Cancel">
+                                                <color key="titleColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="4"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="WwH-p6-Mfa" secondAttribute="bottom" constant="4" id="10q-Em-CNe"/>
-                                        <constraint firstItem="WwH-p6-Mfa" firstAttribute="leading" secondItem="xkc-aL-eLu" secondAttribute="trailing" constant="3" id="2Qm-H4-du2"/>
                                         <constraint firstItem="xkc-aL-eLu" firstAttribute="top" secondItem="l4M-eO-W47" secondAttribute="top" constant="8" id="7xk-xv-8sV"/>
+                                        <constraint firstItem="UQn-qW-JVG" firstAttribute="leading" secondItem="WwH-p6-Mfa" secondAttribute="leading" id="8kG-h2-P9z"/>
                                         <constraint firstAttribute="centerX" secondItem="rpb-mt-kUS" secondAttribute="centerX" id="BhH-9N-7lt"/>
                                         <constraint firstItem="83s-An-FkW" firstAttribute="leading" secondItem="WwH-p6-Mfa" secondAttribute="leading" id="CcD-9B-09X"/>
                                         <constraint firstItem="83s-An-FkW" firstAttribute="trailing" secondItem="WwH-p6-Mfa" secondAttribute="trailing" id="KXj-nv-vdR"/>
                                         <constraint firstItem="rpb-mt-kUS" firstAttribute="top" secondItem="l4M-eO-W47" secondAttribute="top" id="OUW-G2-xe6"/>
-                                        <constraint firstAttribute="trailing" secondItem="WwH-p6-Mfa" secondAttribute="trailing" constant="3" id="Rft-1Z-IuI"/>
+                                        <constraint firstAttribute="trailing" secondItem="WwH-p6-Mfa" secondAttribute="trailing" constant="8" id="Rft-1Z-IuI"/>
                                         <constraint firstItem="xkc-aL-eLu" firstAttribute="leading" secondItem="l4M-eO-W47" secondAttribute="leading" constant="15" id="Yfl-1X-pGU"/>
-                                        <constraint firstAttribute="trailing" secondItem="xkc-aL-eLu" secondAttribute="trailing" constant="42" id="iX7-Nn-3Qh"/>
                                         <constraint firstItem="83s-An-FkW" firstAttribute="top" secondItem="xkc-aL-eLu" secondAttribute="top" id="klw-oM-BX8"/>
+                                        <constraint firstItem="WwH-p6-Mfa" firstAttribute="leading" secondItem="xkc-aL-eLu" secondAttribute="trailing" constant="8" id="nod-0C-8YD"/>
+                                        <constraint firstItem="UQn-qW-JVG" firstAttribute="trailing" secondItem="WwH-p6-Mfa" secondAttribute="trailing" id="oKP-Fh-4AC"/>
                                         <constraint firstAttribute="bottom" secondItem="xkc-aL-eLu" secondAttribute="bottom" constant="4" id="sDg-U4-Nnm"/>
+                                        <constraint firstItem="UQn-qW-JVG" firstAttribute="top" secondItem="83s-An-FkW" secondAttribute="bottom" constant="4" id="wfz-cb-1mk"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
@@ -3594,6 +3661,7 @@
                                     <outlet property="descriptionLanguageLabel" destination="83s-An-FkW" id="NXo-TW-kkd"/>
                                     <outlet property="descriptionTextView" destination="xkc-aL-eLu" id="snD-Bh-cF5"/>
                                     <outlet property="descriptionTextViewButton" destination="WwH-p6-Mfa" id="Sjy-lZ-JYF"/>
+                                    <outlet property="descriptionTextViewCancelButton" destination="UQn-qW-JVG" id="mlz-Hm-pEk"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

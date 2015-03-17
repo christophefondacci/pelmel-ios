@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextView *descriptionTextView;
 @property (weak, nonatomic) IBOutlet UIButton *descriptionTextViewButton;
+@property (weak, nonatomic) IBOutlet UIButton *descriptionTextViewCancelButton;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionLanguageLabel;
 
 @end
