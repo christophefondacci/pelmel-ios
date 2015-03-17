@@ -675,15 +675,10 @@
             }
         }
     }
-    MKCoordinateRegion region = self.mapView.region;
-    if(region.span.latitudeDelta<0.1 ) {
-        NSSet *annotations = [self.mapView annotationsInMapRect:self.mapView.visibleMapRect];
-        if(annotations.count < 20) {
+    NSSet *annotations = [self.mapView annotationsInMapRect:self.mapView.visibleMapRect];
+    if(annotations.count < 300) {
             _labelsVisible = YES;
             [self toggleLabelsVisibility:YES forAnnotations:annotations];
-        } else {
-            [self toggleLabelsVisibility:NO forAnnotations:annotations];
-        }
     } else if(_labelsVisible) {
         _labelsVisible = NO;
         NSArray *annotations = [self.mapView annotations];
@@ -697,7 +692,39 @@
         if([annotation isKindOfClass:[MapAnnotation class]]) {
             MKAnnotationView *mapAnnotationView = ((MapAnnotation*)annotation).annotationView;
             if([mapAnnotationView isKindOfClass:[PMLPlaceAnnotationView class]]) {
-                ((PMLPlaceAnnotationView*)mapAnnotationView).showLabel = labelsVisible;
+                // Extracting annotation view to make some checks
+                PMLPlaceAnnotationView *annView = (PMLPlaceAnnotationView*)mapAnnotationView;
+                if(!labelsVisible) {
+                    annView.showLabel = labelsVisible;
+                } else {
+                    PMLPlaceAnnotationView *titledAnnotation = annView;
+                    for(id<MKAnnotation> otherAnnotation  in annotations) {
+                        if(otherAnnotation!=annotation && [otherAnnotation isKindOfClass:[MapAnnotation class]]) {
+                            PMLPlaceAnnotationView *otherAnnView = (PMLPlaceAnnotationView*) ((MapAnnotation*)otherAnnotation).annotationView;
+                            
+                            // Checking intersection of title labels
+                            CGRect otherTitleFrame = [otherAnnView convertRect:otherAnnView.titleLabel.frame toView:self.mapView];
+                            CGRect titleFrame = [annView convertRect:annView.titleLabel.frame toView:self.mapView];
+                            
+                            CALObject *obj = (CALObject*)((MapAnnotation*)annotation).object;
+                            CALObject *otherObj = (CALObject*)((MapAnnotation*)otherAnnotation).object;
+                            if(CGRectIntersectsRect(titleFrame, otherTitleFrame)) {
+                                if(otherObj.likeCount>obj.likeCount) {
+                                    titledAnnotation = nil;
+                                    break;
+                                } else if(obj.likeCount == otherObj.likeCount && otherAnnView.showLabel) {
+                                    titledAnnotation = nil;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if(titledAnnotation == annView) {
+                        annView.showLabel = YES;
+                    } else {
+                        annView.showLabel = NO;
+                    }
+                }
             }
         }
     }

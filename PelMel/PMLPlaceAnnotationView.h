@@ -15,5 +15,6 @@
 // The center off
 @property (nonatomic) CGPoint imageCenterOffset;
 @property (nonatomic) BOOL showLabel;
+@property (nonatomic,strong) UILabel *titleLabel;
 
 @end

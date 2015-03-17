@@ -200,6 +200,8 @@
             [_timePickerDatasource setHours:_calendar.endHour minutes:_calendar.endMinute forTag:1];
         }
         [_titleCell.textField resignFirstResponder];
+        [_descriptionCell.descriptionTextView resignFirstResponder];
+        
         // Inserting picker
         // Deleting any previous picker
         [self.tableView beginUpdates];

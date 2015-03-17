@@ -16,7 +16,6 @@
 
 @implementation PMLPlaceAnnotationView {
     UIImageView *_imageView;
-    UILabel *_titleLabel;
     MKNumberBadgeView *_badgeView;
     UIDynamicAnimator *_animator;
     
@@ -120,8 +119,8 @@
             [_titleLabel removeFromSuperview];
             _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(-30, -20, 60+scaledSize.width, 20)];
             _titleLabel.textAlignment = NSTextAlignmentCenter;
-            _titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:11];
-            _titleLabel.textColor = UIColorFromRGB(0xf48020);
+            _titleLabel.font = [UIFont fontWithName:@"Avenir-MediumOblique" size:11];
+            _titleLabel.textColor = UIColorFromRGB(0xe86900);
             _titleLabel.text = ((Place*)annotation.object).title;
             _titleLabel.hidden=NO;
             _titleLabel.alpha=0;
