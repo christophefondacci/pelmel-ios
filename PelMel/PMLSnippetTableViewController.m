@@ -211,7 +211,6 @@ typedef enum {
     _dataService = TogaytherService.dataService;
     _settingsService = [TogaytherService settingsService];
     _conversionService = [TogaytherService getConversionService];
-    _observedProperties = [[NSMutableArray alloc] init];
     _actionManager = [[PMLPopupActionManager alloc] initWithObject:_snippetItem];
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
@@ -303,11 +302,12 @@ typedef enum {
 - (void)clearObservers {
     // Unregistering any observed property
     for(NSString *observedProperty in _observedProperties) {
+        NSLog(@"De-Observing '%@' from %p",observedProperty,self);
         // Removing us as observer
         [_snippetItem removeObserver:self forKeyPath:observedProperty];
     }
     // Purging props
-    [_observedProperties removeAllObjects];
+    _observedProperties = [[NSMutableArray alloc] init];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -1480,8 +1480,9 @@ typedef enum {
     _infoProvider = [TogaytherService.uiService infoProviderFor:_snippetItem];
     _hoursTypeMap = [_conversionService hashHoursByType:snippetItem];
     
-    
+
     // Listening to edit mode
+    NSLog(@"Observing 'editing' from %p",self);
     [self.snippetItem addObserver:self forKeyPath:@"editing" options:NSKeyValueObservingOptionNew context:NULL];
     [_observedProperties addObject:@"editing"];
     [self.snippetItem addObserver:self forKeyPath:@"editingDesc" options:NSKeyValueObservingOptionNew context:NULL];
@@ -1539,7 +1540,8 @@ typedef enum {
 //            [self.tableView reloadData];
 //        });
 //    } else
-        if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
+    if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
+        NSLog(@"VALUE CHANGE: '%@' change catched from %p",keyPath,self);
         if(_snippetItem.editing || _snippetItem.editingDesc) {
             [self.tableView setContentOffset:CGPointMake(0, 0)];
             [self.parentMenuController minimizeCurrentSnippet:YES];
@@ -1641,7 +1643,6 @@ typedef enum {
         if(self.navigationItem.rightBarButtonItem==nil) {
             [self installNavBarEdit];
         }
-        NSLog(@"VISIBLE anim");
         [UIView animateWithDuration:0.3 animations:^{
 //            self.parentMenuController.navigationController.navigationBar.alpha=1;
             self.navigationItem.rightBarButtonItem.customView.alpha=1;
@@ -1650,7 +1651,7 @@ typedef enum {
         }];
     } else if(_editVisible == PMLVisibityStateVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom && _opened) {
         _editVisible = PMLVisibityStateTransitioning;
-        NSLog(@"INVISIBLE anim");
+
         [UIView animateWithDuration:0.3 animations:^{
             self.navigationItem.rightBarButtonItem.customView.alpha=0;
         } completion:^(BOOL finished) {

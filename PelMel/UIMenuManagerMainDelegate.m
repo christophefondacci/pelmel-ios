@@ -131,7 +131,7 @@
     float y = pctHeight*size.height-actionBounds.size.height/2+action.topMargin;
     y = MIN(y,size.height-actionBounds.size.height-action.bottomMargin);
     y = MAX(y,action.topMargin);
-    NSLog(@"Menu action y=%d",(int)y);
+//    NSLog(@"Menu action y=%d",(int)y);
     // Setting frame
     action.menuActionView.frame = CGRectMake(x, y, actionBounds.size.width, actionBounds.size.height);
     

@@ -415,7 +415,7 @@
     }
 }
 -(void)dismiss {
-    NSLog(@"DISMISS");
+//    NSLog(@"DISMISS");
     if(objectMainView != nil) {
         @synchronized(self) {
             [_animator removeAllBehaviors];

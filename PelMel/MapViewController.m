@@ -599,7 +599,7 @@
     return pinAnnotation;
 }
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    NSLog(@"didSelect");
+//    NSLog(@"didSelect");
     selectedAnnotation = view;
     if([selectedAnnotation.annotation isKindOfClass:[MapAnnotation class]]) {
         MapAnnotation *mapAnnotation = selectedAnnotation.annotation;
@@ -627,7 +627,7 @@
 
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
-    NSLog(@"didDeselect");
+//    NSLog(@"didDeselect");
     if(!_snippetDisabledOnSelection) {
 //        [self.parentMenuController dismissControllerSnippet];
     }
@@ -701,20 +701,21 @@
                     for(id<MKAnnotation> otherAnnotation  in annotations) {
                         if(otherAnnotation!=annotation && [otherAnnotation isKindOfClass:[MapAnnotation class]]) {
                             PMLPlaceAnnotationView *otherAnnView = (PMLPlaceAnnotationView*) ((MapAnnotation*)otherAnnotation).annotationView;
-                            
-                            // Checking intersection of title labels
-                            CGRect otherTitleFrame = [otherAnnView convertRect:otherAnnView.titleLabel.frame toView:self.mapView];
-                            CGRect titleFrame = [annView convertRect:annView.titleLabel.frame toView:self.mapView];
-                            
-                            CALObject *obj = (CALObject*)((MapAnnotation*)annotation).object;
-                            CALObject *otherObj = (CALObject*)((MapAnnotation*)otherAnnotation).object;
-                            if(CGRectIntersectsRect(titleFrame, otherTitleFrame)) {
-                                if(otherObj.likeCount>obj.likeCount) {
-                                    titledAnnotation = nil;
-                                    break;
-                                } else if(obj.likeCount == otherObj.likeCount && otherAnnView.showLabel) {
-                                    titledAnnotation = nil;
-                                    break;
+                            if([otherAnnView isKindOfClass: [PMLPlaceAnnotationView class]]) {
+                                // Checking intersection of title labels
+                                CGRect otherTitleFrame = [otherAnnView convertRect:otherAnnView.titleLabel.frame toView:self.mapView];
+                                CGRect titleFrame = [annView convertRect:annView.titleLabel.frame toView:self.mapView];
+                                
+                                CALObject *obj = (CALObject*)((MapAnnotation*)annotation).object;
+                                CALObject *otherObj = (CALObject*)((MapAnnotation*)otherAnnotation).object;
+                                if(CGRectIntersectsRect(titleFrame, otherTitleFrame)) {
+                                    if(otherObj.likeCount>obj.likeCount) {
+                                        titledAnnotation = nil;
+                                        break;
+                                    } else if(obj.likeCount == otherObj.likeCount && otherAnnView.showLabel) {
+                                        titledAnnotation = nil;
+                                        break;
+                                    }
                                 }
                             }
                         }
