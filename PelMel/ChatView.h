@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *detailMessageButton;
 @property (weak, nonatomic) IBOutlet UIButton *leftThumbButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightThumbButton;
+@property (weak, nonatomic) IBOutlet UILabel *leftUsernameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rightUsernameLabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textHeightConstraint;
 

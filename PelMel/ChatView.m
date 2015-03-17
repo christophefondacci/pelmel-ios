@@ -45,6 +45,7 @@
 
     UIImageView *currentThumb;
     UITextView *currentBubbleText;
+    UILabel *currentUsernameLabel;
     UIActivityIndicatorView *currentActivity;
     
     // Selecting right or left positioning
@@ -52,17 +53,22 @@
     if([object.key isEqualToString:user.key]) {
         currentThumb = _thumbImageSelf;
         currentBubbleText = _bubbleTextSelf;
+        currentUsernameLabel = _rightUsernameLabel;
         [_bubbleText setHidden:YES];
         [_thumbImage setHidden:YES];
         [_leftActivity setHidden:YES];
+        [_leftUsernameLabel setHidden:YES];
+        [_rightUsernameLabel setHidden:YES];
         [dateLabel setTextAlignment:NSTextAlignmentLeft];
         currentActivity = _rightActivity;
     } else {
         currentThumb = _thumbImage;
         currentBubbleText = _bubbleText;
+        currentUsernameLabel = _leftUsernameLabel;
         [_bubbleTextSelf setHidden:YES];
         [_thumbImageSelf setHidden:YES];
         [_rightActivity setHidden:YES];
+        [_rightUsernameLabel setHidden:YES];
         [dateLabel setTextAlignment:NSTextAlignmentRight];
         currentActivity = _leftActivity;
     }
@@ -89,6 +95,7 @@
     if(fromUser.isOnline) {
         currentThumb.layer.borderColor = [_uiService colorForObject:fromUser].CGColor;
     }
+    currentUsernameLabel.text = fromUser.pseudo;
     
     // Setting the message's textual contents
     NSString *msgText = nil;
