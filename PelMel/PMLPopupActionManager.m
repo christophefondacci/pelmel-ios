@@ -166,10 +166,20 @@
         NSLog(@"CHECKIN");
         if(_currentObject.key != nil) {
             [_menuManagerController.menuManagerDelegate loadingStart];
-            [_userService checkin:_currentObject completion:^(id obj) {
-                [_menuManagerController.menuManagerDelegate loadingEnd];
-                [self updateBadge];
-            }];
+            
+            // Are we checked in here?
+            CurrentUser *user = [_userService getCurrentUser];
+            if([user.lastLocation.key isEqualToString:_currentObject.key]) {
+                [_userService checkout:_currentObject completion:^(id obj) {
+                    [_menuManagerController.menuManagerDelegate loadingEnd];
+                    [self updateBadge];
+                }];
+            } else {
+                [_userService checkin:_currentObject completion:^(id obj) {
+                    [_menuManagerController.menuManagerDelegate loadingEnd];
+                    [self updateBadge];
+                }];
+            }
         }
     }];
     _checkinAction.color = UIColorFromRGB(kPMLCheckinColor);

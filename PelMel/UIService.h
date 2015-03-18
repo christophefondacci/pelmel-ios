@@ -112,6 +112,7 @@
  * Simple alert dialog with localized messages, only one OK button
  */
 -(void)alertWithTitle:(NSString*)titleKey text:(NSString*)textKey;
+-(void)alertWithTitle:(NSString*)titleKey text:(NSString*)textKey textObjectName:(NSString*)text;
 - (void)alertError;
 /**
  * Takes a snapshot of the given view and return it as a UIImage for processing.

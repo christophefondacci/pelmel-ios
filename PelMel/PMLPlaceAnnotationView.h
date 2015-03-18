@@ -17,4 +17,5 @@
 @property (nonatomic) BOOL showLabel;
 @property (nonatomic,strong) UILabel *titleLabel;
 
+-(void)updateData;
 @end

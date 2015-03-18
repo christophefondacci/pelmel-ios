@@ -31,6 +31,7 @@
 #define kParamBirthYYYY @"birthYYYY"
 #define kParamUserToken @"nxtpUserToken"
 #define kParamCheckinKey @"checkInKey"
+#define kParamCheckout @"checkout"
 #define kParamFBAccessToken @"fbAccessToken"
 
 #define kLoginParamsFormat      @"email=%@&password=%@&highRes=%@"
@@ -451,8 +452,16 @@
 
     }
 }
-#pragma mark - Checkin
+#pragma mark - Checkin / checkout
 - (void)checkin:(CALObject *)place completion:(Completor)completor {
+    [self checkInOrOut:place completion:completor checkout:NO];
+}
+
+- (void)checkout:(CALObject *)place completion:(Completor)completor {
+    [self checkInOrOut:place completion:completor checkout:YES];
+}
+
+-(void)checkInOrOut:(CALObject*)place completion:(Completor)completor checkout:(BOOL)checkout {
     if(_currentUser.token!=nil && place.key != nil) {
         
         // Building params map
@@ -463,6 +472,9 @@
             [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.longitude] forKey:kParamLng];
         }
         [params setObject:place.key forKey:kParamCheckinKey];
+        if(checkout) {
+            [params setObject:@"true" forKey:kParamCheckout];
+        }
         
         // Building URL
         NSString *url = [NSString stringWithFormat:kCheckinUrlFormat,togaytherServer];
@@ -470,12 +482,43 @@
         // Posting to server
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            _currentUser.lastLocation = (Place*)place;
+            Place *previousLocation = _currentUser.lastLocation;
+            if(!checkout) {
+                _currentUser.lastLocation = (Place*)place;
+            } else {
+                _currentUser.lastLocation = nil;
+            }
             _currentUser.lastLocationDate = [NSDate new];
-            [self notifyUserCheckedIn:completor to:place];
+            if(!checkout) {
+                [self notifyUserCheckedIn:completor to:place previousLocation:previousLocation];
+            } else {
+                [self notifyUserCheckedOut:completor from:(Place*)place ];
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             [self notifyUserFailedCheckedInTo:place];
         }];
+    }
+}
+-(void)notifyUserCheckedIn:(Completor)completion to:(CALObject*)object previousLocation:(Place*)previousLocation {
+    NSMutableSet *callbacks = [NSMutableSet setWithSet:_listeners];
+    if(completion != nil) {
+        completion(object);
+    }
+    for(NSObject<PMLUserCallback> *c in callbacks) {
+        if([c respondsToSelector:@selector(user:didCheckInTo:previousLocation:)]) {
+            [c user:_currentUser didCheckInTo:object previousLocation:previousLocation];
+        }
+    }
+}
+-(void)notifyUserCheckedOut:(Completor)completion from:(Place*)object {
+    NSMutableSet *callbacks = [NSMutableSet setWithSet:_listeners];
+    if(completion != nil) {
+        completion(object);
+    }
+    for(NSObject<PMLUserCallback> *c in callbacks) {
+        if([c respondsToSelector:@selector(user:didCheckOutFrom:)]) {
+            [c user:_currentUser didCheckOutFrom:object];
+        }
     }
 }
 #pragma mark - Tools
@@ -522,17 +565,7 @@
         }
     }
 }
--(void)notifyUserCheckedIn:(Completor)completion to:(CALObject*)object {
-    NSMutableSet *callbacks = [NSMutableSet setWithSet:_listeners];
-    if(completion != nil) {
-        completion(object);
-    }
-    for(NSObject<PMLUserCallback> *c in callbacks) {
-        if([c respondsToSelector:@selector(user:didCheckInTo:)]) {
-            [c user:_currentUser didCheckInTo:object];
-        }
-    }
-}
+
 -(void)notifyUserFailedCheckedInTo:(CALObject*)object {
     NSMutableSet *callbacks = [NSMutableSet setWithSet:_listeners];
     for(NSObject<PMLUserCallback> *c in callbacks) {

@@ -354,9 +354,14 @@
 }
 
 - (void)alertWithTitle:(NSString *)titleKey text:(NSString *)textKey {
+    [self alertWithTitle:titleKey text:textKey textObjectName:nil];
+}
+- (void)alertWithTitle:(NSString *)titleKey text:(NSString *)textKey textObjectName:(NSString *)textObjName {
     NSString *title = NSLocalizedString(titleKey,titleKey);
     NSString *msg = NSLocalizedString(textKey,textKey);
-    
+    if(textObjName!=nil) {
+        msg = [NSString stringWithFormat:msg,textObjName];
+    }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
     [alert show];
 }

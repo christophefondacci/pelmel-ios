@@ -13,10 +13,12 @@
 "action.attendCancel.feedbackTitle"="Vous n'y allez plus";
 "action.modify"="Modifier";
 "action.chat"="Chatter";
-"action.checkedin"="Checked in";
+"action.checke"="Check out";
 "action.checkin"="Check In";
 "action.checkin.feedbackTitle"="Vous avez checkiné!";
-"action.checkin.feedbackMessage"="Vous avez partagé votre présence à %@, les autres utilisateurs peuvent savoir que vous êtes ici! Vous pourrez bientôt nous dire ce qu'il se passe et partager l'information avec votre réseau PelMel.";
+"action.checkin.feedbackMessage"="Votre présence à %@ est désormais visible par les autres utilisateurs. Vous pouvez faire un 'checkout' pour ne plus partager cette information.";
+"action.checkout.feedbackTitle"="Vous êtes parti!";
+"action.checkout.feedbackMessage"="Vous êtes parti de %@, plus personne ne peut voir que vous êtes là!";
 "action.comment"="Commenter";
 "action.edit.title"="Information à modifier";
 "action.edit.name"="Nom / Type";

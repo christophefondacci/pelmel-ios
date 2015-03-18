@@ -14,10 +14,12 @@
 "action.attendCancel.feedbackTitle"="You will not attend";
 "action.modify"="Modify";
 "action.chat"="Chat";
-"action.checkedin"="Checked in";
+"action.checkout"="Check out";
 "action.checkin"="Check in";
 "action.checkin.feedbackTitle"="You checked in!";
-"action.checkin.feedbackMessage"="You checked in %@, other users will know you are here! You will soon be able to tell us what is going on and share it with your PelMel network.";
+"action.checkin.feedbackMessage"="You checked in %@, other users will be able to see that you are here. You can do a 'check out' to stop sharing that information.";
+"action.checkout.feedbackTitle"="You checked out!";
+"action.checkout.feedbackMessage"="You checked out from %@, other users can no longer see that you are here!";
 "action.comment"="Comment";
 "action.edit.title"="Choose an item to edit";
 "action.edit.name"="Name / place type";

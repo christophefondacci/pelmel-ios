@@ -411,7 +411,7 @@
             code = _place.isLiked ? @"action.unlike" : @"action.like";
             break;
         case kPMLCounterIndexCheckin:
-            code = [self isCheckedIn] ? @"action.checkedin" : @"action.checkin";
+            code = [self isCheckedIn] ? @"action.checkout" : @"action.checkin";
             break;
         case kPMLCounterIndexComment:
             code= @"action.comment";

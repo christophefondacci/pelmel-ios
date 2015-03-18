@@ -20,7 +20,7 @@
 #import "PMLDataManager.h"
 
 #define kPMLMainRadius 100.0 // Radius of the main title box
-#define kPMLDistance 10.0
+#define kPMLDistance 20.0
 #define kPMLBorderWidth 3.0
 
 #define kPMLActionIconMargin 5.0

@@ -1370,7 +1370,6 @@ typedef enum {
     NSString *inputText = textView.text;
     
     // Removing current input
-    textView.hidden=YES;
     textView.text = nil;
     
     [_snippetDescCell.descriptionTextViewButton removeTarget:self action:@selector(descriptionDone:) forControlEvents:UIControlEventTouchUpInside];
@@ -1493,7 +1492,10 @@ typedef enum {
 }
 
 #pragma mark PMLUserCallback
-- (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object {
+- (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object previousLocation:(Place *)previousLocation {
+    [self.tableView reloadData];
+}
+- (void)user:(CurrentUser *)user didCheckOutFrom:(Place *)object {
     [self.tableView reloadData];
 }
 
@@ -1508,7 +1510,6 @@ typedef enum {
     NSString *inputText = textField.text;
     
     // Removing current input
-    textField.hidden=YES;
     textField.text = nil;
     
     // Calling back

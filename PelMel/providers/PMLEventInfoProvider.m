@@ -57,7 +57,14 @@
     return _event.name;
 }
 - (NSString *)subtitle {
-    return [_conversionService eventDateLabel:_event isStart:YES];
+    NSString *startDate = [_conversionService eventDateLabel:_event isStart:YES];
+    
+    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"hmma" options:0
+                                                              locale:[NSLocale currentLocale]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:formatString];
+    NSString *endHour = [formatter stringFromDate:_event.endDate];
+    return [startDate stringByAppendingFormat:@" - %@", endHour ];
 }
 - (UIImage *)subtitleIcon {
     return [UIImage imageNamed:@"snpIconTicket"];

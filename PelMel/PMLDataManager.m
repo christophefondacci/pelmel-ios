@@ -331,24 +331,30 @@
 -(void)userRegistered:(CurrentUser *)user {
     [self userAuthenticated:user];
 }
-
-- (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object {
+- (void)user:(CurrentUser *)user didCheckOutFrom:(Place *)place {
+    if([place.inUsers containsObject:user]) {
+        [place.inUsers removeObject:user];
+        place.inUserCount--;
+    }
+    // Feedback message
+    [[TogaytherService uiService] alertWithTitle:@"action.checkout.feedbackTitle" text:@"action.checkout.feedbackMessage" textObjectName:place.title];
+}
+- (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object previousLocation:(Place *)previousLocation {
+    if(previousLocation != nil) {
+        if([previousLocation.inUsers containsObject:user]) {
+            [previousLocation.inUsers removeObject:user];
+            previousLocation.inUserCount--;
+        }
+    }
     if([object isKindOfClass:[Place class]]) {
         Place *place = (Place*)object;
         if(![place.inUsers containsObject:user]) {
             [place.inUsers addObject:user];
             place.inUserCount ++ ;
         }
-        // Feedback message
-        NSString *title;
-        NSString *message;
-        title = NSLocalizedString(@"action.checkin.feedbackTitle", @"action.checkin.feedbackTitle");
-        NSString *msgTemplate = NSLocalizedString(@"action.checkin.feedbackMessage", @"action.checkin.feedbackMessage");
-        message = [NSString stringWithFormat:msgTemplate,place.title];
         
-        // Displaying the alert
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-        [alert show];
+        // Feedback message
+        [[TogaytherService uiService] alertWithTitle:@"action.checkin.feedbackTitle" text:@"action.checkin.feedbackMessage" textObjectName:place.title];
     }
 }
 - (void)user:(CurrentUser *)user didFailCheckInTo:(CALObject *)object {

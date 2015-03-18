@@ -21,6 +21,8 @@
     
     NSMutableArray *_actionViews;
     BOOL _showLabel;
+    
+    CALObject *_observedObject;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -63,23 +65,6 @@
     return nil;
 }
 
-//- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent*)event
-//{
-//    CGRect rect = self.bounds;
-//    BOOL isInside = CGRectContainsPoint(rect, point);
-//    if(!isInside)
-//    {
-//        for (UIView *view in self.subviews)
-//        {
-//            isInside = CGRectContainsPoint(view.frame, point);
-//            if(isInside)
-//                break;
-//        }
-//    }
-//    return isInside;
-//}
-
-
 - (void)setImage:(UIImage *)image {
     if(_sizeRatio != nil && !isnan(_sizeRatio.floatValue) && image !=nil) {
         _imageView.image = image;
@@ -91,29 +76,16 @@
         
         _imageView.frame = CGRectMake(0, 0, scaledSize.width, scaledSize.height);
         self.bounds = CGRectMake(0, 0, scaledSize.width, scaledSize.height);
-        // Debug borders
-//        self.layer.borderColor = [[UIColor redColor] CGColor];
-//        self.layer.borderWidth = 1;
         super.centerOffset = CGPointMake((float)self.imageCenterOffset.x*sizeRatio, self.imageCenterOffset.y*sizeRatio);
 
+        // Badge management
+        [self updateBadge];
+
+        // Title on top of marker
         MapAnnotation *annotation = (MapAnnotation*) self.annotation;
-        CALObject *object = annotation.object;
-        NSInteger badgeVal = object.likeCount;
-        if([object isKindOfClass:[Place class]]) {
-            badgeVal+=((Place*)object).inUserCount;
-        }
-
-        if(badgeVal>0) {
-            _imageView.clipsToBounds=NO;
-            _badgeView.hidden=NO;
-            _badgeView.frame = CGRectMake(10, 0, scaledSize.width+10, 20);
-            _badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
-            _badgeView.value = badgeVal;
-            [_imageView addSubview: _badgeView]; //Add NKNumberBadgeView as a subview on UIButton
-
-        } else {
-            [_badgeView removeFromSuperview];
-        }
+        
+        // Registering observers
+        [self registerObservers:annotation.object];
         
         if([annotation.object isKindOfClass:[Place class]]) {
             [_titleLabel removeFromSuperview];
@@ -124,7 +96,6 @@
             _titleLabel.text = ((Place*)annotation.object).title;
             _titleLabel.hidden=NO;
             _titleLabel.alpha=0;
-//            _titleLabel.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:0.2];
             self.showLabel = NO;
             [_imageView addSubview:_titleLabel];
         }
@@ -132,11 +103,55 @@
         [super setImage:image];
     }
 }
-
+- (void)dealloc {
+    [self clearObservers];
+}
+-(void)clearObservers {
+    if(_observedObject != nil) {
+        [_observedObject removeObserver:self forKeyPath:@"inUserCount" context:NULL];
+    }
+    _observedObject = nil;
+}
+-(void)registerObservers:(CALObject*)object {
+    [self clearObservers];
+    _observedObject = object;
+    [_observedObject addObserver:self forKeyPath:@"inUserCount" options:NSKeyValueObservingOptionNew context:NULL];
+}
+-(void) updateBadge {
+    MapAnnotation *annotation = (MapAnnotation*) self.annotation;
+    CALObject *object = annotation.object;
+    
+    NSInteger badgeVal = 0;
+    if([object isKindOfClass:[Place class]]) {
+        badgeVal+=((Place*)object).inUserCount;
+    }
+    
+    if(badgeVal>0) {
+        _imageView.clipsToBounds=NO;
+        _badgeView.hidden=NO;
+        
+        // Computing position
+        CGSize size = _imageView.image.size;
+        float sizeRatio = _sizeRatio.floatValue;
+        CGSize scaledSize = CGSizeMake(size.width*sizeRatio, size.height*sizeRatio);
+        
+        // Positioning
+        _badgeView.frame = CGRectMake(10, 0, scaledSize.width+10, 20);
+        _badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
+        _badgeView.value = badgeVal;
+        [_imageView addSubview: _badgeView]; //Add NKNumberBadgeView as a subview on UIButton
+        
+    } else {
+        [_badgeView removeFromSuperview];
+    }
+}
 - (void)setCenterOffset:(CGPoint)centerOffset {
     // Doing nothing
 }
 
+- (void)updateData {
+    [self updateBadge];
+}
 -(void)setShowLabel:(BOOL)showLabel {
     float alpha = showLabel ? 1 : 0;
     _showLabel = showLabel;
@@ -146,5 +161,10 @@
 }
 - (BOOL)showLabel {
     return _showLabel;
+}
+
+#pragma mark - KVO Observer
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    [self updateBadge];
 }
 @end

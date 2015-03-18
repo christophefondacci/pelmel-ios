@@ -469,6 +469,8 @@
         }
         
 
+//    } else if([annotation.annotationView isKindOfClass:[PMLPlaceAnnotationView class]]) {
+//        [((PMLPlaceAnnotationView*)annotation.annotationView) updateData];
     }
 
     return annotation;

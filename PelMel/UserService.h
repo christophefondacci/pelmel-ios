@@ -25,7 +25,8 @@ typedef void(^Completor)(id obj);
 - (void)authenticationImpossible;
 - (void)userRegistered:(CurrentUser *)user;
 - (void)userRegistrationFailed;
-- (void)user:(CurrentUser*)user didCheckInTo:(CALObject*)object;
+- (void)user:(CurrentUser*)user didCheckInTo:(CALObject*)object previousLocation:(Place*)previousLocation;
+- (void)user:(CurrentUser*)user didCheckOutFrom:(Place*)object;
 - (void)user:(CurrentUser*)user didFailCheckInTo:(CALObject*)object;
 
 @end
@@ -87,6 +88,10 @@ typedef void(^Completor)(id obj);
  * Checkin of the current user to the specified place or event
  */
 -(void)checkin:(CALObject*)place completion:(Completor)completor;
+/**
+ * Checkout of the current user from the specified place or event
+ */
+-(void)checkout:(CALObject*)place completion:(Completor)completor;
 
 /**
  * Fetches the like statistics for the current user and sends it back to the completor
