@@ -547,6 +547,7 @@
     NSNumber *checkinPlacesCount= [json objectForKey:@"checkedInPlacesCount"];
     NSArray *jsonCheckedInPlaces= [json objectForKey:@"checkedInPlaces"];
     NSNumber *liked         = [json objectForKey:@"liked"];
+    NSArray *jsonEvents     = [json objectForKey:@"events"];
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
@@ -596,6 +597,13 @@
         
         // Adding this liked place
         [user.checkedInPlaces addObject:place];
+    }
+    
+    // Injecting events
+    [user.events removeAllObjects];
+    for(NSDictionary *jsonEvent in jsonEvents) {
+        Event *event = [self convertJsonEventToEvent:jsonEvent defaultEvent:nil];
+        [user.events addObject:event];
     }
     
     // Setting liked flag

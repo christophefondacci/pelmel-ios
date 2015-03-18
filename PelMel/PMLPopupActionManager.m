@@ -321,55 +321,21 @@
     if([object isKindOfClass:[Place class]]) {
         Place *place = (Place*)object;
         if(object.key != nil) {
-            // Preparing actions for a place
-//            if(!_currentEditor.editing) {
-//                // Computing distance from current location
-//                PopupAction *likeOrCheckinAction = _likeAction;
-//                if(_userService.currentLocation!=nil) {
-//                    CLLocation *objectLocation = [[CLLocation alloc] initWithLatitude:object.lat longitude:object.lng];
-//                    CLLocationDistance distance = [_userService.currentLocation distanceFromLocation:objectLocation];
-//                    
-//                    // If less than our checkin distance, we activate checkin action
-//                    if(distance <= kPMLCheckinDistanceMeters) {
-//                        _checkinEnabled = YES;
-//                        likeOrCheckinAction = _checkinAction;
-//                    }
-//                }
-//                [actions addObjectsFromArray:@[likeOrCheckinAction,_modifyAction,_photoAction,_commentAction,_reportAction]];
-//            } else {
             if(_currentEditor.editing) {
                 [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];
                 [actions addObject:_modifyAction];
             }
             // Updates the badge on popup actions
             [self updateBadge];
-//            // Loading overview data if not yet available
-//            if(!object.hasOverviewData) {
-//                [_dataService getOverviewData:object];
-//            }
-//            
         } else {
-//            // New place, we propose save if name defined
-//
+            // New place, we propose save if name defined
             if(place.title!= nil) {
                 [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_modifyAction]];
             } else {
                 [actions addObjectsFromArray:@[_cancelAction,_confirmAction ]];
             }
-            // Observing title changes
-//            [place addObserver:self forKeyPath:@"title" options:NSKeyValueObservingOptionNew context:NULL];
-//            [_observedProperties addObject:@"title"];
         }
     }
-//
-//    } else if( [object isKindOfClass:[City class]] ) {
-//        PopupAction *searchInCityAction = [[PopupAction alloc] initWithAngle:M_PI/5 distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionSearch"] titleCode:nil size:kPMLLikeSize command:^{
-//            _popupController.controller.zoomUpdateType = PMLZoomUpdateFitResults;
-//            [_dataService fetchPlacesFor:object searchTerm:nil];
-//        }];
-//        searchInCityAction.color = UIColorFromRGB(0x344160);
-//        [actions addObject:searchInCityAction];
-//    }
     return actions;
 }
 - (void)updateBadge {

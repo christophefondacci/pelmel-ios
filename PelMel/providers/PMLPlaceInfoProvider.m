@@ -314,7 +314,9 @@
     }];
     return allEvents;
 }
-
+- (BOOL)canAddEvent {
+    return YES;
+}
 - (NSString *)eventsSectionTitle {
     return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
 }

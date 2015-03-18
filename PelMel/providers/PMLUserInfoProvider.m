@@ -69,7 +69,7 @@
     return [self snippetRightTitleText];
 }
 - (NSString *)city {
-    return _user.cityName;
+    return nil;//_user.cityName;
 }
 // Global theme color for element
 -(UIColor*) color {
@@ -340,6 +340,15 @@
 }
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;
+}
+-(NSArray *)events {
+    return _user.events;
+}
+- (NSString *)eventsSectionTitle {
+    if(_user.events.count>0) {
+        return NSLocalizedString(@"snippet.title.events.user", @"He will attend");
+    }
+    return nil;
 }
 -(CALObject *)mapObjectForLocalization {
     if(_user.lastLocation!=nil) {

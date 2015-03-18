@@ -97,6 +97,7 @@
 "edit.title"="Entrez un nom";
 "events.title"="Evènements";
 "events.addButton"="Créer et promouvoir un évènement";
+"filters.hours.checkins"="Checkins";
 "filters.hours.events"="Evènements";
 "filters.hours.happy"="Happy hour maintenant";
 "filters.hours.open"="Ouvert maintenant";
@@ -273,6 +274,7 @@
 "snippet.likes"="%d aiment";
 "snippet.title.counters"="Connexe";
 "snippet.title.events"="Evènements à venir";
+"snippet.title.events.user"="Il y sera";
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Heures d'ouverture";
 "snippet.title.localization.user"="S'est enregistré dans ce lieu";
@@ -298,11 +300,12 @@
 "specials.start.in"="Commence dans";
 "specials.subtitleTemplate.soon"="Dans %@ : %@";
 "specials.subtitleTemplate.current"="Reste %@ : %@";
+"thumbView.section.checkin"="Ils y sont";
+"thumbView.section.checkin.singular"="Il y est";
 "thumbView.section.event.users"="Ils en seront";
 "thumbView.section.like"="Ils aiment";
 "thumbView.section.like.singular"="Il aime";
-"thumbView.section.checkin"="Ils y sont";
-"thumbView.section.checkin.singular"="Il y est";
+"thumbView.section.localization.event"="Cet évènement aura lieu à";
 "thumbView.section.location"="Lieu";
 "thumbView.section.user.checkin"="Il est allé";
 "thumbView.section.user.likeUser"="Son réseau";

@@ -327,6 +327,9 @@
     UINavigationController *navigationController = (UINavigationController*)_menuManagerController.currentSnippetViewController;
     PMLSnippetTableViewController *controllerToPush = snippetController;
     BOOL isRoot = navigationController.childViewControllers.count == 1;
+    
+    // Preparing array of child view controllers
+    NSMutableArray *childViewControllers =  [navigationController.childViewControllers mutableCopy];
     for(UIViewController *controller in navigationController.childViewControllers) {
         
         // Checking snippet controllers
@@ -340,7 +343,7 @@
                 // This call will also do a refresh
                 childSnippet.snippetItem = snippetController.snippetItem;
                 if(!isRoot && childSnippet!=navigationController.topViewController) {
-                    [childSnippet removeFromParentViewController];
+                    [childViewControllers removeObject:childSnippet];
                     controllerToPush = childSnippet;
                 } else {
                     controllerToPush = nil;
@@ -348,6 +351,8 @@
             }
         }
     }
+    // Replacing Nav controller hierarchy (as we may have removed one)
+    [navigationController setViewControllers:childViewControllers animated:NO];
     if(controllerToPush != nil) {
         [navigationController pushViewController:controllerToPush animated:YES];
     }

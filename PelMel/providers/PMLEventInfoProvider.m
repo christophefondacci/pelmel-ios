@@ -152,7 +152,15 @@
 }
 #pragma mark - Likeable
 - (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
-    [_likeableDelegate likeTapped:likedObject callback:callback];
+    [_likeableDelegate likeTapped:likedObject callback:^(int likes, int dislikes, BOOL isLiked) {
+        if(isLiked) {
+            [[[[TogaytherService userService] getCurrentUser] events] addObject:_event];
+        } else {
+            [[[[TogaytherService userService] getCurrentUser] events] removeObject:_event];
+        }
+        // Initial callback
+        callback(likes,dislikes,isLiked);
+    }];
 }
 
 #pragma mark - Actions
@@ -240,5 +248,8 @@
 }
 -(CALObject *)mapObjectForLocalization {
     return [_placeInfoProvider mapObjectForLocalization];
+}
+-(NSString *)localizationSectionTitle {
+    return NSLocalizedString(@"thumbView.section.localization.event", @"This event will take place at");
 }
 @end

@@ -147,6 +147,10 @@
                 filtersActive = YES;
                 placeActive = [self hasEvent:place];;
             }
+            if([self isFilterEnabled:PMLFilterCheckins] && (placeActive|| !filtersActive)) {
+                filtersActive = YES;
+                placeActive = [self hasCheckin:place];;
+            }
         }
     }
     // If nothing filtered, everything visible, else we check place type filter
@@ -175,6 +179,9 @@
         }
     }
     return NO;
+}
+-(BOOL)hasCheckin:(Place*)place {
+    return place.inUserCount>0 || place.inUsers.count>0;
 }
 -(void)storePlaceTypeFilter:(PlaceType*)placeType {
     NSNumber *val = [NSNumber numberWithBool:placeType.visible];

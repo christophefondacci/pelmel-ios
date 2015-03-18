@@ -15,11 +15,12 @@
 #define kSectionHours 0
 #define kSectionPlaceType 1
 #define kRowCountSettings 2
-#define kRowCountHours 3
+#define kRowCountHours 4
 
 #define kRowHoursOpening 0
 #define kRowHoursSpecials 1
 #define kRowHoursEvents 2
+#define kRowHoursCheckins 3
 
 #define kCellIdPlaceType @"placeTypeCell"
 
@@ -141,6 +142,9 @@
                 case kRowHoursEvents:
                     [settingsService enableFilter:PMLFilterEvents enablement:![settingsService isFilterEnabled:PMLFilterEvents]];
                     break;
+                case kRowHoursCheckins:
+                    [settingsService enableFilter:PMLFilterCheckins enablement:![settingsService isFilterEnabled:PMLFilterCheckins]];
+                    break;
                 default:
                     break;
             }
@@ -243,11 +247,15 @@
 
             break;
         case kRowHoursEvents:
-            cell.image.image = [UIImage imageNamed:@"snpIconEvent"];
+            cell.image.image = [UIImage imageNamed:@"snpIconTicket"];
             cell.label.text = NSLocalizedString(@"filters.hours.events", @"WithEvents");
             cell.accessoryType = [settingsService isFilterEnabled:PMLFilterEvents] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            
-
+            break;
+        case kRowHoursCheckins:
+            cell.image.image = [UIImage imageNamed:@"snpIconEvent"];
+            cell.label.text = NSLocalizedString(@"filters.hours.checkins", @"Checkins");
+            cell.accessoryType = [settingsService isFilterEnabled:PMLFilterCheckins] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            break;
     }
 }
 

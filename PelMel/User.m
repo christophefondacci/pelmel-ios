@@ -20,6 +20,7 @@
         _descriptions = [[NSMutableArray alloc] init];
         _likedPlaces = [[NSMutableArray alloc] init];
         _checkedInPlaces = [[NSMutableArray alloc] init];
+        _events = [[NSMutableArray alloc] init];
     }
     return self;
 }

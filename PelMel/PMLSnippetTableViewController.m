@@ -345,7 +345,7 @@ typedef enum {
             case kPMLSectionOvSummary:
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
-                return [[_infoProvider addressComponents] count]+1;
+                return [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
             case kPMLSectionOvHours: {
                 NSInteger count = [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count];
                 return count == 0 ? 0 : count+1;
@@ -356,7 +356,13 @@ typedef enum {
             }
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(events)]) {
-                    return [[_infoProvider events] count]+1;
+                    NSInteger addEventRowCount = 0;
+                    if([_infoProvider respondsToSelector:@selector(canAddEvent)]) {
+                        if([_infoProvider canAddEvent]) {
+                            addEventRowCount = 1;
+                        }
+                    }
+                    return [[_infoProvider events] count]+addEventRowCount;
                 }
                 break;
             case kPMLSectionOvDesc:
@@ -376,7 +382,7 @@ typedef enum {
                 return [[_infoProvider topPlaces] count];
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(events)]) {
-                    return [[_infoProvider events] count]+1;
+                    return [[_infoProvider events] count];
                 }
                 break;
         }
@@ -700,8 +706,10 @@ typedef enum {
                     }
                 }
                 return 0;
-            case kPMLSectionOvSummary:
-                return _sectionSummaryTitleView.bounds.size.height;
+            case kPMLSectionOvSummary: {
+                NSInteger rows = [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
+                return rows>0 ? _sectionSummaryTitleView.bounds.size.height : 0;
+            }
             case kPMLSectionCounters:
                 return 5;
             default:
@@ -1441,7 +1449,9 @@ typedef enum {
 }
 - (UIViewContentMode)contentModeForImage:(NSUInteger)image {
 //    return  UIViewContentModeScaleAspectFill;
-        return  _galleryFullscreen ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+//        return  _galleryFullscreen ? UIViewContentModeScaleAspectFit : UIViewContentModeScaleAspectFill;
+    return  UIViewContentModeScaleAspectFit;
+    
 }
 - (BOOL)alignTop {
     return !_galleryFullscreen;

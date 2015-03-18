@@ -22,6 +22,7 @@
 @property (readonly) NSMutableArray *likedPlaces;
 @property (nonatomic) NSInteger checkedInPlacesCount;
 @property (readonly) NSMutableArray *checkedInPlaces;
+@property (readonly) NSMutableArray *events;
 @property (nonatomic,strong) Place *lastLocation;
 @property (strong) NSString *cityName;
 

@@ -81,6 +81,7 @@ typedef enum {
 -(void)configureCustomViewIn:(UIView*)parentView forController:(UIViewController*)controller;
 // Provides the list of events connected to the current element
 -(NSArray*)events;
+-(BOOL)canAddEvent; // Implement and return YES to integrate Add Event button, or return NO / no implem to hide
 // Provides the introduction label for the events section, if not implemented or nil then no section header will be displayed
 -(NSString*)eventsSectionTitle;
 // List of top places
