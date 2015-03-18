@@ -79,8 +79,8 @@
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
     _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likedPlaces forType:PMLThumbsLike];
     [_thumbsProvider addItems:_user.likers forType:PMLThumbsUserLike];
-    [_thumbsProvider addItems:_user.checkedInPlaces forType:PMLThumbsCheckin];
-    [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.checkin" forType:PMLThumbsCheckin];
+//    [_thumbsProvider addItems:_user.checkedInPlaces forType:PMLThumbsCheckin];
+//    [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.checkin" forType:PMLThumbsCheckin];
     [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.like" forType:PMLThumbsLike];
     return _thumbsProvider;
 }
@@ -121,8 +121,8 @@
     switch (mode) {
         case ThumbPreviewModeLikes:
             return [self likesThumbsRowCount];
-        case ThumbPreviewModeCheckins:
-            return _user.checkedInPlaces.count>0 ? 1 : 0;
+//        case ThumbPreviewModeCheckins:
+//            return _user.checkedInPlaces.count>0 ? 1 : 0;
         default:
             return 0;
     }
@@ -340,5 +340,11 @@
 }
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;
+}
+-(CALObject *)mapObjectForLocalization {
+    return _user.lastLocationDate.timeIntervalSince1970 > ([NSDate timeIntervalSinceReferenceDate]-10800)  ? _user.lastLocation : nil;
+}
+- (NSString *)localizationSectionTitle {
+    return NSLocalizedString(@"snippet.title.localization.user", @"Checked in at");
 }
 @end

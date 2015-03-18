@@ -275,6 +275,7 @@
 "snippet.title.events"="Evènements à venir";
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Heures d'ouverture";
+"snippet.title.localization.user"="S'est enregistré dans ce lieu";
 "snippet.title.notitle" = "Touchez pour ajouter un nom";
 "snippet.title.summary"="Informations générales";
 "snippet.thumbIntro.userLikes"="%@ aime:";
@@ -300,9 +301,9 @@
 "thumbView.section.event.users"="Ils en seront";
 "thumbView.section.like"="Ils aiment";
 "thumbView.section.like.singular"="Il aime";
-"thumbView.section.checkin"="Ils étaient là";
+"thumbView.section.checkin"="Ils y sont";
+"thumbView.section.checkin.singular"="Il y est";
 "thumbView.section.location"="Lieu";
-"thumbView.section.checkin.singular"="Il était là";
 "thumbView.section.user.checkin"="Il est allé";
 "thumbView.section.user.likeUser"="Son réseau";
 "thumbView.section.user.like"="Il aime";

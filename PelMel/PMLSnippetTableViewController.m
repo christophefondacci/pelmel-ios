@@ -164,6 +164,7 @@ typedef enum {
     
     // Headers
     PMLSectionTitleView *_sectionTitleView;
+    PMLSectionTitleView *_sectionLocalizationTitleView;
     PMLSectionTitleView *_sectionSummaryTitleView;
     PMLSectionTitleView *_sectionTopPlacesTitleView;
     PMLSectionTitleView *_sectionActivityTitleView;
@@ -234,6 +235,7 @@ typedef enum {
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLAddEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
     // Loading header views
     _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    _sectionLocalizationTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionSummaryTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionTopPlacesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionActivityTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
@@ -650,6 +652,15 @@ typedef enum {
                 }
             }
             return nil;
+        case kPMLSectionLocalization:
+            if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)] && [_infoProvider respondsToSelector:@selector(localizationSectionTitle)]) {
+                CALObject *obj = [_infoProvider mapObjectForLocalization];
+                if(obj !=nil) {
+                    [_sectionLocalizationTitleView setTitle:[_infoProvider localizationSectionTitle]];
+                    return _sectionLocalizationTitleView;
+                }
+            }
+            return nil;
         case kPMLSectionOvSummary:
             [_sectionSummaryTitleView setTitleLocalized:@"snippet.title.summary"];
             return _sectionSummaryTitleView;
@@ -678,6 +689,14 @@ typedef enum {
                 if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
                     if([_infoProvider eventsSectionTitle]!=nil) {
                         return _sectionTitleView.bounds.size.height;
+                    }
+                }
+                return 0;
+            case kPMLSectionLocalization:
+                if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)] && [_infoProvider respondsToSelector:@selector(localizationSectionTitle)]) {
+                    CALObject *obj = [_infoProvider mapObjectForLocalization];
+                    if(obj !=nil && [_infoProvider localizationSectionTitle]!=nil) {
+                        return _sectionLocalizationTitleView.bounds.size.height;
                     }
                 }
                 return 0;

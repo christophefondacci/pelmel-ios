@@ -282,6 +282,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.header.activities"="Recent activity";
 "snippet.title.counters"="Related";
 "snippet.title.events"="Upcoming Events";
+"snippet.title.localization.user"="Currently checked in at";
 "snippet.title.notitle" = "Tap to add a name";
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Opening Hours";
@@ -309,10 +310,9 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "thumbView.section.event.users"="They are in";
 "thumbView.section.like"="They Like";
 "thumbView.section.like.singular"="He Likes";
-"thumbView.section.checkin"="They Went";
-"thumbView.section.checkin.singular"="He Went";
+"thumbView.section.checkin"="Checked in";
 "thumbView.section.location"="Venue";
-"thumbView.section.user.checkin"="Hangouts he's been";
+"thumbView.section.user.checkin"="Checked in at";
 "thumbView.section.user.likeUser"="Users he likes";
 "thumbView.section.user.like"="Hangouts he likes";
 "time.days"="days";

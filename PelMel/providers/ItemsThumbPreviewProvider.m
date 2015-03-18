@@ -138,9 +138,13 @@
 }
 -(UIImage *)bottomRightDecoratorForIndex:(NSInteger)index forType:(PMLThumbType)type{
     NSArray *typedItems = [self itemsForType:type ];
-    CALObject *item = [typedItems objectAtIndex:index];
-    UIImage *icon = [_itemsTypes objectForKey:item.key];
-    return icon;
+    if(typedItems.count>index) {
+        CALObject *item = [typedItems objectAtIndex:index];
+        UIImage *icon = [_itemsTypes objectForKey:item.key];
+        return icon;
+    } else {
+        return nil;
+    }
 }
 - (NSArray *)itemsForType:(PMLThumbType)thumbType {
     NSNumber *t = [NSNumber numberWithInt:thumbType];
@@ -149,9 +153,13 @@
 }
 - (NSString *)titleAtIndex:(NSInteger)index forType:(PMLThumbType)type {
     NSArray *typedItems = [self itemsForType:type ];
-    CALObject *obj = [typedItems objectAtIndex:index];
-    NSString *label = [DisplayHelper getName:obj];
-    return label;
+    if(typedItems.count>index) {
+        CALObject *obj = [typedItems objectAtIndex:index];
+        NSString *label = [DisplayHelper getName:obj];
+        return label;
+    } else {
+        return nil;
+    }
 }
 
 - (NSString *)getPreviewSegueIdForThumb:(int)thumbIndex {
@@ -179,12 +187,15 @@
 }
 - (UIColor *)colorFor:(NSInteger)index forType:(PMLThumbType)type{
     NSArray *typedItems = [self itemsForType:type ];
-    CALObject *item = [typedItems objectAtIndex:index];
-    UIColor *color = [UIColor whiteColor];
-    if([item isKindOfClass:[User class]]) {
-        color = [_uiService colorForObject:item];
+    if(typedItems.count>index) {
+        CALObject *item = [typedItems objectAtIndex:index];
+        UIColor *color = [UIColor whiteColor];
+        if([item isKindOfClass:[User class]]) {
+            color = [_uiService colorForObject:item];
+        }
+        return color;
     }
-    return color;
+    return nil;
 }
 - (NSArray *)thumbTypes {
     return _types;

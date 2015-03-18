@@ -91,16 +91,31 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     PMLThumbType type = [self.thumbProvider thumbTypeAtIndex:section];
-    return [[self.thumbProvider itemsForType:type] count ];
+    NSInteger count = [[self.thumbProvider itemsForType:type] count ];
+    return count>0 ? MAX(count,2) : count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     PMLThumbView *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
+
     // Configure the cell...
     cell.backgroundColor = [UIColor clearColor];
     PMLThumbType type = [self.thumbProvider thumbTypeAtIndex:indexPath.section];
     cell.backgroundColor = [UIColor clearColor];
+    
+    // Checking dummy cell
+    if([self.thumbProvider respondsToSelector:@selector(objectAtIndex:forType:)]) {
+        CALObject *obj = [self.thumbProvider objectAtIndex:indexPath.row forType:type];
+        if(obj == nil) {
+            cell.thumbImage.image = nil;
+            cell.thumbImage.layer.borderWidth=0;
+            cell.titleLabel.text = nil;
+            return cell;
+        }
+    }
+    cell.thumbImage.layer.borderWidth=1;
+    // Configuring background for selected cells
     if([self.thumbProvider respondsToSelector:@selector(isSelected:forType:)]) {
         if([self.thumbProvider isSelected:indexPath.row forType:type]) {
             cell.backgroundColor = UIColorFromRGB(0xf48020);
@@ -109,9 +124,10 @@ static NSString * const reuseIdentifier = @"Cell";
         }
     }
     
+
     // Configuring image
-        cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
-        CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
+    cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
+    CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
             [_imageService load:image to:cell.thumbImage thumb:YES];
     // Setting rounded corners (or not)
     BOOL rounded= YES;

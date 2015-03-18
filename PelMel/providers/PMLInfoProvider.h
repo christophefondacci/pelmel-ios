@@ -62,6 +62,8 @@ typedef enum {
 
 @optional
 - (CALObject*)mapObjectForLocalization;
+// If a localization object is provided, the title for the localization section, nil or unimplemented will hide section title
+- (NSString*)localizationSectionTitle;
 // Whether or not the data could be edited, defaults to false if not implemented
 - (PMLActionType)editActionType;
 - (BOOL)canAddPhoto;    // Default is YES
