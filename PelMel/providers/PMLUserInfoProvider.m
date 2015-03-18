@@ -342,7 +342,12 @@
     return _actionManager;
 }
 -(CALObject *)mapObjectForLocalization {
-    return _user.lastLocationDate.timeIntervalSince1970 > ([NSDate timeIntervalSinceReferenceDate]-10800)  ? _user.lastLocation : nil;
+    if(_user.lastLocation!=nil) {
+        NSTimeInterval locationLastTime =_user.lastLocationDate.timeIntervalSince1970;
+        NSTimeInterval checkinTimeout = [[NSDate new] timeIntervalSince1970]-10800;
+        return locationLastTime > checkinTimeout   ? _user.lastLocation : nil;
+    }
+    return nil;
 }
 - (NSString *)localizationSectionTitle {
     return NSLocalizedString(@"snippet.title.localization.user", @"Checked in at");
