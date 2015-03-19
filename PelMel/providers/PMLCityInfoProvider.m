@@ -93,7 +93,9 @@
 - (NSArray *)activities {
     return nil;
 }
-
+- (BOOL)canAddPhoto {
+    return YES;
+}
 -(NSObject<PMLThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {
 #pragma mark Implement me
     return nil;

@@ -121,6 +121,9 @@
 -(NSString*)descriptionText {
     return _event.miniDesc;
 }
+- (BOOL)canAddPhoto {
+    return YES;
+}
 // Short text displayed with thumb
 -(NSString*)thumbSubtitleText {
     return [[TogaytherService uiService] delayStringFrom:_event.startDate];

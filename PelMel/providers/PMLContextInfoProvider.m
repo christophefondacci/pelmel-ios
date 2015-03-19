@@ -152,6 +152,12 @@
 - (NSArray *)events {
     return _modelHolder.events;
 }
+- (BOOL)canAddPhoto {
+    return NO;
+}
+- (BOOL)canAddEvent {
+    return NO;
+}
 - (NSString *)eventsSectionTitle {
     return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
 }

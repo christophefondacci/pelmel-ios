@@ -1457,10 +1457,22 @@ typedef enum {
     return !_galleryFullscreen;
 }
 -(UIImage *)placeHolderImageForImagePager {
+    if([_infoProvider canAddPhoto]) {
+        return [[_imageService imageOrPlaceholderFor:_snippetItem allowAdditions:YES] fullImage];
+    }
     return [CALImage getDefaultImage];
 }
 - (void)imagePager:(KIImagePager *)imagePager didSelectImageAtIndex:(NSUInteger)index {
-    [self imageTappedAtIndex:(int)index image:nil];
+    // If no photo
+    if(index == -1) {
+        if([_infoProvider canAddPhoto]) {
+            // Offering to upload one
+            PopupAction *uploadAction = [_actionManager actionForType:PMLActionTypeAddPhoto];
+            uploadAction.actionCommand();
+        }
+    } else {
+        [self imageTappedAtIndex:(int)index image:nil];
+    }
 }
 #pragma mark - ThumbPreviewActionDelegate
 - (void)thumbsTableView:(PMLThumbCollectionViewController*)controller thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {

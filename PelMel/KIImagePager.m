@@ -224,14 +224,8 @@
 
             }
             
-            // Add GestureRecognizer to ImageView
-            UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]
-                                                                  initWithTarget:self
-                                                                  action:@selector(imageTapped:)];
-            [singleTapGestureRecognizer setNumberOfTapsRequired:1];
-            [imageView addGestureRecognizer:singleTapGestureRecognizer];
-            [imageView setUserInteractionEnabled:YES];
-            
+            // Adding tap support
+            [self addImageTapGesture:imageView];
             [_scrollView addSubview:imageView];
         }
         
@@ -239,15 +233,27 @@
         _pageControl.numberOfPages = [(NSArray *)[_dataSource arrayWithImages] count];
     } else {
         UIImageView *blankImage = [[UIImageView alloc] initWithFrame:_scrollView.frame];
-        blankImage.contentMode = UIViewContentModeScaleAspectFill;
+        blankImage.contentMode = UIViewContentModeScaleAspectFit;
         if ([_dataSource respondsToSelector:@selector(placeHolderImageForImagePager)]) {
             [blankImage setImage:[_dataSource placeHolderImageForImagePager]];
         }
         if([_dataSource respondsToSelector:@selector(contentModeForPlaceHolder)]) {
             [blankImage setContentMode:[_dataSource contentModeForPlaceHolder]];
         }
+        // Adding tap support
+        blankImage.tag = -1;
+        [self addImageTapGesture:blankImage];
         [_scrollView addSubview:blankImage];
     }
+}
+-(void)addImageTapGesture:(UIImageView*)imageView {
+    // Add GestureRecognizer to ImageView
+    UITapGestureRecognizer *singleTapGestureRecognizer = [[UITapGestureRecognizer alloc]
+                                                          initWithTarget:self
+                                                          action:@selector(imageTapped:)];
+    [singleTapGestureRecognizer setNumberOfTapsRequired:1];
+    [imageView addGestureRecognizer:singleTapGestureRecognizer];
+    [imageView setUserInteractionEnabled:YES];
 }
 - (void)loadImageAtIndex:(int)i thumb:(BOOL)isThumb {
     NSArray *aImageUrls = (NSArray *)[_dataSource arrayWithImages];

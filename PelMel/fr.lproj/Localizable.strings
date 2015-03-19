@@ -162,6 +162,8 @@
 "message.placeholder.comment"="Ecrivez votre commentaire";
 "message.reviews.title"="Commentaires";
 "message.sending"="Envoi du message...";
+"message.sending.failed"="Nous n'avons pas pu délivrer votre message. Vérifiez votre connexion et essayez à nouveau.";
+"message.sending.failed.title"="Envoi Impossible";
 "messages.my.title"="Messages";
 "modify"="Modifier";
 "moreresults.title"="Voir plus de résultats";
@@ -302,7 +304,7 @@
 "specials.subtitleTemplate.current"="Reste %@ : %@";
 "thumbView.section.checkin"="Ils y sont";
 "thumbView.section.checkin.singular"="Il y est";
-"thumbView.section.event.users"="Ils en seront";
+"thumbView.section.event.users"="Ils y seront";
 "thumbView.section.like"="Ils aiment";
 "thumbView.section.like.singular"="Il aime";
 "thumbView.section.localization.event"="Cet évènement aura lieu à";

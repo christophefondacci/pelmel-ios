@@ -406,10 +406,7 @@
     return view.frame.size.height;
 }
 - (void)messageSent:(Message *)message {
-    [_activityIndicator stopAnimating];
-    [_activityIndicator setHidden:YES];
-    [_activityText setHidden:YES];
-    [_activityBackground setHidden:YES];
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     // Adding a new bubble for this sent message
     [self addMessageToScrollView:message atHeight:scrollView.contentSize.height forIndex:_messagesList.count];
@@ -427,6 +424,8 @@
 }
 - (void)messageSendFailed {
     NSLog(@"Message sent failed");
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [[TogaytherService uiService] alertWithTitle:@"message.sending.failed.title" text:@"message.sending.failed"];
 }
 
 #pragma mark - UITextFieldDelegate
@@ -440,11 +439,9 @@
 }
 #pragma mark - Message actions
 - (void)sendMsg:(id)sender {
-    [_activityIndicator startAnimating];
-    [_activityIndicator setHidden:NO];
-    [_activityBackground setHidden:NO];
-    _activityText.text = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
-    [_activityText setHidden:NO];
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
     
     if([_withObject isKindOfClass:[User class]]) {
         [messageService sendMessage:_chatTextView.text toUser:(User*)_withObject messageCallback:self];

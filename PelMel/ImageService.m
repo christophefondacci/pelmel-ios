@@ -111,7 +111,6 @@
 
 - (void)imageTapped:(UITapGestureRecognizer*)recognizer {
 
-
     // Prompting
     NSString *key = [self buildKeyFromPointer:recognizer.view];
     UIViewController *controller = [tapImagesControllerMap objectForKey:key];

@@ -165,6 +165,8 @@
 "message.placeholder.comment"="Write your comment";
 "message.reviews.title"="Comments";
 "message.sending"="Sending message...";
+"message.sending.failed"="We were not able to deliver your message properly. Check your connection and try again.";
+"message.sending.failed.title"="Cannot send message";
 "messages.my.title"="Messages";
 "modify"="Modify";
 "moreresults.title"="Search more results";
@@ -310,7 +312,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "specials.subtitleTemplate.current"="%@ left : %@";
 "specials.subtitleTemplate.soon"="In %@ : %@";
 "thumbView.section.checkin"="Checked in";
-"thumbView.section.event.users"="They are in";
+"thumbView.section.event.users"="They will attend";
 "thumbView.section.like"="They Like";
 "thumbView.section.like.singular"="He Likes";
 "thumbView.section.localization.event"="This event will take place at";
