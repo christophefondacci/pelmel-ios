@@ -8,7 +8,9 @@
 
 #import "CALObject.h"
 
-@implementation CALObject
+@implementation CALObject {
+    NSTimeInterval _overviewLoadTime;
+}
 
 @synthesize key = _key;
 @synthesize lat = _lat;
@@ -35,5 +37,11 @@
 
 - (void)setHasOverviewData:(BOOL)hasOverviewData {
     _hasOverviewData = hasOverviewData;
+    _overviewLoadTime = [[NSDate new] timeIntervalSince1970];
+}
+
+- (BOOL)hasOverviewData {
+    NSTimeInterval now = [[NSDate new] timeIntervalSince1970];
+    return _hasOverviewData && (now-_overviewLoadTime)< 60;
 }
 @end

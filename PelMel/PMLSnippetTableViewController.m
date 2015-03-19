@@ -1507,7 +1507,9 @@ typedef enum {
     _snippetItem = snippetItem;
     _infoProvider = [TogaytherService.uiService infoProviderFor:_snippetItem];
     _hoursTypeMap = [_conversionService hashHoursByType:snippetItem];
-    
+    if(_snippetItem != nil) {
+        [_dataService getOverviewData:_snippetItem];
+    }
 
     // Listening to edit mode
     NSLog(@"Observing 'editing' from %p",self);

@@ -281,11 +281,13 @@
     // Preparing the no image thumb (default for every place at first)
     for(NSDictionary *jsonPlace in jsonPlaces) {
         Place *place = [jsonService convertFullJsonPlaceToPlace:jsonPlace];
+        [place setHasOverviewData:NO];
         // Appending to the document list
         [docs addObject:place];
         // Building specials as events
         for(Special *special in place.specials) {
             Event *event = [jsonService convertSpecial:special toEventForPlace:place];
+            [event setHasOverviewData:NO];
             if(event != nil) {
                 [happyHoursEvents addObject:event];
             }
@@ -306,7 +308,9 @@
     // Parsing users
     NSArray *jsonUsers = [json objectForKey:@"nearbyUsers"];
     NSArray *users = [jsonService convertJsonUsersToUsers:jsonUsers];
-    
+    for(User *user in users) {
+        [user setHasOverviewData:NO];
+    }
     // Parsing events
     NSArray *jsonEvents = [json objectForKey:@"nearbyEvents"];
     NSMutableArray *events = [[[jsonService convertJsonEventsToEvents:jsonEvents] arrayByAddingObjectsFromArray:happyHoursEvents] mutableCopy];
@@ -315,6 +319,9 @@
         Event *e2 = (Event*)obj2;
         return [e1.startDate compare:e2.startDate];
     }];
+    for(Event *event in events) {
+        [event setHasOverviewData:NO];
+    }
     // Parsing localized city
     NSDictionary *jsonCity = [json objectForKey:@"localizedCity"];
     City *localizedCity = nil;
