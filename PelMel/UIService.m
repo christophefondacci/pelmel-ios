@@ -65,7 +65,11 @@
     NSString *placeType = @"";
     NSString *colorPrefKey;
     if([obj isKindOfClass:[Place class]]) {
-        placeType = [NSString stringWithFormat:@"placeType.%@",((Place*)obj).placeType];
+        NSString *placeType = ((Place*)obj).placeType;
+        if(placeType == nil) {
+            placeType = @"bar";
+        }
+        placeType = [NSString stringWithFormat:@"placeType.%@",placeType];
         colorPrefKey = [NSString stringWithFormat:kColorPrefKeyTemplate, placeType];
     } else if([obj isKindOfClass:[Event class]]) {
         colorPrefKey = [NSString stringWithFormat:kColorPrefKeyTemplate, @"event"];

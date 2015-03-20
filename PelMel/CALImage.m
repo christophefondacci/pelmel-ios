@@ -14,6 +14,7 @@ static UIImage *defaultImage;
 static UIImage *defaultThumb;
 static UIImage *defaultUserThumb;
 static UIImage *defaultThumbLandscape;
+static CALImage *defaultNoPhotoCalImage;
 
 
 - (void)configure {
@@ -108,10 +109,12 @@ static UIImage *defaultThumbLandscape;
     return img;
 }
 + (CALImage *)defaultNoPhotoCalImage {
-    CALImage *img = [[CALImage alloc] init];
-    img.thumbImage = [UIImage imageNamed:@"imgBlankMini"];
-    img.fullImage = [UIImage imageNamed:@"imgBlank"];
-    return img;
+    if(defaultNoPhotoCalImage == nil) {
+        defaultNoPhotoCalImage = [[CALImage alloc] init];
+        defaultNoPhotoCalImage.thumbImage = [UIImage imageNamed:@"imgBlankMini"];
+        defaultNoPhotoCalImage.fullImage = [UIImage imageNamed:@"imgBlank"];
+    }
+    return defaultNoPhotoCalImage;
 }
 + (UIImage *)getDefaultThumbLandscape {
     if(defaultThumbLandscape ==nil) {

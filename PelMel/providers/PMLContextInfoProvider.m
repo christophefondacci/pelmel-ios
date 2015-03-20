@@ -81,8 +81,12 @@
 }
 // Provider of thumb displayed in the main snippet section
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
+    NSArray *objects = _modelHolder.users;
+    if(objects.count==0) {
+        objects = _modelHolder.places;
+    }
     // Building provider
-    return [[ItemsThumbPreviewProvider alloc] initWithParent:nil items:_modelHolder.users moreSegueId:nil labelKey:nil icon:nil];
+    return [[ItemsThumbPreviewProvider alloc] initWithParent:nil items:objects moreSegueId:nil labelKey:nil icon:nil];
 }
 - (NSObject<PMLThumbsPreviewProvider> *)thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {
     return nil;

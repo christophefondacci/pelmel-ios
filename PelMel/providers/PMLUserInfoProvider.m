@@ -24,7 +24,6 @@
     PMLSnippetTableViewController *_snippetController;
     PMLPopupActionManager *_actionManager;
     id<Likeable> _likeableDelegate;
-    PMLCountersView *_countersView;
 }
 
 - (instancetype)initWithUser:(User *)user
@@ -34,8 +33,6 @@
         _user = user;
         _uiService = TogaytherService.uiService;
         _likeableDelegate = [[LikeableStrategyObjectWithLiked alloc] init];
-        _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
-
     }
     return self;
 }
@@ -69,7 +66,7 @@
     return [self snippetRightTitleText];
 }
 - (NSString *)city {
-    return nil;//_user.cityName;
+    return _user.cityName;
 }
 // Global theme color for element
 -(UIColor*) color {

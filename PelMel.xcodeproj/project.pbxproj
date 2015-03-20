@@ -2041,8 +2041,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Christophe Fondacci (U5323TM7U6)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Christophe Fondacci (U5323TM7U6)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/cfondacci/Dev/iOS/togayther.mobile,
@@ -2059,7 +2059,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = PelMel;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "c3d64e64-5970-41e7-bc47-e205d7ab1fa1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -2090,7 +2090,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = PelMel;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "c3d64e64-5970-41e7-bc47-e205d7ab1fa1";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;

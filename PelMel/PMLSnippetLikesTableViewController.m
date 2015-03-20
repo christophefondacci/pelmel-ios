@@ -108,18 +108,27 @@
     Activity *activity = [self.activities objectAtIndex:row];
     
     CALObject *activityObject = [self activityObjectFor:activity];
-    NSObject<PMLInfoProvider> *provider = [_uiService infoProviderFor:activityObject];
-    
-    cell.imageView.layer.cornerRadius = 25;
-    cell.imageView.layer.masksToBounds = YES;
-    cell.imageView.image = [CALImage getDefaultUserThumb];
-    NSLog(@"W=%d / H=%d",(int)cell.imageView.frame.size.width,(int)cell.imageView.frame.size.height );
-    cell.imageView.layer.borderColor = [[provider color] CGColor];
-    CALImage *calImage = [_imageService imageOrPlaceholderFor:activityObject allowAdditions:NO];
-    [_imageService load:calImage to:cell.imageView thumb:YES];
-    cell.nameLabel.text = [provider title];
-    NSString *delay = [_uiService delayStringFrom:activity.activityDate];
-    cell.timeLabel.text = delay;
+    if(activityObject != nil) {
+        NSObject<PMLInfoProvider> *provider = [_uiService infoProviderFor:activityObject];
+
+        cell.imageView.layer.cornerRadius = 25;
+        cell.imageView.layer.masksToBounds = YES;
+        cell.imageView.image = [CALImage getDefaultUserThumb];
+//        //    NSLog(@"W=%d / H=%d",(int)cell.imageView.frame.size.width,(int)cell.imageView.frame.size.height );
+    cell.imageView.layer.borderColor = [[UIColor whiteColor] CGColor]; //[[provider color] CGColor];
+        cell.imageView.layer.borderWidth = 1;
+        CALImage *calImage = [_imageService imageOrPlaceholderFor:activityObject allowAdditions:NO];
+        [_imageService load:calImage to:cell.imageView thumb:YES];
+        cell.nameLabel.text = [provider title];
+    } else {
+        cell.imageView.layer.cornerRadius = 25;
+        cell.imageView.layer.masksToBounds = YES;
+        cell.imageView.image = [CALImage getDefaultUserThumb];
+        cell.imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
+        cell.nameLabel.text = NSLocalizedString(@"likes.row.deleted",@"likes.row.deleted");
+    }
+//    NSString *delay = [_uiService delayStringFrom:activity.activityDate];
+//    cell.timeLabel.text = delay;
 }
 
 -(void) configureRowNoResult:(PMLSnippetLikeTableViewCell*)cell {
@@ -152,10 +161,9 @@
     Activity *activity = [self.activities objectAtIndex:indexPath.row];
     
     CALObject *activityObject = [self activityObjectFor:activity];
-    [_uiService presentSnippetFor:activityObject opened:YES];
-//    PMLSnippetTableViewController *controller = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-//    controller.snippetItem = activityObject;
-//    [self.parentMenuController.navigationController pushViewController:controller animated:YES ];
+    if(activityObject != nil) {
+        [_uiService presentSnippetFor:activityObject opened:YES];
+    }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
