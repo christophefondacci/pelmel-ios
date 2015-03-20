@@ -197,7 +197,7 @@
         case kPMLSectionIntro:
             [_headerView setNickname:self.place.title parentWidth:self.tableView.frame.size.width];
             _headerView.editButtonIcon.hidden=YES;
-            _headerView.profileImageView.image= nil;
+            _headerView.profileImageView.image= [CALImage getDefaultImage];
             if(self.place.mainImage) {
                 [_imageService load:self.place.mainImage to:_headerView.profileImageView thumb:YES];
             }
