@@ -876,7 +876,8 @@ typedef enum {
 
     if(_snippetItem==nil) {
         cell.distanceIntroLabel.hidden=NO;
-        cell.distanceIntroLabel.text = NSLocalizedString(@"snippet.distance.intro", @"Within");
+        cell.distanceIntroLabel.text = _infoProvider.thumbSubtitleText;
+        cell.thumbSubtitleLabel.text = NSLocalizedString(@"snippet.distance.intro", @"Within");
     } else {
         cell.distanceIntroLabel.hidden=YES;
         cell.distanceIntroLabel.text =nil;
