@@ -18,7 +18,6 @@
 #import "PMLDataManager.h"
 #import "UITextInputView.h"
 #import "UITouchBehavior.h"
-#import "PMLSubNavigationController.h"
 #import "PMLMainNavBarView.h"
 #import "FiltersViewController.h"
 #import "MainMenuTableViewController.h"
@@ -829,8 +828,8 @@ static void *MyParentMenuControllerKey;
     
     CGRect snippetBounds = _bottomView.frame;
 
-    if(snippetBounds.origin.y>0 && _keyboardShown) {
-        _keyboardShown = NO;
+    if(snippetBounds.origin.y>0 && _keyboardShown && !_snippetFullyOpened) {
+
         // Then we move it above keyboard
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:duration.doubleValue];
@@ -840,6 +839,7 @@ static void *MyParentMenuControllerKey;
         
         [UIView commitAnimations];
     }
+    _keyboardShown = NO;
     _kbSize.height = 0;
     _kbSize.width = 0;
 
