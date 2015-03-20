@@ -719,10 +719,14 @@ typedef enum {
             case kPMLSectionActivity:
                 return kPMLHeightActivityHeader;
             case kPMLSectionTopPlaces:
-                return kPMLHeightTopPlacesHeader;
+                if([[_infoProvider topPlaces] count ]>0) {
+                    return kPMLHeightTopPlacesHeader;
+                } else {
+                    return 0;
+                }
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
-                    if([_infoProvider eventsSectionTitle]!=nil) {
+                    if([_infoProvider eventsSectionTitle]!=nil && [[_infoProvider events] count]>0) {
                         return _sectionTitleView.bounds.size.height;
                     }
                 }

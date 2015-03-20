@@ -89,11 +89,11 @@
             condition = "[place.key isEqualToString:@&quot;PLAC3101&quot;]"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLSnippetTableViewController.m"
-            timestampString = "448583163.545313"
+            timestampString = "448584637.30556"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1211"
-            endingLineNumber = "1211"
+            startingLineNumber = "1215"
+            endingLineNumber = "1215"
             landmarkName = "-configureRowTopPlace:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
