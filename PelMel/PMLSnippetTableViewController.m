@@ -1471,10 +1471,8 @@ typedef enum {
     return !_galleryFullscreen;
 }
 -(UIImage *)placeHolderImageForImagePager {
-    if([_infoProvider canAddPhoto]) {
-        return [[_imageService imageOrPlaceholderFor:_snippetItem allowAdditions:YES] fullImage];
-    }
-    return [CALImage getDefaultImage];
+    return [[_imageService imageOrPlaceholderFor:_snippetItem allowAdditions:[_infoProvider canAddPhoto]] fullImage];
+
 }
 - (void)imagePager:(KIImagePager *)imagePager didSelectImageAtIndex:(NSUInteger)index {
     // If no photo

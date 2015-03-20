@@ -2221,7 +2221,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HD Images" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcJ-Nm-YG7">
-                                            <rect key="frame" x="69" y="12" width="215" height="18"/>
+                                            <rect key="frame" x="58" y="12" width="226" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="21" id="YY2-qw-ZmF"/>
                                             </constraints>
@@ -2229,11 +2229,11 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hd_logo_small.gif" translatesAutoresizingMaskIntoConstraints="NO" id="P9Y-hd-6lu">
-                                            <rect key="frame" x="20" y="1" width="41" height="41"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hd_logo_small.gif" translatesAutoresizingMaskIntoConstraints="NO" id="P9Y-hd-6lu">
+                                            <rect key="frame" x="20" y="6.5" width="30" height="30"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="41" id="QkX-QG-rXO"/>
-                                                <constraint firstAttribute="height" constant="41" id="wl0-Jc-7CS"/>
+                                                <constraint firstAttribute="width" constant="30" id="QkX-QG-rXO"/>
+                                                <constraint firstAttribute="height" constant="30" id="wl0-Jc-7CS"/>
                                             </constraints>
                                         </imageView>
                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="nQu-TP-nBV">

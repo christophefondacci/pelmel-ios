@@ -858,7 +858,7 @@ static void *MyParentMenuControllerKey;
         // Instantiating menu view if needed
         CGRect frame = self.view.window.frame;
         frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
-        frame.size.height -= self.navigationController.navigationBar.frame.size.height-[UIApplication sharedApplication].statusBarFrame.size.height;
+        frame.size.height -= self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height-1;
         frame = CGRectOffset(frame, -frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height);
         
         // Building standard menu

@@ -32,7 +32,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <imageView contentMode="scaleAspectFit" image="no-photo-profile-small" translatesAutoresizingMaskIntoConstraints="NO" id="4">
+                <imageView contentMode="scaleAspectFill" image="no-photo-profile-small" translatesAutoresizingMaskIntoConstraints="NO" id="4">
                     <rect key="frame" x="128" y="15" width="65" height="65"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="65" id="YtM-TH-ej5"/>

@@ -26,11 +26,11 @@
 #define kRowSettingLikes 1
 #define kRowSettingLikers 2
 
-#define kRowCountSettings 3
-#define kRowSettingProfile 0
-#define kRowSettingSettings 1
-
-#define kRowSettingDisconnect 2
+#define kRowCountSettings 4
+#define kRowSettingMyPage 0
+#define kRowSettingProfile 1
+#define kRowSettingSettings 2
+#define kRowSettingDisconnect 3
 
 #define kCellIdPlaceType @"placeTypeCell"
 #define kCellIdProfile @"profileTableCell"
@@ -143,7 +143,9 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     UITablePlaceTypeViewCell *placeTypeCell = (UITablePlaceTypeViewCell*)cell;
     cell.backgroundColor = UIColorFromRGB(0x272a2e);
-
+    placeTypeCell.image.layer.cornerRadius=0;
+    placeTypeCell.image.layer.masksToBounds=NO;
+    placeTypeCell.image.layer.borderWidth=0;
     switch(indexPath.section) {
         case kSectionNetwork:
             switch(indexPath.row) {
@@ -186,6 +188,19 @@
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
+                case kRowSettingMyPage: {
+                    placeTypeCell.label.text = NSLocalizedString(@"settings.mypage", @"My Page");
+                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    placeTypeCell.image.image = [CALImage getDefaultUserThumb];
+                    CALImage *image = [_imageService imageOrPlaceholderFor:[_userService getCurrentUser] allowAdditions:NO];
+                    [_imageService load:image to:placeTypeCell.image thumb:YES];
+                    placeTypeCell.badgeLabel.hidden=YES;
+                    placeTypeCell.image.layer.cornerRadius=15;
+                    placeTypeCell.image.layer.masksToBounds=YES;
+                    placeTypeCell.image.layer.borderWidth=1;
+                    placeTypeCell.image.layer.borderColor=[[UIColor whiteColor] CGColor];
+                    break;
+                }
                 case kRowSettingProfile: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.account.cell", @"Edit my profile");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -269,7 +284,9 @@
                 case kRowSettingSettings:
                     [self performSegueWithIdentifier:@"settings" sender:self];
                     break;
-                
+                case kRowSettingMyPage:
+                    [_uiService presentSnippetFor:[_userService getCurrentUser] opened:YES];
+                    break;
                 case kRowSettingProfile: {
                     UIViewController *accountController = [[TogaytherService uiService] instantiateViewController:SB_ID_MYACCOUNT];
                     [self.parentMenuController.navigationController pushViewController:accountController animated:YES];

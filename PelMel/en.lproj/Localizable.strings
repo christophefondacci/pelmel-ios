@@ -273,8 +273,10 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "settings.likes"="I like";
 "settings.likers"="They like me";
 "settings.messages"="Messages";
+"settings.mypage"="My Page";
 "settings.placeTypes.title"="Place filters";
 "settings.settings"="Settings";
+
 "snippet.likes"="%d likes";
 "snippet.activity"="Nearby users";
 "snippet.distance.intro"="Within";
