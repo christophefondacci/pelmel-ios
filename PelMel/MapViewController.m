@@ -231,21 +231,18 @@
     _menuAddAction.bottomMargin=160;
     
     // Refresh action
-    _menuRefreshAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnRefresh"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+    _menuRefreshAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnRefresh"] pctWidth:1 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
         
         // Getting current map center coordinates
         CLLocationDistance distance = [self distanceFromCornerPoint];
         int milesRadius = MIN(1500,distance/1609.344);
-        
-        if([[_mapView annotationsInMapRect:_mapView.visibleMapRect] containsObject:_mapView.userLocation]) {
-            _zoomUpdateType = PMLZoomUpdateAroundLocation;
-        } else {
-            _zoomUpdateType = PMLZoomUpdateInMapRect;
-        }
+
+        // No zoom, updating behind the scenes
+        _zoomUpdateType = PMLZoomUpdateNone;
         [self.parentMenuController.dataManager refreshAt:_mapView.centerCoordinate radius:milesRadius];
     }];
     _menuRefreshAction.rightMargin = 5;
-    _menuRefreshAction.bottomMargin = 215; //topMargin = 100; //69;
+    _menuRefreshAction.topMargin = 84+24+50+5; //topMargin = 100; //69;
     
     // My Position action
     _menuMyPositionAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnPosition"] pctWidth:1 pctHeight:00 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
@@ -253,20 +250,12 @@
             
             // First zoom mode: center on current position
             CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
-            if([_mapView.userLocation.location distanceFromLocation:centerLocation] > 50) {
-                [_mapView setCenterCoordinate:_mapView.userLocation.coordinate animated:YES];
+            if([_mapView.userLocation.location distanceFromLocation:centerLocation] < 750000) {
+                [_mapView setCenterCoordinate:_mapView.userLocation.location.coordinate animated:YES];
+                _menuRefreshAction.menuAction(self.parentMenuController,_menuRefreshAction);
             } else {
-                // If not zoomed, we zoom
-                CLLocationDistance distance = [self distanceFromCornerPoint];
-                if(distance > 2000) {
-                    // Building our zoom rect around our center
-                    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(_mapView.centerCoordinate, 1500, 1500);
-                    MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
-                    MKMapRect mapRect = [self MKMapRectForCoordinateRegion:adjustedRegion];
-                    [_mapView setVisibleMapRect:mapRect animated:YES];
-                } else {
-                    [_mapView showAnnotations:[_placeAnnotations allObjects] animated:YES];
-                }
+                _zoomUpdateType = PMLZoomUpdateAroundLocation;
+                [_dataService fetchNearbyPlaces];
             }
         } else {
             NSString *title = NSLocalizedString(@"action.myposition.alertTitle", @"action.myposition.alertTitle");
@@ -276,7 +265,7 @@
         }
     }];
     _menuMyPositionAction.rightMargin = 5;
-    _menuMyPositionAction.topMargin = 84+64; //topMargin = 50;
+    _menuMyPositionAction.topMargin = 84+24; //topMargin = 50;
     
 }
 
@@ -667,16 +656,16 @@
         [_mapView setCamera:camera animated:YES];
         
     }
-    if(_zoomUpdateType == PMLZoomUpdateNone) {
-        // If we moved more than 100km (our current search radius, then we display refresh
-        if([currentLocation distanceFromLocation:_mapInitialCenter]>=50000) {
-            if([[_mapView annotationsInMapRect:_mapView.visibleMapRect] count] == 0) {
-                [UIView animateWithDuration:0.2 animations:^{
-                    _menuRefreshAction.menuActionView.transform = CGAffineTransformRotate(_menuRefreshAction.menuActionView.transform, M_PI_2);
-                }];
-            }
-        }
-    }
+//    if(_zoomUpdateType == PMLZoomUpdateNone) {
+//        // If we moved more than 100km (our current search radius, then we display refresh
+//        if([currentLocation distanceFromLocation:_mapInitialCenter]>=50000) {
+//            if([[_mapView annotationsInMapRect:_mapView.visibleMapRect] count] == 0) {
+//                [UIView animateWithDuration:0.2 animations:^{
+//                    _menuRefreshAction.menuActionView.transform = CGAffineTransformRotate(_menuRefreshAction.menuActionView.transform, M_PI_2);
+//                }];
+//            }
+//        }
+//    }
     NSSet *annotations = [self.mapView annotationsInMapRect:self.mapView.visibleMapRect];
     if(annotations.count < 300) {
             _labelsVisible = YES;

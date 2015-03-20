@@ -33,6 +33,12 @@ typedef void(^AddressClosure)(NSString*address);
 -(NSString*)distanceTo:(CALObject*)object;
 - (CLLocationDistance)numericDistanceTo:(CALObject*)object;
 /**
+ * Provides a localized (miles / km) compact distance string (meters, kilometers, feet, etc.)
+ * of the given miles distance. The method will use current locale to determine whether
+ * the results should be metric or imperial.
+ */
+-(NSString*)distanceStringForMeters:(CLLocationDistance)distance;
+/**
  * Computes the address at the location of the given object and invokes the block passing
  * the resolved and formatted address.
  */

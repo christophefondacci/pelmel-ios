@@ -270,7 +270,7 @@ static void *MyParentMenuControllerKey;
         [_currentSnippetViewController willMoveToParentViewController:nil];
         [_currentSnippetViewController.view removeFromSuperview];
         [_currentSnippetViewController removeFromParentViewController];
-        [self.menuManagerDelegate layoutMenuActions];
+//        [self.menuManagerDelegate layoutMenuActions];
         _currentSnippetViewController = nil;
         [_gripView removeFromSuperview];
     }

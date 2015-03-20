@@ -11,6 +11,7 @@
 @interface PMLSnippetTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *thumbSubtitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *distanceIntroLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbView;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;

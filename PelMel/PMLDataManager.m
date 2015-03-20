@@ -83,6 +83,8 @@
 //                ((MapViewController*)_menuController.rootViewController).zoomUpdateType = PMLZoomUpdateAroundLocation;
                 _dataService.currentRadius =1500;
                 [_dataService fetchNearbyPlaces];
+            } else {
+                _nearbyLoad = NO;
             }
         } else {
             _nearbyLoad = NO;

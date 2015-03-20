@@ -70,44 +70,46 @@
     CLLocation *userLoc = TogaytherService.userService.currentLocation;
     if(userLoc != nil) {
         CLLocationDistance distance = [placeLoc distanceFromLocation:userLoc];
-        
-        NSLocale *locale = [NSLocale currentLocale];
-        BOOL isMetric = [[locale objectForKey:NSLocaleUsesMetricSystem] boolValue];
-        
-        NSString *currentTemplate;
-        double currentValue = 0;
-        if(isMetric) {
-            if(distance > 1000) {
-                currentTemplate = @"distance.template.kilometers";
-                currentValue = distance/100;
-                currentValue = (double)(int)currentValue;
-                currentValue = currentValue/10;
-            } else {
-                currentTemplate =@"distance.template.meters";
-                currentValue = (double)(int)distance;
-            }
-        } else {
-            double miles = distance / 1609.34;
-            if(miles < 0.5) {
-                double feet = distance / 0.3048;
-                currentTemplate = @"distance.template.feet";
-                currentValue = (double)(int)feet;
-            } else {
-                currentTemplate = @"distance.template.miles";
-                currentValue = (double)(int)(miles*10.0);
-                currentValue = round(currentValue);
-                currentValue = currentValue / 10.0;
-            }
-        }
-        NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
-        [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
-        NSString *formattedNumberString = [numberFormatter stringFromNumber:[NSNumber numberWithDouble:currentValue]];
-        return [NSString stringWithFormat:NSLocalizedString(currentTemplate,@"template"),formattedNumberString];
+        return [self distanceStringForMeters:distance];
+
     } else {
         return nil;
     }
 }
-
+-(NSString*)distanceStringForMeters:(CLLocationDistance)distance {
+    NSLocale *locale = [NSLocale currentLocale];
+    BOOL isMetric = [[locale objectForKey:NSLocaleUsesMetricSystem] boolValue];
+    
+    NSString *currentTemplate;
+    double currentValue = 0;
+    if(isMetric) {
+        if(distance > 1000) {
+            currentTemplate = @"distance.template.kilometers";
+            currentValue = distance/100;
+            currentValue = (double)(int)currentValue;
+            currentValue = currentValue/10;
+        } else {
+            currentTemplate =@"distance.template.meters";
+            currentValue = (double)(int)distance;
+        }
+    } else {
+        double miles = distance / 1609.34;
+        if(miles < 0.5) {
+            double feet = distance / 0.3048;
+            currentTemplate = @"distance.template.feet";
+            currentValue = (double)(int)feet;
+        } else {
+            currentTemplate = @"distance.template.miles";
+            currentValue = (double)(int)(miles*10.0);
+            currentValue = round(currentValue);
+            currentValue = currentValue / 10.0;
+        }
+    }
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSString *formattedNumberString = [numberFormatter stringFromNumber:[NSNumber numberWithDouble:currentValue]];
+    return [NSString stringWithFormat:NSLocalizedString(currentTemplate,@"template"),formattedNumberString];
+}
 -(void)geocodeAddressFor:(CALObject *)object completion:(AddressClosure)closure {
     // Geocoding
     CLLocation *loc = [[CLLocation alloc] initWithLatitude:object.lat longitude:object.lng];

@@ -113,11 +113,15 @@
 }
 // Short text displayed with thumb
 -(NSString*)thumbSubtitleText {
-    return nil;
+    CLLocationDistance distance = 50;
+    if(_dataService.currentRadius>0) {
+        distance = _dataService.currentRadius;
+    }
+    return [[TogaytherService getConversionService] distanceStringForMeters:distance*1609.34];
 }
 // Color of the short thumb subtitle text
 -(UIColor*)thumbSubtitleColor {
-    return [self color];
+    return UIColorFromRGB(0x969696);
 }
 -(NSArray *)addressComponents {
     return @[];
