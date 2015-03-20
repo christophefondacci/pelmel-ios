@@ -74,6 +74,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -3105,7 +3107,7 @@
                                     <outlet property="descriptionLabel" destination="s4I-Lr-8wV" id="AQl-Cg-SIg"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="text" id="RA6-87-IMj" customClass="PMLTextTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="text" id="RA6-87-IMj" customClass="PMLTextTableViewCell">
                                 <rect key="frame" x="0.0" y="596" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="RA6-87-IMj" id="tlm-e5-8iA">
@@ -3172,7 +3174,7 @@
                                                 <constraint firstAttribute="height" constant="18" id="SoO-v0-nGj"/>
                                                 <constraint firstAttribute="width" constant="34" id="wdE-t6-58u"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
                                             <color key="textColor" red="0.92549020051956177" green="0.46666666865348816" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -3186,11 +3188,18 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconLikeAcitvity" translatesAutoresizingMaskIntoConstraints="NO" id="7SO-Dn-sMS">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconLikeWhite" translatesAutoresizingMaskIntoConstraints="NO" id="7SO-Dn-sMS">
                                             <rect key="frame" x="75" y="32" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="20" id="dIx-le-iKx"/>
                                                 <constraint firstAttribute="width" constant="20" id="fIK-cL-jJw"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconMarker" translatesAutoresizingMaskIntoConstraints="NO" id="Cdf-iR-3eX">
+                                            <rect key="frame" x="157" y="33" width="17" height="17"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="17" id="eGi-XM-CVp"/>
+                                                <constraint firstAttribute="width" constant="17" id="jes-rz-IJN"/>
                                             </constraints>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconCity" translatesAutoresizingMaskIntoConstraints="NO" id="VmJ-mu-spu">
@@ -3217,11 +3226,22 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 Checked in" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uhj-qj-W5v">
+                                            <rect key="frame" x="182" y="35" width="123" height="18"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="18" id="QdJ-RE-Gh6"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
+                                            <color key="textColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="Cdf-iR-3eX" firstAttribute="centerY" secondItem="7SO-Dn-sMS" secondAttribute="centerY" id="4Ox-gU-Gvk"/>
                                         <constraint firstItem="zMM-Pv-mju" firstAttribute="centerY" secondItem="HwL-hZ-chC" secondAttribute="centerY" id="982-ZJ-EIF"/>
                                         <constraint firstAttribute="trailing" secondItem="f5u-H8-oM0" secondAttribute="trailing" constant="20" id="BcI-nJ-zLP"/>
                                         <constraint firstItem="xfS-Hk-A6V" firstAttribute="centerY" secondItem="VmJ-mu-spu" secondAttribute="centerY" id="Dis-fz-Lb6"/>
+                                        <constraint firstAttribute="trailing" secondItem="uhj-qj-W5v" secondAttribute="trailing" constant="15" id="E20-lU-1eK"/>
                                         <constraint firstItem="mGX-Mj-mxb" firstAttribute="top" secondItem="JuL-SU-X3V" secondAttribute="top" constant="9" id="JWz-Kf-hIi"/>
                                         <constraint firstItem="VmJ-mu-spu" firstAttribute="top" secondItem="7SO-Dn-sMS" secondAttribute="bottom" constant="5" id="NqB-rf-bN2"/>
                                         <constraint firstItem="zMM-Pv-mju" firstAttribute="leading" secondItem="VmJ-mu-spu" secondAttribute="trailing" constant="4" id="Oh6-9o-oHD"/>
@@ -3230,9 +3250,12 @@
                                         <constraint firstItem="HwL-hZ-chC" firstAttribute="leading" secondItem="xfS-Hk-A6V" secondAttribute="trailing" constant="3" id="Yfp-l3-S9p"/>
                                         <constraint firstItem="f5u-H8-oM0" firstAttribute="leading" secondItem="7SO-Dn-sMS" secondAttribute="leading" id="Yxu-O6-2Hf"/>
                                         <constraint firstItem="f5u-H8-oM0" firstAttribute="top" secondItem="JuL-SU-X3V" secondAttribute="top" constant="9" id="Zbe-Yk-XnF"/>
+                                        <constraint firstItem="uhj-qj-W5v" firstAttribute="centerY" secondItem="Cdf-iR-3eX" secondAttribute="centerY" constant="2" id="gd5-Hq-1Dx"/>
                                         <constraint firstItem="f5u-H8-oM0" firstAttribute="leading" secondItem="mGX-Mj-mxb" secondAttribute="trailing" constant="14" id="r5w-AY-Yix"/>
                                         <constraint firstItem="7SO-Dn-sMS" firstAttribute="top" secondItem="f5u-H8-oM0" secondAttribute="bottom" constant="2" id="rMk-Xw-UhF"/>
+                                        <constraint firstItem="Cdf-iR-3eX" firstAttribute="leading" secondItem="Bou-yw-ANs" secondAttribute="trailing" constant="20" id="t3V-QQ-8LE"/>
                                         <constraint firstItem="xfS-Hk-A6V" firstAttribute="leading" secondItem="zMM-Pv-mju" secondAttribute="trailing" constant="8" id="tOF-gj-Kaa"/>
+                                        <constraint firstItem="uhj-qj-W5v" firstAttribute="leading" secondItem="Cdf-iR-3eX" secondAttribute="trailing" constant="8" id="v9f-Nl-pOS"/>
                                         <constraint firstItem="zMM-Pv-mju" firstAttribute="centerY" secondItem="VmJ-mu-spu" secondAttribute="centerY" constant="2" id="vgP-pX-Sqf"/>
                                         <constraint firstItem="mGX-Mj-mxb" firstAttribute="leading" secondItem="JuL-SU-X3V" secondAttribute="leading" constant="20" id="yqp-Pi-5XA"/>
                                         <constraint firstItem="Bou-yw-ANs" firstAttribute="leading" secondItem="7SO-Dn-sMS" secondAttribute="trailing" constant="8" id="z87-q7-1AI"/>
@@ -3243,6 +3266,8 @@
                                     <outlet property="activitySubtitleLabel" destination="Bou-yw-ANs" id="mV6-fF-z0s"/>
                                     <outlet property="activityThumbImageView" destination="mGX-Mj-mxb" id="4ot-w8-D8S"/>
                                     <outlet property="activityTitleLabel" destination="f5u-H8-oM0" id="Qmn-DJ-nSG"/>
+                                    <outlet property="checkinImageView" destination="Cdf-iR-3eX" id="liM-mG-548"/>
+                                    <outlet property="checkinLabel" destination="uhj-qj-W5v" id="l86-8h-kh3"/>
                                     <outlet property="cityLabel" destination="zMM-Pv-mju" id="cE0-y7-FPz"/>
                                     <outlet property="distanceLabel" destination="HwL-hZ-chC" id="CWA-2d-2B6"/>
                                     <outlet property="heightTitleConstraint" destination="zNT-wv-mII" id="cTp-zU-tL1"/>
@@ -3772,7 +3797,7 @@
         <image name="snpIconCity" width="20" height="20"/>
         <image name="snpIconDistance" width="20" height="20"/>
         <image name="snpIconLike" width="30" height="30"/>
-        <image name="snpIconLikeAcitvity" width="20" height="20"/>
+        <image name="snpIconLikeWhite" width="30" height="30"/>
         <image name="snpIconMarker" width="40" height="40"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

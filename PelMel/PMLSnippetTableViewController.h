@@ -12,7 +12,6 @@
 #import "DataService.h"
 #import "PMLThumbCollectionViewController.h"
 #import "PMLMenuManagerController.h"
-#import "PMLSubNavigationController.h"
 
 @interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, KIImagePagerDataSource, PMLThumbsCollectionViewActionDelegate, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate, PMLUserCallback>
 

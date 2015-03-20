@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *activityThumbImageView;
 @property (weak, nonatomic) IBOutlet UILabel *cityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *distanceLabel;
+@property (weak, nonatomic) IBOutlet UILabel *checkinLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *checkinImageView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightTitleConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthSubtitleLabelConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthCityLabelConstraint;

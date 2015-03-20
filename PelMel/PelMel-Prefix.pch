@@ -28,8 +28,8 @@
 
 
 #define PML_ICON_LIKE @"snpIconLikeWhite"
-#define PML_ICON_CHECKIN @"ovvIconCheckin"
-#define PML_ICON_COMMENT @"ovvIconComment"
+#define PML_ICON_CHECKIN @"ovvIconCheckinWhite"
+#define PML_ICON_COMMENT @"ovvIconCommentWhite"
 
 
 #import "Constants.h"

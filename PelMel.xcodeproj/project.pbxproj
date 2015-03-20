@@ -73,8 +73,6 @@
 		B42D2D461619715B00159EBD /* CALImage.m in Sources */ = {isa = PBXBuildFile; fileRef = B42D2D451619715B00159EBD /* CALImage.m */; };
 		B42F543F19873CC200C2371F /* MKNewPlaceAnnotationView.h in Headers */ = {isa = PBXBuildFile; fileRef = B42F543D19873CC200C2371F /* MKNewPlaceAnnotationView.h */; };
 		B42F544019873CC200C2371F /* MKNewPlaceAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = B42F543E19873CC200C2371F /* MKNewPlaceAnnotationView.m */; };
-		B4322E3D198DE2DA0037E260 /* PMLSubNavigationController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4322E3B198DE2DA0037E260 /* PMLSubNavigationController.h */; };
-		B4322E3E198DE2DA0037E260 /* PMLSubNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4322E3C198DE2DA0037E260 /* PMLSubNavigationController.m */; };
 		B43805B91A1D870100736051 /* PMLImagedTitleTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */; };
 		B43805BA1A1D870100736051 /* PMLImagedTitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */; };
 		B43D116F1A97A12B008476C7 /* DynamicDismissalAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = B43D11671A97A12B008476C7 /* DynamicDismissalAnimator.h */; };
@@ -430,8 +428,6 @@
 		B42D2D451619715B00159EBD /* CALImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CALImage.m; sourceTree = "<group>"; };
 		B42F543D19873CC200C2371F /* MKNewPlaceAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNewPlaceAnnotationView.h; sourceTree = "<group>"; };
 		B42F543E19873CC200C2371F /* MKNewPlaceAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNewPlaceAnnotationView.m; sourceTree = "<group>"; };
-		B4322E3B198DE2DA0037E260 /* PMLSubNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLSubNavigationController.h; sourceTree = "<group>"; };
-		B4322E3C198DE2DA0037E260 /* PMLSubNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLSubNavigationController.m; sourceTree = "<group>"; };
 		B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLImagedTitleTableViewCell.h; sourceTree = "<group>"; };
 		B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLImagedTitleTableViewCell.m; sourceTree = "<group>"; };
 		B43D11671A97A12B008476C7 /* DynamicDismissalAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDismissalAnimator.h; sourceTree = "<group>"; };
@@ -819,8 +815,6 @@
 				B40668B6197149B50012DF71 /* UIMenuManagerMainDelegate.m */,
 				B41DD74A197A4E5B008F09D9 /* PMLMapPopupViewController.h */,
 				B41DD74B197A4E5B008F09D9 /* PMLMapPopupViewController.m */,
-				B4322E3B198DE2DA0037E260 /* PMLSubNavigationController.h */,
-				B4322E3C198DE2DA0037E260 /* PMLSubNavigationController.m */,
 				B457A1101A9D93D200207D8E /* PMLFakeViewController.h */,
 				B457A1111A9D93D200207D8E /* PMLFakeViewController.m */,
 			);
@@ -1492,7 +1486,6 @@
 				B457A1061A9CECE800207D8E /* PMLEventInfoProvider.h in Headers */,
 				B452EDF719B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h in Headers */,
 				B4FC959619B1F20A00269E74 /* PMLTextTableViewCell.h in Headers */,
-				B4322E3D198DE2DA0037E260 /* PMLSubNavigationController.h in Headers */,
 				B4B1FCF819E012BD0068894C /* NSString+HTML.h in Headers */,
 				B457A0EF1A9A689100207D8E /* PMLSectionTitleView.h in Headers */,
 				B49F989F19A2131100BD3B2F /* PMLDynamicActionObject.h in Headers */,
@@ -1755,7 +1748,6 @@
 				B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */,
 				B42F544019873CC200C2371F /* MKNewPlaceAnnotationView.m in Sources */,
 				B4D560B9160C95A3003A738E /* Place.m in Sources */,
-				B4322E3E198DE2DA0037E260 /* PMLSubNavigationController.m in Sources */,
 				B4D560DD161060CD003A738E /* UITablePlaceViewCell.m in Sources */,
 				B4FC959719B1F20A00269E74 /* PMLTextTableViewCell.m in Sources */,
 				B43D11701A97A12B008476C7 /* DynamicDismissalAnimator.m in Sources */,

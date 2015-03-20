@@ -13,7 +13,6 @@
 #import "KIImagePager.h"
 #import "ThumbTableViewController.h"
 #import "PMLThumbCollectionViewController.h"
-#import "PMLSubNavigationController.h"
 #import "PMLSnippetTableViewCell.h"
 #import "PMLSnippetDescTableViewCell.h"
 #import "PMLGalleryTableViewCell.h"
@@ -1200,6 +1199,14 @@ typedef enum {
     CGSize size = [cell.activitySubtitleLabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
     cell.widthSubtitleLabelConstraint.constant = size.width;
     
+    // Checkins count
+    if(place.inUserCount>0) {
+        cell.checkinLabel.text = [_uiService localizedString:@"counters.checkedin" forCount:place.inUserCount];
+        cell.checkinImageView.image = [UIImage imageNamed:@"snpIconMarker"];
+    } else {
+        cell.checkinImageView.image = nil;
+        cell.checkinLabel.text = nil;
+    }
     // Setting city
     cell.cityLabel.text = place.cityName;
     size = [cell.cityLabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];

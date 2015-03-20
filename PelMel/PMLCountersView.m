@@ -131,9 +131,9 @@
         switch(action) {
             case PMLActionTypeCheckin:
             case PMLActionTypeAttend:
-                return @"ovvIconCheckin";
+                return @"ovvIconCheckinWhite";
             case PMLActionTypeComment:
-                return @"ovvIconComment";
+                return @"ovvIconCommentWhite";
             case PMLActionTypeLike:
                 return @"snpIconLikeWhite";
             default:
