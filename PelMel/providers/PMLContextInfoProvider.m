@@ -55,7 +55,7 @@
         title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count];
     } else {
         NSString *titleTemplate = @"places.section.inZoneWithEvents";
-        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count,_modelHolder.events.count];
+        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.events.count,_modelHolder.places.count];
     }
     return title;
 

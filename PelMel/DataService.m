@@ -888,7 +888,7 @@
         [self setIfDefined:calendar.place.key       forKey:@"placeId" fill:paramValues];
         [self setIfDefined:@"0"               forKey:@"monthRecurrency" fill:paramValues];
         [self setIfDefined:user.token               forKey:@"nxtpUserToken" fill:paramValues];
-        
+        [self fillDescriptionsFor:calendar inParams:paramValues];
         // Preparing POST request
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {

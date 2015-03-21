@@ -259,7 +259,8 @@
 }
 
 - (NSString *)eventDateLabel:(Event*)event isStart:(BOOL)start {
-    NSString *template=@"EdMMMhmma";
+
+    BOOL timeOnly = NO;
     NSDate *date;
     if(start) {
         date = event.startDate;
@@ -267,10 +268,17 @@
         if(event.startDate != nil) {
             NSTimeInterval delta = [event.endDate timeIntervalSinceDate:event.startDate];
             if(delta < 86400) {
-                template = @"hmma";
+                timeOnly = YES;
             }
         }
         date= event.endDate;
+    }
+    return [self stringForEventDate:date timeOnly:timeOnly];
+}
+-(NSString *)stringForEventDate:(NSDate*)date timeOnly:(BOOL)timeOnly {
+    NSString *template=@"EdMMMhmma";
+    if(timeOnly) {
+        template = @"hmma";
     }
     NSString *formatString = [NSDateFormatter dateFormatFromTemplate:template options:0
                                                               locale:[NSLocale currentLocale]];

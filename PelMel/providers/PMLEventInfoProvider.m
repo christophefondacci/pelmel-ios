@@ -54,16 +54,18 @@
             _event.name = NSLocalizedString(template,template);
         }
     }
-    return _event.name;
+    return [_event.name uppercaseString];
 }
 - (NSString *)subtitle {
-    NSString *startDate = [_conversionService eventDateLabel:_event isStart:YES];
+    NSString *startDate ;
     
-    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"hmma" options:0
-                                                              locale:[NSLocale currentLocale]];
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:formatString];
-    NSString *endHour = [formatter stringFromDate:_event.endDate];
+    if([_event.startDate compare:_event.endDate] == NSOrderedAscending) {
+        startDate = [_conversionService eventDateLabel:_event isStart:YES];
+    } else {
+        startDate = [_conversionService stringForEventDate:[NSDate date] timeOnly:NO];
+    }
+    
+    NSString *endHour = [_conversionService eventDateLabel:_event isStart:NO];
     return [startDate stringByAppendingFormat:@" - %@", endHour ];
 }
 - (UIImage *)subtitleIcon {

@@ -71,4 +71,5 @@ typedef void(^AddressClosure)(NSString*address);
  * @return the corresponding date label
  */
 -(NSString *)eventDateLabel:(Event*)event isStart:(BOOL)start;
+-(NSString *)stringForEventDate:(NSDate*)date timeOnly:(BOOL)timeOnly ;
 @end
