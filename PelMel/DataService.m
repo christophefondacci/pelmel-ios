@@ -427,7 +427,10 @@
         }
     }
 }
-
+- (void)getObject:(NSString *)key callback:(OverviewCompletionBlock)callback {
+    CALObject *obj = [jsonService.objectCache objectForKey:key];
+    callback(obj);
+}
 -(void)fetchOverviewData:(CALObject *)object {
     [self startOp:@""];
     

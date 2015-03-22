@@ -128,7 +128,11 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
  * Gets full information on this place. Information might come from cache or server
  */
 -(void)getOverviewData:(CALObject*)object;
-
+/**
+ * Gets the object referenced by the given key. If object does not exist it will be
+ * loaded, if it is in cache, the cached object will be returned. No listeners will be triggered
+ */
+-(void)getObject:(NSString*)key callback:(OverviewCompletionBlock)callback;
 
 // Like management
 -(void)like:(CALObject*)object callback:(LikeCompletionBlock)callback;

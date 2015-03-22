@@ -127,8 +127,8 @@
         cell.imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
         cell.nameLabel.text = NSLocalizedString(@"likes.row.deleted",@"likes.row.deleted");
     }
-//    NSString *delay = [_uiService delayStringFrom:activity.activityDate];
-//    cell.timeLabel.text = delay;
+    NSString *delay = [_uiService delayStringFrom:activity.activityDate];
+    cell.timeLabel.text = delay;
 }
 
 -(void) configureRowNoResult:(PMLSnippetLikeTableViewCell*)cell {

@@ -13,7 +13,6 @@
 #import "NSString+HTML.h"
 
 @implementation JsonService {
-    NSCache *cacheService;
 
     MessageService *_messageService;
     UserService *_userService;
@@ -25,7 +24,7 @@
 {
     self = [super init];
     if (self) {
-        cacheService = [[NSCache alloc] init];
+        _objectCache = [[NSCache alloc] init];
         _messageService = [TogaytherService getMessageService];
         _userService = TogaytherService.userService;
     }
@@ -39,13 +38,13 @@
     
     // Looking up in cache
     if(key != nil) {
-        Place *place = [cacheService objectForKey:key];
+        Place *place = [_objectCache objectForKey:key];
         if(place == nil) {
             place = [[Place alloc] init:name];
             [place setKey:key];
             CALImage *img = [imageService convertJsonImageToImage:thumb];
             [place setMainImage:img];
-            [cacheService setObject:place forKey:key];
+            [_objectCache setObject:place forKey:key];
         }
         
         return place;
@@ -91,11 +90,11 @@
     CALImage *mainImage = [imageService convertJsonImageToImage:thumb];
     
     // Building the place data bean
-    Place *data =[cacheService objectForKey:itemKey];
+    Place *data =[_objectCache objectForKey:itemKey];
     if(data == nil) {
         data = [[Place alloc] initFull:name distance:distance miniDesc:description];
         // Caching result
-        [cacheService setObject:data forKey:itemKey];
+        [_objectCache setObject:data forKey:itemKey];
     }
     [data setRawDistance:[rawDistance doubleValue]];
     [data setOtherImages:imagesArray];
@@ -203,7 +202,7 @@
     [_messageService setUnreadMessageCount:[unreadMsgCount intValue]];
     
     // Getting place
-    Place *place = [cacheService objectForKey:placeKey];
+    Place *place = [_objectCache objectForKey:placeKey];
     if(place == nil) {
         if(defaultPlace != nil) {
             place = defaultPlace;
@@ -304,7 +303,7 @@
     [place setHasOverviewData:YES];
     
     // Refreshing cache
-    [cacheService setObject:place forKey:place.key];
+    [_objectCache setObject:place forKey:place.key];
     return place;
 }
 
@@ -327,15 +326,18 @@
     NSNumber *isSunday      = [jsonHour objectForKey:@"sunday"];
     
     NSNumber *recurrency    = [jsonHour objectForKey:@"recurrency"];
+    NSString *description   = [jsonHour objectForKey:@"description"];
+    NSString *descriptionKey= [jsonHour objectForKey:@"descriptionKey"];
+    NSString *descriptionLng= [jsonHour objectForKey:@"descriptionLanguage"];
     
-    PMLCalendar *calendar = [cacheService objectForKey:key];
+    PMLCalendar *calendar = [_objectCache objectForKey:key];
     if(calendar == nil) {
         if(defaultCalendar) {
             calendar = defaultCalendar;
         } else {
             calendar = [[PMLCalendar alloc] init];
         }
-        [cacheService setObject:calendar forKey:key];
+        [_objectCache setObject:calendar forKey:key];
     }
 
     [calendar setKey:key];
@@ -353,6 +355,9 @@
     [calendar setIsSaturday:[isSaturday boolValue]];
     [calendar setIsSunday:[isSunday boolValue]];
     [calendar setCalendarType:hoursType];
+    [calendar setMiniDesc:description];
+    [calendar setMiniDescKey:descriptionKey];
+    [calendar setMiniDescLang:descriptionLng];
     if(recurrency != (NSNumber*)[NSNull null]){
         [calendar setRecurrency:recurrency];
     } else {
@@ -424,10 +429,10 @@
         cacheKey = [@"EVNT" stringByAppendingString:itemKey];
     }
     // Building JSON event
-    Event *event = [cacheService objectForKey:cacheKey];
+    Event *event = [_objectCache objectForKey:cacheKey];
     if(event == nil) {
         event = defaultEvent == nil ? [[Event alloc] init] : defaultEvent;
-        [cacheService setObject:event forKey:cacheKey];
+        [_objectCache setObject:event forKey:cacheKey];
     }
 
     // Extracting information from JSON
@@ -505,7 +510,7 @@
     NSNumber *isOnline  = [jsonUser objectForKey:@"online"];
     
     // Looking up user in cache
-    User *user = [cacheService objectForKey:userKey];
+    User *user = [_objectCache objectForKey:userKey];
     if(user == nil) {
         // Creating CAL image
         CALImage *img = [imageService convertJsonImageToImage:jsonThumb];
@@ -518,7 +523,7 @@
         [user setHasOverviewData:NO];
         
         //Adding to cache
-        [cacheService setObject:user forKey:user.key];
+        [_objectCache setObject:user forKey:user.key];
     }
     [user setIsOnline:[isOnline boolValue]];
     return user;
@@ -527,7 +532,7 @@
     NSString *key     = [json objectForKey:@"key"];
     
     // Getting user
-    User *user = [cacheService objectForKey:key];
+    User *user = [_objectCache objectForKey:key];
     if(user == nil) {
         if(defaultUser != nil) {
             user = defaultUser;
@@ -708,7 +713,7 @@
         NSDate* lastLocDate = [[NSDate alloc] initWithTimeIntervalSince1970:pTime];
         [user setLastLocationDate:lastLocDate];
     }
-    [cacheService setObject:user forKey:user.key];
+    [_objectCache setObject:user forKey:user.key];
 }
 -(NSString*)getMiniDesc:(NSArray*)descriptions {
     NSMutableDictionary *descLangMap = [[NSMutableDictionary alloc] init];
@@ -747,10 +752,10 @@
     Event *event = nil;
     if(![special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
         NSString *cacheKey = [self specialCacheEventKey:special];
-        event = [cacheService objectForKey:cacheKey];
+        event = [_objectCache objectForKey:cacheKey];
         if(event == nil) {
             event = [[Event alloc] initWithPlace:place];
-            [cacheService setObject:event forKey:cacheKey];
+            [_objectCache setObject:event forKey:cacheKey];
         }
         [event setPlace: place];
         event.key = special.key;
@@ -767,6 +772,6 @@
     return event;
 }
 - (CALObject *)objectForKey:(NSString *)key {
-    return [cacheService objectForKey:key];
+    return [_objectCache objectForKey:key];
 }
 @end

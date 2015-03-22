@@ -18,6 +18,7 @@
 @interface JsonService : NSObject
 
 @property (strong,nonatomic) ImageService *imageService;
+@property (strong,nonatomic) NSCache *objectCache;
 
 -(Place*)convertJsonPlaceToPlace:(NSDictionary*)jsonPlace;
 /**

@@ -15,6 +15,7 @@
 #import "MapAnnotation.h"
 #import "MessageViewController.h"
 #import "PMLCalendarTableViewController.h"
+#import "PMLCalendarEditorTableViewController.h"
 #import "PMLEventTableViewController.h"
 
 
@@ -656,15 +657,27 @@
 }
 -(void)editEvent:(Event*)event {
     
-    // Building event editor
-    PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
-    eventController.event = event;
-    
-    // Wrapping inside a nav controller
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
-    
-    // Preparing transition
-    [_menuManagerController presentModal:navController];
+    if([event.key hasPrefix:@"SERI"]) {
+        PMLCalendarEditorTableViewController *controller =(PMLCalendarEditorTableViewController*)[_uiService instantiateViewController:@"hoursEditor"];
+        [_dataService getObject:event.key callback:^(CALObject *overviewObject) {
+            controller.calendar = (PMLCalendar*)overviewObject;
+            // Wrapping inside a nav controller
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+            
+            // Preparing transition
+            [_menuManagerController presentModal:navController];
+        }];
+    } else {
+        // Building event editor
+        PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
+        eventController.event = event;
+        
+        // Wrapping inside a nav controller
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
+        
+        // Preparing transition
+        [_menuManagerController presentModal:navController];
+    }
 }
 #pragma mark - Dynamic actions generation
 -(NSArray *)buildLikeActions:(CALObject*)object {
