@@ -278,10 +278,16 @@
     NSMutableArray *docs = [[NSMutableArray alloc] initWithCapacity:[jsonPlaces count]];
     
     NSMutableArray *happyHoursEvents = [[NSMutableArray alloc] init];
+    long maxLikes = 0;
     // Preparing the no image thumb (default for every place at first)
     for(NSDictionary *jsonPlace in jsonPlaces) {
         Place *place = [jsonService convertFullJsonPlaceToPlace:jsonPlace];
         [place setHasOverviewData:NO];
+        
+        // Computing max likes
+        if(place.likeCount > maxLikes ) {
+            maxLikes = place.likeCount;
+        }
         // Appending to the document list
         [docs addObject:place];
         // Building specials as events
@@ -337,6 +343,7 @@
     [_modelHolder setActivities:activities];
     [_modelHolder setUsers:users];
     [_modelHolder setLocalizedCity:localizedCity];
+    [_modelHolder setMaxLikes:maxLikes];
     
     // Callback on main thread
     dispatch_async(dispatch_get_main_queue(), ^{

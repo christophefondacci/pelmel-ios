@@ -23,6 +23,7 @@
     BOOL _showLabel;
     
     CALObject *_observedObject;
+    UIImage *_image;
 }
 
 - (id)initWithFrame:(CGRect)frame
@@ -66,6 +67,11 @@
 }
 
 - (void)setImage:(UIImage *)image {
+    _image = image;
+    [self refreshImage:image updateLabel:YES];
+}
+
+-(void)refreshImage:(UIImage*)image updateLabel:(BOOL)updateLabel{
     if(_sizeRatio != nil && !isnan(_sizeRatio.floatValue) && image !=nil) {
         _imageView.image = image;
         _imageView.layer.opacity=1;
@@ -94,9 +100,11 @@
             _titleLabel.font = [UIFont fontWithName:@"Avenir-MediumOblique" size:11];
             _titleLabel.textColor = UIColorFromRGB(0xe86900);
             _titleLabel.text = ((Place*)annotation.object).title;
-            _titleLabel.hidden=NO;
-            _titleLabel.alpha=0;
-            self.showLabel = NO;
+//            if(updateLabel){
+                _titleLabel.hidden=NO;
+                _titleLabel.alpha=0;
+                self.showLabel = NO;
+//            }
             [_imageView addSubview:_titleLabel];
         }
     } else {
@@ -109,6 +117,7 @@
 -(void)clearObservers {
     if(_observedObject != nil) {
         [_observedObject removeObserver:self forKeyPath:@"inUserCount" context:NULL];
+        [_observedObject removeObserver:self forKeyPath:@"likeCount" context:NULL];
     }
     _observedObject = nil;
 }
@@ -116,6 +125,7 @@
     [self clearObservers];
     _observedObject = object;
     [_observedObject addObserver:self forKeyPath:@"inUserCount" options:NSKeyValueObservingOptionNew context:NULL];
+    [_observedObject addObserver:self forKeyPath:@"likeCount" options:NSKeyValueObservingOptionNew context:NULL];
 }
 -(void) updateBadge {
     MapAnnotation *annotation = (MapAnnotation*) self.annotation;
@@ -125,7 +135,7 @@
     if([object isKindOfClass:[Place class]]) {
         badgeVal+=((Place*)object).inUserCount;
     }
-    
+    [_badgeView removeFromSuperview];
     if(badgeVal>0) {
         _imageView.clipsToBounds=NO;
         _badgeView.hidden=NO;
@@ -140,16 +150,16 @@
         _badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
         _badgeView.value = badgeVal;
         [_imageView addSubview: _badgeView]; //Add NKNumberBadgeView as a subview on UIButton
-        
-    } else {
-        [_badgeView removeFromSuperview];
     }
+    [_imageView layoutSubviews];
 }
 - (void)setCenterOffset:(CGPoint)centerOffset {
     // Doing nothing
 }
 
 - (void)updateData {
+    [self updateSizeRatio];
+    [self refreshImage:_image updateLabel:NO];
     [self updateBadge];
 }
 -(void)setShowLabel:(BOOL)showLabel {
@@ -162,9 +172,31 @@
 - (BOOL)showLabel {
     return _showLabel;
 }
-
+- (void)updateSizeRatio {
+    // Size computation
+    double ratio = 0;
+    int maxLikes =[[[TogaytherService dataService] modelHolder] maxLikes];
+    CALObject *object = ((MapAnnotation*)self.annotation).object;
+    if( maxLikes > 0) {
+        long count = object.likeCount;
+        if([object isKindOfClass:[Place class]]) {
+            count += ((Place*)object).inUserCount;
+        }
+        if(count>maxLikes) {
+            [[[TogaytherService dataService] modelHolder] setMaxLikes:count];
+        }
+        ratio = ((double)count) / (double)maxLikes;
+    }
+    if([object isKindOfClass:[City class] ]) {
+        ratio = 2;
+    }
+    self.sizeRatio = @(MIN(ratio*0.3+0.7,1));
+}
 #pragma mark - KVO Observer
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    [self updateBadge];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self updateData];
+    });
+
 }
 @end

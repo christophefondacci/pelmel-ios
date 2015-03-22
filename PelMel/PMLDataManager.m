@@ -343,14 +343,23 @@
 }
 - (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object previousLocation:(Place *)previousLocation {
     if(previousLocation != nil) {
-        if([previousLocation.inUsers containsObject:user]) {
-            [previousLocation.inUsers removeObject:user];
-            previousLocation.inUserCount--;
+        for(User *u in [previousLocation.inUsers mutableCopy]) {
+            if([u.key isEqualToString:user.key]) {
+                [previousLocation.inUsers removeObject:u];
+                previousLocation.inUserCount--;
+            }
         }
     }
     if([object isKindOfClass:[Place class]]) {
         Place *place = (Place*)object;
-        if(![place.inUsers containsObject:user]) {
+        BOOL alreadyCheckedIn = NO;
+        for(User *u in place.inUsers) {
+            if([u.key isEqualToString:user.key]) {
+                alreadyCheckedIn = YES;
+                break;
+            }
+        }
+        if(!alreadyCheckedIn) {
             [place.inUsers addObject:user];
             place.inUserCount ++ ;
         }

@@ -55,8 +55,6 @@
     MapAnnotation *_editedAnnotation;
     BOOL _labelsVisible;
     
-    long maxLikes;
-    
     // Location management
     CLLocation *_mapInitialCenter;
     CLLocationManager *_locationManager;
@@ -398,14 +396,6 @@
         }
     }
     
-    // EXPERIMENTAL Computing max likes
-    maxLikes = 0;
-    for(place in _modelHolder.places) {
-        if(place.likeCount+place.inUserCount>maxLikes) {
-            maxLikes = place.likeCount+place.inUserCount;
-        }
-    }
-    
     // Building annotations from places
     BOOL centralObjectProcessed = NO;
     for(place in _modelHolder.places) {
@@ -414,6 +404,9 @@
             // Building annotation
             MapAnnotation *annotation = [self buildMapAnnotationFor:place];
             [updatedAnnotations addObject:annotation];
+            if([annotation.annotationView isKindOfClass:[PMLPlaceAnnotationView class]]) {
+                [(PMLPlaceAnnotationView*)annotation.annotationView updateData];
+            }
             // Selecting if central object
             if ( _centralObject != nil && [place.key isEqualToString:_centralObject.key]) {
                 [_mapView selectAnnotation:annotation animated:YES];
@@ -519,19 +512,7 @@
             // Assigning
             pinAnnotation = placeAnnotation;
 
-            // Size computation
-            double ratio = 0;
-            if(maxLikes > 0) {
-                long count = object.likeCount;
-                if([object isKindOfClass:[Place class]]) {
-                    count += ((Place*)object).inUserCount;
-                }
-                ratio = ((double)count) / (double)maxLikes;
-            }
-            if([object isKindOfClass:[City class] ]) {
-                ratio = 2;
-            }
-            placeAnnotation.sizeRatio = @(MIN(ratio*0.3+0.7,1));
+            [placeAnnotation updateSizeRatio];
             placeAnnotation.enabled = YES;
             placeAnnotation.canShowCallout = NO;
             

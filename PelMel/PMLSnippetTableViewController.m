@@ -733,7 +733,7 @@ typedef enum {
     } else {
         switch(section) {
             case kPMLSectionActivity:
-                return kPMLHeightActivityHeader;
+                return [[_infoProvider activities] count ]>0 ? kPMLHeightActivityHeader : 0;
             case kPMLSectionTopPlaces:
                 if([[_infoProvider topPlaces] count ]>0) {
                     return kPMLHeightTopPlacesHeader;

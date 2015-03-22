@@ -32,6 +32,7 @@
     // Our list of current actions
     NSMutableArray *_actions;
     MenuAction *_loaderAction;
+    MenuAction *_eventsAction;
 
     
     // Menu controls
@@ -40,6 +41,7 @@
     
     // Loader
     UIActivityIndicatorView *_activityView;
+    UIView *_eventsActionView;
     
     // Animation
     UIDynamicAnimator *_animator;
@@ -81,6 +83,15 @@
     }
     [self setupMenuAction:_pelmelLogo];
     
+
+    // Loader view
+    [self configureLoaderAction];
+    
+    // Events view
+//    [self configureEventsAction];
+    
+}
+- (void)configureLoaderAction {
     // Building loader view
     if(_activityView == nil) {
         UIView *bgView = [[UIView alloc] init];
@@ -99,10 +110,36 @@
             _loaderAction.leftMargin = 4;
         }
     }
-
+    
     [self setupMenuAction:_loaderAction];
 }
+- (void)configureEventsAction {
+    if(_eventsAction == nil) {
+        _eventsActionView = [[UIView alloc] init];
+        _eventsActionView.backgroundColor = [UIColor clearColor];
+        _eventsActionView.layer.cornerRadius=5;
+        _eventsActionView.layer.shadowOffset = CGSizeMake(2, 2);
+        _eventsActionView.layer.shadowRadius = 2;
+        _eventsActionView.bounds = CGRectMake(0, 0, 50, 50);
+        _eventsActionView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:_eventsActionView.layer.bounds] CGPath];
+        _eventsActionView.clipsToBounds = NO;
+        _eventsActionView.layer.shadowOpacity = 0.5;
 
+        UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpIconTicket"]];
+        icon.contentMode = UIViewContentModeCenter;
+        icon.frame = CGRectMake(0, 0, _eventsActionView.bounds.size.width, _eventsActionView.bounds.size.height);
+        icon.backgroundColor =UIColorFromRGB(0xe9791e);
+        icon.layer.cornerRadius = 5;
+        icon.layer.masksToBounds=YES;
+        icon.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [_eventsActionView addSubview:icon];
+        _eventsAction = [[MenuAction alloc] initWithView:_eventsActionView pctWidth:0 pctHeight:0.5 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+            [_uiService presentSnippetFor:nil opened:YES];
+        }];
+        _eventsAction.leftMargin=4;
+    }
+    [self setupMenuAction:_eventsAction];
+}
 - (void)layoutMenuActions {
     for(MenuAction *action in _menuActions) {
         [self setupMenuAction:action];

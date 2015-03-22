@@ -18,4 +18,5 @@
 @property (nonatomic,strong) UILabel *titleLabel;
 
 -(void)updateData;
+-(void)updateSizeRatio;
 @end
