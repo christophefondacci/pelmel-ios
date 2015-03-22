@@ -334,6 +334,8 @@
     PMLCalendar *calendar = [[PMLCalendar alloc] init];
     calendar.place = _place;
     calendar.calendarType = type;
+
+
     [self presentCalendarEditorFor:calendar];
 }
 - (void)removeHoursTapped:(UIButton*)source {

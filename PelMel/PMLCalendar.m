@@ -10,6 +10,21 @@
 
 @implementation PMLCalendar
 
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        // Setting start / end hour based on now
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+        NSDateComponents *components = [gregorian components: (NSCalendarUnitHour | NSCalendarUnitMinute) fromDate: [NSDate date]];
+        self.startHour = components.hour + 1;
+        self.startMinute = 0;
+        self.endHour = self.startHour+2;
+        self.endMinute = 0;
+    }
+    return self;
+}
 - (BOOL)isEnabledFor:(NSInteger)index {
     BOOL checked = NO;
     if([self isSunday] && index == 0) {

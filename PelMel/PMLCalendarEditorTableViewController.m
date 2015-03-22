@@ -363,6 +363,12 @@
         _calendar.startHour = components.hour;
         _calendar.startMinute = components.minute;
         [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:kSectionTime]];
+        
+        // Adjusting end time if start is after current end
+        if(_calendar.endHour <= _calendar.startHour) {
+            _calendar.endHour = _calendar.startHour+2;
+            [indexPathToReload addObject:[NSIndexPath indexPathForRow:2 inSection:kSectionTime]];
+        }
     } else {
         _calendar.endHour = components.hour;
         _calendar.endMinute = components.minute;
