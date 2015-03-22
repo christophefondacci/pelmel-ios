@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 Christophe Fondacci. All rights reserved.
 //
 
-#import "PMLAddEventTableViewCell.h"
+#import "PMLButtonTableViewCell.h"
 
-@implementation PMLAddEventTableViewCell
+@implementation PMLButtonTableViewCell
 
 - (void)awakeFromNib {
     // Initialization code

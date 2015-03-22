@@ -28,7 +28,7 @@
 #import "PMLImagedTitleTableViewCell.h"
 #import "PMLEventTableViewCell.h"
 #import "PMLSectionTitleView.h"
-#import "PMLAddEventTableViewCell.h"
+#import "PMLButtonTableViewCell.h"
 #import "PMLEventTableViewController.h"
 #import "SpringTransitioningDelegate.h"
 #import "PMLFakeViewController.h"
@@ -41,7 +41,7 @@
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
-#define kPMLSectionsCount 12
+#define kPMLSectionsCount 14
 
 #define kPMLSectionGallery 0
 #define kPMLSectionSnippet 1
@@ -56,6 +56,7 @@
 #define kPMLSectionOvTags 10
 #define kPMLSectionTopPlaces 11
 #define kPMLSectionActivity 12
+#define kPMLSectionReport 13
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -128,6 +129,11 @@
 #define kPMLRowActivityId @"activity"
 #define kPMLHeightActivityRows 60
 #define kPMLHeightActivityHeader 30
+
+#define kPMLReportRows 1
+#define kPMLRowReportButton 0
+#define kPMLHeightReportButton 62
+#define kPMLRowReportButtonId @"reportButton"
 
 #define kPMLHeightTopPlacesHeader 30
 
@@ -231,7 +237,8 @@ typedef enum {
     
     // Initializing external table view cells
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowEventId];
-    [self.tableView registerNib:[UINib nibWithNibName:@"PMLAddEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowReportButtonId];
     // Loading header views
     _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionLocalizationTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
@@ -370,6 +377,8 @@ typedef enum {
                 double rows = (double)_snippetItem.tags.count / (double)kPMLMaxTagsPerRow; //((double)tableView.bounds.size.width / (double)kPMLOvTagWidth);
                 return (int)ceil(rows);
             }
+            case kPMLSectionReport:
+                return [_snippetItem isKindOfClass:[Place class]] ? kPMLReportRows : 0;
         }
     } else {
         switch(section) {
@@ -454,6 +463,8 @@ typedef enum {
             return kPMLRowActivityId;
         case kPMLSectionTopPlaces:
             return @"topPlace";
+        case kPMLSectionReport:
+            return kPMLRowReportButtonId;
 
     }
     return nil;
@@ -527,7 +538,7 @@ typedef enum {
             if(indexPath.row < [[_infoProvider events] count]) {
                 [self configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
             } else {
-                [self configureRowOvAddEvent:(PMLAddEventTableViewCell*)cell];
+                [self configureRowOvAddEvent:(PMLButtonTableViewCell*)cell];
             }
             break;
         case kPMLSectionOvDesc:
@@ -541,6 +552,9 @@ typedef enum {
             break;
         case kPMLSectionTopPlaces:
             [self configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:indexPath.row];
+            break;
+        case kPMLSectionReport:
+            [self configureRowReport:(PMLButtonTableViewCell*)cell];
             break;
     }
     return cell;
@@ -638,6 +652,8 @@ typedef enum {
             break;
         case kPMLSectionTopPlaces:
             return 80; //kPMLHeightActivityRows;
+        case kPMLSectionReport:
+            return kPMLHeightReportButton;
     }
     return 44;
 
@@ -757,6 +773,7 @@ typedef enum {
         case kPMLSectionTopPlaces:
         case kPMLSectionActivity:
         case kPMLSectionLocalization:
+        case kPMLSectionReport:
             return YES;
         case kPMLSectionOvAddress:
             // Address lines are selectable only if we have something to display on the map
@@ -793,7 +810,13 @@ typedef enum {
                 [self pushSnippetFor:event];
             }
             break;
+        case kPMLSectionReport: {
+            PopupAction *action = [_actionManager actionForType:PMLActionTypeReport];
+            action.actionCommand();
+            break;
+        }
     }
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
@@ -1141,8 +1164,9 @@ typedef enum {
     }
 //    cell.backgroundColor = UIColorFromRGB(0x31363a);
 }
--(void)configureRowOvAddEvent:(PMLAddEventTableViewCell*)cell {
-    cell.addEventLabel.text = NSLocalizedString(@"events.addButton", @"Create and promote an event");
+-(void)configureRowOvAddEvent:(PMLButtonTableViewCell*)cell {
+    cell.buttonLabel.text = NSLocalizedString(@"events.addButton", @"Create and promote an event");
+    cell.buttonImageView.image = [UIImage imageNamed:@"evtButtonAdd"];
 }
 -(void)configureRowLocalization:(PMLEventTableViewCell*)cell {
 
@@ -1280,6 +1304,12 @@ typedef enum {
     [cell layoutIfNeeded];
     
 }
+-(void) configureRowReport:(PMLButtonTableViewCell*)cell {
+    cell.buttonImageView.image = [UIImage imageNamed:@"snpButtonReport"];
+    cell.buttonLabel.text = NSLocalizedString(@"snippet.button.report", @"Report a problem");
+    cell.buttonContainer.backgroundColor = UIColorFromRGB(0xc50000);
+}
+
 -(NSString *) stringByStrippingHTML:(NSString*)html {
     NSRange r;
     NSString *s = [NSString stringWithString:html];
