@@ -1545,6 +1545,7 @@ typedef enum {
 #pragma mark - PMLDataListener
 - (void)didLoadOverviewData:(CALObject *)object {
     if([_snippetItem.key isEqualToString:object.key]) {
+        _infoProvider = [_uiService infoProviderFor:object];
         // Building provider
         _thumbController.thumbProvider = _infoProvider.thumbsProvider;
         _hoursTypeMap = [_conversionService hashHoursByType:object];

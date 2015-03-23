@@ -31,7 +31,7 @@
     BOOL _initWithOverviewAvailable;
 
     // Related ingo
-    PMLCalendar *_bestSpecial;
+    PMLCalendar *_openingCalendar;
     
     // Address management
     NSArray *_addressComponents;
@@ -47,7 +47,7 @@
         _place = place;
         _uiService = TogaytherService.uiService;
         _conversionService = [TogaytherService getConversionService];
-        [self configureSpecials];
+        [self configureOpening];
         [self configureAddress];
         _initWithOverviewAvailable = _place.hasOverviewData;
         
@@ -57,12 +57,11 @@
     }
     return self;
 }
--(void) configureSpecials {
-    NSArray *specials = _place.hours;
-    _bestSpecial = nil;
-    for(PMLCalendar *special in specials) {
-        if(_bestSpecial == nil ||[special.calendarType isEqualToString:SPECIAL_TYPE_OPENING] || [_bestSpecial.startDate compare:special.startDate] == NSOrderedDescending) {
-            _bestSpecial = special;
+-(void) configureOpening {
+    _openingCalendar = nil;
+    for(PMLCalendar *special in _place.hours) {
+        if([special.calendarType isEqualToString:SPECIAL_TYPE_OPENING] && (_openingCalendar==nil || [_openingCalendar.startDate compare:special.startDate] == NSOrderedDescending)) {
+            _openingCalendar = special;
         }
     }
 }
@@ -158,12 +157,11 @@
 #pragma mark - Specials
 
 - (BOOL)hasSnippetRightSection {
-    return _bestSpecial != nil;
+    return _openingCalendar != nil;
 }
 -(UIImage *)snippetRightIcon {
-    PMLCalendar *special = _bestSpecial;
-    if(special!=nil) {
-        switch([_conversionService specialModeFor:special]) {
+    if(_openingCalendar!=nil) {
+        switch([_conversionService specialModeFor:_openingCalendar]) {
             case CURRENT:
                 return [UIImage imageNamed:@"ovvIconHours"];
             default:
@@ -174,32 +172,24 @@
 }
 
 - (NSString *)snippetRightSubtitleText {
-    PMLCalendar *special = _bestSpecial;
-    if(special != nil) {
+    if(_openingCalendar != nil) {
         
         // If next end date is < to next start and is not yet
-        switch([_conversionService specialModeFor:special]) {
+        switch([_conversionService specialModeFor:_openingCalendar]) {
             case CURRENT:
-            if([special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
                 return NSLocalizedString(@"specials.opened", @"specials.opened");
-            } else {
-                return NSLocalizedString(@"specials.happy", @"specials.happy");
-            }
-            break;
-            case SOON: {
-//                NSString *deltaStr = [self getDeltaString:special.nextStart];
+            case SOON:
                 return NSLocalizedString(@"specials.closed", @"specials.closed");;
-            }
             default:
             return nil;
         }
+        
     }
     return nil;
 }
 
 - (UIColor *)snippetRightColor {
-    PMLCalendar *special = _bestSpecial;
-    switch([_conversionService specialModeFor:special]) {
+    switch([_conversionService specialModeFor:_openingCalendar]) {
         case CURRENT:
         //            return UIColorFromRGB(0xa5d170);
         return UIColorFromRGB(0x72ff00);
@@ -236,21 +226,17 @@
 
 - (NSString *)snippetRightTitleText {
     NSString *label = nil;
-    if(_bestSpecial != nil) {
-        SpecialMode specialMode = [_conversionService specialModeFor:_bestSpecial];
+    if(_openingCalendar != nil) {
+        SpecialMode specialMode = [_conversionService specialModeFor:_openingCalendar];
         switch(specialMode) {
             case CURRENT: {
-                NSString *deltaStr = [self getDeltaString:_bestSpecial.endDate];
+                NSString *deltaStr = [self getDeltaString:_openingCalendar.endDate];
                 label = [NSString stringWithFormat:NSLocalizedString(@"specials.open.leftHours",@"specials.open.leftHours"),deltaStr];
                 break;
             }
             case SOON: {
-                if([_bestSpecial.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
-                    label = NSLocalizedString(@"specials.open.in",@"specials.open.in");
-                } else {
-                    label = NSLocalizedString(@"specials.start.in",@"specials.start.in");
-                }
-                NSString *deltaStr = [self getDeltaString:_bestSpecial.startDate];
+                label = NSLocalizedString(@"specials.open.in",@"specials.open.in");
+                NSString *deltaStr = [self getDeltaString:_openingCalendar.startDate];
                 label = [NSString stringWithFormat:@"%@ %@",label,deltaStr];
                 break;
             }
