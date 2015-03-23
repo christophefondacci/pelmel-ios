@@ -342,6 +342,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "user.status.offline"="OFFLINE";
 "user.status.online"="ONLINE";
 "validation.errorTitle"="Invalid data";
+"validation.event.noday"="A reccurring event need to be enabled for at least one day of the week. Check your data and try again.";
 "validation.nolocation"="You must locate the place position on the map by dragging the pin to the desired place.";
 "validation.noname"="You must enter the name of the place you are editing or creating. Please check your data and try again.";
 "profile.mustBe18.title"="Age restriction";

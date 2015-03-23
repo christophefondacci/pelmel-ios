@@ -333,6 +333,22 @@
 }
 
 -(void)save:(id)sender {
+
+    
+    // Checking we have at least one day set
+    BOOL oneDay = NO;
+    for(int i =0 ; i < 7 ; i++) {
+        if([_editedCalendar isEnabledFor:i]) {
+            oneDay = YES;
+            break;
+        }
+    }
+    
+    if(!oneDay) {
+        [[TogaytherService uiService] alertWithTitle:@"validation.errorTitle" text:@"validation.event.noday"];
+        return;
+    }
+    
     // Transferring data from edited calendar
     [self.calendar refreshFrom:_editedCalendar];
     
