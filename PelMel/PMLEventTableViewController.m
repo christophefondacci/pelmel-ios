@@ -39,6 +39,12 @@
     ConversionService *_conversionService;
     
     PMLEventDescriptionTableViewCell *_descriptionCell;
+    
+    // Temporary edition data
+    NSString *_editedName;
+    NSDate *_editedStartDate;
+    NSDate *_editedEndDate;
+    NSString *_editedDescription;
 }
 
 - (void)viewDidLoad {
@@ -231,15 +237,18 @@
     [cell.textField addTarget:self
                   action:@selector(textChanged:)
         forControlEvents:UIControlEventEditingChanged];
-    cell.textField.text = _event.name;
+    cell.textField.text = _editedName;
 }
 -(void)configureDateCell:(PMLDetailTableViewCell*)detailCell forIndex:(NSInteger)row {
     if(row == 0) {
         detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.start", @"Start");
-        detailCell.detailValueLabel.text = [_conversionService eventDateLabel:self.event isStart:YES];
+//        detailCell.detailValueLabel.text = [_conversionService eventDateLabel:self.event isStart:YES];
+        detailCell.detailValueLabel.text = [_conversionService stringForEventDate:_editedStartDate timeOnly:NO];
+
     } else {
         detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.end", @"End");
-        detailCell.detailValueLabel.text = [_conversionService eventDateLabel:self.event isStart:NO];
+//        detailCell.detailValueLabel.text = [_conversionService eventDateLabel:self.event isStart:NO];
+        detailCell.detailValueLabel.text = [_conversionService stringForEventDate:_editedEndDate timeOnly:[_editedEndDate timeIntervalSinceDate:_editedStartDate]< 86400];
     }
 
 }
@@ -248,13 +257,13 @@
     [datePickerCell.datePicker removeTarget:self action:NULL forControlEvents:UIControlEventAllEvents];
     [datePickerCell.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
     if(row == 0) {
-        [datePickerCell.datePicker setDate:self.event.startDate];
+        [datePickerCell.datePicker setDate:_editedStartDate];
     } else {
-        [datePickerCell.datePicker setDate:self.event.endDate];
+        [datePickerCell.datePicker setDate:_editedEndDate];
     }
 }
 -(void)configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell {
-    cell.descriptionTextView.text = self.event.miniDesc;
+    cell.descriptionTextView.text = _editedDescription;
     if(self.event.miniDesc.length==0) {
         cell.placeholderLocalizedCode = @"calendar.desc.placeholder";
     } else {
@@ -275,25 +284,25 @@
 #pragma mark - Action callbacks
 -(void) dateChanged:(UIDatePicker*)datePicker {
     if(datePicker.tag==0) {
-        [self.event setStartDate:datePicker.date];
+        _editedStartDate = datePicker.date;
         
         NSMutableArray *indexPathToReload = [NSMutableArray new];
         [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:kPMLSectionHours]];
         
         // Adjusting end date if before start date
-        if([self.event.endDate timeIntervalSinceDate:datePicker.date]<0) {
-            self.event.endDate = [datePicker.date dateByAddingTimeInterval:7200];
+        if([_editedEndDate timeIntervalSinceDate:datePicker.date]<0) {
+            _editedEndDate = [datePicker.date dateByAddingTimeInterval:7200];
             [indexPathToReload addObject:[NSIndexPath indexPathForRow:2 inSection:kPMLSectionHours]];
         }
         [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationNone];
     } else {
-        [self.event setEndDate:datePicker.date];
+        _editedEndDate = datePicker.date;
         [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:kPMLSectionHours]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 - (void)textChanged:(UITextField*)textField {
-    self.event.name = textField.text;
-    self.navigationItem.rightBarButtonItem.enabled = self.event.name!=nil && self.event.name.length>0;
+    _editedName = textField.text;
+    self.navigationItem.rightBarButtonItem.enabled = _editedName!=nil && _editedName.length>0;
 }
 -(void)cancelTapped:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -301,6 +310,10 @@
 -(void)saveTapped:(id)sender {
     BOOL newEvent = self.event.key == nil;
     self.event.miniDesc = _descriptionCell.descriptionTextView.text;
+    self.event.name = _editedName;
+    self.event.startDate = _editedStartDate;
+    self.event.endDate = _editedEndDate;
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = NSLocalizedString(@"action.wait", @"Please wait...");
@@ -325,5 +338,15 @@
     [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
         [self tableView:self.tableView didSelectRowAtIndexPath:indexPath];
     return YES;
+}
+
+- (void)setEvent:(Event *)event {
+    _event = event;
+    
+    // Capturing variables for edition (so we don't alter original event before save)
+    _editedName = event.name;
+    _editedStartDate = event.startDate;
+    _editedEndDate = event.endDate;
+    _editedDescription = event.miniDesc;
 }
 @end

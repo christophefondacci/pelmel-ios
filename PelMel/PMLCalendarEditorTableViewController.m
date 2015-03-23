@@ -57,6 +57,9 @@
     // Cells
     PMLTextFieldTableViewCell *_titleCell;
     PMLEventDescriptionTableViewCell *_descriptionCell;
+    
+    // Temporary data
+    PMLCalendar *_editedCalendar;
 }
 
 - (void)viewDidLoad {
@@ -103,7 +106,7 @@
     switch(section) {
         case kSectionTitle:
             // Only a title for hours different than opening hours
-            return [self.calendar.calendarType isEqualToString:SPECIAL_TYPE_OPENING] ? 0 : kRowCountTitle;
+            return [_editedCalendar.calendarType isEqualToString:SPECIAL_TYPE_OPENING] ? 0 : kRowCountTitle;
         case kSectionTime:
             // Start / End time rows + optional time picker
             return kRowCountTime + (_pickerIndexPath != nil ? 1 : 0);
@@ -169,7 +172,7 @@
         case kSectionDays: {
             PMLDetailTableViewCell *detailCell = (PMLDetailTableViewCell*)cell;
             detailCell.detailIntroLabel.text = [_weekdays objectAtIndex:(indexPath.row+1)%7];
-            BOOL checked = [_calendar isEnabledFor:(indexPath.row+1)%7];
+            BOOL checked = [_editedCalendar isEnabledFor:(indexPath.row+1)%7];
             
             detailCell.accessoryType =  checked ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
@@ -195,9 +198,9 @@
         _pickerIndexPath = [NSIndexPath indexPathForRow:pickerRow inSection:indexPath.section];
         
         if(indexPath.row == 0) {
-            [_timePickerDatasource setHours:_calendar.startHour minutes:_calendar.startMinute forTag:0];
+            [_timePickerDatasource setHours:_editedCalendar.startHour minutes:_editedCalendar.startMinute forTag:0];
         } else {
-            [_timePickerDatasource setHours:_calendar.endHour minutes:_calendar.endMinute forTag:1];
+            [_timePickerDatasource setHours:_editedCalendar.endHour minutes:_editedCalendar.endMinute forTag:1];
         }
         [_titleCell.textField resignFirstResponder];
         [_descriptionCell.descriptionTextView resignFirstResponder];
@@ -211,7 +214,7 @@
         [self.tableView insertRowsAtIndexPaths:@[_pickerIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
     } else if(indexPath.section == kSectionDays) {
-        [_calendar toggleEnablementFor:(indexPath.row+1)%7];
+        [_editedCalendar toggleEnablementFor:(indexPath.row+1)%7];
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
@@ -258,11 +261,11 @@
     NSDateComponents *components = [[NSDateComponents alloc] init];
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
     if(_pickerIndexPath.row == 1) {
-        [components setHour:[_calendar startHour]];
-        [components setMinute:[_calendar startMinute]];
+        [components setHour:[_editedCalendar startHour]];
+        [components setMinute:[_editedCalendar startMinute]];
     } else {
-        [components setHour:[_calendar endHour]];
-        [components setMinute:[_calendar endMinute]];
+        [components setHour:[_editedCalendar endHour]];
+        [components setMinute:[_editedCalendar endMinute]];
     }
     date = [gregorian dateFromComponents:components];
     [datePickerCell.datePicker setDate:date];
@@ -272,26 +275,23 @@
 
     if(isStart) {
         detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.start", @"Start");
-        detailCell.detailValueLabel.text = [_conversionService stringForHours:[_calendar startHour] minutes:[_calendar startMinute]];
+        detailCell.detailValueLabel.text = [_conversionService stringForHours:[_editedCalendar startHour] minutes:[_editedCalendar startMinute]];
     } else {
         detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.end", @"End");
-        detailCell.detailValueLabel.text = [_conversionService stringForHours:[_calendar endHour] minutes:[_calendar endMinute]];
+        detailCell.detailValueLabel.text = [_conversionService stringForHours:[_editedCalendar endHour] minutes:[_editedCalendar endMinute]];
     }
 }
 -(void)configureTitleCell:(PMLTextFieldTableViewCell*)cell {
     _titleCell = cell;
-    cell.textField.text = self.calendar.name;
+    cell.textField.text = _editedCalendar.name;
     cell.textField.returnKeyType = UIReturnKeyNext;
     cell.textField.delegate = self;
     cell.textField.attributedPlaceholder = 
         [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"calendar.title.placeholder",@"Name (optional)") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x939597)}];
-    [cell.textField addTarget:self
-                       action:@selector(titleDidChange:)
-             forControlEvents:UIControlEventEditingChanged];
 }
 -(void)configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell {
-    cell.descriptionTextView.text = self.calendar.miniDesc;
-    if(self.calendar.miniDesc.length==0) {
+    cell.descriptionTextView.text = _editedCalendar.miniDesc;
+    if(_editedCalendar.miniDesc.length==0) {
         cell.placeholderLocalizedCode = @"calendar.desc.placeholder";
     } else {
         cell.placeholderLocalizedCode = nil;
@@ -312,11 +312,11 @@
 #pragma mark - PMLTimePickerCallback
 - (void)timePickerChangedForTag:(NSInteger)tag hours:(NSInteger)hours minutes:(NSInteger)minutes {
     if(tag == 0) {
-        [_calendar setStartHour:hours];
-        [_calendar setStartMinute:minutes];
+        [_editedCalendar setStartHour:hours];
+        [_editedCalendar setStartMinute:minutes];
     } else {
-        [_calendar setEndHour:hours];
-        [_calendar setEndMinute:minutes];
+        [_editedCalendar setEndHour:hours];
+        [_editedCalendar setEndMinute:minutes];
     }
     
     
@@ -331,10 +331,13 @@
 -(void)cancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
--(void)titleDidChange:(UITextField*)textField {
-    self.calendar.name = textField.text;
-}
+
 -(void)save:(id)sender {
+    // Transferring data from edited calendar
+    [self.calendar refreshFrom:_editedCalendar];
+    
+    // Applying name / description
+    self.calendar.name = _titleCell.textField.text;
     self.calendar.miniDesc = _descriptionCell.descriptionTextView.text;
     // Filling title
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -360,20 +363,25 @@
     NSDateComponents *components = [gregorian components: (NSCalendarUnitHour | NSCalendarUnitMinute) fromDate: datePicker.date];
     NSMutableArray *indexPathToReload = [[NSMutableArray alloc] init];
     if(_pickerIndexPath.row == 1) {
-        _calendar.startHour = components.hour;
-        _calendar.startMinute = components.minute;
+        _editedCalendar.startHour = components.hour;
+        _editedCalendar.startMinute = components.minute;
         [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:kSectionTime]];
         
         // Adjusting end time if start is after current end
-        if(_calendar.endHour <= _calendar.startHour) {
-            _calendar.endHour = _calendar.startHour+2;
+        if(_editedCalendar.endHour <= _editedCalendar.startHour) {
+            _editedCalendar.endHour = _editedCalendar.startHour+2;
             [indexPathToReload addObject:[NSIndexPath indexPathForRow:2 inSection:kSectionTime]];
         }
     } else {
-        _calendar.endHour = components.hour;
-        _calendar.endMinute = components.minute;
+        _editedCalendar.endHour = components.hour;
+        _editedCalendar.endMinute = components.minute;
         [indexPathToReload addObject:[NSIndexPath indexPathForRow:1 inSection:kSectionTime]];
     }
     [self.tableView reloadRowsAtIndexPaths:indexPathToReload withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)setCalendar:(PMLCalendar *)calendar {
+    _calendar = calendar;
+    _editedCalendar = [[PMLCalendar alloc] initWithCalendar:_calendar];
 }
 @end

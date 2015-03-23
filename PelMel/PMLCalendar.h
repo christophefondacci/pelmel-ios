@@ -36,4 +36,14 @@
  * Toggles enablement for day index (0 = sunday) and returns the new state for this day
  */
 - (BOOL)toggleEnablementFor:(NSInteger)index;
+
+/**
+ * Creates a copy of the given calendar
+ */
+-(instancetype)initWithCalendar:(PMLCalendar*)calendar;
+
+/**
+ * Copies all information from given calendar into current instance
+ */
+-(void)refreshFrom:(PMLCalendar*)calendar;
 @end

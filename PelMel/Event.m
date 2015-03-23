@@ -18,7 +18,7 @@
         // Setting start / end hour based on now
         NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
         NSDateComponents *components = [gregorian components: (NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate: [NSDate date]];
-        components.hour = 23; //components.hour+1;
+        components.hour = components.hour+1;
         components.minute = 0;
         components.second = 0;
         self.startDate = [gregorian dateBySettingHour:((components.hour+1)%24) minute:0 second:0 ofDate:[NSDate new] options:NSCalendarWrapComponents];

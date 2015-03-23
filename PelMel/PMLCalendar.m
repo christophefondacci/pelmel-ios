@@ -15,15 +15,56 @@
 {
     self = [super init];
     if (self) {
-        // Setting start / end hour based on now
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
-        NSDateComponents *components = [gregorian components: (NSCalendarUnitHour | NSCalendarUnitMinute) fromDate: [NSDate date]];
-        self.startHour = components.hour + 1;
-        self.startMinute = 0;
-        self.endHour = self.startHour+2;
-        self.endMinute = 0;
+        [self configure];
     }
     return self;
+}
+-(void)configure {
+    // Setting start / end hour based on now
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier: NSGregorianCalendar];
+    NSDateComponents *components = [gregorian components: (NSCalendarUnitHour | NSCalendarUnitMinute) fromDate: [NSDate date]];
+    self.startHour = components.hour + 1;
+    self.startMinute = 0;
+    self.endHour = self.startHour+2;
+    self.endMinute = 0;
+}
+- (instancetype)initWithPlace:(Place *)place
+{
+    self = [super initWithPlace:place];
+    if (self) {
+        [self configure];
+    }
+    return self;
+}
+- (instancetype)initWithCalendar:(PMLCalendar *)calendar
+{
+    self = [super init];
+    if (self) {
+        [self refreshFrom:calendar];
+        
+    }
+    return self;
+}
+-(void)refreshFrom:(PMLCalendar *)calendar {
+    self.place = calendar.place;
+    self.startDate = calendar.startDate;
+    self.endDate = calendar.endDate;
+    self.name = calendar.name;
+    self.miniDesc = calendar.miniDesc;
+    self.miniDescKey = calendar.miniDescKey;
+    self.miniDescLang = calendar.miniDescLang;
+    self.startHour=calendar.startHour;
+    self.startMinute = calendar.startMinute;
+    self.endHour=calendar.endHour;
+    self.endMinute = calendar.endMinute;
+    
+    [self setIsMonday:calendar.isMonday];
+    [self setIsTuesday:calendar.isTuesday];
+    [self setIsWednesday:calendar.isWednesday];
+    [self setIsThursday:calendar.isThursday];
+    [self setIsFriday:calendar.isFriday];
+    [self setIsSaturday:calendar.isSaturday];
+    [self setIsSunday:calendar.isSunday];
 }
 - (BOOL)isEnabledFor:(NSInteger)index {
     BOOL checked = NO;
