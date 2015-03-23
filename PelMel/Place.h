@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
-#import "PMLCalendar.h"
+
 
 @interface Place : CALObject
 
@@ -21,7 +21,6 @@
 @property (nonatomic) NSInteger inUserCount; // Number of users currently in this place
 @property (strong,nonatomic) NSMutableArray *inUsers;
 @property (strong,nonatomic) NSMutableArray *events;
-@property (strong,nonatomic) NSArray *specials;
 @property (nonatomic) int closedReportsCount;
 @property (strong,nonatomic) NSMutableArray *hours;
 

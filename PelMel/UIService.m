@@ -411,12 +411,14 @@
 }
 
 #pragma mark - Naming
--(NSString*)nameForSpecial:(Special*)special {
-    if(special.name && special.name.length>3) {
-        return special.name;
-    } else {
-        NSString *template = [NSString stringWithFormat:@"special.label.%@",special.type];
-        return NSLocalizedString(template,template);
+-(NSString*)nameForEvent:(Event*)event {
+    NSString *name = event.name;
+    if([event isKindOfClass:[PMLCalendar class]]) {
+        if(event.name==nil || event.name.length<=3) {
+            NSString *template = [NSString stringWithFormat:@"special.label.%@",((PMLCalendar*)event).calendarType];
+            name= NSLocalizedString(template,template);
+        }
     }
+    return [name uppercaseString];
 }
 @end

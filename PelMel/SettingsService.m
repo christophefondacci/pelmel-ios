@@ -159,12 +159,12 @@
 
 -(BOOL)isOpened:(Place*)place {
 //    NSObject<PMLInfoProvider> *provider = [_uiService infoProviderFor:place];
-    Special *special = [_conversionService specialFor:place ofType:SPECIAL_TYPE_OPENING];
+    PMLCalendar *special = [_conversionService specialFor:place ofType:SPECIAL_TYPE_OPENING];
     SpecialMode mode = [_conversionService specialModeFor:special];
     return mode == CURRENT;
 }
 -(BOOL)isHappyHour:(Place*)place {
-    Special *special = [_conversionService specialFor:place ofType:SPECIAL_TYPE_HAPPY];
+    PMLCalendar *special = [_conversionService specialFor:place ofType:SPECIAL_TYPE_HAPPY];
     SpecialMode mode = [_conversionService specialModeFor:special];
     return mode == CURRENT;
 }

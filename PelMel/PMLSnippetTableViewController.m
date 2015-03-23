@@ -1148,10 +1148,16 @@ typedef enum {
 -(void)configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
     Event *event = [[_infoProvider events] objectAtIndex:row];
     cell.image.image = nil;
-    CALImage *calImage = [[TogaytherService imageService] imageOrPlaceholderFor:event allowAdditions:YES];
-    [_imageService load:calImage to:cell.image thumb:NO];
     
-    cell.titleLabel.text = [event.name uppercaseString];
+    CALImage *calEventImage;
+    if([_infoProvider respondsToSelector:@selector(imageForEvent:)]) {
+        calEventImage = [_infoProvider imageForEvent:event];
+    } else {
+        calEventImage = [[TogaytherService imageService] imageOrPlaceholderFor:event allowAdditions:YES];
+    }
+    [_imageService load:calEventImage to:cell.image thumb:NO];
+    
+    cell.titleLabel.text = [_uiService nameForEvent:event];
     cell.dateLabel.text = [_conversionService eventDateLabel:event isStart:YES];
     cell.locationIcon.image = [UIImage imageNamed:@"snpIconMarker"];
     cell.locationLabel.text = [NSString stringWithFormat:@"%@, %@",event.place.title,event.place.cityName];

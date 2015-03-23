@@ -10,6 +10,7 @@
 #import "Place.h"
 #import "Special.h"
 #import "Event.h"
+#import "PMLCalendar.h"
 #import <CoreLocation/CoreLocation.h>
 
 typedef enum {
@@ -47,8 +48,8 @@ typedef void(^AddressClosure)(NSString*address);
 /**
  * Converts the special object into a real-time information about whether it is past, present or future
  */
--(SpecialMode)specialModeFor:(Special*)special;
--(Special*)specialFor:(CALObject*)place ofType:(NSString *)specialType;
+-(SpecialMode)specialModeFor:(PMLCalendar*)special;
+-(PMLCalendar*)specialFor:(CALObject*)place ofType:(NSString *)specialType;
 
 /**
  * Converts a calendar definition into a human readable string

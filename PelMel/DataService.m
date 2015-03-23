@@ -291,11 +291,10 @@
         // Appending to the document list
         [docs addObject:place];
         // Building specials as events
-        for(Special *special in place.specials) {
-            Event *event = [jsonService convertSpecial:special toEventForPlace:place];
-            [event setHasOverviewData:NO];
-            if(event != nil) {
-                [happyHoursEvents addObject:event];
+        for(PMLCalendar *special in place.hours) {
+            if(![special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
+                special.hasOverviewData = NO;
+                [happyHoursEvents addObject:special];
             }
         }
     }
@@ -904,7 +903,7 @@
         [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"JSON: %@", responseObject);
             NSDictionary *json = (NSDictionary*)responseObject;
-            PMLCalendar *newCalendar = [jsonService convertJsonCalendarToCalendar:json defaultCalendar:calendar];
+            PMLCalendar *newCalendar = [jsonService convertJsonCalendarToCalendar:json forPlace:calendar.place defaultCalendar:calendar];
             callback(newCalendar);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             errorCallback(error.code,@"Cannot update calendar");

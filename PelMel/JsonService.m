@@ -111,39 +111,25 @@
     [data setAdBoost:[adBoost integerValue]];
     [data setClosedReportsCount:[closedCount intValue]];
     
+    
+    // Hashing current place hours by key
+    NSMutableDictionary *placeHoursKeys = [[NSMutableDictionary alloc] init];
+    for(PMLCalendar *calendar in data.hours) {
+        [placeHoursKeys setObject:calendar forKey:calendar.key];
+    }
     // Parsing specials
-    NSMutableArray *placeSpecials = [[NSMutableArray alloc] initWithCapacity:specials.count];
     for(NSDictionary *jsonSpecial in specials) {
-        // Extracting from JSON
-        NSString *key       = [jsonSpecial objectForKey:@"key"];
-        NSString *name      = [jsonSpecial objectForKey:@"name"];
-        NSString *desc      = [jsonSpecial objectForKey:@"description"];
-        NSNumber *nextStart = [jsonSpecial objectForKey:@"nextStart"];
-        NSNumber *nextEnd   = [jsonSpecial objectForKey:@"nextEnd"];
-        NSString *type      = [jsonSpecial objectForKey:@"type"];
-        NSDictionary  *thumb= [jsonSpecial objectForKey:@"thumb"];
-        
-        NSDate *startDate   = [[NSDate alloc] initWithTimeIntervalSince1970:[nextStart longValue]];
-        NSDate *endDate     = [[NSDate alloc] initWithTimeIntervalSince1970:[nextEnd longValue]];
-        
-        // Creating and filling bean
-        Special *special = [[Special alloc] init];
-        special.key         = key;
-        special.name        = name;
-        special.descriptionText = desc;
-        special.nextStart   = startDate;
-        special.nextEnd     = endDate;
-        special.type        = type;
-        
-        // Filling media
-        CALImage *calThumb = [imageService convertJsonImageToImage:thumb];
-        special.thumb = calThumb;
+        PMLCalendar *special = [self convertJsonLightCalendarToCalendar:jsonSpecial forPlace:data defaultCalendar:nil];
         
         // Adding to our list
-        [placeSpecials addObject:special];
+        PMLCalendar *placeCalendar = [placeHoursKeys objectForKey:special.key];
+        if(placeCalendar != nil) {
+            [data.hours removeObject:placeCalendar];
+        }
+        [data.hours addObject:special];
     }
     // Injecting into current place
-    data.specials = placeSpecials;
+//    data.specials = placeSpecials;
     
     return data;
 }
@@ -292,8 +278,7 @@
     // Processing hours
     NSMutableArray *hours = [[NSMutableArray alloc] init];
     for(NSDictionary *jsonHour in jsonHours) {
-        PMLCalendar *calendar = [self convertJsonCalendarToCalendar:jsonHour defaultCalendar:nil];
-        calendar.place = place;
+        PMLCalendar *calendar = [self convertJsonCalendarToCalendar:jsonHour forPlace:place defaultCalendar:nil];
         [hours addObject:calendar];
     }
     [place setHours:hours];
@@ -306,11 +291,47 @@
     [_objectCache setObject:place forKey:place.key];
     return place;
 }
-
--(PMLCalendar*)convertJsonCalendarToCalendar:(NSDictionary*)jsonHour defaultCalendar:(PMLCalendar*)defaultCalendar {
-    NSString *key           = [jsonHour objectForKey:@"key"];
-    NSString *hoursType     = [jsonHour objectForKey:@"type"];
-    NSString *hoursName     = [jsonHour objectForKey:@"name"];
+-(PMLCalendar*)convertJsonLightCalendarToCalendar:(NSDictionary *)jsonSpecial forPlace:(Place*)place defaultCalendar:(PMLCalendar *)defaultCalendar {
+    // Extracting from JSON
+    NSString *key       = [jsonSpecial objectForKey:@"key"];
+    NSString *name      = [jsonSpecial objectForKey:@"name"];
+    NSString *desc      = [jsonSpecial objectForKey:@"description"];
+    NSNumber *nextStart = [jsonSpecial objectForKey:@"nextStart"];
+    NSNumber *nextEnd   = [jsonSpecial objectForKey:@"nextEnd"];
+    NSString *type      = [jsonSpecial objectForKey:@"type"];
+    NSDictionary  *thumb= [jsonSpecial objectForKey:@"thumb"];
+    
+    NSDate *startDate   = [[NSDate alloc] initWithTimeIntervalSince1970:[nextStart longValue]];
+    NSDate *endDate     = [[NSDate alloc] initWithTimeIntervalSince1970:[nextEnd longValue]];
+    
+    // Creating and filling bean
+    PMLCalendar *calendar = [_objectCache objectForKey:key];
+    if(calendar == nil) {
+        if(defaultCalendar == nil) {
+            calendar = [[PMLCalendar alloc] initWithPlace:place];
+        } else {
+            calendar = defaultCalendar;
+            calendar.place = place;
+        }
+        calendar.key= key;
+        [_objectCache setObject:calendar forKey:key];
+    }
+    
+    calendar.name        = name;
+    calendar.miniDesc = desc;
+    calendar.startDate   = startDate;
+    calendar.endDate     = endDate;
+    calendar.calendarType        = type;
+    
+    // Filling media
+    CALImage *calThumb = [imageService convertJsonImageToImage:thumb];
+    if(calThumb != nil) {
+        calendar.mainImage = calThumb;
+    }
+    
+    return calendar;
+}
+-(PMLCalendar*)convertJsonCalendarToCalendar:(NSDictionary*)jsonHour forPlace:(Place*)place defaultCalendar:(PMLCalendar*)defaultCalendar {
     
     NSNumber *startHour     = [jsonHour objectForKey:@"startHour"];
     NSNumber *startMinute   = [jsonHour objectForKey:@"startMinute"];
@@ -330,18 +351,8 @@
     NSString *descriptionKey= [jsonHour objectForKey:@"descriptionKey"];
     NSString *descriptionLng= [jsonHour objectForKey:@"descriptionLanguage"];
     
-    PMLCalendar *calendar = [_objectCache objectForKey:key];
-    if(calendar == nil) {
-        if(defaultCalendar) {
-            calendar = defaultCalendar;
-        } else {
-            calendar = [[PMLCalendar alloc] init];
-        }
-        [_objectCache setObject:calendar forKey:key];
-    }
+    PMLCalendar *calendar = [self convertJsonLightCalendarToCalendar:jsonHour forPlace:place defaultCalendar:defaultCalendar];
 
-    [calendar setKey:key];
-    [calendar setName:hoursName];
     [calendar setStartHour:[startHour integerValue]];
     [calendar setStartMinute:[startMinute integerValue]];
     [calendar setEndHour:[endHour integerValue]];
@@ -354,10 +365,10 @@
     [calendar setIsFriday:[isFriday boolValue]];
     [calendar setIsSaturday:[isSaturday boolValue]];
     [calendar setIsSunday:[isSunday boolValue]];
-    [calendar setCalendarType:hoursType];
     [calendar setMiniDesc:description];
     [calendar setMiniDescKey:descriptionKey];
     [calendar setMiniDescLang:descriptionLng];
+    
     if(recurrency != (NSNumber*)[NSNull null]){
         [calendar setRecurrency:recurrency];
     } else {
@@ -747,29 +758,6 @@
 }
 - (NSString*)specialCacheEventKey:(Special*)special {
     return [@"EVNT" stringByAppendingString:special.key];
-}
-- (Event*)convertSpecial:(Special*)special toEventForPlace:(Place*)place {
-    Event *event = nil;
-    if(![special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
-        NSString *cacheKey = [self specialCacheEventKey:special];
-        event = [_objectCache objectForKey:cacheKey];
-        if(event == nil) {
-            event = [[Event alloc] initWithPlace:place];
-            [_objectCache setObject:event forKey:cacheKey];
-        }
-        [event setPlace: place];
-        event.key = special.key;
-        event.startDate = special.nextStart;
-        event.endDate = special.nextEnd;
-        event.name = [[TogaytherService uiService] nameForSpecial:special];
-        if(special.thumb!= nil) {
-            event.mainImage = special.thumb;
-        } else if(event.mainImage == nil) {
-            event.mainImage = place.mainImage;
-        }
-        event.place = place;
-    }
-    return event;
 }
 - (CALObject *)objectForKey:(NSString *)key {
     return [_objectCache objectForKey:key];

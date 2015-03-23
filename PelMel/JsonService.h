@@ -14,6 +14,7 @@
 #import "User.h"
 #import "Activity.h"
 #import "Special.h"
+#import "PMLCalendar.h"
 
 @interface JsonService : NSObject
 
@@ -54,20 +55,12 @@
 /**
  * Converts a JsonHour bean (recurring event, opening hours) to a PMLCalendar object
  * @param jsonHour a dictionary representing JSON contents
+ * @param place the place defining this calendar
  * @param calendar the default calendar bean to use when no entry exists in cache
  * @return the corresponding model as a PMLCalendar bean
  */
-- (PMLCalendar*)convertJsonCalendarToCalendar:(NSDictionary*)jsonHour defaultCalendar:(PMLCalendar*)calendar;
+- (PMLCalendar*)convertJsonCalendarToCalendar:(NSDictionary*)jsonHour forPlace:(Place*)place defaultCalendar:(PMLCalendar*)calendar;
 
-/**
- * Converts the given special information to an event, using cache to seamlessly 
- * reuse already converted instances.
- * This method may return a nil object when no event could be generated for the given
- * special so callers should always check the result for nullity
- * @param special the Special instance to convert, generally coming from a nearby search
- * @param place the place to which the event needs to be associated (the current parent of the special)
- */
-- (Event*)convertSpecial:(Special*)special toEventForPlace:(Place*)place;
 /**
  * Retrieves an object instance from its key
  */

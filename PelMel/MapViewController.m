@@ -523,8 +523,8 @@
             // Looking for opening hours
             if([object isKindOfClass:[Place class]]) {
                 Place *p = (Place*)object;
-                for(Special *special in p.specials) {
-                    if([special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
+                for(PMLCalendar *special in p.hours) {
+                    if([special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
                         switch([_conversionService specialModeFor:special]) {
                             case PAST:
                             case SOON:

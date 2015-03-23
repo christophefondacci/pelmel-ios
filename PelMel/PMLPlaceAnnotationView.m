@@ -175,7 +175,7 @@
 - (void)updateSizeRatio {
     // Size computation
     double ratio = 0;
-    int maxLikes =[[[TogaytherService dataService] modelHolder] maxLikes];
+    long maxLikes =[[[TogaytherService dataService] modelHolder] maxLikes];
     CALObject *object = ((MapAnnotation*)self.annotation).object;
     if( maxLikes > 0) {
         long count = object.likeCount;

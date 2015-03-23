@@ -137,10 +137,10 @@
 /**
  * Informs whether the special is currently valid or not
  */
--(SpecialMode) specialModeFor:(Special*)special {
+-(SpecialMode) specialModeFor:(PMLCalendar*)special {
     NSDate *date = [NSDate date];
-    if(([special.nextStart compare:special.nextEnd] == NSOrderedDescending ||[date compare:special.nextStart] == NSOrderedDescending)) {
-        if([date compare:special.nextEnd] == NSOrderedAscending) {
+    if(([special.startDate compare:special.endDate] == NSOrderedDescending ||[date compare:special.startDate] == NSOrderedDescending)) {
+        if([date compare:special.endDate] == NSOrderedAscending) {
             return CURRENT;
         } else {
             return PAST;
@@ -149,12 +149,12 @@
         return SOON;
     }
 }
--(Special*)specialFor:(CALObject*)place ofType:(NSString *)specialType{
-    Special *bestSpecial = nil;
+-(PMLCalendar*)specialFor:(CALObject*)place ofType:(NSString *)specialType{
+    PMLCalendar *bestSpecial = nil;
     if([place isKindOfClass:[Place class]]) {
-        NSArray *specials = ((Place*)place).specials;
-        for(Special *special in specials) {
-            if([special.type isEqualToString:specialType]) {
+        NSArray *specials = ((Place*)place).hours;
+        for(PMLCalendar *special in specials) {
+            if([special.calendarType isEqualToString:specialType]) {
                 bestSpecial = special;
             }
         }

@@ -7,16 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CALObject.h"
+#import "Event.h"
 
 @class Place;
 
-@interface PMLCalendar : CALObject
+@interface PMLCalendar : Event
 
 @property (nonatomic,retain) NSString *calendarType;
-@property (nonatomic,retain) NSString *name;
-@property (nonatomic,retain) Place *place;
-
 @property (nonatomic) NSInteger startHour;
 @property (nonatomic) NSInteger startMinute;
 @property (nonatomic) NSInteger endHour;
@@ -29,7 +26,6 @@
 @property (nonatomic) BOOL isFriday;
 @property (nonatomic) BOOL isSaturday;
 @property (nonatomic) BOOL isSunday;
-
 @property (nonatomic) NSNumber *recurrency;
 
 /**

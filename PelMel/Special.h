@@ -13,9 +13,9 @@
 
 @property (strong,nonatomic) NSString *key;
 @property (strong,nonatomic) NSString *name;
-@property (strong,nonatomic) NSDate *nextStart;
-@property (strong,nonatomic) NSDate *nextEnd;
-@property (strong,nonatomic) NSString *type;
-@property (strong,nonatomic) NSString *descriptionText;
-@property (strong,nonatomic) CALImage *thumb;
+@property (strong,nonatomic) NSDate *startDate;
+@property (strong,nonatomic) NSDate *endDate;
+@property (strong,nonatomic) NSString *calendarType;
+@property (strong,nonatomic) NSString *miniDesc;
+@property (strong,nonatomic) CALImage *mainImage;
 @end

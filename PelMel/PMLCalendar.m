@@ -71,4 +71,5 @@
     }
     return [self isEnabledFor:index];
 }
+
 @end

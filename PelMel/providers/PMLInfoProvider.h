@@ -14,6 +14,7 @@
 #import "PopupAction.h"
 #import "PMLThumbsPreviewProvider.h"
 #import "PMLCountersView.h"
+#import "Event.h"
 
 @class PMLMenuManagerController;
 typedef enum {
@@ -80,6 +81,9 @@ typedef enum {
 -(void)configureCustomViewIn:(UIView*)parentView forController:(UIViewController*)controller;
 // Provides the list of events connected to the current element
 -(NSArray*)events;
+// Provides the image for the event listing
+-(CALImage*)imageForEvent:(Event*)event;
+-(NSString*)titleForEvent:(Event*)event;
 -(BOOL)canAddEvent; // Implement and return YES to integrate Add Event button, or return NO / no implem to hide
 // Provides the introduction label for the events section, if not implemented or nil then no section header will be displayed
 -(NSString*)eventsSectionTitle;

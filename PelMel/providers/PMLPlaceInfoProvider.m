@@ -31,7 +31,7 @@
     BOOL _initWithOverviewAvailable;
 
     // Related ingo
-    Special *_bestSpecial;
+    PMLCalendar *_bestSpecial;
     
     // Address management
     NSArray *_addressComponents;
@@ -58,10 +58,10 @@
     return self;
 }
 -(void) configureSpecials {
-    NSArray *specials = _place.specials;
+    NSArray *specials = _place.hours;
     _bestSpecial = nil;
-    for(Special *special in specials) {
-        if(_bestSpecial == nil ||[special.type isEqualToString:SPECIAL_TYPE_OPENING] || [_bestSpecial.nextStart compare:special.nextStart] == NSOrderedDescending) {
+    for(PMLCalendar *special in specials) {
+        if(_bestSpecial == nil ||[special.calendarType isEqualToString:SPECIAL_TYPE_OPENING] || [_bestSpecial.startDate compare:special.startDate] == NSOrderedDescending) {
             _bestSpecial = special;
         }
     }
@@ -161,7 +161,7 @@
     return _bestSpecial != nil;
 }
 -(UIImage *)snippetRightIcon {
-    Special *special = _bestSpecial;
+    PMLCalendar *special = _bestSpecial;
     if(special!=nil) {
         switch([_conversionService specialModeFor:special]) {
             case CURRENT:
@@ -174,13 +174,13 @@
 }
 
 - (NSString *)snippetRightSubtitleText {
-    Special *special = _bestSpecial;
+    PMLCalendar *special = _bestSpecial;
     if(special != nil) {
         
         // If next end date is < to next start and is not yet
         switch([_conversionService specialModeFor:special]) {
             case CURRENT:
-            if([special.type isEqualToString:SPECIAL_TYPE_OPENING]) {
+            if([special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
                 return NSLocalizedString(@"specials.opened", @"specials.opened");
             } else {
                 return NSLocalizedString(@"specials.happy", @"specials.happy");
@@ -198,7 +198,7 @@
 }
 
 - (UIColor *)snippetRightColor {
-    Special *special = _bestSpecial;
+    PMLCalendar *special = _bestSpecial;
     switch([_conversionService specialModeFor:special]) {
         case CURRENT:
         //            return UIColorFromRGB(0xa5d170);
@@ -240,17 +240,17 @@
         SpecialMode specialMode = [_conversionService specialModeFor:_bestSpecial];
         switch(specialMode) {
             case CURRENT: {
-                NSString *deltaStr = [self getDeltaString:_bestSpecial.nextEnd];
+                NSString *deltaStr = [self getDeltaString:_bestSpecial.endDate];
                 label = [NSString stringWithFormat:NSLocalizedString(@"specials.open.leftHours",@"specials.open.leftHours"),deltaStr];
                 break;
             }
             case SOON: {
-                if([_bestSpecial.type isEqualToString:SPECIAL_TYPE_OPENING]) {
+                if([_bestSpecial.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
                     label = NSLocalizedString(@"specials.open.in",@"specials.open.in");
                 } else {
                     label = NSLocalizedString(@"specials.start.in",@"specials.start.in");
                 }
-                NSString *deltaStr = [self getDeltaString:_bestSpecial.nextStart];
+                NSString *deltaStr = [self getDeltaString:_bestSpecial.startDate];
                 label = [NSString stringWithFormat:@"%@ %@",label,deltaStr];
                 break;
             }
@@ -301,10 +301,12 @@
 }
 - (NSArray *)events {
     NSMutableArray *allEvents = [_place.events mutableCopy];
-    for(Special *special in _place.specials) {
-        Event *event = [[TogaytherService getJsonService] convertSpecial:special toEventForPlace:_place];
-        if(event != nil) {
-            [allEvents addObject:event];
+
+    for(PMLCalendar *special in _place.hours) {
+//        Event *event = [[TogaytherService getJsonService] convertSpecial:special toEventForPlace:_place];
+//        if(event != nil) {
+        if(![special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
+            [allEvents addObject:special];
         }
     }
     [allEvents sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {

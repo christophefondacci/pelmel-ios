@@ -160,6 +160,13 @@
 - (NSArray *)events {
     return _modelHolder.events;
 }
+- (CALImage *)imageForEvent:(Event *)event {
+    if(event.mainImage != nil) {
+        return event.mainImage;
+    } else {
+        return event.place.mainImage;
+    }
+}
 - (BOOL)canAddPhoto {
     return NO;
 }

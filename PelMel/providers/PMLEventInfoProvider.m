@@ -47,14 +47,7 @@
 }
 // Title of the element
 -(NSString*) title {
-    if(_event.name.length==0 && [_event.key hasPrefix:@"SERI"]) {
-        PMLCalendar *calendar = (PMLCalendar*)[[TogaytherService getJsonService] objectForKey:_event.key];
-        if(calendar != nil) {
-            NSString *template = [NSString stringWithFormat:@"special.label.%@",calendar.calendarType];
-            _event.name = NSLocalizedString(template,template);
-        }
-    }
-    return [_event.name uppercaseString];
+    return [_uiService nameForEvent:_event];
 }
 - (NSString *)subtitle {
     NSString *startDate ;
