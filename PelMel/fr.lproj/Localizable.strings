@@ -332,6 +332,9 @@
 "user.loc.minutes"="minutes";
 "user.status.offline"="Hors ligne";
 "user.status.online"="En ligne";
+"validation.errorTitle"="Données non valides";
+"validation.nolocation"="Vous devez définir la localisation du lieu sur la carte en déplaçant l'épingle sur le lieu souhaité.";
+"validation.noname"="Vous devez renseigner le nom du lieu que vous éditez ou que vous créez. Veuillez vérifier vos données et essayer à nouveau.";
 "profile.mustBe18.title"="Restriction d'age";
 "profile.mustBe18"="Vous devez avoir plus de 12 ans pour pouvoir utiliser PelMel guide, veuillez définir une date de naissance correcte et essayez à nouveau.";
 "push.permission.title"="Activer le push ?";

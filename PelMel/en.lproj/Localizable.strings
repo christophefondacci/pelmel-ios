@@ -341,6 +341,9 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "user.loc.minutes"="minutes";
 "user.status.offline"="OFFLINE";
 "user.status.online"="ONLINE";
+"validation.errorTitle"="Invalid data";
+"validation.nolocation"="You must locate the place position on the map by dragging the pin to the desired place.";
+"validation.noname"="You must enter the name of the place you are editing or creating. Please check your data and try again.";
 "profile.mustBe18.title"="Age restriction";
 "profile.mustBe18"="You must be over 12 to be able to use togayther, please define your correct birth date so that you can log in.";
 "terms.title"="Terms of use";

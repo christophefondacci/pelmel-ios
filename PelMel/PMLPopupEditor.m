@@ -78,6 +78,20 @@ static NSMutableDictionary *_editorsKeyMap;
 
 }
 -(void)commit {
+    if([self.editedObject isKindOfClass:[Place class]]) {
+        Place *p = (Place*)self.editedObject;
+        NSString *errorMsg;
+        if([[p.title stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] == 0) {
+            errorMsg = @"validation.noname";
+        } else if(p.lat == 0 && p.lng == 0) {
+            errorMsg = @"validation.nolocation";
+        }
+        if(errorMsg != nil) {
+            [[TogaytherService uiService] alertWithTitle:@"validation.errorTitle" text:errorMsg];
+            return;
+        }
+    }
+    
     // Confirm action that prompts user for confirmation
     NSString *title = NSLocalizedString(@"action.edit.confirm.title",@"Submit changes title");
     NSString *msg = NSLocalizedString(@"action.edit.confirm.message",@"Submit changes msg");
