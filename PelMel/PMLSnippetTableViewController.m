@@ -1313,7 +1313,7 @@ typedef enum {
 -(void) configureRowReport:(PMLButtonTableViewCell*)cell {
     cell.buttonImageView.image = [UIImage imageNamed:@"snpButtonReport"];
     cell.buttonLabel.text = NSLocalizedString(@"snippet.button.report", @"Report a problem");
-    cell.buttonContainer.backgroundColor = UIColorFromRGB(0xc50000);
+    cell.buttonContainer.backgroundColor = UIColorFromRGBAlpha(0xc50000,0.2);
 }
 
 -(NSString *) stringByStrippingHTML:(NSString*)html {
