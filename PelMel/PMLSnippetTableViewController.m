@@ -1175,7 +1175,7 @@ typedef enum {
     id<PMLInfoProvider> provider = [_uiService infoProviderFor:mapObject];
     
     // Image
-    cell.image.image = nil;
+//    cell.image.image = nil;
     CALImage *calImage = [[TogaytherService imageService] imageOrPlaceholderFor:mapObject allowAdditions:NO];
     [_imageService load:calImage to:cell.image thumb:NO];
     
