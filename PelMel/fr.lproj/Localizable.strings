@@ -93,9 +93,9 @@
 "description.edition.langChoice"="Ecrire en %@";
 "detail.city.title"="%@ : %d lieux gays";
 "distance.template.kilometers"="%@ km";
-"distance.template.meters"="%@ mètres";
-"distance.template.miles"="%@ miles";
-"distance.template.feet"="%@ pieds";
+"distance.template.meters"="%@ m";
+"distance.template.miles"="%@ mi";
+"distance.template.feet"="%@ ft";
 "edit.title"="Entrez un nom";
 "events.title"="Evènements";
 "events.addButton"="Créer et promouvoir un évènement";

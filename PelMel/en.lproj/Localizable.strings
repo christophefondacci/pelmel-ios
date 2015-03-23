@@ -93,9 +93,9 @@
 "description.edition.langChoice"="Write in %@";
 "detail.city.title"="%@: %d gay hangouts";
 "distance.template.kilometers"="%@ km";
-"distance.template.meters"="%@ meters";
-"distance.template.miles"="%@ miles";
-"distance.template.feet"="%@ feet";
+"distance.template.meters"="%@ m";
+"distance.template.miles"="%@ mi";
+"distance.template.feet"="%@ ft";
 "edit.title"="Enter a name";
 "events.addButton"="Create and promote an event";
 "events.new.placeholder"="Event Name";
