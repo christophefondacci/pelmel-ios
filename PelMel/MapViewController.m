@@ -517,7 +517,9 @@
             placeAnnotation.canShowCallout = NO;
             
             // Selecting image depending on openings
-            UIImage *markerImage = [_uiService mapMarkerFor:object enabled:YES];
+            UIImage *offMarkerImage = [_uiService mapMarkerFor:object enabled:NO];
+            UIImage *onMarkerImage = [_uiService mapMarkerFor:object enabled:YES];
+            UIImage *markerImage = onMarkerImage;
 
             placeAnnotation.alpha=1;
             // Looking for opening hours
@@ -525,13 +527,13 @@
                 Place *p = (Place*)object;
                 for(PMLCalendar *special in p.hours) {
                     if([special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
-                        switch([_conversionService specialModeFor:special]) {
-                            case PAST:
-                            case SOON:
-                                markerImage = [_uiService mapMarkerFor:object enabled:NO];
-                                break;
-                            default:
-                                break;
+                        // As soon as we have hours, we set it disabled
+                        markerImage = offMarkerImage;
+                        // And we re-enable it only if current opening hours
+                        if([_conversionService specialModeFor:special] == CURRENT) {
+                            markerImage = onMarkerImage;
+                            // And we exit we don't need to process anything else
+                            break;
                         }
                     }
                 }
