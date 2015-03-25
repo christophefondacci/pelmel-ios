@@ -523,17 +523,15 @@
             [profileHeaderView setNickname:user.pseudo parentWidth:tableView.bounds.size.width];
             
             // Updating image thumb for user
-            CALImage *mainImage = user.mainImage;
             profileImageView = profileHeaderView.profileImageView;
             [imageService registerTappable:profileImageView forViewController:self callback:self];
             
             [activityView stopAnimating];
             [profileHeaderView.activityIndicator stopAnimating];
             profileHeaderView.activityIndicator.hidden=YES;
-            if(mainImage == nil) {
-                profileImageView.image= nil;
-            }
-            [imageService load:mainImage to:profileImageView thumb:YES];
+            
+            CALImage *mainImage = [imageService imageOrPlaceholderFor:user allowAdditions:YES];
+            [imageService load:mainImage to:profileImageView thumb:NO];
             
             [profileHeaderView.editButton addTarget:self action:@selector(editNicknameTapped:) forControlEvents:UIControlEventTouchUpInside];
             return profileHeaderView;

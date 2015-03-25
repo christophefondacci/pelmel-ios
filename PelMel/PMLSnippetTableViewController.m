@@ -378,7 +378,11 @@ typedef enum {
                 return (int)ceil(rows);
             }
             case kPMLSectionReport:
-                return [_snippetItem isKindOfClass:[Place class]] ? kPMLReportRows : 0;
+                if([_infoProvider respondsToSelector:@selector(reportActionType)]) {
+                    return [_infoProvider reportActionType] == PMLActionTypeNoAction? 0 : kPMLReportRows;
+                }
+                return 0;
+
         }
     } else {
         switch(section) {
@@ -776,6 +780,12 @@ typedef enum {
         case kPMLSectionReport:
             return YES;
         case kPMLSectionOvAddress:
+            if([_infoProvider city] !=nil) {
+                NSInteger rows = [self.tableView numberOfRowsInSection:indexPath.section];
+                if(rows -1 == indexPath.row) {
+                    return NO;
+                }
+            }
             // Address lines are selectable only if we have something to display on the map
             return [_infoProvider respondsToSelector:@selector(mapObjectForLocalization)];
     }
@@ -792,8 +802,11 @@ typedef enum {
         case kPMLSectionOvAddress:
             self.tableView.contentOffset = CGPointMake(0,0);
             if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
-                [self.parentMenuController minimizeCurrentSnippet:YES];
-                [self.parentMenuController.rootViewController selectCALObject:[_infoProvider mapObjectForLocalization]];
+                CALObject *localizationObj = [_infoProvider mapObjectForLocalization];
+                if(localizationObj!=nil) {
+                    [self.parentMenuController minimizeCurrentSnippet:YES];
+                    [self.parentMenuController.rootViewController selectCALObject:localizationObj];
+                }
             }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
@@ -811,7 +824,7 @@ typedef enum {
             }
             break;
         case kPMLSectionReport: {
-            PopupAction *action = [_actionManager actionForType:PMLActionTypeReport];
+            PopupAction *action = [_actionManager actionForType:[_infoProvider reportActionType]];
             action.actionCommand();
             break;
         }
@@ -1312,7 +1325,7 @@ typedef enum {
 }
 -(void) configureRowReport:(PMLButtonTableViewCell*)cell {
     cell.buttonImageView.image = [UIImage imageNamed:@"snpButtonReport"];
-    cell.buttonLabel.text = NSLocalizedString(@"snippet.button.report", @"Report a problem");
+    cell.buttonLabel.text = [_infoProvider reportText];
     cell.buttonContainer.backgroundColor = UIColorFromRGBAlpha(0xc50000,0.2);
 }
 

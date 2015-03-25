@@ -37,7 +37,7 @@
 "action.edit.confirm.message"="Voulez-vous soumettre vos modifications pour qu'elles soient visibles de tous ?";
 "action.edit.confirm.submit"="Soumettre";
 "action.failure.title"="Erreur";
-"action.failure.message"="Une erreur est survenue et votre action ne peut aboutir. Nous sommes désolés pour le désagrément.";
+"action.failure.message"="Une erreur est survenue et votre action ne peut aboutir. Nous sommes désolés pour le désagrément. Essayez de taper sur le bouton 'rafraichir' de la carte puis essayez à nouveau.";
 "action.like"="J'aime";
 "action.like.feedbackTitle"="Vous aimez!";
 "action.like.feedbackMessage"="Votre \"j'aime\" a été pris en compte, merci !";
@@ -45,7 +45,7 @@
 "action.myposition.alertMsg"="Vous n'avez pas autorisé PelMel à accéder à votre localisation. Vous pouvez changer ceci en ouvrant l'application 'Réglages' et en allant dans Confidentialité > Localisation > PelMel et autorisez.";
 "action.photo"="Photo";
 "action.report.done.title"="Report d'information";
-"action.report.done"="Votre notification a été enregistrée et sera revue dans les jours qui viennent. Merci de votre aide!";
+"action.report.done"="Votre notification a été enregistrée et sera revue très vite. Merci de votre contribution!";
 "action.report.title"="Actions disponibles";
 "action.report.abuse"="La photo contient un abus";
 "action.report.closed"="Ce lieu n'existe plus";
@@ -270,13 +270,14 @@
 "settings.settings"="Paramètres";
 "snippet.activity"="Utilisateurs à proximité";
 "snippet.button.report"="Signaler une fermeture";
+"snippet.button.reportForDeletion"="Demander la suppression";
 "snippet.distance.intro"="Instantané";
 "snippet.edit.descPlaceholder"="Entrez une description";
 "snippet.edit.placeType"="Sélectionnez le type de lieu :";
 "snippet.edit.titlePlaceholder"="Entrez un nom";
 "snippet.event.count"="%d Evènements à venir";
-"snippet.event.inUsers"="%d mecs en seront";
-"snippet.event.inUsers.singular"="%d mec en sera";
+"snippet.event.inUsers"="%d y seront";
+"snippet.event.inUsers.singular"="%d y sera";
 "snippet.header.topPlaces"="Lieux populaires";
 "snippet.header.activities"="Activité récente";
 "snippet.likes"="%d aiment";

@@ -47,6 +47,7 @@
 }
 -(void)refreshFrom:(PMLCalendar *)calendar {
     self.place = calendar.place;
+    self.calendarType = calendar.calendarType;
     self.startDate = calendar.startDate;
     self.endDate = calendar.endDate;
     self.name = calendar.name;

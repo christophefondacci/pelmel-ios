@@ -23,6 +23,7 @@ typedef enum {
     PMLReportTypeClosed = 2,
     PMLReportTypeLocation = 3,
     PMLReportTypeNotGay = 4,
+    PMLReportTypeRemovalRequest = 5
 } PMLReportType;
 
 @protocol PMLDataListener

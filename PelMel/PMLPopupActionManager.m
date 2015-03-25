@@ -87,6 +87,7 @@
     PopupAction *_photoAction;
     PopupAction *_commentAction;
     PopupAction *_reportAction;
+    PopupAction *_reportForDeletionAction;
     PopupAction *_confirmAction;
     PopupAction *_cancelAction;
     
@@ -277,7 +278,12 @@
     }];
     _reportAction.color = UIColorFromRGB(kPMLReportColor);
     [self registerAction:_reportAction forType:PMLActionTypeReport];
-    
+    _reportForDeletionAction = [[PopupAction alloc] initWithAngle:kPMLReportAngle distance:kPMLReportDistance icon:[UIImage imageNamed:@"popActionReport"] titleCode:nil size:kPMLReportSize command:^{
+        NSLog(@"REPORT FOR DELETION");
+        [_dataService sendReportFor:_currentObject reportType:PMLReportTypeRemovalRequest];
+    }];
+    _reportForDeletionAction.color = UIColorFromRGB(kPMLReportColor);
+    [self registerAction:_reportForDeletionAction forType:PMLActionTypeReportForDeletion];
     _cancelAction = [[PopupAction alloc] initWithAngle:kPMLCancelAngle distance:kPMLCancelDistance icon:[UIImage imageNamed:@"popActionCancel"] titleCode:nil size:kPMLCancelSize command:^{
         NSLog(@"Cancel");
         [_currentEditor cancel];

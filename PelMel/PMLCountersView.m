@@ -131,6 +131,7 @@
         switch(action) {
             case PMLActionTypeCheckin:
             case PMLActionTypeAttend:
+            case PMLActionTypeAttendCancel:
                 return @"ovvIconCheckinWhite";
             case PMLActionTypeComment:
                 return @"ovvIconCommentWhite";

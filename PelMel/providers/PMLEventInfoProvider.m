@@ -250,4 +250,11 @@
 -(NSString *)localizationSectionTitle {
     return NSLocalizedString(@"thumbView.section.localization.event", @"This event will take place at");
 }
+#pragma mark - Reports
+- (PMLActionType)reportActionType {
+    return PMLActionTypeReportForDeletion;
+}
+- (NSString *)reportText {
+    return NSLocalizedString(@"snippet.button.reportForDeletion", @"Request removal");
+}
 @end

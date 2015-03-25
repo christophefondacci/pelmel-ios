@@ -441,4 +441,11 @@
         return nil;
     }
 }
+#pragma mark Report
+- (PMLActionType)reportActionType {
+    return PMLActionTypeReport;
+}
+- (NSString *)reportText {
+    return NSLocalizedString(@"snippet.button.report", @"Report a problem");
+}
 @end

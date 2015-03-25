@@ -70,6 +70,8 @@ typedef enum {
 - (PMLActionType)likeActionType; // Default is Like
 - (PMLActionType)checkinActionType; // Default is Checkin
 - (PMLActionType)commentActionType; // Default is Comment
+- (PMLActionType)reportActionType; // Default is no report, if returning something, the report button will be displayed
+- (NSString*)reportText;
 // The subtitle to display
 - (NSString*)actionSubtitleFor:(PMLActionType)actionType;
 

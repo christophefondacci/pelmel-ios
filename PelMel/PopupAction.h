@@ -20,6 +20,7 @@ typedef enum {
     PMLActionTypeConfirm,
     PMLActionTypeCancel,
     PMLActionTypeReport,
+    PMLActionTypeReportForDeletion,
     PMLActionTypeEditPlace,
     PMLActionTypeEditEvent,
     PMLActionTypeAttend,

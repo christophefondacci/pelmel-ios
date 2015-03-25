@@ -235,9 +235,8 @@
             _profileHeaderView.editButtonIcon.hidden=YES;
             _profileHeaderView.profileImageView.image= nil;
             [[TogaytherService imageService] registerTappable:_profileHeaderView.profileImageView forViewController:self callback:self];
-            if(user.mainImage) {
-                [_imageService load:user.mainImage to:_profileHeaderView.profileImageView thumb:YES];
-            }
+            CALImage *image = [_imageService imageOrPlaceholderFor:user allowAdditions:YES];
+            [_imageService load:image to:_profileHeaderView.profileImageView thumb:NO];
             return _profileHeaderView;
         }
         case kSectionNetwork:
@@ -301,6 +300,7 @@
                     // Dismissing this view and immediately
                     UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    [self.parentMenuController dismissControllerMenu:YES];
                     [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
                     
 

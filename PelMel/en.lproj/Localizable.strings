@@ -36,7 +36,7 @@
 "action.edit.confirm.message"="Submit your changes so that everyone will see your modifications?";
 "action.edit.confirm.submit"="Submit";
 "action.failure.title"="Error";
-"action.failure.message"="An error has occurred and your action could not be completed. We are very sorry for the inconvenience.";
+"action.failure.message"="An error has occurred and your action could not be completed. We are very sorry for the inconvenience. Try to hit the 'refresh' button on the map and try again.";
 "action.like"="Like";
 "action.like.feedbackTitle"="You like!";
 "action.like.feedbackMessage"="Your like has been saved, thank you!";
@@ -44,7 +44,7 @@
 "action.myposition.alertMsg"="You have not authorized PelMel to access your location. You can change this by opening the settings app and going into Privacy > Location > PelMel and authorize.";
 "action.photo"="Photo";
 "action.report.done.title"="Reporting information";
-"action.report.done"="Your notification has been stored and will be reviewed within a few days. Thank you for your help!";
+"action.report.done"="Your notification has been stored and will be reviewed shortly. Thank you for contributing!";
 "action.report.title"="Report what?";
 "action.report.abuse"="This photo contains abuse";
 "action.report.closed"="This place doesn't exist";
@@ -280,13 +280,13 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.likes"="%d likes";
 "snippet.activity"="Nearby users";
 "snippet.button.report"="Report or mark as closed";
+"snippet.button.reportForDeletion"="Request removal";
 "snippet.distance.intro"="snapshot";
 "snippet.edit.descPlaceholder"="Enter a description";
 "snippet.edit.placeType"="Select the kind of venue:";
 "snippet.edit.titlePlaceholder"="Enter a name";
 "snippet.event.count"="%d Upcoming Events";
-"snippet.event.inUsers"="%d guys are in";
-"snippet.event.inUsers.singular"="%d guy is in";
+"snippet.event.inUsers"="%d will attend";
 "snippet.header.topPlaces"="Popular places";
 "snippet.header.activities"="Recent activity";
 "snippet.title.counters"="Related";

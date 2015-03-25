@@ -288,6 +288,9 @@
     cell.textField.delegate = self;
     cell.textField.attributedPlaceholder = 
         [[NSAttributedString alloc  ] initWithString: NSLocalizedString(@"calendar.title.placeholder",@"Name (optional)") attributes: @{NSForegroundColorAttributeName : UIColorFromRGB(0x939597)}];
+    [cell.textField addTarget:self
+                       action:@selector(titleDidChange:)
+             forControlEvents:UIControlEventEditingChanged];
 }
 -(void)configureDescriptionCell:(PMLEventDescriptionTableViewCell*)cell {
     cell.descriptionTextView.text = _editedCalendar.miniDesc;
@@ -331,7 +334,9 @@
 -(void)cancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
+-(void)titleDidChange:(UITextField*)textField {
+    _editedCalendar.name = textField.text;
+}
 -(void)save:(id)sender {
 
     
@@ -384,10 +389,10 @@
         [indexPathToReload addObject:[NSIndexPath indexPathForRow:0 inSection:kSectionTime]];
         
         // Adjusting end time if start is after current end
-        if(_editedCalendar.endHour <= _editedCalendar.startHour) {
-            _editedCalendar.endHour = _editedCalendar.startHour+2;
-            [indexPathToReload addObject:[NSIndexPath indexPathForRow:2 inSection:kSectionTime]];
-        }
+//        if(_editedCalendar.endHour <= _editedCalendar.startHour) {
+//            _editedCalendar.endHour = _editedCalendar.startHour+2;
+//            [indexPathToReload addObject:[NSIndexPath indexPathForRow:2 inSection:kSectionTime]];
+//        }
     } else {
         _editedCalendar.endHour = components.hour;
         _editedCalendar.endMinute = components.minute;

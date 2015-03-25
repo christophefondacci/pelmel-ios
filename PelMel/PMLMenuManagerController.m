@@ -276,6 +276,7 @@ static void *MyParentMenuControllerKey;
     }
 }
 - (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated {
+    [self.rootViewController.view layoutIfNeeded];
     CGRect myFrame = self.rootViewController.view.bounds;
 
     [self removeCurrentSnippetController];
