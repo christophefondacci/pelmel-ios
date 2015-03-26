@@ -341,6 +341,13 @@
 -(NSArray *)events {
     return _user.events;
 }
+- (CALImage *)imageForEvent:(Event *)event {
+    if(event.mainImage != nil) {
+        return event.mainImage;
+    } else {
+        return event.place.mainImage;
+    }
+}
 - (NSString *)eventsSectionTitle {
     if(_user.events.count>0) {
         return NSLocalizedString(@"snippet.title.events.user", @"He will attend");

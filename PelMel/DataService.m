@@ -23,6 +23,9 @@
 #define kPlaceListUrlFormat @"%@/mapPlaces.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&searchLat=%f&searchLng=%f"
 #define kEventListUrlFormat @"%@/mobileEvents.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
 #define kOverviewDataUrlFormat @"%@/mobileOverview?id=%@&nxtpUserToken=%@&highRes=%@&lat=%f&lng=%f"
+#define kOverviewPlaceUrlFormat @"%@/api/place"
+#define kOverviewEventUrlFormat @"%@/api/event"
+#define kOverviewUserUrlFormat @"%@/api/user"
 #define kLikeUrlFormat @"%@/mobileIlike?id=%@&nxtpUserToken=%@&type=%@"
 #define kPlaceUpdateUrlFormat @"%@/mobileUpdatePlace"
 #define kCalendarUpdateUrlFormat @"%@/mobileUpdateEvent"
@@ -61,7 +64,6 @@
 
 @synthesize modelHolder = _modelHolder;
 @synthesize userService = userService;
-@synthesize cacheService = cacheService;
 @synthesize imageService = imageService;
 @synthesize jsonService = jsonService;
 @synthesize messageService = messageService;
@@ -291,10 +293,13 @@
         // Appending to the document list
         [docs addObject:place];
         // Building specials as events
+        NSDate *now= [NSDate date];
         for(PMLCalendar *special in place.hours) {
             if(![special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
                 special.hasOverviewData = NO;
-                [happyHoursEvents addObject:special];
+                if([special.endDate compare:now] == NSOrderedDescending) {
+                    [happyHoursEvents addObject:special];
+                }
             }
         }
     }
@@ -437,48 +442,60 @@
     CALObject *obj = [jsonService.objectCache objectForKey:key];
     callback(obj);
 }
+-(NSString*)overviewUrlTemplateFor:(CALObject*)object {
+    if([object isKindOfClass:[Place class]]) {
+        return kOverviewPlaceUrlFormat;
+    } else if([object isKindOfClass:[User class]]) {
+        return kOverviewUserUrlFormat;
+    } else if([object isKindOfClass:[Event class]]) {
+        return kOverviewEventUrlFormat;
+    }
+    return nil;
+}
 -(void)fetchOverviewData:(CALObject *)object {
     [self startOp:@""];
     
     if(!object.hasOverviewData && object.key != nil) {
         // Loading object's full data
-        dispatch_async(kTopQueue, ^{
-            CurrentUser *user = userService.getCurrentUser;
-            BOOL isRetina = [TogaytherService isRetina];
-            NSString *url = [[NSString alloc] initWithFormat:kOverviewDataUrlFormat,togaytherServer,object.key,user.token, (isRetina ? @"true" : @"false"),location.coordinate.latitude, location.coordinate.longitude];
-            NSLog(@"Overview data : calling URL %@",url);
-            NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-            if(data!=nil) {
+        CurrentUser *user = userService.getCurrentUser;
+        BOOL isRetina = [TogaytherService isRetina];
+        
+        // Getting appropriate URL
+        NSString *template = [self overviewUrlTemplateFor:object];
+        NSString *url = [[NSString alloc] initWithFormat:template,togaytherServer ];
+        if(url != nil) {
+            // Filling arguments
+            NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+            [params setObject:object.key forKey:@"id"];
+            [params setObject:user.token forKey:@"nxtpUserToken"];
+            [params setObject:(isRetina ? @"true" : @"false") forKey:@"highRes"];
+            [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:@"lat"];
+            [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:@"lng"];
+            
+            NSLog(@"Overview data : calling URL %@ for key %@",url,object.key);
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSDictionary *json = (NSDictionary*)responseObject;
                 if([object isKindOfClass:[Place class]]) {
-                    [self placeOverviewDataFetched:data object:object];
+                    [self placeOverviewDataFetched:json object:object];
                 } else if([object isKindOfClass:[User class]]) {
-                    [self userOverviewDataFetched:data object:object];
+                    [self userOverviewDataFetched:json object:object];
                 } else if([object isKindOfClass:[Event class]]) {
-                    [self eventOverviewDataFetched:data object:object];
+                    [self eventOverviewDataFetched:json object:object];
                 }
-            } else {
-                [self performSelectorOnMainThread:@selector(notifyConnectionLost) withObject:nil waitUntilDone:NO];
-            }
-            // Clearing cache action
-            [overviewCache removeObjectForKey:object.key];
-        });
+                
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                [self notifyConnectionLost];
+            }];
+        }
+        // Clearing cache action
+        [overviewCache removeObjectForKey:object.key];
     } else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self notifyOverviewDataAvailable:object];
-        });
+        [self notifyOverviewDataAvailable:object];
     }
 }
-- (void)eventOverviewDataFetched:(NSData*)data object:(CALObject*)object {
+- (void)eventOverviewDataFetched:(NSDictionary*)json object:(CALObject*)object {
     Event *event = (Event*)object;
-    NSError* error;
-    if(data == nil) {
-        NSLog(@"eventOverviewDataFetched: JSON data is null, aborting");
-        return;
-    }
-    NSDictionary *json = [NSJSONSerialization
-                          JSONObjectWithData:data //1
-                          options:kNilOptions
-                          error:&error];
     
     // Checking any login error
     NSString *loginFailed = [json objectForKey:@"loginFailed"];
@@ -502,17 +519,7 @@
         [self notifyOverviewDataAvailable:event];
     });
 }
-- (void)userOverviewDataFetched:(NSData*)data object:(CALObject*)object {
-    NSError* error;
-    if(data == nil) {
-        NSLog(@"userOverviewDataFetched: JSON data is null, aborting");
-        return;
-    }
-    NSDictionary *json = [NSJSONSerialization
-                          JSONObjectWithData:data //1
-                          options:kNilOptions
-                          error:&error];
-    
+- (void)userOverviewDataFetched:(NSDictionary*)json object:(CALObject*)object {
     // Checking any login error
     NSString *loginFailed = [json objectForKey:@"loginFailed"];
     if(loginFailed != nil) {
@@ -531,17 +538,7 @@
     });
 }
 
-- (void)placeOverviewDataFetched:(NSData*)data object:(CALObject*)object {
-//    Place *place = (Place*)object;
-    NSError* error;
-    if(data == nil) {
-        NSLog(@"placesOverviewDataFetched: JSON data is null, aborting");
-        return;
-    }
-    NSDictionary *json = [NSJSONSerialization
-                          JSONObjectWithData:data //1
-                          options:kNilOptions
-                          error:&error];
+- (void)placeOverviewDataFetched:(NSDictionary*)json object:(CALObject*)object {
     
     // Checking any login error
     NSString *loginFailed = [json objectForKey:@"loginFailed"];

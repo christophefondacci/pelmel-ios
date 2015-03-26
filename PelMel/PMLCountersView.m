@@ -50,18 +50,11 @@
         labelView.text = label;
 
         if(imageName != nil) {
-//            if([_datasource isCounterSelectedAtIndex:i]) {
-//                imageView.image = [UIImage ipMaskedImageNamed:imageName color:UIColorFromRGB(0xef6c00)];
-//                labelView.textColor =UIColorFromRGB(0xef6c00);
-//                
-//            } else {
             imageView.image = [UIImage imageNamed:imageName];
             labelView.textColor = UIColorFromRGB(0xc3c3c4);
-//            }
             if([_datasource counterActionAtIndex:i]!=PMLActionTypeNoAction) {
                 UIView *containerView  = [self containerViewAtIndex:i];
-//                containerView.backgroundColor = [_datasource counterColorAtIndex:i selected:[_datasource isCounterSelectedAtIndex:i]];
-                containerView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.05];
+                containerView.backgroundColor = [self colorForViewAtIndex:i];
                 containerView.layer.borderWidth=1;
                 containerView.layer.borderColor = [[UIColor colorWithWhite:1 alpha:0.3] CGColor];
                 containerView.layer.cornerRadius = 5;
@@ -76,6 +69,14 @@
         actionLabel.text = [_datasource counterActionLabelAtIndex:i];
 //        actionLabel.textColor = UIColorFromRGB(0x555555);
         
+    }
+}
+
+- (UIColor*)colorForViewAtIndex:(NSInteger)i {
+    if([_datasource isCounterSelectedAtIndex:i]) {
+        return [UIColor colorWithWhite:1 alpha:0.25];
+    } else {
+        return [UIColor colorWithWhite:1 alpha:0.05];
     }
 }
 
@@ -156,7 +157,7 @@
             animatedView.backgroundColor = [color colorWithAlphaComponent:0.3];
         } completion:^(BOOL finished) {
             [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                animatedView.backgroundColor = color;
+                animatedView.backgroundColor = [self colorForViewAtIndex:index];
             } completion:NULL];
         }];
 //        animatedView.layer.anchorPoint=CGPointMake(0.5f, 0.5f);

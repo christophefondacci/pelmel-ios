@@ -41,7 +41,7 @@ typedef void (^ImageLoaderBlock)(CALImage *image);
 @interface ImageService : NSObject <UIActionSheetDelegate,UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 // The cache service that needs to be injected
-@property (strong,nonatomic) id<CacheService> imageCache;
+@property (strong,nonatomic) NSCache *imageCache;
 @property (strong,nonatomic) UIService *uiService;
 
 // Pre-loading thumbs images of the given element

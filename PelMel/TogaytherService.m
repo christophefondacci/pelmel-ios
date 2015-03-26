@@ -32,8 +32,6 @@
     static ImageService *_imageService;
     static MessageService *_messageService;
     static JsonService *_jsonService;
-    static id<CacheService> _cacheService;
-    static id<CacheService> _imageCacheService;
     static UIService *_uiService;
     static SettingsService *_settingsService;
     static NSDictionary *properties;
@@ -52,8 +50,6 @@
     _language = [[NSLocale preferredLanguages] objectAtIndex:0];
     _conversionService = [[ConversionService alloc] init];
     _imageService = [[ImageService alloc] init];
-    _cacheService = [[SizedTTLCacheService alloc] initWithTTL:kCacheTTL maxObjects:kCacheMaxObjects];
-    _imageCacheService = [[SizedTTLCacheService alloc] initWithTTL:kImageCacheTTL maxObjects:kCacheMaxImages];
     _messageService = [[MessageService alloc] init];
     _jsonService = [[JsonService alloc] init];
     _uiService = [[UIService alloc] init];
@@ -62,7 +58,6 @@
     // Injecting data service
     _dataService.userService = [TogaytherService userService];
     _dataService.imageService= [TogaytherService imageService];
-    _dataService.cacheService= [TogaytherService getCacheService];
     _dataService.messageService = [TogaytherService getMessageService];
     _dataService.jsonService = [TogaytherService getJsonService];
     
@@ -72,7 +67,6 @@
     _userService.jsonService = _jsonService;
     
     // Injecting image service
-    _imageService.imageCache = _imageCacheService;
     _imageService.uiService = _uiService;
     
     // Injecting message service
@@ -119,12 +113,6 @@
     return _imageService;
 }
 
-+ (id<CacheService>)getCacheService {
-    return _cacheService;
-}
-+ (id<CacheService>)getImageCache {
-    return _imageCacheService;
-}
 + (MessageService *)getMessageService {
     return _messageService;
 }

@@ -56,10 +56,8 @@
     UIViewController *_pickerParentController;
     
     UIService *_uiService;
-    
 }
 
-@synthesize imageCache = imageCache;
 
 - (id)init
 {
@@ -73,6 +71,7 @@
         uploadConnectionCallbacksMap= [[NSMutableDictionary alloc] init];
         uploadDataMap               = [[NSMutableDictionary alloc] init];
         tagImagesMap = [[NSMutableDictionary alloc]init];
+        _imageCache = [[NSCache alloc] init];
 
         togaytherServer = [TogaytherService propertyFor:PML_PROP_SERVER];
         
@@ -430,7 +429,18 @@
         NSString *thumbUrl  = [jsonImage objectForKey:@"thumbUrl"];
         NSString *url       = [jsonImage objectForKey:@"url"];
         
-        CALImage *img = [[CALImage alloc] initWithKey:key url:url thumbUrl:thumbUrl];
+        CALImage *img = [_imageCache objectForKey:key];
+        if(img == nil) {
+            img = [[CALImage alloc] initWithKey:key url:url thumbUrl:thumbUrl];
+            [_imageCache setObject:img forKey:key];
+        } else {
+            if(![img.imageUrl isEqualToString:url]){
+                img.imageUrl = url;
+                img.thumbUrl = thumbUrl;
+                img.fullImage = nil;
+                img.thumbImage = nil;
+            }
+        }
         return img;
     } else {
         return nil;

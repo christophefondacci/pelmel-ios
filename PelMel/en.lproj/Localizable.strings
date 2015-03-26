@@ -74,8 +74,8 @@
 "cancel"="Cancel";
 "city.label"="City";
 "city.withbars"="%d gay places";
-"counters.arein"="%d Are in";
-"counters.arein.singular"="%d Is in";
+"counters.arein"="%d Will attend";
+"counters.arein.singular"="%d Will attend";
 "counters.chat"="Chat";
 "counters.checkedin"="%d Checked in";
 "counters.checkins"="%d Check-ins";
@@ -175,6 +175,7 @@
 "moreresults.subtitle"="Tap here to search for all places and cities";
 "network.noconnection"="No Network Connection";
 "network.connected"="Connected!";
+"network.error"="An error occurred, tap refresh";
 "network.connecting"="Trying to connect...";
 "noresult.title"="No nearby result found";
 "noresult.subtitle"="Tap here to search worldwide";

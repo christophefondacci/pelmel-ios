@@ -41,11 +41,12 @@
         Place *place = [_objectCache objectForKey:key];
         if(place == nil) {
             place = [[Place alloc] init:name];
-            [place setKey:key];
-            CALImage *img = [imageService convertJsonImageToImage:thumb];
-            [place setMainImage:img];
             [_objectCache setObject:place forKey:key];
         }
+        [place setTitle:name];
+        [place setKey:key];
+        CALImage *img = [imageService convertJsonImageToImage:thumb];
+        [place setMainImage:img];
         
         return place;
     } else {
@@ -298,6 +299,7 @@
     NSString *desc      = [jsonSpecial objectForKey:@"description"];
     NSNumber *nextStart = [jsonSpecial objectForKey:@"nextStart"];
     NSNumber *nextEnd   = [jsonSpecial objectForKey:@"nextEnd"];
+    NSNumber *participants=[jsonSpecial objectForKey:@"participants"];
     NSString *type      = [jsonSpecial objectForKey:@"type"];
     NSDictionary  *thumb= [jsonSpecial objectForKey:@"thumb"];
     
@@ -322,7 +324,7 @@
     calendar.startDate   = startDate;
     calendar.endDate     = endDate;
     calendar.calendarType        = type;
-    
+    calendar.likeCount = [participants intValue];
     // Filling media
     CALImage *calThumb = [imageService convertJsonImageToImage:thumb];
     if(calThumb != nil) {
@@ -431,7 +433,7 @@
     }
     return events;
 }
--(Event*)convertJsonEventToEvent:(NSDictionary*)obj defaultEvent:(Event*)defaultEvent {
+-(Event*)convertJsonLightEventToEvent:(NSDictionary*)obj defaultEvent:(Event*)defaultEvent {
     NSString *itemKey = [obj objectForKey:@"key"];
     
     // Because we convert series (SERI) into events, the cache may return a PMLCalendar object
@@ -455,8 +457,42 @@
     NSNumber *endTime       = [obj objectForKey:@"endTime"];
     NSDictionary *place     = [obj objectForKey:@"place"];
     NSNumber *participants  = [obj objectForKey:@"participants"];
-    NSNumber *reviewsCount  = [obj objectForKey:@"commentsCount"];
+    [event setKey:itemKey];
+    [event setName:name];
+    [event setDistance:distance];
+    [event setRawDistance:[rawDistance doubleValue]];
+    NSDate *startDate = [[NSDate alloc] initWithTimeIntervalSince1970:[startTime longValue]];
+    NSDate *endDate = [[NSDate alloc] initWithTimeIntervalSince1970:[endTime longValue]];
+    [event setStartDate:startDate];
+    [event setEndDate:endDate];
+    [event setLikeCount:[participants intValue]];
+    if(place != nil && place!=(id)[NSNull null]) {
+        Place *p = [self convertJsonPlaceToPlace:place];
+        if([[p.key substringToIndex:4] isEqualToString:@"CITY"]) {
+            p.key = nil;
+        }
+        [event setPlace:p];
+    }
+    NSNumber *likeCount     = [obj objectForKey:@"likes"];
+    [event setLikeCount:MAX([likeCount integerValue],[participants integerValue])];
     
+    // Setting the main image here
+    for(NSDictionary *jsonOtherImage in media) {
+        CALImage *image = [imageService convertJsonImageToImage:jsonOtherImage];
+        [event setMainImage:image];
+        break;
+    }
+    
+    return event;
+}
+-(Event*)convertJsonEventToEvent:(NSDictionary*)obj defaultEvent:(Event*)defaultEvent {
+
+    // Building JSON event
+    Event *event = [self convertJsonLightEventToEvent:obj defaultEvent:defaultEvent];
+
+    // Extracting information from JSON
+    NSArray *media          = [obj objectForKey:@"media"];
+    NSNumber *reviewsCount  = [obj objectForKey:@"commentsCount"];
     
     // Building image array
     BOOL isFirst = YES;
@@ -471,34 +507,15 @@
     }
     
     // Building the place data bean
-    [event setKey:itemKey];
-    [event setName:name];
-    [event setDistance:distance];
-    [event setRawDistance:[rawDistance doubleValue]];
-    NSDate *startDate = [[NSDate alloc] initWithTimeIntervalSince1970:[startTime longValue]];
-    NSDate *endDate = [[NSDate alloc] initWithTimeIntervalSince1970:[endTime longValue]];
-    [event setStartDate:startDate];
-    [event setEndDate:endDate];
     [event setReviewsCount:[reviewsCount intValue]];
-    [event setLikeCount:[participants intValue]];
-    if(place != nil && place!=(id)[NSNull null]) {
-        Place *p = [self convertJsonPlaceToPlace:place];
-        if([[p.key substringToIndex:4] isEqualToString:@"CITY"]) {
-            p.key = nil;
-        }
-        [event setPlace:p];
-    }
     
     NSString *description = [obj objectForKey:@"description"];
     [event setMiniDesc:description];
     
     // Likes management
-
     NSArray *jsonLikeUsers  = [obj objectForKey:@"likeUsers"];
     NSNumber *liked         = [obj objectForKey:@"liked"];
     [event setIsLiked:[liked boolValue]];
-    NSNumber *likeCount     = [obj objectForKey:@"likes"];
-    [event setLikeCount:MAX([likeCount integerValue],[participants integerValue])];
     [event.likers removeAllObjects];
     for(NSDictionary *jsonUser in jsonLikeUsers) {
         // Building User bean (liked user) from JSON
@@ -618,7 +635,7 @@
     // Injecting events
     [user.events removeAllObjects];
     for(NSDictionary *jsonEvent in jsonEvents) {
-        Event *event = [self convertJsonEventToEvent:jsonEvent defaultEvent:nil];
+        Event *event = [self convertJsonLightEventToEvent:jsonEvent defaultEvent:nil];
         [user.events addObject:event];
     }
     

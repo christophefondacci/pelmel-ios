@@ -82,7 +82,6 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 @property (strong, nonatomic) ImageService *imageService;
 @property (strong, nonatomic) MessageService *messageService;
 @property (strong, nonatomic) JsonService *jsonService;
-@property (strong, nonatomic) id<CacheService> cacheService;
 @property (strong, nonatomic) AFNetworkReachabilityManager *reachabilityManager;
 @property (strong) ModelHolder *modelHolder;
 @property (nonatomic) double currentRadius;
