@@ -47,13 +47,14 @@ static NSMutableDictionary *_editorsKeyMap;
     PMLPopupEditor *editor = [_editorsKeyMap objectForKey:editedObject.key];
     if(editor == nil ) {
         editor = [[PMLPopupEditor alloc] init];
+        if(editedObject.key != nil) {
+            [_editorsKeyMap setObject:editor forKey:editedObject.key];
+        }
     }
     editor.editedObject = editedObject;
 //    editor.mapAnnotation = annotation;
     editor.mapViewController = mapViewController;
-    if(editedObject.key != nil) {
-        [_editorsKeyMap setObject:editor forKey:editedObject.key];
-    }
+
     return editor;
 }
 
@@ -104,17 +105,17 @@ static NSMutableDictionary *_editorsKeyMap;
 -(void)endEdition {
     // Removing edited object from map view controller
     self.mapViewController.editedObject = nil;
-    // Purging editor
-    if(self.editedObject.key != nil) {
-        [_editorsKeyMap removeObjectForKey:self.editedObject.key];
-        [self.mapViewController reselectPlace:(Place*)self.editedObject];
-    }
+
     // Cleanup and setting new state
     self.editing = NO;
     [_cancelActions removeAllObjects];
     [_confirmActions removeAllObjects];
     self.editedObject.editing = NO;
-
+    // Purging editor
+    if(self.editedObject.key != nil) {
+        [_editorsKeyMap removeObjectForKey:self.editedObject.key];
+        [self.mapViewController reselectPlace:(Place*)self.editedObject];
+    }
     
 //    if(!_mapEdition) {
 //        [self.mapViewController.popupController refreshActions];

@@ -23,7 +23,7 @@
 
 @property (nonatomic,retain) PMLMapPopupViewController *popupController;
 @property (nonatomic,retain) PMLMenuManagerController *menuManagerController;
-@property (nonatomic,retain) PMLPopupEditor *currentEditor;
+//@property (nonatomic,retain) PMLPopupEditor *currentEditor;
 
 /**
  * Instantiates a new action manager using the specified popup controller.

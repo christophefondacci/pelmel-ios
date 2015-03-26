@@ -202,7 +202,7 @@
 }
 -(void)didLooseConnection {
     [_menuController.menuManagerDelegate loadingEnd];
-    [_menuController setWarningMessage:NSLocalizedString(@"network.error",@"network.error") color:UIColorFromRGBAlpha(0xe11d21, 1) animated:YES duration:0];
+    [_menuController setWarningMessage:NSLocalizedString(@"network.error",@"network.error") color:UIColorFromRGBAlpha(0xe11d21, 1) animated:YES duration:3];
     _deviceConnected = NO;
 }
 

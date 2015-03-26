@@ -1790,9 +1790,9 @@ typedef enum {
 #pragma mark - NavBar management
 - (void)installNavBarEdit {
 
-    if(_actionManager.currentEditor.editing) {
-        [self installNavBarCommitCancel];
-    } else {
+//    if(_actionManager.currentEditor.editing) {
+//        [self installNavBarCommitCancel];
+//    } else {
         // Info provider informs us whether edit is supported or not by providing the actual edit implementation
         if([_infoProvider respondsToSelector:@selector(editActionType)]) {
             PMLActionType editType = [_infoProvider editActionType];
@@ -1807,7 +1807,7 @@ typedef enum {
         } else {
             self.navigationItem.rightBarButtonItem = nil;
         }
-    }
+//    }
 }
 -(void) installNavBarCommitCancel {
     UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarActionTapped:)];

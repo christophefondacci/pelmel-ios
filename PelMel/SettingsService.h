@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "PlaceType.h"
-
+#import "Place.h"
 @class ConversionService;
 
 @class CALObject;
@@ -79,5 +79,8 @@ typedef enum {
  * Sets the given filter enablement
  */
 - (void)enableFilter:(FilterCode)setting enablement:(BOOL)enabled;
-
+/** 
+ * Returns whether checkin is allowed for the given place
+ */
+-(BOOL)isCheckinEnabledFor:(Place*)place;
 @end

@@ -9,6 +9,8 @@
 #ifndef togayther_Constants_h
 #define togayther_Constants_h
 
+#define PML_CHECKIN_DISTANCE 1500
+
 #define PML_PROP_PUSH_ENABLED @"pushEnabled"
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
 

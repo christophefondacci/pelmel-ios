@@ -126,7 +126,6 @@
         _currentObject = currentObject;
         _menuManagerController = [[TogaytherService uiService] menuManagerController];
         _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
-        _currentEditor = [PMLPopupEditor editorFor:_currentObject on:(MapViewController*)_menuManagerController.rootViewController];
     }
     return self;
 }
@@ -255,7 +254,8 @@
     
     _confirmAction = [[PopupAction alloc] initWithAngle:kPMLConfirmAngle distance:kPMLConfirmDistance icon:[UIImage imageNamed:@"popActionCheck"] titleCode:nil size:kPMLConfirmSize command:^{
         NSLog(@"Confirm");
-        [_currentEditor commit];
+        
+        [[self popupEditor] commit];
     }];
     _confirmAction.color = UIColorFromRGB(kPMLConfirmColor);
     [self registerAction:_confirmAction forType:PMLActionTypeConfirm];
@@ -286,7 +286,7 @@
     [self registerAction:_reportForDeletionAction forType:PMLActionTypeReportForDeletion];
     _cancelAction = [[PopupAction alloc] initWithAngle:kPMLCancelAngle distance:kPMLCancelDistance icon:[UIImage imageNamed:@"popActionCancel"] titleCode:nil size:kPMLCancelSize command:^{
         NSLog(@"Cancel");
-        [_currentEditor cancel];
+        [[self popupEditor] cancel];
         if(_navbarEdit) {
 //            [self installNavBarEdit:_menuManagerController];
         }
@@ -294,6 +294,10 @@
     _cancelAction.color = UIColorFromRGB(kPMLCancelColor);
     [self registerAction:_cancelAction forType:PMLActionTypeCancel];
     
+}
+
+-(PMLPopupEditor*)popupEditor {
+    return [PMLPopupEditor editorFor:_currentObject on:(MapViewController*)[[TogaytherService uiService] menuManagerController].rootViewController];
 }
 -(void) likeAction {
     if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
@@ -314,12 +318,12 @@
     _popupController = popupController;
     _currentObject = object;
     // Setting editor that handles history of changes
-    if(annotation.popupEditor!=nil) {
-        _currentEditor = annotation.popupEditor;
-    } else {
-        _currentEditor = [PMLPopupEditor editorFor:_currentObject on:popupController.controller];
+//    if(annotation.popupEditor!=nil) {
+//        _currentEditor = annotation.popupEditor;
+//    } else {
+        PMLPopupEditor *_currentEditor = [PMLPopupEditor editorFor:_currentObject on:popupController.controller];
         annotation.popupEditor = _currentEditor;
-    }
+//    }
     _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
     
     // Preparing list of actions
@@ -511,7 +515,7 @@
             ((Place*)_currentObject).editing = NO;
 //            [self uninstallNavBarCommitCancel];
         };
-        [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
+        [[self popupEditor] startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
     }
 }
 -(void)editDescription {
@@ -581,7 +585,7 @@
         _currentObject.editingDesc = NO;
 //        [self uninstallNavBarCommitCancel];
     };
-    [_currentEditor startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
+    [[self popupEditor] startEditionWith:commitAction cancelledBy:cancelAction mapEdition:NO];
 
 }
 -(void)editLocation
@@ -603,12 +607,13 @@
         
     };
     // Starting new edition
-    [_currentEditor startEditionWith:nil cancelledBy:cancelAction mapEdition:YES];
+    [[self popupEditor] startEditionWith:nil cancelledBy:cancelAction mapEdition:YES];
 }
 -(void)editToMyLocation {
     CLLocationCoordinate2D coords;
     NSString *title;
     NSString *msg;
+    EditionAction cancelAction = nil;
     if(_dataService.modelHolder.userLocation != nil) {
         coords = _dataService.modelHolder.userLocation.coordinate;
         title =  NSLocalizedString(@"action.edit.mylocation.title", @"action.edit.mylocation.title");
@@ -623,7 +628,7 @@
         }
         __block CALObject *obj = _currentObject;
         // Preparing cancel action
-        EditionAction cancelAction = ^{
+        cancelAction = ^{
             obj.lat=oldLat;
             obj.lng=oldLng;
             if([obj isKindOfClass:[Place class]]) {
@@ -638,8 +643,9 @@
         [conversionService geocodeAddressFor:_currentObject completion:^(NSString *address) {
             ((Place*)_currentObject).address = address;
         }];
+
         // Starting new edition
-        [_currentEditor startEditionWith:nil cancelledBy:cancelAction mapEdition:YES];
+        [[self popupEditor] startEditionWith:nil cancelledBy:cancelAction mapEdition:YES];
 
     } else {
         title =  NSLocalizedString(@"action.edit.mylocation.fail.title", @"action.edit.mylocation.fail.title");
@@ -650,6 +656,7 @@
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:nil otherButtonTitles:@"Ok",nil];
     [alert show];
+
 }
 
 -(void)editHours {
@@ -729,28 +736,11 @@
     return saveAction;
 }
 
-
-//-(void)navbarCommitTapped:(id)source {
-//    PopupAction *action = [self actionForType:PMLActionTypeConfirm];
-//    action.actionCommand();
-//}
-//-(void)navbarCancelTapped:(id)source {
-//    PopupAction *action = [self actionForType:PMLActionTypeCancel];
-//    action.actionCommand();
-//}
 #pragma mark - PMLDataListener
 - (void)didLoadOverviewData:(CALObject *)object {
     if([object.key isEqualToString:_currentObject.key]) {
-//        [self.popupController updateBadgeFor:_likeAction with:(int)object.likeCount];
         [self updateBadge];
     }
-//    if([object.key isEqualToString:_currentObject.key]) {
-//        // Building additional actions
-//        NSArray *actions = [self buildLikeActions:object];
-//        
-//        // Adding like actions
-//        [_popupController buildActions:actions];
-//    }
 }
 #pragma mark - KVO Observing
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

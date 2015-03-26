@@ -59,10 +59,19 @@
                 containerView.layer.borderColor = [[UIColor colorWithWhite:1 alpha:0.3] CGColor];
                 containerView.layer.cornerRadius = 5;
                 containerView.layer.masksToBounds = YES;
+            } else {
+                UIView *containerView  = [self containerViewAtIndex:i];
+                containerView.backgroundColor = [UIColor clearColor];
+                containerView.layer.borderWidth=0;
+                containerView.layer.borderColor=[[UIColor clearColor] CGColor];
             }
 
         } else {
             imageView.image = nil;
+            UIView *containerView  = [self containerViewAtIndex:i];
+            containerView.backgroundColor = [UIColor clearColor];
+            containerView.layer.borderWidth=0;
+            containerView.layer.borderColor=[[UIColor clearColor] CGColor];
         }
         
         UILabel *actionLabel = [self actionLabelAtIndex:i];

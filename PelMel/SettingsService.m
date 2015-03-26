@@ -235,4 +235,8 @@
     _leftHandedMode = leftHandedMode;
     [_defaults setObject:[NSNumber numberWithBool:leftHandedMode] forKey:PML_PROP_LEFTHANDED];
 }
+
+- (BOOL)isCheckinEnabledFor:(id)place {
+    return [_conversionService numericDistanceTo:place] <= PML_CHECKIN_DISTANCE;
+}
 @end

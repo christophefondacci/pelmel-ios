@@ -20,6 +20,7 @@
     
     // Services
     ConversionService *_conversionService;
+    SettingsService *_settingsService;
     UIService *_uiService;
     
     // Parent controller
@@ -47,6 +48,7 @@
         _place = place;
         _uiService = TogaytherService.uiService;
         _conversionService = [TogaytherService getConversionService];
+        _settingsService = [TogaytherService settingsService];
         [self configureOpening];
         [self configureAddress];
         _initWithOverviewAvailable = _place.hasOverviewData;
@@ -359,7 +361,11 @@
         case kPMLCounterIndexLike:
             return [_uiService localizedString:@"counters.likes" forCount:_place.likeCount];
         case kPMLCounterIndexCheckin:
-            return [_uiService localizedString:@"counters.checkins" forCount:_place.inUserCount];
+            if([_settingsService isCheckinEnabledFor:_place]) {
+                return [_uiService localizedString:@"counters.checkins" forCount:_place.inUserCount];
+            } else {
+                return nil;
+            }
         case kPMLCounterIndexComment:
             return [_uiService localizedString:@"counters.comments" forCount:_place.reviewsCount];
     }
@@ -370,7 +376,11 @@
         case kPMLCounterIndexLike:
             return PMLActionTypeLike;
         case kPMLCounterIndexCheckin:
-            return PMLActionTypeCheckin;
+            if([_settingsService isCheckinEnabledFor:_place]) {
+                return PMLActionTypeCheckin;
+            } else {
+                return PMLActionTypeNoAction;
+            }
         case kPMLCounterIndexComment:
             return PMLActionTypeComment;
     }
@@ -404,7 +414,11 @@
             code = _place.isLiked ? @"action.unlike" : @"action.like";
             break;
         case kPMLCounterIndexCheckin:
-            code = [self isCheckedIn] ? @"action.checkout" : @"action.checkin";
+            if([_settingsService isCheckinEnabledFor:_place]) {
+                code = [self isCheckedIn] ? @"action.checkout" : @"action.checkin";
+            } else {
+                return nil;
+            }
             break;
         case kPMLCounterIndexComment:
             code= @"action.comment";
@@ -423,7 +437,11 @@
         case kPMLCounterIndexLike:
             return _place.isLiked;
         case kPMLCounterIndexCheckin:
-            return [self isCheckedIn];
+            if([_settingsService isCheckinEnabledFor:_place]) {
+                return [self isCheckedIn];
+            } else {
+                return NO;
+            }
         case kPMLCounterIndexComment:
             // TODO return selected when messages with user
             return NO;
