@@ -525,22 +525,15 @@
             // Looking for opening hours
             if([object isKindOfClass:[Place class]]) {
                 Place *p = (Place*)object;
-                for(PMLCalendar *special in p.hours) {
-                    if([special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
-                        // As soon as we have hours, we set it disabled
-                        markerImage = offMarkerImage;
-                        // And we re-enable it only if current opening hours
-                        if([_conversionService specialModeFor:special] == CURRENT) {
-                            markerImage = onMarkerImage;
-                            // And we exit we don't need to process anything else
-                            break;
-                        }
-                    }
+                if([_conversionService calendarType:SPECIAL_TYPE_OPENING isCurrentFor:p noDataResult:YES]) {
+                    markerImage = onMarkerImage;
+                } else {
+                    markerImage = offMarkerImage;
                 }
-                // If closed we gray the image
-                if(p.closedReportsCount>0) {
-                    markerImage = [_uiService mapMarkerFor:object enabled:NO];
-                }
+// If closed we gray the image
+//                if(p.closedReportsCount>0) {
+//                    markerImage = [_uiService mapMarkerFor:object enabled:NO];
+//                }
             }
 
             placeAnnotation.imageCenterOffset = [_uiService mapMarkerCenterOffsetFor:object];

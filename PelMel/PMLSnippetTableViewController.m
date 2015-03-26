@@ -1206,7 +1206,10 @@ typedef enum {
     }
     cell.locationIcon.image = [provider subtitleIcon];
     cell.locationLabel.text = [provider subtitle];
-    if([provider likesCount]>0) {
+    if([provider checkinsCount]>0) {
+        cell.countLabel.text = [_uiService localizedString:@"counters.arehere" forCount:[provider checkinsCount]];
+        cell.countIcon.image=[UIImage imageNamed:@"snpIconEvent"];
+    } else if([provider likesCount]>0) {
         cell.countLabel.text = [_uiService localizedString:@"counters.likes" forCount:[provider likesCount]];
         cell.countIcon.image=[UIImage imageNamed:@"snpIconLike"];
     } else {

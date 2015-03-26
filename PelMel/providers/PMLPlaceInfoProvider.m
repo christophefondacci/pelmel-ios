@@ -134,7 +134,7 @@
 }
 // Number of checkins (if applicable)
 -(NSInteger)checkinsCount {
-    return _place.inUsers.count;
+    return _place.inUserCount;
 }
 // Description of elements
 -(NSString*)descriptionText {

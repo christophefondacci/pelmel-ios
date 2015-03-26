@@ -49,7 +49,15 @@ typedef void(^AddressClosure)(NSString*address);
  * Converts the special object into a real-time information about whether it is past, present or future
  */
 -(SpecialMode)specialModeFor:(PMLCalendar*)special;
--(PMLCalendar*)specialFor:(CALObject*)place ofType:(NSString *)specialType;
+/**
+ * Informs whether the specified calendar type is "CURRENT" (meaning happening right now) for the 
+ * given place. The default value is the returned result when no hour definition exists for the
+ * given calendar type.
+ * @param calendarType the calendarType to check (OPENING, HAPPY, THEME, etc. use constants)
+ * @param place the place to process
+ * @param defaultResult the default result when no definition exists for the specified calendar type
+ */
+-(BOOL)calendarType:(NSString*)calendarType isCurrentFor:(Place*)place noDataResult:(BOOL)defaultResult;
 
 /**
  * Converts a calendar definition into a human readable string

@@ -158,15 +158,11 @@
 }
 
 -(BOOL)isOpened:(Place*)place {
-//    NSObject<PMLInfoProvider> *provider = [_uiService infoProviderFor:place];
-    PMLCalendar *special = [_conversionService specialFor:place ofType:SPECIAL_TYPE_OPENING];
-    SpecialMode mode = [_conversionService specialModeFor:special];
-    return mode == CURRENT;
+    return [_conversionService calendarType:SPECIAL_TYPE_OPENING isCurrentFor:place noDataResult:NO];
 }
+
 -(BOOL)isHappyHour:(Place*)place {
-    PMLCalendar *special = [_conversionService specialFor:place ofType:SPECIAL_TYPE_HAPPY];
-    SpecialMode mode = [_conversionService specialModeFor:special];
-    return mode == CURRENT;
+    return [_conversionService calendarType:SPECIAL_TYPE_HAPPY isCurrentFor:place noDataResult:NO];
 }
 -(BOOL)hasEvent:(Place*)place {
     if(place.events.count>0) {

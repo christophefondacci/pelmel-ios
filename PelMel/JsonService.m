@@ -444,7 +444,13 @@
     // Building JSON event
     Event *event = [_objectCache objectForKey:cacheKey];
     if(event == nil) {
-        event = defaultEvent == nil ? [[Event alloc] init] : defaultEvent;
+        if([itemKey hasPrefix:@"EVNT"]) {
+            event = defaultEvent == nil ? [[Event alloc] init] : defaultEvent;
+        } else {
+            event = defaultEvent == nil ? [[PMLCalendar alloc] init] : defaultEvent;
+            NSString *calendarType = [obj objectForKey:@"calendarType"];
+            ((PMLCalendar*)event).calendarType = calendarType;
+        }
         [_objectCache setObject:event forKey:cacheKey];
     }
 
@@ -628,7 +634,7 @@
         // Adding this place to our thumbs download list
         [thumbsToDownload addObject:place];
         
-        // Adding this liked place
+        // Adding this checkin place
         [user.checkedInPlaces addObject:place];
     }
     

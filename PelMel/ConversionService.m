@@ -149,17 +149,21 @@
         return SOON;
     }
 }
--(PMLCalendar*)specialFor:(CALObject*)place ofType:(NSString *)specialType{
-    PMLCalendar *bestSpecial = nil;
-    if([place isKindOfClass:[Place class]]) {
-        NSArray *specials = ((Place*)place).hours;
-        for(PMLCalendar *special in specials) {
-            if([special.calendarType isEqualToString:specialType]) {
-                bestSpecial = special;
+-(BOOL)calendarType:(NSString*)calendarType isCurrentFor:(Place*)place noDataResult:(BOOL)defaultResult {
+    BOOL hasData = NO;
+    for(PMLCalendar *calendar in place.hours) {
+        if([calendar.calendarType isEqualToString:calendarType]) {
+            hasData = YES;
+            // Get the current mode PAST, CURRENT or SOON
+            SpecialMode mode = [self specialModeFor:calendar];
+            if(mode == CURRENT) {
+                // It is current, we found it!
+                return YES;
             }
         }
     }
-    return bestSpecial;
+    // If no data found for this type, we return default result, otherwise false
+    return hasData ? NO : defaultResult;
 }
 -(NSString *)stringFromCalendar:(PMLCalendar *)calendar {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
