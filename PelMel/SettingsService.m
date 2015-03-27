@@ -236,7 +236,17 @@
     [_defaults setObject:[NSNumber numberWithBool:leftHandedMode] forKey:PML_PROP_LEFTHANDED];
 }
 
-- (BOOL)isCheckinEnabledFor:(id)place {
-    return [_conversionService numericDistanceTo:place] <= PML_CHECKIN_DISTANCE;
+- (BOOL)isCheckinEnabledFor:(CALObject*)object {
+    if([object isKindOfClass:[Place class]]) {
+        return [_conversionService numericDistanceTo:(Place*)object] <= PML_CHECKIN_DISTANCE;
+    } else if([object isKindOfClass:[Event class]]) {
+        // If it is an event, checkin is enabled if the event is started and not yet over
+        Event *event = (Event*)object;
+        if([_conversionService eventStartStateFor:event] == PMLEventStateCurrent) {
+            // And if we are close enough to the place of this event
+            return [self isCheckinEnabledFor:event.place];
+        }
+    }
+    return NO;
 }
 @end

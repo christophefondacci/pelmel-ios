@@ -98,4 +98,9 @@ typedef void(^Completor)(id obj);
  */
 -(void)likeStatistics:(Completor)completion failure:(Completor)failure;
 
+/**
+ * Tells whether current user is checked in at the given place
+ */
+-(BOOL)isCheckedInAt:(Place*)place;
+
 @end

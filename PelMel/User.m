@@ -11,8 +11,6 @@
 
 @implementation User
 
-@synthesize pseudo = _pseudo;
-@synthesize lastLocationDate = _lastLocationDate;
 
 - (id)init {
     self = [super init];

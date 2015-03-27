@@ -137,16 +137,16 @@
 /**
  * Informs whether the special is currently valid or not
  */
--(SpecialMode) specialModeFor:(PMLCalendar*)special {
+-(PMLEventState) eventStartStateFor:(Event*)special {
     NSDate *date = [NSDate date];
     if(([special.startDate compare:special.endDate] == NSOrderedDescending ||[date compare:special.startDate] == NSOrderedDescending)) {
         if([date compare:special.endDate] == NSOrderedAscending) {
-            return CURRENT;
+            return PMLEventStateCurrent;
         } else {
-            return PAST;
+            return PMLEventStatePast;
         }
     } else {
-        return SOON;
+        return PMLEventStateSoon;
     }
 }
 -(BOOL)calendarType:(NSString*)calendarType isCurrentFor:(Place*)place noDataResult:(BOOL)defaultResult {
@@ -155,8 +155,8 @@
         if([calendar.calendarType isEqualToString:calendarType]) {
             hasData = YES;
             // Get the current mode PAST, CURRENT or SOON
-            SpecialMode mode = [self specialModeFor:calendar];
-            if(mode == CURRENT) {
+            PMLEventState mode = [self eventStartStateFor:calendar];
+            if(mode == PMLEventStateCurrent) {
                 // It is current, we found it!
                 return YES;
             }

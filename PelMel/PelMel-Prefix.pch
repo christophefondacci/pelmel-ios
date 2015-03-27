@@ -31,6 +31,7 @@
 #define PML_ICON_CHECKIN @"ovvIconCheckinWhite"
 #define PML_ICON_COMMENT @"ovvIconCommentWhite"
 
+#define PML_CHECKIN_SECONDS 10800 
 
 #import "Constants.h"
 

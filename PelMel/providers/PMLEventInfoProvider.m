@@ -195,18 +195,31 @@
         case kPMLCounterIndexLike:
             return [_uiService localizedString:@"counters.arein" forCount:_event.likeCount];
         case kPMLCounterIndexCheckin:
-            return nil;
+            if([self checkinEnabled]) {
+                return [_uiService localizedString:@"counters.checkins" forCount:_event.place.inUserCount];
+            } else {
+                return nil;
+            }
+            break;
         case kPMLCounterIndexComment:
             return [_uiService localizedString:@"counters.comments" forCount:_event.reviewsCount];
     }
     return nil;
 }
+
+-(BOOL)checkinEnabled {
+    return [self isCheckedIn] || [[TogaytherService settingsService] isCheckinEnabledFor:_event];
+}
+-(BOOL)isCheckedIn {
+    return [[TogaytherService userService] isCheckedInAt:_event.place];
+}
+
 - (PMLActionType)counterActionAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:
             return PMLActionTypeAttend;
         case kPMLCounterIndexCheckin:
-            return PMLActionTypeNoAction;
+            return [self checkinEnabled] ? PMLActionTypeCheckin : PMLActionTypeNoAction;
         case kPMLCounterIndexComment:
             return PMLActionTypeComment;
     }
@@ -219,7 +232,11 @@
             code = _event.isLiked ? @"action.attend.cancel" : @"action.attend";
             break;
         case kPMLCounterIndexCheckin:
-            code = nil;
+            if([self checkinEnabled]) {
+                code = [self isCheckedIn] ? @"action.checkout" : @"action.checkin";
+            } else {
+                return nil;
+            }
             break;
         case kPMLCounterIndexComment:
             code= @"action.comment";
@@ -234,7 +251,7 @@
         case kPMLCounterIndexLike:
             return _event.isLiked;
         case kPMLCounterIndexCheckin:
-            return NO;
+            return [self isCheckedIn];
         case kPMLCounterIndexComment:
             // TODO return selected when messages with user
             return NO;

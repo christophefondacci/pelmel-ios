@@ -14,8 +14,8 @@
 #import <CoreLocation/CoreLocation.h>
 
 typedef enum {
-    CURRENT, SOON, PAST
-} SpecialMode;
+    PMLEventStateCurrent, PMLEventStateSoon, PMLEventStatePast
+} PMLEventState;
 
 typedef void(^AddressClosure)(NSString*address);
 
@@ -46,9 +46,11 @@ typedef void(^AddressClosure)(NSString*address);
 -(void)geocodeAddressFor:(CALObject*)object completion:(AddressClosure)closure;
 
 /**
- * Converts the special object into a real-time information about whether it is past, present or future
+ * Computes real-time information about whether an event is past, present or future
+ * @param event the Event to compute (start/end dates against current time)
+ * @return a PMLEventState constant indicating whether it is PAST, CURRENT, or SOON
  */
--(SpecialMode)specialModeFor:(PMLCalendar*)special;
+-(PMLEventState)eventStartStateFor:(Event*)event;
 /**
  * Informs whether the specified calendar type is "CURRENT" (meaning happening right now) for the 
  * given place. The default value is the returned result when no hour definition exists for the

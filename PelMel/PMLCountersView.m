@@ -140,9 +140,10 @@
         PMLActionType action = [_datasource counterActionAtIndex:index];
         switch(action) {
             case PMLActionTypeCheckin:
+                return @"ovvIconCheckinWhite";
             case PMLActionTypeAttend:
             case PMLActionTypeAttendCancel:
-                return @"ovvIconCheckinWhite";
+                return @"snpIconEvent";
             case PMLActionTypeComment:
                 return @"ovvIconCommentWhite";
             case PMLActionTypeLike:

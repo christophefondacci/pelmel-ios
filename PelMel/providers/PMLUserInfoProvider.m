@@ -20,6 +20,7 @@
     User *_user;
     ItemsThumbPreviewProvider *_thumbsProvider;
     UIService *_uiService;
+    UserService *_userService;
     PMLUserActionsView *_actionsView;
     PMLSnippetTableViewController *_snippetController;
     PMLPopupActionManager *_actionManager;
@@ -31,7 +32,8 @@
     self = [super init];
     if (self) {
         _user = user;
-        _uiService = TogaytherService.uiService;
+        _uiService = [TogaytherService uiService];
+        _userService = [TogaytherService userService];
         _likeableDelegate = [[LikeableStrategyObjectWithLiked alloc] init];
     }
     return self;
@@ -356,9 +358,9 @@
 }
 -(CALObject *)mapObjectForLocalization {
     if(_user.lastLocation!=nil) {
-        NSTimeInterval locationLastTime =_user.lastLocationDate.timeIntervalSince1970;
-        NSTimeInterval checkinTimeout = [[NSDate new] timeIntervalSince1970]-10800;
-        return locationLastTime > checkinTimeout   ? _user.lastLocation : nil;
+        if([_userService isCheckedInAt:_user.lastLocation]) {
+            return _user.lastLocation;
+        }
     }
     return nil;
 }

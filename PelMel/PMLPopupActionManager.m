@@ -168,18 +168,27 @@
         if(_currentObject.key != nil) {
             [_menuManagerController.menuManagerDelegate loadingStart];
             
-            // Are we checked in here?
-            CurrentUser *user = [_userService getCurrentUser];
-            if([user.lastLocation.key isEqualToString:_currentObject.key]) {
-                [_userService checkout:_currentObject completion:^(id obj) {
-                    [_menuManagerController.menuManagerDelegate loadingEnd];
-                    [self updateBadge];
-                }];
-            } else {
-                [_userService checkin:_currentObject completion:^(id obj) {
-                    [_menuManagerController.menuManagerDelegate loadingEnd];
-                    [self updateBadge];
-                }];
+            // Get the checkin object
+            Place *checkinObj = nil;
+            if([_currentObject isKindOfClass:[Place class]]) {
+                checkinObj = (Place*)_currentObject;
+            } else if([_currentObject isKindOfClass:[Event class]]) {
+                checkinObj = ((Event*)_currentObject).place;
+            }
+            
+            if(checkinObj != nil) {
+                // Are we checked in here?
+                if([_userService isCheckedInAt:checkinObj ]) {
+                    [_userService checkout:checkinObj completion:^(id obj) {
+                        [_menuManagerController.menuManagerDelegate loadingEnd];
+                        [self updateBadge];
+                    }];
+                } else {
+                    [_userService checkin:checkinObj completion:^(id obj) {
+                        [_menuManagerController.menuManagerDelegate loadingEnd];
+                        [self updateBadge];
+                    }];
+                }
             }
         }
     }];

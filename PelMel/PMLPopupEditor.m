@@ -16,6 +16,7 @@
 
 // A static map of all current editors
 static NSMutableDictionary *_editorsKeyMap;
+static PMLPopupEditor *_newObjectEditor;
 
 @implementation PMLPopupEditor {
     NSMutableArray *_confirmActions;
@@ -44,11 +45,18 @@ static NSMutableDictionary *_editorsKeyMap;
     return self;
 }
 + (instancetype)editorFor:(CALObject *)editedObject on:(MapViewController *)mapViewController {
-    PMLPopupEditor *editor = [_editorsKeyMap objectForKey:editedObject.key];
+    PMLPopupEditor *editor = nil;
+    if(editedObject.key != nil) {
+        editor = [_editorsKeyMap objectForKey:editedObject.key];
+    } else {
+        editor = _newObjectEditor;
+    }
     if(editor == nil ) {
         editor = [[PMLPopupEditor alloc] init];
         if(editedObject.key != nil) {
             [_editorsKeyMap setObject:editor forKey:editedObject.key];
+        } else {
+            _newObjectEditor = editor;
         }
     }
     editor.editedObject = editedObject;
@@ -116,10 +124,7 @@ static NSMutableDictionary *_editorsKeyMap;
         [_editorsKeyMap removeObjectForKey:self.editedObject.key];
         [self.mapViewController reselectPlace:(Place*)self.editedObject];
     }
-    
-//    if(!_mapEdition) {
-//        [self.mapViewController.popupController refreshActions];
-//    }
+    _newObjectEditor = nil;
 }
 
 - (void)startEditionWith:(EditionAction)commitAction cancelledBy:(EditionAction)cancelAction mapEdition:(BOOL)mapEdition{

@@ -163,8 +163,8 @@
 }
 -(UIImage *)snippetRightIcon {
     if(_openingCalendar!=nil) {
-        switch([_conversionService specialModeFor:_openingCalendar]) {
-            case CURRENT:
+        switch([_conversionService eventStartStateFor:_openingCalendar]) {
+            case PMLEventStateCurrent:
                 return [UIImage imageNamed:@"ovvIconHours"];
             default:
                 return [UIImage imageNamed:@"ovvIconHoursClosed"];
@@ -177,10 +177,10 @@
     if(_openingCalendar != nil) {
         
         // If next end date is < to next start and is not yet
-        switch([_conversionService specialModeFor:_openingCalendar]) {
-            case CURRENT:
+        switch([_conversionService eventStartStateFor:_openingCalendar]) {
+            case PMLEventStateCurrent:
                 return NSLocalizedString(@"specials.opened", @"specials.opened");
-            case SOON:
+            case PMLEventStateSoon:
                 return NSLocalizedString(@"specials.closed", @"specials.closed");;
             default:
             return nil;
@@ -191,13 +191,13 @@
 }
 
 - (UIColor *)snippetRightColor {
-    switch([_conversionService specialModeFor:_openingCalendar]) {
-        case CURRENT:
+    switch([_conversionService eventStartStateFor:_openingCalendar]) {
+        case PMLEventStateCurrent:
         //            return UIColorFromRGB(0xa5d170);
         return UIColorFromRGB(0x72ff00);
-        case SOON:
+        case PMLEventStateSoon:
         return UIColorFromRGB(0xffbb56);
-        case PAST:
+        case PMLEventStatePast:
         return [UIColor clearColor]; //UIColorFromRGB(0xc5595d);
     }
 }
@@ -229,14 +229,14 @@
 - (NSString *)snippetRightTitleText {
     NSString *label = nil;
     if(_openingCalendar != nil) {
-        SpecialMode specialMode = [_conversionService specialModeFor:_openingCalendar];
+        PMLEventState specialMode = [_conversionService eventStartStateFor:_openingCalendar];
         switch(specialMode) {
-            case CURRENT: {
+            case PMLEventStateCurrent: {
                 NSString *deltaStr = [self getDeltaString:_openingCalendar.endDate];
                 label = [NSString stringWithFormat:NSLocalizedString(@"specials.open.leftHours",@"specials.open.leftHours"),deltaStr];
                 break;
             }
-            case SOON: {
+            case PMLEventStateSoon: {
                 label = NSLocalizedString(@"specials.open.in",@"specials.open.in");
                 NSString *deltaStr = [self getDeltaString:_openingCalendar.startDate];
                 label = [NSString stringWithFormat:@"%@ %@",label,deltaStr];
@@ -361,7 +361,7 @@
         case kPMLCounterIndexLike:
             return [_uiService localizedString:@"counters.likes" forCount:_place.likeCount];
         case kPMLCounterIndexCheckin:
-            if([_settingsService isCheckinEnabledFor:_place]) {
+            if([self isCheckinEnabled]) {
                 return [_uiService localizedString:@"counters.checkins" forCount:_place.inUserCount];
             } else {
                 return nil;
@@ -371,12 +371,15 @@
     }
     return nil;
 }
+-(BOOL)isCheckinEnabled {
+    return [self isCheckedIn] ||[_settingsService isCheckinEnabledFor:_place];
+}
 - (PMLActionType)counterActionAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:
             return PMLActionTypeLike;
         case kPMLCounterIndexCheckin:
-            if([_settingsService isCheckinEnabledFor:_place]) {
+            if([self isCheckinEnabled]) {
                 return PMLActionTypeCheckin;
             } else {
                 return PMLActionTypeNoAction;
@@ -387,16 +390,6 @@
     return PMLActionTypeNoAction;
 }
 - (UIColor *)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected {
-//    if(selected) {
-//        switch(index) {
-//            case kPMLCounterIndexLike:
-//            case kPMLCounterIndexCheckin:
-//                return UIColorFromRGB(0xffcc80);
-//            default:
-//                return [UIColor colorWithWhite:1 alpha:0.3];
-//
-//        }
-//    } else {
     if(!selected) {
         switch (index) {
             case kPMLCounterIndexLike:
@@ -405,7 +398,6 @@
         }
     }
     return [UIColor colorWithWhite:1 alpha:0.3];
-//    }
 }
 - (NSString *)counterActionLabelAtIndex:(NSInteger)index {
     NSString *code;
@@ -414,7 +406,7 @@
             code = _place.isLiked ? @"action.unlike" : @"action.like";
             break;
         case kPMLCounterIndexCheckin:
-            if([_settingsService isCheckinEnabledFor:_place]) {
+            if([self isCheckinEnabled]) {
                 code = [self isCheckedIn] ? @"action.checkout" : @"action.checkin";
             } else {
                 return nil;
@@ -429,19 +421,14 @@
     return nil;
 }
 -(BOOL)isCheckedIn {
-    CurrentUser *user=[[TogaytherService userService] getCurrentUser];
-    return [user.lastLocation.key isEqualToString:_place.key] && [user.lastLocationDate timeIntervalSinceNow]>-3600;
+    return [[TogaytherService userService] isCheckedInAt:_place];
 }
 - (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:
             return _place.isLiked;
         case kPMLCounterIndexCheckin:
-            if([_settingsService isCheckinEnabledFor:_place]) {
-                return [self isCheckedIn];
-            } else {
-                return NO;
-            }
+            return [self isCheckedIn];
         case kPMLCounterIndexComment:
             // TODO return selected when messages with user
             return NO;

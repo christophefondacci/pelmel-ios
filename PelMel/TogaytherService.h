@@ -45,8 +45,6 @@
 // Provides the Settings service
 + (SettingsService*)settingsService;
 
-+ (id<CacheService>)getCacheService;
-+ (id<CacheService>)getImageCache;
 
 + (MessageService*)getMessageService;
 + (void)applyCommonLookAndFeel:(UIViewController*)controller;

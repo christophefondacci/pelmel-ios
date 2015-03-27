@@ -82,5 +82,5 @@ typedef enum {
 /** 
  * Returns whether checkin is allowed for the given place
  */
--(BOOL)isCheckinEnabledFor:(Place*)place;
+-(BOOL)isCheckinEnabledFor:(CALObject*)place;
 @end
