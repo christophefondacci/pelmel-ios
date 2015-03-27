@@ -28,6 +28,7 @@
     
     NSMutableSet *listeners;
     NSUserDefaults *_defaults;
+    
 }
 
 - (id)init
@@ -109,6 +110,7 @@
     self.allFiltersActive &= ![self isFilterEnabled:PMLFilterHappyHours];
     self.allFiltersActive &= ![self isFilterEnabled:PMLFilterOpeningHours];
     self.allFiltersActive &= ![self isFilterEnabled:PMLFilterEvents];
+    self.allFiltersActive &= (_filterText==nil || [@"" isEqualToString:[_filterText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet] ]]);
 }
 -(BOOL)isPlaceTypeActive:(NSString*)code {
 
@@ -151,6 +153,14 @@
                 filtersActive = YES;
                 placeActive = [self hasCheckin:place];;
             }
+        }
+        
+        if((placeActive||!filtersActive) && _filterText !=nil && ![@"" isEqualToString:[self.filterText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]]) {
+            filtersActive=YES;
+            // Searching the text to match
+            NSRange range = [place.title rangeOfString:_filterText options:NSCaseInsensitiveSearch];
+            // If matched, we display this object
+            placeActive = (range.location != NSNotFound) ;
         }
     }
     // If nothing filtered, everything visible, else we check place type filter
@@ -248,5 +258,10 @@
         }
     }
     return NO;
+}
+
+- (void)setFilterText:(NSString *)filterText {
+    _filterText = filterText;
+    [self notifyFiltersChanged];
 }
 @end

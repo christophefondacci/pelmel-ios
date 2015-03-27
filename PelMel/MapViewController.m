@@ -589,6 +589,7 @@
         }
         _popupController = [[PMLMapPopupViewController alloc] initWithObject:mapAnnotation.object inParentView:view withController:self];
         [self.parentMenuController.view endEditing:YES];
+        [self.parentMenuController dismissSearch];
     }
 }
 

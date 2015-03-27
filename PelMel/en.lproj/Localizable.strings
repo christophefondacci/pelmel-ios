@@ -273,7 +273,11 @@ Then, we may use your localization when you are near a place so that we can expo
 
 Don't be scared, we only need an email, a password, a nickname and your birth date. Your email is only used as a unique identifier internally to our services and will never be exposed to anyone. We encourage you to never use your personal info as your nickname (like your name) but to instead use anything which cannot personally identify yourself.
 ";
-"search.placeholder"="Search a place or a city";
+"search.done.serverTitle"="Search worldwide?";
+"search.done.serverMsg"="Do you want to search for worldwide results or do you prefer to stay local on your current map?";
+"search.done.keep"="Local";
+"search.done.worldwide"="Worldwide";
+"search.placeholder"="Search a place, city, user";
 "settings.account.title"="My account";
 "settings.account.cell"="My profile";
 "settings.hd"="HD images";

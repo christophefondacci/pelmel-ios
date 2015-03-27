@@ -697,34 +697,35 @@ static void *MyParentMenuControllerKey;
 -(void)textFieldDidChange:(UITextField*)textField {
     NSString *searchText = textField.text;
     
-    if(searchText != nil) {
-        // Getting current provider
-        int matchCount = 0;
-        Place *lastMatchedPlace = nil;
-        for(Place *place in _dataService.modelHolder.allPlaces) {
-            // Getting object's title
-            NSString *title = place.title;
-            // Searching the text to match
-            if(searchText != nil && searchText.length>0 ) {
-                
-                NSRange range = [title rangeOfString:searchText options:NSCaseInsensitiveSearch];
-                // If matched, we display this object
-                if(range.location != NSNotFound) {
-                    matchCount++;
-                    lastMatchedPlace = place;
-                    [(MapViewController*)self.rootViewController show:place];
-                } else {
-                    [(MapViewController*)self.rootViewController hide:place];
-                }
-            } else {
-                [(MapViewController*)self.rootViewController show:place];
-            }
-        }
-        // Auto-selecting if only one match
-        if(matchCount == 1) {
-            [(MapViewController*)self.rootViewController selectCALObject:lastMatchedPlace withSnippet:YES];
-        }
-    }
+//    if(searchText != nil && ![@"" isEqualToString:[searchText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet] ]]) {
+        [[TogaytherService settingsService] setFilterText:searchText];
+//        // Getting current provider
+//        int matchCount = 0;
+//        Place *lastMatchedPlace = nil;
+//        for(Place *place in _dataService.modelHolder.allPlaces) {
+//            // Getting object's title
+//            NSString *title = place.title;
+//            // Searching the text to match
+//            if(searchText != nil && searchText.length>0 ) {
+//                
+//                NSRange range = [title rangeOfString:searchText options:NSCaseInsensitiveSearch];
+//                // If matched, we display this object
+//                if(range.location != NSNotFound) {
+//                    matchCount++;
+//                    lastMatchedPlace = place;
+//                    [(MapViewController*)self.rootViewController show:place];
+//                } else {
+//                    [(MapViewController*)self.rootViewController hide:place];
+//                }
+//            } else {
+//                [(MapViewController*)self.rootViewController show:place];
+//            }
+//        }
+//        // Auto-selecting if only one match
+//        if(matchCount == 1) {
+//            [(MapViewController*)self.rootViewController selectCALObject:lastMatchedPlace withSnippet:YES];
+//        }
+//    }
 }
 - (void) inputDone {
     // Retrieving text
@@ -740,12 +741,32 @@ static void *MyParentMenuControllerKey;
     }
 }
 - (void) searchInputDone {
+    // Computing how many results
+    int visibleCount = 0;
+    for(Place * place in _dataService.modelHolder.places) {
+        if([[TogaytherService settingsService] isVisible:place]) {
+            visibleCount++;
+            break;
+        }
+    }
+    
+    if(visibleCount>0) {
+        NSString *title = NSLocalizedString(@"search.done.serverTitle", @"Search worldwide?");
+        NSString *message = NSLocalizedString(@"search.done.serverMsg", @"Server search msg");;
+        NSString *worldwide = NSLocalizedString(@"search.done.worldwide", @"Worldwide");
+        NSString *keepMap = NSLocalizedString(@"search.done.keep", @"Keep this map");
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:nil otherButtonTitles:worldwide, keepMap, nil];
+        [alertView show];
+    } else {
+        [self searchWorldwide];
+    }
+}
+- (void)searchWorldwide {
     NSString *searchTerm = _mainNavBarView.searchTextField.text;
     [self dismissSearch];
+    [[TogaytherService settingsService] setFilterText:nil];
     ((MapViewController*)self.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
     [TogaytherService.dataService fetchPlacesFor:nil searchTerm:searchTerm];
-//    _mainNavBarView.searchTextField.text = nil;
-//    [self textFieldDidChange:_mainNavBarView.searchTextField];
 }
 -(void)inputButtonTapped:(id)sender {
     [self inputDone];
@@ -773,6 +794,14 @@ static void *MyParentMenuControllerKey;
     } completion:^(BOOL finished) {
         _mainNavBarView.cancelButton.hidden = YES;
     }];
+}
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if(buttonIndex == 0) {
+        [self searchWorldwide];
+    } else {
+        [self dismissSearch];
+    }
 }
 #pragma mark - Keyboard management
 - (void)registerForKeyboardNotifications

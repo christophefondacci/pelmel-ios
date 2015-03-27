@@ -102,7 +102,7 @@ typedef void(^TextInputCallback)(NSString *text);
  * The UIMenuManagerController is the container of view controllers and decorates
  * them with menu items and manages view apparitions and transitions
  */
-@interface PMLMenuManagerController : UIViewController <UIGestureRecognizerDelegate, UITextFieldDelegate>
+@interface PMLMenuManagerController : UIViewController <UIGestureRecognizerDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
 @property (nonatomic,strong) NSObject<PMLMenuManagerDelegate> *menuManagerDelegate;
 @property (nonatomic,strong) NSObject<PMLSnippetDelegate> *snippetDelegate;
@@ -156,6 +156,7 @@ typedef void(^TextInputCallback)(NSString *text);
  *          (like a user input dialog)
  */
 -(BOOL)dismissControllerSnippet;
+-(void)dismissSearch;
 //- (void)installNavigationFor:(UIViewController*)controller;
 //- (void)uninstallNavigation;
 /**

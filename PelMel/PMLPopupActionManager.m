@@ -771,6 +771,9 @@
     Place *place = (Place*)_currentObject;
     UITextField *textField = [_addressAlertView textFieldAtIndex:0];
     textField.text = place.address;
+    textField.clearButtonMode = UITextFieldViewModeAlways;
+
+//    textField.selectedTextRange paste:<#(id)#>]
     [_addressAlertView show];
 }
 #pragma mark - Dynamic actions generation
