@@ -233,7 +233,7 @@
         
         // Getting current map center coordinates
         CLLocationDistance distance = [self distanceFromCornerPoint];
-        int milesRadius = MIN(1500,distance/1609.344);
+        double milesRadius = distance/1609.344f;
 
         // No zoom, updating behind the scenes
         _zoomUpdateType = PMLZoomUpdateNone;
