@@ -117,15 +117,8 @@
         if(error == nil && placemarks.count>0) {
             // Getting first result
             CLPlacemark *placemark = placemarks[0];
+            NSString *address= [self addressFromPlacemark:placemark];
             
-            NSArray *addressLines = [placemark.addressDictionary objectForKey:@"FormattedAddressLines"];
-            NSMutableString *address = [[NSMutableString alloc ] init];
-            NSString *separator = @"";
-            for(NSString *addressLine in addressLines) {
-                [address appendString:separator];
-                [address appendString:addressLine];
-                separator = @", ";
-            }
             // Calling back
             if(closure != nil) {
                 closure(address);
@@ -133,6 +126,17 @@
         }
     }];
 
+}
+-(NSString*)addressFromPlacemark:(CLPlacemark*)placemark {
+    NSArray *addressLines = [placemark.addressDictionary objectForKey:@"FormattedAddressLines"];
+    NSMutableString *address = [[NSMutableString alloc ] init];
+    NSString *separator = @"";
+    for(NSString *addressLine in addressLines) {
+        [address appendString:separator];
+        [address appendString:addressLine];
+        separator = @", ";
+    }
+    return address;
 }
 /**
  * Informs whether the special is currently valid or not

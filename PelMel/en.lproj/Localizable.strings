@@ -21,6 +21,13 @@
 "action.checkout.feedbackTitle"="You checked out!";
 "action.checkout.feedbackMessage"="You checked out from %@, other users can no longer see that you are here!";
 "action.comment"="Comment";
+"action.edit.address.geocoding"="Geocoding address";
+"action.edit.address.geocodingFailedTitle"="Address not found";
+"action.edit.address.geocodingFailed"="We could not find this address or there was a problem when trying to geocode it. We kept the place at its previous map position, so you may want to check if it matches this address.";
+"action.edit.address.geocodingMovedPlace"="The address you provided is far away from the current location of the place. We moved the place to the address.";
+"action.edit.address.geocodingMovedPlaceTitle"="Place moved";
+"action.edit.address.title"="Address";
+"action.edit.address.message"="Enter the exact address here:";
 "action.edit.title"="Choose an item to edit";
 "action.edit.name"="Name / place type";
 "action.edit.description"="Description";

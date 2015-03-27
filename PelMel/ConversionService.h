@@ -44,7 +44,7 @@ typedef void(^AddressClosure)(NSString*address);
  * the resolved and formatted address.
  */
 -(void)geocodeAddressFor:(CALObject*)object completion:(AddressClosure)closure;
-
+-(NSString*)addressFromPlacemark:(CLPlacemark*)placemark;
 /**
  * Computes real-time information about whether an event is past, present or future
  * @param event the Event to compute (start/end dates against current time)

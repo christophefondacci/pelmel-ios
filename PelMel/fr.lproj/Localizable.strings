@@ -20,6 +20,9 @@
 "action.checkout.feedbackTitle"="Vous êtes parti!";
 "action.checkout.feedbackMessage"="Vous êtes parti de %@, plus personne ne peut voir que vous êtes là!";
 "action.comment"="Commenter";
+"action.edit.address.geocoding"="Geocodage de l'addresse";
+"action.edit.address.title"="Addresse";
+"action.edit.address.message"="Entrez l'adresse exacte ici:";
 "action.edit.title"="Information à modifier";
 "action.edit.name"="Nom / Type";
 "action.edit.description"="Description";

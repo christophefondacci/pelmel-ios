@@ -17,7 +17,7 @@
 #import "PMLCalendarTableViewController.h"
 #import "PMLCalendarEditorTableViewController.h"
 #import "PMLEventTableViewController.h"
-
+#import <MBProgressHUD.h>
 
 #define kPMLLikeDistance 32.0
 #define kPMLLikeSize 60.0
@@ -84,6 +84,7 @@
     PopupAction *_checkinAction;
     PopupAction *_likeAction;
     PopupAction *_modifyAction;
+    PopupAction *_editAddressAction;
     PopupAction *_photoAction;
     PopupAction *_commentAction;
     PopupAction *_reportAction;
@@ -97,12 +98,14 @@
     UIActionSheet *_eventEditActionSheet;
     UIActionSheet *_relocationConfirmActionSheet;
     UIActionSheet *_descriptionActionSheet;
+    UIAlertView *_addressAlertView;
     
     CALObject *_currentObject;
     BOOL _checkinEnabled;
     NSObject<PMLInfoProvider> *_infoProvider;
     NSMutableSet *_observedProperties;
     NSMutableDictionary *_actionTypes;
+    CLGeocoder *_geocoder;
     
     // Navbar management
     BOOL _navbarEdit;
@@ -222,6 +225,13 @@
     }];
     _modifyAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:_modifyAction forType:PMLActionTypeEditPlace];
+    
+    _editAddressAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
+        NSLog(@"MODIFY ADDRESS");
+        [self editAddress];
+    }];
+    _editAddressAction.color = UIColorFromRGB(kPMLEditColor);
+    [self registerAction:_editAddressAction forType:PMLActionTypeEditAddress];
     
     PopupAction *editEventAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
         NSLog(@"MODIFY EVENT");
@@ -343,17 +353,13 @@
         if(object.key != nil) {
             if(_currentEditor.editing) {
                 [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];
-                [actions addObject:_modifyAction];
+                [actions addObject:_editAddressAction];
             }
             // Updates the badge on popup actions
             [self updateBadge];
         } else {
             // New place, we propose save if name defined
-            if(place.title!= nil) {
-                [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_modifyAction]];
-            } else {
-                [actions addObjectsFromArray:@[_cancelAction,_confirmAction ]];
-            }
+            [actions addObjectsFromArray:@[_cancelAction,_confirmAction,_editAddressAction]];
         }
     }
     return actions;
@@ -505,6 +511,58 @@
         }
     }
 }
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if(buttonIndex != [alertView cancelButtonIndex]) {
+        Place *place = (Place*)_currentObject;
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        NSString *address = textField.text;
+        
+        // Adding cancel action that reverts address and latitude / longitude
+        NSString *oldAddress = place.address;
+        double oldLat = place.lat;
+        double oldLng = place.lng;
+        [[[self popupEditor] pendingCancelActions] addObject:^{
+            place.address = oldAddress;
+            place.lat = oldLat;
+            place.lng = oldLng;
+        }];
+        
+        // Geolocating
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[TogaytherService uiService] menuManagerController] view] animated:NO];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString(@"action.edit.address.geocoding", @"Geocoding address");
+        
+        _geocoder = [[CLGeocoder alloc] init];
+        [_geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
+            if(error == nil && placemarks.count>0) {
+                // Computing current place location to compare distance
+                CLLocation *currentPlaceLocation = [[CLLocation alloc] initWithLatitude:place.lat longitude:place.lng];
+                for(CLPlacemark *placemark in placemarks) {
+                    // If address is more than 100 meters from current place, we relocate place
+                    if([placemark.location distanceFromLocation:currentPlaceLocation]>100) {
+                        place.lat = placemark.location.coordinate.latitude;
+                        place.lng = placemark.location.coordinate.longitude;
+                        place.address = [[TogaytherService getConversionService] addressFromPlacemark:placemark];
+                        [[[[TogaytherService uiService] menuManagerController] rootViewController] reselectPlace:place];
+                        [_uiService alertWithTitle:@"action.edit.address.geocodingMovedPlaceTitle" text:@"action.edit.address.geocodingMovedPlace"];
+                    }
+                    break;
+                }
+            } else {
+                place.address = address;
+                [_uiService alertWithTitle:@"action.edit.address.geocodingFailedTitle" text:@"action.edit.address.geocodingFailed"];
+            }
+            
+            
+            // Done
+            [hud hide:YES];
+        }];
+
+    }
+}
+
 #pragma mark - Edition actions
 - (void)editName {
     if(!_currentObject.editing) {
@@ -700,6 +758,20 @@
         // Preparing transition
         [_menuManagerController presentModal:navController];
     }
+}
+
+-(void)editAddress {
+    NSString *title = NSLocalizedString(@"action.edit.address.title", @"action.edit.address.title");
+    NSString *message = NSLocalizedString(@"action.edit.address.message", @"action.edit.address.message");;
+    NSString *cancel = NSLocalizedString(@"cancel", @"cancel");
+    _addressAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:@"Ok", nil];
+    _addressAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    // Initializing text field to current user nickname
+    Place *place = (Place*)_currentObject;
+    UITextField *textField = [_addressAlertView textFieldAtIndex:0];
+    textField.text = place.address;
+    [_addressAlertView show];
 }
 #pragma mark - Dynamic actions generation
 -(NSArray *)buildLikeActions:(CALObject*)object {

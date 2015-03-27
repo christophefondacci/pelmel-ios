@@ -66,10 +66,10 @@ static PMLPopupEditor *_newObjectEditor;
     return editor;
 }
 
-- (NSArray *)pendingConfirmActions {
+- (NSMutableArray *)pendingConfirmActions {
     return _confirmActions;
 }
-- (NSArray *)pendingCancelActions {
+- (NSMutableArray *)pendingCancelActions {
     return _cancelActions;
 }
 - (void)cancel {

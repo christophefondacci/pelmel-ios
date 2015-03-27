@@ -22,8 +22,8 @@ typedef void(^EditionAction)();
 
 @property (nonatomic,weak) CALObject *editedObject;
 //@property (nonatomic,weak) MapAnnotation *mapAnnotation;
-@property (nonatomic,readonly) NSArray *pendingConfirmActions;
-@property (nonatomic,readonly) NSArray *pendingCancelActions;
+@property (nonatomic,readonly) NSMutableArray *pendingConfirmActions;
+@property (nonatomic,readonly) NSMutableArray *pendingCancelActions;
 @property (nonatomic,weak) MapViewController *mapViewController;
 @property (nonatomic) BOOL editing;
 
