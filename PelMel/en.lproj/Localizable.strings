@@ -251,6 +251,12 @@
 "push.permission.msg"="Would you like to enable push notifications to let PelMel ping you whenever you got new messages?";
 "push.refused.title"="You're the boss";
 "push.refused.msg"="Ok, we won't bother you again. In case you change your mind, you can activate/de-activate push from your settings of the bottom left menu.";
+"push.disabled.registerSuccessTitle"="Push disabled";
+"push.disabled.registerSuccess"="Push notifications are now disabled.";
+"push.registerFailedTitle"="Push failed";
+"push.registerFailed"="There was an error when trying to register your device for push notifications.";
+"push.registerSuccessTitle"="Push enabled";
+"push.registerSuccess"="Push notifications are now enabled.";
 "push.yes"="Yes";
 "push.no"="Not now";
 "tags"="bear,beard,bi,black,blond,chubby,couple,cruising,daddy,hairy,hardcore,hugedick,leather,military,muscle,naked,piercing,tatoo,twink";

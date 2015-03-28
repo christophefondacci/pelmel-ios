@@ -37,6 +37,7 @@
 #define kLoginParamsFormat      @"email=%@&password=%@&highRes=%@"
 #define kDisconnectUrlFormat    @"%@/mobileDisconnect?nxtpUserToken=%@"
 #define kRegisterUrlFormat      @"%@/mobileRegister"
+#define kRegisterTokenUrlFormat      @"%@/mobileRegisterToken"
 #define kCheckinUrlFormat       @"%@/mobileCheckin"
 #define kLikeStatsUrlFormat       @"%@/mobileLikeInfo"
 #define kRegisterParamsFormat   @"userKey=%@&name=%@&height=%d&weight=%d&birthDD=%d&birthMM=%d&birthYYYY=%d&lat=%f&lng=%f&nxtpUserToken=%@"
@@ -133,8 +134,28 @@
         }
     }];
 }
+
+
 - (void)registerDeviceToken:(NSString *)deviceToken {
-    [self authenticateWithLastLogin:nil];
+    
+    NSMutableDictionary * params = [[NSMutableDictionary alloc] init];
+    [params setObject:_currentUser.token forKey:kParamUserToken];
+    [self fillPushInformation:params];
+    
+    // Building URL
+    NSString *url = [[NSString alloc] initWithFormat:kRegisterTokenUrlFormat, togaytherServer];
+    
+    // POSTing request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if(deviceToken == nil) {
+            [[TogaytherService uiService] alertWithTitle:@"push.disabled.registerSuccessTitle" text:@"push.disabled.registerSuccess"];
+        } else {
+            [[TogaytherService uiService] alertWithTitle:@"push.registerSuccessTitle" text:@"push.registerSuccess"];
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [[TogaytherService uiService] alertWithTitle:@"push.registerFailedTitle" text:@"push.registerFailed"];
+    }];
 }
 
 - (BOOL)isAuthenticated {
@@ -216,6 +237,7 @@
         [params setObject:kPushProvider forKey:kParamPushProvider];
     }
 }
+
 #pragma mark - Registration
 
 -(void)registerWithLogin:(NSString *)login password:(NSString *)password pseudo:(NSString *)pseudo birthDate:(NSDate*)birthDate callback:(NSObject<PMLUserCallback>*)callback {

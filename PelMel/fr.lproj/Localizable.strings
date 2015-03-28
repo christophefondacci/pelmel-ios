@@ -239,6 +239,19 @@
 "profile.save"="Envoi des données...";
 "profile.title"="Mon compte";
 "profile.weight"="Poids";
+"push.permission.title"="Activer le push ?";
+"push.permission.msg"="Voulez-vous activer les notifications 'push' pour permettre à Pelmel de vous signaler l'arrivée de nouveaux messages ?";
+"push.refused.title"="C'est vous le chef";
+"push.refused.msg"="Ok, on ne vous demandera plus. Au cas où vous changeriez d'avis, vous pouvez activer/désactiver le push depuis les paramètres du menu en bas à gauche.";
+"push.disabled.registerSuccessTitle"="Push désactivé";
+"push.disabled.registerSuccess"="Les notifications PUSH ont été désactivées.";
+"push.registerFailedTitle"="Erreur Push";
+"push.registerFailed"="Une erreur est survenue lors de la tentative d'enregistrement de votre appareil pour les notifications push.";
+"push.registerSuccessTitle"="Push activé";
+"push.registerSuccess"="Les notifications PUSH ont été activées.";
+
+"push.yes"="Oui";
+"push.no"="Pas maintenant";
 
 "tags"="bear,beard,bi,black,blond,chubby,couple,cruising,daddy,hairy,hardcore,hugedick,leather,military,muscle,naked,piercing,tatoo,twink";
 "description"="Description";
@@ -348,12 +361,6 @@
 "validation.noname"="Vous devez renseigner le nom du lieu que vous éditez ou que vous créez. Veuillez vérifier vos données et essayer à nouveau.";
 "profile.mustBe18.title"="Restriction d'age";
 "profile.mustBe18"="Vous devez avoir plus de 12 ans pour pouvoir utiliser PelMel guide, veuillez définir une date de naissance correcte et essayez à nouveau.";
-"push.permission.title"="Activer le push ?";
-"push.permission.msg"="Voulez-vous activer les notifications 'push' pour permettre à Pelmel de vous signaler l'arrivée de nouveaux messages ?";
-"push.refused.title"="C'est vous le chef";
-"push.refused.msg"="Ok, on ne vous demandera plus. Au cas où vous changeriez d'avis, vous pouvez activer/désactiver le push depuis les paramètres du menu en bas à gauche.";
-"push.yes"="Oui";
-"push.no"="Pas maintenant";
 "terms.title"="Conditions";
 "terms"="These Terms of Use will apply to the use of the Service. Please read these Terms of Use carefully so that you know what your rights and obligations are when using the Service. The acceptance of these Terms of Use constitutes a valid and binding agreement between 'FGP Digital LLC' (the COMPANY) and you (the USER) for the use of the Service. If you make any use of the Service you agree to be bound by these terms and conditions. You must be 18 years of age or older to use this service and must be registered as a member. If we discover that you are not over 18, we reserve our right to suspend and remove you account without any notice.
     
