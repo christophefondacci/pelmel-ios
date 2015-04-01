@@ -162,7 +162,7 @@
     
     CALObject *activityObject = [self activityObjectFor:activity];
     if(activityObject != nil) {
-        [_uiService presentSnippetFor:activityObject opened:YES];
+        [_uiService presentSnippetFor:activityObject opened:YES root:YES];
     }
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

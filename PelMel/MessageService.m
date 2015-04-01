@@ -345,12 +345,15 @@
     _pushCompletion = nil;
 }
 - (void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+
     NSString *hexToken = [deviceToken hexadecimalString];
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken: %@",hexToken);
     [_userDefaults setObject:hexToken forKey:PML_PROP_DEVICE_TOKEN];
     [_userDefaults synchronize];
     [self pushCompletion:YES];
 }
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: code=%d domain=%@",error.code,error.domain);
     
     [self pushCompletion:NO];
 }

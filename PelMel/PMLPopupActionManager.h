@@ -19,7 +19,7 @@
  * The popup action manager is a central place to compute which actions should be
  * proposed given different contexts.
  */
-@interface PMLPopupActionManager : NSObject <PMLDataListener,UIActionSheetDelegate, UIAlertViewDelegate>
+@interface PMLPopupActionManager : NSObject <PMLDataListener,UIActionSheetDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic,retain) PMLMapPopupViewController *popupController;
 @property (nonatomic,retain) PMLMenuManagerController *menuManagerController;

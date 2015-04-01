@@ -642,7 +642,12 @@
 }
 
 - (BOOL)isCheckedInAt:(Place *)place {
-    CurrentUser *user=[[TogaytherService userService] getCurrentUser];
-    return [user.lastLocation.key isEqualToString:place.key] && [user.lastLocationDate timeIntervalSinceNow]>-PML_CHECKIN_SECONDS;
+    return [_currentUser.lastLocation.key isEqualToString:place.key] && [_currentUser.lastLocationDate timeIntervalSinceNow]>-PML_CHECKIN_SECONDS;
+}
+-(Place *)checkedInPlace {
+    if([_currentUser.lastLocationDate timeIntervalSinceNow]>-PML_CHECKIN_SECONDS) {
+        return _currentUser.lastLocation;
+    }
+    return nil;
 }
 @end

@@ -17,9 +17,9 @@
 "action.checkout"="Check out";
 "action.checkin"="Check in";
 "action.checkin.feedbackTitle"="You checked in!";
-"action.checkin.feedbackMessage"="You checked in %@, other users will be able to see that you are here. You can do a 'check out' to stop sharing that information.";
+"action.checkin.feedbackMessage"="You checked in %@, other users will be able to see that you are here. You can do a 'check out' to stop sharing that information. If you forget to check out, you will be automatically checked out after some time.";
 "action.checkout.feedbackTitle"="You checked out!";
-"action.checkout.feedbackMessage"="You checked out from %@, other users can no longer see that you are here!";
+"action.checkout.feedbackMessage"="You checked out from %@, other users can no longer see that you are here. Nobody will ever see that you were there.";
 "action.comment"="Comment";
 "action.edit.address.geocoding"="Geocoding address";
 "action.edit.address.geocodingFailedTitle"="Address not found";
@@ -79,6 +79,8 @@
 "calendar.time"="Schedule";
 "calendar.title.placeholder"="Name (optional)";
 "cancel"="Cancel";
+"checkin.globalEnabled"="Check in and get noticed!";
+"checkin.placeEnabled"="Check in here and let the fun begin!";
 "city.label"="City";
 "city.withbars"="%d gay places";
 "counters.arehere"="%d are here";

@@ -25,8 +25,8 @@ typedef enum {
     PMLActionTypeEditAddress,
     PMLActionTypeEditEvent,
     PMLActionTypeAttend,
-    PMLActionTypeAttendCancel
-
+    PMLActionTypeAttendCancel,
+    PMLActionTypeMyProfile,
 } PMLActionType;
 
 /**

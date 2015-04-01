@@ -107,7 +107,7 @@
  * Creates a snippet for the given element, presents it, and optionally opens it
  */
 -(void)presentSnippetFor:(CALObject*)object opened:(BOOL)opened;
-
+- (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened root:(BOOL)root;
 /**
  * Simple alert dialog with localized messages, only one OK button
  */

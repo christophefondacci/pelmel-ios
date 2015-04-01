@@ -478,8 +478,8 @@
         if([view isKindOfClass:[ChatView class]]) {
             ChatView *chatView = (ChatView*)view;
             Message *message = chatView.getMessage;
-
-            [[TogaytherService uiService] presentSnippetFor:message.from opened:YES];
+            
+            [[TogaytherService uiService] presentSnippetFor:message.from opened:YES root:YES];
         }
     }
 }

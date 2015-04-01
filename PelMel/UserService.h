@@ -102,5 +102,5 @@ typedef void(^Completor)(id obj);
  * Tells whether current user is checked in at the given place
  */
 -(BOOL)isCheckedInAt:(Place*)place;
-
+-(Place*)checkedInPlace;
 @end

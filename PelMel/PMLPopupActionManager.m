@@ -312,8 +312,16 @@
     }];
     _cancelAction.color = UIColorFromRGB(kPMLCancelColor);
     [self registerAction:_cancelAction forType:PMLActionTypeCancel];
+
     
-}
+    // User profile edition
+    PopupAction *myProfileAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^{
+        NSLog(@"MY PROFILE");
+        UIViewController *accountController = [[TogaytherService uiService] instantiateViewController:SB_ID_MYACCOUNT];
+        [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:accountController animated:YES];
+    }];
+    myProfileAction.color = UIColorFromRGB(kPMLEditColor);
+    [self registerAction:myProfileAction forType:PMLActionTypeMyProfile];}
 
 -(PMLPopupEditor*)popupEditor {
     return [PMLPopupEditor editorFor:_currentObject on:(MapViewController*)[[TogaytherService uiService] menuManagerController].rootViewController];
@@ -540,12 +548,14 @@
                 // Computing current place location to compare distance
                 CLLocation *currentPlaceLocation = [[CLLocation alloc] initWithLatitude:place.lat longitude:place.lng];
                 for(CLPlacemark *placemark in placemarks) {
+                    place.address = [[TogaytherService getConversionService] addressFromPlacemark:placemark];
                     // If address is more than 100 meters from current place, we relocate place
                     if([placemark.location distanceFromLocation:currentPlaceLocation]>100) {
                         place.lat = placemark.location.coordinate.latitude;
                         place.lng = placemark.location.coordinate.longitude;
-                        place.address = [[TogaytherService getConversionService] addressFromPlacemark:placemark];
+                        
                         [[[[TogaytherService uiService] menuManagerController] rootViewController] reselectPlace:place];
+                        [[[[TogaytherService uiService] menuManagerController] rootViewController] selectCALObject:place withSnippet:YES];
                         [_uiService alertWithTitle:@"action.edit.address.geocodingMovedPlaceTitle" text:@"action.edit.address.geocodingMovedPlace"];
                     }
                     break;
@@ -771,10 +781,25 @@
     Place *place = (Place*)_currentObject;
     UITextField *textField = [_addressAlertView textFieldAtIndex:0];
     textField.text = place.address;
+    textField.delegate = self;
     textField.clearButtonMode = UITextFieldViewModeAlways;
 
 //    textField.selectedTextRange paste:<#(id)#>]
     [_addressAlertView show];
+}
+- (void)selectTextForInput:(UITextField *)input atRange:(NSRange)range {
+    UITextPosition *start = [input positionFromPosition:[input beginningOfDocument]
+                                                 offset:range.location];
+    UITextPosition *end = [input positionFromPosition:start
+                                               offset:range.length];
+    [input setSelectedTextRange:[input textRangeFromPosition:start toPosition:end]];
+}
+#pragma mark - UITextFieldDelegate 
+- (void)textFieldDidBeginEditing:(UITextField *)textField {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self selectTextForInput:textField atRange:NSMakeRange(0, 0)];
+    });
+
 }
 #pragma mark - Dynamic actions generation
 -(NSArray *)buildLikeActions:(CALObject*)object {

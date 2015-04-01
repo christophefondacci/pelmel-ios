@@ -472,7 +472,7 @@
             [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:@"lat"];
             [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:@"lng"];
             
-            NSLog(@"Overview data : calling URL %@ for key %@",url,object.key);
+            NSLog(@"Overview data : calling URL %@/id=%@&nxtpUserToken=%@",url,object.key,user.token);
             AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
             [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSDictionary *json = (NSDictionary*)responseObject;

@@ -106,15 +106,38 @@
         [_menuController presentControllerSnippet:snippetController];
         
         // Displays a warning if filters are active
+        double delay = 2;
         if(![[TogaytherService settingsService] allFiltersActive]) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [_menuController setWarningMessage:NSLocalizedString(@"filters.warning", @"filters.warning") color:UIColorFromRGB(0x272a2e) animated:NO duration:5];
-            });
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [_menuController setWarningMessage:NSLocalizedString(@"filters.warning", @"filters.warning") color:UIColorFromRGB(0x272a2e) animated:NO duration:4];
 
+            });
+            delay = 4.6;
         }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delay * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+            [self checkinWarningIfAvailable];
+        });
+        
     }
 //    [insideImage removeFromSuperview];
 //    [outsideImage removeFromSuperview];
+}
+-(void)checkinWarningIfAvailable {
+    if([_userService checkedInPlace]==nil) {
+        BOOL checkinAvailable = NO;
+        for(Place *place in _dataService.modelHolder.places) {
+            if([[TogaytherService getConversionService] numericDistanceTo:place]< PML_CHECKIN_DISTANCE) {
+                checkinAvailable = YES;
+                break;
+            }
+        }
+        if(checkinAvailable) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_menuController setWarningMessage:NSLocalizedString(@"checkin.globalEnabled", @"checkin.globalEnabled") color:UIColorFromRGB(0x3083ea) animated:YES duration:2];
+            });
+        }
+    }
 }
 -(void)thumbAvailableFor:(Imaged *)place {
     
@@ -199,6 +222,11 @@
         }
         _initialContextObject = nil;
     }
+//    if([_userService checkedInPlace]==nil && [object isKindOfClass:[Place class]]) {
+//        if([[TogaytherService getConversionService] numericDistanceTo:(Place*)object] < PML_CHECKIN_DISTANCE) {
+//            [_menuController setWarningMessage:NSLocalizedString(@"checkin.placeEnabled", @"checkin.placeEnabled") color:UIColorFromRGB(0x5fd500) animated:YES duration:2];
+//        }
+//    }
 }
 -(void)didLooseConnection {
     [_menuController.menuManagerDelegate loadingEnd];

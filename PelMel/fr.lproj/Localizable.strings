@@ -13,12 +13,12 @@
 "action.attendCancel.feedbackTitle"="Vous n'y allez plus";
 "action.modify"="Modifier";
 "action.chat"="Chatter";
-"action.checke"="Check out";
+"action.checkout"="Check out";
 "action.checkin"="Check In";
 "action.checkin.feedbackTitle"="Vous avez checkiné!";
 "action.checkin.feedbackMessage"="Votre présence à %@ est désormais visible par les autres utilisateurs. Vous pouvez faire un 'checkout' pour ne plus partager cette information.";
 "action.checkout.feedbackTitle"="Vous êtes parti!";
-"action.checkout.feedbackMessage"="Vous êtes parti de %@, plus personne ne peut voir que vous êtes là!";
+"action.checkout.feedbackMessage"="Vous êtes parti de %@, plus personne ne peut voir que vous êtes là! Personne ne peut voir que vous avez été ici.";
 "action.comment"="Commenter";
 "action.edit.address.geocoding"="Geocodage de l'addresse";
 "action.edit.address.title"="Addresse";
@@ -57,7 +57,7 @@
 "action.report.location.infomsg"="Si vous connaissez la localisation de ce lieu, pourriez-vous déplacer l'épingle du lieu vers la position correcte et valider pour aider les autres utilisateurs ?";
 "action.report.notgay"="Ce lieu n'est pas gay";
 "action.report.remove"="Supprimer la photo";
-"action.unlike"="Je n'aime plus";
+"action.unlike"="J'aime plus";
 "action.unlike.feedbackTitle"="Vous n'aimez plus!";
 "action.unlike.feedbackMessage"="Votre \"j'aime\" précédent a bien été retiré.";
 "action.save"="Sauver";
@@ -73,6 +73,8 @@
 "calendar.time"="Horaire";
 "calendar.title.placeholder"="Nom (facultatif)";
 "cancel"="Annuler";
+"checkin.globalEnabled"="Check in pour être remarqué !";
+"checkin.placeEnabled"="Check in ici et c'est parti !";
 "city.label"="Ville";
 "city.withbars"="%d lieux gays";
 "counters.arehere"="%d y sont";
@@ -278,7 +280,7 @@
 "search.done.serverMsg"="Souhaitez-vous chercher des résultats dans le monde entier ou préférez vous rester local sur votre carte actuelle ?";
 "search.done.keep"="Local";
 "search.done.worldwide"="Monde";
-"search.placeholder"="Cherchez un lieu, une ville";
+"search.placeholder"="Cherchez un lieu, ville, utilisateur";
 "settings.account.title"="Mon compte";
 "settings.account.cell"="Mon profil";
 "settings.hd"="Images HD";

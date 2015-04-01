@@ -1795,7 +1795,7 @@
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" fixedFrame="YES" text="Profile picture" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="YhU-JC-n1V">
                                             <rect key="frame" x="58" y="0.0" width="106" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </label>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="fAR-hg-a9e">
@@ -2016,7 +2016,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="zjH-Jg-o3c">
-                                        <rect key="frame" x="40" y="5" width="240" height="21"/>
+                                        <rect key="frame" x="15" y="5" width="290" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="NFY-Tz-OC6"/>
                                         </constraints>
@@ -2028,8 +2028,8 @@
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="DXl-33-UBP"/>
-                                    <constraint firstAttribute="trailing" secondItem="zjH-Jg-o3c" secondAttribute="trailing" constant="40" id="H5H-bx-zLQ"/>
-                                    <constraint firstItem="zjH-Jg-o3c" firstAttribute="leading" secondItem="cuT-Gk-A2S" secondAttribute="leading" constant="40" id="c11-v7-cEJ"/>
+                                    <constraint firstAttribute="trailing" secondItem="zjH-Jg-o3c" secondAttribute="trailing" constant="15" id="H5H-bx-zLQ"/>
+                                    <constraint firstItem="zjH-Jg-o3c" firstAttribute="leading" secondItem="cuT-Gk-A2S" secondAttribute="leading" constant="15" id="c11-v7-cEJ"/>
                                     <constraint firstAttribute="centerY" secondItem="zjH-Jg-o3c" secondAttribute="centerY" id="iqQ-XY-aih"/>
                                 </constraints>
                             </view>
@@ -3820,10 +3820,10 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="eKE-7K-Ihn"/>
         <segue reference="enc-VM-87F"/>
         <segue reference="fnn-3s-KqK"/>
         <segue reference="hk5-7z-xvn"/>
         <segue reference="hap-7x-4U2"/>
+        <segue reference="eKE-7K-Ihn"/>
     </inferredMetricsTieBreakers>
 </document>

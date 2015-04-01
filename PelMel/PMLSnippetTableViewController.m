@@ -264,6 +264,10 @@ typedef enum {
     // Edit visibility
     self.navigationItem.rightBarButtonItem=nil;
     _editVisible = PMLVisibityStateInvisible;
+    
+    if(_opened) {
+        [self.parentMenuController.navigationController setNavigationBarHidden:YES];
+    }
 
 }
 - (void)viewDidAppear:(BOOL)animated {
@@ -1173,7 +1177,11 @@ typedef enum {
     cell.titleLabel.text = [_uiService nameForEvent:event];
     cell.dateLabel.text = [_conversionService eventDateLabel:event isStart:YES];
     cell.locationIcon.image = [UIImage imageNamed:@"snpIconMarker"];
-    cell.locationLabel.text = [NSString stringWithFormat:@"%@, %@",event.place.title,event.place.cityName];
+    if(event.place.cityName != nil) {
+        cell.locationLabel.text = [NSString stringWithFormat:@"%@, %@",event.place.title,event.place.cityName];
+    } else {
+        cell.locationLabel.text = event.place.title;
+    }
     if(event.likeCount>0) {
         cell.countLabel.text = [_uiService localizedString:@"snippet.event.inUsers" forCount:event.likeCount];
         cell.countIcon.image=[UIImage imageNamed:@"snpIconEvent"];
@@ -1734,7 +1742,7 @@ typedef enum {
 }
 - (void)adjustEditVisibility {
     // TODO Avoid the class test here
-    if([_snippetItem isKindOfClass:[User class]]) {
+    if([_snippetItem isKindOfClass:[User class]] && ![_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
         return;
     }
     // Computing if we are at the bottom of the scroll view
@@ -1805,7 +1813,14 @@ typedef enum {
                 self.navigationItem.rightBarButtonItem=nil;
             }
         } else {
-            self.navigationItem.rightBarButtonItem = nil;
+            if([_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
+                UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeMyProfile selector:@selector(navbarActionTapped:)];
+                //            _navbarEdit = YES;
+                self.navigationItem.rightBarButtonItem = barItem;
+                barItem.customView.alpha=0;
+            } else {
+                self.navigationItem.rightBarButtonItem = nil;
+            }
         }
 //    }
 }

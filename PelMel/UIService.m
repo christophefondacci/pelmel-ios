@@ -294,6 +294,9 @@
 }
 
 - (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened {
+    [self presentSnippetFor:object opened:opened root:NO];
+}
+- (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened root:(BOOL)root {
     PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[self instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
     snippetController.snippetItem = object;
 
@@ -310,7 +313,7 @@
                 [_menuManagerController presentControllerSnippet:snippetController animated:YES];
             }
         } else {
-            if(_menuManagerController.currentSnippetViewController != nil) {
+            if(_menuManagerController.currentSnippetViewController != nil && !root) {
                 [self pushSnippetNavigationController:snippetController];
                 [_menuManagerController dismissControllerMenu:YES];
             } else {
