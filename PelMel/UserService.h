@@ -31,7 +31,7 @@ typedef void(^Completor)(id obj);
 
 @end
 
-@interface UserService : NSObject <NSURLConnectionDelegate,NSURLConnectionDataDelegate>
+@interface UserService : NSObject 
 
 @property (strong, nonatomic) ImageService *imageService;
 @property (strong, nonatomic) JsonService *jsonService;

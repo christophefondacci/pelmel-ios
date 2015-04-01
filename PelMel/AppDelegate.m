@@ -21,10 +21,13 @@
 #import "NSData+Conversion.h"
 #import "PMLDataManager.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <AFNetworkActivityLogger.h>
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+//    [[AFNetworkActivityLogger sharedLogger] startLogging];
+//    [[AFNetworkActivityLogger sharedLogger] setLevel:AFLoggerLevelDebug];
 //    for (NSString* family in [UIFont familyNames])
 //    {
 //        NSLog(@"%@", family);

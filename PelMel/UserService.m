@@ -284,8 +284,6 @@
     }
 }
 - (void)updateCurrentUser {
-
-//    NSString *url = @"%@/userRegister?userKey=%@&height=%d&weight=%d&birthDD=%d&birthMM=%d&birthYYYY=%d&tagKeys=%@&descriptionLanguageCodes=%@&descriptionItemKeys=%@&descriptions=%@";
     NSString *userKey = _currentUser.key;
     NSString *pseudo = _currentUser.pseudo;
     int weight = (int)_currentUser.weightInKg;
@@ -298,98 +296,60 @@
     NSInteger birthMM = [components month];
     NSInteger birthDD = [components day];
     NSString *nxtpUserToken = _currentUser.token;
-    
-    // Building tag list
-    NSMutableString *tagKeys = [[NSMutableString alloc] init];
-    NSString *format = @"&tags=%@";
-    for(NSString *tag in _currentUser.tags) {
-        [tagKeys appendFormat:format,tag];
-    }
 
     // Building description components
-    NSMutableString *descriptionLanguageCodes = [[NSMutableString alloc] init];
-    NSMutableString *descriptionItemKeys = [[NSMutableString alloc] init];
-    NSMutableString *descriptions = [[NSMutableString alloc] init];
-    NSString *formatLang = @"&descriptionLanguageCode=%@";
-    NSString *formatKey = @"&descriptionKey=%@";
-    NSString *formatDesc = @"&description=%@";
-    
+    NSMutableArray *descLanguageCodes = [[NSMutableArray alloc] init];
+    NSMutableArray *descKeys = [[NSMutableArray alloc] init];
+    NSMutableArray *descTexts = [[NSMutableArray alloc] init];
     for(Description *desc in _currentUser.descriptions) {
-        [descriptionLanguageCodes appendFormat:formatLang,[desc.languageCode lowercaseString]];
-        [descriptionItemKeys appendFormat:formatKey, desc.key == nil ? @"" : desc.key];
-        [descriptions appendFormat:formatDesc, desc.descriptionText];
+        [descLanguageCodes addObject:[desc.languageCode lowercaseString]];
+        [descKeys addObject:(desc.key == nil ? @"" : desc.key)];
+        [descTexts addObject:desc.descriptionText];
     }
+    
+    // Building parameters
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:userKey forKey:@"userKey"];
+    [params setObject:pseudo forKey:@"name"];
+    [params setObject:[NSNumber numberWithInt:weight] forKey:@"weight"];
+    [params setObject:[NSNumber numberWithInt:height] forKey:@"height"];
+    [params setObject:[NSNumber numberWithInt:birthDD] forKey:@"birthDD"];
+    [params setObject:[NSNumber numberWithInt:birthMM] forKey:@"birthMM"];
+    [params setObject:[NSNumber numberWithInt:birthYYYY] forKey:@"birthYYYY"];
+    [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.latitude] forKey:@"lat"];
+    [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.longitude] forKey:@"lng"];
+    [params setObject:nxtpUserToken forKey:@"nxtpUserToken"];
+    [params setObject:_currentUser.tags forKey:@"tags"];
+    [params setObject:descLanguageCodes forKey:@"descriptionLanguageCode"];
+    [params setObject:descKeys forKey:@"descriptionKey"];
+    [params setObject:descTexts forKey:@"description"];
     
     // Building the URL
     NSString *url = [[NSString alloc] initWithFormat:kRegisterUrlFormat,togaytherServer ];
-    NSMutableString *params = [[NSMutableString alloc] initWithFormat:kRegisterParamsFormat,userKey,pseudo,height,weight,(int)birthDD,(int)birthMM,(int)birthYYYY,_currentLocation.coordinate.latitude,_currentLocation.coordinate.longitude,nxtpUserToken];
-    [params appendString:tagKeys];
-    [params appendString:descriptionLanguageCodes];
-    [params appendString:descriptionItemKeys];
-    [params appendString:descriptions];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
-    // Preparing data to post
-    NSData *postData = [params dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-    NSString *postLength = [NSString stringWithFormat:@"%ld", (unsigned long)[postData length]];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:postData];
-    
-    [NSURLConnection connectionWithRequest:request delegate:self];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
 
-    // Calling the update URL
-//    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-    NSLog(@"User updated");
-}
-
-- (BOOL)connection:(NSURLConnection *)connection canAuthenticateAgainstProtectionSpace:(NSURLProtectionSpace *)protectionSpace {
-    NSLog(@"Can authenticate against");
-    return NO;
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"Fail with error");
-}
-
--(void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
-    NSLog(@"Will send for auth challenge");
-}
-- (BOOL)connectionShouldUseCredentialStorage:(NSURLConnection *)connection {
-    NSLog(@"Should use credential storage");
-    return NO;
-}
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    NSLog(@"Did receive response");
-}
-
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
-    NSLog(@"Did receive data");
-    NSError *error;
-    if(data == nil) {
-        NSLog(@"userRegistration: JSON data is null, aborting");
-        return;
-    }
-    NSDictionary *jsonRegisterInfo = [NSJSONSerialization
-                                   JSONObjectWithData:data //1
-                                   options:kNilOptions
-                                   error:&error];
-    // Retrieving authentication token
-    NSString *token     =[jsonRegisterInfo objectForKey:@"nxtpUserToken"];
-    
-    
-    if(token != nil) {
-        [_currentUser setToken:token];
-        [jsonService fillUser:_currentUser fromJson:jsonRegisterInfo];
-        [self performSelectorOnMainThread:@selector(notifyUserRegistered:) withObject:currentCallback waitUntilDone:NO];
-    } else {
-        if(currentCallback != nil) {
-            _currentUser = nil;
-            [self performSelectorOnMainThread:@selector(notifyUserRegistrationFailed:) withObject:currentCallback waitUntilDone:NO];
+        
+        NSDictionary *jsonRegisterInfo = (NSDictionary*)responseObject;
+        // Retrieving authentication token
+        NSString *token     =[jsonRegisterInfo objectForKey:@"nxtpUserToken"];
+        
+        
+        if(token != nil) {
+            [_currentUser setToken:token];
+            [jsonService fillUser:_currentUser fromJson:jsonRegisterInfo];
+            [self performSelectorOnMainThread:@selector(notifyUserRegistered:) withObject:currentCallback waitUntilDone:NO];
+        } else {
+            if(currentCallback != nil) {
+                _currentUser = nil;
+                [self performSelectorOnMainThread:@selector(notifyUserRegistrationFailed:) withObject:currentCallback waitUntilDone:NO];
+            }
         }
-    }
-    
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [self notifyUserRegistrationFailed:currentCallback];
+    }];
+    NSLog(@"User updated");
 }
 
 - (void)mainThumbAvailableFor:(NSArray *)imagedObjects {
