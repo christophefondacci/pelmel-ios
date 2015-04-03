@@ -210,8 +210,12 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if(self.actionDelegate != nil) {
         PMLThumbType type = [self.thumbProvider thumbTypeAtIndex:indexPath.section];
-        // Firing action
-        [self.actionDelegate thumbsTableView:self thumbTapped:(int)indexPath.row forThumbType:type];
+        NSArray *items = [self.thumbProvider itemsForType:type];
+        // We check that user did not tap our "extra spacing cell"
+        if(items.count>indexPath.row) {
+            // Firing action
+            [self.actionDelegate thumbsTableView:self thumbTapped:(int)indexPath.row forThumbType:type];
+        }
     }
 
 }
