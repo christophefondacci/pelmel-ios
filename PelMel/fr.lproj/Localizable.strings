@@ -116,6 +116,13 @@
 "gallery.removalFailed.title"="Suppression impossible";
 "geoloc.deactivated.title"="Localisation désactivée";
 "geoloc.deactivated.subtitle"="Modifiez réglages > confidentiel > localisation";
+"hint.addPlace"="Ce bouton ajoute un nouveau lieu à PELMEL\nEntrez le nom, le type, ajustez la localisation et c'est fait!";
+"hint.badge"="Un chiffre à côté d'un marqueur indique combien de personne sont actuellement là (checkins)";
+"hint.checkin"="Check in pour que les autres utilisateurs sachent qu'il y a quelqu'un ici";
+"hint.edit"="Pas à jour ? Édite les informations ici";
+"hint.myposition"="Touche ici pour centrer la carte sur ta position et recharger les informations temps réel aux alentours";
+"hint.reloadData"="Charge ou rafraîchit les informations sur la zone visible de la carte en touchant ce bouton";
+"hint.snippet"="Tire vers le HAUT cette section pour voir plus d'informations sur un lieu ou sur ce qu'il y a autour";
 "language.fr"="Français";
 "language.en"="Anglais";
 "language.es"="Espagnol";
