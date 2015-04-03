@@ -919,10 +919,9 @@ typedef enum {
     cell.thumbSubtitleLabel.textColor = _infoProvider.thumbSubtitleColor;
     cell.thumbSubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:11];
 
-    if(_snippetItem==nil) {
+    if([_infoProvider respondsToSelector:@selector(subtitleIntro)]) {
         cell.distanceIntroLabel.hidden=NO;
-        cell.distanceIntroLabel.text = _infoProvider.thumbSubtitleText;
-        cell.thumbSubtitleLabel.text = NSLocalizedString(@"snippet.distance.intro", @"Within");
+        cell.distanceIntroLabel.text = [_infoProvider subtitleIntro];
     } else {
         cell.distanceIntroLabel.hidden=YES;
         cell.distanceIntroLabel.text =nil;

@@ -213,7 +213,7 @@
 "places.search.placeholder"="Find a place or city";
 "places.search.placeholder.event"="Find an event";
 "places.section.incity"="%@'s gay hangouts";
-"places.section.inZone"="%d gay hangouts found";
+"places.section.inZone"="%d gay hangouts";
 "places.section.inZoneWithEvents"="%d upcoming events / %d hangouts";
 "places.section.nearby"="Hangouts nearby";
 "places.section.nearby.events"="Events nearby";
@@ -311,6 +311,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.button.report"="Report or mark as closed";
 "snippet.button.reportForDeletion"="Request removal";
 "snippet.distance.intro"="snapshot";
+"snippet.distance.textSearch"="Matching";
 "snippet.edit.descPlaceholder"="Enter a description";
 "snippet.edit.placeType"="Select the kind of venue:";
 "snippet.edit.titlePlaceholder"="Enter a name";
@@ -332,6 +333,9 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.thumbIntro.placeLikes"="They like %@:";
 "snippet.thumbIntro.placeCheckins"="They went to %@:";
 "snippet.users.count"="%d guys nearby";
+"snippet.users.count.singular"="%d guy nearby";
+"snippet.users.textSearchCount"="%d guys";
+"snippet.users.textSearchCount.singular"="%d guy";
 "sort.popularity"="Popularity";
 "sort.date"="Date";
 "sort.distance"="Distance";

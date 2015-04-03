@@ -74,6 +74,8 @@ typedef enum {
 - (NSString*)reportText;
 // The subtitle to display
 - (NSString*)actionSubtitleFor:(PMLActionType)actionType;
+- (NSString*)subtitleIntro; // Text displayed on top of the subtitle text (top right corner)
+
 
 - (NSString*)commentsCounterTitle;
 - (NSString*)checkinsCounterTitle;

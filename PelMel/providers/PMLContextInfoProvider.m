@@ -63,7 +63,13 @@
 - (NSString *)subtitle {
     NSString *subtitle = nil;
     if(_modelHolder.users.count>0) {
-         subtitle = [NSString stringWithFormat:NSLocalizedString(@"snippet.users.count","# guys nearby"),_modelHolder.users.count ];
+        NSString *templateCode = nil;
+        if(_dataService.searchTerm==nil) {
+            templateCode = @"snippet.users.count";
+        } else {
+            templateCode = @"snippet.users.textSearchCount";
+        }
+        subtitle = [_uiService localizedString:templateCode forCount:_modelHolder.users.count];
     }
     return subtitle;
 }
@@ -113,11 +119,24 @@
 }
 // Short text displayed with thumb
 -(NSString*)thumbSubtitleText {
-    CLLocationDistance distance = 50;
-    if(_dataService.currentRadius>0) {
-        distance = _dataService.currentRadius;
+    if(_dataService.searchTerm==nil) {
+        return NSLocalizedString(@"snippet.distance.intro", @"Within");
+    } else {
+        return [NSString stringWithFormat:@"'%@'",_dataService.searchTerm];
     }
-    return [[TogaytherService getConversionService] distanceStringForMeters:distance*1609.34];
+}
+
+- (NSString *)subtitleIntro {
+    // If no textual search we display distance box
+    if(_dataService.searchTerm==nil) {
+        CLLocationDistance distance = 50;
+        if(_dataService.currentRadius>0) {
+            distance = _dataService.currentRadius;
+        }
+        return [[TogaytherService getConversionService] distanceStringForMeters:distance*1609.34];
+    } else {
+        return NSLocalizedString(@"snippet.distance.textSearch", @"snippet.distance.textSearch");
+    }
 }
 // Color of the short thumb subtitle text
 -(UIColor*)thumbSubtitleColor {

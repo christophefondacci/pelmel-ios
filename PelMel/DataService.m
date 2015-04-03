@@ -124,6 +124,7 @@
  */
 -(void)fetchPlacesFor:(CALObject *)parent searchTerm:(NSString *)searchTerm {
     [PMLPopupEditor purgeEditors];
+
     dispatch_async(kBgQueue, ^{
         BOOL isLocalized = NO;
         while(!isLocalized) {
@@ -163,7 +164,7 @@
 }
 
 -(void)fetchPlacesAtLatitude:(double)latitude longitude:(double)longitude for:(CALObject *)parent searchTerm:(NSString *)searchTerm radius:(double)radius {
-
+    self.searchTerm = searchTerm;
     [self startOp:@""];
     [self notify:@selector(willLoadData) with:nil mainThread:YES];
     BOOL retina = [TogaytherService isRetina];

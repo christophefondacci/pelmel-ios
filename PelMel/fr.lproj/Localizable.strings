@@ -207,7 +207,7 @@
 "places.search.placeholder"="Chercher lieu, ville, utilisateur";
 "places.search.placeholder.event"="Trouver un évènement";
 "places.section.incity"="Lieux gay de %@";
-"places.section.inZone"="%d lieux gays trouvés";
+"places.section.inZone"="%d lieux gays";
 "places.section.inZoneWithEvents"="%d évènements à venir / %d lieux";
 "places.section.nearby"="Lieux à proximité";
 "places.section.nearby.events"="Evènements à proximité";
@@ -327,6 +327,9 @@
 "snippet.thumbIntro.placeLikes"="Ils aiment %@:";
 "snippet.thumbIntro.placeCheckins"="Ils sont venus à %@:";
 "snippet.users.count"="%d mecs à proximité";
+"snippet.users.count.singular"="%d mec à proximité";
+"snippet.users.textSearchCount"="%d mecs";
+"snippet.users.textSearchCount.singular"="%d mec";
 "sort.popularity"="Popularité";
 "sort.date"="Date";
 "sort.distance"="Distance";
