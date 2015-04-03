@@ -29,11 +29,11 @@
 }
 - (void)registerBubbleHint:(PMLHelpBubble *)bubble forNotification:(NSString *)notificationName {
     NSMutableSet *bubbles = [_bubblesNotificationMap objectForKey:notificationName];
-    if(bubbles == nil) {
+//    if(bubbles == nil) {
         bubbles = [[NSMutableSet alloc] init];
         [_bubblesNotificationMap setObject:bubbles forKey:notificationName];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpNotification:) name:notificationName object:nil];
-    }
+//    }
     [bubbles addObject:bubble];
 }
 - (void)dealloc {

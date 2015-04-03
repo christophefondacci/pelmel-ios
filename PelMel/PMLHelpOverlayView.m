@@ -9,6 +9,10 @@
 #import "PMLHelpOverlayView.h"
 #import "Arrow.h"
 
+#define kPMLLabelWidth 200
+#define kPMLLabelHeight 100
+#define kPMLLabelSpacing 40
+
 @implementation PMLHelpOverlayView {
     CAShapeLayer *_shapeLayer;
     UIBezierPath *_path;
@@ -73,12 +77,14 @@
     label.textColor = [UIColor whiteColor];
     label.numberOfLines=0;
     
+    
+    
     // Setting frame and alignment
     CGRect frame;
     NSTextAlignment alignement;
     switch(helpBubble.textPosition) {
         case PMLTextPositionLeft: {
-            frame =CGRectMake(MAX(bubbleRect.origin.x-240,0), CGRectGetMidY(bubbleRect)-50, 200, 100);
+            frame =CGRectMake(MAX(bubbleRect.origin.x-kPMLLabelWidth-kPMLLabelSpacing,0), CGRectGetMidY(bubbleRect)-kPMLLabelHeight/2, kPMLLabelWidth, kPMLLabelHeight);
             alignement=NSTextAlignmentRight;
             
             // Creating and positioning arrow
@@ -89,8 +95,9 @@
             break;
         }
         case PMLTextPositionTop: {
-            frame = CGRectMake(CGRectGetMidX(bubbleRect)-100, MAX(bubbleRect.origin.y-140,0), 200, 100);
+            frame = CGRectMake(CGRectGetMidX(bubbleRect)-kPMLLabelWidth/2, MAX(bubbleRect.origin.y-kPMLLabelHeight-kPMLLabelSpacing,0), kPMLLabelWidth, kPMLLabelHeight);
             alignement=NSTextAlignmentCenter;
+            
             // Creating and positioning arrow
             UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"help-arrow-down"]];
             CGRect arrowFrame = arrow.bounds;
@@ -98,13 +105,24 @@
             [self addSubview:arrow];
             break;
         }
-        case PMLTextPositionBottom:
-            frame = CGRectMake(CGRectGetMidX(bubbleRect)-100, MIN(bubbleRect.origin.y+bubbleRect.size.height+40,self.bounds.size.height), 200, 100);
+        case PMLTextPositionBottom: {
+            frame = CGRectMake(CGRectGetMidX(bubbleRect)-kPMLLabelWidth/2, MIN(bubbleRect.origin.y+bubbleRect.size.height+kPMLLabelSpacing,self.bounds.size.height), kPMLLabelWidth, kPMLLabelHeight);
             alignement=NSTextAlignmentCenter;
+            // Creating and positioning arrow
+            UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"help-arrow-up"]];
+            CGRect arrowFrame = arrow.bounds;
+            arrow.frame = CGRectMake(CGRectGetMidX(bubbleRect)-CGRectGetWidth(arrowFrame)/2, CGRectGetMaxY(bubbleRect), CGRectGetWidth(arrowFrame), CGRectGetHeight(arrowFrame));
+            [self addSubview:arrow];
             break;
+        }
         case PMLTextPositionRight:
-            frame =CGRectMake(MIN(bubbleRect.origin.x+bubbleRect.size.width+40,self.bounds.size.width), CGRectGetMidY(bubbleRect)-50, 200, 100);
+            frame =CGRectMake(MIN(bubbleRect.origin.x+bubbleRect.size.width+kPMLLabelSpacing,self.bounds.size.width), CGRectGetMidY(bubbleRect)-kPMLLabelHeight/2, kPMLLabelWidth, kPMLLabelHeight);
             alignement=NSTextAlignmentLeft;
+            // Creating and positioning arrow
+            UIImageView *arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"help-arrow-left"]];
+            CGRect arrowFrame = arrow.bounds;
+            arrow.frame = CGRectMake(CGRectGetMaxX(bubbleRect), CGRectGetMaxY(bubbleRect)-CGRectGetHeight(arrowFrame)/2, CGRectGetWidth(arrowFrame), CGRectGetHeight(arrowFrame));
+            [self addSubview:arrow];
             break;
     }
     label.frame = frame;

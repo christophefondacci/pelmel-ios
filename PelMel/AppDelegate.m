@@ -52,6 +52,8 @@
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SEARCH];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SNIPPET];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_EDIT];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_BADGE];
+    
     // Facebook init
     [FBLoginView class];
     // ------------ NEW PELMEL NAV

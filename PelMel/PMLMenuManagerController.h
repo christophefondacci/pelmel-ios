@@ -13,6 +13,7 @@
 #import "PMLPopupActionManager.h"
 
 #define kPMLSnippetTopOffset 20
+#define kSnippetHeight 110
 
 @class PMLDataManager;
 

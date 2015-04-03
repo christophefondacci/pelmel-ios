@@ -26,7 +26,7 @@
 #import "SpringTransitioningDelegate.h"
 #import "PMLSnippetTableViewController.h"
 
-#define kSnippetHeight 110
+
 
 @interface PMLMenuManagerController ()
 @property (nonatomic, strong) SpringTransitioningDelegate *transitioningDelegate;

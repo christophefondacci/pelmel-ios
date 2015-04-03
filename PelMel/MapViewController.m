@@ -660,17 +660,43 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_LOCALIZE object:self];
     }
 
-    
+    // Displaying help if no annotation and zoom is high enough
     NSSet *annotations = [self.mapView annotationsInMapRect:self.mapView.visibleMapRect];
     if(annotations.count == 0) {
         CLLocationDistance distance = [self distanceFromCornerPoint];
-        if(distance < 10000) {
+        if(distance < 5000) {
             [[NSNotificationCenter defaultCenter]postNotificationName:PML_HELP_ADDCONTENT object:self];
         }
     }
+    
+    // Displaying help for annotated marker that would be visible
+    if(![_settingsService settingValueAsBoolFor:PML_HELP_BADGE]) {
+        CLLocationDistance distance = [self distanceFromCornerPoint];
+        if(distance < 5000) {
+            MKMapRect rect = MKMapRectMake(MKMapRectGetMinX(self.mapView.visibleMapRect), MKMapRectGetMidY(self.mapView.visibleMapRect), MKMapRectGetWidth(self.mapView.visibleMapRect), MKMapRectGetHeight(self.mapView.visibleMapRect)/2-kSnippetHeight);
+            NSSet *relevantAnnotations = [self.mapView annotationsInMapRect:rect];
+            for(id<MKAnnotation> annotation in relevantAnnotations) {
+                if([annotation isKindOfClass:[MapAnnotation class]]) {
+                    MapAnnotation *ann = (MapAnnotation*)annotation;
+                    if([ann.object isKindOfClass:[Place class]]) {
+                        Place *p = (Place*)ann.object;
+                        // Anybody here?
+                        if(p.inUserCount>0) {
+                            PMLPlaceAnnotationView *annView = (PMLPlaceAnnotationView*)ann.annotationView;
+                            CGRect rect = [self.mapView convertRect:annView.frame toView:self.parentMenuController.view];
+                            PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:30 helpText:NSLocalizedString(@"hint.badge",@"hint.badge") textPosition:PMLTextPositionTop];
+                            [_helpService registerBubbleHint:bubble forNotification:PML_HELP_BADGE];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_BADGE object:self];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // Labels display / hide management
     if(annotations.count < 300) {
-            _labelsVisible = YES;
-            [self toggleLabelsVisibility:YES forAnnotations:annotations];
+        _labelsVisible = YES;
+        [self toggleLabelsVisibility:YES forAnnotations:annotations];
     } else if(_labelsVisible) {
         _labelsVisible = NO;
         NSArray *annotations = [self.mapView annotations];
