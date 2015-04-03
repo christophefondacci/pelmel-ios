@@ -84,4 +84,9 @@ typedef enum {
  * Returns whether checkin is allowed for the given place
  */
 -(BOOL)isCheckinEnabledFor:(CALObject*)place;
+
+-(void)storeSettingValue:(NSString*)value forName:(NSString*)settingName;
+-(void)storeSettingBoolValue:(BOOL)value forName:(NSString*)settingName;
+-(NSString*)settingValueFor:(NSString*)settingName;
+-(BOOL)settingValueAsBoolFor:(NSString*)settingName;
 @end

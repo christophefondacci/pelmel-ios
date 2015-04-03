@@ -248,6 +248,7 @@ typedef enum {
     
     // Animation init
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
+    
 }
 - (void)viewWillAppear:(BOOL)animated {
     self.actionManager.menuManagerController = self.parentMenuController;
@@ -1766,10 +1767,11 @@ typedef enum {
             [self installNavBarEdit];
         }
         [UIView animateWithDuration:0.3 animations:^{
-//            self.parentMenuController.navigationController.navigationBar.alpha=1;
             self.navigationItem.rightBarButtonItem.customView.alpha=1;
         } completion:^(BOOL finished) {
             _editVisible = PMLVisibityStateVisible;
+            // Showing help if needed
+            [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
         }];
     } else if(_editVisible == PMLVisibityStateVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom && _opened) {
         _editVisible = PMLVisibityStateTransitioning;
@@ -1797,32 +1799,35 @@ typedef enum {
 }
 #pragma mark - NavBar management
 - (void)installNavBarEdit {
-
-//    if(_actionManager.currentEditor.editing) {
-//        [self installNavBarCommitCancel];
-//    } else {
-        // Info provider informs us whether edit is supported or not by providing the actual edit implementation
-        if([_infoProvider respondsToSelector:@selector(editActionType)]) {
-            PMLActionType editType = [_infoProvider editActionType];
-            if(editType!=PMLActionTypeNoAction) {
-                UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
-//            _navbarEdit = YES;
-                self.navigationItem.rightBarButtonItem = barItem;
-                barItem.customView.alpha=0;
-            } else {
-                self.navigationItem.rightBarButtonItem=nil;
-            }
+    
+    // Info provider informs us whether edit is supported or not by providing the actual edit implementation
+    if([_infoProvider respondsToSelector:@selector(editActionType)]) {
+        PMLActionType editType = [_infoProvider editActionType];
+        if(editType!=PMLActionTypeNoAction) {
+            UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
+            self.navigationItem.rightBarButtonItem = barItem;
+            barItem.customView.alpha=0;
         } else {
-            if([_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
-                UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeMyProfile selector:@selector(navbarActionTapped:)];
-                //            _navbarEdit = YES;
-                self.navigationItem.rightBarButtonItem = barItem;
-                barItem.customView.alpha=0;
-            } else {
-                self.navigationItem.rightBarButtonItem = nil;
-            }
+            self.navigationItem.rightBarButtonItem=nil;
         }
-//    }
+    } else {
+        if([_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
+            UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeMyProfile selector:@selector(navbarActionTapped:)];
+            //            _navbarEdit = YES;
+            self.navigationItem.rightBarButtonItem = barItem;
+            barItem.customView.alpha=0;
+        } else {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+    }
+    
+    // Installing help
+    if(self.navigationItem.rightBarButtonItem != nil) {
+        CGRect rect = [self.navigationController.view convertRect:self.navigationItem.rightBarButtonItem.customView.frame toView:[self parentMenuController].view];
+        // Help
+        [[TogaytherService helpService] registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:rect cornerRadius:15 helpText:NSLocalizedString(@"hint.edit",@"hint.edit") textPosition:PMLTextPositionLeft ] forNotification:PML_HELP_EDIT];
+    }
+
 }
 -(void) installNavBarCommitCancel {
     UIBarButtonItem *commitItem = [self barButtonItemFromAction:PMLActionTypeConfirm selector:@selector(navbarActionTapped:)];

@@ -46,4 +46,13 @@
 
 #define MAP_HACK_TAG 24681357
 
+
+#define PML_HELP_ADDCONTENT @"PMLaddcontent"
+#define PML_HELP_LOCALIZE @"PMLlocalize"
+#define PML_HELP_REFRESH @"PMLrefresh"
+#define PML_HELP_SEARCH @"PMLsearch"
+#define PML_HELP_CHECKIN @"PMLcheckin"
+#define PML_HELP_EDIT @"PMLedit"
+#define PML_HELP_SNIPPET @"PMLsnippet"
+
 #endif

@@ -10,9 +10,12 @@
 #import "UITouchBehavior.h"
 #import "UIImage+IPImageUtils.h"
 #import "PMLPopupActionManager.h"
+#import "TogaytherService.h"
 
 @implementation PMLCountersView {
     UIDynamicAnimator *_animator;
+
+    PMLHelpBubble *_checkinHelpBubble;
 }
 
 - (void)awakeFromNib {
@@ -59,6 +62,20 @@
                 containerView.layer.borderColor = [[UIColor colorWithWhite:1 alpha:0.3] CGColor];
                 containerView.layer.cornerRadius = 5;
                 containerView.layer.masksToBounds = YES;
+                if([_datasource counterActionAtIndex:i]==PMLActionTypeCheckin) {
+                    
+                    if(_checkinHelpBubble == nil) {
+                        [self layoutIfNeeded];
+                        CGRect checkinRect = [self convertRect:_checkinsContainerView.frame toView:[[TogaytherService uiService] menuManagerController].view];
+                        _checkinHelpBubble = [[PMLHelpBubble alloc ] initWithRect:checkinRect cornerRadius:checkinRect.size.width/2 helpText:NSLocalizedString(@"hint.checkin",@"hint.checkin") textPosition:PMLTextPositionTop];
+                        
+                        [[TogaytherService helpService] registerBubbleHint:_checkinHelpBubble forNotification:PML_HELP_CHECKIN];
+                    }
+                    
+                    if(![[[TogaytherService uiService] menuManagerController] snippetFullyOpened]) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_CHECKIN object:self];
+                    }
+                }
             } else {
                 UIView *containerView  = [self containerViewAtIndex:i];
                 containerView.backgroundColor = [UIColor clearColor];

@@ -25,7 +25,7 @@
 #define PML_FONT_SARI_MEDIUM @"Sari-Medium"
 #define PML_FONT_SARI_LIGHT @"Sari-Light"
 #define PML_FONT_BADGES @"OpenSans"
-
+#define PML_FONT_HINTS @"ComingSoon"
 
 #define PML_ICON_LIKE @"snpIconLikeWhite"
 #define PML_ICON_CHECKIN @"ovvIconCheckinWhite"

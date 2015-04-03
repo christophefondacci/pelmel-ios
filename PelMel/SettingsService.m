@@ -264,4 +264,20 @@
     _filterText = filterText;
     [self notifyFiltersChanged];
 }
+
+- (void)storeSettingValue:(NSString *)value forName:(NSString *)settingName {
+    [_defaults setObject:value forKey:settingName];
+    [_defaults synchronize];
+}
+- (void)storeSettingBoolValue:(BOOL)value forName:(NSString *)settingName {
+    [_defaults setObject:[NSNumber numberWithBool:value] forKey:settingName];
+    [_defaults synchronize];
+}
+- (NSString *)settingValueFor:(NSString *)settingName {
+    return (NSString*)[_defaults objectForKey:settingName];
+}
+- (BOOL)settingValueAsBoolFor:(NSString *)settingName {
+    NSNumber *n = [_defaults objectForKey:settingName];
+    return [n boolValue];
+}
 @end

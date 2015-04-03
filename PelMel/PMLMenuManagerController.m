@@ -63,6 +63,7 @@ static void *MyParentMenuControllerKey;
     // Services
     UIService *_uiService;
     DataService *_dataService;
+    PMLHelpService *_helpService;
     
     // Our main animator
     UIDynamicAnimator *_animator;
@@ -146,6 +147,7 @@ static void *MyParentMenuControllerKey;
     // Initializing navigation
     _uiService = [TogaytherService uiService];
     _dataService = [TogaytherService dataService];
+    _helpService = [TogaytherService helpService];
     [TogaytherService applyCommonLookAndFeel:self];
     
     // Configuring main nav bar
@@ -179,6 +181,9 @@ static void *MyParentMenuControllerKey;
     
     // Grip
     _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpGripTop"]];
+    
+    // Help
+    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:CGRectMake(CGRectGetMinX(self.view.bounds), CGRectGetMaxY(self.view.bounds)-kSnippetHeight,CGRectGetWidth(self.view.bounds),kSnippetHeight) cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop] forNotification:PML_HELP_SNIPPET];
     
     // Warning label@
 //    [self configureWarningLabel];
@@ -281,7 +286,6 @@ static void *MyParentMenuControllerKey;
 
     [self removeCurrentSnippetController];
     // Initializing child inside a sub navigation
-    //    PMLSubNavigationController *viewController = [[PMLSubNavigationController alloc] initWithRootViewController:childViewController];
     UINavigationController *viewController = [[UINavigationController alloc] initWithRootViewController:childViewController];
     [viewController.interactivePopGestureRecognizer setDelegate:self];
     

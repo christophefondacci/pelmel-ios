@@ -34,6 +34,7 @@
     static JsonService *_jsonService;
     static UIService *_uiService;
     static SettingsService *_settingsService;
+    static PMLHelpService *_helpService;
     static NSDictionary *properties;
 
     static BOOL hdModeLoaded;
@@ -54,6 +55,7 @@
     _jsonService = [[JsonService alloc] init];
     _uiService = [[UIService alloc] init];
     _settingsService = [[SettingsService alloc] init];
+    _helpService = [[PMLHelpService alloc] init];
     
     // Injecting data service
     _dataService.userService = [TogaytherService userService];
@@ -174,5 +176,8 @@
 }
 + (SettingsService*)settingsService {
     return _settingsService;
+}
++ (PMLHelpService *)helpService {
+    return _helpService;
 }
 @end

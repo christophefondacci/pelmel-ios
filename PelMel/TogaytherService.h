@@ -16,6 +16,7 @@
 #import "JsonService.h"
 #import "UIService.h"
 #import "SettingsService.h"
+#import "PMLHelpService.h"
 
 @interface TogaytherService : NSObject
 
@@ -45,6 +46,8 @@
 // Provides the Settings service
 + (SettingsService*)settingsService;
 
+// Provides the help management service
++(PMLHelpService*)helpService;
 
 + (MessageService*)getMessageService;
 + (void)applyCommonLookAndFeel:(UIViewController*)controller;

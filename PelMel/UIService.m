@@ -324,6 +324,9 @@
             }
         }
     }
+    if(!opened) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET object:self];
+    }
 }
 /**
  * Pushes the snippet controller on the current navigation stack presented in the snippet. It handles

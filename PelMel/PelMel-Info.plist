@@ -45,9 +45,10 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>PelMel would like to access your location to tell you what's around</string>
+	<string>PelMel would like to access your location to tell you what&apos;s around</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>ComingSoon.ttf</string>
 		<string>Cooper Black.ttf</string>
 		<string>OpenSans-Bold.ttf</string>
 		<string>OpenSans-Italic.ttf</string>
@@ -83,9 +84,9 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0.25513803930135248</real>
+				<real>0.2551380393013525</real>
 				<key>Green</key>
-				<real>0.54738482512463693</real>
+				<real>0.5473848251246369</real>
 				<key>Red</key>
 				<real>1</real>
 			</dict>

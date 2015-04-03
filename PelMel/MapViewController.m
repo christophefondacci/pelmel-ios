@@ -18,6 +18,7 @@
 #import "PMLDataManager.h"
 #import "MKNumberBadgeView.h"
 #import "PMLInfoProvider.h"
+#import "PMLHelpOverlayView.h"
 
 @import QuartzCore;
 
@@ -36,6 +37,7 @@
     DataService *_dataService;
     UserService *_userService;
     UIService *_uiService;
+    PMLHelpService *_helpService;
     ConversionService *_conversionService;
     SettingsService *_settingsService;
     MKAnnotationView *selectedAnnotation;
@@ -76,6 +78,9 @@
     
     BOOL _snippetDisabledOnSelection;
     
+    // Help
+    PMLHelpOverlayView *helpOverlayView;
+    
 }
 @synthesize mapView = _mapView;
 
@@ -93,6 +98,7 @@
     _userService = [TogaytherService userService];
     _conversionService = [TogaytherService getConversionService];
     _uiService = TogaytherService.uiService;
+    _helpService = [TogaytherService helpService];
     _modelHolder = _dataService.modelHolder;
     newPointReady = YES;
     
@@ -141,6 +147,17 @@
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuMyPositionAction];
     
     [self.parentMenuController addObserver:self forKeyPath:@"contextObject" options:NSKeyValueObservingOptionNew context:NULL];
+    
+    
+    // Registering help bubbles
+    PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:_menuAddAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.addPlace",@"hint.addPlace") textPosition:PMLTextPositionLeft];
+    [_helpService registerBubbleHint:bubble forNotification:PML_HELP_ADDCONTENT];
+    
+    bubble = [[PMLHelpBubble alloc] initWithRect:_menuRefreshAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.reloadData",@"hint.reloadData") textPosition:PMLTextPositionLeft];
+    [_helpService registerBubbleHint:bubble forNotification:PML_HELP_REFRESH];
+
+    bubble = [[PMLHelpBubble alloc] initWithRect:_menuMyPositionAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.myposition",@"hint.myposition") textPosition:PMLTextPositionLeft];
+    [_helpService registerBubbleHint:bubble forNotification:PML_HELP_LOCALIZE];
 }
 
 - (void)viewDidUnload
@@ -633,17 +650,24 @@
         [_mapView setCamera:camera animated:YES];
         
     }
-//    if(_zoomUpdateType == PMLZoomUpdateNone) {
-//        // If we moved more than 100km (our current search radius, then we display refresh
-//        if([currentLocation distanceFromLocation:_mapInitialCenter]>=50000) {
-//            if([[_mapView annotationsInMapRect:_mapView.visibleMapRect] count] == 0) {
-//                [UIView animateWithDuration:0.2 animations:^{
-//                    _menuRefreshAction.menuActionView.transform = CGAffineTransformRotate(_menuRefreshAction.menuActionView.transform, M_PI_2);
-//                }];
-//            }
-//        }
-//    }
+
+    // If we moved more than 100km (our current search radius, then we display refresh
+    if([currentLocation distanceFromLocation:_mapInitialCenter]>=50000 && _mapInitialCenter!=nil) {
+        _mapInitialCenter = currentLocation;
+        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_REFRESH object:self];
+    }
+    if(!mapView.userLocationVisible) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_LOCALIZE object:self];
+    }
+
+    
     NSSet *annotations = [self.mapView annotationsInMapRect:self.mapView.visibleMapRect];
+    if(annotations.count == 0) {
+        CLLocationDistance distance = [self distanceFromCornerPoint];
+        if(distance < 10000) {
+            [[NSNotificationCenter defaultCenter]postNotificationName:PML_HELP_ADDCONTENT object:self];
+        }
+    }
     if(annotations.count < 300) {
             _labelsVisible = YES;
             [self toggleLabelsVisibility:YES forAnnotations:annotations];

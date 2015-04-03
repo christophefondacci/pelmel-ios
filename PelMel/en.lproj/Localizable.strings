@@ -121,6 +121,12 @@
 "gallery.removalFailed.title"="Cannot delete photo";
 "geoloc.deactivated.title"="Location services disabled";
 "geoloc.deactivated.subtitle"="Go to settings > privacy > location";
+"hint.addPlace"="Tap this button to add a new hangout to PELMEL!\nSet a name, a type, adjust location and it's done!";
+"hint.checkin"="Check in so that other users can see there is someone here.";
+"hint.edit"="Not up to date? Edit any information here";
+"hint.myposition"="Tap here to center the map to your current location and reload real-time information on what's around";
+"hint.reloadData"="Load or reload information on the current visible map area by tapping this reload button";
+"hint.snippet"="Pull up this snippet to see more information about a place, or about what's around you";
 "language.fr"="French";
 "language.en"="English";
 "language.es"="Spanish";
