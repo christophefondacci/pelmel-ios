@@ -108,12 +108,16 @@ static NSString * const reuseIdentifier = @"Cell";
     if([self.thumbProvider respondsToSelector:@selector(objectAtIndex:forType:)]) {
         CALObject *obj = [self.thumbProvider objectAtIndex:indexPath.row forType:type];
         if(obj == nil) {
+            cell.hidden=YES;
             cell.thumbImage.image = nil;
             cell.thumbImage.layer.borderWidth=0;
             cell.titleLabel.text = nil;
+            // Just in case, passing through image service to make sure everything cancelled
+            [_imageService load:nil to:cell.thumbImage thumb:YES];
             return cell;
         }
     }
+    cell.hidden=NO;
     cell.thumbImage.layer.borderWidth=1;
     // Configuring background for selected cells
     if([self.thumbProvider respondsToSelector:@selector(isSelected:forType:)]) {
@@ -128,7 +132,7 @@ static NSString * const reuseIdentifier = @"Cell";
     // Configuring image
     cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
     CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
-            [_imageService load:image to:cell.thumbImage thumb:YES];
+    [_imageService load:image to:cell.thumbImage thumb:YES];
     // Setting rounded corners (or not)
     BOOL rounded= YES;
     if([self.thumbProvider respondsToSelector:@selector(rounded)]) {
