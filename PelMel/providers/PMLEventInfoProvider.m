@@ -52,7 +52,7 @@
 - (NSString *)subtitle {
     NSString *startDate ;
     
-    if([_event.startDate compare:_event.endDate] == NSOrderedAscending) {
+    if([_event.startDate compare:_event.endDate] == NSOrderedAscending || [_event.startDate compare:[NSDate date]] == NSOrderedDescending) {
         startDate = [_conversionService eventDateLabel:_event isStart:YES];
     } else {
         startDate = [_conversionService stringForEventDate:[NSDate date] timeOnly:NO];
