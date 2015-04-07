@@ -183,7 +183,7 @@ static void *MyParentMenuControllerKey;
     _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpGripTop"]];
     
     // Help
-    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:CGRectMake(CGRectGetMinX(self.view.bounds), CGRectGetMaxY(self.view.bounds)-kSnippetHeight,CGRectGetWidth(self.view.bounds),kSnippetHeight) cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop] forNotification:PML_HELP_SNIPPET];
+    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:CGRectMake(CGRectGetMinX(self.view.bounds)+15, CGRectGetMaxY(self.view.bounds)-kSnippetHeight+15,CGRectGetWidth(self.view.bounds)-30,kSnippetHeight-27) cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop] forNotification:PML_HELP_SNIPPET];
     
     // Warning label@
 //    [self configureWarningLabel];

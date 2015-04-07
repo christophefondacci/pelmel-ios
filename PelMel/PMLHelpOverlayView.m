@@ -39,6 +39,9 @@
         
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissOverlay:)];
         [self addGestureRecognizer:tapRecognizer];
+        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc ] initWithTarget:self action:@selector(dismissOverlay:)];
+        [self addGestureRecognizer:panRecognizer];
+        
         self.userInteractionEnabled=YES;
     }
     return self;
@@ -82,9 +85,10 @@
     // Setting frame and alignment
     CGRect frame;
     NSTextAlignment alignement;
+    CGRect screen = [[UIScreen mainScreen] bounds];
     switch(helpBubble.textPosition) {
         case PMLTextPositionLeft: {
-            frame =CGRectMake(MAX(bubbleRect.origin.x-kPMLLabelWidth-kPMLLabelSpacing,0), CGRectGetMidY(bubbleRect)-kPMLLabelHeight/2, kPMLLabelWidth, kPMLLabelHeight);
+            frame =CGRectMake(MAX(bubbleRect.origin.x-kPMLLabelWidth-kPMLLabelSpacing,0), MAX(CGRectGetMidY(bubbleRect)-kPMLLabelHeight/2,0), kPMLLabelWidth, kPMLLabelHeight);
             alignement=NSTextAlignmentRight;
             
             // Creating and positioning arrow
@@ -95,7 +99,8 @@
             break;
         }
         case PMLTextPositionTop: {
-            frame = CGRectMake(CGRectGetMidX(bubbleRect)-kPMLLabelWidth/2, MAX(bubbleRect.origin.y-kPMLLabelHeight-kPMLLabelSpacing,0), kPMLLabelWidth, kPMLLabelHeight);
+            frame = CGRectMake(MIN(MAX(CGRectGetMidX(bubbleRect)-kPMLLabelWidth/2,0),screen.size.width)
+                                   , MAX(bubbleRect.origin.y-kPMLLabelHeight-kPMLLabelSpacing,0), kPMLLabelWidth, kPMLLabelHeight);
             alignement=NSTextAlignmentCenter;
             
             // Creating and positioning arrow

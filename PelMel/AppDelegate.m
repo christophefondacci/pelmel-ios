@@ -43,17 +43,6 @@
     UIService *uiService = TogaytherService.uiService;
     MapViewController *mapView = (MapViewController*)[uiService instantiateViewController:@"mapItemsView"];
     
-    //TODO: Comment this
-    SettingsService *_settingsService = [TogaytherService settingsService];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_LOCALIZE];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_ADDCONTENT];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_CHECKIN];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_REFRESH];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SEARCH];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SNIPPET];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_EDIT];
-    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_BADGE];
-    
     // Facebook init
     [FBLoginView class];
     // ------------ NEW PELMEL NAV

@@ -40,6 +40,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)resetHints {
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_LOCALIZE];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_ADDCONTENT];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_CHECKIN];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_REFRESH];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SEARCH];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SNIPPET];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_EDIT];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_BADGE];
+}
 #pragma mark - Notification callback
 - (void)helpNotification:(NSNotification*)notification {
     // Retrieving any registered help bubble

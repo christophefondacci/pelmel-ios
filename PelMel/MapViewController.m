@@ -684,7 +684,8 @@
                         if(p.inUserCount>0) {
                             PMLPlaceAnnotationView *annView = (PMLPlaceAnnotationView*)ann.annotationView;
                             CGRect rect = [self.mapView convertRect:annView.frame toView:self.parentMenuController.view];
-                            PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:30 helpText:NSLocalizedString(@"hint.badge",@"hint.badge") textPosition:PMLTextPositionTop];
+                            NSString *hintText = [_uiService localizedString:@"hint.badge" forCount:p.inUserCount];
+                            PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:30 helpText:hintText textPosition:PMLTextPositionTop];
                             [_helpService registerBubbleHint:bubble forNotification:PML_HELP_BADGE];
                             [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_BADGE object:self];
                         }

@@ -324,7 +324,7 @@
             }
         }
     }
-    if(!opened) {
+    if(!opened && object.key != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET object:self];
     }
 }

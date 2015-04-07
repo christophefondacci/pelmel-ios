@@ -13,6 +13,13 @@
 
 @property (nonatomic,retain) PMLHelpOverlayView *currentOverlayView;
 
+/**
+ * Registers the given help bubble for the provided notification. Whenever this notification is 
+ * posted to the NSNotificationCenter, this bubble will be displayed.
+ */
 -(void)registerBubbleHint:(PMLHelpBubble*)bubble forNotification:(NSString*)notificationName;
-
+/**
+ * Resets all hints so that each of them will be displayed again
+ */
+-(void)resetHints;
 @end

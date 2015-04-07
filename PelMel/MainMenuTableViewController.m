@@ -26,11 +26,12 @@
 #define kRowSettingLikes 1
 #define kRowSettingLikers 2
 
-#define kRowCountSettings 4
+#define kRowCountSettings 5
 #define kRowSettingMyPage 0
 #define kRowSettingProfile 1
 #define kRowSettingSettings 2
-#define kRowSettingDisconnect 3
+#define kRowSettingHints 3
+#define kRowSettingDisconnect 4
 
 #define kCellIdPlaceType @"placeTypeCell"
 #define kCellIdProfile @"profileTableCell"
@@ -209,7 +210,13 @@
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
-
+                case kRowSettingHints: {
+                    placeTypeCell.label.text = NSLocalizedString(@"settings.hints", @"Show hints");
+                    placeTypeCell.accessoryType = UITableViewCellAccessoryNone;
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconInfo"];
+                    placeTypeCell.badgeLabel.hidden=YES;
+                    break;
+                }
                 case kRowSettingDisconnect: {
                     placeTypeCell.label.text = NSLocalizedString(@"disconnect", @"disconnect");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryNone;
@@ -290,11 +297,12 @@
                 case kRowSettingProfile: {
                     UIViewController *accountController = [[TogaytherService uiService] instantiateViewController:SB_ID_MYACCOUNT];
                     [self.parentMenuController.navigationController pushViewController:accountController animated:YES];
-//                    [self.parentMenuController.navigationController presentViewController:[[UINavigationController alloc] initWithRootViewController:accountController] animated:YES completion:NULL ];
-//                    [self.navigationController pushViewController:accountController animated:YES];
                 }
                     break;
-
+                case kRowSettingHints:
+                    [[TogaytherService helpService] resetHints];
+                    [_uiService alertWithTitle:@"hint.reset.title" text:@"hint.reset.msg"];
+                    break;
                 case kRowSettingDisconnect:
                     // Disconnecting
                     [_userService disconnect];
