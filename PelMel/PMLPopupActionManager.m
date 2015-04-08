@@ -265,7 +265,7 @@
         NSLog(@"Photo");
         
         // Asking our data manager to prompt for photo upload
-        PMLDataManager *dataManager = _menuManagerController.dataManager;
+        PMLDataManager *dataManager = [[TogaytherService uiService] menuManagerController].dataManager;
         [dataManager promptUserForPhotoUploadOn:_currentObject];
     }];
     _photoAction.color = UIColorFromRGB(kPMLPhotoColor);

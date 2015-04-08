@@ -824,6 +824,12 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self notifyPlaceUpdated:newPlace];
                 callback(newPlace);
+                
+                // If the place does not have a picture, prompt to add one
+                if(place.mainImage==nil) {
+                    PopupAction *photoAction = [[[[[TogaytherService uiService] menuManagerController] rootViewController] popupActionManager] actionForType:PMLActionTypeAddPhoto];
+                    photoAction.actionCommand();
+                }
             });
             
 
