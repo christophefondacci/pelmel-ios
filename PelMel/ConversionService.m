@@ -110,7 +110,7 @@
     NSString *formattedNumberString = [numberFormatter stringFromNumber:[NSNumber numberWithDouble:currentValue]];
     return [NSString stringWithFormat:NSLocalizedString(currentTemplate,@"template"),formattedNumberString];
 }
--(void)geocodeAddressFor:(CALObject *)object completion:(AddressClosure)closure {
+-(void)reverseGeocodeAddressFor:(CALObject *)object completion:(AddressClosure)closure {
     // Geocoding
     CLLocation *loc = [[CLLocation alloc] initWithLatitude:object.lat longitude:object.lng];
     [_geocoder reverseGeocodeLocation:loc completionHandler:^(NSArray *placemarks, NSError *error) {
@@ -125,7 +125,49 @@
             }
         }
     }];
+}
+- (void)geocodeAddress:(NSString*)address intoObject:(Place *)place completion:(LatLngClosure)closure {
+    // Adding cancel action that reverts address and latitude / longitude
+//    PMLPopupEditor *editor = [PMLPopupEditor editorFor:place on:[[[TogaytherService uiService] menuManagerController] rootViewController]];
+//    NSString *oldAddress = place.address;
+//    double oldLat = place.lat;
+//    double oldLng = place.lng;
+//    [[editor pendingCancelActions] addObject:^{
+//        place.address = oldAddress;
+//        place.lat = oldLat;
+//        place.lng = oldLng;
+//    }];
+    
 
+    
+    _geocoder = [[CLGeocoder alloc] init];
+    [_geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
+        if(error == nil && placemarks.count>0) {
+            // Computing current place location to compare distance
+            CLLocation *currentPlaceLocation = [[CLLocation alloc] initWithLatitude:place.lat longitude:place.lng];
+            for(CLPlacemark *placemark in placemarks) {
+                place.address = [[TogaytherService getConversionService] addressFromPlacemark:placemark];
+                // If address is more than 100 meters from current place, we relocate place
+                if([placemark.location distanceFromLocation:currentPlaceLocation]>100) {
+                    place.lat = placemark.location.coordinate.latitude;
+                    place.lng = placemark.location.coordinate.longitude;
+                    [[[[TogaytherService uiService] menuManagerController] rootViewController].mapView setCenterCoordinate:placemark.location.coordinate];
+
+                    [[TogaytherService uiService] alertWithTitle:@"action.edit.address.geocodingMovedPlaceTitle" text:@"action.edit.address.geocodingMovedPlace"];
+                }
+                break;
+            }
+            closure(place,place.lat,place.lng,YES);
+        } else {
+            if([address stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length>5) {
+                place.address = address;
+            }
+            [[TogaytherService uiService] alertWithTitle:@"action.edit.address.geocodingFailedTitle" text:@"action.edit.address.geocodingFailed"];
+            
+            // Error callback
+            closure(place,0,0,NO);
+        }
+    }];
 }
 -(NSString*)addressFromPlacemark:(CLPlacemark*)placemark {
     NSArray *addressLines = [placemark.addressDictionary objectForKey:@"FormattedAddressLines"];

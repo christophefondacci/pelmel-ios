@@ -667,24 +667,25 @@
 }
 -(void)editLocation
 {
-    // Preparing validation blocks
-    double oldLat = _currentObject.lat;
-    double oldLng = _currentObject.lng;
-    NSString *oldAddress;
-    if([_currentObject isKindOfClass:[Place class]]) {
-        oldAddress = ((Place*)_currentObject).address;
-    }
-    __block CALObject *obj = _currentObject;
-    EditionAction cancelAction = ^{
-        obj.lat=oldLat;
-        obj.lng=oldLng;
-        if([obj isKindOfClass:[Place class]]) {
-            ((Place*)obj).address =  oldAddress;
-        }
-        
-    };
-    // Starting new edition
-    [[self popupEditor] startEditionWith:nil cancelledBy:cancelAction mapEdition:YES];
+    [_menuManagerController.rootViewController editPlaceLocation:(Place*)_currentObject centerMapOnPlace:YES];
+//    // Preparing validation blocks
+//    double oldLat = _currentObject.lat;
+//    double oldLng = _currentObject.lng;
+//    NSString *oldAddress;
+//    if([_currentObject isKindOfClass:[Place class]]) {
+//        oldAddress = ((Place*)_currentObject).address;
+//    }
+//    __block CALObject *obj = _currentObject;
+//    EditionAction cancelAction = ^{
+//        obj.lat=oldLat;
+//        obj.lng=oldLng;
+//        if([obj isKindOfClass:[Place class]]) {
+//            ((Place*)obj).address =  oldAddress;
+//        }
+//        
+//    };
+//    // Starting new edition
+//    [[self popupEditor] startEditionWith:nil cancelledBy:cancelAction mapEdition:NO];
 }
 -(void)editToMyLocation {
     CLLocationCoordinate2D coords;
@@ -717,7 +718,7 @@
         ConversionService *conversionService = [TogaytherService getConversionService];
         _currentObject.lat = coords.latitude;
         _currentObject.lng = coords.longitude;
-        [conversionService geocodeAddressFor:_currentObject completion:^(NSString *address) {
+        [conversionService reverseGeocodeAddressFor:_currentObject completion:^(NSString *address) {
             ((Place*)_currentObject).address = address;
         }];
 

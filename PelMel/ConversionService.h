@@ -18,7 +18,7 @@ typedef enum {
 } PMLEventState;
 
 typedef void(^AddressClosure)(NSString*address);
-
+typedef void(^LatLngClosure)(CALObject *calObject, CGFloat lat,CGFloat lng, BOOL success);
 @interface ConversionService : NSObject
 
 - (int) getFeetFromCm:(double)cm;
@@ -43,7 +43,12 @@ typedef void(^AddressClosure)(NSString*address);
  * Computes the address at the location of the given object and invokes the block passing
  * the resolved and formatted address.
  */
--(void)geocodeAddressFor:(CALObject*)object completion:(AddressClosure)closure;
+-(void)reverseGeocodeAddressFor:(CALObject*)object completion:(AddressClosure)closure;
+/**
+ * Geocodes the given address into a latitude / longitude, not altering current place latitude if under
+ * a certain distance, handles rollback.
+ */
+-(void)geocodeAddress:(NSString*)address intoObject:(Place *)object completion:(LatLngClosure)closure;
 -(NSString*)addressFromPlacemark:(CLPlacemark*)placemark;
 /**
  * Computes real-time information about whether an event is past, present or future

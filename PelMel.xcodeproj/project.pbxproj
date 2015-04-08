@@ -61,7 +61,6 @@
 		B41DD757197BD844008F09D9 /* UIMapOptionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B41DD756197BD843008F09D9 /* UIMapOptionView.xib */; };
 		B41DD75A197BD9DA008F09D9 /* UIMapOptionView.h in Headers */ = {isa = PBXBuildFile; fileRef = B41DD758197BD9D9008F09D9 /* UIMapOptionView.h */; };
 		B41DD75B197BD9DA008F09D9 /* UIMapOptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = B41DD759197BD9DA008F09D9 /* UIMapOptionView.m */; };
-		B423643D199F4ABB00E350A7 /* PelMel.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B423643C199F4ABB00E350A7 /* PelMel.xcassets */; };
 		B42408DF18EC711600B8B898 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42408DE18EC711600B8B898 /* QuartzCore.framework */; };
 		B42408E418F8EA9500B8B898 /* EGORefreshTableHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = B42408E218F8EA9500B8B898 /* EGORefreshTableHeaderView.h */; };
 		B42408E518F8EA9500B8B898 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B42408E318F8EA9500B8B898 /* EGORefreshTableHeaderView.m */; };
@@ -172,6 +171,7 @@
 		B46C4C3819D27D9D00C81DA3 /* PMLTagsTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B46C4C3619D27D9D00C81DA3 /* PMLTagsTableViewCell.h */; };
 		B46C4C3919D27D9D00C81DA3 /* PMLTagsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B46C4C3719D27D9D00C81DA3 /* PMLTagsTableViewCell.m */; };
 		B46C4C3B19D2D27A00C81DA3 /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */; };
+		B46EEC1D1AD47A0500A471B4 /* PelMel.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B46EEC1C1AD47A0500A471B4 /* PelMel.xcassets */; };
 		B470F429199D800500A03CAD /* KIImagePager.h in Headers */ = {isa = PBXBuildFile; fileRef = B470F427199D800500A03CAD /* KIImagePager.h */; };
 		B470F42A199D800500A03CAD /* KIImagePager.m in Sources */ = {isa = PBXBuildFile; fileRef = B470F428199D800500A03CAD /* KIImagePager.m */; };
 		B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */; };
@@ -422,7 +422,6 @@
 		B41DD756197BD843008F09D9 /* UIMapOptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UIMapOptionView.xib; sourceTree = "<group>"; };
 		B41DD758197BD9D9008F09D9 /* UIMapOptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIMapOptionView.h; sourceTree = "<group>"; };
 		B41DD759197BD9DA008F09D9 /* UIMapOptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIMapOptionView.m; sourceTree = "<group>"; };
-		B423643C199F4ABB00E350A7 /* PelMel.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PelMel.xcassets; sourceTree = "<group>"; };
 		B42408DE18EC711600B8B898 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		B42408E218F8EA9500B8B898 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
 		B42408E318F8EA9500B8B898 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
@@ -543,6 +542,7 @@
 		B46C4C3619D27D9D00C81DA3 /* PMLTagsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLTagsTableViewCell.h; sourceTree = "<group>"; };
 		B46C4C3719D27D9D00C81DA3 /* PMLTagsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLTagsTableViewCell.m; sourceTree = "<group>"; };
 		B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Italic.ttf"; sourceTree = "<group>"; };
+		B46EEC1C1AD47A0500A471B4 /* PelMel.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PelMel.xcassets; sourceTree = "<group>"; };
 		B470F427199D800500A03CAD /* KIImagePager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIImagePager.h; sourceTree = "<group>"; };
 		B470F428199D800500A03CAD /* KIImagePager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIImagePager.m; sourceTree = "<group>"; };
 		B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLCountersView.xib; sourceTree = "<group>"; };
@@ -1248,7 +1248,7 @@
 		B4D560BD160C9DF3003A738E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B423643C199F4ABB00E350A7 /* PelMel.xcassets */,
+				B46EEC1C1AD47A0500A471B4 /* PelMel.xcassets */,
 				B4FC958319B1E64A00269E74 /* OpenSans-Bold.ttf */,
 				B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */,
 				B4FC958419B1E64A00269E74 /* OpenSans-Regular.ttf */,
@@ -1656,7 +1656,6 @@
 				B4D56089160B673F003A738E /* MainStoryboard_iPhone.storyboard in Resources */,
 				B4D5608C160B673F003A738E /* MainStoryboard_iPad.storyboard in Resources */,
 				B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */,
-				B423643D199F4ABB00E350A7 /* PelMel.xcassets in Resources */,
 				B41CF0AE1899C0F40031FD7C /* PelMel-config.plist in Resources */,
 				B4859DCB1984C1060036D8FF /* UITextInputView.xib in Resources */,
 				B457A0E61A980DDA00207D8E /* PMLEventTableViewCell.xib in Resources */,
@@ -1685,6 +1684,7 @@
 				B4E9120C169ACD4E005D3CAF /* TogaytherTitleView.xib in Resources */,
 				B4FC958619B1E64A00269E74 /* OpenSans-Regular.ttf in Resources */,
 				B4A290B916A5AC9F007F5AA9 /* hd_logo_small.gif in Resources */,
+				B46EEC1D1AD47A0500A471B4 /* PelMel.xcassets in Resources */,
 				B43123A61ACDB08D008EF107 /* ComingSoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

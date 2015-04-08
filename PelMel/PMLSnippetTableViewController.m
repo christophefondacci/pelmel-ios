@@ -37,6 +37,8 @@
 #import "UIImage+IPImageUtils.h"
 #import "UITouchBehavior.h"
 #import "PMLSnippetEditTableViewCell.h"
+#import <MBProgressHUD.h>
+
 
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
@@ -72,6 +74,7 @@
 #define kPMLRowCountersId @"counters"
 #define kPMLRowThumbPreviewId @"thumbsPreview"
 #define kPMLHeightSnippet 110
+#define kPMLHeightSnippetEditor 150
 #define kPMLHeightGallery 180
 #define kPMLHeightCounters 97
 #define kPMLHeightThumbPreview 75
@@ -166,6 +169,7 @@ typedef enum {
     CAGradientLayer *_countersGradient;
     NSMutableDictionary *_countersPreviewGradients; // map of CAGradientLayer for likes/checkins gradients
     NSMutableDictionary *_heightsMap;
+    PMLSnippetEditTableViewCell *_snippetEditCell;
     
     // Headers
     PMLSectionTitleView *_sectionTitleView;
@@ -574,7 +578,11 @@ typedef enum {
         case kPMLSectionSnippet:
             switch(indexPath.row) {
                 case kPMLRowSnippet:
-                    return kPMLHeightSnippet;
+                    if(!_snippetItem.editing) {
+                        return kPMLHeightSnippet;
+                    } else {
+                        return kPMLHeightSnippetEditor;
+                    }
             }
             break;
         case kPMLSectionGallery:
@@ -841,7 +849,7 @@ typedef enum {
 #pragma mark - Cell configuration
 
 - (void)configureRowSnippetEditor:(PMLSnippetEditTableViewCell*)cell {
-
+    _snippetEditCell = cell;
     cell.titleTextField.delegate = self;
     cell.titleTextField.hidden=NO;
     cell.titleTextField.text = _infoProvider.title;
@@ -850,20 +858,27 @@ typedef enum {
                                     action:@selector(titleTextChanged:)
                           forControlEvents:UIControlEventEditingChanged];
 
+    
+
     // Toggling place type selection
     if([_snippetItem isKindOfClass:[Place class]]) {
+        Place *place = (Place*)_snippetItem;
+        
         // Initializing default type
         PlaceType *selectedPlaceType = [_settingsService defaultPlaceType];
         // Getting place type for current place
-        NSString *typeCode =((Place*)_snippetItem).placeType;
+        NSString *typeCode =place.placeType;
         if(typeCode != nil) {
             selectedPlaceType = [_settingsService getPlaceType:typeCode];
         }
         // Initilizing with this selection
-        PMLPlaceTypesThumbProvider *provider = [[PMLPlaceTypesThumbProvider alloc] initWithPlace:(Place*)_snippetItem];
+        PMLPlaceTypesThumbProvider *provider = [[PMLPlaceTypesThumbProvider alloc] initWithPlace:place];
         [cell layoutIfNeeded];
         _typesThumbController = [self thumbControllerIn:cell.peopleView provider:provider using:_typesThumbController size:kPMLThumbTypesSize];
         
+        // Address update
+        cell.addressTextField.text = place.address;
+        cell.addressTextField.delegate = self;
     }
     cell.subtitleLabel.text = NSLocalizedString(@"snippet.edit.placeType",@"Select the kind of venue:");
     [cell.okButton addTarget:self  action:@selector(editOkTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -1498,8 +1513,8 @@ typedef enum {
     okAction.actionCommand();
 }
 -(void)editCancelTapped:(id)sender {
-    PopupAction *okAction = [_actionManager actionForType:PMLActionTypeCancel];
-    okAction.actionCommand();
+    PopupAction *cancelAction = [_actionManager actionForType:PMLActionTypeCancel];
+    cancelAction.actionCommand();
 }
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
@@ -1607,6 +1622,8 @@ typedef enum {
     [_observedProperties addObject:@"editing"];
     [self.snippetItem addObserver:self forKeyPath:@"editingDesc" options:NSKeyValueObservingOptionNew context:NULL];
     [_observedProperties addObject:@"editingDesc"];
+    [self.snippetItem addObserver:self forKeyPath:@"address" options:NSKeyValueObservingOptionNew context:NULL];
+    [_observedProperties addObject:@"address"];
 }
 - (void)didLike:(CALObject *)likedObject newLikes:(int)likeCount newDislikes:(int)dislikesCount liked:(BOOL)liked {
     [self.tableView reloadData];
@@ -1627,26 +1644,36 @@ typedef enum {
     }
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    // Retrieving text
-    NSString *inputText = textField.text;
-    
-    // Removing current input
-    textField.text = nil;
-    
-    // Calling back
-    if([_snippetItem isKindOfClass:[Place class]]) {
-        // Only doing something if we have a valid text
-        NSString *title = [inputText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-        if(title.length>0) {
-            ((Place*)_snippetItem).title = inputText;
-            PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
-            action.actionCommand();
+    if(textField == _snippetEditCell.addressTextField) {
+        // Geolocating
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[TogaytherService uiService] menuManagerController] view] animated:NO];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.labelText = NSLocalizedString(@"action.edit.address.geocoding", @"Geocoding address");
+        [_conversionService geocodeAddress:textField.text intoObject:(Place*)_snippetItem completion:^(CALObject *calObject, CGFloat lat, CGFloat lng, BOOL success) {
+            // Done
+            [hud hide:YES];
+        }];
+    } else {
+        // Retrieving text
+        NSString *inputText = textField.text;
+        
+        // Removing current input
+        textField.text = nil;
+        
+        // Calling back
+        if([_snippetItem isKindOfClass:[Place class]]) {
+            // Only doing something if we have a valid text
+            NSString *title = [inputText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            if(title.length>0) {
+                ((Place*)_snippetItem).title = inputText;
+                PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
+                action.actionCommand();
+            }
         }
+        [self.tableView reloadData];
+        return YES;
     }
-    [self.tableView reloadData];
-    
 
-    return YES;
 }
 #pragma mark - UITextViewDelegate
 - (BOOL)textViewShouldEndEditing:(UITextView *)textView {
@@ -1657,12 +1684,11 @@ typedef enum {
 }
 #pragma mark - KVO Observing implementation
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-//    if([@"address" isEqualToString:keyPath]) {
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            [self.tableView reloadData];
-//        });
-//    } else
-    if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
+    if([@"address" isEqualToString:keyPath]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.tableView reloadData];
+        });
+    } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         NSLog(@"VALUE CHANGE: '%@' change catched from %p",keyPath,self);
         if(_snippetItem.editing || _snippetItem.editingDesc) {
             [self.tableView setContentOffset:CGPointMake(0, 0)];
@@ -1671,17 +1697,10 @@ typedef enum {
         } else if(!_snippetItem.editing && !_snippetItem.editingDesc && self.navigationItem.leftBarButtonItem!=self.navigationItem.backBarButtonItem) {
             [self uninstallNavBarCommitCancel];
         }
-        // If place is already created we show the keyboard, otherwise it stays hidden
-//        if(_snippetItem.key != nil && _snippetItem.editing) {
-//            [_snippetCell.titleTextField becomeFirstResponder];
-//        }
         [self.tableView reloadData];
         
     } else if([keyPath isEqualToString:@"mainImage"]) {
-//        if(_opened) {
-            [_galleryCell.galleryView reloadData];
-//            [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationNone];
-//        }
+        [_galleryCell.galleryView reloadData];
     }
 }
 -(void)updateTitleEdition {

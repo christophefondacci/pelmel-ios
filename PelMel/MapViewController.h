@@ -44,7 +44,7 @@ typedef enum {
  */
 -(void)selectCALObject:(CALObject*)calObject withSnippet:(BOOL)snippetEnabled;
 - (void)reselectPlace:(Place*)place;
-
+- (void)editPlaceLocation:(Place *)place centerMapOnPlace:(BOOL)centerMap;
 -(void)show:(CALObject*)object;
 -(void)hide:(CALObject*)object;
 @end

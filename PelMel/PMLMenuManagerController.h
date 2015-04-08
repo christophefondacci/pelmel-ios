@@ -14,6 +14,7 @@
 
 #define kPMLSnippetTopOffset 20
 #define kSnippetHeight 110
+#define kSnippetEditHeight 150
 
 @class PMLDataManager;
 

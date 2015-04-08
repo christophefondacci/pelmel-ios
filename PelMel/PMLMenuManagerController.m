@@ -315,7 +315,8 @@ static void *MyParentMenuControllerKey;
     [_animator removeAllBehaviors];
     
     // Positioning snippet
-    NSInteger offset = myFrame.size.height-kSnippetHeight-_kbSize.height;
+    
+    NSInteger offset = [self offsetForMinimizedSnippet]-_kbSize.height;
     [self animateSnippetToOffset:offset animated:animated];
     [self dismissControllerMenu:animated];
     
@@ -638,8 +639,21 @@ static void *MyParentMenuControllerKey;
 //    }
 }
 -(NSInteger)offsetForMinimizedSnippet {
+    
+    CGFloat snippetHeight = kSnippetHeight;
+    UIViewController *topMostChildController = self.currentSnippetViewController;
+    if([topMostChildController isKindOfClass:[UINavigationController class]]) {
+        topMostChildController = [((UINavigationController*)topMostChildController) topViewController];
+    }
+    if([topMostChildController isKindOfClass:[PMLSnippetTableViewController class]]) {
+        PMLSnippetTableViewController *snippetCtrl = (PMLSnippetTableViewController*)topMostChildController;
+        if(snippetCtrl.snippetItem.editing) {
+            snippetHeight = kSnippetEditHeight;
+        }
+    }
+    
     CGRect myFrame = self.view.frame;
-    return myFrame.size.height  - kSnippetHeight;
+    return myFrame.size.height  - snippetHeight;
 }
 -(NSInteger)offsetForOpenedSnippet {
 //    CGRect bounds = self.view.bounds;
@@ -869,7 +883,8 @@ static void *MyParentMenuControllerKey;
         [UIView setAnimationDuration:duration.doubleValue];
         [UIView setAnimationCurve:curve.intValue];
         [UIView setAnimationBeginsFromCurrentState:YES];
-        _bottomView.frame = CGRectMake(snippetBounds.origin.x, self.view.frame.size.height-kSnippetHeight, snippetBounds.size.width, snippetBounds.size.height);
+        NSInteger offset  = [self offsetForMinimizedSnippet];
+        _bottomView.frame = CGRectMake(snippetBounds.origin.x, offset, snippetBounds.size.width, snippetBounds.size.height);
         
         [UIView commitAnimations];
     }

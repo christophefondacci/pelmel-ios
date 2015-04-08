@@ -46,6 +46,8 @@
     // Internal for adding new point management
     UILongPressGestureRecognizer *gestureRecognizer;
     BOOL newPointReady;
+    Place *_editedPlace;
+    UIImageView *_editedPlaceView;
     
     CALObject *_parentObject;
     
@@ -73,7 +75,6 @@
     CALObject *_contextObject;
     
     // Geocoding
-    CLGeocoder *_geocoder;
     BOOL _initialUserLocationZoomDone;
     
     BOOL _snippetDisabledOnSelection;
@@ -109,7 +110,6 @@
     _placeKeys = [[NSMutableSet alloc] init];
     
     // Geocoding
-    _geocoder = [[CLGeocoder alloc] init];
     _locationManager = [[CLLocationManager alloc] init];
     _locationManager.delegate = self;
     if([_locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
@@ -131,8 +131,8 @@
     
     
     // Listening to long press
-    gestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(mapPressed:)];
-    [_mapView addGestureRecognizer:gestureRecognizer];
+//    gestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(mapPressed:)];
+//    [_mapView addGestureRecognizer:gestureRecognizer];
     _mapView.showsBuildings=NO;
     
     // Menu actions
@@ -238,7 +238,6 @@
 -(void)initializeMenuActions {
     // Providing our menu action (add content)
     _menuAddAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnAdd"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
-        NSLog(@"AddContent");
         CLLocationCoordinate2D coords = _mapView.centerCoordinate;
         [self addPlaceAtLatitude:coords.latitude longitude:coords.longitude];
     }];
@@ -583,6 +582,7 @@
     return pinAnnotation;
 }
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    [self cancelEdition];
 //    NSLog(@"didSelect");
     selectedAnnotation = view;
     if([selectedAnnotation.annotation isKindOfClass:[MapAnnotation class]]) {
@@ -703,6 +703,19 @@
         NSArray *annotations = [self.mapView annotations];
         [self toggleLabelsVisibility:NO forAnnotations:annotations];
     }
+    
+    // New place management
+    if(_editedPlace !=nil) {
+        _editedPlace.lat = _mapView.centerCoordinate.latitude;
+        _editedPlace.lng = _mapView.centerCoordinate.longitude;
+        
+        CGPoint viewCenter = CGPointMake(_editedPlaceView.center.x,_editedPlaceView.frame.origin.y+_editedPlaceView.frame.size.height);
+        CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
+        CGRect frame = _editedPlaceView.bounds;
+        _editedPlaceView.frame = CGRectMake(mapCenter.x-CGRectGetWidth(frame)/2, mapCenter.y-CGRectGetHeight(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
+        // Geocoding
+        [self geocodePlaceAddress:_editedPlace];
+    }
 }
 
 -(void)toggleLabelsVisibility:(BOOL)labelsVisible forAnnotations:(id<NSFastEnumeration>)annotations {
@@ -781,14 +794,19 @@
 }
 
 -(void)addPlaceAtLatitude:(double)latitude longitude:(double)longitude {
-    if(_editedObject == nil) {
-        [_mapView deselectAnnotation:selectedAnnotation.annotation animated:NO];
-        // Creating place
-        [_dataService createPlaceAtLatitude:latitude longitude:longitude];
+    NSLog(@"AddContent");
+    if(_editedPlace==nil) {
+        if(_editedObject == nil) {
+            [_mapView deselectAnnotation:selectedAnnotation.annotation animated:NO];
+            // Creating place
+            [_dataService createPlaceAtLatitude:latitude longitude:longitude];
+        }
+    } else {
+        [_uiService presentSnippetFor:_editedPlace opened:NO];
     }
 }
 -(void)geocodePlaceAddress:(Place*)place {
-    [_conversionService geocodeAddressFor:place completion:^(NSString *address) {
+    [_conversionService reverseGeocodeAddressFor:place completion:^(NSString *address) {
         [place setAddress:address];
     }];
 }
@@ -882,38 +900,90 @@
     annotation = [self buildMapAnnotationFor:place];
     [_mapView selectAnnotation:annotation animated:YES];
 }
-//- (void)didUpdatePlace:(Place *)place {
-//    if(_editedObject != nil) {
-//        // Deselect / reselect
-//        [_mapView deselectAnnotation:_editedAnnotation animated:YES];
-//        [_mapView removeAnnotation:_editedAnnotation];
-//        [_annotationsKeyMap removeObjectForKey:place.key];
-//
-//        _editedObject = nil;
-//        
-//        MapAnnotation *annotation = [self buildMapAnnotationFor:place];
-//        [_mapView selectAnnotation:annotation animated:YES];
-//    }
-//}
+
 -(void)thumbAvailableFor:(Imaged *)place {
     
 }
 -(void)objectCreated:(CALObject *)object {
     if([object isKindOfClass:[Place class]]) {
-        Place *place = (Place*)object;
-        [self setEditedObject:place];
-//        CLLocationCoordinate2D coords = CLLocationCoordinate2DMake(object.lat, object.lng);
-//        
-//        // Adding annotation
-//        newPointAnnotation = [[MapAnnotation alloc] initWithCoordinates:coords object:place];
-//        [_mapView addAnnotation:newPointAnnotation];
+        [self editPlaceLocation:(Place*)object centerMapOnPlace:NO];
+     }
+    
+}
+- (void)didUpdatePlace:(Place *)place {
+    [self cancelEdition];
+    [self reselectPlace:place];
+}
+
+#pragma mark - Edition management
+
+- (void)cancelEdition {
+    if(_editedPlace!=nil) {
+        _editedPlace = nil;
+        [_editedPlaceView removeFromSuperview];
+    }
+}
+- (void)editPlaceLocation:(Place *)place centerMapOnPlace:(BOOL)centerMap {
+    _editedPlace = nil;
+
+    // Adding cancel action to remove view and restore lat/lng/address information
+    PMLPopupEditor *editor = [PMLPopupEditor editorFor:place on:self];
+    
+    __block double lat = place.lat;
+    __block double lng = place.lng;
+    __block NSString *address=place.address;
+    __block Place *p = place;
+    [editor startEditionWith:nil cancelledBy:^{
+        // Restoring lat/lng
+        p.lat = lat;
+        p.lng = lng;
+        p.address = address;
+        
+        // Resetting local edition state
+        _editedPlace = nil;
+        [_editedPlaceView removeFromSuperview];
+        _editedPlaceView = nil;
+    } mapEdition:NO];
+
+    
+    // Placing view
+    _editedPlaceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mapPinNewPlace"]];
+    CGRect imgFrame = CGRectMake(0, 0, 40, 40);
+    _editedPlaceView.bounds=imgFrame;
+    CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
+    
+    
+    if(!centerMap) {
+        // Making sure place is at the center of map, altering place to be at map center
+        CLLocationCoordinate2D coords = _mapView.centerCoordinate;
+        place.lat=coords.latitude;
+        place.lng=coords.longitude;
         
         // Geocoding
         [self geocodePlaceAddress:place];
+    } else {
+        // Otherwise we center the map on the place
+        CLLocationCoordinate2D coords = CLLocationCoordinate2DMake(place.lat, place.lng);
+//        [_mapView setCenterCoordinate:coords animated:NO];
+        _mapView.centerCoordinate = coords;
+        if(place.key != nil) {
+            MapAnnotation *ann = [_annotationsKeyMap objectForKey:place.key];
+            [_mapView removeAnnotation:ann];
+        }
+        mapCenter.y+= self.parentMenuController.navigationController.navigationBar.frame.size.height/2;
     }
+    place.editing = YES;
     
-}
+    // Showing snippet
+    [_uiService presentSnippetFor:place opened:NO];
+    
 
+    _editedPlaceView.frame = CGRectMake(self.mapView.center.x-CGRectGetWidth(imgFrame)/2,mapCenter.y-CGRectGetHeight(imgFrame), CGRectGetWidth(imgFrame), CGRectGetHeight(imgFrame));
+    [self.mapView addSubview:_editedPlaceView];
+    
+    // Registering for map region change updates
+    _editedPlace = place;
+}
 #pragma mark - UserLoginCallback
 //- (void)authenticationFailed:(NSString *)reason {
 //    [self performSegueWithIdentifier:@"login" sender:self];

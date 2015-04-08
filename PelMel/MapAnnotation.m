@@ -28,7 +28,7 @@
     _object.lng = coordinate.longitude;
     _coordinate = coordinate;
     if([self.object isKindOfClass:[Place class]]) {
-        [[TogaytherService getConversionService] geocodeAddressFor:self.object completion:^(NSString *address) {
+        [[TogaytherService getConversionService] reverseGeocodeAddressFor:self.object completion:^(NSString *address) {
             ((Place*)self.object).address = address;
         }];
     }

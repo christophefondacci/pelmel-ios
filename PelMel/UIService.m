@@ -327,6 +327,9 @@
     if(!opened && object.key != nil) {
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET object:self];
     }
+    if(!opened) {
+        [_menuManagerController minimizeCurrentSnippet:YES];
+    }
 }
 /**
  * Pushes the snippet controller on the current navigation stack presented in the snippet. It handles
