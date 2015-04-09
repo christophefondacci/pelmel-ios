@@ -899,7 +899,7 @@
 
         [self setIfDefined:calendar.calendarType    forKey:@"calendarType" fill:paramValues];
         [self setIfDefined:calendar.place.key       forKey:@"placeId" fill:paramValues];
-        [self setIfDefined:@"0"               forKey:@"monthRecurrency" fill:paramValues];
+        [self setIfDefined:[NSString stringWithFormat:@"%d",calendar.recurrency.integerValue]               forKey:@"monthRecurrency" fill:paramValues];
         [self setIfDefined:user.token               forKey:@"nxtpUserToken" fill:paramValues];
         [self fillDescriptionsFor:calendar inParams:paramValues];
         // Preparing POST request

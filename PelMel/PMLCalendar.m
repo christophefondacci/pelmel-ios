@@ -66,6 +66,8 @@
     [self setIsFriday:calendar.isFriday];
     [self setIsSaturday:calendar.isSaturday];
     [self setIsSunday:calendar.isSunday];
+    
+    self.recurrency = calendar.recurrency;
 }
 - (BOOL)isEnabledFor:(NSInteger)index {
     BOOL checked = NO;

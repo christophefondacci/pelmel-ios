@@ -67,8 +67,16 @@
 "calendar.days"="Jours de semaine";
 "calendar.desc.placeholder"="Description (facultatif)";
 "calendar.editor.saving"="Sauvegarde...";
+"calendar.end"="Fin";
 "calendar.happy"="Happy hours";
 "calendar.opening"="Heures d'ouverture";
+"calendar.repeat.every"="Tous";
+"calendar.repeat.first"="les 1ers";
+"calendar.repeat.second"="les 2èmes";
+"calendar.repeat.third"="les 3èmes";
+"calendar.repeat.fourth"="les 4èmes";
+"calendar.repeat.title"="Répétition dans le mois";
+"calendar.start"="Début";
 "calendar.theme"="Soirées à thème";
 "calendar.time"="Horaire";
 "calendar.title.placeholder"="Nom (facultatif)";

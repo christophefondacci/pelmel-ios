@@ -17,11 +17,11 @@
 #import "PMLTextFieldTableViewCell.h"
 #import "PMLEventDescriptionTableViewCell.h"
 
-#define kSectionsCount 3
+#define kSectionsCount 4
 #define kSectionTitle 0
 #define kSectionTime 1
-//#define kSectionDescription 2
 #define kSectionDays 2
+#define kSectionRepetition 3
 
 #define kRowCountTitle 2
 #define kRowTitle 0
@@ -31,7 +31,8 @@
 #define kRowStartTime 0
 #define kRowEndTime 1
 
-#define kRowCountDescription 0
+#define kRowCountRepetition 5
+
 
 
 #define kRowCountDays 7
@@ -49,6 +50,7 @@
     // Header views
     UIPelmelTitleView *_scheduleHeaderView;
     UIPelmelTitleView *_daysHeaderView;
+    UIPelmelTitleView *_repeatHeaderView;
     
     // Time picker vars
     PMLTimePickerDataSource *_timePickerDatasource;
@@ -85,7 +87,8 @@
     // Header views
     _scheduleHeaderView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
     _daysHeaderView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
-
+    _repeatHeaderView = (UIPelmelTitleView*)[[TogaytherService uiService] loadView:@"PMLHoursSectionTitleView"];
+    
     self.navigationController.view.layer.cornerRadius = 10;
     self.navigationController.view.layer.masksToBounds = YES;
 }
@@ -99,7 +102,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return kSectionsCount;
+    return [_editedCalendar.calendarType isEqualToString:SPECIAL_TYPE_OPENING] ? kSectionsCount-1 : kSectionsCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -110,10 +113,10 @@
         case kSectionTime:
             // Start / End time rows + optional time picker
             return kRowCountTime + (_pickerIndexPath != nil ? 1 : 0);
-//        case kSectionDescription:
-//            return kRowCountDescription;
         case kSectionDays:
             return kRowCountDays;
+        case kSectionRepetition:
+            return kRowCountRepetition;
     }
     // Return the number of rows in the section.
     return 0;
@@ -141,6 +144,9 @@
 //            cellId = @"descCell";
 //            break;
         case kSectionDays:
+            cellId = @"dayCell";
+            break;
+        case kSectionRepetition:
             cellId = @"dayCell";
             break;
         default:
@@ -176,6 +182,9 @@
             
             detailCell.accessoryType =  checked ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
         }
+            break;
+        case kSectionRepetition:
+            [self configureRepeatCell:(PMLDetailTableViewCell*)cell forIndex:indexPath.row];
             break;
         default:
             break;
@@ -216,6 +225,10 @@
     } else if(indexPath.section == kSectionDays) {
         [_editedCalendar toggleEnablementFor:(indexPath.row+1)%7];
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    } else if(indexPath.section == kSectionRepetition) {
+        _editedCalendar.recurrency = [NSNumber numberWithInt:indexPath.row];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kSectionRepetition] withRowAnimation:UITableViewRowAnimationNone];
+//        [self.tableView reloadSections: withRowAnimation:<#(UITableViewRowAnimation)#>RowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
     
 }
@@ -233,6 +246,7 @@
     switch(section) {
         case kSectionDays:
         case kSectionTime:
+        case kSectionRepetition:
             return 38;
         default:
             return 0;
@@ -247,6 +261,9 @@
         case kSectionDays:
             _daysHeaderView.titleLabel.text = NSLocalizedString(@"calendar.days", @"Days of week");
             return _daysHeaderView;
+        case kSectionRepetition:
+            _repeatHeaderView.titleLabel.text = NSLocalizedString(@"calendar.repeat.title", @"Week of month (repetition)");
+            return _repeatHeaderView;
         default:
             break;
     }
@@ -300,6 +317,32 @@
         cell.placeholderLocalizedCode = nil;
     }
     _descriptionCell = cell;
+}
+-(void)configureRepeatCell:(PMLDetailTableViewCell*)cell forIndex:(NSInteger)row {
+    NSString *repeatText = NSLocalizedString(@"calendar.repeat.every", @"Every");
+    if(row>0) {
+        switch(row) {
+            case 1: {
+                repeatText = [repeatText stringByAppendingFormat:@" %@",NSLocalizedString(@"calendar.repeat.first", @"1st")];
+                break;
+            }
+            case 2:
+                repeatText = [repeatText stringByAppendingFormat:@" %@",NSLocalizedString(@"calendar.repeat.second", @"2nd")];
+                break;
+            case 3:
+                repeatText = [repeatText stringByAppendingFormat:@" %@",NSLocalizedString(@"calendar.repeat.third", @"3rd")];
+                break;
+            case 4:
+                repeatText = [repeatText stringByAppendingFormat:@" %@",NSLocalizedString(@"calendar.repeat.fourth", @"4th")];
+                break;
+        }
+    }
+    cell.detailIntroLabel.text = repeatText;
+    if([_editedCalendar.recurrency integerValue] == row) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 #pragma mark - UITextFieldDelegate
 -(BOOL)textFieldShouldReturn:(UITextField *)textField {

@@ -231,6 +231,25 @@
     NSNumber *start = nil;
     NSString *buf = @"";
     NSString *sep = @"";
+    
+    if(calendar.recurrency.integerValue>0) {
+        switch(calendar.recurrency.integerValue) {
+            case 1:
+                buf = NSLocalizedString(@"calendar.repeat.first", @"First");
+                break;
+            case 2:
+                buf = NSLocalizedString(@"calendar.repeat.second", @"Second");
+                break;
+            case 3:
+                buf = NSLocalizedString(@"calendar.repeat.third", @"Third");
+                break;
+            case 4:
+                buf = NSLocalizedString(@"calendar.repeat.fourth", @"Fourth");
+                break;
+        }
+        buf = [buf stringByAppendingString:@" "];
+    }
+    
     BOOL allTrue = YES;
     while (i < [enabledList count]) {
         // Is this day active?
