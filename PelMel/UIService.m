@@ -316,12 +316,13 @@
             if(_menuManagerController.currentSnippetViewController != nil && !root) {
                 [self pushSnippetNavigationController:snippetController];
                 [_menuManagerController dismissControllerMenu:YES];
+                if(opened) {
+                    [_menuManagerController openCurrentSnippet:!isOpened];
+                }
             } else {
-                [_menuManagerController presentControllerSnippet:snippetController];
+                [_menuManagerController presentControllerSnippet:snippetController animated:YES opened:opened];
             }
-            if(opened) {
-                [_menuManagerController openCurrentSnippet:!isOpened];
-            }
+            
         }
     }
     if(!opened && object.key != nil) {

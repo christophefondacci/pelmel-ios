@@ -183,7 +183,7 @@ static void *MyParentMenuControllerKey;
     _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpGripTop"]];
     
     // Help
-    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:CGRectMake(CGRectGetMinX(self.view.bounds)+15, CGRectGetMaxY(self.view.bounds)-kSnippetHeight+15,CGRectGetWidth(self.view.bounds)-30,kSnippetHeight-27) cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop] forNotification:PML_HELP_SNIPPET];
+    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:CGRectMake(CGRectGetMinX(self.view.bounds)+15, CGRectGetMaxY(self.view.bounds)-kSnippetHeight+15,CGRectGetWidth(self.view.bounds)-30,kSnippetHeight-27) cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop whenSnippetOpened:NO] forNotification:PML_HELP_SNIPPET];
     
     // Warning label@
 //    [self configureWarningLabel];
@@ -281,6 +281,10 @@ static void *MyParentMenuControllerKey;
     }
 }
 - (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated {
+    // Default is not opened
+    [self presentControllerSnippet:childViewController animated:animated opened:NO];
+}
+- (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated opened:(BOOL)opened {
     [self.rootViewController.view layoutIfNeeded];
     CGRect myFrame = self.rootViewController.view.bounds;
 
@@ -315,10 +319,18 @@ static void *MyParentMenuControllerKey;
     [_animator removeAllBehaviors];
     
     // Positioning snippet
-    
-    NSInteger offset = [self offsetForMinimizedSnippet]-_kbSize.height;
-    [self animateSnippetToOffset:offset animated:animated];
-    [self dismissControllerMenu:animated];
+    if(opened) {
+        [self openCurrentSnippet:animated];
+    } else {
+        NSInteger offset = [self offsetForMinimizedSnippet]-_kbSize.height;
+        [self animateSnippetToOffset:offset animated:animated];
+    }
+
+    // Putting menu underneath snippet
+    if(_menuView != nil ) {
+        [_menuView removeFromSuperview ];
+        [self.view insertSubview:_menuView belowSubview:_bottomView];
+    }
     
 }
 
@@ -387,8 +399,8 @@ static void *MyParentMenuControllerKey;
 }
 
 - (void)sendSnippetDelegateState:(BOOL)animated {
-    if(_snippetFullyOpened && [self.snippetDelegate respondsToSelector:@selector(menuManager:snippetOpened:)]) {
-        [self.snippetDelegate menuManager:self snippetOpened:animated];
+    if(_snippetFullyOpened && [self.snippetDelegate respondsToSelector:@selector(menuManager:snippetWillOpen:)]) {
+        [self.snippetDelegate menuManager:self snippetWillOpen:animated];
     } else if(!_snippetFullyOpened && [self.snippetDelegate respondsToSelector:@selector(menuManager:snippetMinimized:)]) {
         [self.snippetDelegate menuManager:self snippetMinimized:animated];
     }
@@ -614,16 +626,30 @@ static void *MyParentMenuControllerKey;
             [UIView animateWithDuration:0.3 animations:^{
                 _bottomView.frame = frame;
             } completion:^(BOOL finished) {
-                if(frame.origin.y>self.view.bounds.size.height) {
-                    [self removeCurrentSnippetController];
-                }
+                [self completeAnimationtoTopOffset:offset];
             }];
         } else {
             _bottomView.frame = frame;
-            if(frame.origin.y>self.view.bounds.size.height) {
-                [self removeCurrentSnippetController];
-            }
+            [self completeAnimationtoTopOffset:offset];
         }
+    }
+}
+/**
+ * A factorized method called after animation or right away if no animation when changing the top offset
+ * of the snippet. This method should only be called in the context of animateSnippetToOffset
+ */
+-(void)completeAnimationtoTopOffset:(NSInteger)offset {
+    if(_bottomView.frame.origin.y>self.view.bounds.size.height) {
+        [self removeCurrentSnippetController];
+    }
+    // Notifying delegate
+    if(_snippetFullyOpened && [self.snippetDelegate respondsToSelector:@selector(menuManagerSnippetDidOpen:)]) {
+        [self.snippetDelegate menuManagerSnippetDidOpen:self];
+    }
+    if(_menuView != nil && offset == [self offsetForMinimizedSnippet]) {
+        [_menuView removeFromSuperview ];
+        [self.view insertSubview:_menuView aboveSubview:_bottomView];
+        //        [self dismissControllerMenu:animated];
     }
 }
 - (void)snippetPannedCallback {

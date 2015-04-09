@@ -21,6 +21,7 @@ typedef enum {
 @property (nonatomic) CGFloat cornerRadius;
 @property (nonatomic,copy) NSString *helpText;
 @property (nonatomic) PMLTextPosition textPosition;
+@property (nonatomic) BOOL whenSnippetOpened;
 
-- (instancetype)initWithRect:(CGRect)bubbleFrame cornerRadius:(CGFloat)cornerRadius helpText:(NSString*)helpText textPosition:(PMLTextPosition)textPosition;
+- (instancetype)initWithRect:(CGRect)bubbleFrame cornerRadius:(CGFloat)cornerRadius helpText:(NSString*)helpText textPosition:(PMLTextPosition)textPosition whenSnippetOpened:(BOOL)opened;
 @end

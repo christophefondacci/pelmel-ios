@@ -37,12 +37,15 @@
         _shapeLayer.path = _path.CGPath;
         [self.layer addSublayer:_shapeLayer];
         
+        // Interaction that dismiss the overlay on tap or pan
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissOverlay:)];
         [self addGestureRecognizer:tapRecognizer];
         UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc ] initWithTarget:self action:@selector(dismissOverlay:)];
         [self addGestureRecognizer:panRecognizer];
-        
         self.userInteractionEnabled=YES;
+        
+        // Preparing bubbles array
+        self.helpBubbles = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -133,39 +136,9 @@
     label.frame = frame;
     label.textAlignment = alignement;
     [self addSubview:label];
-//
-//    NSDictionary *dic = @{ @"label":label};
-//    NSArray *constraint_V = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[label(100)]"
-//                                                                    options:0
-//                                                                    metrics:nil
-//                                                                      views:dic];
-//    NSArray *constraint_H = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[label(200)]"
-//                                                                    options:0
-//                                                                    metrics:nil
-//                                                                      views:dic];
-//    
-//    
-//    NSLayoutConstraint *alignCenters = [NSLayoutConstraint constraintWithItem:label
-//                                 attribute:NSLayoutAttributeCenterY
-//                                 relatedBy:NSLayoutRelationEqual
-//                                    toItem:dummyView
-//                                 attribute:NSLayoutAttributeCenterY
-//                                multiplier:1.f constant:0.f];
-//    
-////    NSArray *constraint_POS_V = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[redView]"
-////                                                                        options:0
-////                                                                        metrics:nil
-////                                                                          views:viewsDictionary];
-//    dic = @{ @"bubble":dummyView, @"label":label};
-//    NSArray *constraint_POS_H = [NSLayoutConstraint constraintsWithVisualFormat:@"H:[label]-20-[bubble]"
-//                                                                        options:0
-//                                                                        metrics:nil
-//                                                                          views:dic];
-//    
-//    [label addConstraints:constraint_V];
-//    [label addConstraints:constraint_H];
-//    [self addConstraint:alignCenters];
-//    [self addConstraints:constraint_POS_H];
+
+    // Registering
+    [self.helpBubbles addObject:helpBubble];
     
 }
 - (void)dismissOverlay:(UIGestureRecognizer*)recognizer {

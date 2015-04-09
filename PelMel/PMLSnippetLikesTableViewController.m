@@ -177,6 +177,7 @@
     }
     return 60;
 }
+
 #pragma mark - Data setup
 - (void)setActivities:(NSArray *)activities {
     _loading = NO;

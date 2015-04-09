@@ -150,13 +150,13 @@
     
     
     // Registering help bubbles
-    PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:_menuAddAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.addPlace",@"hint.addPlace") textPosition:PMLTextPositionLeft];
+    PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:_menuAddAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.addPlace",@"hint.addPlace") textPosition:PMLTextPositionLeft whenSnippetOpened:NO];
     [_helpService registerBubbleHint:bubble forNotification:PML_HELP_ADDCONTENT];
     
-    bubble = [[PMLHelpBubble alloc] initWithRect:_menuRefreshAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.reloadData",@"hint.reloadData") textPosition:PMLTextPositionLeft];
+    bubble = [[PMLHelpBubble alloc] initWithRect:_menuRefreshAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.reloadData",@"hint.reloadData") textPosition:PMLTextPositionLeft whenSnippetOpened:NO];
     [_helpService registerBubbleHint:bubble forNotification:PML_HELP_REFRESH];
 
-    bubble = [[PMLHelpBubble alloc] initWithRect:_menuMyPositionAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.myposition",@"hint.myposition") textPosition:PMLTextPositionLeft];
+    bubble = [[PMLHelpBubble alloc] initWithRect:_menuMyPositionAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.myposition",@"hint.myposition") textPosition:PMLTextPositionLeft whenSnippetOpened:NO];
     [_helpService registerBubbleHint:bubble forNotification:PML_HELP_LOCALIZE];
 }
 
@@ -685,7 +685,7 @@
                             PMLPlaceAnnotationView *annView = (PMLPlaceAnnotationView*)ann.annotationView;
                             CGRect rect = [self.mapView convertRect:annView.frame toView:self.parentMenuController.view];
                             NSString *hintText = [_uiService localizedString:@"hint.badge" forCount:p.inUserCount];
-                            PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:30 helpText:hintText textPosition:PMLTextPositionTop];
+                            PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:30 helpText:hintText textPosition:PMLTextPositionTop whenSnippetOpened:NO];
                             [_helpService registerBubbleHint:bubble forNotification:PML_HELP_BADGE];
                             [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_BADGE object:self];
                         }

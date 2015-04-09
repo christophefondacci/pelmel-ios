@@ -10,13 +10,14 @@
 
 @implementation PMLHelpBubble
 
-- (instancetype)initWithRect:(CGRect)bubbleRect cornerRadius:(CGFloat)radius helpText:(NSString*)helpText textPosition:(PMLTextPosition)textPosition{
+- (instancetype)initWithRect:(CGRect)bubbleRect cornerRadius:(CGFloat)radius helpText:(NSString*)helpText textPosition:(PMLTextPosition)textPosition whenSnippetOpened:(BOOL)opened{
     self = [super init];
     if (self) {
         self.bubbleFrame = bubbleRect;
         self.cornerRadius = radius;
         self.helpText = helpText;
         self.textPosition = textPosition;
+        self.whenSnippetOpened=opened;
     }
     return self;
 }

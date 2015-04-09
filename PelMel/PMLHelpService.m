@@ -63,17 +63,23 @@
             
             // Appending bubbles
             for(PMLHelpBubble *bubble in bubbles) {
-                [_currentOverlayView addHelpBubble:bubble];
+                if(bubble.whenSnippetOpened == [[_uiService menuManagerController] snippetFullyOpened]) {
+                    [_currentOverlayView addHelpBubble:bubble];
+                }
             }
             
-            _currentOverlayView.alpha=0;
-            // Adding to the view hierarchy
-            [_uiService.menuManagerController.view addSubview:_currentOverlayView];
-            [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                _currentOverlayView.alpha=1;
-            } completion:NULL];
-            // Showing is not showing any longer
-            [_settingsService storeSettingBoolValue:YES forName:notification.name];
+            if(_currentOverlayView.helpBubbles.count>0) {
+                _currentOverlayView.alpha=0;
+                // Adding to the view hierarchy
+                [_uiService.menuManagerController.view addSubview:_currentOverlayView];
+                [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    _currentOverlayView.alpha=1;
+                } completion:NULL];
+                // Showing is not showing any longer
+                [_settingsService storeSettingBoolValue:YES forName:notification.name];
+            } else {
+                _currentOverlayView = nil;
+            }
         }
 
     }

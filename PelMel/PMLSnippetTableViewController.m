@@ -208,6 +208,7 @@ typedef enum {
     NSInteger _readMoreSize;
     ThumbPreviewMode _thumbPreviewMode;
     BOOL _opened;
+    BOOL _didOpened;
     PMLVisibityState _editVisible;
     
 }
@@ -1653,6 +1654,7 @@ typedef enum {
             // Done
             [hud hide:YES];
         }];
+        return YES;
     } else {
         // Retrieving text
         NSString *inputText = textField.text;
@@ -1791,8 +1793,11 @@ typedef enum {
             self.navigationItem.rightBarButtonItem.customView.alpha=1;
         } completion:^(BOOL finished) {
             _editVisible = PMLVisibityStateVisible;
+            
             // Showing help if needed
-            [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
+            if(_didOpened) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
+            }
         }];
     } else if(_editVisible == PMLVisibityStateVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom && _opened) {
         _editVisible = PMLVisibityStateTransitioning;
@@ -1843,10 +1848,10 @@ typedef enum {
     }
     
     // Installing help
-    if(self.navigationItem.rightBarButtonItem != nil) {
+    if(self.navigationItem.rightBarButtonItem != nil && _opened) {
         CGRect rect = [self.navigationController.view convertRect:self.navigationItem.rightBarButtonItem.customView.frame toView:[self parentMenuController].view];
         // Help
-        [[TogaytherService helpService] registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:rect cornerRadius:15 helpText:NSLocalizedString(@"hint.edit",@"hint.edit") textPosition:PMLTextPositionLeft ] forNotification:PML_HELP_EDIT];
+        [[TogaytherService helpService] registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:rect cornerRadius:15 helpText:NSLocalizedString(@"hint.edit",@"hint.edit") textPosition:PMLTextPositionLeft whenSnippetOpened:YES ] forNotification:PML_HELP_EDIT];
     }
 
 }
@@ -1890,7 +1895,7 @@ typedef enum {
     action.actionCommand();
 }
 #pragma  mark - PMLSnippetDelegate
-- (void)menuManager:(PMLMenuManagerController *)menuManager snippetOpened:(BOOL)animated {
+- (void)menuManager:(PMLMenuManagerController *)menuManager snippetWillOpen:(BOOL)animated {
     _opened = YES;
     
     // Gallery management
@@ -1905,9 +1910,13 @@ typedef enum {
         }
     }
 }
+- (void)menuManagerSnippetDidOpen:(PMLMenuManagerController *)menuManager {
+    _didOpened = YES;
+}
 
 -(void)menuManager:(PMLMenuManagerController *)menuManager snippetMinimized:(BOOL)animated {
     _opened = NO;
+    _didOpened=NO;
     
     // Hiding NAV BAR
     [self.navigationController setNavigationBarHidden:YES animated:YES];
