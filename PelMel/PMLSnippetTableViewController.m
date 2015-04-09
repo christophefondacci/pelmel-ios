@@ -1510,8 +1510,12 @@ typedef enum {
     
 }
 -(void)editOkTapped:(id)sender {
-    PopupAction *okAction = [_actionManager actionForType:PMLActionTypeConfirm];
-    okAction.actionCommand();
+    if(![_snippetEditCell.addressTextField.text isEqualToString:((Place*)_snippetItem).address]) {
+        [self updateAddress:_snippetEditCell.addressTextField.text];
+    } else {
+        PopupAction *okAction = [_actionManager actionForType:PMLActionTypeConfirm];
+        okAction.actionCommand();
+    }
 }
 -(void)editCancelTapped:(id)sender {
     PopupAction *cancelAction = [_actionManager actionForType:PMLActionTypeCancel];
@@ -1644,16 +1648,19 @@ typedef enum {
         ((Place*)_snippetItem).title = textField.text;
     }
 }
+-(void)updateAddress:(NSString*)newAddress {
+    // Geolocating
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[TogaytherService uiService] menuManagerController] view] animated:NO];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString(@"action.edit.address.geocoding", @"Geocoding address");
+    [_conversionService geocodeAddress:newAddress intoObject:(Place*)_snippetItem completion:^(CALObject *calObject, CGFloat lat, CGFloat lng, BOOL success) {
+        // Done
+        [hud hide:YES];
+    }];
+}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if(textField == _snippetEditCell.addressTextField) {
-        // Geolocating
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[TogaytherService uiService] menuManagerController] view] animated:NO];
-        hud.mode = MBProgressHUDModeIndeterminate;
-        hud.labelText = NSLocalizedString(@"action.edit.address.geocoding", @"Geocoding address");
-        [_conversionService geocodeAddress:textField.text intoObject:(Place*)_snippetItem completion:^(CALObject *calObject, CGFloat lat, CGFloat lng, BOOL success) {
-            // Done
-            [hud hide:YES];
-        }];
+        [self updateAddress:textField.text];
         return YES;
     } else {
         // Retrieving text
