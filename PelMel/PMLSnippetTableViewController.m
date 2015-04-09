@@ -1304,7 +1304,7 @@ typedef enum {
     // Resetting height that might have been changed by an activity row
     cell.heightTitleConstraint.constant = 21;
     [_imageService load:place.mainImage to:cell.activityThumbImageView thumb:YES];
-    cell.activityThumbImageView.layer.borderColor = [[_uiService colorForObject:place] CGColor];
+    cell.activityThumbImageView.layer.borderColor = [[UIColor whiteColor] CGColor]; //[[_uiService colorForObject:place] CGColor];
     cell.activityTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
     cell.activitySubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:12];
     for(UIGestureRecognizer *recognizer in cell.activityThumbImageView.gestureRecognizers) {
@@ -1690,17 +1690,20 @@ typedef enum {
         });
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         NSLog(@"VALUE CHANGE: '%@' change catched from %p",keyPath,self);
-        if(_snippetItem.editing || _snippetItem.editingDesc) {
-            [self.tableView setContentOffset:CGPointMake(0, 0)];
-            [self.parentMenuController minimizeCurrentSnippet:YES];
-            [self installNavBarCommitCancel];
-        } else if(!_snippetItem.editing && !_snippetItem.editingDesc && self.navigationItem.leftBarButtonItem!=self.navigationItem.backBarButtonItem) {
-            [self uninstallNavBarCommitCancel];
-        }
-        [self.tableView reloadData];
-        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+            if(_snippetItem.editing || _snippetItem.editingDesc) {
+                [self.tableView setContentOffset:CGPointMake(0, 0)];
+                [self.parentMenuController minimizeCurrentSnippet:YES];
+                [self installNavBarCommitCancel];
+            } else if(!_snippetItem.editing && !_snippetItem.editingDesc && self.navigationItem.leftBarButtonItem!=self.navigationItem.backBarButtonItem) {
+                [self uninstallNavBarCommitCancel];
+            }
+            [self.tableView reloadData];
+//        });
     } else if([keyPath isEqualToString:@"mainImage"]) {
-        [_galleryCell.galleryView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_galleryCell.galleryView reloadData];
+        });
     }
 }
 -(void)updateTitleEdition {
