@@ -40,8 +40,8 @@
         // Interaction that dismiss the overlay on tap or pan
         UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissOverlay:)];
         [self addGestureRecognizer:tapRecognizer];
-        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc ] initWithTarget:self action:@selector(dismissOverlay:)];
-        [self addGestureRecognizer:panRecognizer];
+//        UIPanGestureRecognizer *panRecognizer = [[UIPanGestureRecognizer alloc ] initWithTarget:self action:@selector(dismissOverlay:)];
+//        [self addGestureRecognizer:panRecognizer];
         self.userInteractionEnabled=YES;
         
         // Preparing bubbles array

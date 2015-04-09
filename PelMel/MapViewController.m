@@ -155,6 +155,7 @@
     
     bubble = [[PMLHelpBubble alloc] initWithRect:_menuRefreshAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.reloadData",@"hint.reloadData") textPosition:PMLTextPositionLeft whenSnippetOpened:NO];
     [_helpService registerBubbleHint:bubble forNotification:PML_HELP_REFRESH];
+    [_helpService registerBubbleHint:bubble forNotification:PML_HELP_REFRESH_TIMER];
 
     bubble = [[PMLHelpBubble alloc] initWithRect:_menuMyPositionAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.myposition",@"hint.myposition") textPosition:PMLTextPositionLeft whenSnippetOpened:NO];
     [_helpService registerBubbleHint:bubble forNotification:PML_HELP_LOCALIZE];

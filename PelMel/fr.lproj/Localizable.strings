@@ -121,11 +121,14 @@
 "hint.badge.singular"="Ce chiffre indique que %d personne se trouve actuellement là (checkin)";
 "hint.checkin"="Check in pour que les autres utilisateurs sachent que vous êtes là";
 "hint.edit"="Pour créer un évènement, modifier les heures ou corriger une information, tapez ici !";
+"hint.filters"="Touchez 'happy hours' pour restreindre la carte aux lieux avec happy hours maintenant!";
+"hint.filters.multi"="Combinez plusieurs filtres : appuyez sur 'Bar' pour ne voir que les bars";
 "hint.myposition"="Tapez ici pour centrer la carte sur votre position et recharger les informations temps réel aux alentours";
 "hint.reloadData"="Rafraîchissez les informations sur la zone visible de la carte en touchant ce bouton";
 "hint.reset.title"="Conseils activés";
 "hint.reset.msg"="Les conseils ont été réactivés et seront affichés à nouveau pendant que vous utilisez l'application.";
-"hint.snippet"="Tirez vers le HAUT cette section pour voir plus d'informations sur un lieu ou sur ce qu'il y a autour";
+"hint.snippet"="Tirez cette section vers le HAUT pour voir plus d'informations sur un lieu ou sur ce qu'il y a autour";
+"hint.snippet.events"="Tirez cette section vers le HAUT pour voir les évènements à venir et les lieux populaires autour de vous";
 "language.fr"="Français";
 "language.en"="Anglais";
 "language.es"="Espagnol";

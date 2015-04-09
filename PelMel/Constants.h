@@ -48,12 +48,17 @@
 
 
 #define PML_HELP_ADDCONTENT @"PMLaddcontent"
+#define PML_HELP_FILTERS @"PMLfilters"
+#define PML_HELP_FILTERS_MULTI @"PMLfiltersMulti"
 #define PML_HELP_LOCALIZE @"PMLlocalize"
 #define PML_HELP_REFRESH @"PMLrefresh"
+#define PML_HELP_REFRESH_TIMER @"PMLrefreshTimer"
 #define PML_HELP_SEARCH @"PMLsearch"
 #define PML_HELP_CHECKIN @"PMLcheckin"
 #define PML_HELP_EDIT @"PMLedit"
 #define PML_HELP_BADGE @"PMLbadge"
 #define PML_HELP_SNIPPET @"PMLsnippet"
+#define PML_HELP_SNIPPET_EVENTS @"PMLsnippetEvents"
+
 
 #endif

@@ -126,11 +126,14 @@
 "hint.badge.singular"="This number indicates that %d person is currently checked in here";
 "hint.checkin"="Check in so that other users can see that you are here";
 "hint.edit"="Want to create an event, update hours or correct any information, tap here!";
+"hint.filters"="Tap 'happy hours now' to restrict map to hangouts with happy hours right now!";
+"hint.filters.multi"="Combine several filters: you can tap 'Bar' to only see bar results";
 "hint.myposition"="Tap here to center the map to your current location and reload real-time information on what's around";
 "hint.reloadData"="Refresh information on the current visible map area by tapping this button";
 "hint.reset.title"="Hints enabled";
 "hint.reset.msg"="Hints have been re-enabled and will be displayed again while you use the app.";
-"hint.snippet"="Pull UP this section to see more information about a place or what's around you";
+"hint.snippet"="Pull UP this section to see more information about this place";
+"hint.snippet.events"="Pull UP this section to see upcoming events and top hangouts around you";
 "language.fr"="French";
 "language.en"="English";
 "language.es"="Spanish";

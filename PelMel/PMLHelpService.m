@@ -45,10 +45,14 @@
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_ADDCONTENT];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_CHECKIN];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_REFRESH];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_REFRESH_TIMER];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SEARCH];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SNIPPET];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SNIPPET_EVENTS];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_EDIT];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_BADGE];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_FILTERS];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_FILTERS_MULTI];
 }
 #pragma mark - Notification callback
 - (void)helpNotification:(NSNotification*)notification {

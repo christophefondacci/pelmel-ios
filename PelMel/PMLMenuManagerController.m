@@ -30,6 +30,7 @@
 
 @interface PMLMenuManagerController ()
 @property (nonatomic, strong) SpringTransitioningDelegate *transitioningDelegate;
+@property (nonatomic) CGRect menuStartFrame;
 @end
 
 static void *MyParentMenuControllerKey;
@@ -183,8 +184,9 @@ static void *MyParentMenuControllerKey;
     _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpGripTop"]];
     
     // Help
-    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:CGRectMake(CGRectGetMinX(self.view.bounds)+15, CGRectGetMaxY(self.view.bounds)-kSnippetHeight+15,CGRectGetWidth(self.view.bounds)-30,kSnippetHeight-27) cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop whenSnippetOpened:NO] forNotification:PML_HELP_SNIPPET];
-    
+    CGRect snippetHelpRect = CGRectMake(CGRectGetMinX(self.view.bounds)+15, CGRectGetMaxY(self.view.bounds)-kSnippetHeight+15,CGRectGetWidth(self.view.bounds)-30,kSnippetHeight-27) ;
+    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:snippetHelpRect cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop whenSnippetOpened:NO] forNotification:PML_HELP_SNIPPET];
+    [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:snippetHelpRect cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet.events", @"hint.snippet.events") textPosition:PMLTextPositionTop whenSnippetOpened:NO] forNotification:PML_HELP_SNIPPET_EVENTS];
     // Warning label@
 //    [self configureWarningLabel];
 
@@ -419,7 +421,7 @@ static void *MyParentMenuControllerKey;
         
         // Computing width, height and frame
         CGFloat menuWidth = bounds.size.width*4/5;
-        CGFloat menuHeight = bounds.size.height*pctHeight;
+        CGFloat menuHeight = bounds.size.height*pctHeight-2*4-5;
         CGRect frame;
         CGPoint anchorPoint;
         if(origin.x+menuWidth< bounds.size.width) {
@@ -461,17 +463,20 @@ static void *MyParentMenuControllerKey;
             [_menuViewController didMoveToParentViewController:self];
         }
         
-
+        CGRect targetFrame = _menuView.frame;
         
-        // Displaying menu
-        NSLog(@"Center x=%d Y=%d",(int)_menuView.center.x,(int)_menuView.center.y);
-        _menuView.layer.anchorPoint = anchorPoint;
-        _menuView.frame = frame;
-        NSLog(@"NEW Center x=%d Y=%d",(int)_menuView.center.x,(int)_menuView.center.y);
-        UIPopBehavior *popBehavior = [[UIPopBehavior alloc] initWithViews:@[_menuView] pop:YES delay:NO completion:nil];
-        popBehavior.elasticity=0.3;
-        [_menuAnimator removeAllBehaviors];
-        [_menuAnimator addBehavior:popBehavior];
+        // Minimized menu for clean open animation
+        _menuView.frame = CGRectMake(origin.x-1, origin.y-1, 1, 1);
+        
+        // Storing start frame for closure
+        _menuStartFrame = _menuView.frame;
+        
+        // Animating
+        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:0.9f initialSpringVelocity:0.7f options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            _menuView.frame=targetFrame;
+        } completion:^(BOOL finished) {
+
+        }];
 
     }
 }
@@ -484,7 +489,11 @@ static void *MyParentMenuControllerKey;
 - (void)dismissControllerMenu:(BOOL)animated {
     if(_menuView != nil) {
         CGRect frame = _menuView.frame;
-        frame = CGRectMake(-frame.size.width-1, frame.origin.y, frame.size.width, frame.size.height);
+        if(_menuStartFrame.size.width!=0) {
+            frame = _menuStartFrame;
+        } else {
+            frame = CGRectMake(-frame.size.width-1, frame.origin.y, frame.size.width, frame.size.height);
+        }
         [_menuAnimator removeAllBehaviors];
         if(animated) {
             [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -494,12 +503,14 @@ static void *MyParentMenuControllerKey;
                 _menuView = nil;
                 _menuViewController = nil;
                 _menuViewController.parentMenuController=nil;
+                _menuStartFrame = CGRectMake(0, 0, 0, 0);
             }];
         } else {
             [_menuView removeFromSuperview];
             _menuView = nil;
             _menuViewController = nil;
             _menuViewController.parentMenuController=nil;
+            _menuStartFrame = CGRectMake(0, 0, 0, 0);
         }
         
     }
