@@ -55,6 +55,7 @@
 #define PML_HELP_REFRESH_TIMER @"PMLrefreshTimer"
 #define PML_HELP_SEARCH @"PMLsearch"
 #define PML_HELP_CHECKIN @"PMLcheckin"
+#define PML_HELP_CHECKIN_CLOSE @"PMLcheckinclose"
 #define PML_HELP_EDIT @"PMLedit"
 #define PML_HELP_BADGE @"PMLbadge"
 #define PML_HELP_SNIPPET @"PMLsnippet"

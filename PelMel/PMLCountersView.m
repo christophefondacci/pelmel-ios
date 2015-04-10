@@ -70,6 +70,7 @@
                         _checkinHelpBubble = [[PMLHelpBubble alloc ] initWithRect:checkinRect cornerRadius:checkinRect.size.width/2 helpText:NSLocalizedString(@"hint.checkin",@"hint.checkin") textPosition:PMLTextPositionTop whenSnippetOpened:NO];
                         
                         [[TogaytherService helpService] registerBubbleHint:_checkinHelpBubble forNotification:PML_HELP_CHECKIN];
+                        [[TogaytherService helpService] registerBubbleHint:_checkinHelpBubble forNotification:PML_HELP_CHECKIN_CLOSE];
                     }
                     
                     if(![[[TogaytherService uiService] menuManagerController] snippetFullyOpened]) {

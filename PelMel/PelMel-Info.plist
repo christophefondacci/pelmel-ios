@@ -21,7 +21,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.1.1</string>
+	<string>2.1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,7 +37,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>2.1.1</string>
+	<string>2.1.2</string>
 	<key>FacebookAppID</key>
 	<string>302478486488872</string>
 	<key>FacebookDisplayName</key>
@@ -45,7 +45,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>PelMel would like to access your location to tell you what&apos;s around</string>
+	<string>PelMel would like to access your location to tell you what's around</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>ComingSoon.ttf</string>
@@ -84,9 +84,9 @@
 			<key>TintColor</key>
 			<dict>
 				<key>Blue</key>
-				<real>0.2551380393013525</real>
+				<real>0.25513803930135248</real>
 				<key>Green</key>
-				<real>0.5473848251246369</real>
+				<real>0.54738482512463693</real>
 				<key>Red</key>
 				<real>1</real>
 			</dict>

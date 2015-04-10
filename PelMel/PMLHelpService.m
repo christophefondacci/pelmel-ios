@@ -44,6 +44,7 @@
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_LOCALIZE];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_ADDCONTENT];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_CHECKIN];
+    [_settingsService storeSettingBoolValue:NO forName:PML_HELP_CHECKIN_CLOSE];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_REFRESH];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_REFRESH_TIMER];
     [_settingsService storeSettingBoolValue:NO forName:PML_HELP_SEARCH];

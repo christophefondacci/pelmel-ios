@@ -1802,7 +1802,7 @@ typedef enum {
             _editVisible = PMLVisibityStateVisible;
             
             // Showing help if needed
-            if(_didOpened) {
+            if(_didOpened && [_snippetItem isKindOfClass:[Place class]]) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
             }
         }];

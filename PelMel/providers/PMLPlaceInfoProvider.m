@@ -380,6 +380,12 @@
             return PMLActionTypeLike;
         case kPMLCounterIndexCheckin:
             if([self isCheckinEnabled]) {
+                if(![self isCheckedIn]) {
+                    // Second help hint when the user is less than 100 meters away
+                    if([_conversionService numericDistanceTo:_place]<=100) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_CHECKIN_CLOSE object:self];
+                    }
+                }
                 return PMLActionTypeCheckin;
             } else {
                 return PMLActionTypeNoAction;
