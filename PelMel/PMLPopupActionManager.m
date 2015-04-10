@@ -357,7 +357,7 @@
     NSMutableArray *actions = [[NSMutableArray alloc] init];
     
     if([object isKindOfClass:[Place class]]) {
-        Place *place = (Place*)object;
+//        Place *place = (Place*)object;
         if(object.key != nil) {
             if(_currentEditor.editing) {
                 [actions addObjectsFromArray:@[_cancelAction,_confirmAction]];

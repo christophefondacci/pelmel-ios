@@ -710,7 +710,6 @@
         _editedPlace.lat = _mapView.centerCoordinate.latitude;
         _editedPlace.lng = _mapView.centerCoordinate.longitude;
         
-        CGPoint viewCenter = CGPointMake(_editedPlaceView.center.x,_editedPlaceView.frame.origin.y+_editedPlaceView.frame.size.height);
         CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
         CGRect frame = _editedPlaceView.bounds;
         _editedPlaceView.frame = CGRectMake(mapCenter.x-CGRectGetWidth(frame)/2, mapCenter.y-CGRectGetHeight(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));

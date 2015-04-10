@@ -16,6 +16,7 @@
 @property (strong) NSString *address;
 @property (strong) NSString *distance;
 @property (strong) NSString *cityName;
+@property (strong) NSString *timezoneId;
 @property (nonatomic) double rawDistance;
 @property (strong) NSString *placeType;
 @property (nonatomic) NSInteger inUserCount; // Number of users currently in this place

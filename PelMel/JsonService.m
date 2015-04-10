@@ -34,6 +34,7 @@
     
     NSString *name = [jsonPlace objectForKey:@"name"];
     NSString *key = [jsonPlace objectForKey:@"key"];
+    NSString *timezoneId = [jsonPlace objectForKey:@"timezoneId"];
     NSDictionary *thumb = [jsonPlace objectForKey:@"thumb"];
     
     // Looking up in cache
@@ -45,6 +46,7 @@
         }
         [place setTitle:name];
         [place setKey:key];
+        [place setTimezoneId:timezoneId];
         CALImage *img = [imageService convertJsonImageToImage:thumb];
         [place setMainImage:img];
         
@@ -68,7 +70,7 @@
     NSNumber *adBoost       = [obj objectForKey:@"boostValue"];
     NSNumber *closedCount   = [obj objectForKey:@"closedReportsCount"];
     NSArray *otherImages    = [obj objectForKey:@"otherImages"];
-    
+    NSString *timezoneId    = [obj objectForKey:@"timezoneId"];
     NSArray *specials       = [obj objectForKey:@"specials"];
     
     // Building image array
@@ -111,7 +113,7 @@
     [data setLikeCount:[likeUser integerValue]];
     [data setAdBoost:[adBoost integerValue]];
     [data setClosedReportsCount:[closedCount intValue]];
-    
+    [data setTimezoneId:timezoneId];
     
     // Hashing current place hours by key
     NSMutableDictionary *placeHoursKeys = [[NSMutableDictionary alloc] init];
@@ -183,6 +185,7 @@
     NSNumber *jsonLiked     = [json objectForKey:@"liked"];
     NSArray *jsonEvents     = [json objectForKey:@"events"];
     NSArray *jsonHours      = [json objectForKey:@"hours"];
+    NSString *timezoneId    = [json objectForKey:@"timezoneId"];
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
@@ -225,6 +228,7 @@
     [place setPlaceType:placeType];
     [place setReviewsCount:[reviewsCount integerValue]];
     [place setClosedReportsCount:(int)[closedCount integerValue]];
+    [place setTimezoneId:timezoneId];
     
     // Building main image bean
     if(thumb != nil) {

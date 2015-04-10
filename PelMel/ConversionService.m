@@ -342,15 +342,20 @@
         }
         date= event.endDate;
     }
-    return [self stringForEventDate:date timeOnly:timeOnly];
+    return [self stringForEventDate:date timeOnly:timeOnly timezoneId:event.place.timezoneId];
 }
--(NSString *)stringForEventDate:(NSDate*)date timeOnly:(BOOL)timeOnly {
+-(NSString *)stringForEventDate:(NSDate*)date timeOnly:(BOOL)timeOnly timezoneId:(NSString *)timezone {
     NSString *template=@"EdMMMhmma";
     if(timeOnly) {
         template = @"hmma";
     }
     NSString *formatString = [NSDateFormatter dateFormatFromTemplate:template options:0
                                                               locale:[NSLocale currentLocale]];
+    if(timezone != nil) {
+        [_eventDateFormatter setTimeZone:[NSTimeZone timeZoneWithName:timezone]];
+    } else {
+        [_eventDateFormatter setTimeZone:[NSTimeZone defaultTimeZone]];
+    }
     [_eventDateFormatter setDateFormat:formatString];
     return [_eventDateFormatter stringFromDate:date];
 }

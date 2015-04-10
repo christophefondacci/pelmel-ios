@@ -55,7 +55,7 @@
     if([_event.startDate compare:_event.endDate] == NSOrderedAscending || [_event.startDate compare:[NSDate date]] == NSOrderedDescending) {
         startDate = [_conversionService eventDateLabel:_event isStart:YES];
     } else {
-        startDate = [_conversionService stringForEventDate:[NSDate date] timeOnly:NO];
+        startDate = [_conversionService stringForEventDate:[NSDate date] timeOnly:NO timezoneId:_event.place.timezoneId];
     }
     
     NSString *endHour = [_conversionService eventDateLabel:_event isStart:NO];

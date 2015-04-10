@@ -243,12 +243,12 @@
     if(row == 0) {
         detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.start", @"Start");
 //        detailCell.detailValueLabel.text = [_conversionService eventDateLabel:self.event isStart:YES];
-        detailCell.detailValueLabel.text = [_conversionService stringForEventDate:_editedStartDate timeOnly:NO];
+        detailCell.detailValueLabel.text = [_conversionService stringForEventDate:_editedStartDate timeOnly:NO timezoneId:nil];
 
     } else {
         detailCell.detailIntroLabel.text = NSLocalizedString(@"calendar.end", @"End");
 //        detailCell.detailValueLabel.text = [_conversionService eventDateLabel:self.event isStart:NO];
-        detailCell.detailValueLabel.text = [_conversionService stringForEventDate:_editedEndDate timeOnly:[_editedEndDate timeIntervalSinceDate:_editedStartDate]< 86400];
+        detailCell.detailValueLabel.text = [_conversionService stringForEventDate:_editedEndDate timeOnly:[_editedEndDate timeIntervalSinceDate:_editedStartDate]< 86400 timezoneId:nil];
     }
 
 }
@@ -345,8 +345,20 @@
     
     // Capturing variables for edition (so we don't alter original event before save)
     _editedName = event.name;
-    _editedStartDate = event.startDate;
-    _editedEndDate = event.endDate;
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:event.place.timezoneId]];
+    
+    // Converting event start date to local event date
+    NSString *startDate = [dateFormatter stringFromDate:event.startDate];
+    NSString *endDate = [dateFormatter stringFromDate:event.endDate];
+    
+    // Converting back to a date
+    [dateFormatter setTimeZone:[NSTimeZone defaultTimeZone]];
+    
+    _editedStartDate = [dateFormatter dateFromString:startDate];
+    _editedEndDate = [dateFormatter dateFromString:endDate];
     _editedDescription = event.miniDesc;
 }
 @end

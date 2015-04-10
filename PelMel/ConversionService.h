@@ -87,5 +87,5 @@ typedef void(^LatLngClosure)(CALObject *calObject, CGFloat lat,CGFloat lng, BOOL
  * @return the corresponding date label
  */
 -(NSString *)eventDateLabel:(Event*)event isStart:(BOOL)start;
--(NSString *)stringForEventDate:(NSDate*)date timeOnly:(BOOL)timeOnly ;
+-(NSString *)stringForEventDate:(NSDate*)date timeOnly:(BOOL)timeOnly timezoneId:(NSString*)timezone;
 @end
