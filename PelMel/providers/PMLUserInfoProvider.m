@@ -358,7 +358,7 @@
 }
 -(CALObject *)mapObjectForLocalization {
     if(_user.lastLocation!=nil) {
-        if([_userService isCheckedInAt:_user.lastLocation]) {
+        if([_userService user:_user isCheckedInAt:_user.lastLocation]) {
             return _user.lastLocation;
         }
     }

@@ -600,9 +600,11 @@
         }
     }
 }
-
+- (BOOL)user:(User*)user isCheckedInAt:(Place *)place {
+    return [user.lastLocation.key isEqualToString:place.key] && [user.lastLocationDate timeIntervalSinceNow]>-PML_CHECKIN_SECONDS;
+}
 - (BOOL)isCheckedInAt:(Place *)place {
-    return [_currentUser.lastLocation.key isEqualToString:place.key] && [_currentUser.lastLocationDate timeIntervalSinceNow]>-PML_CHECKIN_SECONDS;
+    return [self user:_currentUser isCheckedInAt:place];
 }
 -(Place *)checkedInPlace {
     if([_currentUser.lastLocationDate timeIntervalSinceNow]>-PML_CHECKIN_SECONDS) {
