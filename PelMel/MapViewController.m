@@ -265,13 +265,13 @@
             
             // First zoom mode: center on current position
             CLLocation *centerLocation = [[CLLocation alloc] initWithLatitude:_mapView.centerCoordinate.latitude longitude:_mapView.centerCoordinate.longitude];
-            if([_mapView.userLocation.location distanceFromLocation:centerLocation] < 750000) {
-                [_mapView setCenterCoordinate:_mapView.userLocation.location.coordinate animated:YES];
-                _menuRefreshAction.menuAction(self.parentMenuController,_menuRefreshAction);
-            } else {
+//            if([_mapView.userLocation.location distanceFromLocation:centerLocation] < 750000) {
+//                [_mapView setCenterCoordinate:_mapView.userLocation.location.coordinate animated:YES];
+//                _menuRefreshAction.menuAction(self.parentMenuController,_menuRefreshAction);
+//            } else {
                 _zoomUpdateType = PMLZoomUpdateAroundLocation;
                 [_dataService fetchNearbyPlaces];
-            }
+//            }
         } else {
             NSString *title = NSLocalizedString(@"action.myposition.alertTitle", @"action.myposition.alertTitle");
             NSString *msg = NSLocalizedString(@"action.myposition.alertMsg", @"action.myposition.alertMsg");

@@ -22,6 +22,10 @@
 "action.checkout.feedbackMessage"="Vous êtes parti de %@, plus personne ne peut voir que vous êtes là! Personne ne peut voir que vous avez été ici.";
 "action.comment"="Commenter";
 "action.edit.address.geocoding"="Geocodage de l'addresse";
+"action.edit.address.geocodingFailedTitle"="Addresse non trouvée";
+"action.edit.address.geocodingFailed"="Nous n'avons pas pu trouver cette adresse ou il y a eu une erreur pendant le géocodage. Nous avons conservé le point à sa précédente position, vous devrez probablement vérifier qu'il correspond à cette adresse.";
+"action.edit.address.geocodingMovedPlace"="L'adress entrée se trouve loin de l'emplacement actuel de ce lieu. Nous avons déplacé le point de la carte à la nouvelle adresse.";
+"action.edit.address.geocodingMovedPlaceTitle"="Lieu déplacé";
 "action.edit.address.title"="Addresse";
 "action.edit.address.message"="Entrez l'adresse exacte ici:";
 "action.edit.title"="Information à modifier";
@@ -385,7 +389,7 @@
 "user.loc.hours"="heures";
 "user.loc.minutes"="minutes";
 "user.status.offline"="Hors ligne";
-"user.status.online"="En ligne";
+"user.status.online"="Disponible";
 "validation.errorTitle"="Données non valides";
 "validation.nolocation"="Vous devez définir la localisation du lieu sur la carte en déplaçant l'épingle sur le lieu souhaité.";
 "validation.noname"="Vous devez renseigner le nom du lieu que vous éditez ou que vous créez. Veuillez vérifier vos données et essayer à nouveau.";
