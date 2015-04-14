@@ -36,6 +36,8 @@ typedef enum {
 @property (strong) NSString *searchedText;
 @property (strong) NSDate *dataTime;
 @property (nonatomic) ListviewType currentListviewType;
+@property (nonatomic) int totalPlacesCount;
+@property (nonatomic) int totalUsersCount;
 
 -(void)updatePlaces:(NSArray *)places location:(CLLocation *)userLocation dataTime:(NSDate *)dataTime;
 -(NSArray*)getCALObjects;
