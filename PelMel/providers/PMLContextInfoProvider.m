@@ -52,10 +52,10 @@
     NSString *title;
     if(_modelHolder.events.count == 0) {
         NSString *titleTemplate = @"places.section.inZone";
-        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.places.count];
+        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.totalPlacesCount];
     } else {
         NSString *titleTemplate = @"places.section.inZoneWithEvents";
-        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.events.count,_modelHolder.places.count];
+        title = [NSString stringWithFormat:NSLocalizedString(titleTemplate, titleTemplate),_modelHolder.events.count,_modelHolder.totalPlacesCount];
     }
     return title;
 
@@ -69,7 +69,7 @@
         } else {
             templateCode = @"snippet.users.textSearchCount";
         }
-        subtitle = [_uiService localizedString:templateCode forCount:_modelHolder.users.count];
+        subtitle = [_uiService localizedString:templateCode forCount:_modelHolder.totalUsersCount];
     }
     return subtitle;
 }

@@ -340,6 +340,10 @@
         localizedCity = [jsonService convertJsonCityToCity:jsonCity];
     }
     
+    // Parsing counts
+    NSNumber *totalPlacesCount = [json objectForKey:@"nearbyPlacesCount"];
+    NSNumber *totalUsersCount = [json objectForKey:@"nearbyUsersCount"];
+    
     // Assigning to model holder for all-view synch
     [_modelHolder setPlaces:docs];
     [_modelHolder setEvents:events];
@@ -349,6 +353,12 @@
     [_modelHolder setUsers:users];
     [_modelHolder setLocalizedCity:localizedCity];
     [_modelHolder setMaxLikes:maxLikes];
+    if(totalPlacesCount!=nil) {
+        [_modelHolder setTotalPlacesCount:[totalPlacesCount intValue]];
+    }
+    if(totalUsersCount != nil) {
+        [_modelHolder setTotalUsersCount:[totalUsersCount intValue]];
+    }
     
     // Callback on main thread
     dispatch_async(dispatch_get_main_queue(), ^{
