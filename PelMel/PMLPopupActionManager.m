@@ -453,7 +453,7 @@
     [_eventEditActionSheet addButtonWithTitle:NSLocalizedString(@"action.edit.event.recurring", @"Recurring")];
     [_eventEditActionSheet addButtonWithTitle:cancel];
     _eventEditActionSheet.cancelButtonIndex=2;
-    [_eventEditActionSheet showInView:_popupController.controller.parentMenuController.view];
+    [_eventEditActionSheet showInView: [_uiService menuManagerController].view];
 }
 
 #pragma mark - ActionSheet Delegate
