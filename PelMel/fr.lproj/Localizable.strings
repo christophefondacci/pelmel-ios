@@ -95,10 +95,10 @@
 "counters.arein"="%d y seront";
 "counters.arein.singular"="%d y sera";
 "counters.chat"="Chat";
-"counters.checkedin"="%d mecs y sont";
-"counters.checkedin.singular"="%d mec y est";
-"counters.checkins"="%d Check-ins";
-"counters.checkins.singular"="%d Check-in";
+"counters.checkedin"="%d y sont";
+"counters.checkedin.singular"="%d y est";
+"counters.checkins"="%d y sont";
+"counters.checkins.singular"="%d y est";
 "counters.comments"="%d Commentaires";
 "counters.comments.singular"="%d Commentaire";
 "counters.likes"="%d Aiment ça";
@@ -131,8 +131,8 @@
 "geoloc.deactivated.title"="Localisation désactivée";
 "geoloc.deactivated.subtitle"="Modifiez réglages > confidentiel > localisation";
 "hint.addPlace"="Ce bouton ajoute un nouveau lieu à PELMEL\nEntrez le nom, le type, ajustez la localisation et c'est fait !";
-"hint.badge"="Ce chiffre indique que %d personnes se trouvent actuellement là (checkins)";
-"hint.badge.singular"="Ce chiffre indique que %d personne se trouve actuellement là (checkin)";
+"hint.badge"="Ce chiffre indique que %d personnes se trouvent actuellement là";
+"hint.badge.singular"="Ce chiffre indique que %d personne se trouve actuellement là";
 "hint.checkin"="Check in pour que les autres utilisateurs sachent que vous êtes là";
 "hint.edit"="Pour créer un évènement, modifier les heures ou corriger une information, tapez ici !";
 "hint.filters"="Touchez 'happy hours' pour restreindre la carte aux lieux avec happy hours maintenant !";

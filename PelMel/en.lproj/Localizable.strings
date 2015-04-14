@@ -94,9 +94,10 @@
 "counters.arein"="%d Will attend";
 "counters.arein.singular"="%d Will attend";
 "counters.chat"="Chat";
-"counters.checkedin"="%d Checked in";
-"counters.checkins"="%d Check-ins";
-"counters.checkins.singular"="%d Check-in";
+"counters.checkedin"="%d are here";
+"counters.checkedin.singular"="%d is here";
+"counters.checkins"="%d are here";
+"counters.checkins.singular"="%d is here";
 "counters.comments"="%d Comments";
 "counters.comments.singular"="%d Comment";
 "counters.likes"="%d Like It";
@@ -128,8 +129,8 @@
 "geoloc.deactivated.title"="Location services disabled";
 "geoloc.deactivated.subtitle"="Go to settings > privacy > location";
 "hint.addPlace"="Tap this button to add a new hangout to PELMEL\nSet a name, a type, adjust location and it's done!";
-"hint.badge"="This number indicates that %d persons are currently checked in here";
-"hint.badge.singular"="This number indicates that %d person is currently checked in here";
+"hint.badge"="This number indicates that %d persons are currently here";
+"hint.badge.singular"="This number indicates that %d person is currently here";
 "hint.checkin"="Check in so that other users can see that you are here";
 "hint.edit"="Want to create an event, update hours or correct any information, tap here!";
 "hint.filters"="Tap 'happy hours now' to restrict map to hangouts with happy hours right now!";

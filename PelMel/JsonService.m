@@ -254,8 +254,7 @@
         // Adding to the list of users in the place
         [place.inUsers addObject:user];
     }
-    // TODO: Provide the total count from server
-    place.inUserCount = jsonInUsers.count;
+
     [place.likers removeAllObjects];
     for(NSDictionary *jsonUser in jsonLikeUsers) {
         // Building user bean from JSON

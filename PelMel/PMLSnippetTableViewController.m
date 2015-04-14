@@ -1283,7 +1283,7 @@ typedef enum {
     
     // Checkins count
     if(place.inUserCount>0) {
-        cell.checkinLabel.text = [_uiService localizedString:@"counters.checkedin" forCount:place.inUserCount];
+        cell.checkinLabel.text = [_uiService localizedString:@"counters.arehere" forCount:place.inUserCount];
         cell.checkinImageView.image = [UIImage imageNamed:@"snpIconMarker"];
     } else {
         cell.checkinImageView.image = nil;
