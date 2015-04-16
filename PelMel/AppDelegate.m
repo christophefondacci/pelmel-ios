@@ -148,6 +148,7 @@
         NSLog(@"Active");
         User *currentUser = [[TogaytherService userService] getCurrentUser];
         [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PUSH_RECEIVED object:self];
         
     }
     completionHandler(UIBackgroundFetchResultNewData);

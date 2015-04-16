@@ -110,6 +110,9 @@
         NSError* error;
         if(data == nil) {
             NSLog(@"JSON data null for getMessagesWithUser");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [callback loadMessageFailed];
+            });
             return;
         }
         NSDictionary *jsonMessageList = [NSJSONSerialization

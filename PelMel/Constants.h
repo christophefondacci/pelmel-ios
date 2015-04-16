@@ -14,6 +14,8 @@
 #define PML_PROP_PUSH_ENABLED @"pushEnabled"
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
 
+#define PML_NOTIFICATION_PUSH_RECEIVED @"pmlPushReceived"
+
 #define VIEW_INDEX_PLACES 0
 #define VIEW_INDEX_MAP 1
 #define VIEW_INDEX_EVENTS 2
