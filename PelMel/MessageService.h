@@ -25,6 +25,7 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 
 @property (strong,nonatomic) UserService *userService;
 @property (strong,nonatomic) JsonService *jsonService;
+@property (strong,nonatomic) UIService *uiService;
 @property (strong,nonatomic) MKNumberBadgeView *messageCountBadgeView;
 @property (nonatomic) BOOL pushEnabled;
 @property (nonatomic) int unreadMessageCount;
@@ -36,10 +37,10 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 -(void)getReviewsAsMessagesFor:(NSString*)itemKey messageCallback:(id<MessageCallback>)callback;
 
 // Sends an instant message to the given user
--(void)sendMessage:(NSString*)message toUser:(User*)user messageCallback:(id<MessageCallback>)callback;
+-(void)sendMessage:(NSString*)message toUser:(User*)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback;
 
 // Posts a comment on the given item 
-- (void)postComment:(NSString *)comment forObject:(CALObject *)object messageCallback:(id<MessageCallback>)callback;
+- (void)postComment:(NSString *)comment forObject:(CALObject *)object withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback;
 
 // Handles the toolbar of a view containing message icon
 -(void)handleToolbar:(UIViewController*)view;

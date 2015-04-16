@@ -15,4 +15,5 @@
 @property (strong,nonatomic) NSDate *date;
 @property (strong,nonatomic) NSString *text;
 @property (strong,nonatomic) NSString *key;
+@property (strong,nonatomic) CALImage *mainImage;
 @end

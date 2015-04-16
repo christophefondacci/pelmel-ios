@@ -10,9 +10,9 @@
 #import "CALObject.h"
 #import "MessageService.h"
 #import "ImageService.h"
-#import "HPGrowingTextView.h"
+#import "AUIAutoGrowingTextView.h"
 
-@interface MessageViewController : UIViewController <MessageCallback, UITextFieldDelegate,HPGrowingTextViewDelegate>
+@interface MessageViewController : UIViewController <MessageCallback, UITextFieldDelegate, UIScrollViewDelegate, PMLImagePickerCallback>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong,nonatomic) CALObject *withObject;
@@ -21,5 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *activityBackground;
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomTextInputConstraint;
-
+@property (weak, nonatomic) IBOutlet AUIAutoGrowingTextView *chatTextView;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIButton *addPhotoButton;
 @end

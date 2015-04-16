@@ -16,6 +16,7 @@
 #import "PMLSnippetTableViewController.h"
 #import "PMLFakeViewController.h"
 #import <MBProgressHUD.h>
+#import "PhotoPreviewViewController.h"
 
 @interface MessageViewController ()
 
@@ -29,10 +30,16 @@
     NSMutableDictionary *imageViewsMap;
     int messagesFetchedCount;
     
-    HPGrowingTextView *_chatTextView;
+//    HPGrowingTextView *_chatTextView;
     
     NSArray *_messagesList;
     NSMutableDictionary *_messagesViewsKeys;
+    
+    BOOL _keyboardVisible;
+    CGPoint _dragStartOffset;
+    
+    // Photo management
+    CALImage *_pendingPhotoUpload;
 }
 @synthesize scrollView;
 
@@ -97,19 +104,21 @@
         [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
     }
 
-    self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
+    if(_withObject==nil || _withObject == [userService getCurrentUser]) {
+        self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
+    }
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
     [self.navigationController.navigationBar setTitleTextAttributes: @{
                                                                        NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
                                                                        NSForegroundColorAttributeName:[UIColor whiteColor]}];
     CurrentUser *currentUser = [userService getCurrentUser];
+    self.chatTextView.textContainerInset = UIEdgeInsetsMake(2, 0, 2, 0);
+    self.chatTextView.maxHeight = 120;
+    self.chatTextView.text = nil;
+    self.scrollView.delegate = self;
     if([_withObject.key isEqualToString:currentUser.key]) {
         CGRect textFrame = _footerView.frame;
-//        CGRect scrollFrame = scrollView.frame;
-//        _footerView.frame = CGRectMake(textFrame.origin.x, textFrame.origin.y+textFrame.size.height, textFrame.size.width, textFrame.size.height);
-//        [_footerView setHidden:YES];
-//        scrollView.frame = CGRectMake(scrollFrame.origin.x, scrollFrame.origin.y, scrollFrame.size.width,scrollFrame.size.height+textFrame.size.height);
-        self.bottomTextInputConstraint.constant = -textFrame.size.height;
+        self.bottomTextInputConstraint.constant = -textFrame.size.height-6;
         self.title = NSLocalizedString(@"messages.my.title",@"Title of the my messages view");
     } else if([_withObject isKindOfClass:[User class]]){
         self.title = ((User*)_withObject).pseudo;
@@ -136,10 +145,17 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
-    self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
+    if(_withObject==nil || _withObject == [userService getCurrentUser]) {
+        self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
+    } else {
+        [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
+        self.navigationController.navigationBar.translucent=NO;
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [self configureChatInput];
+    
+    [[TogaytherService uiService] setProgressView:self.view];
 }
 -(void)viewDidAppear:(BOOL)animated {
     [self.navigationController setToolbarHidden:YES];
@@ -154,9 +170,11 @@
 #pragma mark - Keyboard notifications
 - (void)keyboardWillShow:(NSNotification*)notification {
     [self updateKeyboard:notification up:YES];
+    _keyboardVisible = YES;
 }
 - (void)keyboardWillHide:(NSNotification*)notification {
     [self updateKeyboard:notification up:NO];
+    _keyboardVisible = NO;
 }
 - (void)updateKeyboard:(NSNotification*)notification up:(BOOL)up {
     NSDictionary *userInfo = [notification userInfo];
@@ -186,84 +204,89 @@
 }
 #pragma mark - Chat Button
 -(void)configureChatInput {
-    _chatTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
-    CGSize viewSize = self.view.frame.size;
-//    _chatTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, viewSize.width-80, 40)];
-    _chatTextView.isScrollable = NO;
-    _chatTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-    
-    _chatTextView.minNumberOfLines = 1;
-    _chatTextView.maxNumberOfLines = 6;
-    // you can also set the maximum height in points with maxHeight
-    // textView.maxHeight = 200.0f;
-//    _chatTextView.returnKeyType = UIReturnKeyGo; //just as an example
-    _chatTextView.font = [UIFont systemFontOfSize:15.0f];
-    _chatTextView.delegate = self;
-    _chatTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
-    _chatTextView.internalTextView.autocorrectionType = UITextAutocorrectionTypeYes;
-    _chatTextView.backgroundColor = [UIColor whiteColor];
-    
-    if([_withObject isKindOfClass:[User class]]) {
-        [_chatTextView setPlaceholder:NSLocalizedString(@"message.placeholder", @"Placeholder text of the message text field for sending instant messages")];
-    } else {
-        NSString *placeholderTemplate = NSLocalizedString(@"message.placeholder.comment", nil);
-        NSString *name;
-        if([_withObject isKindOfClass:[Place class]]) {
-            name=((Place*)_withObject).title;
-        } else if([_withObject isKindOfClass:[Event class]]){
-            name=((Event*)_withObject).name;
-        }
-        NSString *placeholder = [NSString stringWithFormat:placeholderTemplate,name];
-        [_chatTextView setPlaceholder:placeholder];
-    }
-//    [_chatTextView setReturnKeyType:UIReturnKeySend];
-    [_chatTextView setDelegate:self];
+    [self.sendButton addTarget:self action:@selector(sendMsg:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sendButton setTitle:NSLocalizedString(@"message.action.send",@"Send") forState:UIControlStateNormal];
+    self.sendButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+    [imageService registerTappable:self.addPhotoButton forViewController:self callback:self];
+//    _chatTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, 240, 40)];
+//    CGSize viewSize = self.view.frame.size;
+////    _chatTextView = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(6, 3, viewSize.width-80, 40)];
+//    _chatTextView.isScrollable = NO;
+//    _chatTextView.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+//    
+//    _chatTextView.minNumberOfLines = 1;
+//    _chatTextView.maxNumberOfLines = 6;
+//    // you can also set the maximum height in points with maxHeight
+//    // textView.maxHeight = 200.0f;
+////    _chatTextView.returnKeyType = UIReturnKeyGo; //just as an example
+//    _chatTextView.font = [UIFont systemFontOfSize:15.0f];
+//    _chatTextView.delegate = self;
+//    _chatTextView.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+//    _chatTextView.internalTextView.autocorrectionType = UITextAutocorrectionTypeYes;
+//    _chatTextView.backgroundColor = [UIColor whiteColor];
+//    
+//    if([_withObject isKindOfClass:[User class]]) {
+//        [_chatTextView setPlaceholder:NSLocalizedString(@"message.placeholder", @"Placeholder text of the message text field for sending instant messages")];
+//    } else {
+//        NSString *placeholderTemplate = NSLocalizedString(@"message.placeholder.comment", nil);
+//        NSString *name;
+//        if([_withObject isKindOfClass:[Place class]]) {
+//            name=((Place*)_withObject).title;
+//        } else if([_withObject isKindOfClass:[Event class]]){
+//            name=((Event*)_withObject).name;
+//        }
+//        NSString *placeholder = [NSString stringWithFormat:placeholderTemplate,name];
+//        [_chatTextView setPlaceholder:placeholder];
+//    }
+////    [_chatTextView setReturnKeyType:UIReturnKeySend];
+//    [_chatTextView setDelegate:self];
+//
+////    _chatTextView.placeholder = @"Type to see the textView grow!";
+//    
+//    // textView.text = @"test\n\ntest";
+//    // textView.animateHeightChange = NO; //turns off animation
+//    
+//    
+//    UIImage *rawEntryBackground = [UIImage imageNamed:@"MessageEntryInputField"];
+//    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+//    UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
+////    entryImageView.frame = CGRectMake(5, 0, 248, 40);
+//    entryImageView.frame = CGRectMake(5, 0, viewSize.width - 72, 40);
+//    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight; // | UIViewAutoresizingFlexibleWidth;
+//    
+//    UIImage *rawBackground = [UIImage imageNamed:@"MessageEntryBackground"];
+//    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
+//    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
+//    imageView.frame = CGRectMake(0, 0, _footerView.frame.size.width, _footerView.frame.size.height);
+//    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+//    
+//    _chatTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth  ;
+//    
+//    // view hierachy
+//    [_footerView addSubview:imageView];
+//    [_footerView addSubview:_chatTextView];
+//    [_footerView addSubview:entryImageView];
+//    
+//    UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+//    UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
+//    
+//    UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    doneBtn.frame = CGRectMake(_footerView.frame.size.width - 69, 8, 63, 27);
+//    doneBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
+//    doneBtn.titleLabel.adjustsFontSizeToFitWidth=YES;
+//    [doneBtn setTitle:NSLocalizedString(@"message.action.send",@"Send") forState:UIControlStateNormal];
+//    
+//    [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
+//    doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
+//    doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
+//    
+//    [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [doneBtn addTarget:self action:@selector(sendMsg:) forControlEvents:UIControlEventTouchUpInside];
+//    [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
+//    [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
+//    [_footerView addSubview:doneBtn];
+//    _footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 
-//    _chatTextView.placeholder = @"Type to see the textView grow!";
-    
-    // textView.text = @"test\n\ntest";
-    // textView.animateHeightChange = NO; //turns off animation
-    
-    
-    UIImage *rawEntryBackground = [UIImage imageNamed:@"MessageEntryInputField"];
-    UIImage *entryBackground = [rawEntryBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-    UIImageView *entryImageView = [[UIImageView alloc] initWithImage:entryBackground];
-//    entryImageView.frame = CGRectMake(5, 0, 248, 40);
-    entryImageView.frame = CGRectMake(5, 0, viewSize.width - 72, 40);
-    entryImageView.autoresizingMask = UIViewAutoresizingFlexibleHeight; // | UIViewAutoresizingFlexibleWidth;
-    
-    UIImage *rawBackground = [UIImage imageNamed:@"MessageEntryBackground"];
-    UIImage *background = [rawBackground stretchableImageWithLeftCapWidth:13 topCapHeight:22];
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:background];
-    imageView.frame = CGRectMake(0, 0, _footerView.frame.size.width, _footerView.frame.size.height);
-    imageView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    
-    _chatTextView.autoresizingMask = UIViewAutoresizingFlexibleWidth  ;
-    
-    // view hierachy
-    [_footerView addSubview:imageView];
-    [_footerView addSubview:_chatTextView];
-    [_footerView addSubview:entryImageView];
-    
-    UIImage *sendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-    UIImage *selectedSendBtnBackground = [[UIImage imageNamed:@"MessageEntrySendButton"] stretchableImageWithLeftCapWidth:13 topCapHeight:0];
-    
-    UIButton *doneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    doneBtn.frame = CGRectMake(_footerView.frame.size.width - 69, 8, 63, 27);
-    doneBtn.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-    doneBtn.titleLabel.adjustsFontSizeToFitWidth=YES;
-    [doneBtn setTitle:NSLocalizedString(@"message.action.send",@"Send") forState:UIControlStateNormal];
-    
-    [doneBtn setTitleShadowColor:[UIColor colorWithWhite:0 alpha:0.4] forState:UIControlStateNormal];
-    doneBtn.titleLabel.shadowOffset = CGSizeMake (0.0, -1.0);
-    doneBtn.titleLabel.font = [UIFont boldSystemFontOfSize:18.0f];
-    
-    [doneBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [doneBtn addTarget:self action:@selector(sendMsg:) forControlEvents:UIControlEventTouchUpInside];
-    [doneBtn setBackgroundImage:sendBtnBackground forState:UIControlStateNormal];
-    [doneBtn setBackgroundImage:selectedSendBtnBackground forState:UIControlStateSelected];
-    [_footerView addSubview:doneBtn];
-    _footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
 }
 
 #pragma mark - HPGrowingTextViewDelegate
@@ -378,6 +401,15 @@
         }
         [thumbButton addTarget:self action:@selector(showFromUserTapped:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
+    // Handling photo tap
+    view.messageImage.tag = index;
+    [view.messageImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(messageImageTapped:)]];
+    view.messageImage.userInteractionEnabled=YES;
+    view.messageImageSelf.tag = index;
+    [view.messageImageSelf addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(messageImageTapped:)]];
+    view.messageImageSelf.userInteractionEnabled=YES;
+    
     // Adding
     [scrollView addSubview:view];
     
@@ -439,14 +471,18 @@
 }
 #pragma mark - Message actions
 - (void)sendMsg:(id)sender {
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
+    [self sendMessage:_chatTextView.text withImage:nil];
+}
+
+-(void)sendMessage:(NSString*)text withImage:(CALImage*)image {
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
     
     if([_withObject isKindOfClass:[User class]]) {
-        [messageService sendMessage:_chatTextView.text toUser:(User*)_withObject messageCallback:self];
+        [messageService sendMessage:text toUser:(User*)_withObject withImage:image messageCallback:self];
     } else {
-        [messageService postComment:_chatTextView.text forObject:_withObject messageCallback:self];
+        [messageService postComment:text forObject:_withObject withImage:image messageCallback:self];
     }
     [_chatTextView resignFirstResponder];
 }
@@ -524,5 +560,48 @@
     } else if([_withObject isKindOfClass:[CALObject class]]){
         [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
     }
+}
+
+#pragma mark Message Images
+- (void)messageImageTapped:(UIGestureRecognizer*)recognizer {
+    // Tag is the index of image
+    NSMutableArray *images = [[NSMutableArray alloc] init];
+    int index = 0;
+    CALImage *initialImage=nil;
+    for(Message *m in _messagesList) {
+        if(m.mainImage != nil) {
+            // Adding to image list
+            [images addObject:m.mainImage];
+            
+            // If this is our current tapped index, we save the corresponding index of the image array
+            if(index == recognizer.view.tag) {
+                initialImage = m.mainImage;
+            }
+        }
+        index++;
+    }
+    // Building new imaged from images
+    Imaged *imaged = [[Imaged alloc] init];
+    imaged.mainImage = [images objectAtIndex:0];
+    imaged.otherImages = [[images subarrayWithRange:NSMakeRange(1, images.count-1)] mutableCopy];
+    PhotoPreviewViewController *photoController = (PhotoPreviewViewController*)[uiService instantiateViewController:SB_ID_PHOTO_GALLERY];
+    photoController.currentImage = initialImage;
+    photoController.imaged = imaged;
+
+    [self.navigationController pushViewController:photoController animated:YES];
+}
+#pragma mark - UIScrollViewDelegate
+-(void)scrollViewWillBeginDragging:(UIScrollView *)sView {
+    _dragStartOffset = sView.contentOffset;
+}
+- (void)scrollViewDidScroll:(UIScrollView *)sView {
+    if(sView.contentOffset.y < _dragStartOffset.y) {
+        [self.chatTextView resignFirstResponder];
+    }
+}
+
+#pragma mark - PMLImagePickerCallback
+- (void)imagePicked:(CALImage *)image {
+    [self sendMessage:@"" withImage:image];
 }
 @end;

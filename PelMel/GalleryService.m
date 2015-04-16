@@ -132,12 +132,12 @@ static UIImage *defaultThumb;
         
         
         // Handling tap gesture
-        if(tappable) {
+//        if(tappable) {
             UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] init];
             [controller.view addGestureRecognizer:tapRecognizer];
             [tapRecognizer addTarget:self action:@selector(imageTap:)];
             [tapRecognizer setDelegate:self];
-        }
+//        }
         
         // Listening to orientation change
         _currentOrientation = UIInterfaceOrientationPortrait;
@@ -204,161 +204,8 @@ static UIImage *defaultThumb;
     }
 }
 #pragma mark - Fullscreen switch for image preview
-- (void)imageTap:(UITapGestureRecognizer *)tapRecognizer {
-    UIView *parentView = tapRecognizer.view;
-    CGPoint point = [tapRecognizer locationInView:parentView];
-    UIView *tappedView = [parentView hitTest:point withEvent:nil];
-    if((tappedView == _previousView || tappedView == _currentView || tappedView == _nextView || tappedView == parentView) && !tapInProgress) {
-        // Tap is occurring
-        tapInProgress = YES;
-        // Getting all view child
-        NSArray *subviews = parentView.subviews;
-        // We iterate over all of them and hide everything but our gallery views
-        [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            if(!subviewsHidden) {
-                for(UIView *subview in subviews) {
-                    if(subview != _previousView && subview != _currentView && subview != _nextView) {
-                        if(subview.hidden && !subviewsHidden) {
-                            [hiddenViews addObject:subview];
-                        } else {
-                            if(![hiddenViews containsObject:subview]) {
-                                NSNumber *alpha = [NSNumber numberWithFloat:subview.alpha];
-                                [subviewsOpacityMap setObject:alpha forKey:[self buildKey:subview]];
-                                subview.alpha=0;
-                                
-                            }
-                        }
-                    }
-                }
-            } else {
-                // Removing the report button
-                if(reportButton != nil) {
-                    [reportButton removeFromSuperview];
-                    reportButton = nil;
-                }
-                // Setting the proper content mode to its inital value
-                [_currentView setContentMode:initialContentMode];
-                [_nextView setContentMode:initialContentMode];
-                [_previousView setContentMode:initialContentMode];
-                [hiddenViews removeAllObjects];
-                
-                // Showing tab bar
-                [self showTabBar];
-                
-                // Fitting image size
-//                CGRect tabBarBounds = _controller.tabBarController.tabBar.bounds;
-//                CGRect frame = _currentView.frame;
-//                _currentView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height-tabBarBounds.size.height);
-//                frame = _previousView.frame;
-//                _previousView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height-tabBarBounds.size.height);
-//                frame = _nextView.frame;
-//                _nextView.frame = CGRectMake(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height-tabBarBounds.size.height);
-            }
-        } completion:^(BOOL finished) {
-            
-            [UIView animateWithDuration:0.2f delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                if(!subviewsHidden) {
-                    // Hiding tab bar
-                    [self hideTabBar];
-                } else {
-                    for(UIView *subview in subviews) {
-                        NSNumber *alpha = [subviewsOpacityMap objectForKey:[self buildKey:subview]];
-                        if(alpha != nil) {
-                            subview.alpha = [alpha floatValue];
-                        }
-                    }
-                }
-            } completion:^(BOOL finished){
-                // Toggling the status
-                subviewsHidden = !subviewsHidden;
-                if(subviewsHidden) {
-                    [_controller.navigationController setNavigationBarHidden:YES animated:YES];
-
-                    // Adding the report button
-//                    reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//                    [reportButton addTarget:self action:@selector(reportButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//                    [reportButton setImage:reportImage forState:UIControlStateNormal];
-//                    CGRect bounds = [_currentView bounds];
-//                    bounds.origin.x = bounds.size.width - 60;
-//                    bounds.origin.y = bounds.size.height - 60;
-//                    bounds.size.width=50;
-//                    bounds.size.height=50;
-//                    [reportButton setFrame:bounds];
-//                    [_controller.view addSubview:reportButton];
-                } else {
-                    [_controller.navigationController setNavigationBarHidden:NO animated:YES ];
-                }
-                // Now, we're done
-                tapInProgress = NO;
-            }];
-        }];
-    }
-}
--(void)hideTabBar {
-
-    if(![TogaytherService.uiService isIpad:_controller]) {
-        CGRect screenRect = [[UIScreen mainScreen] bounds];
-        
-        float fHeight = screenRect.size.height;
-        if(  UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ) {
-            fHeight = screenRect.size.width;
-        }
-        
-        CGRect tabFrame = _controller.tabBarController.tabBar.frame;
-        [_controller.tabBarController.tabBar setFrame:CGRectMake(tabFrame.origin.x, fHeight, tabFrame.size.width, tabFrame.size.height)];
-        CGRect imageFrame = _currentView.frame;
-        float heightDelta = 0;
-        if(SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            //        heightDelta = _controller.navigationController.navigationBar.frame.size.height;
-            for(UIView *view in _controller.tabBarController.view.subviews) {
-                if(![view isKindOfClass:[UITabBar class]]) {
-                    [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
-                    view.backgroundColor = [UIColor blackColor];
-                }
-            }
-        }
-        _currentView.frame = CGRectMake(imageFrame.origin.x, imageFrame.origin.y, imageFrame.size.width, imageFrame.size.height+tabFrame.size.height+heightDelta);
-        imageFrame = _nextView.frame;
-        _nextView.frame = CGRectMake(imageFrame.origin.x, imageFrame.origin.y, imageFrame.size.width, imageFrame.size.height+tabFrame.size.height+heightDelta);
-        imageFrame = _previousView.frame;
-        _previousView.frame = CGRectMake(imageFrame.origin.x, imageFrame.origin.y, imageFrame.size.width, imageFrame.size.height+tabFrame.size.height+heightDelta);
-    }
-    
-
-}
--(void)showTabBar {
-    if(![TogaytherService.uiService isIpad:_controller]) {
-        CGRect tabFrame = _controller.tabBarController.tabBar.frame;
-        CGRect screenRect = [[UIScreen mainScreen] bounds];
-        float heightDelta = tabFrame.size.height;
-        float fHeight = screenRect.size.height - heightDelta;
-        
-        if(  UIDeviceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ) {
-            fHeight = screenRect.size.width  - heightDelta;
-        }
-        
-        [_controller.tabBarController.tabBar setFrame:CGRectMake(tabFrame.origin.x, fHeight, tabFrame.size.width, tabFrame.size.height)];
-        CGRect imageFrame = _currentView.frame;
-        _currentView.frame = CGRectMake(imageFrame.origin.x, imageFrame.origin.y, imageFrame.size.width, imageFrame.size.height-tabFrame.size.height);
-        imageFrame = _nextView.frame;
-        _nextView.frame = CGRectMake(imageFrame.origin.x, imageFrame.origin.y, imageFrame.size.width, imageFrame.size.height-tabFrame.size.height);
-        imageFrame = _previousView.frame;
-        _previousView.frame = CGRectMake(imageFrame.origin.x, imageFrame.origin.y, imageFrame.size.width, imageFrame.size.height-tabFrame.size.height);
-        
-        _currentView.backgroundColor=[UIColor whiteColor];
-        // Specific pre iOS7
-        if(SYSTEM_VERSION_LESS_THAN(@"7.0")) {
-            for(UIView *view in _controller.tabBarController.view.subviews) {
-                if([view isKindOfClass:[UITabBar class]]) {
-                    NSLog(@"Tab bar Y=%d / height=%d",(int)fHeight,(int)view.frame.size.height);
-                    [view setFrame:CGRectMake(view.frame.origin.x, fHeight, view.frame.size.width, view.frame.size.height)];
-                } else {
-                    NSLog(@"Other Class Y=%d / height=%d",(int)view.frame.origin.y,(int)view.frame.size.height);
-                    [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, fHeight)];
-                }
-            }
-        }
-    }
+-(void)imageTap:(UIGestureRecognizer*)recognizer {
+    [_controller.navigationController setNavigationBarHidden:!_controller.navigationController.navigationBarHidden animated:YES];
 
 }
 - (void)imagePan:(UIPanGestureRecognizer *)panrecognizer {
@@ -589,9 +436,6 @@ static UIImage *defaultThumb;
 }
 
 -(void)viewWillDisappear {
-    if(subviewsHidden) {
-        [self showTabBar];
-    }
     _previousView.hidden = YES;
 }
 -(void)reportButtonTapped:(id)sender {

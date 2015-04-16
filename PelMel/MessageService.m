@@ -154,6 +154,8 @@
         NSString *toKey     = [message objectForKey:@"toKey"];
         NSString *text      = [message objectForKey:@"message"];
         NSNumber *msgTime   = [message objectForKey:@"time"];
+        NSDictionary *media = [message objectForKey:@"media"];
+        
         long time = [msgTime longValue];
         NSDate *msgDate = [[NSDate alloc] initWithTimeIntervalSince1970:time];
         
@@ -166,6 +168,10 @@
         [m setText:text];
         [m setDate:msgDate];
         
+        if(media != nil) {
+            CALImage *image = [[TogaytherService imageService] convertJsonImageToImage:media];
+            [m setMainImage:image];
+        }
         // Augmenting our collection of messages
         [calMessages addObject:m];
     }
@@ -192,15 +198,15 @@
     });
 }
 
-- (void)sendMessage:(NSString *)message toUser:(User *)user messageCallback:(id<MessageCallback>)callback {
-    [self sendMessageOrComment:message forObject:user isComment:NO messageCallback:callback];
+- (void)sendMessage:(NSString *)message toUser:(User *)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback {
+    [self sendMessageOrComment:message forObject:user withImage:image isComment:NO messageCallback:callback];
 }
 
-- (void)postComment:(NSString *)comment forObject:(CALObject *)object messageCallback:(id<MessageCallback>)callback {
-    [self sendMessageOrComment:comment forObject:object isComment:YES messageCallback:callback];
+- (void)postComment:(NSString *)comment forObject:(CALObject *)object withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback {
+    [self sendMessageOrComment:comment forObject:object withImage:image isComment:YES messageCallback:callback];
 }
 
--(void)sendMessageOrComment:(NSString*)message forObject:(CALObject*)object isComment:(BOOL)isComment messageCallback:(id<MessageCallback>)callback {
+-(void)sendMessageOrComment:(NSString*)message forObject:(CALObject*)object withImage:(CALImage*)image isComment:(BOOL)isComment messageCallback:(id<MessageCallback>)callback {
     CurrentUser *currentUser = [userService getCurrentUser];
     NSString *template;
     // Selecting URL template
@@ -221,18 +227,45 @@
         [params setObject:message forKey:@"msgText"];
     }
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [_uiService reportProgress:(float)0.05f];
+    AFHTTPRequestOperation *operation = [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if(image!=nil) {
+            NSData *imageData = UIImageJPEGRepresentation(image.fullImage, 1.0);
+            NSString *fileParam = @"media";
+            [formData appendPartWithFileData:imageData
+                                    name:fileParam
+                                fileName:@"msgPhoto" mimeType:@"image/jpeg"];
+        }
+        [formData appendPartWithFormData:[currentUser.token dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:@"nxtpUserToken"];
+        [formData appendPartWithFormData:[object.key dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:(isComment ? @"commentItemKey" : @"to")];
+        [formData appendPartWithFormData:[message dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:(isComment ? @"comment" : @"msgText")];
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
         Message *msg = [[Message alloc] init];
         [msg setFrom:currentUser];
         [msg setTo:object];
         [msg setText:message];
         [msg setDate:[NSDate date]];
+        [msg setMainImage:image];
 
         [callback messageSent:msg];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [callback messageSendFailed];
     }];
     
+    [_uiService reportProgress:(float)0.1f];
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        double progressPct = (double)totalBytesWritten/(double)totalBytesExpectedToWrite;
+        [_uiService reportProgress:0.1f+0.5f*(float)progressPct];
+    }];
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        double progressPct = (double)totalBytesRead/(double)totalBytesExpectedToRead;
+        [_uiService reportProgress:0.6f+0.4f*(float)progressPct];
+    }];
+
 }
 
 -(void)handleToolbar:(UIViewController *)view {

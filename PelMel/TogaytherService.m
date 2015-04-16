@@ -74,6 +74,7 @@
     // Injecting message service
     _messageService.userService = _userService;
     _messageService.jsonService = _jsonService;
+    _messageService.uiService = _uiService;
     
     // Injecting JSON Service
     _jsonService.imageService = _imageService;

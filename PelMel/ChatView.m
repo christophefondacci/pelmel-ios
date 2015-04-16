@@ -46,6 +46,7 @@
     UIImageView *currentThumb;
     UITextView *currentBubbleText;
     UILabel *currentUsernameLabel;
+    UIImageView *currentMessageImage;
     UIActivityIndicatorView *currentActivity;
     
     // Selecting right or left positioning
@@ -59,8 +60,10 @@
         [_leftActivity setHidden:YES];
         [_leftUsernameLabel setHidden:YES];
         [_rightUsernameLabel setHidden:YES];
+        [_messageImage setHidden:YES];
         [dateLabel setTextAlignment:NSTextAlignmentLeft];
         currentActivity = _rightActivity;
+        currentMessageImage = _messageImageSelf;
     } else {
         currentThumb = _thumbImage;
         currentBubbleText = _bubbleText;
@@ -69,8 +72,10 @@
         [_thumbImageSelf setHidden:YES];
         [_rightActivity setHidden:YES];
         [_rightUsernameLabel setHidden:YES];
+        [_messageImageSelf setHidden:YES];
         [dateLabel setTextAlignment:NSTextAlignmentRight];
         currentActivity = _leftActivity;
+        currentMessageImage = _messageImage;
     }
     
     dateLabel.text = [_uiService delayStringFrom:message.date]; //[dateFormatter stringFromDate:message.date];
@@ -106,9 +111,22 @@
     }
     currentBubbleText.text = msgText; //[NSString stringWithFormat:@"\"%@\"",message.text];
     
+    // Setting the message's image content
+    CALImage *image = message.mainImage;
+    if(image != nil) {
+        currentMessageImage.hidden=NO;
+        currentBubbleText.hidden=YES;
+        [[TogaytherService imageService] load:image to:currentMessageImage thumb:NO];
+    } else {
+        currentMessageImage.hidden=YES;
+    }
+    
     // Getting minimum height
     CGSize size = [currentBubbleText sizeThatFits:CGSizeMake(currentBubbleText.frame.size.width,FLT_MAX)];
     int minHeight = MAX(size.height,_thumbImage.frame.size.height);
+    if(image!=nil) {
+        minHeight = MAX(currentMessageImage.bounds.size.height,minHeight);
+    }
     _textHeightConstraint.constant = minHeight+1; // Adding 1 for fractional height !!
 }
 

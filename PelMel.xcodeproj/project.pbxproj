@@ -240,6 +240,8 @@
 		B4A4666D19A73A6A004ADC7E /* PMLPlaceInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A4666B19A73A6A004ADC7E /* PMLPlaceInfoProvider.m */; };
 		B4A4667019A7518E004ADC7E /* PMLUserInfoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B4A4666E19A7518E004ADC7E /* PMLUserInfoProvider.h */; };
 		B4A4667119A7518E004ADC7E /* PMLUserInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A4666F19A7518E004ADC7E /* PMLUserInfoProvider.m */; };
+		B4A47D201ADE0827000178BD /* AUIAutoGrowingTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = B4A47D1E1ADE0827000178BD /* AUIAutoGrowingTextView.h */; };
+		B4A47D211ADE0827000178BD /* AUIAutoGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A47D1F1ADE0827000178BD /* AUIAutoGrowingTextView.m */; };
 		B4A6642F1695E32100732B6D /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */; };
 		B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6643416970EB700732B6D /* AccountNavigationController.m */; };
 		B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A854281635416F003649C8 /* SizedTTLCacheService.m */; };
@@ -619,6 +621,8 @@
 		B4A4666B19A73A6A004ADC7E /* PMLPlaceInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPlaceInfoProvider.m; sourceTree = "<group>"; };
 		B4A4666E19A7518E004ADC7E /* PMLUserInfoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLUserInfoProvider.h; sourceTree = "<group>"; };
 		B4A4666F19A7518E004ADC7E /* PMLUserInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLUserInfoProvider.m; sourceTree = "<group>"; };
+		B4A47D1E1ADE0827000178BD /* AUIAutoGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUIAutoGrowingTextView.h; sourceTree = "<group>"; };
+		B4A47D1F1ADE0827000178BD /* AUIAutoGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AUIAutoGrowingTextView.m; sourceTree = "<group>"; };
 		B4A6642D1695E32100732B6D /* MKNumberBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNumberBadgeView.h; sourceTree = "<group>"; };
 		B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
 		B4A6643316970EB700732B6D /* AccountNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountNavigationController.h; sourceTree = "<group>"; };
@@ -1049,6 +1053,8 @@
 				B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */,
 				B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */,
 				B4BB9F0019D4E2460070B03C /* PMLChatTimeTableViewCell.m */,
+				B4A47D1E1ADE0827000178BD /* AUIAutoGrowingTextView.h */,
+				B4A47D1F1ADE0827000178BD /* AUIAutoGrowingTextView.m */,
 			);
 			name = Chat;
 			sourceTree = "<group>";
@@ -1494,6 +1500,7 @@
 				B457A10A1A9D914100207D8E /* UIViewController+BackButtonHandler.h in Headers */,
 				B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */,
 				B406CA47197D126300A7FFE2 /* MKCustomMapView.h in Headers */,
+				B4A47D201ADE0827000178BD /* AUIAutoGrowingTextView.h in Headers */,
 				B4BB9F1619D7F23E0070B03C /* PMLThumbsTableViewCell.h in Headers */,
 				B4BB9F0E19D4F9260070B03C /* HPTextViewInternal.h in Headers */,
 				B4FC957B19AF3B4B00269E74 /* PMLPopupEditor.h in Headers */,
@@ -1768,6 +1775,7 @@
 				B41DD751197B4F5E008F09D9 /* APLDecorationView.m in Sources */,
 				B495655F163EDBA6006A0451 /* MessageViewController.m in Sources */,
 				B43FA67719866ECD008A1679 /* Activity.m in Sources */,
+				B4A47D211ADE0827000178BD /* AUIAutoGrowingTextView.m in Sources */,
 				B495654C163AC9A8006A0451 /* UIImage+Alpha.m in Sources */,
 				B495654D163AC9A8006A0451 /* UIImage+RoundedCorner.m in Sources */,
 				B4956545163AC8FA006A0451 /* UIImage+Resize.m in Sources */,
