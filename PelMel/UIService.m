@@ -244,23 +244,23 @@
     if(delta < 60) {
         delta = 60;
     }
-    NSString *timeScale;
+    NSString *timeStr;
     long value;
     if(delta < 3600 || delta > 999999999) {
         // Display in minutes
         value = delta / 60;
-        timeScale = NSLocalizedString(@"user.loc.minutes", nil);
+        timeStr = [self localizedString:@"user.loc.minutes" forCount:value];
     } else if(delta < 86400) {
         // Display in hours
         value = delta / 3600;
-        timeScale = NSLocalizedString(@"user.loc.hours", nil);
+        timeStr = [self localizedString:@"user.loc.hours" forCount:value];
     } else {
         // Display in days
         value = delta / 86400;
-        timeScale = NSLocalizedString(@"user.loc.days", nil);
+        timeStr = [self localizedString:@"user.loc.days" forCount:value];
     }
     
-    NSString *line = [NSString stringWithFormat:template,value,timeScale];
+    NSString *line = [NSString stringWithFormat:template,timeStr];
     return line;
 }
 

@@ -374,8 +374,8 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "thumbView.section.user.likeUser"="Users he likes";
 "thumbView.section.user.like"="Hangouts he likes";
 "time.days"="days";
-"time.formatter"="%d %@ ago";
-"time.formatter.future"="In %d %@";
+"time.formatter"="%@ ago";
+"time.formatter.future"="In %@";
 "time.hours"="hrs";
 "time.minutes"="min";
 
@@ -383,9 +383,12 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "upload.failed.title"="Image upload failed";
 "upload.failed"="We could not send your image to our server, this is probably caused by network problems. Check your connection or try to connect to a wifi hotspot and try again.";
 "user.lastlocation"="@ %@ %d %@ ago";
-"user.loc.days"="days";
-"user.loc.hours"="hours";
-"user.loc.minutes"="minutes";
+"user.loc.days"="%d days";
+"user.loc.days.singular"="%d day";
+"user.loc.hours"="%d hours";
+"user.loc.hours.singular"="%d hour";
+"user.loc.minutes"="%d minutes";
+"user.loc.minutes.singular"="%d minute";
 "user.status.offline"="OFFLINE";
 "user.status.online"="Available";
 "validation.errorTitle"="Invalid data";
