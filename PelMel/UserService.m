@@ -313,9 +313,9 @@
     [params setObject:pseudo forKey:@"name"];
     [params setObject:[NSNumber numberWithInt:weight] forKey:@"weight"];
     [params setObject:[NSNumber numberWithInt:height] forKey:@"height"];
-    [params setObject:[NSNumber numberWithInt:birthDD] forKey:@"birthDD"];
-    [params setObject:[NSNumber numberWithInt:birthMM] forKey:@"birthMM"];
-    [params setObject:[NSNumber numberWithInt:birthYYYY] forKey:@"birthYYYY"];
+    [params setObject:[NSNumber numberWithInteger:birthDD] forKey:@"birthDD"];
+    [params setObject:[NSNumber numberWithInteger:birthMM] forKey:@"birthMM"];
+    [params setObject:[NSNumber numberWithInteger:birthYYYY] forKey:@"birthYYYY"];
     [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.latitude] forKey:@"lat"];
     [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.longitude] forKey:@"lng"];
     [params setObject:nxtpUserToken forKey:@"nxtpUserToken"];

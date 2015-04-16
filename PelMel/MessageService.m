@@ -389,7 +389,7 @@
     [self pushCompletion:YES];
 }
 - (void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: code=%d domain=%@",error.code,error.domain);
+    NSLog(@"didFailToRegisterForRemoteNotificationsWithError: code=%ld domain=%@",(long)error.code,error.domain);
     
     [self pushCompletion:NO];
 }

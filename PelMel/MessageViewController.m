@@ -379,7 +379,9 @@
     [scrollView setContentOffset:bottomOffset animated:YES];
     
     [_chatTextView endEditing:YES];
-    _chatTextView.text=nil;
+    if(message.mainImage==nil) {
+        _chatTextView.text=nil;
+    }
     if(![_withObject isKindOfClass:[User class]]){
         _withObject.reviewsCount++;
     }

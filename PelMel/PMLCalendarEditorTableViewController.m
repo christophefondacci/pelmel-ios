@@ -226,7 +226,7 @@
         [_editedCalendar toggleEnablementFor:(indexPath.row+1)%7];
         [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     } else if(indexPath.section == kSectionRepetition) {
-        _editedCalendar.recurrency = [NSNumber numberWithInt:indexPath.row];
+        _editedCalendar.recurrency = [NSNumber numberWithInteger:indexPath.row];
         [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kSectionRepetition] withRowAnimation:UITableViewRowAnimationNone];
 //        [self.tableView reloadSections: withRowAnimation:<#(UITableViewRowAnimation)#>RowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
