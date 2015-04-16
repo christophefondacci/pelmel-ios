@@ -157,6 +157,7 @@
         NSString *toKey     = [message objectForKey:@"toKey"];
         NSString *text      = [message objectForKey:@"message"];
         NSNumber *msgTime   = [message objectForKey:@"time"];
+        NSNumber *unread    = [message objectForKey:@"unread"];
         NSDictionary *media = [message objectForKey:@"media"];
         
         long time = [msgTime longValue];
@@ -170,6 +171,8 @@
         [m setTo:toUser];
         [m setText:text];
         [m setDate:msgDate];
+        [m setUnread:[unread boolValue]];
+        [m setUnreadCount:[unread integerValue]];
         
         if(media != nil) {
             CALImage *image = [[TogaytherService imageService] convertJsonImageToImage:media];
@@ -182,11 +185,14 @@
     if([userKey isEqualToString:user.key]) {
         // Reversing array and eliminating duplicates
         NSMutableArray *filteredArray = [NSMutableArray arrayWithCapacity:calMessages.count];
-        NSMutableSet *keysSet = [[NSMutableSet alloc] init];
+        NSMutableDictionary *keysMessageMap = [[NSMutableDictionary alloc] init];
         for(Message *msg in [calMessages reverseObjectEnumerator]) {
-            if(![keysSet containsObject:msg.from.key]) {
-                [keysSet addObject:msg.from.key];
+            Message *thread = [keysMessageMap objectForKey:msg.from.key];
+            if(thread == nil) {
+                [keysMessageMap setObject:msg forKey:msg.from.key];
                 [filteredArray addObject:msg];
+            } else {
+                thread.unreadCount+=msg.unreadCount;
             }
         }
         // Switching

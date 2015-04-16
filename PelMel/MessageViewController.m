@@ -17,6 +17,7 @@
 #import "PMLFakeViewController.h"
 #import <MBProgressHUD.h>
 #import "PhotoPreviewViewController.h"
+#import "MKNumberBadgeView.h"
 
 @interface MessageViewController ()
 
@@ -96,13 +97,6 @@
     // Allocating internal cache structures for storing image thumbs map
     imageViewsMap =  [[NSMutableDictionary alloc] init];
     messagesFetchedCount = 0;
-    
-    // Fetching messages
-    if([_withObject isKindOfClass:[User class]]) {
-        [messageService getMessagesWithUser:_withObject.key messageCallback:self];
-    } else if([_withObject isKindOfClass:[CALObject class]]){
-        [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
-    }
 
     if(_withObject==nil || _withObject == [userService getCurrentUser]) {
         self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
@@ -157,6 +151,7 @@
     [self configureChatInput];
     
     [[TogaytherService uiService] setProgressView:self.view];
+    [self refreshContents];
 }
 -(void)viewDidAppear:(BOOL)animated {
     [self.navigationController setToolbarHidden:YES];
@@ -359,6 +354,28 @@
         view.backgroundColor = UIColorFromRGB(0x343c42);
     } else {
         view.backgroundColor = UIColorFromRGB(0x272a2e);
+    }
+    
+    // Thread view, displaying badge for unread messages
+    if(_withObject == currentUser) {
+        if(message.unreadCount>0) {
+            CGRect frame = view.leftThumbButton.bounds;
+            MKNumberBadgeView *badge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(frame.size.width-10, -5, 20, 20)];
+            badge.shadow = NO;
+            badge.shine=NO;
+            badge.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
+            badge.value = message.unreadCount;
+            [view.leftThumbButton addSubview:badge];
+        } else {
+            for(UIView *subview in view.leftThumbButton.subviews) {
+                if([subview isKindOfClass:[MKNumberBadgeView class]]) {
+                    [subview removeFromSuperview];
+                }
+            }
+        }
+    } else {
+        message.unread = NO;
+        message.unreadCount = 0;
     }
     
     // DEBUG
