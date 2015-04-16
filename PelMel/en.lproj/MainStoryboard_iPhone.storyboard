@@ -1880,6 +1880,44 @@
             </objects>
             <point key="canvasLocation" x="4170" y="-1319"/>
         </scene>
+        <!--Photo Picker Preview View Controller-->
+        <scene sceneID="naa-5X-741">
+            <objects>
+                <viewController storyboardIdentifier="photoPickerPreview" id="zH3-Fr-bON" customClass="PMLPhotoPickerPreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XpS-s6-eZp"/>
+                        <viewControllerLayoutGuide type="bottom" id="wmi-RO-BgR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zuZ-s7-SMe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="4" translatesAutoresizingMaskIntoConstraints="NO" id="Odh-Cz-Xz2">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VND-KV-YDk">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                    </imageView>
+                                </subviews>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wmi-RO-BgR" firstAttribute="top" secondItem="Odh-Cz-Xz2" secondAttribute="bottom" id="Aak-ni-UIq"/>
+                            <constraint firstAttribute="trailing" secondItem="Odh-Cz-Xz2" secondAttribute="trailing" id="Iky-RV-T1W"/>
+                            <constraint firstItem="Odh-Cz-Xz2" firstAttribute="leading" secondItem="zuZ-s7-SMe" secondAttribute="leading" id="UWN-EW-8Bo"/>
+                            <constraint firstItem="Odh-Cz-Xz2" firstAttribute="top" secondItem="zuZ-s7-SMe" secondAttribute="top" id="WOY-DY-L1c"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="previewImage" destination="VND-KV-YDk" id="IQF-eU-KzI"/>
+                        <outlet property="scrollView" destination="Odh-Cz-Xz2" id="up8-KF-nPQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y82-jJ-uO2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4604" y="-2059"/>
+        </scene>
         <!--Photo Preview View Controller-->
         <scene sceneID="9jy-GA-wzC">
             <objects>

@@ -242,6 +242,8 @@
 		B4A4667119A7518E004ADC7E /* PMLUserInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A4666F19A7518E004ADC7E /* PMLUserInfoProvider.m */; };
 		B4A47D201ADE0827000178BD /* AUIAutoGrowingTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = B4A47D1E1ADE0827000178BD /* AUIAutoGrowingTextView.h */; };
 		B4A47D211ADE0827000178BD /* AUIAutoGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A47D1F1ADE0827000178BD /* AUIAutoGrowingTextView.m */; };
+		B4A47D241AE06071000178BD /* PMLPhotoPickerPreviewViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4A47D221AE06071000178BD /* PMLPhotoPickerPreviewViewController.h */; };
+		B4A47D251AE06071000178BD /* PMLPhotoPickerPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A47D231AE06071000178BD /* PMLPhotoPickerPreviewViewController.m */; };
 		B4A6642F1695E32100732B6D /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */; };
 		B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6643416970EB700732B6D /* AccountNavigationController.m */; };
 		B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A854281635416F003649C8 /* SizedTTLCacheService.m */; };
@@ -623,6 +625,8 @@
 		B4A4666F19A7518E004ADC7E /* PMLUserInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLUserInfoProvider.m; sourceTree = "<group>"; };
 		B4A47D1E1ADE0827000178BD /* AUIAutoGrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AUIAutoGrowingTextView.h; sourceTree = "<group>"; };
 		B4A47D1F1ADE0827000178BD /* AUIAutoGrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AUIAutoGrowingTextView.m; sourceTree = "<group>"; };
+		B4A47D221AE06071000178BD /* PMLPhotoPickerPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPhotoPickerPreviewViewController.h; sourceTree = "<group>"; };
+		B4A47D231AE06071000178BD /* PMLPhotoPickerPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPhotoPickerPreviewViewController.m; sourceTree = "<group>"; };
 		B4A6642D1695E32100732B6D /* MKNumberBadgeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MKNumberBadgeView.h; sourceTree = "<group>"; };
 		B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
 		B4A6643316970EB700732B6D /* AccountNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountNavigationController.h; sourceTree = "<group>"; };
@@ -1200,6 +1204,8 @@
 				B405E66F1A953F9400C49F64 /* PMLCalendarEditorTableViewController.m */,
 				B457A1001A9AF1B100207D8E /* PMLEventTableViewController.h */,
 				B457A1011A9AF1B100207D8E /* PMLEventTableViewController.m */,
+				B4A47D221AE06071000178BD /* PMLPhotoPickerPreviewViewController.h */,
+				B4A47D231AE06071000178BD /* PMLPhotoPickerPreviewViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1568,6 +1574,7 @@
 				B457A0FE1A9AF08A00207D8E /* PMLDatePickerTableViewCell.h in Headers */,
 				B4E8292F18AAFAA10063715C /* SettingsService.h in Headers */,
 				B457A1021A9AF1B100207D8E /* PMLEventTableViewController.h in Headers */,
+				B4A47D241AE06071000178BD /* PMLPhotoPickerPreviewViewController.h in Headers */,
 				B41DD74C197A4E5B008F09D9 /* PMLMapPopupViewController.h in Headers */,
 				B43E76201991BD5C00153B46 /* PMLMainNavBarView.h in Headers */,
 			);
@@ -1862,6 +1869,7 @@
 				B4B504151621DE95002D5669 /* UITableMeasureViewCell.m in Sources */,
 				B4592A861622CF35009688B8 /* UITableDescriptionViewCell.m in Sources */,
 				B4270E1D19F631B700620773 /* PMLUserActionsView.m in Sources */,
+				B4A47D251AE06071000178BD /* PMLPhotoPickerPreviewViewController.m in Sources */,
 				B40668B419713AF20012DF71 /* MenuAction.m in Sources */,
 				B4592A8C1623090A009688B8 /* UIInteractiveLabel.m in Sources */,
 				B449DEE216245B6600C362F8 /* ImageService.m in Sources */,

@@ -12,6 +12,7 @@
 #import "CALImage.h"
 #import "TogaytherService.h"
 #import "UIImage+Resize.h"
+#import "PMLPhotoPickerPreviewViewController.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/SDWebImageManager.h>
 #import <AFNetworking.h>
@@ -160,6 +161,7 @@
     switch(buttonIndex) {
         case kActionCameraIndex:
             pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            pickerController.modalPresentationStyle = UIModalPresentationCurrentContext;
             break;
         case kActionLibraryIndex:
             [pickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
@@ -184,25 +186,34 @@
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
 
-    // Getting resulting image
-//    UIImage *pickedImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-//    UIImage *resized = [pickedImage resizedImageWithContentMode:UIViewContentModeScaleAspectFit bounds:pickedImage.size interpolationQuality:kCGInterpolationHigh];
-    
+    // Getting picked image
     UIImage *fullImage = (UIImage*) [info objectForKey:UIImagePickerControllerOriginalImage];
-    UIImage *resized = [self scaleAndRotateImage:fullImage];
-    UIImage *thumbImage = [resized imageByScalingAndCroppingForSize:CGSizeMake(111, 111)];
+    
+    PMLPhotoPickerPreviewCompletion completion = ^(UIImage *otherfullImage){
+        UIImage *resized = [self scaleAndRotateImage:fullImage];
+        UIImage *thumbImage = [resized imageByScalingAndCroppingForSize:CGSizeMake(111, 111)];
+        
+        CALImage *image = [[CALImage alloc] init];
+        image.fullImage = resized;
+        image.thumbImage = thumbImage;
+        // Dismissing picker
+        [_pickerParentController dismissViewControllerAnimated:YES completion:^{
+            // Invoking callback
+            [_pickerCallback imagePicked:image];
+            _pickerCallback = nil;
+            _pickerParentController = nil;
+            _pickerView = nil;
+        }];
+    };
 
-    CALImage *image = [[CALImage alloc] init];
-    image.fullImage = resized;
-    image.thumbImage = thumbImage;
-    // Dismissing picker
-    [_pickerParentController dismissViewControllerAnimated:YES completion:^{
-        // Invoking callback
-        [_pickerCallback imagePicked:image];
-        _pickerCallback = nil;
-        _pickerParentController = nil;
-        _pickerView = nil;
-    }];
+    if(picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
+        completion(fullImage);
+    } else {
+        PMLPhotoPickerPreviewViewController *pickerPreview = (PMLPhotoPickerPreviewViewController*)[_uiService instantiateViewController:SB_ID_PHOTO_PICKER_PREVIEW];
+        pickerPreview.image = fullImage;
+        pickerPreview.completion = completion;
+        [picker pushViewController:pickerPreview animated:YES];
+    }
 }
 
 - (UIImage *)scaleAndRotateImage:(UIImage *)image {
