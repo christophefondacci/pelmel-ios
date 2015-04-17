@@ -23,6 +23,7 @@
     _inUsers = [[NSMutableArray alloc] init];
     _events = [[NSMutableArray alloc] init];
     _hours = [[NSMutableArray alloc] init];
+    _properties = [[NSMutableArray alloc ] init];
 }
 
 - (id)initFull:(NSString *)title distance:(NSString *)distance miniDesc:(NSString *)desc {

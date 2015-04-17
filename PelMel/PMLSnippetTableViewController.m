@@ -37,13 +37,16 @@
 #import "UIImage+IPImageUtils.h"
 #import "UITouchBehavior.h"
 #import "PMLSnippetEditTableViewCell.h"
+#import "PMLPropertyTableViewCell.h"
+#import "PMLWebViewController.h"
 #import <MBProgressHUD.h>
+#import <PBWebViewController.h>
 
 
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
-#define kPMLSectionsCount 14
+#define kPMLSectionsCount 15
 
 #define kPMLSectionGallery 0
 #define kPMLSectionSnippet 1
@@ -51,14 +54,15 @@
 #define kPMLSectionLocalization 3
 #define kPMLSectionOvSummary 4
 #define kPMLSectionOvAddress 5
-#define kPMLSectionOvHours 6
-#define kPMLSectionOvHappyHours 7
-#define kPMLSectionOvEvents 8
-#define kPMLSectionOvDesc 9
-#define kPMLSectionOvTags 10
-#define kPMLSectionTopPlaces 11
-#define kPMLSectionActivity 12
-#define kPMLSectionReport 13
+#define kPMLSectionOvProperties 6
+#define kPMLSectionOvHours 7
+#define kPMLSectionOvHappyHours 8
+#define kPMLSectionOvEvents 9
+#define kPMLSectionOvDesc 10
+#define kPMLSectionOvTags 11
+#define kPMLSectionTopPlaces 12
+#define kPMLSectionActivity 13
+#define kPMLSectionReport 14
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -102,6 +106,9 @@
 #define kPMLOvAddressRows 1
 #define kPMLRowOvAddressId @"text"
 #define kPMLHeightOvAddressRows 20
+
+#define kPMLRowOvPropertyId @"propertyCell"
+#define kPMLHeightOvPropertyRows 33;
 
 #define kPMLOvHoursRows 1
 #define kPMLRowHoursTitleId @"hoursTitle"
@@ -210,7 +217,9 @@ typedef enum {
     BOOL _opened;
     BOOL _didOpened;
     PMLVisibityState _editVisible;
+
     
+    PBWebViewController *_webviewController;
 }
 
 
@@ -362,6 +371,11 @@ typedef enum {
                 return kPMLOvSummaryRows;
             case kPMLSectionOvAddress:
                 return [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
+            case kPMLSectionOvProperties:
+                if([_infoProvider respondsToSelector:@selector(properties)]) {
+                    return [[_infoProvider properties] count];
+                }
+                return 0;
             case kPMLSectionOvHours: {
                 NSInteger count = [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count];
                 return count == 0 ? 0 : count+1;
@@ -465,6 +479,8 @@ typedef enum {
             } else {
                 return kPMLRowOvImagedTitleId;
             }
+        case kPMLSectionOvProperties:
+            return kPMLRowOvPropertyId;
         case kPMLSectionOvHours:
             return indexPath.row == 0 ? kPMLRowHoursTitleId : kPMLRowTextId;
         case kPMLSectionOvHappyHours:
@@ -533,6 +549,9 @@ typedef enum {
             } else {
                 [self configureRowOvCity:(PMLImagedTitleTableViewCell*)cell];
             }
+            break;
+        case kPMLSectionOvProperties:
+            [self configureRowProperty:(PMLPropertyTableViewCell*)cell atIndex:indexPath.row];
             break;
         case kPMLSectionOvHours:
             if(indexPath.row==0) {
@@ -624,6 +643,8 @@ typedef enum {
             } else {
                 return kPMLHeightOvImagedTitle;
             }
+        case kPMLSectionOvProperties:
+            return kPMLHeightOvPropertyRows;
         case kPMLSectionOvHours:
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvHappyHours:
@@ -793,6 +814,10 @@ typedef enum {
         case kPMLSectionLocalization:
         case kPMLSectionReport:
             return YES;
+        case kPMLSectionOvProperties: {
+            PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
+            return [p.propertyCode isEqualToString:@"website"];
+        }
         case kPMLSectionOvAddress:
             if([_infoProvider city] !=nil) {
                 NSInteger rows = [self.tableView numberOfRowsInSection:indexPath.section];
@@ -824,6 +849,17 @@ typedef enum {
             }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
+        case kPMLSectionOvProperties: {
+            PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
+            if([p.propertyCode isEqualToString:@"website"]) {
+//                PMLWebViewController *webviewController = (PMLWebViewController*)[_uiService instantiateViewController:SB_ID_WEBVIEW];
+//                [webviewController setUrl:p.propertyValue];
+                _webviewController= [[PBWebViewController alloc] init];
+                _webviewController.URL = [[NSURL alloc] initWithString:p.propertyValue];
+                [self.navigationController pushViewController:_webviewController animated:YES];
+            }
+            break;
+        }
         case kPMLSectionLocalization: {
             CALObject *locationObject = [_infoProvider mapObjectForLocalization];
             [_uiService presentSnippetFor:locationObject opened:YES];
@@ -1144,6 +1180,30 @@ typedef enum {
     cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
     cell.cellTextLabel.textColor = [UIColor whiteColor];
 
+}
+-(void)configureRowProperty:(PMLPropertyTableViewCell*)cell atIndex:(NSInteger)row {
+    PMLProperty *property = [[_infoProvider properties] objectAtIndex:row];
+    
+    // Decoding property code
+    NSString *labelCode = [NSString stringWithFormat:@"property.label.%@",property.propertyCode];
+    NSString *label = NSLocalizedString(labelCode, labelCode);
+    if([label isEqualToString:labelCode]) {
+        label = property.defaultLabel;
+    }
+    if([@"phone" isEqualToString:property.propertyCode]) {
+        cell.propertyTextView.hidden=NO;
+        cell.propertyLabel.hidden=YES;
+        cell.propertyTextView.text = [NSString stringWithFormat:@"%@ - %@",label,property.propertyValue];
+        cell.propertyTextView.textContainerInset = UIEdgeInsetsMake(3, 0, 3, 0);
+    } else {
+        cell.propertyLabel.hidden=NO;
+        cell.propertyTextView.hidden=YES;
+        if([@"website" isEqualToString:property.propertyCode]) {
+            cell.propertyLabel.text = property.propertyValue;
+        } else {
+            cell.propertyLabel.text = [NSString stringWithFormat:@"%@ - %@",label,property.propertyValue];
+        }
+    }
 }
 -(void)configureRowOvCity:(PMLImagedTitleTableViewCell*)cell {
     cell.titleLabel.text = [_infoProvider city];

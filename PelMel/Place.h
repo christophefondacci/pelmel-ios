@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
-
+#import "PMLProperty.h"
 
 @interface Place : CALObject
 
@@ -24,7 +24,7 @@
 @property (strong,nonatomic) NSMutableArray *events;
 @property (nonatomic) int closedReportsCount;
 @property (strong,nonatomic) NSMutableArray *hours;
-
+@property (strong,nonatomic) NSMutableArray *properties;
 
 - (id)initFull:(NSString*)title distance:(NSString *)distance miniDesc:(NSString*)desc;
 - (id)init:(NSString*)title;

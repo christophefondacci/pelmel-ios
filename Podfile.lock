@@ -3,12 +3,12 @@ PODS:
     - AFNetworking/NSURLConnection (~> 2.0)
     - AFNetworking/NSURLSession (~> 2.0)
   - AFNetworking (2.3.1):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
+    - AFNetworking/NSURLConnection (= 2.3.1)
+    - AFNetworking/NSURLSession (= 2.3.1)
+    - AFNetworking/Reachability (= 2.3.1)
+    - AFNetworking/Security (= 2.3.1)
+    - AFNetworking/Serialization (= 2.3.1)
+    - AFNetworking/UIKit (= 2.3.1)
   - AFNetworking/NSURLConnection (2.3.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -24,20 +24,23 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - MBProgressHUD (0.9)
+  - PBWebViewController (0.3)
   - SDWebImage (3.7.1):
-    - SDWebImage/Core
+    - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
 
 DEPENDENCIES:
   - AFNetworkActivityLogger (~> 2.0.4)
   - AFNetworking (~> 2.2)
   - MBProgressHUD (~> 0.9)
+  - PBWebViewController
   - SDWebImage (~> 3.7.1)
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05b9f6e3aa5ac45bc383b4bb108ef338080a26c7
   MBProgressHUD: d8e7ea388dc1549a42e0d219067cf5f2c898fb66
+  PBWebViewController: 909b1505da6ba7c5c82519a6457246027926061e
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.36.3

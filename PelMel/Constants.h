@@ -39,6 +39,7 @@
 #define SB_ID_MENU_MANAGER @"menuManager"
 #define SB_ID_PHOTO_GALLERY @"photoPreview"
 #define SB_ID_PHOTO_PICKER_PREVIEW @"photoPickerPreview"
+#define SB_ID_WEBVIEW @"webview"
 
 
 #define PML_PROP_SERVER @"url.server"

@@ -186,6 +186,7 @@
     NSArray *jsonEvents     = [json objectForKey:@"events"];
     NSArray *jsonHours      = [json objectForKey:@"hours"];
     NSString *timezoneId    = [json objectForKey:@"timezoneId"];
+    NSArray *jsonProperties = [json objectForKey:@"properties"];
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
@@ -287,6 +288,13 @@
     }
     [place setHours:hours];
     
+    // Processing properties
+    NSMutableArray *properties = [[NSMutableArray alloc] init];
+    for(NSDictionary *jsonProperty in jsonProperties) {
+        PMLProperty *prop = [self convertJsonPropertyToProperty:jsonProperty];
+        [properties addObject:prop];
+    }
+    place.properties = properties;
     
     // Registering that this object has data
     [place setHasOverviewData:YES];
@@ -294,6 +302,24 @@
     // Refreshing cache
     [_objectCache setObject:place forKey:place.key];
     return place;
+}
+-(PMLProperty*)convertJsonPropertyToProperty:(NSDictionary*)jsonProperty {
+    NSString *key      = [jsonProperty objectForKey:@"key"];
+    NSString *code      = [jsonProperty objectForKey:@"code"];
+    NSString *value      = [jsonProperty objectForKey:@"value"];
+    NSString *label      = [jsonProperty objectForKey:@"label"];
+    
+    PMLProperty *prop = [_objectCache objectForKey:key];
+    if(prop == nil) {
+        prop = [[PMLProperty alloc] init];
+        prop.key = key;
+        [_objectCache setObject:prop forKey:key];
+    }
+    
+    prop.propertyCode = code;
+    prop.propertyValue = value;
+    prop.defaultLabel = label;
+    return prop;
 }
 -(PMLCalendar*)convertJsonLightCalendarToCalendar:(NSDictionary *)jsonSpecial forPlace:(Place*)place defaultCalendar:(PMLCalendar *)defaultCalendar {
     // Extracting from JSON

@@ -156,6 +156,10 @@
     return _addressComponents;
 }
 
+- (NSArray *)properties {
+    return _place.properties;
+}
+
 #pragma mark - Specials
 
 - (BOOL)hasSnippetRightSection {
@@ -444,6 +448,7 @@
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;
 }
+
 #pragma mark Localization
 -(CALObject *)mapObjectForLocalization {
     if(_place.lat!=0 && _place.lng!=0 && _place.key!=nil) {

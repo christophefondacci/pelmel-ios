@@ -268,6 +268,11 @@
 "profile.save"="Envoi des données...";
 "profile.title"="Mon compte";
 "profile.weight"="Poids";
+
+"property.label.phone"="Téléphone";
+"property.label.website"="Site web";
+
+
 "push.permission.title"="Activer le push ?";
 "push.permission.msg"="Voulez-vous activer les notifications 'push' pour permettre à Pelmel de vous signaler l'arrivée de nouveaux messages ?";
 "push.refused.title"="C'est vous le chef";
