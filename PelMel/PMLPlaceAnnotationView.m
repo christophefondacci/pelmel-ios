@@ -150,6 +150,13 @@
         _badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
         _badgeView.value = badgeVal;
         [_imageView addSubview: _badgeView]; //Add NKNumberBadgeView as a subview on UIButton
+        if(!self.selected) {
+            self.layer.zPosition=MIN(-500+badgeVal,-1);
+        }
+    } else {
+        if(!self.selected) {
+            self.layer.zPosition=MIN(-1000+object.likeCount,-500);
+        }
     }
     [_imageView layoutSubviews];
 }

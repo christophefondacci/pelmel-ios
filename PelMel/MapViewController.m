@@ -584,6 +584,11 @@
 }
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     [self cancelEdition];
+    
+    
+    if([view isKindOfClass:[PMLPlaceAnnotationView class]]) {
+        view.layer.zPosition=0;
+    }
 //    NSLog(@"didSelect");
     selectedAnnotation = view;
     if([selectedAnnotation.annotation isKindOfClass:[MapAnnotation class]]) {
@@ -622,6 +627,10 @@
         _popupController = nil;
     }
     [self.parentMenuController.view endEditing:YES];
+    
+    if([view isKindOfClass:[PMLPlaceAnnotationView class]]) {
+        [((PMLPlaceAnnotationView*)view) updateData];
+    }
 }
 
 -(void)mapView:(MKMapView *)mapView didAddAnnotationViews:(NSArray *)views {
