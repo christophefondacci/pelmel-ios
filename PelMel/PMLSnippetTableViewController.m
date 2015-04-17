@@ -856,7 +856,10 @@ typedef enum {
 //                [webviewController setUrl:p.propertyValue];
                 _webviewController= [[PBWebViewController alloc] init];
                 _webviewController.URL = [[NSURL alloc] initWithString:p.propertyValue];
+                [TogaytherService applyCommonLookAndFeel:self];
+                self.navigationController.navigationBar.translucent=NO;
                 [self.navigationController pushViewController:_webviewController animated:YES];
+
             }
             break;
         }
