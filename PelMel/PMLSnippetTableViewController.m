@@ -1196,16 +1196,29 @@ typedef enum {
     if([@"phone" isEqualToString:property.propertyCode]) {
         cell.propertyTextView.hidden=NO;
         cell.propertyLabel.hidden=YES;
-        cell.propertyTextView.text = [NSString stringWithFormat:@"%@ - %@",label,property.propertyValue];
+        cell.propertyIcon.hidden=NO;
+        cell.propertyTextView.text = property.propertyValue;
         cell.propertyTextView.textContainerInset = UIEdgeInsetsMake(3, 0, 3, 0);
+        cell.propertyTextView.textColor = UIColorFromRGB(0xababac);
+        cell.propertyTextView.tintColor = [UIColor whiteColor];
+        CGSize fitSize =  [cell.propertyTextView sizeThatFits:CGSizeMake(cell.bounds.size.width, cell.propertyTextView.bounds.size.height)];
+        cell.propertyLabelWidthConstraint.constant = fitSize.width;
+        cell.propertyIcon.image = [UIImage imageNamed:@"snpIconPhone"];
     } else {
         cell.propertyLabel.hidden=NO;
+        cell.propertyIcon.hidden=NO;
         cell.propertyTextView.hidden=YES;
         if([@"website" isEqualToString:property.propertyCode]) {
             cell.propertyLabel.text = property.propertyValue;
+            cell.propertyLabel.textColor = UIColorFromRGB(0xababac);
+            CGSize fitSize =  [cell.propertyLabel sizeThatFits:CGSizeMake(cell.bounds.size.width, cell.propertyTextView.bounds.size.height)];
+            cell.propertyLabelWidthConstraint.constant=fitSize.width;
+            cell.propertyIcon.image = nil; //[UIImage imageNamed:@"snpIconWeb"];
         } else {
             cell.propertyLabel.text = [NSString stringWithFormat:@"%@ - %@",label,property.propertyValue];
         }
+
+
     }
 }
 -(void)configureRowOvCity:(PMLImagedTitleTableViewCell*)cell {

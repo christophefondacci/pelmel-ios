@@ -3784,26 +3784,39 @@
                                             <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
                                         </textView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="65a-Ib-QIT">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
+                                            <rect key="frame" x="45" y="0.0" width="231" height="32"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="231" id="6cq-RN-ug5"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
                                             <color key="textColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconPhone" translatesAutoresizingMaskIntoConstraints="NO" id="EeH-Ya-R1e">
+                                            <rect key="frame" x="21" y="8" width="16" height="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="16" id="E2r-JG-zIw"/>
+                                                <constraint firstAttribute="width" constant="16" id="TTu-EI-Bt4"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="65a-Ib-QIT" firstAttribute="leading" secondItem="EeH-Ya-R1e" secondAttribute="trailing" constant="8" id="RPg-vW-SOr"/>
                                         <constraint firstAttribute="trailing" secondItem="sCE-Vm-KkH" secondAttribute="trailing" id="STx-jE-slf"/>
                                         <constraint firstItem="65a-Ib-QIT" firstAttribute="top" secondItem="Tbe-hQ-mZK" secondAttribute="top" id="UFp-do-1hM"/>
                                         <constraint firstAttribute="bottom" secondItem="65a-Ib-QIT" secondAttribute="bottom" id="WuH-uT-dQ1"/>
-                                        <constraint firstItem="65a-Ib-QIT" firstAttribute="leading" secondItem="Tbe-hQ-mZK" secondAttribute="leading" id="Ytq-d0-sci"/>
+                                        <constraint firstItem="EeH-Ya-R1e" firstAttribute="centerY" secondItem="65a-Ib-QIT" secondAttribute="centerY" id="ah7-8c-MdT"/>
                                         <constraint firstAttribute="bottom" secondItem="sCE-Vm-KkH" secondAttribute="bottom" id="bj0-2v-AJc"/>
+                                        <constraint firstAttribute="centerX" secondItem="65a-Ib-QIT" secondAttribute="centerX" id="mKS-hK-kKk"/>
                                         <constraint firstItem="sCE-Vm-KkH" firstAttribute="top" secondItem="Tbe-hQ-mZK" secondAttribute="top" id="nQL-ZG-Qti"/>
                                         <constraint firstItem="sCE-Vm-KkH" firstAttribute="leading" secondItem="Tbe-hQ-mZK" secondAttribute="leading" id="pKL-4B-bzi"/>
-                                        <constraint firstAttribute="trailing" secondItem="65a-Ib-QIT" secondAttribute="trailing" id="tk9-Qp-Fqx"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
+                                    <outlet property="propertyIcon" destination="EeH-Ya-R1e" id="KtD-ht-klf"/>
                                     <outlet property="propertyLabel" destination="65a-Ib-QIT" id="nO3-nz-Qgv"/>
+                                    <outlet property="propertyLabelWidthConstraint" destination="6cq-RN-ug5" id="tlY-2b-ZjA"/>
                                     <outlet property="propertyTextView" destination="sCE-Vm-KkH" id="uYm-Sb-We8"/>
                                 </connections>
                             </tableViewCell>
@@ -3995,6 +4008,7 @@
         <image name="snpIconLike" width="30" height="30"/>
         <image name="snpIconLikeWhite" width="30" height="30"/>
         <image name="snpIconMarker" width="40" height="40"/>
+        <image name="snpIconPhone" width="16" height="16"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

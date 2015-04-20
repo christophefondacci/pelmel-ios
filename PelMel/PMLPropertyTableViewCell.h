@@ -11,5 +11,7 @@
 @interface PMLPropertyTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UITextView *propertyTextView;
 @property (weak, nonatomic) IBOutlet UILabel *propertyLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *propertyIcon;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *propertyLabelWidthConstraint;
 
 @end
