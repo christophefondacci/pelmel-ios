@@ -19,6 +19,7 @@
 #define kResetPasswordUrlFormat @"%@/lostPassword"
 #define kParamEmail @"email"
 #define kParamPassword @"password"
+#define kParamVersion @"deviceInfo"
 #define kParamHighRes @"highRes"
 #define kParamDeviceToken @"pushDeviceId"
 #define kParamPushProvider @"pushProvider"
@@ -116,6 +117,14 @@
     [params setObject:login forKey:kParamEmail];
     [params setObject:password forKey:kParamPassword];
     [params setObject:(isRetina ? @"true" : @"false") forKey:kParamHighRes];
+    
+    // Building version string
+    NSString *appVersionString  = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *appBuildString    = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSString *iosVersion        = [[UIDevice currentDevice] systemVersion];
+    NSString *deviceName        = [[UIDevice currentDevice] model];
+    NSString *versionBuildString = [NSString stringWithFormat:@"%@;%@;%@;%@",appVersionString, appBuildString, deviceName, iosVersion];
+    [params setObject:versionBuildString forKey:kParamVersion];
     [self fillPushInformation:params];
     
     // Building URL
