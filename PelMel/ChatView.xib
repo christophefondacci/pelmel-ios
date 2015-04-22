@@ -4,11 +4,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="OpenSans-Italic.ttf">
-            <string>OpenSans-Italic</string>
-            <string>OpenSans-Italic</string>
-        </mutableArray>
         <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+            <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
@@ -70,21 +68,32 @@
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" scrollEnabled="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8" userLabel="rightText">
                     <rect key="frame" x="68" y="28" width="217" height="79"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="217" id="wOm-34-bJP"/>
+                    </constraints>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="OpenSans-Italic" family="Open Sans" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                 </textView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chatBubble" translatesAutoresizingMaskIntoConstraints="NO" id="9Uy-VR-hD7">
+                    <rect key="frame" x="251" y="32" width="10" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="10" id="A0j-Oh-lws"/>
+                        <constraint firstAttribute="height" constant="26" id="Lpk-sJ-gQu"/>
+                    </constraints>
+                </imageView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" scrollEnabled="NO" editable="NO" textAlignment="right" translatesAutoresizingMaskIntoConstraints="NO" id="16" userLabel="leftText">
-                    <rect key="frame" x="35" y="28" width="217" height="79"/>
+                    <rect key="frame" x="37" y="28" width="215" height="79"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="215" id="RZt-s0-rf8"/>
                         <constraint firstAttribute="height" constant="79" id="fNG-KK-HaU"/>
                     </constraints>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="OpenSans-Italic" family="Open Sans" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
                 </textView>
@@ -128,17 +137,17 @@
                     </state>
                 </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="4">
-                    <rect key="frame" x="10" y="8" width="300" height="17"/>
+                    <rect key="frame" x="10" y="2" width="300" height="17"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="17" id="cum-Ik-cob"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="12"/>
                     <color key="textColor" red="0.92549020051956177" green="0.46666666865348816" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="leftUser" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eIG-og-y33">
-                    <rect key="frame" x="6" y="69" width="59" height="16"/>
+                    <rect key="frame" x="6" y="65" width="59" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="59" id="gxf-s6-zAM"/>
                         <constraint firstAttribute="height" constant="16" id="lbR-jX-HOj"/>
@@ -148,7 +157,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rightUser" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bx-39-sCM">
-                    <rect key="frame" x="256" y="69" width="59" height="16"/>
+                    <rect key="frame" x="256" y="65" width="59" height="16"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="59" id="T04-0N-L9G"/>
                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="59" id="Wuv-du-rrS"/>
@@ -171,7 +180,7 @@
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                            <integer key="value" value="1"/>
+                            <integer key="value" value="2"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
                             <color key="value" red="0.91427665948867798" green="0.34112125635147095" blue="0.028950339183211327" alpha="1" colorSpace="calibratedRGB"/>
@@ -190,7 +199,7 @@
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                            <integer key="value" value="1"/>
+                            <integer key="value" value="2"/>
                         </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
                             <color key="value" red="0.91427665948867798" green="0.34112125635147095" blue="0.028950339183211327" alpha="1" colorSpace="calibratedRGB"/>
@@ -206,36 +215,48 @@
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chatBubbleLeft" translatesAutoresizingMaskIntoConstraints="NO" id="cd6-Dv-hsE">
+                    <rect key="frame" x="59" y="32" width="10" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="10" id="1QZ-58-HwR"/>
+                        <constraint firstAttribute="height" constant="26" id="R3n-1U-8kv"/>
+                    </constraints>
+                </imageView>
             </subviews>
             <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="29" firstAttribute="width" secondItem="5" secondAttribute="width" id="1KY-xL-P8p"/>
                 <constraint firstItem="29" firstAttribute="height" secondItem="5" secondAttribute="height" id="2pc-VS-EDB"/>
                 <constraint firstItem="8" firstAttribute="leading" secondItem="i5N-2Q-2gR" secondAttribute="leading" id="4yx-Jv-dnf"/>
-                <constraint firstItem="eIG-og-y33" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="1" id="6Eu-Ts-Gg8"/>
+                <constraint firstItem="eIG-og-y33" firstAttribute="top" secondItem="5" secondAttribute="bottom" constant="-3" id="6Eu-Ts-Gg8"/>
                 <constraint firstAttribute="bottom" secondItem="27" secondAttribute="bottom" constant="15" id="6jU-9o-MVQ"/>
                 <constraint firstItem="23" firstAttribute="centerX" secondItem="14" secondAttribute="centerX" id="7OQ-LO-3Rg"/>
                 <constraint firstItem="23" firstAttribute="centerY" secondItem="14" secondAttribute="centerY" id="7U1-q1-9Mr"/>
                 <constraint firstItem="5" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="10" id="7ub-3r-ok7"/>
+                <constraint firstItem="16" firstAttribute="top" secondItem="9Uy-VR-hD7" secondAttribute="top" constant="-4" id="8ZT-r1-Boh"/>
+                <constraint firstItem="i5N-2Q-2gR" firstAttribute="trailing" secondItem="14" secondAttribute="trailing" constant="-25" id="98P-Sx-wPK"/>
                 <constraint firstItem="29" firstAttribute="centerY" secondItem="5" secondAttribute="centerY" id="9Xf-6k-Pvw"/>
                 <constraint firstItem="8" firstAttribute="leading" secondItem="H3j-4y-5g7" secondAttribute="leading" id="9cD-0P-2bz"/>
                 <constraint firstItem="14" firstAttribute="trailing" secondItem="27" secondAttribute="trailing" id="9jv-XR-EEB"/>
-                <constraint firstItem="2bx-39-sCM" firstAttribute="top" secondItem="14" secondAttribute="bottom" constant="1" id="AAj-6f-nBl"/>
-                <constraint firstItem="8" firstAttribute="trailing" secondItem="i5N-2Q-2gR" secondAttribute="trailing" id="BJz-hF-B5P"/>
+                <constraint firstItem="2bx-39-sCM" firstAttribute="top" secondItem="14" secondAttribute="bottom" constant="-3" id="AAj-6f-nBl"/>
                 <constraint firstItem="16" firstAttribute="bottom" secondItem="8" secondAttribute="bottom" id="CAp-eJ-iqK"/>
                 <constraint firstItem="16" firstAttribute="top" secondItem="3" secondAttribute="top" constant="28" id="CKO-GK-c3F"/>
                 <constraint firstAttribute="trailing" secondItem="SWB-az-Bc0" secondAttribute="trailing" constant="10" id="DCe-3k-WNv"/>
-                <constraint firstItem="16" firstAttribute="leading" secondItem="3" secondAttribute="leading" constant="35" id="Efg-W8-hIU"/>
+                <constraint firstItem="16" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3" secondAttribute="leading" constant="35" id="Efg-W8-hIU"/>
+                <constraint firstItem="9Uy-VR-hD7" firstAttribute="top" secondItem="cd6-Dv-hsE" secondAttribute="top" id="Gr4-N4-RiC"/>
                 <constraint firstItem="14" firstAttribute="leading" secondItem="16" secondAttribute="trailing" constant="8" id="HcV-SU-PuV"/>
                 <constraint firstItem="4" firstAttribute="leading" secondItem="5" secondAttribute="leading" id="IXY-d4-Anz"/>
                 <constraint firstItem="4" firstAttribute="trailing" secondItem="14" secondAttribute="trailing" id="Jlw-Xg-zMS"/>
+                <constraint firstItem="9Uy-VR-hD7" firstAttribute="leading" secondItem="16" secondAttribute="trailing" constant="-1" id="LZO-EX-RF1"/>
                 <constraint firstItem="14" firstAttribute="top" secondItem="5" secondAttribute="top" id="OHF-00-mq0"/>
                 <constraint firstItem="aF8-3s-wYb" firstAttribute="trailing" secondItem="16" secondAttribute="trailing" id="UOW-bl-bp4"/>
                 <constraint firstItem="27" firstAttribute="leading" secondItem="5" secondAttribute="leading" id="Y7f-jG-QIi"/>
                 <constraint firstItem="2bx-39-sCM" firstAttribute="centerX" secondItem="14" secondAttribute="centerX" id="YG8-7g-2NQ"/>
                 <constraint firstAttribute="centerY" secondItem="SWB-az-Bc0" secondAttribute="centerY" id="ZSd-Sa-kQ2"/>
+                <constraint firstItem="9Uy-VR-hD7" firstAttribute="bottom" secondItem="cd6-Dv-hsE" secondAttribute="bottom" id="bAY-Er-mjG"/>
                 <constraint firstItem="i5N-2Q-2gR" firstAttribute="top" secondItem="3" secondAttribute="top" constant="21" id="bpA-1d-rcu"/>
                 <constraint firstItem="5" firstAttribute="centerX" secondItem="eIG-og-y33" secondAttribute="centerX" id="cKU-sb-9Ic"/>
+                <constraint firstItem="8" firstAttribute="leading" secondItem="cd6-Dv-hsE" secondAttribute="trailing" constant="-1" id="chW-j0-aUF"/>
                 <constraint firstItem="14" firstAttribute="trailing" secondItem="64L-2L-gEs" secondAttribute="trailing" id="d4g-ju-OKf"/>
                 <constraint firstItem="22" firstAttribute="centerX" secondItem="5" secondAttribute="centerX" id="ery-Hy-yaY"/>
                 <constraint firstAttribute="bottom" secondItem="16" secondAttribute="bottom" constant="15" id="fv5-nc-ZYE"/>
@@ -245,10 +266,10 @@
                 <constraint firstItem="5" firstAttribute="top" secondItem="3" secondAttribute="top" constant="18" id="nQe-BF-WNU"/>
                 <constraint firstItem="8" firstAttribute="top" secondItem="H3j-4y-5g7" secondAttribute="top" id="nqw-aI-35d"/>
                 <constraint firstItem="14" firstAttribute="leading" secondItem="64L-2L-gEs" secondAttribute="leading" id="rIN-WU-9xZ"/>
-                <constraint firstItem="4" firstAttribute="top" secondItem="5" secondAttribute="top" constant="-10" id="sD6-R7-4KL"/>
+                <constraint firstItem="4" firstAttribute="top" secondItem="5" secondAttribute="top" constant="-16" id="sD6-R7-4KL"/>
                 <constraint firstAttribute="trailing" secondItem="14" secondAttribute="trailing" constant="10" id="tbf-gM-24R"/>
                 <constraint firstItem="aF8-3s-wYb" firstAttribute="top" secondItem="16" secondAttribute="top" id="u9V-0W-hHY"/>
-                <constraint firstItem="14" firstAttribute="trailing" secondItem="8" secondAttribute="trailing" constant="25" id="uBO-Bn-nSV"/>
+                <constraint firstItem="14" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8" secondAttribute="trailing" constant="25" id="uBO-Bn-nSV"/>
                 <constraint firstItem="22" firstAttribute="centerY" secondItem="5" secondAttribute="centerY" id="ukm-EB-W0y"/>
                 <constraint firstItem="16" firstAttribute="top" secondItem="8" secondAttribute="top" id="xhh-zZ-dqY"/>
                 <constraint firstItem="27" firstAttribute="top" secondItem="5" secondAttribute="top" id="yRK-Y9-OgT"/>
@@ -257,8 +278,12 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="bubbleTail" destination="cd6-Dv-hsE" id="aK5-QK-hca"/>
+                <outlet property="bubbleTailSelf" destination="9Uy-VR-hD7" id="Zg6-0W-Qn1"/>
                 <outlet property="bubbleText" destination="8" id="12"/>
                 <outlet property="bubbleTextSelf" destination="16" id="19"/>
+                <outlet property="bubbleTextSelfWidthConstraint" destination="RZt-s0-rf8" id="b5R-bg-fTb"/>
+                <outlet property="bubbleTextWidthConstraint" destination="wOm-34-bJP" id="V0x-O7-zhp"/>
                 <outlet property="chatDisclosureImage" destination="SWB-az-Bc0" id="UBE-53-bdS"/>
                 <outlet property="dateLabel" destination="4" id="9"/>
                 <outlet property="detailMessageButton" destination="27" id="28"/>
@@ -279,6 +304,8 @@
         </view>
     </objects>
     <resources>
+        <image name="chatBubble" width="21" height="26"/>
+        <image name="chatBubbleLeft" width="21" height="26"/>
         <image name="chatDisclosure" width="13" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

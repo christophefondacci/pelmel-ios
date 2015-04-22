@@ -48,9 +48,11 @@
     UILabel *currentUsernameLabel;
     UIImageView *currentMessageImage;
     UIActivityIndicatorView *currentActivity;
+    NSLayoutConstraint *textWidthConstraint;
     
     // Selecting right or left positioning
     CurrentUser *user = userService.getCurrentUser;
+    UIColor *bubbleColor;
     if([object.key isEqualToString:user.key]) {
         currentThumb = _thumbImageSelf;
         currentBubbleText = _bubbleTextSelf;
@@ -64,6 +66,12 @@
         [dateLabel setTextAlignment:NSTextAlignmentLeft];
         currentActivity = _rightActivity;
         currentMessageImage = _messageImageSelf;
+        bubbleColor = UIColorFromRGB(0x057efe);
+        currentMessageImage.layer.borderColor = [bubbleColor CGColor];
+        currentBubbleText.textColor = [UIColor whiteColor];
+        self.bubbleTailSelf.hidden=NO;
+        self.bubbleTail.hidden=YES;
+        textWidthConstraint = _bubbleTextSelfWidthConstraint;
     } else {
         currentThumb = _thumbImage;
         currentBubbleText = _bubbleText;
@@ -76,8 +84,19 @@
         [dateLabel setTextAlignment:NSTextAlignmentRight];
         currentActivity = _leftActivity;
         currentMessageImage = _messageImage;
+        bubbleColor = UIColorFromRGB(0xe5e5e5);
+        currentMessageImage.layer.borderColor = [bubbleColor CGColor];
+        if(!snippet) {
+            currentBubbleText.textColor = [UIColor blackColor];
+        }
+        self.bubbleTailSelf.hidden=YES;
+        self.bubbleTail.hidden=NO;
+        textWidthConstraint = _bubbleTextWidthConstraint;
     }
-    
+    if(snippet) {
+        self.bubbleTailSelf.hidden=YES;
+        self.bubbleTail.hidden=YES;
+    }
     dateLabel.text = [_uiService delayStringFrom:message.date]; //[dateFormatter stringFromDate:message.date];
     
     // Thumb image setup
@@ -117,6 +136,13 @@
     }
     currentBubbleText.text = msgText; //[NSString stringWithFormat:@"\"%@\"",message.text];
     
+    // Setting up the bubble
+    if(!snippet) {
+        currentBubbleText.backgroundColor = bubbleColor;
+        currentBubbleText.layer.cornerRadius = 8;
+        currentBubbleText.layer.masksToBounds=YES;
+    }
+
     // Setting the message's image content
     CALImage *image = message.mainImage;
     if(image != nil) {
@@ -128,12 +154,18 @@
     }
     
     // Getting minimum height
-    CGSize size = [currentBubbleText sizeThatFits:CGSizeMake(currentBubbleText.frame.size.width,FLT_MAX)];
-    int minHeight = MAX(size.height,_thumbImage.frame.size.height);
-    if(image!=nil) {
-        minHeight = MAX(currentMessageImage.bounds.size.height,minHeight);
+    UIEdgeInsets insets = currentBubbleText.textContainerInset;
+    currentBubbleText.textContainerInset = UIEdgeInsetsMake(insets.top, insets.top, insets.bottom, insets.bottom);
+    CGFloat maxHeight = snippet ? 30 : FLT_MAX;
+    CGSize size = [currentBubbleText sizeThatFits:CGSizeMake(_threadNicknameLabel.bounds.size.width,maxHeight)];
+    int minHeight = size.height; //MAX(size.height,_thumbImage.frame.size.height);
+    if(image==nil) {
+        _textHeightConstraint.constant = minHeight+1; // Adding 1 for fractional height !!
+    } else {
+        _textHeightConstraint.constant = currentMessageImage.bounds.size.height;
     }
-    _textHeightConstraint.constant = minHeight+1; // Adding 1 for fractional height !!
+    textWidthConstraint.constant = size.width+1;
+
 }
 
 - (Message *)getMessage {

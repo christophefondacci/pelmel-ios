@@ -268,8 +268,12 @@
         [formData appendPartWithFormData:[message dataUsingEncoding:NSUTF8StringEncoding]
                                     name:(isComment ? @"comment" : @"msgText")];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+        
+        NSDictionary *jsonMsg = (NSDictionary*)responseObject;
+        NSString *msgKey = [jsonMsg objectForKey:@"key"];
+        
         Message *msg = [[Message alloc] init];
+        [msg setKey:msgKey];
         [msg setFrom:currentUser];
         [msg setTo:object];
         [msg setText:message];

@@ -276,9 +276,9 @@
             switch(indexPath.row) {
                     
                 case kRowSettingMessages: {
-                    [self performSegueWithIdentifier:@"directMsg" sender:self];
-//                    MessageTableViewController *msgController = (MessageTableViewController*)[_uiService instantiateViewController:@"messageTableView"];
-//                    [self.navigationController pushViewController:msgController animated:YES];
+//                    [self performSegueWithIdentifier:@"directMsg" sender:self];
+                    MessageTableViewController *msgController = (MessageTableViewController*)[_uiService instantiateViewController:@"messageView"];
+                    [self.parentMenuController.navigationController pushViewController:msgController animated:YES];
                     break;
                 }
                 case kRowSettingLikes:

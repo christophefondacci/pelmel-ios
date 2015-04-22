@@ -14,8 +14,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbImage;
 @property (weak, nonatomic) IBOutlet UITextView *bubbleText;
+@property (weak, nonatomic) IBOutlet UIImageView *bubbleTail;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bubbleTextWidthConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *bubbleTextSelf;
+@property (weak, nonatomic) IBOutlet UIImageView *bubbleTailSelf;
 @property (weak, nonatomic) IBOutlet UIImageView *thumbImageSelf;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bubbleTextSelfWidthConstraint;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *rightActivity;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *leftActivity;
 @property (weak, nonatomic) IBOutlet UIButton *detailMessageButton;

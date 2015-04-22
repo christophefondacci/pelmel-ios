@@ -313,17 +313,22 @@
         // Handling stripping
         ChatView *chatView = [_messagesViewsKeys objectForKey:message.key];
         NSInteger index = [reversedArray indexOfObject:message];
-        if(index % 2 > 0) {
-            chatView.backgroundColor = UIColorFromRGB(0x343c42);
-        } else {
+//        if(index % 2 > 0) {
+//            chatView.backgroundColor = UIColorFromRGB(0x343c42);
+//        } else {
             chatView.backgroundColor = UIColorFromRGB(0x272a2e);
-        }
+//        }
         
+        // Disclosure for thread view
         if(!isConversation) {
             chatView.chatDisclosureImage.hidden=NO;
         } else {
             chatView.chatDisclosureImage.hidden=YES;
         }
+        
+        // Tags for image tap
+        chatView.messageImage.tag = i;
+        chatView.messageImageSelf.tag = i;
         i++;
     }
     
@@ -394,7 +399,8 @@
     if(view==nil) {
         // Instantiating the Chat view to display current message
         view = (ChatView*)[uiService loadView:@"ChatView"];
-
+//        view.bubbleTextSelfWidthConstraint.constant=150;
+//        view.bubbleTextWidthConstraint.constant=150;
         // Registering view
         if(message.key!=nil) {
             [_messagesViewsKeys setObject:view forKey:message.key];
@@ -526,6 +532,11 @@
 //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 //    hud.mode = MBProgressHUDModeIndeterminate;
 //    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
+    
+    // Checking that message is not empty
+    if(image==nil && (text ==nil || [[text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""])) {
+        return;
+    }
     
     if([_withObject isKindOfClass:[User class]]) {
         [messageService sendMessage:text toUser:(User*)_withObject withImage:image messageCallback:self];

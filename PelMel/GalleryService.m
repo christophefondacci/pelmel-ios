@@ -410,6 +410,8 @@ static UIImage *defaultThumb;
     [_controller.view sendSubviewToBack:_previousView];
     [_controller.view sendSubviewToBack:_currentView];
     [_controller.view sendSubviewToBack:_nextView];
+    CALImage *currentImage = [self getImage:currentImageIndex];
+    [imageService load:currentImage to:_currentView thumb:NO];
 }
 
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)tapRecognizer shouldReceiveTouch:(UITouch *)touch {
