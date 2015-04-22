@@ -203,9 +203,11 @@
         for(Message *msg in [calMessages reverseObjectEnumerator]) {
             Message *thread = [keysMessageMap objectForKey:msg.from.key];
             if(thread == nil) {
+                msg.messageCount = 1;
                 [keysMessageMap setObject:msg forKey:msg.from.key];
                 [filteredArray addObject:msg];
             } else {
+                thread.messageCount++;
                 thread.unreadCount+=msg.unreadCount;
             }
         }

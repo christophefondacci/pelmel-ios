@@ -104,9 +104,15 @@
     
     // Setting the message's textual contents
     NSString *msgText = nil;
-    if(snippet && message.text.length > 70) {
-        msgText = [NSString stringWithFormat:@"%@...",[message.text substringToIndex:70]];
+    if(snippet) {
+        msgText = [NSString stringWithFormat:NSLocalizedString(@"message.thread.message", @"message.thread.message"),message.messageCount];
+        self.threadNicknameLabel.hidden=NO;
+        self.threadNicknameLabel.text = fromUser.pseudo;
+        UIEdgeInsets insets = currentBubbleText.textContainerInset;
+        currentBubbleText.textContainerInset = UIEdgeInsetsMake(15, insets.left, insets.bottom, insets.right);
+        currentUsernameLabel.text = nil;
     } else {
+        self.threadNicknameLabel.hidden=YES;
         msgText = message.text;
     }
     currentBubbleText.text = msgText; //[NSString stringWithFormat:@"\"%@\"",message.text];

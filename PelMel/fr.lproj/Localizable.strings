@@ -203,7 +203,8 @@
 "message.sending"="Envoi du message...";
 "message.sending.failed"="Nous n'avons pas pu délivrer votre message. Vérifiez votre connexion et essayez à nouveau.";
 "message.sending.failed.title"="Envoi Impossible";
-"messages.my.title"="Messages";
+"message.thread.message"="%d messages récents";
+"messages.my.title"="Chats";
 "modify"="Modifier";
 "moreresults.title"="Voir plus de résultats";
 "moreresults.subtitle"="Tapez ici pour rechercher tous les lieux et villes";

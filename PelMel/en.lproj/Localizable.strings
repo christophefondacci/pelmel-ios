@@ -202,7 +202,8 @@
 "message.sending"="Sending message...";
 "message.sending.failed"="We were not able to deliver your message properly. Check your connection and try again.";
 "message.sending.failed.title"="Cannot send message";
-"messages.my.title"="Messages";
+"message.thread.message"="%d recent messages";
+"messages.my.title"="Chats";
 "modify"="Modify";
 "moreresults.title"="Search more results";
 "moreresults.subtitle"="Tap here to search for all places and cities";

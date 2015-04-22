@@ -273,7 +273,6 @@
 
 - (void)messagesFetched:(NSArray *)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize {
     [self appendMessageList:messagesList ];
-//    _messagesList = messagesList;
 
     // In case it is empty, generating a first message
     [self autoFillMessageList];
@@ -282,12 +281,6 @@
     BOOL isInitialLoad = (_totalHeight == 0);
     BOOL isPartial = ((page*pageSize+messagesList.count) < totalCount );
     
-//    if(!isConversation) {
-//        // Clearing everything
-//        for(UIView *subview in scrollView.subviews) {
-//            [subview removeFromSuperview];
-//        }
-//    }
     // Resetting total height
     _totalHeight = 0;
     
@@ -324,6 +317,12 @@
             chatView.backgroundColor = UIColorFromRGB(0x343c42);
         } else {
             chatView.backgroundColor = UIColorFromRGB(0x272a2e);
+        }
+        
+        if(!isConversation) {
+            chatView.chatDisclosureImage.hidden=NO;
+        } else {
+            chatView.chatDisclosureImage.hidden=YES;
         }
         i++;
     }

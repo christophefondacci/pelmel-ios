@@ -18,4 +18,5 @@
 @property (strong,nonatomic) CALImage *mainImage;
 @property (nonatomic) BOOL unread;
 @property (nonatomic) NSInteger unreadCount;    // Unread message count in thread (if thread)
+@property (nonatomic) NSInteger messageCount;    // Messages count in thread (if thread)
 @end
