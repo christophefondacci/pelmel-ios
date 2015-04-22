@@ -284,6 +284,15 @@
 		B4BB9F1319D7E8840070B03C /* PMLCityInfoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB9F1119D7E8840070B03C /* PMLCityInfoProvider.m */; };
 		B4BB9F1619D7F23E0070B03C /* PMLThumbsTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9F1419D7F23E0070B03C /* PMLThumbsTableViewCell.h */; };
 		B4BB9F1719D7F23E0070B03C /* PMLThumbsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB9F1519D7F23E0070B03C /* PMLThumbsTableViewCell.m */; };
+		B4BD19111AE5CAB000510AC4 /* PMLChatLoaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BD19101AE5CAB000510AC4 /* PMLChatLoaderView.xib */; };
+		B4BD19141AE5CB2F00510AC4 /* PMLChatLoaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BD19121AE5CB2F00510AC4 /* PMLChatLoaderView.h */; };
+		B4BD19151AE5CB2F00510AC4 /* PMLChatLoaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BD19131AE5CB2F00510AC4 /* PMLChatLoaderView.m */; };
+		B4BD19181AE6BE3800510AC4 /* MessageTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BD19161AE6BE3800510AC4 /* MessageTableViewController.h */; };
+		B4BD19191AE6BE3800510AC4 /* MessageTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BD19171AE6BE3800510AC4 /* MessageTableViewController.m */; };
+		B4BD191B1AE6BF2C00510AC4 /* PMLChatInputBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BD191A1AE6BF2C00510AC4 /* PMLChatInputBarView.xib */; };
+		B4BD191E1AE6BFAD00510AC4 /* PMLChatInputBarView.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BD191C1AE6BFAD00510AC4 /* PMLChatInputBarView.h */; };
+		B4BD191F1AE6BFAD00510AC4 /* PMLChatInputBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BD191D1AE6BFAD00510AC4 /* PMLChatInputBarView.m */; };
+		B4BD19211AE6CD9B00510AC4 /* ChatViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4BD19201AE6CD9B00510AC4 /* ChatViewCell.xib */; };
 		B4C199D518A8952F00F55196 /* Special.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C199D418A8952F00F55196 /* Special.m */; };
 		B4CDDB0D1680D140002C01C0 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CDDB0C1680D140002C01C0 /* Event.m */; };
 		B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = B4D26A7019DE1637004C5991 /* NSData+Conversion.h */; };
@@ -687,6 +696,15 @@
 		B4BB9F1119D7E8840070B03C /* PMLCityInfoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLCityInfoProvider.m; sourceTree = "<group>"; };
 		B4BB9F1419D7F23E0070B03C /* PMLThumbsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLThumbsTableViewCell.h; sourceTree = "<group>"; };
 		B4BB9F1519D7F23E0070B03C /* PMLThumbsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLThumbsTableViewCell.m; sourceTree = "<group>"; };
+		B4BD19101AE5CAB000510AC4 /* PMLChatLoaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLChatLoaderView.xib; sourceTree = "<group>"; };
+		B4BD19121AE5CB2F00510AC4 /* PMLChatLoaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatLoaderView.h; sourceTree = "<group>"; };
+		B4BD19131AE5CB2F00510AC4 /* PMLChatLoaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLChatLoaderView.m; sourceTree = "<group>"; };
+		B4BD19161AE6BE3800510AC4 /* MessageTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewController.h; sourceTree = "<group>"; };
+		B4BD19171AE6BE3800510AC4 /* MessageTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewController.m; sourceTree = "<group>"; };
+		B4BD191A1AE6BF2C00510AC4 /* PMLChatInputBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLChatInputBarView.xib; sourceTree = "<group>"; };
+		B4BD191C1AE6BFAD00510AC4 /* PMLChatInputBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatInputBarView.h; sourceTree = "<group>"; };
+		B4BD191D1AE6BFAD00510AC4 /* PMLChatInputBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLChatInputBarView.m; sourceTree = "<group>"; };
+		B4BD19201AE6CD9B00510AC4 /* ChatViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatViewCell.xib; sourceTree = "<group>"; };
 		B4C199D318A8952F00F55196 /* Special.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Special.h; sourceTree = "<group>"; };
 		B4C199D418A8952F00F55196 /* Special.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Special.m; sourceTree = "<group>"; };
 		B4CDDB0B1680D140002C01C0 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
@@ -1062,6 +1080,7 @@
 		B4BB9EFA19D4DE2A0070B03C /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				B4BD19201AE6CD9B00510AC4 /* ChatViewCell.xib */,
 				B4956550163ECC82006A0451 /* ChatView.xib */,
 				B4956554163ECE05006A0451 /* ChatView.h */,
 				B4956555163ECE05006A0451 /* ChatView.m */,
@@ -1071,6 +1090,12 @@
 				B4BB9F0019D4E2460070B03C /* PMLChatTimeTableViewCell.m */,
 				B4A47D1E1ADE0827000178BD /* AUIAutoGrowingTextView.h */,
 				B4A47D1F1ADE0827000178BD /* AUIAutoGrowingTextView.m */,
+				B4BD19101AE5CAB000510AC4 /* PMLChatLoaderView.xib */,
+				B4BD19121AE5CB2F00510AC4 /* PMLChatLoaderView.h */,
+				B4BD19131AE5CB2F00510AC4 /* PMLChatLoaderView.m */,
+				B4BD191A1AE6BF2C00510AC4 /* PMLChatInputBarView.xib */,
+				B4BD191C1AE6BFAD00510AC4 /* PMLChatInputBarView.h */,
+				B4BD191D1AE6BFAD00510AC4 /* PMLChatInputBarView.m */,
 			);
 			name = Chat;
 			sourceTree = "<group>";
@@ -1220,6 +1245,8 @@
 				B4A47D231AE06071000178BD /* PMLPhotoPickerPreviewViewController.m */,
 				B4A47D2E1AE0852F000178BD /* PMLWebViewController.h */,
 				B4A47D2F1AE0852F000178BD /* PMLWebViewController.m */,
+				B4BD19161AE6BE3800510AC4 /* MessageTableViewController.h */,
+				B4BD19171AE6BE3800510AC4 /* MessageTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1533,6 +1560,7 @@
 				B4FC957B19AF3B4B00269E74 /* PMLPopupEditor.h in Headers */,
 				B405E6701A953F9400C49F64 /* PMLCalendarEditorTableViewController.h in Headers */,
 				B457A0FA1A9AF00A00207D8E /* PMLTextFieldTableViewCell.h in Headers */,
+				B4BD19181AE6BE3800510AC4 /* MessageTableViewController.h in Headers */,
 				B45B38241AB0C1F200730313 /* PMLSnippetDescTableViewCell.h in Headers */,
 				B41DD754197B5FA5008F09D9 /* UIAttachmentView.h in Headers */,
 				B47A69D71AA7843B00877B58 /* PMLThumbHeaderView.h in Headers */,
@@ -1540,6 +1568,7 @@
 				B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */,
 				B405E66C1A953C9600C49F64 /* PMLDetailTableViewCell.h in Headers */,
 				B405E6661A93C04900C49F64 /* PMLCalendarTableViewController.h in Headers */,
+				B4BD191E1AE6BFAD00510AC4 /* PMLChatInputBarView.h in Headers */,
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
 				B47A69DF1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h in Headers */,
 				B43D11731A97A12B008476C7 /* PresentingSpringAnimator.h in Headers */,
@@ -1597,6 +1626,7 @@
 				B457A1021A9AF1B100207D8E /* PMLEventTableViewController.h in Headers */,
 				B4A47D241AE06071000178BD /* PMLPhotoPickerPreviewViewController.h in Headers */,
 				B41DD74C197A4E5B008F09D9 /* PMLMapPopupViewController.h in Headers */,
+				B4BD19141AE5CB2F00510AC4 /* PMLChatLoaderView.h in Headers */,
 				B43E76201991BD5C00153B46 /* PMLMainNavBarView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1688,6 +1718,7 @@
 				B4956560163EDC22006A0451 /* ChatView.xib in Resources */,
 				B45C3C5E1AB75C6F00D8B321 /* Cooper Black.ttf in Resources */,
 				B4D56080160B673F003A738E /* InfoPlist.strings in Resources */,
+				B4BD191B1AE6BF2C00510AC4 /* PMLChatInputBarView.xib in Resources */,
 				B457A0F21A9A9B7700207D8E /* PMLButtonTableViewCell.xib in Resources */,
 				B4D56089160B673F003A738E /* MainStoryboard_iPhone.storyboard in Resources */,
 				B4D5608C160B673F003A738E /* MainStoryboard_iPad.storyboard in Resources */,
@@ -1702,6 +1733,7 @@
 				B45B38211AAF9F5000730313 /* PMLHoursSectionTitleView.xib in Resources */,
 				B4B560A818B76C41006E6D90 /* UIPelmelTitleView.xib in Resources */,
 				B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */,
+				B4BD19211AE6CD9B00510AC4 /* ChatViewCell.xib in Resources */,
 				B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */,
 				B41830C2197CA89900B7E2DD /* UIMapPopupView.xib in Resources */,
 				B406AB4C1613881E0053E067 /* Localizable.strings in Resources */,
@@ -1716,6 +1748,7 @@
 				B4EECAEB162EB6EE005F80DE /* ClosableBoxView.xib in Resources */,
 				B49C97231AB2AEE7009B9F8F /* JsonService in Resources */,
 				B41A13F2163942C600827E04 /* TogaytherHeaderView.xib in Resources */,
+				B4BD19111AE5CAB000510AC4 /* PMLChatLoaderView.xib in Resources */,
 				B47A69D41AA7837200877B58 /* PMLThumbHeaderView.xib in Resources */,
 				B4E9120C169ACD4E005D3CAF /* TogaytherTitleView.xib in Resources */,
 				B4FC958619B1E64A00269E74 /* OpenSans-Regular.ttf in Resources */,
@@ -1838,6 +1871,7 @@
 				B4859DCF1984C39B0036D8FF /* UITextInputView.m in Sources */,
 				B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */,
 				B42F544019873CC200C2371F /* MKNewPlaceAnnotationView.m in Sources */,
+				B4BD19151AE5CB2F00510AC4 /* PMLChatLoaderView.m in Sources */,
 				B4D560B9160C95A3003A738E /* Place.m in Sources */,
 				B4D560DD161060CD003A738E /* UITablePlaceViewCell.m in Sources */,
 				B4FC959719B1F20A00269E74 /* PMLTextTableViewCell.m in Sources */,
@@ -1867,6 +1901,7 @@
 				B47A69D81AA7843B00877B58 /* PMLThumbHeaderView.m in Sources */,
 				B40779BA16149D2E00D02F66 /* UserService.m in Sources */,
 				B47A69D21AA764CE00877B58 /* PMLHorizontalFlowLayout.m in Sources */,
+				B4BD19191AE6BE3800510AC4 /* MessageTableViewController.m in Sources */,
 				B40779BD16149D9700D02F66 /* CurrentUser.m in Sources */,
 				B4FC959C19B1F2E300269E74 /* PMLSnippetTableViewController.m in Sources */,
 				B457A0F01A9A689100207D8E /* PMLSectionTitleView.m in Sources */,
@@ -1970,6 +2005,7 @@
 				B405E65F1A93B71600C49F64 /* PMLCalendar.m in Sources */,
 				B41CF0A71895CE3E0031FD7C /* ThumbTableViewController.m in Sources */,
 				B4FE2A3316B047F5001BE53D /* ItemsThumbPreviewProvider.m in Sources */,
+				B4BD191F1AE6BFAD00510AC4 /* PMLChatInputBarView.m in Sources */,
 				B405E6711A953F9400C49F64 /* PMLCalendarEditorTableViewController.m in Sources */,
 				B4E8292A18A9EE530063715C /* MainMenuTableViewController.m in Sources */,
 				B412D0C616C6A8F000312157 /* UIColor+Expanded.m in Sources */,

@@ -191,6 +191,8 @@
 "menu.settings.title"="Settings";
 "messages.wait"="Loading...";
 "message.action.send"="Send";
+"message.loadEarlier"="Load earlier messages";
+"message.loading"="Loading older messages...";
 "message.place.dummyMessage"="Tell the PELMEL community what you think about %@, why you like this place, when is the best time to go, did you have fun? Was there a cover? What kind of crowd? Would you go back?";
 "message.user.dummyMessage"="Send a message to %@, ask him about the places he likes, the upcoming events he is going to. Or just say hi! But always be courteous.";
 "message.event.dummyMessage"="Tell us what you think about this event, whether you gonna go, or if you have any useful information worth sharing.";

@@ -16,7 +16,7 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 
 @protocol MessageCallback
 // Method called to inform that a list of messages have been fetched from the server
--(void)messagesFetched:(NSArray*)messagesList;
+-(void)messagesFetched:(NSArray*)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize;
 -(void)loadMessageFailed;
 -(void)messageSent:(Message*)message;
 -(void)messageSendFailed;
@@ -33,6 +33,7 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 
 // Gets the list of messages exchanged with this user
 -(void)getMessagesWithUser:(NSString*)userKey messageCallback:(id<MessageCallback>)callback;
+-(void)getMessagesWithUser:(NSString*)userKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page;
 
 // Gets the list of reviews as messages
 -(void)getReviewsAsMessagesFor:(NSString*)itemKey messageCallback:(id<MessageCallback>)callback;

@@ -44,6 +44,9 @@
     UIDynamicAnimator *animator;
     UIView *_progressView;
     MBProgressHUD *_progressHUD;
+    
+    // Cache
+    NSCache *nibCache;
 }
 
 - (id)init
@@ -51,10 +54,14 @@
     self = [super init];
     if (self) {
         storyboard = [UIStoryboard storyboardWithName:[[NSBundle mainBundle].infoDictionary objectForKey:@"UIMainStoryboardFile"] bundle:[NSBundle mainBundle]];
+
+        // Cache for nib objects
+        nibCache = [[NSCache alloc] init];
         
         // Loading profile header view
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"UIWaitingView" owner:self options:nil];
-        waitingView = [views objectAtIndex:0];
+        waitingView = (UIWaitingView*)[self loadView:@"UIWaitingView"];
+        
+
     }
     return self;
 }
@@ -159,7 +166,12 @@
     return atan2(sin(tLng-fLng)*cos(tLat), cos(fLat)*sin(tLat)-sin(fLat)*cos(tLat)*cos(tLng-fLng));
 }
 -(UIView *)loadView:(NSString *)nibName {
-    NSArray *nibViews = [[NSBundle mainBundle] loadNibNamed:nibName owner:self options:nil];
+    UINib *nib = [nibCache objectForKey:nibName];
+    if(nib==nil) {
+        nib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+        [nibCache setObject:nib forKey:nibName];
+    }
+    NSArray *nibViews = [nib instantiateWithOwner:self options:nil];
     return [nibViews objectAtIndex:0];
 }
 #pragma mark - Providers

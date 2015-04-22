@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="pPk-JO-iVE">
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -2755,7 +2754,7 @@
                                                 <constraint firstAttribute="height" constant="5" id="plm-mH-2hG"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1234 12th Street, San Francisco CA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHy-Xs-8FP" userLabel="subtitle">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="1234 12th Street, San Francisco CA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHy-Xs-8FP" userLabel="subtitle">
                                             <rect key="frame" x="37" y="31" width="108" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="an4-Bo-89Z"/>
@@ -2765,7 +2764,7 @@
                                             <color key="textColor" red="1" green="0.83529411760000005" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconMarker" translatesAutoresizingMaskIntoConstraints="NO" id="nfa-dU-yAG">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="snpIconMarker" translatesAutoresizingMaskIntoConstraints="NO" id="nfa-dU-yAG">
                                             <rect key="frame" x="15" y="33" width="17" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="17" id="0LM-ZP-Ckz"/>

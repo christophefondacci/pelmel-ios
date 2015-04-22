@@ -13,9 +13,20 @@
 #import <QuartzCore/QuartzCore.h>
 #import "NSData+Conversion.h"
 #import <AFNetworking/AFNetworking.h>
-#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
-#define kMyMessagesListUrlFormat @"%@/mobileMyMessages?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
-#define kReviewsListUrlFormat @"%@/mobileComments?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&id=%@"
+
+//#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
+//#define kMyMessagesListUrlFormat @"%@/mobileMyMessages?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
+//#define kReviewsListUrlFormat @"%@/mobileComments?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&id=%@"
+#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply"
+#define kMyMessagesListUrlFormat @"%@/mobileMyMessages"
+#define kReviewsListUrlFormat @"%@/mobileComments"
+#define kParamLat @"lat"
+#define kParamLng @"lng"
+#define kParamToken @"nxtpUserToken"
+#define kParamRetina @"highRes"
+#define kParamId @"id"
+#define kParamFrom @"from"
+#define kParamPage @"page"
 #define kSendMessageUrlFormat @"%@/mobileSendMsg"
 #define kPostCommentUrlFormat @"%@/mobilePostComment"
 #define kTopQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
@@ -86,43 +97,43 @@
     });
 }
 - (void)getMessagesWithUser:(NSString *)userKey messageCallback:(id<MessageCallback>)callback {
+    [self getMessagesWithUser:userKey messageCallback:callback page:0];
+}
+- (void)getMessagesWithUser:(NSString *)userKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page{
     // Getting current user and some device settings
     CurrentUser *user = userService.getCurrentUser;
     if(user == nil) {
         return;
     }
-    BOOL retina = [TogaytherService isRetina];
+    
+    // Preparing params
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
     // Building URL
     NSString *url;
     if([userKey isEqualToString:user.key]) {
-        url = [[NSString alloc] initWithFormat:kMyMessagesListUrlFormat,togaytherServer, user.lat, user.lng, user.token, retina ? @"true" : @"false"];
+        url = [[NSString alloc] initWithFormat:kMyMessagesListUrlFormat,togaytherServer ];
     } else {
-        url = [[NSString alloc] initWithFormat:kMessagesListUrlFormat,togaytherServer, user.lat, user.lng, user.token, retina ? @"true" : @"false", userKey];
+        url = [[NSString alloc] initWithFormat:kMessagesListUrlFormat,togaytherServer];
+        [params setObject:userKey forKey:kParamFrom];
     }
+    
+    // Filling params
+    BOOL retina = [TogaytherService isRetina];
+    [params setObject:[NSString stringWithFormat:@"%f",user.lat] forKey:kParamLat];
+    [params setObject:[NSString stringWithFormat:@"%f",user.lng] forKey:kParamLng];
+    [params setObject:user.token forKey:kParamToken];
+    [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
+    [params setObject:[NSString stringWithFormat:@"%d",page] forKey:kParamPage];
+    
     NSLog(@"URL: %@",url);
-    dispatch_async(kTopQueue, ^{
-        // Calling URL
-        NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-        // Extracting JSON
-        NSLog(@"JSON messages data fetched");
-        // Parse JSON
-        NSError* error;
-        if(data == nil) {
-            NSLog(@"JSON data null for getMessagesWithUser");
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [callback loadMessageFailed];
-            });
-            return;
-        }
-        NSDictionary *jsonMessageList = [NSJSONSerialization
-                               JSONObjectWithData:data //1
-                               options:kNilOptions
-                               error:&error];
-        
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Processing JSON message response
-        [self processJsonMessage:jsonMessageList messageCallback:callback forUserKey:userKey];
-    });
+        [self processJsonMessage:(NSDictionary*)responseObject messageCallback:callback forUserKey:userKey];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [callback loadMessageFailed];
+    }];
 }
 -(void)processJsonMessage:(NSDictionary*)jsonMessageList messageCallback:(id<MessageCallback>)callback forUserKey:(NSString*)userKey {
     CurrentUser *user = userService.getCurrentUser;
@@ -147,6 +158,9 @@
     // Getting unread message count
     NSNumber *unreadMsgCount = [jsonMessageList objectForKey:@"unreadMsgCount"];
     [self setUnreadMessageCount:[unreadMsgCount intValue]];
+    NSNumber *totalMsgCount = [jsonMessageList objectForKey:@"totalMsgCount"];
+    NSNumber *page          = [jsonMessageList objectForKey:@"page"];
+    NSNumber *pageSize      = [jsonMessageList objectForKey:@"pageSize"];
     
     // Getting message list
     NSArray *messages = [jsonMessageList objectForKey:@"messages"];
@@ -200,9 +214,9 @@
     }
     // Now invoking callback
     dispatch_async(dispatch_get_main_queue(), ^{
-        [callback messagesFetched:calMessages];
+        [callback messagesFetched:calMessages totalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
         for(id<MessageCallback> callback in _messageCallbacks) {
-            [callback messagesFetched:calMessages];
+            [callback messagesFetched:calMessages totalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
         }
     });
 }

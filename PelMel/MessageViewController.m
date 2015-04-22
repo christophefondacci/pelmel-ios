@@ -18,6 +18,7 @@
 #import <MBProgressHUD.h>
 #import "PhotoPreviewViewController.h"
 #import "MKNumberBadgeView.h"
+#import "PMLChatLoaderView.h"
 
 @interface MessageViewController ()
 
@@ -30,10 +31,10 @@
     UIService *uiService;
     NSMutableDictionary *imageViewsMap;
     int messagesFetchedCount;
-    
-//    HPGrowingTextView *_chatTextView;
+    PMLChatLoaderView *_loaderView;
     
     NSArray *_messagesList;
+    NSMutableDictionary *_messagesFromKeys;
     NSMutableDictionary *_messagesViewsKeys;
     
     BOOL _keyboardVisible;
@@ -41,6 +42,11 @@
     
     // Photo management
     CALImage *_pendingPhotoUpload;
+    
+    // Height
+    int _totalHeight;
+    NSInteger _currentPage;
+    BOOL _loading;
 }
 @synthesize scrollView;
 
@@ -69,7 +75,9 @@
     uiService = [TogaytherService uiService];
     
     _messagesList = @[];
+    _totalHeight = 0;
     _messagesViewsKeys = [[NSMutableDictionary alloc] init];
+    _messagesFromKeys = [[NSMutableDictionary alloc] init];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"pushProposedForMessages"] == nil) {
@@ -84,6 +92,7 @@
             }
         }];
     }
+    
     // Displaying wait message and animation
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
@@ -208,55 +217,146 @@
     [imageService registerTappable:self.addPhotoButton forViewController:self callback:self];
 }
 
-#pragma mark - HPGrowingTextViewDelegate
-- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
-{
-    float diff = (growingTextView.frame.size.height - height);
-    
-    CGRect r = _footerView.frame;
-    r.size.height -= diff;
-    r.origin.y += diff;
-    _footerView.frame = r;
-    
-    r = scrollView.frame;
-    r.size.height+=diff;
-    scrollView.frame=r;
-    
-}
 
 #pragma mark - MessageCallback
-- (void)messagesFetched:(NSArray *)messagesList {
-    _messagesList = messagesList;
+-(void)appendMessageList:(NSArray*)messagesList {
+    NSMutableArray *msgList = [_messagesList mutableCopy];
+    BOOL isThread = [self isThreadView];
+    for(Message *msg in messagesList) {
+        Message *prevMsg = [_messagesViewsKeys objectForKey:msg.key];
+        if(prevMsg == nil) {
+            if(isThread) {
+                if([_messagesFromKeys objectForKey:msg.from.key]==nil) {
+                    [msgList addObject:msg];
+                    [_messagesFromKeys setObject:msg forKey:msg.from.key];
+                }
+            } else {
+                [msgList addObject:msg];
+            }
+        }
+    }
+    _messagesList = [msgList sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Message *m1 = (Message*)obj1;
+        Message *m2 = (Message*)obj2;
+        return [m1.date compare:m2.date];
+    }];
+
+    // If thread view we display newest message first
+    if([self isThreadView]) {
+        _messagesList = [[_messagesList reverseObjectEnumerator] allObjects];
+    }
+    
+}
+-(void)addLoaderButtonAtOffset:(NSInteger)offset {
+    if(_loaderView == nil) {
+        // Instantiating
+        _loaderView = (PMLChatLoaderView*)[uiService loadView:@"PMLChatLoaderView"];
+        
+        // Localized labels for loading message and load button
+        _loaderView.loaderLabel.text = NSLocalizedString(@"message.loading",@"Loading");
+        [_loaderView.loadMessagesButton setTitle:NSLocalizedString(@"message.loadEarlier",@"Load earlier messages") forState:UIControlStateNormal];
+        
+        // Load button action
+        [_loaderView.loadMessagesButton addTarget:self action:@selector(loadEarlierMessages:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // Adjusting loading message width to fit text
+        CGSize fitSize = [_loaderView.loaderLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width, _loaderView.loaderLabel.bounds.size.height)];
+        _loaderView.loaderWidthConstraint.constant = fitSize.width;
+        
+        // Adding to scroll view
+        [scrollView addSubview:_loaderView];
+    }
+    // Positioning at offset
+    _loaderView.frame = CGRectMake(0, offset, self.view.bounds.size.width, _loaderView.bounds.size.height);
+    _loaderView.loadMessagesButton.hidden=NO;
+}
+
+- (void)messagesFetched:(NSArray *)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize {
+    [self appendMessageList:messagesList ];
+//    _messagesList = messagesList;
+
     // In case it is empty, generating a first message
     [self autoFillMessageList];
-    int totalHeight = 0;
-    if(messagesFetchedCount == 0) {
-        
+    
+    BOOL isConversation = ![[userService getCurrentUser].key isEqualToString:_withObject.key];
+    BOOL isInitialLoad = (_totalHeight == 0);
+    BOOL isPartial = ((page*pageSize+messagesList.count) < totalCount );
+    
+//    if(!isConversation) {
+//        // Clearing everything
+//        for(UIView *subview in scrollView.subviews) {
+//            [subview removeFromSuperview];
+//        }
+//    }
+    // Resetting total height
+    _totalHeight = 0;
+    
+    if(!isPartial) {
+        [_loaderView removeFromSuperview];
+        _loaderView = nil;
+    } else if(isConversation) {
+        // If partial and conversation then the loader is the first to be displayed
+        [self addLoaderButtonAtOffset:_totalHeight];
+        _totalHeight = _loaderView.bounds.size.height;
     }
     
-    // Clearing everything
-    for(UIView *subview in scrollView.subviews) {
-        [subview removeFromSuperview];
-    }
-
     // A map of all image views hashed by the image key
-//    NSMutableArray *images = [[NSMutableArray alloc] init];
     int i = 0;
+    int addedHeight = 0;
+    // Reverse array to use for stripping (since we add lines on top we index from the bottom to preserve the stripes color)
+    NSArray *reversedArray = [[_messagesList reverseObjectEnumerator] allObjects];
     for(Message *message in _messagesList) {
-        NSInteger messageHeight = [self addMessageToScrollView:message atHeight:totalHeight forIndex:i++];
-        totalHeight+= messageHeight;
+        if([_messagesViewsKeys objectForKey:message.key]==nil ) {
+            NSInteger messageHeight = [self addMessageToScrollView:message atHeight:_totalHeight forIndex:i];
+            _totalHeight+= messageHeight;
+            addedHeight +=messageHeight;
+        } else {
+            ChatView *chatView = [_messagesViewsKeys objectForKey:message.key];
+            CGRect frame = chatView.frame;
+            chatView.frame = CGRectMake(frame.origin.x, MAX(_totalHeight,frame.origin.y), frame.size.width, frame.size.height);
+            _totalHeight = CGRectGetMaxY(chatView.frame);
+        }
+        
+        // Handling stripping
+        ChatView *chatView = [_messagesViewsKeys objectForKey:message.key];
+        NSInteger index = [reversedArray indexOfObject:message];
+        if(index % 2 > 0) {
+            chatView.backgroundColor = UIColorFromRGB(0x343c42);
+        } else {
+            chatView.backgroundColor = UIColorFromRGB(0x272a2e);
+        }
+        i++;
     }
+    
+    // Adding load button to the end if this is the thread view
+    if(isPartial && !isConversation) {
+        [self addLoaderButtonAtOffset:_totalHeight];
+        _totalHeight += _loaderView.bounds.size.height;
+    }
+    
+    // Ensuring content size is set
+    [scrollView setContentSize:CGSizeMake(scrollView.bounds.size.width, _totalHeight)];
     
     // Updating our scroll view
-    if(![_withObject.key isEqualToString:[[userService getCurrentUser] key]]) {
-        CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
-        if(bottomOffset.y>0) {
-            [scrollView setContentOffset:bottomOffset animated:NO];
+    if(isConversation) {
+        // Will be 0 for the first display of view
+        if(addedHeight+_loaderView.bounds.size.height == _totalHeight) {
+            CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
+            if(bottomOffset.y>0) {
+                [scrollView setContentOffset:bottomOffset animated:!isInitialLoad];
+            }
+        } else {
+            // Otherwise we only shift by added height
+            [scrollView setContentOffset:CGPointMake(0, scrollView.contentOffset.y+addedHeight) animated:NO];
         }
     }
     
+    // Updating page
+    _currentPage = MAX(_currentPage, page);
+    
     // Dismissing progress
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    _loading = NO;
 }
 - (void)loadMessageFailed {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
@@ -294,8 +394,8 @@
     ChatView * view = [_messagesViewsKeys objectForKey:message.key];
     if(view==nil) {
         // Instantiating the Chat view to display current message
-        NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"ChatView" owner:self options:nil];
-        view = [views objectAtIndex:0];
+        view = (ChatView*)[uiService loadView:@"ChatView"];
+
         // Registering view
         if(message.key!=nil) {
             [_messagesViewsKeys setObject:view forKey:message.key];
@@ -349,12 +449,12 @@
     [view.leftActivity setHidden:YES];
     [view.rightActivity setHidden:YES];
     
-    // Stripping lines
-    if(index % 2 > 0) {
-        view.backgroundColor = UIColorFromRGB(0x343c42);
-    } else {
-        view.backgroundColor = UIColorFromRGB(0x272a2e);
-    }
+//    // Stripping lines
+//    if(index % 2 > 0) {
+//        view.backgroundColor = UIColorFromRGB(0x343c42);
+//    } else {
+//        view.backgroundColor = UIColorFromRGB(0x272a2e);
+//    }
     
     // Thread view, displaying badge for unread messages
     if(_withObject == currentUser) {
@@ -503,6 +603,10 @@
         [self.parentMenuController dismissControllerMenu:YES];
     }
 }
+-(void)loadEarlierMessages:(id)sender {
+    _loaderView.loadMessagesButton.hidden=YES;
+    [self refreshContentsForPage:_currentPage+1];
+}
 #pragma mark - Notifications
 - (void)appBecameActive:(NSNotification*)notification {
     [self refreshContents];
@@ -511,10 +615,16 @@
     [self refreshContents];
 }
 - (void)refreshContents {
-    if([_withObject isKindOfClass:[User class]]) {
-        [messageService getMessagesWithUser:_withObject.key messageCallback:self];
-    } else if([_withObject isKindOfClass:[CALObject class]]){
-        [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
+    [self refreshContentsForPage:0];
+}
+-(void)refreshContentsForPage:(NSInteger)page {
+    if(!_loading) {
+        _loading = YES ;
+        if([_withObject isKindOfClass:[User class]]) {
+            [messageService getMessagesWithUser:_withObject.key messageCallback:self page:page];
+        } else if([_withObject isKindOfClass:[CALObject class]]){
+            [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
+        }
     }
 }
 #pragma mark Message Images
@@ -553,10 +663,21 @@
     if(sView.contentOffset.y < _dragStartOffset.y) {
         [self.chatTextView resignFirstResponder];
     }
+    
+    // Checking if loader view is visible
+//    CGPoint offset = scrollView.contentOffset;
+//    CGRect frame = scrollView.bounds;
+//    if(_loaderView != nil && CGRectIntersectsRect(CGRectMake(0, offset.y, frame.size.width, frame.size.height), _loaderView.frame)) {
+//        [self refreshContentsForPage:_currentPage+1];
+//    }
 }
 
 #pragma mark - PMLImagePickerCallback
 - (void)imagePicked:(CALImage *)image {
     [self sendMessage:@"" withImage:image];
+}
+#pragma mark - State
+-(BOOL) isThreadView {
+    return _withObject==nil || _withObject == [userService getCurrentUser];
 }
 @end;

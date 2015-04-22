@@ -14,6 +14,7 @@
 #import "PMLMenuManagerController.h"
 #import "ProfileHeaderView.h"
 #import "UIPelmelTitleView.h"
+#import "MessageTableViewController.h"
 
 #define kSectionsCount 3
 
@@ -274,10 +275,12 @@
         case kSectionNetwork:
             switch(indexPath.row) {
                     
-                case kRowSettingMessages:
+                case kRowSettingMessages: {
                     [self performSegueWithIdentifier:@"directMsg" sender:self];
+//                    MessageTableViewController *msgController = (MessageTableViewController*)[_uiService instantiateViewController:@"messageTableView"];
+//                    [self.navigationController pushViewController:msgController animated:YES];
                     break;
-                    
+                }
                 case kRowSettingLikes:
                     [self performSegueWithIdentifier:@"likes" sender:self];
                     break;
