@@ -633,7 +633,7 @@
         if([_withObject isKindOfClass:[User class]]) {
             [messageService getMessagesWithUser:_withObject.key messageCallback:self page:page];
         } else if([_withObject isKindOfClass:[CALObject class]]){
-            [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
+            [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self page:page];
         }
     }
 }

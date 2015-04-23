@@ -63,8 +63,10 @@
     }
     return self;
 }
-
 -(void)getReviewsAsMessagesFor:(NSString *)itemKey messageCallback:(id<MessageCallback>)callback {
+    [self getReviewsAsMessagesFor:itemKey messageCallback:callback page:0];
+}
+-(void)getReviewsAsMessagesFor:(NSString *)itemKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page {
     // Getting current user and some device settings
     CurrentUser *user = userService.getCurrentUser;
     BOOL retina = [TogaytherService isRetina];
@@ -80,6 +82,7 @@
     [params setObject:user.token forKey:kParamToken];
     [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
     [params setObject:itemKey forKey:kParamId];
+    [params setObject:[NSString stringWithFormat:@"%d",page] forKey:kParamPage];
     
     NSLog(@"Fetching reviews for '%@' : %@",itemKey,url);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

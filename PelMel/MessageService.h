@@ -37,6 +37,7 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 
 // Gets the list of reviews as messages
 -(void)getReviewsAsMessagesFor:(NSString*)itemKey messageCallback:(id<MessageCallback>)callback;
+-(void)getReviewsAsMessagesFor:(NSString *)itemKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page;
 
 // Sends an instant message to the given user
 -(void)sendMessage:(NSString*)message toUser:(User*)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback;
