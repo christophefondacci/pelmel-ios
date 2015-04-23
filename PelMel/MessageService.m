@@ -71,30 +71,25 @@
     
     // Building URL
     NSString *url;
-    url = [[NSString alloc] initWithFormat:kReviewsListUrlFormat,togaytherServer, user.lat, user.lng, user.token, retina ? @"true" : @"false", itemKey];
+    url = [[NSString alloc] initWithFormat:kReviewsListUrlFormat,togaytherServer ];//, user.lat, user.lng, user.token, retina ? @"true" : @"false", itemKey];
+    
+    // Building parameters
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:[NSString stringWithFormat:@"%f",user.lat] forKey:kParamLat];
+    [params setObject:[NSString stringWithFormat:@"%f",user.lng] forKey:kParamLng];
+    [params setObject:user.token forKey:kParamToken];
+    [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
+    [params setObject:itemKey forKey:kParamId];
+    
     NSLog(@"Fetching reviews for '%@' : %@",itemKey,url);
-    dispatch_async(kTopQueue, ^{
-        // Calling URL
-        NSData* data = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
-        
-        // Extracting JSON
-        NSLog(@"JSON reviews data fetched");
-        
-        // Parse JSON
-        NSError* error;
-        if(data == nil) {
-            NSLog(@"JSON data null for getReviewsAsMessagesFor");
-            return;
-        }
-        // Unwrapping JSON
-        NSDictionary *jsonMessageList = [NSJSONSerialization
-                                         JSONObjectWithData:data //1
-                                         options:kNilOptions
-                                         error:&error];
-        
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Processing JSON message response
-        [self processJsonMessage:jsonMessageList messageCallback:callback forUserKey:nil];
-    });
+        [self processJsonMessage:(NSDictionary*)responseObject messageCallback:callback forUserKey:nil];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [callback loadMessageFailed];
+    }];
+
 }
 - (void)getMessagesWithUser:(NSString *)userKey messageCallback:(id<MessageCallback>)callback {
     [self getMessagesWithUser:userKey messageCallback:callback page:0];
