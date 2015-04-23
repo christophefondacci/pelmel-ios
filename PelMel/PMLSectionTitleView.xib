@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -34,30 +34,30 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nx6-ku-WAZ">
-                    <rect key="frame" x="283" y="7" width="22" height="22"/>
+                    <rect key="frame" x="273" y="-3" width="32" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="22" id="1Vt-pi-T0I"/>
-                        <constraint firstAttribute="width" constant="22" id="TyB-DU-E2L"/>
+                        <constraint firstAttribute="height" constant="32" id="1Vt-pi-T0I"/>
+                        <constraint firstAttribute="width" constant="32" id="TyB-DU-E2L"/>
                     </constraints>
                     <state key="normal" title="Button" image="popActionEdit">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dzv-Wo-P1L">
-                    <rect key="frame" x="253" y="7" width="22" height="22"/>
+                    <rect key="frame" x="225" y="-3" width="32" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="22" id="tMl-ie-Zbf"/>
-                        <constraint firstAttribute="height" constant="22" id="x6P-WF-kew"/>
+                        <constraint firstAttribute="width" constant="32" id="tMl-ie-Zbf"/>
+                        <constraint firstAttribute="height" constant="32" id="x6P-WF-kew"/>
                     </constraints>
                     <state key="normal" title="Button" image="popActionEdit">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JbN-hi-OqI">
-                    <rect key="frame" x="223" y="7" width="22" height="22"/>
+                    <rect key="frame" x="177" y="-3" width="32" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="22" id="59I-Sh-DaJ"/>
-                        <constraint firstAttribute="height" constant="22" id="ekc-ay-bFU"/>
+                        <constraint firstAttribute="width" constant="32" id="59I-Sh-DaJ"/>
+                        <constraint firstAttribute="height" constant="32" id="ekc-ay-bFU"/>
                     </constraints>
                     <state key="normal" title="Button" image="popActionEdit">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -70,8 +70,8 @@
                 <constraint firstItem="dzv-Wo-P1L" firstAttribute="bottom" secondItem="nx6-ku-WAZ" secondAttribute="bottom" id="KJO-uS-dzr"/>
                 <constraint firstAttribute="bottom" secondItem="bid-Z9-TZu" secondAttribute="bottom" constant="6" id="LKR-TA-FuL"/>
                 <constraint firstAttribute="bottom" secondItem="2p5-i6-WXd" secondAttribute="bottom" constant="6" id="dGz-tQ-QNB"/>
-                <constraint firstItem="dzv-Wo-P1L" firstAttribute="leading" secondItem="JbN-hi-OqI" secondAttribute="trailing" constant="8" id="ezG-Kj-1K6"/>
-                <constraint firstItem="nx6-ku-WAZ" firstAttribute="leading" secondItem="dzv-Wo-P1L" secondAttribute="trailing" constant="8" id="frl-kO-ojY"/>
+                <constraint firstItem="dzv-Wo-P1L" firstAttribute="leading" secondItem="JbN-hi-OqI" secondAttribute="trailing" constant="16" id="ezG-Kj-1K6"/>
+                <constraint firstItem="nx6-ku-WAZ" firstAttribute="leading" secondItem="dzv-Wo-P1L" secondAttribute="trailing" constant="16" id="frl-kO-ojY"/>
                 <constraint firstAttribute="trailing" secondItem="2p5-i6-WXd" secondAttribute="trailing" priority="750" constant="15" id="kJO-ha-2MS"/>
                 <constraint firstItem="2p5-i6-WXd" firstAttribute="top" secondItem="nx6-ku-WAZ" secondAttribute="bottom" constant="2" id="l8f-z3-ZSN"/>
                 <constraint firstItem="bid-Z9-TZu" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="s5t-vQ-Gkn"/>

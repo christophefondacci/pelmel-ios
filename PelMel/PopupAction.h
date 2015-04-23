@@ -27,6 +27,8 @@ typedef enum {
     PMLActionTypeAttend,
     PMLActionTypeAttendCancel,
     PMLActionTypeMyProfile,
+    PMLActionTypePhoneCall,
+    PMLActionTypeWebsite,
 } PMLActionType;
 
 /**
@@ -59,5 +61,5 @@ typedef void (^PopupActionBlock)(void);
  * Initializes a new popup action with all its properties (none is optional)
  */
 - (instancetype) initWithAngle:(double)angle distance:(double)distance icon:(UIImage*)icon titleCode:(NSString*)titleCode size:(double)size command:(PopupActionBlock)actionCommand;
-
+- (instancetype) initWithIcon:(UIImage*)icon titleCode:(NSString*)titleCode size:(double)size command:(PopupActionBlock)actionCommand;
 @end

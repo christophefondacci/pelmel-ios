@@ -45,10 +45,10 @@
         [self installPopupAction:popupActions[0] onButton:self.primaryAction forIndex:0];
     }
     if(popupActions.count>1) {
-        [self installPopupAction:popupActions[1] onButton:self.primaryAction forIndex:1];
+        [self installPopupAction:popupActions[1] onButton:self.secondaryAction forIndex:1];
     }
     if(popupActions.count>2) {
-        [self installPopupAction:popupActions[2] onButton:self.primaryAction forIndex:2];
+        [self installPopupAction:popupActions[2] onButton:self.thirdAction forIndex:2];
     }
     _popupActions = popupActions;
 }
@@ -57,8 +57,8 @@
     [button setImage:action.icon forState:UIControlStateNormal];
     button.layer.cornerRadius = button.frame.size.width/2;
     button.layer.masksToBounds = YES;
-    button.layer.borderWidth=1;
-    button.layer.borderColor = [action.color CGColor];
+//    button.layer.borderWidth=1;
+//    button.layer.borderColor = [action.color CGColor];
     button.tag = index;
     [button addTarget:self action:@selector(actionTapped:) forControlEvents:UIControlEventTouchUpInside];
 }

@@ -27,4 +27,20 @@
     }
     return self;
 }
+
+- (instancetype)initWithIcon:(UIImage *)icon titleCode:(NSString *)titleCode size:(double)size command:(PopupActionBlock)actionCommand {
+    self = [super init];
+    if (self) {
+        _icon = icon;
+        if(titleCode) {
+            _title = NSLocalizedString(titleCode, @"Dynamic code of the label to use as title");
+        }
+        _size = [NSNumber numberWithDouble:size];
+        _actionCommand = actionCommand;
+        _showAttachment=YES;
+    }
+    return self;
+    
+}
+
 @end

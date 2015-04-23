@@ -139,4 +139,13 @@
  */
 -(NSString*)localizedString:(NSString*)translateKey forCount:(NSInteger)count;
 -(NSString*)nameForEvent:(Event*)event;
+
+/**
+ * Extracts the property matching the specified code. Will return nil if this property is not defined
+ * or if the info provider does not support properties.
+ * @param infoProvider the current info provider
+ * @param propertyCode the code of the property to extract
+ * @return the PMLProperty matching the given code, or nil if none or properties not supported
+ */
+-(PMLProperty*)propertyFrom:(id<PMLInfoProvider>)infoProvider forCode:(NSString*)propertyCode;
 @end

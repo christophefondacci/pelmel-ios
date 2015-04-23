@@ -372,10 +372,11 @@ typedef enum {
             case kPMLSectionOvAddress:
                 return [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
             case kPMLSectionOvProperties:
-                if([_infoProvider respondsToSelector:@selector(properties)]) {
-                    return [[_infoProvider properties] count];
-                }
                 return 0;
+//                if([_infoProvider respondsToSelector:@selector(properties)]) {
+//                    return [[_infoProvider properties] count];
+//                }
+//                return 0;
             case kPMLSectionOvHours: {
                 NSInteger count = [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count];
                 return count == 0 ? 0 : count+1;
@@ -721,9 +722,28 @@ typedef enum {
                 }
             }
             return nil;
-        case kPMLSectionOvSummary:
+        case kPMLSectionOvSummary: {
             [_sectionSummaryTitleView setTitleLocalized:@"snippet.title.summary"];
+            NSMutableArray *actionsArray = [[NSMutableArray alloc] init];
+            
+            // Do we have a phone property?
+            PMLProperty *phoneProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_PHONE];
+            if(phoneProperty !=nil) {
+                // If yes we install the phone action
+                [actionsArray addObject:[self.actionManager actionForType:PMLActionTypePhoneCall]];
+            }
+            // Do we have a website property?
+            PMLProperty *websiteProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_WEBSITE];
+            if(websiteProperty !=nil) {
+                // If yes we install the website action
+                [actionsArray addObject:[self.actionManager actionForType:PMLActionTypeWebsite]];
+            }
+            if(actionsArray.count>0) {
+                [_sectionSummaryTitleView installPopupActions:actionsArray];
+            }
+            
             return _sectionSummaryTitleView;
+        }
         case kPMLSectionTopPlaces:
             [_sectionTopPlacesTitleView setTitleLocalized:@"snippet.header.topPlaces"];
             return _sectionTopPlacesTitleView;
@@ -762,7 +782,15 @@ typedef enum {
                 return 0;
             case kPMLSectionOvSummary: {
                 NSInteger rows = [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
-                return rows>0 ? _sectionSummaryTitleView.bounds.size.height : 0;
+                NSInteger height =38;
+                
+                // Increasing height if we have phone / website controls
+                PMLProperty *phoneProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_PHONE];
+                PMLProperty *websiteProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_WEBSITE];
+                if(phoneProperty != nil || websiteProperty != nil) {
+                    height+=10;
+                }
+                return rows>0 ? height : 0;
             }
             case kPMLSectionCounters:
                 return 5;

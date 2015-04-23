@@ -226,6 +226,8 @@
 "photos.other"="Photo #%d";
 "photos.add"="Add photo";
 "photos.uploading"="Uploading photo...";
+"phone.unsupported.title"="Not supported";
+"phone.unsupported"="This device or OS version does not seem to be able to make phone calls";
 "places.search.placeholder"="Find a place or city";
 "places.search.placeholder.event"="Find an event";
 "places.section.incity"="%@'s gay hangouts";

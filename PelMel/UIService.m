@@ -191,6 +191,16 @@
     }
     return infoProvider;
 }
+- (PMLProperty *)propertyFrom:(id<PMLInfoProvider>)infoProvider forCode:(NSString *)propertyCode {
+    if([infoProvider respondsToSelector:@selector(properties)]) {
+        for(PMLProperty *property in infoProvider.properties) {
+            if([property.propertyCode isEqualToString:propertyCode]) {
+                return property;
+            }
+        }
+    }
+    return nil;
+}
 #pragma mark - Map / markers
 -(UIImage *)mapMarkerFor:(CALObject *)object enabled:(BOOL)enabled {
     UIImage *marker;

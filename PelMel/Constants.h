@@ -68,4 +68,8 @@
 #define PML_HELP_SNIPPET_EVENTS @"PMLsnippetEvents"
 
 
+// Property codes
+#define PML_PROPERTY_CODE_PHONE @"phone"
+#define PML_PROPERTY_CODE_WEBSITE @"website"
+
 #endif

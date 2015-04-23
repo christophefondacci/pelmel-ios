@@ -18,6 +18,8 @@
 #import "PMLCalendarEditorTableViewController.h"
 #import "PMLEventTableViewController.h"
 #import <MBProgressHUD.h>
+#import "PMLProperty.h"
+#import <PBWebViewController.h>
 
 #define kPMLLikeDistance 32.0
 #define kPMLLikeSize 60.0
@@ -260,6 +262,45 @@
     genericEdit.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:genericEdit forType:PMLActionTypeEdit];
     
+    PopupAction *phoneCall = [[PopupAction alloc] initWithIcon:[UIImage imageNamed:@"btnActionPhone"] titleCode:nil size:32 command:^{
+        PMLProperty *property = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_PHONE];
+        if(property != nil) {
+            NSString *cleanedString = [[property.propertyValue componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789-+()"] invertedSet]] componentsJoinedByString:@""];
+            NSString *escapedPhoneNumber = [cleanedString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *phoneURLString = [NSString stringWithFormat:@"telprompt:%@", escapedPhoneNumber];
+            NSURL *phoneURL = [NSURL URLWithString:phoneURLString];
+            
+            if ([[UIApplication sharedApplication] canOpenURL:phoneURL]) {
+                [[UIApplication sharedApplication] openURL:phoneURL];
+            } else {
+                phoneURLString = [NSString stringWithFormat:@"tel:%@",escapedPhoneNumber];
+                phoneURL = [NSURL URLWithString:phoneURLString];
+                if ([[UIApplication sharedApplication] canOpenURL:phoneURL]) {
+                    [[UIApplication sharedApplication] openURL:phoneURL];
+                } else {
+                    [_uiService alertWithTitle:@"phone.unsupported.title" text:@"phone.unsupported"];
+                }
+            }
+//            NSString *phoneNumber = [NSString stringWithFormat:@"telprompt:%@",property.propertyValue];
+//            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
+        }
+    }];
+    [self registerAction:phoneCall forType:PMLActionTypePhoneCall];
+    
+    PopupAction *openWebsite = [[PopupAction alloc] initWithIcon:[UIImage imageNamed:@"btnActionWebsite"] titleCode:nil size:32 command:^{
+        PMLProperty *property = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_WEBSITE];
+        if(property != nil) {
+            PBWebViewController *webviewController= [[PBWebViewController alloc] init];
+            webviewController.URL = [[NSURL alloc] initWithString:property.propertyValue];
+//            [[TogaytherService uiService] menuManagerController ].navigationController.navigationBar.translucent=NO;
+            UINavigationController *snippetController = (UINavigationController*)[[[TogaytherService uiService] menuManagerController ] currentSnippetViewController];
+            snippetController.navigationBar.translucent=NO;
+            [TogaytherService applyCommonLookAndFeel:snippetController.topViewController];
+            [snippetController pushViewController:webviewController animated:YES];
+        }
+    }];
+    [self registerAction:openWebsite forType:PMLActionTypeWebsite];
+    
     
     _photoAction = [[PopupAction alloc] initWithAngle:kPMLPhotoAngle distance:kPMLPhotoDistance icon:[UIImage imageNamed:@"popActionPhoto"] titleCode:nil size:kPMLPhotoSize command:^{
         NSLog(@"Photo");
@@ -321,7 +362,8 @@
         [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:accountController animated:YES];
     }];
     myProfileAction.color = UIColorFromRGB(kPMLEditColor);
-    [self registerAction:myProfileAction forType:PMLActionTypeMyProfile];}
+    [self registerAction:myProfileAction forType:PMLActionTypeMyProfile];
+}
 
 -(PMLPopupEditor*)popupEditor {
     return [PMLPopupEditor editorFor:_currentObject on:(MapViewController*)[[TogaytherService uiService] menuManagerController].rootViewController];
