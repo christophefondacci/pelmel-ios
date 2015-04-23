@@ -10,7 +10,6 @@
 #import "TogaytherService.h"
 
 @implementation ChatView {
-    Message *_message;
     CALObject *_currentObject;
     UserService *userService;
     ImageService *imageService;

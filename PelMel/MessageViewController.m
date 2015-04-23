@@ -220,32 +220,60 @@
 
 #pragma mark - MessageCallback
 -(void)appendMessageList:(NSArray*)messagesList {
-    NSMutableArray *msgList = [_messagesList mutableCopy];
     BOOL isThread = [self isThreadView];
+    // First appending all messages that we don't have yet
+    NSMutableArray *msgList = [_messagesList mutableCopy];
     for(Message *msg in messagesList) {
-        Message *prevMsg = [_messagesViewsKeys objectForKey:msg.key];
-        if(prevMsg == nil) {
-            if(isThread) {
-                if([_messagesFromKeys objectForKey:msg.from.key]==nil) {
-                    [msgList addObject:msg];
-                    [_messagesFromKeys setObject:msg forKey:msg.from.key];
-                }
-            } else {
+        ChatView *prevMsgView = [_messagesViewsKeys objectForKey:msg.key];
+        if(prevMsgView == nil) {
+            [msgList addObject:msg];
+            if(!isThread) {
+                msg.unreadCount=0;
+                msg.unread=NO;
+            }
+        } else {
+            [msgList removeObject:prevMsgView.message];
+            prevMsgView.message = msg;
+            [msgList addObject:msg];
+        }
+    }
+
+    // If we are on a thread we stack them
+    if(isThread) {
+        // Building all messages list by date DESC
+        NSArray *allMessages = [msgList copy];
+        allMessages = [self messagesBySortingDate:allMessages ascending:NO];
+        
+        // Preparing threaded list
+        msgList = [[NSMutableArray alloc ] init];
+        _messagesFromKeys = [[NSMutableDictionary alloc] init];
+        
+        // Folding messages by sender
+        for(Message *msg in allMessages) {
+            Message *message = [_messagesFromKeys objectForKey:msg.from.key];
+            if(message==nil) {
                 [msgList addObject:msg];
+                [_messagesFromKeys setObject:msg forKey:msg.from.key];
+            } else {
+                ChatView *prevMsgView = [_messagesViewsKeys objectForKey:msg.key];
+                if(prevMsgView != nil) {
+                    [prevMsgView removeFromSuperview];
+                    [_messagesViewsKeys removeObjectForKey:msg.key];
+                }
             }
         }
     }
-    _messagesList = [msgList sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+   
+    _messagesList = [self messagesBySortingDate:msgList ascending:!isThread];
+
+}
+-(NSArray*)messagesBySortingDate:(NSArray*)messages ascending:(BOOL)ascending {
+    return [messages sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
         Message *m1 = (Message*)obj1;
         Message *m2 = (Message*)obj2;
-        return [m1.date compare:m2.date];
+        return ascending ? [m1.date compare:m2.date] : [m2.date compare:m1.date];
     }];
 
-    // If thread view we display newest message first
-    if([self isThreadView]) {
-        _messagesList = [[_messagesList reverseObjectEnumerator] allObjects];
-    }
-    
 }
 -(void)addLoaderButtonAtOffset:(NSInteger)offset {
     if(_loaderView == nil) {
@@ -296,36 +324,21 @@
     // A map of all image views hashed by the image key
     int i = 0;
     int addedHeight = 0;
-    // Reverse array to use for stripping (since we add lines on top we index from the bottom to preserve the stripes color)
-    NSArray *reversedArray = [[_messagesList reverseObjectEnumerator] allObjects];
+    
+    // Processing messages
     for(Message *message in _messagesList) {
+        BOOL isAdded = NO;
         if([_messagesViewsKeys objectForKey:message.key]==nil ) {
-            NSInteger messageHeight = [self addMessageToScrollView:message atHeight:_totalHeight forIndex:i];
-            _totalHeight+= messageHeight;
-            addedHeight +=messageHeight;
-        } else {
-            ChatView *chatView = [_messagesViewsKeys objectForKey:message.key];
-            CGRect frame = chatView.frame;
-            chatView.frame = CGRectMake(frame.origin.x, MAX(_totalHeight,frame.origin.y), frame.size.width, frame.size.height);
-            _totalHeight = CGRectGetMaxY(chatView.frame);
+            isAdded = YES;
         }
         
-        // Handling stripping
-        ChatView *chatView = [_messagesViewsKeys objectForKey:message.key];
-        NSInteger index = [reversedArray indexOfObject:message];
-//        if(index % 2 > 0) {
-//            chatView.backgroundColor = UIColorFromRGB(0x343c42);
-//        } else {
-            chatView.backgroundColor = UIColorFromRGB(0x272a2e);
-//        }
-        
-        // Disclosure for thread view
-        if(!isConversation) {
-            chatView.chatDisclosureImage.hidden=NO;
-        } else {
-            chatView.chatDisclosureImage.hidden=YES;
+        // Adding or adjusting message view
+        ChatView *chatView = [self addMessageToScrollView:message atHeight:_totalHeight forIndex:i];
+        _totalHeight= CGRectGetMaxY(chatView.frame);
+        if(isAdded) {
+            addedHeight += chatView.frame.size.height;
         }
-        
+
         // Tags for image tap
         chatView.messageImage.tag = i;
         chatView.messageImageSelf.tag = i;
@@ -391,7 +404,7 @@
         }
     }
 }
-- (NSInteger)addMessageToScrollView:(Message*)message atHeight:(NSInteger)height forIndex:(NSInteger)index {
+- (ChatView*)addMessageToScrollView:(Message*)message atHeight:(NSInteger)height forIndex:(NSInteger)index {
     CurrentUser *currentUser = [userService getCurrentUser];
     BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
     
@@ -409,7 +422,7 @@
     
     // Adjusting position (mostly width because it is used for height computation
     CGRect frame = view.frame;
-    [view setFrame:CGRectMake(frame.origin.x, height, scrollView.bounds.size.width, frame.size.height)];
+    [view setFrame:CGRectMake(frame.origin.x, MAX(height,frame.origin.y), scrollView.bounds.size.width, frame.size.height)];
     [view layoutIfNeeded];
     
     // Setuping chat view
@@ -454,29 +467,26 @@
     [view.leftActivity setHidden:YES];
     [view.rightActivity setHidden:YES];
     
-//    // Stripping lines
-//    if(index % 2 > 0) {
-//        view.backgroundColor = UIColorFromRGB(0x343c42);
-//    } else {
-//        view.backgroundColor = UIColorFromRGB(0x272a2e);
-//    }
+    // Uniform background color
+    view.backgroundColor = UIColorFromRGB(0x272a2e);
     
     // Thread view, displaying badge for unread messages
     if(_withObject == currentUser) {
         if(message.unreadCount>0) {
             CGRect frame = view.leftThumbButton.bounds;
-            MKNumberBadgeView *badge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(frame.size.width-10, -5, 20, 20)];
+
+            // Getting or creating badge view
+            MKNumberBadgeView *badge = [self badgeViewFor:view];
+            if(badge == nil) {
+                badge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(frame.size.width-10, -5, 20, 20)];
+            }
             badge.shadow = NO;
             badge.shine=NO;
             badge.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
             badge.value = message.unreadCount;
             [view.leftThumbButton addSubview:badge];
         } else {
-            for(UIView *subview in view.leftThumbButton.subviews) {
-                if([subview isKindOfClass:[MKNumberBadgeView class]]) {
-                    [subview removeFromSuperview];
-                }
-            }
+            [self removeBadgeFrom:view];
         }
     } else {
         message.unread = NO;
@@ -487,7 +497,21 @@
     NSLog(@"Height : %d - Width : %d",(int)view.bubbleText.bounds.size.height,(int)view.bubbleText.bounds.size.width);
     int totalHeight = height + view.frame.size.height;
     [scrollView setContentSize:CGSizeMake(frame.size.width,totalHeight)];
-    return view.frame.size.height;
+    return view;
+}
+-(void)removeBadgeFrom:(ChatView*)view {
+    MKNumberBadgeView *badgeView = [self badgeViewFor:view];
+    if(badgeView) {
+        [badgeView removeFromSuperview];
+    }
+}
+-(MKNumberBadgeView*)badgeViewFor:(ChatView*)view {
+    for(UIView *subview in view.leftThumbButton.subviews) {
+        if([subview isKindOfClass:[MKNumberBadgeView class]]) {
+            return (MKNumberBadgeView*)subview;
+        }
+    }
+    return nil;
 }
 - (void)messageSent:(Message *)message {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
