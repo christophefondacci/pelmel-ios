@@ -357,10 +357,10 @@
     // Updating our scroll view
     if(isConversation) {
         // Will be 0 for the first display of view
-        if(addedHeight+_loaderView.bounds.size.height == _totalHeight) {
+        if(addedHeight==0 || addedHeight+_loaderView.bounds.size.height == _totalHeight) {
             CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
             if(bottomOffset.y>0) {
-                [scrollView setContentOffset:bottomOffset animated:!isInitialLoad];
+                [scrollView setContentOffset:bottomOffset animated:(addedHeight>0 && !isInitialLoad)];
             }
         } else {
             // Otherwise we only shift by added height

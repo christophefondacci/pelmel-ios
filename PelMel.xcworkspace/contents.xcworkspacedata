@@ -5,6 +5,18 @@
       location = "group:seattle.gpx">
    </FileRef>
    <FileRef
+      location = "group:Diesel.gpx">
+   </FileRef>
+   <FileRef
+      location = "group:militarybase.gpx">
+   </FileRef>
+   <FileRef
+      location = "group:Nothing.gpx">
+   </FileRef>
+   <FileRef
+      location = "group:PacificGrill.gpx">
+   </FileRef>
+   <FileRef
       location = "group:PelMel.xcodeproj">
    </FileRef>
    <FileRef
