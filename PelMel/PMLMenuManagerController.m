@@ -25,7 +25,7 @@
 #import "UIViewController+BackButtonHandler.h"
 #import "SpringTransitioningDelegate.h"
 #import "PMLSnippetTableViewController.h"
-
+#import "PMLActivityStatisticsTableViewController.h"
 
 
 @interface PMLMenuManagerController ()
@@ -211,7 +211,8 @@ static void *MyParentMenuControllerKey;
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     
     // Binding filter action
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(filtersTapped:)];
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(activityTapped:)];
+    _mainNavBarView.filtersLabel.text = NSLocalizedString(@"navbar.activity", @"Activity");
     [_mainNavBarView.filtersView addGestureRecognizer:tapRecognizer];
     
     // Binding reveal menu
@@ -225,10 +226,25 @@ static void *MyParentMenuControllerKey;
     badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
     badgeView.shadow = NO;
     badgeView.shine=NO;
+    badgeView.hidden=YES;
     [_mainNavBarView.appIconView addSubview:badgeView];
     
     // Registering it
     [[TogaytherService getMessageService] setMessageCountBadgeView:badgeView];
+    
+    // Adding badge view for activities
+    MKNumberBadgeView *activitiesBadgeView = [[MKNumberBadgeView alloc] init];
+    _mainNavBarView.filtersView.clipsToBounds=NO;
+    _mainNavBarView.filtersLabel.clipsToBounds=NO;
+    activitiesBadgeView.frame = CGRectMake(_mainNavBarView.filtersLabel.frame.size.width-30, -7, 35, 20);
+    activitiesBadgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:8];
+    activitiesBadgeView.shadow = NO;
+    activitiesBadgeView.shine=NO;
+    activitiesBadgeView.hidden=YES;
+    [_mainNavBarView.filtersLabel addSubview:activitiesBadgeView];
+    
+    // Registering it
+    [[TogaytherService getMessageService] setActivityCountBadgeView:activitiesBadgeView];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -401,7 +417,13 @@ static void *MyParentMenuControllerKey;
 }
 
 - (void)sendSnippetDelegateState:(BOOL)animated {
-    if(_snippetFullyOpened && [self.snippetDelegate respondsToSelector:@selector(menuManager:snippetWillOpen:)]) {
+    BOOL isRootController = NO;
+    if([self.snippetDelegate isKindOfClass:[UIViewController class]]) {
+        if(((UIViewController*)self.snippetDelegate).navigationController == self.navigationController) {
+            isRootController = YES;
+        }
+    }
+    if((_snippetFullyOpened || isRootController) && [self.snippetDelegate respondsToSelector:@selector(menuManager:snippetWillOpen:)]) {
         [self.snippetDelegate menuManager:self snippetWillOpen:animated];
     } else if(!_snippetFullyOpened && [self.snippetDelegate respondsToSelector:@selector(menuManager:snippetMinimized:)]) {
         [self.snippetDelegate menuManager:self snippetMinimized:animated];
@@ -571,11 +593,11 @@ static void *MyParentMenuControllerKey;
     }
 }
 #pragma mark - Menu actions
-- (void)filtersTapped:(UITapGestureRecognizer*)sender {
+- (void)activityTapped:(UITapGestureRecognizer*)sender {
     
-    FiltersViewController *filtersController = (FiltersViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_MENU];
+    PMLActivityStatisticsTableViewController *activityStatController = (PMLActivityStatisticsTableViewController*)[_uiService instantiateViewController:SB_ID_ACTIVITY_STAT];
     CGPoint topRight = CGPointMake(self.view.bounds.size.width-5, 5+self.navigationController.navigationBar.frame.size.height+20);
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:filtersController];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:activityStatController];
     [self presentControllerMenu:navController from:topRight withHeightPct:0.7];
 }
 #pragma mark - PanGestureRecognizer

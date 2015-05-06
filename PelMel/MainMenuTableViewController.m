@@ -15,6 +15,7 @@
 #import "ProfileHeaderView.h"
 #import "UIPelmelTitleView.h"
 #import "MessageTableViewController.h"
+#import "FiltersViewController.h"
 
 #define kSectionsCount 3
 
@@ -27,12 +28,13 @@
 #define kRowSettingLikes 1
 #define kRowSettingLikers 2
 
-#define kRowCountSettings 5
+#define kRowCountSettings 6
 #define kRowSettingMyPage 0
 #define kRowSettingProfile 1
 #define kRowSettingSettings 2
-#define kRowSettingHints 3
-#define kRowSettingDisconnect 4
+#define kRowSettingFilters 3
+#define kRowSettingHints 4
+#define kRowSettingDisconnect 5
 
 #define kCellIdPlaceType @"placeTypeCell"
 #define kCellIdProfile @"profileTableCell"
@@ -211,6 +213,11 @@
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
+                case kRowSettingFilters:
+                    placeTypeCell.label.text = NSLocalizedString(@"settings.filters", @"Filters");
+                    placeTypeCell.image.image = [UIImage imageNamed:@"navButtonFilter"];
+                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    break;
                 case kRowSettingHints: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.hints", @"Show hints");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryNone;
@@ -302,6 +309,11 @@
                     [self.parentMenuController.navigationController pushViewController:accountController animated:YES];
                 }
                     break;
+                case kRowSettingFilters: {
+                    FiltersViewController *filtersController = (FiltersViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_MENU];
+                    [self.parentMenuController.navigationController pushViewController:filtersController animated:YES];
+                    break;
+                }
                 case kRowSettingHints:
                     [[TogaytherService helpService] resetHints];
                     [_uiService alertWithTitle:@"hint.reset.title" text:@"hint.reset.msg"];
@@ -423,4 +435,5 @@
 - (void)imageUploadFailed:(CALImage *)image {
     [_uiService alertWithTitle:@"upload.failed.title" text:@"upload.failed"];
 }
+
 @end

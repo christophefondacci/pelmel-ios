@@ -12,6 +12,7 @@
 #import "MKNumberBadgeView.h"
 #import <QuartzCore/QuartzCore.h>
 #import "NSData+Conversion.h"
+#import "PMLActivityStatistic.h"
 #import <AFNetworking/AFNetworking.h>
 
 //#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
@@ -20,6 +21,9 @@
 #define kMessagesListUrlFormat @"%@/mobileMyMessagesReply"
 #define kMyMessagesListUrlFormat @"%@/mobileMyMessages"
 #define kReviewsListUrlFormat @"%@/mobileComments"
+#define kActivitiesStatsUrlFormat @"%@/api/activityStats"
+#define kActivitiesUrlFormat @"%@/api/activityDetails"
+#define kActivitiesGroupedUrlFormat @"%@/api/groupedActivityDetails"
 #define kParamLat @"lat"
 #define kParamLng @"lng"
 #define kParamToken @"nxtpUserToken"
@@ -27,9 +31,13 @@
 #define kParamId @"id"
 #define kParamFrom @"from"
 #define kParamPage @"page"
+#define kParamStatActivityType @"statActivityType"
+#define kParamLastActivityTime @"lastActivityTime"
 #define kSendMessageUrlFormat @"%@/mobileSendMsg"
 #define kPostCommentUrlFormat @"%@/mobilePostComment"
 #define kTopQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
+
+#define kSettingMaxActivityId @"activity.maxId"
 
 @implementation MessageService {
 
@@ -82,7 +90,7 @@
     [params setObject:user.token forKey:kParamToken];
     [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
     [params setObject:itemKey forKey:kParamId];
-    [params setObject:[NSString stringWithFormat:@"%d",page] forKey:kParamPage];
+    [params setObject:[NSString stringWithFormat:@"%ld",(long)page] forKey:kParamPage];
     
     NSLog(@"Fetching reviews for '%@' : %@",itemKey,url);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -122,7 +130,7 @@
     [params setObject:[NSString stringWithFormat:@"%f",user.lng] forKey:kParamLng];
     [params setObject:user.token forKey:kParamToken];
     [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
-    [params setObject:[NSString stringWithFormat:@"%d",page] forKey:kParamPage];
+    [params setObject:[NSString stringWithFormat:@"%ld",(long)page] forKey:kParamPage];
     
     NSLog(@"URL: %@",url);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
@@ -302,21 +310,7 @@
     [self refresh];
 
 }
-//-(void) initNumberBadge {
-//    // instantiating badge
-//    if(_unreadMessageCount > 0) {
-//        if(numberBadge == nil) {
-//            numberBadge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(25, 13, 30,24)];
-//            numberBadge.font = [UIFont systemFontOfSize:10];
-//            [badgeButton addSubview: numberBadge]; //Add NKNumberBadgeView as a subview on UIButton
-//        }
-//        numberBadge.value = _unreadMessageCount;
-//    } else {
-//        [numberBadge removeFromSuperview];
-//        numberBadge = nil;
-//    }
-//    
-//}
+
 - (void)releaseToobar:(UIViewController *)view {
     
 }
@@ -330,16 +324,25 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadMessageCount];
     [self refresh];
 }
-
+-(void)setMaxActivityId:(long)maxActivityId {
+    _maxActivityId = maxActivityId;
+    [self refresh];
+}
+-(void)clearNewActivities {
+    [_userDefaults setObject:[NSNumber numberWithLong:_maxActivityId] forKey:kSettingMaxActivityId];
+    [self refresh];
+}
 -(void) refresh {
-//    UITabBarItem *tabbarItem = [currentViewController.tabBarController.tabBar.items objectAtIndex:3];
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        NSString *val = _unreadMessageCount > 0 ? [NSString stringWithFormat:@"%d",_unreadMessageCount] : nil;
-//        [tabbarItem setBadgeValue:val];
-//    });
     dispatch_async(dispatch_get_main_queue(), ^{
         _messageCountBadgeView.value = _unreadMessageCount;
         _messageCountBadgeView.hidden = (_unreadMessageCount == 0);
+        NSNumber *maxActivityId = [_userDefaults objectForKey:kSettingMaxActivityId];
+        if(_maxActivityId > maxActivityId.longValue) {
+            _activityCountBadgeView.label = @"NEW";
+            _activityCountBadgeView.hidden=NO;
+        } else {
+            _activityCountBadgeView.hidden=YES;
+        }
     });
 
 }
@@ -347,19 +350,132 @@
     _messageCountBadgeView = messageCountBadgeView;
     [self refresh];
 }
-////    if(numberBadge != nil) {
-//    [self initNumberBadge];
-//    if(numberBadge != nil) {
-//        [numberBadge setNeedsDisplay];
-//    }
-//    [badgeButton setNeedsDisplay];
-////        UIView *button = [[[currentViewController toolbarItems] objectAtIndex:1] customView];
-////        if(button != nil) {
-////            [button layoutSubviews];
-////        }
-////    }
-//}
+-(void)setActivityCountBadgeView:(MKNumberBadgeView *)activityCountBadgeView {
+    _activityCountBadgeView = activityCountBadgeView;
+    [self refresh];
+}
+#pragma mark - Activity management
+- (void)getNearbyActivitiesStats:(id<ActivitiesStatsCallback>)callback {
 
+    // Building URL
+    NSString *url = [[NSString alloc] initWithFormat:kActivitiesStatsUrlFormat,togaytherServer];
+    
+    // Building arguments
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    CurrentUser *user = [userService getCurrentUser];
+    BOOL retina = [TogaytherService isRetina];
+    
+    [params setObject:user.token forKey:kParamToken];
+    CLLocation *location = [[[TogaytherService dataService] modelHolder] userLocation];
+    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:kParamLat];
+    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:kParamLng];
+    [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    NSLog(@"%@?nxtpUserToken=%@&lat=%f&lng=%f",url,user.token,user.lat,user.lng);
+    
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSArray *jsonStats = (NSArray*)responseObject;
+        NSMutableArray *stats = [[NSMutableArray alloc] init];
+        
+        // Iterating over JSON entries of the result array
+        NSNumber *maxActivityId = [NSNumber numberWithInt:0];
+        for(NSDictionary *jsonStat in jsonStats) {
+            
+            // Parsing JSON data
+            NSString *activityType  = [jsonStat objectForKey:@"activityType"];
+            NSNumber *totalCount    = [jsonStat objectForKey:@"totalCount"];
+            NSNumber *partialCount  = [jsonStat objectForKey:@"partialCount"];
+            NSNumber *lastId        = [jsonStat objectForKey:@"lastId"];
+            NSString *partialNames  = [jsonStat objectForKey:@"partialNames"];
+            NSDictionary *media     = [jsonStat objectForKey:@"media"];
+            
+            // Building model object
+            PMLActivityStatistic *stat = [[PMLActivityStatistic alloc] init];
+            [stat setActivityType:activityType];
+            [stat setTotalCount:[totalCount integerValue]];
+            [stat setPartialCount:[partialCount integerValue]];
+            [stat setPartialNames:partialNames];
+            [stat setMaxActivityId:lastId];
+            
+            if(media != nil && (NSObject*)media != [NSNull null]) {
+                CALImage *image = [[TogaytherService imageService] convertJsonImageToImage:media];
+                [stat setStatImage:image];
+            }
+            
+            // Storing current activity ID
+            [_userDefaults setObject:lastId forKey:activityType];
+            if(maxActivityId.longValue  < lastId.longValue) {
+                maxActivityId = lastId;
+            }
+            // Appending to global list
+            [stats addObject:stat];
+        }
+        
+        // Sorting
+        NSArray *sortedStats = [stats sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+            PMLActivityStatistic *stat1 = (PMLActivityStatistic*)obj1;
+            PMLActivityStatistic *stat2 = (PMLActivityStatistic*)obj2;
+            NSInteger index1 = [PML_ACTIVITY_PRIORITY indexOfObject:stat1.activityType];
+            NSInteger index2 = [PML_ACTIVITY_PRIORITY indexOfObject:stat2.activityType];
+            if(index2 == NSNotFound) {
+                return NSOrderedAscending;
+            } else if(index1 == NSNotFound) {
+                return NSOrderedDescending;
+            } else {
+                return index1-index2 < 0 ? NSOrderedAscending : NSOrderedDescending;
+            }
+        }];
+        
+        [[[TogaytherService dataService] modelHolder] setActivityStats:sortedStats];
+        [callback activityStatsFetched:sortedStats];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [callback activityStatsFetchFailed:error.domain];
+    }];
+
+
+}
+- (void)registerMaxActivityId:(NSNumber*)maxActivityId {
+    // Setting current max activity ID and refreshing badges
+    NSNumber *currentMaxId = [_userDefaults objectForKey:kSettingMaxActivityId];
+    if(currentMaxId == nil || currentMaxId.longValue < maxActivityId.longValue) {
+        [_userDefaults setObject:maxActivityId forKey:kSettingMaxActivityId];
+        [self refresh];
+    }
+}
+-(NSNumber*)activityMaxId {
+    NSNumber *maxId = [_userDefaults objectForKey:kSettingMaxActivityId];
+    return maxId == nil ? @0 : maxId;
+}
+
+- (void)getNearbyActivitiesFor:(NSString *)statActivityType callback:(id<ActivitiesCallback>)callback {
+    
+    // Building URL
+    BOOL isLikeActivity = [statActivityType hasPrefix:@"I_"];
+    NSString *url = [[NSString alloc] initWithFormat:(isLikeActivity ? kActivitiesGroupedUrlFormat : kActivitiesUrlFormat),togaytherServer];
+    
+    // Building arguments
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    CurrentUser *user = [userService getCurrentUser];
+    BOOL retina = [TogaytherService isRetina];
+    
+    CLLocation *location = [[[TogaytherService dataService] modelHolder] userLocation];
+    [params setObject:user.token forKey:kParamToken];
+    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:kParamLat];
+    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:kParamLng];
+    [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
+    [params setObject:statActivityType forKey:kParamStatActivityType];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSArray *json = (NSArray*)responseObject;
+        NSArray *activities = [[TogaytherService getJsonService] convertJsonActivitiesToActivities:json];
+        [callback activityFetched:activities];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [callback activityFetchFailed:error.domain];
+    }];
+}
 #pragma mark - Push notification management
 - (void)setPushEnabled:(BOOL)pushEnabled {
     [_userDefaults setObject:[NSNumber numberWithBool:pushEnabled] forKey:PML_PROP_PUSH_ENABLED];

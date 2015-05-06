@@ -253,6 +253,24 @@
 		B4A6642F1695E32100732B6D /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */; };
 		B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6643416970EB700732B6D /* AccountNavigationController.m */; };
 		B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A854281635416F003649C8 /* SizedTTLCacheService.m */; };
+		B4AA0A2F1AF177DE00DCDE29 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4AA0A2E1AF177DE00DCDE29 /* CoreData.framework */; };
+		B4AA0A331AF178AE00DCDE29 /* PMLStorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A311AF178AE00DCDE29 /* PMLStorageService.h */; };
+		B4AA0A341AF178AE00DCDE29 /* PMLStorageService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A321AF178AE00DCDE29 /* PMLStorageService.m */; };
+		B4AA0A371AF17AC300DCDE29 /* PMLModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A351AF17AC300DCDE29 /* PMLModel.xcdatamodeld */; };
+		B4AA0A3A1AF19EBE00DCDE29 /* PMLManagedActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A381AF19EBE00DCDE29 /* PMLManagedActivity.h */; };
+		B4AA0A3B1AF19EBE00DCDE29 /* PMLManagedActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A391AF19EBE00DCDE29 /* PMLManagedActivity.m */; };
+		B4AA0A3E1AF2E31C00DCDE29 /* PMLActivityStatistic.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A3C1AF2E31C00DCDE29 /* PMLActivityStatistic.h */; };
+		B4AA0A3F1AF2E31C00DCDE29 /* PMLActivityStatistic.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A3D1AF2E31C00DCDE29 /* PMLActivityStatistic.m */; };
+		B4AA0A421AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A401AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h */; };
+		B4AA0A431AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A411AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.m */; };
+		B4AA0A461AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A441AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.h */; };
+		B4AA0A471AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A451AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.m */; };
+		B4AA0A4B1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A491AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.h */; };
+		B4AA0A4C1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A4A1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.m */; };
+		B4AA0A4F1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A4D1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.h */; };
+		B4AA0A501AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A4E1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.m */; };
+		B4AA0A531AF81CC900DCDE29 /* PMLActivityDetailTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A511AF81CC900DCDE29 /* PMLActivityDetailTableViewController.h */; };
+		B4AA0A541AF81CC900DCDE29 /* PMLActivityDetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A521AF81CC900DCDE29 /* PMLActivityDetailTableViewController.m */; };
 		B4AC8ED9168C795C002E8381 /* MessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AC8ED8168C795C002E8381 /* MessageService.m */; };
 		B4B1FCF819E012BD0068894C /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B1FCF619E012BD0068894C /* NSString+HTML.h */; };
 		B4B1FCF919E012BD0068894C /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B1FCF719E012BD0068894C /* NSString+HTML.m */; };
@@ -321,8 +339,6 @@
 		B4D561161611C259003A738E /* ModelHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D561151611C259003A738E /* ModelHolder.m */; };
 		B4D561191611C8DE003A738E /* MapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D561181611C8DE003A738E /* MapAnnotation.m */; };
 		B4E288381A4A3A5900F84EA7 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4E288371A4A3A5900F84EA7 /* FacebookSDK.framework */; };
-		B4E8292518A9BCFF0063715C /* SWRevealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4E8292318A9BCFF0063715C /* SWRevealViewController.h */; };
-		B4E8292618A9BCFF0063715C /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4E8292418A9BCFF0063715C /* SWRevealViewController.m */; };
 		B4E8292918A9EE530063715C /* MainMenuTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4E8292718A9EE530063715C /* MainMenuTableViewController.h */; };
 		B4E8292A18A9EE530063715C /* MainMenuTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4E8292818A9EE530063715C /* MainMenuTableViewController.m */; };
 		B4E8292F18AAFAA10063715C /* SettingsService.h in Headers */ = {isa = PBXBuildFile; fileRef = B4E8292D18AAFAA10063715C /* SettingsService.h */; };
@@ -654,6 +670,24 @@
 		B4A6643416970EB700732B6D /* AccountNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountNavigationController.m; sourceTree = "<group>"; };
 		B4A854271635416F003649C8 /* SizedTTLCacheService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizedTTLCacheService.h; sourceTree = "<group>"; };
 		B4A854281635416F003649C8 /* SizedTTLCacheService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizedTTLCacheService.m; sourceTree = "<group>"; };
+		B4AA0A2E1AF177DE00DCDE29 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		B4AA0A311AF178AE00DCDE29 /* PMLStorageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLStorageService.h; sourceTree = "<group>"; };
+		B4AA0A321AF178AE00DCDE29 /* PMLStorageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLStorageService.m; sourceTree = "<group>"; };
+		B4AA0A361AF17AC300DCDE29 /* PMLModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PMLModel.xcdatamodel; sourceTree = "<group>"; };
+		B4AA0A381AF19EBE00DCDE29 /* PMLManagedActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLManagedActivity.h; sourceTree = "<group>"; };
+		B4AA0A391AF19EBE00DCDE29 /* PMLManagedActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLManagedActivity.m; sourceTree = "<group>"; };
+		B4AA0A3C1AF2E31C00DCDE29 /* PMLActivityStatistic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLActivityStatistic.h; sourceTree = "<group>"; };
+		B4AA0A3D1AF2E31C00DCDE29 /* PMLActivityStatistic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivityStatistic.m; sourceTree = "<group>"; };
+		B4AA0A401AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLLoadingTableViewCell.h; sourceTree = "<group>"; };
+		B4AA0A411AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLLoadingTableViewCell.m; sourceTree = "<group>"; };
+		B4AA0A441AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLActivityStatisticsTableViewController.h; sourceTree = "<group>"; };
+		B4AA0A451AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivityStatisticsTableViewController.m; sourceTree = "<group>"; };
+		B4AA0A491AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLActivityStatTableViewCell.h; sourceTree = "<group>"; };
+		B4AA0A4A1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivityStatTableViewCell.m; sourceTree = "<group>"; };
+		B4AA0A4D1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLActivityDetailTableViewCell.h; sourceTree = "<group>"; };
+		B4AA0A4E1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivityDetailTableViewCell.m; sourceTree = "<group>"; };
+		B4AA0A511AF81CC900DCDE29 /* PMLActivityDetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLActivityDetailTableViewController.h; sourceTree = "<group>"; };
+		B4AA0A521AF81CC900DCDE29 /* PMLActivityDetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivityDetailTableViewController.m; sourceTree = "<group>"; };
 		B4AC8ED7168C795C002E8381 /* MessageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageService.h; sourceTree = "<group>"; };
 		B4AC8ED8168C795C002E8381 /* MessageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageService.m; sourceTree = "<group>"; };
 		B4B1FCF619E012BD0068894C /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
@@ -747,8 +781,6 @@
 		B4D561171611C8DE003A738E /* MapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapAnnotation.h; sourceTree = "<group>"; };
 		B4D561181611C8DE003A738E /* MapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapAnnotation.m; sourceTree = "<group>"; };
 		B4E288371A4A3A5900F84EA7 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
-		B4E8292318A9BCFF0063715C /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
-		B4E8292418A9BCFF0063715C /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
 		B4E8292718A9EE530063715C /* MainMenuTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainMenuTableViewController.h; sourceTree = "<group>"; };
 		B4E8292818A9EE530063715C /* MainMenuTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuTableViewController.m; sourceTree = "<group>"; };
 		B4E8292D18AAFAA10063715C /* SettingsService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsService.h; sourceTree = "<group>"; };
@@ -803,6 +835,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4AA0A2F1AF177DE00DCDE29 /* CoreData.framework in Frameworks */,
 				B42408DF18EC711600B8B898 /* QuartzCore.framework in Frameworks */,
 				B4E8293518AB28A80063715C /* ImageIO.framework in Frameworks */,
 				B4D5610F1611BA52003A738E /* MapKit.framework in Frameworks */,
@@ -1033,8 +1066,21 @@
 				B45CAB3D197375F70089C7E8 /* PMLDataManager.m */,
 				B43123AB1ACDBDFB008EF107 /* PMLHelpService.h */,
 				B43123AC1ACDBDFB008EF107 /* PMLHelpService.m */,
+				B4AA0A311AF178AE00DCDE29 /* PMLStorageService.h */,
+				B4AA0A321AF178AE00DCDE29 /* PMLStorageService.m */,
 			);
 			name = Services;
+			sourceTree = "<group>";
+		};
+		B4AA0A481AF3F56500DCDE29 /* Activity */ = {
+			isa = PBXGroup;
+			children = (
+				B4AA0A491AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.h */,
+				B4AA0A4A1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.m */,
+				B4AA0A4D1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.h */,
+				B4AA0A4E1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.m */,
+			);
+			name = Activity;
 			sourceTree = "<group>";
 		};
 		B4B503FB161ED5EA002D5669 /* Utils */ = {
@@ -1134,6 +1180,7 @@
 		B4D56074160B673F003A738E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B4AA0A2E1AF177DE00DCDE29 /* CoreData.framework */,
 				B4E288371A4A3A5900F84EA7 /* FacebookSDK.framework */,
 				B42408DE18EC711600B8B898 /* QuartzCore.framework */,
 				B4E8293418AB28A80063715C /* ImageIO.framework */,
@@ -1166,6 +1213,7 @@
 				B4D560B6160C9563003A738E /* Model */,
 				B4D560B4160C9555003A738E /* Controllers */,
 				B4D5607C160B673F003A738E /* Supporting Files */,
+				B4AA0A351AF17AC300DCDE29 /* PMLModel.xcdatamodeld */,
 			);
 			path = PelMel;
 			sourceTree = "<group>";
@@ -1208,8 +1256,6 @@
 				B4322E39198DE1DF0037E260 /* Framework */,
 				B4FC959819B1F2B600269E74 /* Screens */,
 				B46AD73B19E50A0B0021E1DE /* Menus */,
-				B4E8292318A9BCFF0063715C /* SWRevealViewController.h */,
-				B4E8292418A9BCFF0063715C /* SWRevealViewController.m */,
 				B4D56084160B673F003A738E /* AppDelegate.h */,
 				B4D56085160B673F003A738E /* AppDelegate.m */,
 				B4D56087160B673F003A738E /* MainStoryboard_iPhone.storyboard */,
@@ -1247,6 +1293,10 @@
 				B4A47D2F1AE0852F000178BD /* PMLWebViewController.m */,
 				B4BD19161AE6BE3800510AC4 /* MessageTableViewController.h */,
 				B4BD19171AE6BE3800510AC4 /* MessageTableViewController.m */,
+				B4AA0A441AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.h */,
+				B4AA0A451AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.m */,
+				B4AA0A511AF81CC900DCDE29 /* PMLActivityDetailTableViewController.h */,
+				B4AA0A521AF81CC900DCDE29 /* PMLActivityDetailTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1254,6 +1304,8 @@
 		B4D560B6160C9563003A738E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				B4AA0A381AF19EBE00DCDE29 /* PMLManagedActivity.h */,
+				B4AA0A391AF19EBE00DCDE29 /* PMLManagedActivity.m */,
 				B4D560B7160C95A3003A738E /* Place.h */,
 				B4D560B8160C95A3003A738E /* Place.m */,
 				B4D561131611C239003A738E /* ModelBased.h */,
@@ -1296,6 +1348,8 @@
 				B405E65D1A93B71600C49F64 /* PMLCalendar.m */,
 				B4A47D261AE078F2000178BD /* PMLProperty.h */,
 				B4A47D271AE078F2000178BD /* PMLProperty.m */,
+				B4AA0A3C1AF2E31C00DCDE29 /* PMLActivityStatistic.h */,
+				B4AA0A3D1AF2E31C00DCDE29 /* PMLActivityStatistic.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1334,6 +1388,7 @@
 		B4D560DA16105B16003A738E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B4AA0A481AF3F56500DCDE29 /* Activity */,
 				B431239C1ACDA49B008EF107 /* Help */,
 				B457A0F71A9AEFB000207D8E /* Event */,
 				B43E9ADB19F47EF900F91FC1 /* Profile */,
@@ -1403,6 +1458,8 @@
 				B405E66A1A953C9600C49F64 /* PMLDetailTableViewCell.h */,
 				B405E66B1A953C9600C49F64 /* PMLDetailTableViewCell.m */,
 				B45C3C5B1AB757B700D8B321 /* Launch Screen.xib */,
+				B4AA0A401AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h */,
+				B4AA0A411AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -1525,7 +1582,6 @@
 				B406CA43197D0F8300A7FFE2 /* PMLPlaceAnnotationView.h in Headers */,
 				B43D11791A97A603008476C7 /* UIImage+ImageEffects.h in Headers */,
 				B4BB9F1219D7E8840070B03C /* PMLCityInfoProvider.h in Headers */,
-				B4E8292518A9BCFF0063715C /* SWRevealViewController.h in Headers */,
 				B4A4667019A7518E004ADC7E /* PMLUserInfoProvider.h in Headers */,
 				B4FC959219B1F12400269E74 /* PMLCountersTableViewCell.h in Headers */,
 				B4859DC81984BAD60036D8FF /* UITouchBehavior.h in Headers */,
@@ -1538,6 +1594,7 @@
 				B4A4666C19A73A6A004ADC7E /* PMLPlaceInfoProvider.h in Headers */,
 				B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */,
 				B4B560AB18B76CD0006E6D90 /* UIPelmelTitleView.h in Headers */,
+				B4AA0A421AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h in Headers */,
 				B4A47D2C1AE07C4E000178BD /* PMLPropertyTableViewCell.h in Headers */,
 				B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */,
 				B45CAB3219721BD40089C7E8 /* DynamicObject.h in Headers */,
@@ -1567,6 +1624,7 @@
 				B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */,
 				B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */,
 				B405E66C1A953C9600C49F64 /* PMLDetailTableViewCell.h in Headers */,
+				B4AA0A4B1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.h in Headers */,
 				B405E6661A93C04900C49F64 /* PMLCalendarTableViewController.h in Headers */,
 				B4BD191E1AE6BFAD00510AC4 /* PMLChatInputBarView.h in Headers */,
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
@@ -1576,6 +1634,8 @@
 				B457A1121A9D93D200207D8E /* PMLFakeViewController.h in Headers */,
 				B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */,
 				B43123AD1ACDBDFB008EF107 /* PMLHelpService.h in Headers */,
+				B4AA0A461AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.h in Headers */,
+				B4AA0A4F1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.h in Headers */,
 				B47A69D11AA764CE00877B58 /* PMLHorizontalFlowLayout.h in Headers */,
 				B47A69C61AA6927D00877B58 /* PMLThumbCollectionViewController.h in Headers */,
 				B43123A91ACDB141008EF107 /* Arrow.h in Headers */,
@@ -1584,6 +1644,7 @@
 				B41DD750197B4F5E008F09D9 /* APLDecorationView.h in Headers */,
 				B46C4C3819D27D9D00C81DA3 /* PMLTagsTableViewCell.h in Headers */,
 				B405E6741A9542AB00C49F64 /* PMLTimePickerDataSource.h in Headers */,
+				B4AA0A331AF178AE00DCDE29 /* PMLStorageService.h in Headers */,
 				B457A1061A9CECE800207D8E /* PMLEventInfoProvider.h in Headers */,
 				B452EDF719B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h in Headers */,
 				B4FC959619B1F20A00269E74 /* PMLTextTableViewCell.h in Headers */,
@@ -1600,6 +1661,7 @@
 				B45C3C611AB7A61800D8B321 /* PMLSnippetEditTableViewCell.h in Headers */,
 				B4FC959F19B1F85D00269E74 /* PMLDescriptionTableViewCell.h in Headers */,
 				B41C63B819B311BE003C9B52 /* PMLContextInfoProvider.h in Headers */,
+				B4AA0A3A1AF19EBE00DCDE29 /* PMLManagedActivity.h in Headers */,
 				B4859DB8197FC6810036D8FF /* PopupAction.h in Headers */,
 				B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */,
 				B4A4666819A73A0B004ADC7E /* PMLInfoProvider.h in Headers */,
@@ -1607,6 +1669,7 @@
 				B4B82B3619FBB69900895C57 /* PMLPickerTableViewCell.h in Headers */,
 				B45CAB3E197375F70089C7E8 /* PMLDataManager.h in Headers */,
 				B4859DBC197FC7FF0036D8FF /* PMLPopupActionManager.h in Headers */,
+				B4AA0A3E1AF2E31C00DCDE29 /* PMLActivityStatistic.h in Headers */,
 				B46AD73919E50A020021E1DE /* PMLSnippetLikesTableViewController.h in Headers */,
 				B45CAB3A197278590089C7E8 /* UIMenuOpenBehavior.h in Headers */,
 				B4BB9F0C19D4F9260070B03C /* HPGrowingTextView.h in Headers */,
@@ -1625,6 +1688,7 @@
 				B4E8292F18AAFAA10063715C /* SettingsService.h in Headers */,
 				B457A1021A9AF1B100207D8E /* PMLEventTableViewController.h in Headers */,
 				B4A47D241AE06071000178BD /* PMLPhotoPickerPreviewViewController.h in Headers */,
+				B4AA0A531AF81CC900DCDE29 /* PMLActivityDetailTableViewController.h in Headers */,
 				B41DD74C197A4E5B008F09D9 /* PMLMapPopupViewController.h in Headers */,
 				B4BD19141AE5CB2F00510AC4 /* PMLChatLoaderView.h in Headers */,
 				B43E76201991BD5C00153B46 /* PMLMainNavBarView.h in Headers */,
@@ -1849,6 +1913,7 @@
 				B43D117A1A97A603008476C7 /* UIImage+ImageEffects.m in Sources */,
 				B4FC958F19B1F0D200269E74 /* PMLGalleryTableViewCell.m in Sources */,
 				B41DD751197B4F5E008F09D9 /* APLDecorationView.m in Sources */,
+				B4AA0A471AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.m in Sources */,
 				B495655F163EDBA6006A0451 /* MessageViewController.m in Sources */,
 				B43FA67719866ECD008A1679 /* Activity.m in Sources */,
 				B4A47D211ADE0827000178BD /* AUIAutoGrowingTextView.m in Sources */,
@@ -1879,12 +1944,15 @@
 				B4D5610B161199B5003A738E /* MenuViewController.m in Sources */,
 				B4D561121611BC27003A738E /* MapViewController.m in Sources */,
 				B43D11741A97A12B008476C7 /* PresentingSpringAnimator.m in Sources */,
+				B4AA0A4C1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.m in Sources */,
 				B4BB9F0219D4E2460070B03C /* PMLChatTimeTableViewCell.m in Sources */,
+				B4AA0A431AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.m in Sources */,
 				B4D561161611C259003A738E /* ModelHolder.m in Sources */,
 				B41C63B919B311BE003C9B52 /* PMLContextInfoProvider.m in Sources */,
 				B4D561191611C8DE003A738E /* MapAnnotation.m in Sources */,
 				B49666091611E60700911FE5 /* DataService.m in Sources */,
 				B470F42A199D800500A03CAD /* KIImagePager.m in Sources */,
+				B4AA0A501AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.m in Sources */,
 				B496660C1611E68F00911FE5 /* TogaytherService.m in Sources */,
 				B41C6FF7198903ED00210474 /* CALayer+XibConfiguration.m in Sources */,
 				B41DD75B197BD9DA008F09D9 /* UIMapOptionView.m in Sources */,
@@ -1896,6 +1964,7 @@
 				B496661F1612250800911FE5 /* UITablePlaceTypeViewCell.m in Sources */,
 				B457A1031A9AF1B100207D8E /* PMLEventTableViewController.m in Sources */,
 				B4966622161227C400911FE5 /* FiltersViewController.m in Sources */,
+				B4AA0A3F1AF2E31C00DCDE29 /* PMLActivityStatistic.m in Sources */,
 				B41CF0B11899C20A0031FD7C /* UIService.m in Sources */,
 				B406AB421613793B0053E067 /* PlaceType.m in Sources */,
 				B47A69D81AA7843B00877B58 /* PMLThumbHeaderView.m in Sources */,
@@ -1905,6 +1974,7 @@
 				B40779BD16149D9700D02F66 /* CurrentUser.m in Sources */,
 				B4FC959C19B1F2E300269E74 /* PMLSnippetTableViewController.m in Sources */,
 				B457A0F01A9A689100207D8E /* PMLSectionTitleView.m in Sources */,
+				B4AA0A341AF178AE00DCDE29 /* PMLStorageService.m in Sources */,
 				B40779C01614A52500D02F66 /* LoginViewController.m in Sources */,
 				B40779C31615913000D02F66 /* User.m in Sources */,
 				B43123AA1ACDB141008EF107 /* Arrow.m in Sources */,
@@ -1917,7 +1987,6 @@
 				B42D2D43161970DD00159EBD /* Imaged.m in Sources */,
 				B47A69C71AA6927D00877B58 /* PMLThumbCollectionViewController.m in Sources */,
 				B41CF0A41895BF6D0031FD7C /* ThumbCell.m in Sources */,
-				B4E8292618A9BCFF0063715C /* SWRevealViewController.m in Sources */,
 				B457A0FB1A9AF00A00207D8E /* PMLTextFieldTableViewCell.m in Sources */,
 				B42D2D461619715B00159EBD /* CALImage.m in Sources */,
 				B45CAB3519721BD40089C7E8 /* UIPopBehavior.m in Sources */,
@@ -1964,11 +2033,13 @@
 				B4EECAF616300218005F80DE /* UITableSegmentViewCell.m in Sources */,
 				B4BB9F0F19D4F9260070B03C /* HPTextViewInternal.m in Sources */,
 				B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */,
+				B4AA0A371AF17AC300DCDE29 /* PMLModel.xcdatamodeld in Sources */,
 				B49C97271AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.m in Sources */,
 				B40668BC19714CCE0012DF71 /* APLPositionToBoundsMapping.m in Sources */,
 				B41A13F91639662300827E04 /* TermsOfUseViewController.m in Sources */,
 				B4CDDB0D1680D140002C01C0 /* Event.m in Sources */,
 				B45CAB3F197375F70089C7E8 /* PMLDataManager.m in Sources */,
+				B4AA0A541AF81CC900DCDE29 /* PMLActivityDetailTableViewController.m in Sources */,
 				B46C4C3919D27D9D00C81DA3 /* PMLTagsTableViewCell.m in Sources */,
 				B4BB9F1719D7F23E0070B03C /* PMLThumbsTableViewCell.m in Sources */,
 				B43123A41ACDA4DC008EF107 /* PMLHelpBubble.m in Sources */,
@@ -1978,6 +2049,7 @@
 				B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */,
 				B4E91223169B226F005D3CAF /* TogaytherTabBarController.m in Sources */,
 				B4A4666D19A73A6A004ADC7E /* PMLPlaceInfoProvider.m in Sources */,
+				B4AA0A3B1AF19EBE00DCDE29 /* PMLManagedActivity.m in Sources */,
 				B4B1FCF919E012BD0068894C /* NSString+HTML.m in Sources */,
 				B42408E518F8EA9500B8B898 /* EGORefreshTableHeaderView.m in Sources */,
 				B405E6751A9542AB00C49F64 /* PMLTimePickerDataSource.m in Sources */,
@@ -2289,6 +2361,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		B4AA0A351AF17AC300DCDE29 /* PMLModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				B4AA0A361AF17AC300DCDE29 /* PMLModel.xcdatamodel */,
+			);
+			currentVersion = B4AA0A361AF17AC300DCDE29 /* PMLModel.xcdatamodel */;
+			path = PMLModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B4D56068160B673F003A738E /* Project object */;
 }

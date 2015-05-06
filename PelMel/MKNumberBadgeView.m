@@ -99,7 +99,7 @@
     
 	CGContextRef curContext = UIGraphicsGetCurrentContext();
     
-	NSString* numberString = [NSString stringWithFormat:@"%d",(int)self.value];
+	NSString* numberString = [self numberString];
     
     
     CGSize numberSize = [numberString sizeWithAttributes:@{NSFontAttributeName : self.font,NSForegroundColorAttributeName : [UIColor whiteColor]}]; //Font:self.font];
@@ -257,10 +257,22 @@
     
 	[self setNeedsDisplay];
 }
-
+-(void)setLabel:(NSString *)label {
+    _label = label;
+    [self setNeedsDisplay];
+}
+- (NSString*)numberString {
+    NSString* numberString = nil;
+    if(_label !=nil) {
+        numberString = _label;
+    } else {
+        numberString = [NSString stringWithFormat:@"%d",(int)self.value];
+    }
+    return numberString;
+}
 - (CGSize)badgeSize
 {
-	NSString* numberString = [NSString stringWithFormat:@"%d",(int)self.value];
+    NSString* numberString = [self numberString];
     
     
     CGSize numberSize = [numberString sizeWithAttributes:@{NSFontAttributeName: self.font,NSForegroundColorAttributeName : [UIColor whiteColor]}]; //Font:self.font];

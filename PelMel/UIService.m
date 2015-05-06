@@ -72,12 +72,13 @@
     NSString *placeType = @"";
     NSString *colorPrefKey;
     if([obj isKindOfClass:[Place class]]) {
-        NSString *placeType = ((Place*)obj).placeType;
-        if(placeType == nil) {
-            placeType = @"bar";
-        }
-        placeType = [NSString stringWithFormat:@"placeType.%@",placeType];
-        colorPrefKey = [NSString stringWithFormat:kColorPrefKeyTemplate, placeType];
+        return [UIColor whiteColor];
+//        NSString *placeType = ((Place*)obj).placeType;
+//        if(placeType == nil) {
+//            placeType = @"bar";
+//        }
+//        placeType = [NSString stringWithFormat:@"placeType.%@",placeType];
+//        colorPrefKey = [NSString stringWithFormat:kColorPrefKeyTemplate, placeType];
     } else if([obj isKindOfClass:[Event class]]) {
         colorPrefKey = [NSString stringWithFormat:kColorPrefKeyTemplate, @"event"];
     } else if([obj isKindOfClass:[PlaceType class]]) {
@@ -113,20 +114,20 @@
     return controller.splitViewController!=nil;
 }
 -(void)showFiltersViewControllerFor:(UIViewController *)controller {
-    // Are we split ?
-    if(controller.splitViewController != nil) {
-        // Getting leftmost navigation controller
-        UINavigationController *navController = [controller.splitViewController.viewControllers objectAtIndex:0];
-        if(filtersViewController == nil) {
-            // Creating filters controller if not yet created
-            filtersViewController = [self instantiateViewController:SB_ID_FILTERS_CONTROLLER];
-        } else {
-            [filtersViewController removeFromParentViewController];
-        }
-        [navController pushViewController:filtersViewController animated:YES];
-    } else {
-        [self.revealViewController revealToggleAnimated:YES];
-    }
+//    // Are we split ?
+//    if(controller.splitViewController != nil) {
+//        // Getting leftmost navigation controller
+//        UINavigationController *navController = [controller.splitViewController.viewControllers objectAtIndex:0];
+//        if(filtersViewController == nil) {
+//            // Creating filters controller if not yet created
+//            filtersViewController = [self instantiateViewController:SB_ID_FILTERS_CONTROLLER];
+//        } else {
+//            [filtersViewController removeFromParentViewController];
+//        }
+//        [navController pushViewController:filtersViewController animated:YES];
+//    } else {
+//        [self.revealViewController revealToggleAnimated:YES];
+//    }
 }
 
 #pragma mark - UISplitViewControllerDelegate
@@ -354,6 +355,14 @@
         [_menuManagerController minimizeCurrentSnippet:YES];
     }
 }
+- (void)presentController:(UIViewController *)controller {
+    if(self.menuManagerController.navigationController.topViewController != self.menuManagerController) {
+        [self.menuManagerController.navigationController pushViewController:controller animated:YES];
+    } else {
+        [(UINavigationController*)self.menuManagerController.currentSnippetViewController pushViewController:controller animated:YES];
+        [self.menuManagerController openCurrentSnippet:YES];
+    }
+}
 /**
  * Pushes the snippet controller on the current navigation stack presented in the snippet. It handles
  * situations when a view controller with the same object may already be presented by removing it from hierarchy 
@@ -391,6 +400,7 @@
     [navigationController setViewControllers:childViewControllers animated:NO];
     if(controllerToPush != nil) {
         [navigationController pushViewController:controllerToPush animated:YES];
+        controllerToPush.tableView.contentOffset=CGPointMake(0, 0);
     }
 }
 

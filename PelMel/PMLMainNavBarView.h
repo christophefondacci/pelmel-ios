@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 @property (weak, nonatomic) IBOutlet UIView *leftContainerView;
 @property (weak, nonatomic) IBOutlet UIView *filtersView;
+@property (weak, nonatomic) IBOutlet UILabel *filtersLabel;
 
 @end

@@ -245,7 +245,7 @@ typedef enum {
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
     // Navigation
-    [self.navigationController setNavigationBarHidden:YES];
+    [self hideNavigationBar];
     
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
     
@@ -281,7 +281,7 @@ typedef enum {
     _editVisible = PMLVisibityStateInvisible;
     
     if(_opened) {
-        [self.parentMenuController.navigationController setNavigationBarHidden:YES];
+        [self hideParentNavigationBar];
     }
 
 }
@@ -1825,6 +1825,9 @@ typedef enum {
 #pragma mark - Dragging control & scroll view
 - (void)tableViewPanned:(UIPanGestureRecognizer*)recognizer {
 
+    if(self.parentMenuController.navigationController == self.navigationController) {
+        return;
+    }
     switch(recognizer.state) {
         case UIGestureRecognizerStateBegan:
             if (abs(self.tableView.contentOffset.y) < kPMLHeightSnippet) {
@@ -2005,6 +2008,16 @@ typedef enum {
     PopupAction *action = [_actionManager actionForType:(PMLActionType)source.tag];
     action.actionCommand();
 }
+-(void)hideNavigationBar {
+    if(self.navigationController != self.parentMenuController.navigationController) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    }
+}
+-(void)hideParentNavigationBar {
+    if(self.navigationController != self.parentMenuController.navigationController) {
+        [self.parentMenuController.navigationController setNavigationBarHidden:YES animated:YES];
+    }
+}
 #pragma  mark - PMLSnippetDelegate
 - (void)menuManager:(PMLMenuManagerController *)menuManager snippetWillOpen:(BOOL)animated {
     _opened = YES;
@@ -2030,7 +2043,7 @@ typedef enum {
     _didOpened=NO;
     
     // Hiding NAV BAR
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self hideNavigationBar];
     if(animated) {
         self.navigationItem.rightBarButtonItem=nil;
     }

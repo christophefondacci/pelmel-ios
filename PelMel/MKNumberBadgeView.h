@@ -35,7 +35,7 @@
 @interface MKNumberBadgeView : UIView
 {
 	NSUInteger _value;
-    
+
 	UIFont* _font;
 	UIColor* _fillColor;
 	UIColor* _strokeColor;
@@ -50,7 +50,7 @@
 
 // The current value displayed in the badge. Updating the value will update the view's display
 @property (assign,nonatomic) NSUInteger value;
-
+@property (retain,nonatomic) NSString *label;
 // Indicates whether the badge view draws a dhadow or not.
 @property (assign,nonatomic) BOOL shadow;
 

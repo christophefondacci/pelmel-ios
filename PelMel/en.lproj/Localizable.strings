@@ -66,6 +66,37 @@
 "action.save"="Save";
 "action.searchHere"="Show";
 "action.wait"="Please wait...";
+"activity.title"="Recent activity";
+"activity.I_PLAC"="%d likes have been given to nearby places";
+"activity.I_USER"="%d users have been liked";
+"activity.K_PLAC"="%d guys checked in";
+"activity.O_PLAC"="%d new comments";
+"activity.I_EVNT"="%d guys have said they will attend to an event";
+"activity.MDIA_CREATION"="%d new photos have been uploaded";
+"activity.R_USER"="%d nearby users joined PELMEL!";
+"activity.EVNT_CREATION"="%d events were added";
+"activity.PLAC_CREATION"="%d new places added";
+"activity.I_PLAC.singular"="%d like has been given to a nearby place";
+"activity.I_USER.singular"="%d user has been liked";
+"activity.K_PLAC.singular"="%d guy has checked in";
+"activity.O_PLAC.singular"="%d new comment";
+"activity.I_EVNT.singular"="%d guy has said he will attend to an event";
+"activity.MDIA_CREATION.singular"="%d new photo has been uploaded";
+"activity.R_USER.singular"="%d nearby user joined PELMEL!";
+"activity.EVNT_CREATION.singular"="%d event was added";
+"activity.PLAC_CREATION.singular"="%d new place added";
+
+"activity.detail.I_PLAC"="%@ received %d new likes";
+"activity.detail.I_PLAC.singular"="%@ received %d new like";
+"activity.detail.I_USER"="%@ received %d new likes";
+"activity.detail.I_USER.singular"="%@ received %d new like";
+"activity.detail.K_PLAC"="%@ checked in at %@";
+"activity.detail.I_EVNT"="%@ will attend to %@";
+"activity.detail.R_USER"="%@ has joined PELMEL!";
+"activity.detail.EVNT_CREATION"="%@ has added event %@";
+"activity.detail.PLAC_CREATION"="%@ has added place %@";
+"activity.detail.O_PLAC"="%@ has commented place %@";
+
 "barButton.list"="List";
 "calendar.daily"="Daily";
 "calendar.days"="Days of week";
@@ -158,8 +189,10 @@
 "list.places.likes"="%d";
 
 "loading"="Fetching nearest gay places...";
+"loading.activityStats"="Loading recent nearby activity...";
 "loading.events"="Fetching nearest gay events...";
 "loading.city"="Fetching %@'s gay places...";
+
 "login.failed"="Login failed";
 "login.noconnection"="No connection";
 "login.field.email"="Email";
@@ -207,6 +240,7 @@
 "modify"="Modify";
 "moreresults.title"="Search more results";
 "moreresults.subtitle"="Tap here to search for all places and cities";
+"navbar.activity"="Activity";
 "network.noconnection"="No Network Connection";
 "network.connected"="Connected!";
 "network.error"="An error occurred, tap refresh";
@@ -315,6 +349,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "search.placeholder"="Search a place, city, user";
 "settings.account.title"="My account";
 "settings.account.cell"="My profile";
+"settings.filters"="Filters";
 "settings.hd"="HD images";
 "settings.hd.subtitle"="Better quality, requires good 3G connexion";
 "settings.hints"="Show hints";

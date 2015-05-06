@@ -8,14 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "CALObject.h"
-#import "SWRevealViewController.h"
 #import "MapViewController.h"
 #import "PMLInfoProvider.h"
 
 
 @interface UIService : NSObject <UISplitViewControllerDelegate>
 
-@property (nonatomic) SWRevealViewController *revealViewController;
 @property (nonatomic) UIBarButtonItem *popoverBarButtonItem;
 @property (nonatomic) UIPopoverController *popoverController;
 @property (strong,nonatomic) MapViewController *splitMapController;
@@ -107,7 +105,12 @@
  * Creates a snippet for the given element, presents it, and optionally opens it
  */
 -(void)presentSnippetFor:(CALObject*)object opened:(BOOL)opened;
-- (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened root:(BOOL)root;
+-(void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened root:(BOOL)root;
+/**
+ * Presents the controller in the current context (most of the cases will be in an opened snippet
+ * unless the navigation is done at the root navigation level).
+ */
+-(void)presentController:(UIViewController*)controller;
 /**
  * Simple alert dialog with localized messages, only one OK button
  */

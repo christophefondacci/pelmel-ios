@@ -23,6 +23,7 @@
         // Default list is list of places
         _currentListviewType = PLACES_LISTVIEW;
         _allPlaces = [[NSMutableArray alloc] init];
+        _activityStats = [[NSMutableArray alloc] init];
     }
     return self;
 }

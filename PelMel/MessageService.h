@@ -12,6 +12,8 @@
 #import "UserService.h"
 #import "MKNumberBadgeView.h"
 
+#define kPMLNotificationActivityChanged @"PMLActivityChanged"
+
 typedef void(^PushPropositionCallback)(BOOL pushActive);
 
 @protocol MessageCallback
@@ -21,13 +23,22 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 -(void)messageSent:(Message*)message;
 -(void)messageSendFailed;
 @end
-
+@protocol ActivitiesStatsCallback
+-(void)activityStatsFetched:(NSArray*)activityStats;
+-(void)activityStatsFetchFailed:(NSString*)errorMessage;
+@end
+@protocol ActivitiesCallback
+-(void)activityFetched:(NSArray*)activities;
+-(void)activityFetchFailed:(NSString*)errorMessage;
+@end
 @interface MessageService : NSObject <NSURLConnectionDelegate,NSURLConnectionDataDelegate, UIAlertViewDelegate>
 
 @property (strong,nonatomic) UserService *userService;
 @property (strong,nonatomic) JsonService *jsonService;
 @property (strong,nonatomic) UIService *uiService;
 @property (strong,nonatomic) MKNumberBadgeView *messageCountBadgeView;
+@property (strong,nonatomic) MKNumberBadgeView *activityCountBadgeView;
+@property (nonatomic) long maxActivityId;
 @property (nonatomic) BOOL pushEnabled;
 @property (nonatomic) int unreadMessageCount;
 
@@ -51,6 +62,15 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 
 -(void)registerCallback:(id<MessageCallback>)callback;
 -(void)unregisterCallback:(id<MessageCallback>)callback;
+
+// Downloads the delta of new activity around the current location, sending the kPMLNotificationActivityChanged notification when
+// ready
+-(void)getNearbyActivitiesStats:(id<ActivitiesStatsCallback>)callback;
+-(void)getNearbyActivitiesFor:(NSString*)statActivityType callback:(id<ActivitiesCallback>)callback;
+// Registers a max activity ID and updates any badge if needed
+-(void)registerMaxActivityId:(NSNumber*)maxActivityId;
+-(void)clearNewActivities;
+-(NSNumber*)activityMaxId;
 
 // Asks the user to enable push if needed
 -(void)handlePushNotificationProposition:(PushPropositionCallback)completion;

@@ -140,7 +140,14 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     if(rounded) {
         [cell layoutIfNeeded];
-        cell.thumbImage.layer.cornerRadius = cell.thumbImage.bounds.size.width/2;
+        cell.thumbImage.layer.cornerRadius = 0;
+        if([self.thumbProvider respondsToSelector:@selector(objectAtIndex:forType:)]) {
+            CALObject *obj = [self.thumbProvider objectAtIndex:indexPath.row forType:type];
+            if([obj isKindOfClass:[User class]]) {
+                cell.thumbImage.layer.cornerRadius = cell.thumbImage.bounds.size.width/2;
+            }
+        }
+
     } else {
         cell.thumbImage.layer.cornerRadius = 0;
         cell.thumbImage.layer.borderWidth=0;

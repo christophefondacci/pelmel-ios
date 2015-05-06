@@ -325,8 +325,7 @@
         if(_currentObject!= nil) {
             MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
             msgController.withObject = _currentObject;
-            [(UINavigationController*)_menuManagerController.currentSnippetViewController pushViewController:msgController animated:YES];
-            [_menuManagerController openCurrentSnippet:YES];
+            [_uiService presentController:msgController];
         }
     }];
     _commentAction.color = UIColorFromRGB(kPMLCommentColor);

@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *subtitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *titleImage;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *widthTitleConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *heightTitleConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 
 @end

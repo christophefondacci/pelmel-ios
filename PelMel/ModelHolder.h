@@ -27,6 +27,7 @@ typedef enum {
 @property (strong) NSArray *cities;
 @property (strong) NSArray *events;
 @property (strong) NSArray *activities;
+@property (strong) NSArray *activityStats;
 @property (strong) NSArray *users;
 @property (nonatomic) long maxLikes;
 @property (strong) NSMutableArray *allPlaces; // All places ever loaded

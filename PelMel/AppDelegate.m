@@ -12,7 +12,6 @@
 #import "FiltersViewController.h"
 #import "TogaytherTabBarController.h"
 #import "TogaytherService.h"
-#import "SWRevealViewController.h"
 #import "MainMenuTableViewController.h"
 #import "PMLMenuManagerController.h"
 #import "UIMenuManagerMainDelegate.h"

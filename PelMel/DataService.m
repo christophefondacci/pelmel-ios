@@ -344,6 +344,10 @@
     NSNumber *totalPlacesCount = [json objectForKey:@"nearbyPlacesCount"];
     NSNumber *totalUsersCount = [json objectForKey:@"nearbyUsersCount"];
     
+    // ACtivities count
+    NSNumber *maxActivityId = [json objectForKey:@"maxActivityId"];
+    [[TogaytherService getMessageService] setMaxActivityId:maxActivityId.longValue];
+    
     // Assigning to model holder for all-view synch
     [_modelHolder setPlaces:docs];
     [_modelHolder setEvents:events];

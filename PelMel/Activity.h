@@ -16,6 +16,8 @@
 // The target of the activity 
 @property (nonatomic,strong) CALObject *activityObject;
 @property (nonatomic,strong) NSDate *activityDate;
+@property (nonatomic,strong) NSString *activityType;
 @property (nonatomic,copy) NSString *message;
+@property (nonatomic,copy) NSNumber *activitiesCount;
 
 @end

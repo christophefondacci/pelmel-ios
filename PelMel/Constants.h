@@ -40,6 +40,8 @@
 #define SB_ID_PHOTO_GALLERY @"photoPreview"
 #define SB_ID_PHOTO_PICKER_PREVIEW @"photoPickerPreview"
 #define SB_ID_WEBVIEW @"webview"
+#define SB_ID_ACTIVITY_STAT @"activityStats"
+#define SB_ID_ACTIVITY_DETAILS @"activityDetails"
 
 
 #define PML_PROP_SERVER @"url.server"
@@ -71,5 +73,8 @@
 // Property codes
 #define PML_PROPERTY_CODE_PHONE @"phone"
 #define PML_PROPERTY_CODE_WEBSITE @"website"
+
+
+#define PML_ACTIVITY_PRIORITY @[@"I_PLAC",@"I_USER",@"K_PLAC",@"MDIA_CREATION",@"R_USER",@"I_EVNT",@"EVNT_CREATION",@"PLAC_CREATION",@"O_PLAC"]
 
 #endif

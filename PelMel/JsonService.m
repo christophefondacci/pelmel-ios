@@ -189,8 +189,10 @@
     NSArray *jsonProperties = [json objectForKey:@"properties"];
     
     // Getting unread message count
-    NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
+    NSNumber *unreadMsgCount= [json objectForKey:@"unreadMsgCount"];
+    NSNumber *maxActivityId = [json objectForKey:@"maxActivityId"];
     [_messageService setUnreadMessageCount:[unreadMsgCount intValue]];
+    [_messageService setMaxActivityId:[maxActivityId intValue]];
     
     // Getting place
     Place *place = [_objectCache objectForKey:placeKey];
@@ -408,11 +410,13 @@
     return calendar;
 }
 -(Activity *)convertJsonActivityToActivity:(NSDictionary *)jsonActivity {
-    NSDictionary *jsonUser = [jsonActivity objectForKey:@"user"];
+    NSDictionary *jsonUser          = [jsonActivity objectForKey:@"user"];
     NSDictionary *jsonActivityPlace = [jsonActivity objectForKey:@"activityPlace"];
-    NSDictionary *jsonActivityUser = [jsonActivity objectForKey:@"activityUser"];
-    NSNumber     *jsonDate = [jsonActivity objectForKey:@"activityDate"];
-    NSString *message = [jsonActivity objectForKey:@"message"];
+    NSDictionary *jsonActivityUser  = [jsonActivity objectForKey:@"activityUser"];
+    NSNumber     *jsonDate          = [jsonActivity objectForKey:@"activityDate"];
+    NSString *message               = [jsonActivity objectForKey:@"message"];
+    NSString *activityType          = [jsonActivity objectForKey:@"activityType"];
+    NSNumber *activityCount          = [jsonActivity objectForKey:@"count"];
     
     // Unwrapping JSON
     User *user;
@@ -426,27 +430,26 @@
         activityObject = [self convertJsonUserToUser:jsonActivityUser];
     }
     NSDate *activityDate;
-    if(jsonDate != (id)[NSNull null]) {
+    if(jsonDate != (id)[NSNull null] && jsonDate.longValue!=0) {
         activityDate = [NSDate dateWithTimeIntervalSince1970:jsonDate.longValue];
     }
-//    if(jsonUser != nil) {
-        // Building activity bean
-        Activity *activity = [[Activity alloc] init];
-        activity.user = user;
-    activity.activityObject = activityObject;
-        activity.message = [message gtm_stringByUnescapingFromHTML];
-        activity.activityDate = activityDate;
     
-//    }
+    // Building activity bean
+    Activity *activity = [[Activity alloc] init];
+    activity.user = user;
+    activity.activityObject = activityObject;
+    activity.message = [message gtm_stringByUnescapingFromHTML];
+    activity.activityDate = activityDate;
+    activity.activityType = activityType;
+    activity.activitiesCount = activityCount;
+    
     return activity;
 }
 - (NSArray *)convertJsonActivitiesToActivities:(NSArray *)jsonActivities {
     NSMutableArray *activities = [[NSMutableArray alloc] initWithCapacity:jsonActivities.count];
     for(NSDictionary *jsonActivity in jsonActivities) {
         Activity *activity = [self convertJsonActivityToActivity:jsonActivity];
-//        if(activity.user !=nil) {
-            [activities addObject:activity];
-//        }
+        [activities addObject:activity];
     }
     return activities;
 }
