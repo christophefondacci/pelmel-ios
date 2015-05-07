@@ -418,7 +418,7 @@
     NSNumber     *jsonDate          = [jsonActivity objectForKey:@"activityDate"];
     NSString *message               = [jsonActivity objectForKey:@"message"];
     NSString *activityType          = [jsonActivity objectForKey:@"activityType"];
-    NSNumber *activityCount          = [jsonActivity objectForKey:@"count"];
+    NSNumber *activityCount         = [jsonActivity objectForKey:@"count"];
     NSDictionary *extraEvent        = [jsonActivity objectForKey:@"extraEvent"];
     NSDictionary *extraMedia        = [jsonActivity objectForKey:@"extraMedia"];
     

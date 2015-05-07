@@ -47,6 +47,7 @@
     int _totalHeight;
     NSInteger _currentPage;
     BOOL _loading;
+    BOOL _newMessageReceived;
 }
 @synthesize scrollView;
 
@@ -130,6 +131,8 @@
         self.title = title;
     }
     
+    // Setting the "new messages" flag to force scroll to the bottom
+    _newMessageReceived = YES;
 }
 
 - (void)viewDidUnload
@@ -325,6 +328,9 @@
     int i = 0;
     int addedHeight = 0;
     
+    // Storing contentOffset
+    CGPoint contentOffset = self.scrollView.contentOffset;
+    
     // Processing messages
     for(Message *message in _messagesList) {
         BOOL isAdded = NO;
@@ -351,13 +357,14 @@
         _totalHeight += _loaderView.bounds.size.height;
     }
     
-    // Ensuring content size is set
+    // Ensuring content size is set and restoring original content offset
     [scrollView setContentSize:CGSizeMake(scrollView.bounds.size.width, _totalHeight)];
+    [scrollView setContentOffset:contentOffset animated:NO];
     
     // Updating our scroll view
     if(isConversation) {
         // Will be 0 for the first display of view
-        if(addedHeight==0 || addedHeight+_loaderView.bounds.size.height == _totalHeight) {
+        if( _newMessageReceived || addedHeight+_loaderView.bounds.size.height == _totalHeight) {
             CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
             if(bottomOffset.y>0) {
                 [scrollView setContentOffset:bottomOffset animated:(addedHeight>0 && !isInitialLoad)];
@@ -366,8 +373,10 @@
             // Otherwise we only shift by added height
             [scrollView setContentOffset:CGPointMake(0, scrollView.contentOffset.y+addedHeight) animated:NO];
         }
+    } else if(_newMessageReceived) {
+        [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
-    
+    _newMessageReceived = NO;
     // Updating page
     _currentPage = MAX(_currentPage, page);
     
@@ -646,6 +655,7 @@
     [self refreshContents];
 }
 -(void)pushNotificationReceived:(NSNotification*)notification {
+    _newMessageReceived = YES;
     [self refreshContents];
 }
 - (void)refreshContents {
