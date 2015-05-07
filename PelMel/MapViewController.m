@@ -866,7 +866,9 @@
 }
 
 - (void)didLoadData:(ModelHolder *)modelHolder {
-
+    if(selectedAnnotation != nil){
+        [self.mapView deselectAnnotation:selectedAnnotation.annotation animated:YES];
+    }
     // Preparing our annotation list (for zooming)
     _placeAnnotations = [[NSMutableSet alloc] initWithCapacity:_modelHolder.places.count];
 

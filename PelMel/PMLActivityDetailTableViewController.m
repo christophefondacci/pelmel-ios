@@ -26,6 +26,7 @@
 #define kActivityUserLike       @"I_USER"
 #define kActivityPlaceLike      @"I_PLAC"
 #define kActivityEventCreation  @"EVNT_CREATION"
+#define kActivityEventAttend    @"I_EVNT"
 
 @interface PMLActivityDetailTableViewController ()
 @property (nonatomic,retain) NSArray *activities;
@@ -45,6 +46,7 @@
     
     // Appearance
     [TogaytherService applyCommonLookAndFeel:self];
+    self.navigationController.navigationBar.translucent=NO;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
@@ -52,6 +54,15 @@
     self.title = NSLocalizedString(@"activity.title", @"Activity");
     _loading = YES;
 
+    // Title (trying to get activityType-specific title, or falls back to default)
+    NSString *localizedKey = [NSString stringWithFormat:@"activity.title.%@",self.activityStatistic.activityType];
+    NSString *title = NSLocalizedString(localizedKey, localizedKey);
+    if(![title hasPrefix:@"activity.title."]) {
+        self.title = title;
+    } else {
+        self.title = NSLocalizedString(@"activity.title", @"activity.title");
+    }
+    
     // Misc init
     _defaults = [NSUserDefaults standardUserDefaults];
     

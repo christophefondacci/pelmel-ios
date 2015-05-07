@@ -414,6 +414,7 @@
     NSDictionary *jsonUser          = [jsonActivity objectForKey:@"user"];
     NSDictionary *jsonActivityPlace = [jsonActivity objectForKey:@"activityPlace"];
     NSDictionary *jsonActivityUser  = [jsonActivity objectForKey:@"activityUser"];
+    NSDictionary *jsonActivityEvent = [jsonActivity objectForKey:@"activityEvent"];
     NSNumber     *jsonDate          = [jsonActivity objectForKey:@"activityDate"];
     NSString *message               = [jsonActivity objectForKey:@"message"];
     NSString *activityType          = [jsonActivity objectForKey:@"activityType"];
@@ -431,6 +432,8 @@
         activityObject = [self convertJsonPlaceToPlace:jsonActivityPlace];
     } else if( jsonActivityUser != (id)[NSNull null]) {
         activityObject = [self convertJsonUserToUser:jsonActivityUser];
+    } else if(jsonActivityEvent != (id)[NSNull null] && jsonActivityEvent!=nil) {
+        activityObject = [self convertJsonEventToEvent:jsonActivityEvent defaultEvent:nil];
     }
     NSDate *activityDate;
     if(jsonDate != (id)[NSNull null] && jsonDate.longValue!=0) {

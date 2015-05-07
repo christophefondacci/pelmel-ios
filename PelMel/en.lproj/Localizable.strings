@@ -68,6 +68,15 @@
 "action.wait"="Please wait...";
 "activity.title"="Recent activity";
 "activity.title.photoGrid"="Recent photos";
+"activity.title.I_PLAC"="Hangouts likes";
+"activity.title.I_USER"="Guys likes";
+"activity.title.K_PLAC"="Recent Checkins";
+"activity.title.MDIA_CREATION"="Photo uploads";
+"activity.title.R_USER"="New users";
+"activity.title.EVNT_CREATION"="New events";
+"activity.title.O_PLAC"="Recent comments";
+"activity.title.O_EVNT"="Recent comments";
+"activity.title.I_EVNT"="Recent RSVP";
 "activity.I_PLAC"="%d likes have been given to nearby places";
 "activity.I_USER"="%d users have been liked";
 "activity.K_PLAC"="%d guys checked in";
@@ -93,6 +102,7 @@
 "activity.detail.I_USER.singular"="%@ received %d new like";
 "activity.detail.K_PLAC"="%@ checked in at %@";
 "activity.detail.I_EVNT"="%@ will attend to %@";
+"activity.detail.I_EVNT.singular"="%@ will attend to %@";
 "activity.detail.R_USER"="%@ has joined PELMEL!";
 "activity.detail.EVNT_CREATION"="%@ has added event %@";
 "activity.detail.PLAC_CREATION"="%@ has added place %@";

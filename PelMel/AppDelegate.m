@@ -23,6 +23,8 @@
 #import <AFNetworkActivityLogger.h>
 @implementation AppDelegate
 
+static BOOL isStarted;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
 //    [[AFNetworkActivityLogger sharedLogger] startLogging];
@@ -107,8 +109,15 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    User *currentUser = [[TogaytherService userService] getCurrentUser];
-    [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+//    User *currentUser = [[TogaytherService userService] getCurrentUser];
+//    [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+    if(!isStarted) {
+        isStarted = YES;
+    } else {
+        [[TogaytherService dataService] setCurrentRadius:0];
+        [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
+        [[TogaytherService dataService] fetchNearbyPlaces];
+    }
 
 }
 

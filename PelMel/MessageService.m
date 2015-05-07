@@ -455,13 +455,12 @@
 - (void)getNearbyActivitiesFor:(NSString *)statActivityType hd:(BOOL)isHd callback:(id<ActivitiesCallback>)callback {
 
     // Building URL
-    BOOL isLikeActivity = [statActivityType hasPrefix:@"I_"];
+    BOOL isLikeActivity = [statActivityType hasPrefix:@"I_"] && ![statActivityType isEqualToString:@"I_EVNT"];
     NSString *url = [[NSString alloc] initWithFormat:(isLikeActivity ? kActivitiesGroupedUrlFormat : kActivitiesUrlFormat),togaytherServer];
     
     // Building arguments
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     CurrentUser *user = [userService getCurrentUser];
-    BOOL retina = [TogaytherService isRetina];
     
     CLLocation *location = [[[TogaytherService dataService] modelHolder] userLocation];
     [params setObject:user.token forKey:kParamToken];
