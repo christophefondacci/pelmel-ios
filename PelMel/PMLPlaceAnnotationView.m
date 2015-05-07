@@ -70,7 +70,31 @@
     _image = image;
     [self refreshImage:image updateLabel:YES];
 }
+/**
+ * Updates the marker image depending on data (opened / closed)
+ */
+-(void) updateImage {
+    MapAnnotation *annotation = (MapAnnotation*) self.annotation;
+    if([annotation.object isKindOfClass:[Place class]]) {
+        Place *place= (Place*)annotation.object;
 
+        // Selecting image depending on openings
+        UIImage *offMarkerImage = [[TogaytherService uiService] mapMarkerFor:place enabled:NO];
+        UIImage *onMarkerImage = [[TogaytherService uiService] mapMarkerFor:place enabled:YES];
+        UIImage *markerImage = onMarkerImage;
+        
+        self.alpha=1;
+        // Looking for opening hours
+        if([[TogaytherService getConversionService] calendarType:SPECIAL_TYPE_OPENING isCurrentFor:place noDataResult:YES]) {
+            markerImage = onMarkerImage;
+        } else {
+            markerImage = offMarkerImage;
+        }
+
+        self.imageCenterOffset = [[TogaytherService uiService] mapMarkerCenterOffsetFor:place];
+        [self setImage:markerImage];
+    }
+}
 -(void)refreshImage:(UIImage*)image updateLabel:(BOOL)updateLabel{
     if(_sizeRatio != nil && !isnan(_sizeRatio.floatValue) && image !=nil) {
         _imageView.image = image;
@@ -165,6 +189,7 @@
 }
 
 - (void)updateData {
+    [self updateImage];
     [self updateSizeRatio];
     [self refreshImage:_image updateLabel:NO];
     [self updateBadge];

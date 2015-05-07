@@ -528,28 +528,7 @@
             placeAnnotation.enabled = YES;
             placeAnnotation.canShowCallout = NO;
             
-            // Selecting image depending on openings
-            UIImage *offMarkerImage = [_uiService mapMarkerFor:object enabled:NO];
-            UIImage *onMarkerImage = [_uiService mapMarkerFor:object enabled:YES];
-            UIImage *markerImage = onMarkerImage;
-
-            placeAnnotation.alpha=1;
-            // Looking for opening hours
-            if([object isKindOfClass:[Place class]]) {
-                Place *p = (Place*)object;
-                if([_conversionService calendarType:SPECIAL_TYPE_OPENING isCurrentFor:p noDataResult:YES]) {
-                    markerImage = onMarkerImage;
-                } else {
-                    markerImage = offMarkerImage;
-                }
-// If closed we gray the image
-//                if(p.closedReportsCount>0) {
-//                    markerImage = [_uiService mapMarkerFor:object enabled:NO];
-//                }
-            }
-
-            placeAnnotation.imageCenterOffset = [_uiService mapMarkerCenterOffsetFor:object];
-            placeAnnotation.image = markerImage;
+            [placeAnnotation updateImage];
             a.annotationView = placeAnnotation;
             //            pinAnnotation.centerOffset = CGPointMake(9, -18);
 
