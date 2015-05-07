@@ -106,6 +106,7 @@
  */
 -(void)presentSnippetFor:(CALObject*)object opened:(BOOL)opened;
 -(void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened root:(BOOL)root;
+-(void)presentSnippet:(UIViewController *)controller opened:(BOOL)opened root:(BOOL)root;
 /**
  * Presents the controller in the current context (most of the cases will be in an opened snippet
  * unless the navigation is done at the root navigation level).

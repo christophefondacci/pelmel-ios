@@ -450,7 +450,10 @@
 }
 
 - (void)getNearbyActivitiesFor:(NSString *)statActivityType callback:(id<ActivitiesCallback>)callback {
-    
+    [self getNearbyActivitiesFor:statActivityType hd:[TogaytherService isRetina] callback:callback];
+}
+- (void)getNearbyActivitiesFor:(NSString *)statActivityType hd:(BOOL)isHd callback:(id<ActivitiesCallback>)callback {
+
     // Building URL
     BOOL isLikeActivity = [statActivityType hasPrefix:@"I_"];
     NSString *url = [[NSString alloc] initWithFormat:(isLikeActivity ? kActivitiesGroupedUrlFormat : kActivitiesUrlFormat),togaytherServer];
@@ -464,7 +467,7 @@
     [params setObject:user.token forKey:kParamToken];
     [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:kParamLat];
     [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:kParamLng];
-    [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
+    [params setObject:(isHd ? @"true" : @"false") forKey:kParamRetina];
     [params setObject:statActivityType forKey:kParamStatActivityType];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];

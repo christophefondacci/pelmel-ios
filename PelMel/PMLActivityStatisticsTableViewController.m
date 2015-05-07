@@ -12,6 +12,7 @@
 #import "PMLActivityStatTableViewCell.h"
 #import "PMLActivityStatistic.h"
 #import "PMLActivityDetailTableViewController.h"
+#import "PMLPhotosCollectionViewController.h"
 
 #define kSectionsCount 2
 #define kSectionStats 0
@@ -29,7 +30,9 @@
 @property (nonatomic) BOOL loading;
 @end
 
-@implementation PMLActivityStatisticsTableViewController
+@implementation PMLActivityStatisticsTableViewController {
+    NSUserDefaults *_userDefaults;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -39,6 +42,7 @@
     _messageService = [TogaytherService getMessageService];
     _imageService   = [TogaytherService imageService];
     _uiService      = [TogaytherService uiService];
+    _userDefaults   = [NSUserDefaults standardUserDefaults];
     _loading=YES;
     
     // Skinning
@@ -122,28 +126,19 @@
     
     // Badging
     NSNumber *currentMaxId = [_messageService activityMaxId];
-    if(currentMaxId.longValue<stat.maxActivityId.longValue) {
-        CGRect frame = cell.activityImageContainer.bounds;
-        
-        // Getting or creating badge view
-        MKNumberBadgeView *badge = [self badgeViewFor:cell.activityImageContainer];
-        cell.activityImageContainer.clipsToBounds = NO;
-        if(badge == nil) {
-            badge = [[MKNumberBadgeView alloc] initWithFrame:CGRectMake(frame.size.width-20, -5, 30, 20)];
-        }
-        badge.shadow = NO;
-        badge.shine=NO;
-        badge.font = [UIFont fontWithName:PML_FONT_BADGES size:7];
-        badge.label = @"NEW";
-        badge.layer.zPosition=1;
-        [cell.activityImageContainer addSubview:badge];
+    NSNumber *number = [_userDefaults objectForKey:[self activityStatKey:stat]];
+    if(number == nil || number.longValue < stat.maxActivityId.longValue ) {
+        [cell showBadge:YES];
     } else {
-        [self removeBadgeFrom:cell.activityImageContainer];
+        [cell showBadge:NO];
     }
 
     CGSize fitSize = [cell.activityTitle sizeThatFits:CGSizeMake(self.view.bounds.size.width-cell.activityLeftMarginConstraint.constant-33, MAXFLOAT)];
     cell.activityHeightConstraint.constant=fitSize.height;
 //    cell.titleLabel.text = stat
+}
+-(NSString*)activityStatKey:(PMLActivityStatistic*)activityStat {
+    return [NSString stringWithFormat:@"activity.stat.seen.%@",activityStat.activityType];
 }
 -(void)removeBadgeFrom:(UIView*)view {
     MKNumberBadgeView *badgeView = [self badgeViewFor:view];
@@ -163,9 +158,19 @@
     switch(indexPath.section) {
         case kSectionStats: {
             PMLActivityStatistic *stat = [_dataService.modelHolder.activityStats objectAtIndex:indexPath.row];
-            PMLActivityDetailTableViewController *activityDetailController = (PMLActivityDetailTableViewController*)[_uiService instantiateViewController:SB_ID_ACTIVITY_DETAILS];
-            activityDetailController.activityStatistic = stat;
-            [self.parentMenuController.navigationController pushViewController:activityDetailController animated:YES];
+            UIViewController *controller = nil;
+            if(![stat.activityType isEqualToString:@"MDIA_CREATION"]) {
+                PMLActivityDetailTableViewController *activityDetailController = (PMLActivityDetailTableViewController*)[_uiService instantiateViewController:SB_ID_ACTIVITY_DETAILS];
+                activityDetailController.activityStatistic = stat;
+                controller = activityDetailController;
+            } else {
+                PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
+                photosController.activityStat = stat;
+                controller = photosController;
+            }
+//            [self.parentMenuController.navigationController pushViewController:controller animated:YES];
+            [_uiService presentSnippet:controller opened:YES root:YES];
+            [_userDefaults setObject:stat.maxActivityId forKey:[self activityStatKey:stat]];
             break;
         }
         default:

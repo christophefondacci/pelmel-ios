@@ -22,6 +22,25 @@
     UITapGestureRecognizer *rightTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(rightImageTapped:)];
     [self.rightImage addGestureRecognizer:rightTapRecognizer];
     self.rightImage.userInteractionEnabled = YES;
+    
+
+}
+- (void)showBadge:(BOOL)visible {
+    if(_badgeView != nil) {
+        [_badgeView removeFromSuperview];
+    }
+    if(visible) {
+        // Badge
+        CGRect frame = self.leftImageContainer.bounds;
+        _badgeView =[[MKNumberBadgeView alloc] initWithFrame:CGRectMake(frame.size.width-20, -5, 30, 20)];
+        self.leftImageContainer.clipsToBounds = NO;
+        _badgeView.shadow = NO;
+        _badgeView.shine=NO;
+        _badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:7];
+        _badgeView.label = @"NEW";
+        _badgeView.layer.zPosition=1;
+        [self.leftImageContainer addSubview:_badgeView];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

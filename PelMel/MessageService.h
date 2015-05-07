@@ -67,6 +67,8 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 // ready
 -(void)getNearbyActivitiesStats:(id<ActivitiesStatsCallback>)callback;
 -(void)getNearbyActivitiesFor:(NSString*)statActivityType callback:(id<ActivitiesCallback>)callback;
+-(void)getNearbyActivitiesFor:(NSString *)statActivityType hd:(BOOL)isHd callback:(id<ActivitiesCallback>)callback;
+
 // Registers a max activity ID and updates any badge if needed
 -(void)registerMaxActivityId:(NSNumber*)maxActivityId;
 -(void)clearNewActivities;

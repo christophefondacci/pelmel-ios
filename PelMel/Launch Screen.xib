@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -83,19 +83,20 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q07-XO-jDf" userLabel="filters">
                             <rect key="frame" x="246" y="7" width="62" height="30"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="navButtonFilter" translatesAutoresizingMaskIntoConstraints="NO" id="I4M-VE-YRi">
-                                    <rect key="frame" x="0.0" y="4" width="23" height="23"/>
-                                </imageView>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Filters" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2C5-QN-e4U">
-                                    <rect key="frame" x="25" y="5" width="32" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2C5-QN-e4U">
+                                    <rect key="frame" x="0.0" y="5" width="57" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstAttribute="bottom" secondItem="2C5-QN-e4U" secondAttribute="bottom" constant="4" id="7J3-4b-jxj"/>
+                                <constraint firstItem="2C5-QN-e4U" firstAttribute="leading" secondItem="Q07-XO-jDf" secondAttribute="leading" id="bMW-PR-ufv"/>
+                                <constraint firstItem="2C5-QN-e4U" firstAttribute="top" secondItem="Q07-XO-jDf" secondAttribute="top" constant="5" id="cBO-uI-wAf"/>
                                 <constraint firstAttribute="width" constant="62" id="jHH-eq-TyX"/>
+                                <constraint firstAttribute="trailing" secondItem="2C5-QN-e4U" secondAttribute="trailing" constant="5" id="rZH-qC-gae"/>
                             </constraints>
                         </view>
                     </subviews>
@@ -161,7 +162,6 @@
     </objects>
     <resources>
         <image name="logo" width="174" height="149"/>
-        <image name="navButtonFilter" width="23" height="23"/>
         <image name="navButtonMenu" width="22" height="22"/>
         <image name="pelmel-launch-title" width="151" height="56"/>
     </resources>

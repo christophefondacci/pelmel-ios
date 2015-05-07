@@ -42,6 +42,7 @@
 #define SB_ID_WEBVIEW @"webview"
 #define SB_ID_ACTIVITY_STAT @"activityStats"
 #define SB_ID_ACTIVITY_DETAILS @"activityDetails"
+#define SB_ID_PHOTOS_COLLECTION @"photosCollectionView"
 
 
 #define PML_PROP_SERVER @"url.server"

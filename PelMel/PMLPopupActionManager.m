@@ -293,10 +293,13 @@
             PBWebViewController *webviewController= [[PBWebViewController alloc] init];
             webviewController.URL = [[NSURL alloc] initWithString:property.propertyValue];
 //            [[TogaytherService uiService] menuManagerController ].navigationController.navigationBar.translucent=NO;
-            UINavigationController *snippetController = (UINavigationController*)[[[TogaytherService uiService] menuManagerController ] currentSnippetViewController];
-            snippetController.navigationBar.translucent=NO;
-            [TogaytherService applyCommonLookAndFeel:snippetController.topViewController];
-            [snippetController pushViewController:webviewController animated:YES];
+            
+            [_uiService presentController:webviewController];
+            
+//            UINavigationController *snippetController = (UINavigationController*)[[[TogaytherService uiService] menuManagerController ] currentSnippetViewController];
+//            snippetController.navigationBar.translucent=NO;
+//            [TogaytherService applyCommonLookAndFeel:snippetController.topViewController];
+//            [snippetController pushViewController:webviewController animated:YES];
         }
     }];
     [self registerAction:openWebsite forType:PMLActionTypeWebsite];

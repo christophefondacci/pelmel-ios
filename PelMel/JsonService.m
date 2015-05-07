@@ -410,6 +410,7 @@
     return calendar;
 }
 -(Activity *)convertJsonActivityToActivity:(NSDictionary *)jsonActivity {
+    NSString *jsonKey               = [jsonActivity objectForKey:@"key"];
     NSDictionary *jsonUser          = [jsonActivity objectForKey:@"user"];
     NSDictionary *jsonActivityPlace = [jsonActivity objectForKey:@"activityPlace"];
     NSDictionary *jsonActivityUser  = [jsonActivity objectForKey:@"activityUser"];
@@ -417,6 +418,8 @@
     NSString *message               = [jsonActivity objectForKey:@"message"];
     NSString *activityType          = [jsonActivity objectForKey:@"activityType"];
     NSNumber *activityCount          = [jsonActivity objectForKey:@"count"];
+    NSDictionary *extraEvent        = [jsonActivity objectForKey:@"extraEvent"];
+    NSDictionary *extraMedia        = [jsonActivity objectForKey:@"extraMedia"];
     
     // Unwrapping JSON
     User *user;
@@ -436,6 +439,7 @@
     
     // Building activity bean
     Activity *activity = [[Activity alloc] init];
+    activity.key = jsonKey;
     activity.user = user;
     activity.activityObject = activityObject;
     activity.message = [message gtm_stringByUnescapingFromHTML];
@@ -443,6 +447,16 @@
     activity.activityType = activityType;
     activity.activitiesCount = activityCount;
     
+    // Extra event
+    if(extraEvent != nil && (id)extraEvent!=[NSNull null]) {
+        Event *e = [self convertJsonEventToEvent:extraEvent defaultEvent:nil];
+        activity.extraEvent = e;
+    }
+    // Extra media
+    if(extraMedia != nil && (id)extraMedia!=[NSNull null]) {
+        CALImage *image = [imageService convertJsonImageToImage:extraMedia];
+        activity.extraImage = image;
+    }
     return activity;
 }
 - (NSArray *)convertJsonActivitiesToActivities:(NSArray *)jsonActivities {
@@ -578,19 +592,19 @@
     // Looking up user in cache
     User *user = [_objectCache objectForKey:userKey];
     if(user == nil) {
-        // Creating CAL image
-        CALImage *img = [imageService convertJsonImageToImage:jsonThumb];
-        
         // Building User bean
         user = [[User alloc] init];
-        [user setKey:userKey];
-        [user setPseudo:pseudo];
-        [user setMainImage:img];
         [user setHasOverviewData:NO];
         
         //Adding to cache
         [_objectCache setObject:user forKey:user.key];
     }
+    
+    // Creating CAL image
+    CALImage *img = [imageService convertJsonImageToImage:jsonThumb];
+    [user setKey:userKey];
+    [user setPseudo:pseudo];
+    [user setMainImage:img];
     [user setIsOnline:[isOnline boolValue]];
     return user;
 }

@@ -444,14 +444,14 @@
         if(img == nil) {
             img = [[CALImage alloc] initWithKey:key url:url thumbUrl:thumbUrl];
             [_imageCache setObject:img forKey:key];
-        } else {
-            if(![img.imageUrl isEqualToString:url]){
-                img.imageUrl = url;
-                img.thumbUrl = thumbUrl;
-                img.fullImage = nil;
-                img.thumbImage = nil;
-            }
         }
+        if(![img.imageUrl isEqualToString:url]){
+            img.imageUrl = url;
+            img.thumbUrl = thumbUrl;
+            img.fullImage = nil;
+            img.thumbImage = nil;
+        }
+
         return img;
     } else {
         return nil;

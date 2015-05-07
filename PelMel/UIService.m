@@ -320,9 +320,18 @@
     [self presentSnippetFor:object opened:opened root:NO];
 }
 - (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened root:(BOOL)root {
+    // Building controller
     PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[self instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
     snippetController.snippetItem = object;
-
+    
+    // Presenting in snippet
+    [self presentSnippet:snippetController opened:opened root:root];
+    if(!opened && object.key != nil) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET object:self];
+    }
+}
+- (void)presentSnippet:(UIViewController *)snippetController opened:(BOOL)opened root:(BOOL)root {
+    
     if(_menuManagerController.navigationController.topViewController != _menuManagerController) {
         [_menuManagerController presentControllerSnippet:snippetController animated:NO];
         [_menuManagerController openCurrentSnippet:NO];
@@ -348,9 +357,6 @@
             
         }
     }
-    if(!opened && object.key != nil) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET object:self];
-    }
     if(!opened) {
         [_menuManagerController minimizeCurrentSnippet:YES];
     }
@@ -368,30 +374,33 @@
  * situations when a view controller with the same object may already be presented by removing it from hierarchy 
  * and places it on top
  */
--(void)pushSnippetNavigationController:(PMLSnippetTableViewController*)snippetController {
+-(void)pushSnippetNavigationController:(UIViewController*)controller {
     UINavigationController *navigationController = (UINavigationController*)_menuManagerController.currentSnippetViewController;
-    PMLSnippetTableViewController *controllerToPush = snippetController;
+    UIViewController *controllerToPush = controller;
     BOOL isRoot = navigationController.childViewControllers.count == 1;
     
     // Preparing array of child view controllers
     NSMutableArray *childViewControllers =  [navigationController.childViewControllers mutableCopy];
-    for(UIViewController *controller in navigationController.childViewControllers) {
-        
-        // Checking snippet controllers
-        if([controller isKindOfClass:[PMLSnippetTableViewController class]]) {
-            PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)controller;
+    if([controller isKindOfClass:[PMLSnippetTableViewController class]]) {
+        PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)controller;
+        for(UIViewController *controller in navigationController.childViewControllers) {
             
-            // Is this controller presenting the same object?
-            if([childSnippet.snippetItem.key isEqualToString:snippetController.snippetItem.key]) {
+            // Checking snippet controllers
+            if([controller isKindOfClass:[PMLSnippetTableViewController class]]) {
+                PMLSnippetTableViewController *childSnippet = (PMLSnippetTableViewController*)controller;
                 
-                // Just in case we have 2 different objects (memory NSCache flush maybe)
-                // This call will also do a refresh
-                childSnippet.snippetItem = snippetController.snippetItem;
-                if(!isRoot && childSnippet!=navigationController.topViewController) {
-                    [childViewControllers removeObject:childSnippet];
-                    controllerToPush = childSnippet;
-                } else {
-                    controllerToPush = nil;
+                // Is this controller presenting the same object?
+                if([childSnippet.snippetItem.key isEqualToString:snippetController.snippetItem.key]) {
+                    
+                    // Just in case we have 2 different objects (memory NSCache flush maybe)
+                    // This call will also do a refresh
+                    childSnippet.snippetItem = snippetController.snippetItem;
+                    if(!isRoot && childSnippet!=navigationController.topViewController) {
+                        [childViewControllers removeObject:childSnippet];
+                        controllerToPush = childSnippet;
+                    } else {
+                        controllerToPush = nil;
+                    }
                 }
             }
         }
@@ -400,7 +409,10 @@
     [navigationController setViewControllers:childViewControllers animated:NO];
     if(controllerToPush != nil) {
         [navigationController pushViewController:controllerToPush animated:YES];
-        controllerToPush.tableView.contentOffset=CGPointMake(0, 0);
+        // Resetting offset to the top for table view controllers (to avoid a minimized snippet not showing its top content)
+        if([controllerToPush isKindOfClass:[UITableViewController class]]) {
+            ((UITableViewController*)controllerToPush).tableView.contentOffset=CGPointMake(0, 0);
+        }
     }
 }
 

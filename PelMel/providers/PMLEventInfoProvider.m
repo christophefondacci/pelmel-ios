@@ -128,9 +128,12 @@
     return [UIColor whiteColor];
 }
 -(NSArray*)addressComponents {
-    NSArray *adrComponents = @[_event.place.title];
+    NSMutableArray *components = [[NSMutableArray alloc] init];
+    if(_event.place != nil) {
+        [components addObject:_event.place.title];
+    }
     NSArray *placeComponents = [_placeInfoProvider addressComponents];
-    return [adrComponents arrayByAddingObjectsFromArray:placeComponents];
+    return [components arrayByAddingObjectsFromArray:placeComponents];
 
 }
 // The label of the type of element being displayed

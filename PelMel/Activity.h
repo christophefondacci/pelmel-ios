@@ -9,6 +9,7 @@
 #import "CALObject.h"
 #import "User.h"
 #import "Place.h"
+#import "Event.h"
 
 @interface Activity : CALObject
 
@@ -19,5 +20,6 @@
 @property (nonatomic,strong) NSString *activityType;
 @property (nonatomic,copy) NSString *message;
 @property (nonatomic,copy) NSNumber *activitiesCount;
-
+@property (nonatomic,strong) CALImage *extraImage;
+@property (nonatomic,strong) Event *extraEvent;
 @end

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MKNumberBadgeView.h"
 
 @interface PMLActivityStatTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *activityImage;
@@ -14,5 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *activityTitle;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *activityHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *activityLeftMarginConstraint;
+@property (retain, nonatomic) MKNumberBadgeView *badgeView;
 
+- (void)showBadge:(BOOL)visible;
 @end

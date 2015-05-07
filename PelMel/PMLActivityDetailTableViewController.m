@@ -24,7 +24,8 @@
 
 #define kActivityUserRegister   @"R_USER"
 #define kActivityUserLike       @"I_USER"
-#define kActivityPlaceLike       @"I_PLAC"
+#define kActivityPlaceLike      @"I_PLAC"
+#define kActivityEventCreation  @"EVNT_CREATION"
 
 @interface PMLActivityDetailTableViewController ()
 @property (nonatomic,retain) NSArray *activities;
@@ -32,7 +33,9 @@
 @property (nonatomic) BOOL loading;
 @end
 
-@implementation PMLActivityDetailTableViewController
+@implementation PMLActivityDetailTableViewController {
+    NSUserDefaults *_defaults;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -49,6 +52,9 @@
     self.title = NSLocalizedString(@"activity.title", @"Activity");
     _loading = YES;
 
+    // Misc init
+    _defaults = [NSUserDefaults standardUserDefaults];
+    
     // Loading data 
     [[TogaytherService getMessageService] getNearbyActivitiesFor:_activityStatistic.activityType callback:self];
 }
@@ -61,6 +67,9 @@
 - (void)viewWillDisappear:(BOOL)animated {
     // Registering max id
     [[TogaytherService getMessageService] registerMaxActivityId:_activityStatistic.maxActivityId];
+    for(Activity *a in _activities) {
+        [_defaults setObject:[NSNumber numberWithBool:YES] forKey:[self activitySeenKey:a]];
+    }
 }
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
@@ -100,34 +109,41 @@
     
     return cell;
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == kSectionActivities) {
+        Activity *activity = [_activities objectAtIndex:indexPath.row];
+        CALObject *sourceObject = [self activityObject:activity source:YES];
+        CALObject *activityObject = [self activityObject:activity source:NO];
+        
+        CALObject *obj = activityObject !=nil ? activityObject : sourceObject;
+        [self presentObject:obj];
+        UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+        [cell setSelected:NO animated:YES];
 
+    }
+}
+
+
+#pragma mark - Row setup
 - (void)configureActivityCell:(PMLActivityDetailTableViewCell*)cell forRow:(NSInteger)row {
     Activity *activity = [_activities objectAtIndex:row];
     
     // Setting user and target object
-    CALObject *sourceObject = activity.user;
-    CALObject *activityObject = activity.activityObject;
-    if([self.activityStatistic.activityType isEqualToString:kActivityUserLike] || [self.activityStatistic.activityType isEqualToString:kActivityPlaceLike]) {
-        if(activityObject != nil) {
-            sourceObject = (User*)activityObject;
-        }
-        activityObject = nil;
-    } else if([self.activityStatistic.activityType isEqualToString:kActivityUserRegister]) {
-        activityObject = nil;
-    }
+    CALObject *sourceObject = [self activityObject:activity source:YES];
+    CALObject *activityObject = [self activityObject:activity source:NO];
     
     // Left image configuration (rounded, border and image)
     cell.leftImage.layer.borderWidth=1;
-    cell.leftImage.layer.cornerRadius = cell.leftImage.bounds.size.width/2;
+    if([sourceObject.key hasPrefix:@"USER"]) {
+        cell.leftImage.layer.cornerRadius = cell.leftImage.bounds.size.width/2;
+    } else {
+        cell.leftImage.layer.cornerRadius = 0;
+    }
     cell.leftImage.layer.masksToBounds=YES;
     cell.leftImage.layer.borderColor = [[[TogaytherService uiService] colorForObject:sourceObject] CGColor];
     cell.leftImage.image = [CALImage getDefaultUserThumb];
     cell.leftActionCallback = ^{
-        PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-        snippetController.snippetItem = sourceObject;
-        [snippetController menuManager:self.parentMenuController snippetWillOpen:YES];
-        [self.navigationController pushViewController:snippetController animated:YES];
-
+        [self presentObject:sourceObject];
     };
     CALImage *image = [[TogaytherService imageService] imageOrPlaceholderFor:sourceObject allowAdditions:NO];
     [[TogaytherService imageService] load:image to:cell.leftImage thumb:YES];
@@ -137,10 +153,7 @@
     cell.rightImage.layer.borderColor = [[UIColor whiteColor] CGColor];
     cell.rightImage.image = [CALImage getDefaultThumb];
     cell.rightActionCallback = ^{
-        PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-        snippetController.snippetItem = activityObject;
-        [snippetController menuManager:self.parentMenuController snippetWillOpen:YES];
-        [self.parentMenuController.navigationController pushViewController:snippetController animated:YES];
+        [self presentObject:activityObject];
     };
     CALImage *placeImage = [[TogaytherService imageService] imageOrPlaceholderFor:activityObject allowAdditions:NO];
     NSInteger additionalWidth = 0;
@@ -180,6 +193,49 @@
         cell.activityTimeLabel.text = nil;
     }
 
+    // Badge configuration
+    NSNumber *val = nil;
+    if(activity.key!=nil) {
+        val = [_defaults objectForKey:[self activitySeenKey:activity]];
+        if(val == nil) {
+            [cell showBadge:YES];
+        } else {
+            [cell showBadge:NO];
+        }
+    } else {
+        [cell showBadge:NO];
+    }
+}
+-(void)presentObject:(CALObject*)object {
+    [_uiService presentSnippetFor:object opened:YES];
+//    PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
+//    snippetController.snippetItem = object;
+//    [snippetController menuManager:self.parentMenuController snippetWillOpen:YES];
+//    [self.parentMenuController.navigationController pushViewController:snippetController animated:YES];
+}
+/**
+ * Provides the activity object
+ * @param activity the Activity to extract object from
+ * @param source YES to get the source, NO to get the target
+ */
+-(CALObject*)activityObject:(Activity*)activity source:(BOOL)source{
+    // Setting user and target object
+    CALObject *sourceObject = activity.user;
+    CALObject *activityObject = activity.activityObject;
+    if([self.activityStatistic.activityType isEqualToString:kActivityUserLike] || [self.activityStatistic.activityType isEqualToString:kActivityPlaceLike]) {
+        if(activityObject != nil) {
+            sourceObject = (User*)activityObject;
+        }
+        activityObject = nil;
+    } else if([self.activityStatistic.activityType isEqualToString:kActivityUserRegister]) {
+        activityObject = nil;
+    } else if([self.activityStatistic.activityType isEqualToString:kActivityEventCreation]) {
+        activityObject = activity.extraEvent;
+    }
+    return source ? sourceObject : activityObject;
+}
+-(NSString*)activitySeenKey:(Activity*)activity {
+    return [NSString stringWithFormat:@"activity.seen.%@",activity.key];
 }
 
 - (void)configureLoadingCell:(PMLLoadingTableViewCell*)cell {
@@ -243,8 +299,9 @@
 }
 #pragma mark - Action callback
 -(void)closeMenu:(id)sender {
-    [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
-//    [self.parentMenuController dismissControllerMenu:YES];
-    [self.parentMenuController dismissControllerSnippet];
+//    [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
+////    [self.parentMenuController dismissControllerMenu:YES];
+//    [self.parentMenuController dismissControllerSnippet];
+    [[TogaytherService uiService] presentSnippetFor:nil opened:NO];
 }
 @end

@@ -370,7 +370,7 @@ static void *MyParentMenuControllerKey;
     }
     [self setSnippetFullyOpened:NO];
     // Dismissing menu
-    [self dismissControllerMenu:YES];
+//    [self dismissControllerMenu:YES];
     return dismissed;
 }
 
@@ -655,6 +655,10 @@ static void *MyParentMenuControllerKey;
         CGRect frame = _bottomView.frame;
         frame.origin.y=offset;
         frame.origin.x=0;
+        if(_menuView!=nil && offset == [self offsetForOpenedSnippet]) {
+            [_menuView removeFromSuperview];
+            [self.view insertSubview:_menuView belowSubview:_bottomView];
+        }
         if(animated) {
             [UIView animateWithDuration:0.3 animations:^{
                 _bottomView.frame = frame;
@@ -684,6 +688,7 @@ static void *MyParentMenuControllerKey;
         [self.view insertSubview:_menuView aboveSubview:_bottomView];
         //        [self dismissControllerMenu:animated];
     }
+        
 }
 - (void)snippetPannedCallback {
     
