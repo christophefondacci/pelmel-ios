@@ -215,7 +215,7 @@
                     break;
                 case kRowSettingFilters:
                     placeTypeCell.label.text = NSLocalizedString(@"settings.filters", @"Filters");
-                    placeTypeCell.image.image = [UIImage imageNamed:@"navButtonFilter"];
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconFilter"];
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
                 case kRowSettingHints: {

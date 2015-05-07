@@ -43,9 +43,6 @@
 #import <PBWebViewController.h>
 
 
-
-#define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
-
 #define kPMLSectionsCount 15
 
 #define kPMLSectionGallery 0

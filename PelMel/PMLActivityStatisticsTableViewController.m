@@ -95,7 +95,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:(indexPath.section == kSectionStats ? kRowIdStat : kRowIdLoading) forIndexPath:indexPath];
-    
+    cell.backgroundColor = BACKGROUND_COLOR;
     switch(indexPath.section) {
         case kSectionLoading:
             [self configureLoadingRow:(PMLLoadingTableViewCell*)cell];
@@ -125,7 +125,6 @@
     self.maxActivityId = MAX(stat.maxActivityId.longValue, self.maxActivityId);
     
     // Badging
-    NSNumber *currentMaxId = [_messageService activityMaxId];
     NSNumber *number = [_userDefaults objectForKey:[self activityStatKey:stat]];
     if(number == nil || number.longValue < stat.maxActivityId.longValue ) {
         [cell showBadge:YES];

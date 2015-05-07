@@ -108,7 +108,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:(indexPath.section == kSectionActivities ? kRowIdActivity : kRowIdLoading) forIndexPath:indexPath];
-    
+    cell.backgroundColor = BACKGROUND_COLOR;
     switch(indexPath.section) {
         case kSectionActivities:
             [self configureActivityCell:(PMLActivityDetailTableViewCell*)cell forRow:indexPath.row];

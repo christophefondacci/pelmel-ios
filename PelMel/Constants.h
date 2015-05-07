@@ -44,6 +44,8 @@
 #define SB_ID_ACTIVITY_DETAILS @"activityDetails"
 #define SB_ID_PHOTOS_COLLECTION @"photosCollectionView"
 
+#define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
+
 
 #define PML_PROP_SERVER @"url.server"
 #define PML_PROP_LEFTHANDED @"settings.leftHanded"
