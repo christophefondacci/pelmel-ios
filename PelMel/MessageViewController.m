@@ -47,7 +47,8 @@
     int _totalHeight;
     NSInteger _currentPage;
     BOOL _loading;
-    BOOL _newMessageReceived;
+    
+    NSNumber *_maxMessageId;
 }
 @synthesize scrollView;
 
@@ -131,8 +132,6 @@
         self.title = title;
     }
     
-    // Setting the "new messages" flag to force scroll to the bottom
-    _newMessageReceived = YES;
 }
 
 - (void)viewDidUnload
@@ -331,7 +330,10 @@
     // Storing contentOffset
     CGPoint contentOffset = self.scrollView.contentOffset;
     
+    NSNumberFormatter *numberFormatter = [[NSNumberFormatter alloc] init];
+    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
     // Processing messages
+    BOOL newMessages = NO;
     for(Message *message in _messagesList) {
         BOOL isAdded = NO;
         if([_messagesViewsKeys objectForKey:message.key]==nil ) {
@@ -345,6 +347,13 @@
             addedHeight += chatView.frame.size.height;
         }
 
+        // Max message id management
+        NSString *idStr = [message.key substringFromIndex:4];
+        NSNumber *msgId = [numberFormatter numberFromString:idStr];
+        if(msgId.longValue>_maxMessageId.longValue) {
+            newMessages = YES;
+            _maxMessageId = msgId;
+        }
         // Tags for image tap
         chatView.messageImage.tag = i;
         chatView.messageImageSelf.tag = i;
@@ -364,19 +373,18 @@
     // Updating our scroll view
     if(isConversation) {
         // Will be 0 for the first display of view
-        if( _newMessageReceived || addedHeight+_loaderView.bounds.size.height == _totalHeight) {
+        if( newMessages || addedHeight+_loaderView.bounds.size.height == _totalHeight) {
             CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
             if(bottomOffset.y>0) {
-                [scrollView setContentOffset:bottomOffset animated:(addedHeight>0 && !isInitialLoad)];
+                [scrollView setContentOffset:bottomOffset animated:((addedHeight>0 || newMessages) && !isInitialLoad)];
             }
         } else {
             // Otherwise we only shift by added height
             [scrollView setContentOffset:CGPointMake(0, scrollView.contentOffset.y+addedHeight) animated:NO];
         }
-    } else if(_newMessageReceived) {
+    } else if(newMessages) {
         [scrollView setContentOffset:CGPointMake(0, 0) animated:YES];
     }
-    _newMessageReceived = NO;
     // Updating page
     _currentPage = MAX(_currentPage, page);
     
@@ -655,7 +663,6 @@
     [self refreshContents];
 }
 -(void)pushNotificationReceived:(NSNotification*)notification {
-    _newMessageReceived = YES;
     [self refreshContents];
 }
 - (void)refreshContents {
