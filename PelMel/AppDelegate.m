@@ -109,11 +109,14 @@ static BOOL isStarted;
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-//    User *currentUser = [[TogaytherService userService] getCurrentUser];
-//    [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
     if(!isStarted) {
         isStarted = YES;
     } else {
+        // Downloading messages for proper count display
+        User *currentUser = [[TogaytherService userService] getCurrentUser];
+        [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+
+        // Refreshing places data
         [[TogaytherService dataService] setCurrentRadius:0];
         if([[TogaytherService dataService] modelHolder].places.count>0) {
             [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
