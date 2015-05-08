@@ -46,7 +46,7 @@
     
     // Appearance
     [TogaytherService applyCommonLookAndFeel:self];
-    self.navigationController.navigationBar.translucent=NO;
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
@@ -84,6 +84,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
+    self.navigationController.navigationBar.translucent=NO;
     self.tableView.estimatedRowHeight = 52;
     self.tableView.rowHeight = UITableViewAutomaticDimension;
 }
@@ -130,6 +131,8 @@
         [self presentObject:obj];
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
         [cell setSelected:NO animated:YES];
+        [_defaults setObject:[NSNumber numberWithBool:YES] forKey:[self activitySeenKey:activity]];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
     }
 }
@@ -154,6 +157,8 @@
     cell.leftImage.layer.borderColor = [[[TogaytherService uiService] colorForObject:sourceObject] CGColor];
     cell.leftImage.image = [CALImage getDefaultUserThumb];
     cell.leftActionCallback = ^{
+        [_defaults setObject:[NSNumber numberWithBool:YES] forKey:[self activitySeenKey:activity]];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:kSectionActivities]] withRowAnimation:UITableViewRowAnimationNone];
         [self presentObject:sourceObject];
     };
     CALImage *image = [[TogaytherService imageService] imageOrPlaceholderFor:sourceObject allowAdditions:NO];
@@ -164,6 +169,8 @@
     cell.rightImage.layer.borderColor = [[UIColor whiteColor] CGColor];
     cell.rightImage.image = [CALImage getDefaultThumb];
     cell.rightActionCallback = ^{
+        [_defaults setObject:[NSNumber numberWithBool:YES] forKey:[self activitySeenKey:activity]];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:row inSection:kSectionActivities]] withRowAnimation:UITableViewRowAnimationNone];
         [self presentObject:activityObject];
     };
     CALImage *placeImage = [[TogaytherService imageService] imageOrPlaceholderFor:activityObject allowAdditions:NO];
@@ -182,16 +189,39 @@
     // Activity text
     NSString *template = [NSString stringWithFormat:@"activity.detail.%@",_activityStatistic.activityType];
     NSString *localizedTemplate = NSLocalizedString(template, template);
+    
+
+    
+    NSString *text = nil;
     if(activity.activitiesCount.intValue == 0) {
-        cell.activityText.text = [NSString stringWithFormat:localizedTemplate,[DisplayHelper getName:sourceObject],[DisplayHelper getName:activityObject]];
+        text = [NSString stringWithFormat:localizedTemplate,[DisplayHelper getName:sourceObject],[DisplayHelper getName:activityObject]];
     } else {
         if(activity.activitiesCount.intValue==1) {
             template = [template stringByAppendingString:@".singular"];
         }
         localizedTemplate = NSLocalizedString(template, template);
         NSString *countString = [NSString stringWithFormat:localizedTemplate,[DisplayHelper getName:sourceObject],activity.activitiesCount.intValue];
-        cell.activityText.text = countString;
+        text = countString;
     }
+    
+    // Define general attributes for the entire text
+    NSDictionary *attribs = @{
+                              NSForegroundColorAttributeName: cell.activityText.textColor,
+                              NSFontAttributeName: [UIFont fontWithName:PML_FONT_DEFAULT size:cell.activityText.font.pointSize]
+                              };
+    // Configuring attributed text
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:text
+                                                            attributes:attribs];
+    NSRange sourceRange = [text rangeOfString:[DisplayHelper getName:sourceObject]];
+    NSRange targetRange = [text rangeOfString:[DisplayHelper getName:activityObject]];
+    if(sourceRange.location != NSNotFound) {
+        [attributedText setAttributes:@{NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT_BOLD size:cell.activityText.font.pointSize]} range:sourceRange];
+    }
+    if(targetRange.location != NSNotFound) {
+        [attributedText setAttributes:@{NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT_BOLD size:cell.activityText.font.pointSize]} range:targetRange];
+    }
+    cell.activityText.attributedText = attributedText;
+    
 //    [cell layoutIfNeeded];
     CGSize size = [cell.activityText sizeThatFits:CGSizeMake(cell.activityText.bounds.size.width+additionalWidth, MAXFLOAT)];
     cell.activityTextHeightConstraint.constant = MAX(cell.activityText.bounds.size.height,size.height);
@@ -254,49 +284,7 @@
     CGSize fitSize = [cell.loadingLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width, cell.loadingLabel.bounds.size.height)];
     cell.loadingWidthConstraint.constant = fitSize.width;
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 #pragma mark - ActivitiesCallback
 - (void)activityFetched:(NSArray *)activities {
     _activities = activities;

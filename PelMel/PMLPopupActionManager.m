@@ -292,6 +292,8 @@
         if(property != nil) {
             PBWebViewController *webviewController= [[PBWebViewController alloc] init];
             webviewController.URL = [[NSURL alloc] initWithString:property.propertyValue];
+            [TogaytherService applyCommonLookAndFeel:[_uiService menuManagerController]];
+            ((UINavigationController*)[_uiService menuManagerController].currentSnippetViewController).navigationBar.translucent=NO;
 //            [[TogaytherService uiService] menuManagerController ].navigationController.navigationBar.translucent=NO;
             
             [_uiService presentController:webviewController];

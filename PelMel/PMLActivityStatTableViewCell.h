@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *activityHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *activityLeftMarginConstraint;
 @property (retain, nonatomic) MKNumberBadgeView *badgeView;
+@property (weak, nonatomic) IBOutlet UIImageView *activityImageBackground;
 
 - (void)showBadge:(BOOL)visible;
 @end

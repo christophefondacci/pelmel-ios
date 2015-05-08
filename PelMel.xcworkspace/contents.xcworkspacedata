@@ -17,6 +17,12 @@
       location = "group:PacificGrill.gpx">
    </FileRef>
    <FileRef
+      location = "group:downtownLA.gpx">
+   </FileRef>
+   <FileRef
+      location = "group:castroSF.gpx">
+   </FileRef>
+   <FileRef
       location = "group:PelMel.xcodeproj">
    </FileRef>
    <FileRef

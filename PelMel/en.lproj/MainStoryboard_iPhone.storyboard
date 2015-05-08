@@ -4026,13 +4026,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="statCell" rowHeight="51" id="Drl-2I-tVo" customClass="PMLActivityStatTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="statCell" rowHeight="59" id="Drl-2I-tVo" customClass="PMLActivityStatTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Drl-2I-tVo" id="ECq-07-Cgo">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6C-YF-jPM">
-                                            <rect key="frame" x="56" y="5" width="231" height="19"/>
+                                            <rect key="frame" x="65" y="5" width="222" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="19" id="1Wm-R0-qyn"/>
                                             </constraints>
@@ -4041,10 +4041,13 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VC7-0c-8f2">
-                                            <rect key="frame" x="8" y="5" width="40" height="40"/>
+                                            <rect key="frame" x="8" y="5" width="47" height="47"/>
                                             <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bgPhotoFrame3" translatesAutoresizingMaskIntoConstraints="NO" id="Mto-n7-YgT">
+                                                    <rect key="frame" x="0.0" y="0.0" width="47" height="47"/>
+                                                </imageView>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0E5-bq-e3E">
-                                                    <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                    <rect key="frame" x="4" y="2" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="0Qg-88-jUE"/>
                                                         <constraint firstAttribute="width" constant="40" id="zB5-Au-nUd"/>
@@ -4059,19 +4062,19 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="J65-BZ-X6l"/>
-                                                <constraint firstAttribute="width" constant="40" id="RmU-S8-WO8"/>
+                                                <constraint firstAttribute="height" constant="47" id="J65-BZ-X6l"/>
+                                                <constraint firstAttribute="width" constant="47" id="RmU-S8-WO8"/>
                                                 <constraint firstAttribute="centerX" secondItem="0E5-bq-e3E" secondAttribute="centerX" id="Rqb-ZA-a5P"/>
-                                                <constraint firstAttribute="centerY" secondItem="0E5-bq-e3E" secondAttribute="centerY" id="n2V-pY-xE7"/>
+                                                <constraint firstAttribute="centerY" secondItem="0E5-bq-e3E" secondAttribute="centerY" constant="2" id="n2V-pY-xE7"/>
                                             </constraints>
                                         </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="VC7-0c-8f2" firstAttribute="leading" secondItem="ECq-07-Cgo" secondAttribute="leading" constant="8" id="7mv-3z-iD3"/>
                                         <constraint firstAttribute="trailing" secondItem="w6C-YF-jPM" secondAttribute="trailing" priority="999" id="NnZ-f8-Vga"/>
-                                        <constraint firstItem="w6C-YF-jPM" firstAttribute="leading" secondItem="ECq-07-Cgo" secondAttribute="leading" constant="56" id="YME-1M-7Jb"/>
+                                        <constraint firstItem="w6C-YF-jPM" firstAttribute="leading" secondItem="ECq-07-Cgo" secondAttribute="leading" constant="65" id="YME-1M-7Jb"/>
                                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="w6C-YF-jPM" secondAttribute="bottom" constant="5" id="aLV-c6-tQv"/>
                                         <constraint firstItem="VC7-0c-8f2" firstAttribute="top" secondItem="ECq-07-Cgo" secondAttribute="top" constant="5" id="bbS-E2-gTg"/>
                                         <constraint firstItem="w6C-YF-jPM" firstAttribute="top" secondItem="ECq-07-Cgo" secondAttribute="top" constant="5" id="g8G-qV-IZm"/>
@@ -4082,6 +4085,7 @@
                                 <connections>
                                     <outlet property="activityHeightConstraint" destination="1Wm-R0-qyn" id="597-4a-G7E"/>
                                     <outlet property="activityImage" destination="0E5-bq-e3E" id="MZ4-li-uk8"/>
+                                    <outlet property="activityImageBackground" destination="Mto-n7-YgT" id="hGn-8D-W7w"/>
                                     <outlet property="activityImageContainer" destination="VC7-0c-8f2" id="4Pe-uk-X8x"/>
                                     <outlet property="activityLeftMarginConstraint" destination="YME-1M-7Jb" id="CUJ-nk-Ozh"/>
                                     <outlet property="activityTitle" destination="w6C-YF-jPM" id="rBk-a5-bJQ"/>
@@ -4101,7 +4105,7 @@
                                                 <constraint firstAttribute="width" constant="174" id="UWF-Rq-RZp"/>
                                                 <constraint firstAttribute="height" constant="19" id="nnP-3f-qXV"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="11"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -4309,6 +4313,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="bgPhotoFrame3" width="47" height="47"/>
         <image name="chat.png" width="30" height="30"/>
         <image name="chatButtonAddPhoto" width="30" height="30"/>
         <image name="edtArrowLeft" width="24" height="24"/>
@@ -4337,10 +4342,10 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="54f-Lu-DMh"/>
         <segue reference="eKE-7K-Ihn"/>
         <segue reference="enc-VM-87F"/>
         <segue reference="fnn-3s-KqK"/>
-        <segue reference="hk5-7z-xvn"/>
         <segue reference="hap-7x-4U2"/>
     </inferredMetricsTieBreakers>
 </document>

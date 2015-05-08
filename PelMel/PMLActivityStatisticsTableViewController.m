@@ -119,6 +119,12 @@
     PMLActivityStatistic *stat = [_dataService.modelHolder.activityStats objectAtIndex:row];
     NSString *locKey = [NSString stringWithFormat:@"activity.%@",stat.activityType];
     cell.activityTitle.text = [_uiService localizedString:locKey forCount:stat.totalCount];
+    // Displaying background photo frames "stack" only when multiple images
+    if(stat.totalCount<=1) {
+        cell.activityImageBackground.hidden=YES;
+    } else {
+        cell.activityImageBackground.hidden=NO;
+    }
     cell.activityImage.image = [[CALImage defaultNoPhotoCalImage] thumbImage];
     [_imageService load:stat.statImage to:cell.activityImage thumb:YES];
     

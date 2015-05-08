@@ -71,6 +71,7 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
+    self.navigationController.navigationBar.translucent=NO;
 }
 /*
 #pragma mark - Navigation
