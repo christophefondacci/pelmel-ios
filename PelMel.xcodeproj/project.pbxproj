@@ -279,6 +279,8 @@
 		B4AA0A611AFACBB800DCDE29 /* PMLPhotoLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4AA0A601AFACBB800DCDE29 /* PMLPhotoLoadingView.xib */; };
 		B4AA0A641AFACCC100DCDE29 /* PMLPhotoLoadingView.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A621AFACCC100DCDE29 /* PMLPhotoLoadingView.h */; };
 		B4AA0A651AFACCC100DCDE29 /* PMLPhotoLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A631AFACCC100DCDE29 /* PMLPhotoLoadingView.m */; };
+		B4AA0A681AFD159300DCDE29 /* PMLMessageCacheEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A661AFD159300DCDE29 /* PMLMessageCacheEntry.h */; };
+		B4AA0A691AFD159300DCDE29 /* PMLMessageCacheEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A671AFD159300DCDE29 /* PMLMessageCacheEntry.m */; };
 		B4AC8ED9168C795C002E8381 /* MessageService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AC8ED8168C795C002E8381 /* MessageService.m */; };
 		B4B1FCF819E012BD0068894C /* NSString+HTML.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B1FCF619E012BD0068894C /* NSString+HTML.h */; };
 		B4B1FCF919E012BD0068894C /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B1FCF719E012BD0068894C /* NSString+HTML.m */; };
@@ -704,6 +706,8 @@
 		B4AA0A601AFACBB800DCDE29 /* PMLPhotoLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLPhotoLoadingView.xib; sourceTree = "<group>"; };
 		B4AA0A621AFACCC100DCDE29 /* PMLPhotoLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPhotoLoadingView.h; sourceTree = "<group>"; };
 		B4AA0A631AFACCC100DCDE29 /* PMLPhotoLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPhotoLoadingView.m; sourceTree = "<group>"; };
+		B4AA0A661AFD159300DCDE29 /* PMLMessageCacheEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLMessageCacheEntry.h; sourceTree = "<group>"; };
+		B4AA0A671AFD159300DCDE29 /* PMLMessageCacheEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLMessageCacheEntry.m; sourceTree = "<group>"; };
 		B4AC8ED7168C795C002E8381 /* MessageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageService.h; sourceTree = "<group>"; };
 		B4AC8ED8168C795C002E8381 /* MessageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageService.m; sourceTree = "<group>"; };
 		B4B1FCF619E012BD0068894C /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
@@ -1382,6 +1386,8 @@
 				B4A47D271AE078F2000178BD /* PMLProperty.m */,
 				B4AA0A3C1AF2E31C00DCDE29 /* PMLActivityStatistic.h */,
 				B4AA0A3D1AF2E31C00DCDE29 /* PMLActivityStatistic.m */,
+				B4AA0A661AFD159300DCDE29 /* PMLMessageCacheEntry.h */,
+				B4AA0A671AFD159300DCDE29 /* PMLMessageCacheEntry.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1707,6 +1713,7 @@
 				B45CAB3A197278590089C7E8 /* UIMenuOpenBehavior.h in Headers */,
 				B4BB9F0C19D4F9260070B03C /* HPGrowingTextView.h in Headers */,
 				B405E65E1A93B71600C49F64 /* PMLCalendar.h in Headers */,
+				B4AA0A681AFD159300DCDE29 /* PMLMessageCacheEntry.h in Headers */,
 				B4E8292918A9EE530063715C /* MainMenuTableViewController.h in Headers */,
 				B4AA0A571AFABB7100DCDE29 /* PMLPhotosCollectionViewController.h in Headers */,
 				B49C97261AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.h in Headers */,
@@ -1971,6 +1978,7 @@
 				B4D56086160B673F003A738E /* AppDelegate.m in Sources */,
 				B49F98A019A2131100BD3B2F /* PMLDynamicActionObject.m in Sources */,
 				B4859DC91984BAD60036D8FF /* UITouchBehavior.m in Sources */,
+				B4AA0A691AFD159300DCDE29 /* PMLMessageCacheEntry.m in Sources */,
 				B4859DCF1984C39B0036D8FF /* UITextInputView.m in Sources */,
 				B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */,
 				B42F544019873CC200C2371F /* MKNewPlaceAnnotationView.m in Sources */,

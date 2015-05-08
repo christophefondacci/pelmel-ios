@@ -41,6 +41,7 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 @property (nonatomic) long maxActivityId;
 @property (nonatomic) BOOL pushEnabled;
 @property (nonatomic) int unreadMessageCount;
+@property (strong,nonatomic) NSCache *messageCache;
 
 // Gets the list of messages exchanged with this user
 -(void)getMessagesWithUser:(NSString*)userKey messageCallback:(id<MessageCallback>)callback;

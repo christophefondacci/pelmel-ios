@@ -14,6 +14,7 @@
 #import "NSData+Conversion.h"
 #import "PMLActivityStatistic.h"
 #import <AFNetworking/AFNetworking.h>
+#import "PMLMessageCacheEntry.h"
 
 //#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
 //#define kMyMessagesListUrlFormat @"%@/mobileMyMessages?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
@@ -38,6 +39,8 @@
 #define kTopQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
 #define kSettingMaxActivityId @"activity.maxId"
+
+#define kCacheKeyMessages @"allMessages"
 
 @implementation MessageService {
 
@@ -68,6 +71,7 @@
         uploadMessagesMap = [[NSMutableDictionary alloc] init];
         _unreadMessageCount = 0;
         _messageCallbacks = [[NSMutableArray alloc] init];
+        _messageCache = [[NSCache alloc] init];
     }
     return self;
 }
@@ -105,12 +109,23 @@
 - (void)getMessagesWithUser:(NSString *)userKey messageCallback:(id<MessageCallback>)callback {
     [self getMessagesWithUser:userKey messageCallback:callback page:0];
 }
+- (NSString*)cacheKeyFor:(NSString*)userKey page:(NSInteger)page {
+    return [NSString stringWithFormat:@"%@.%d",userKey,page];
+}
 - (void)getMessagesWithUser:(NSString *)userKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page{
     // Getting current user and some device settings
     CurrentUser *user = userService.getCurrentUser;
     if(user == nil) {
         return;
     }
+    
+    // Getting cache information
+    PMLMessageCacheEntry *cacheEntry = [_messageCache objectForKey:[self cacheKeyFor:userKey page:page]];
+    if(cacheEntry != nil) {
+        // Immediate callback (but we still make the query)
+        [callback messagesFetched:cacheEntry.messages totalCount:cacheEntry.totalCount page:cacheEntry.page pageSize:cacheEntry.pageSize];
+    }
+    
     
     // Preparing params
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
@@ -220,6 +235,14 @@
         // Switching
         calMessages = filteredArray;
     }
+    // Storing cache
+    PMLMessageCacheEntry *cacheEntry =  [[PMLMessageCacheEntry alloc] init];
+    cacheEntry.messages = calMessages;
+    cacheEntry.totalCount = [totalMsgCount integerValue];
+    cacheEntry.page = [page integerValue];
+    cacheEntry.pageSize = [pageSize integerValue];
+    [_messageCache setObject:cacheEntry forKey:[self cacheKeyFor:userKey page:[page integerValue]]];
+    
     // Now invoking callback
     dispatch_async(dispatch_get_main_queue(), ^{
         [callback messagesFetched:calMessages totalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
