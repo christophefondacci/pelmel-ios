@@ -12,8 +12,9 @@
 #import "DataService.h"
 #import "PMLThumbCollectionViewController.h"
 #import "PMLMenuManagerController.h"
+#import "PMLEventPlaceTabsTitleView.h"
 
-@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, KIImagePagerDataSource, PMLThumbsCollectionViewActionDelegate, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate, PMLUserCallback>
+@interface PMLSnippetTableViewController : UITableViewController <PMLDataListener, KIImagePagerDataSource, PMLThumbsCollectionViewActionDelegate, KIImagePagerDelegate, UITextFieldDelegate, UITextViewDelegate, PMLSnippetDelegate, PMLUserCallback,PMLEventPlaceTabsDelegate>
 
 @property (weak,nonatomic) CALObject *snippetItem;
 

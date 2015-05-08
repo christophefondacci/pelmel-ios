@@ -197,7 +197,7 @@
 }
 -(BOOL)calendarType:(NSString*)calendarType isCurrentFor:(Place*)place noDataResult:(BOOL)defaultResult {
     BOOL hasData = NO;
-    for(PMLCalendar *calendar in place.hours) {
+    for(PMLCalendar *calendar in [place.hours copy]) {
         if([calendar.calendarType isEqualToString:calendarType]) {
             hasData = YES;
             // Get the current mode PAST, CURRENT or SOON

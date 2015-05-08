@@ -39,6 +39,7 @@
 #import "PMLSnippetEditTableViewCell.h"
 #import "PMLPropertyTableViewCell.h"
 #import "PMLWebViewController.h"
+#import "PMLEventPlaceTabsTitleView.h"
 #import <MBProgressHUD.h>
 #import <PBWebViewController.h>
 
@@ -176,6 +177,8 @@ typedef enum {
     PMLSnippetEditTableViewCell *_snippetEditCell;
     
     // Headers
+    PMLEventPlaceTabsTitleView *_eventPlaceTabsTitleView;
+    PMLTab _activeTab;
     PMLSectionTitleView *_sectionTitleView;
     PMLSectionTitleView *_sectionLocalizationTitleView;
     PMLSectionTitleView *_sectionSummaryTitleView;
@@ -251,11 +254,16 @@ typedef enum {
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowReportButtonId];
     // Loading header views
+    _eventPlaceTabsTitleView = (PMLEventPlaceTabsTitleView*)[_uiService loadView:@"PMLEventPlaceTabsTitleView"];
+    _eventPlaceTabsTitleView.delegate = self;
     _sectionTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionLocalizationTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionSummaryTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionTopPlacesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionActivityTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    
+    // Tab selection
+    [self updateTab];
     
     // Animation init
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
@@ -413,10 +421,14 @@ typedef enum {
             case kPMLSectionActivity:
                 return [[_infoProvider activities] count];
             case kPMLSectionTopPlaces:
-                return [[_infoProvider topPlaces] count];
+                return 0;//[[_infoProvider topPlaces] count];
             case kPMLSectionOvEvents:
-                if([_infoProvider respondsToSelector:@selector(events)]) {
-                    return [[_infoProvider events] count];
+                if(_activeTab == PMLTabEvents) {
+                    if([_infoProvider respondsToSelector:@selector(events)]) {
+                        return [[_infoProvider events] count];
+                    }
+                } else {
+                    return [[_infoProvider topPlaces] count];
                 }
                 break;
         }
@@ -451,10 +463,14 @@ typedef enum {
         case kPMLSectionLocalization:
             return kPMLRowEventId;
         case kPMLSectionOvEvents:
-            if(indexPath.row<[[_infoProvider events] count]) {
-                return kPMLRowEventId;
-            } else {
-                return kPMLRowAddEventId;
+            if(_snippetItem != nil || (_snippetItem == nil && _activeTab == PMLTabEvents)) {
+                if(indexPath.row<[[_infoProvider events] count]) {
+                    return kPMLRowEventId;
+                } else {
+                    return kPMLRowAddEventId;
+                }
+            } else if(_activeTab==PMLTabPlaces) {
+                return @"topPlace";
             }
             break;
         case kPMLSectionOvSummary:
@@ -566,10 +582,14 @@ typedef enum {
             }
             break;
         case kPMLSectionOvEvents:
-            if(indexPath.row < [[_infoProvider events] count]) {
-                [self configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
-            } else {
-                [self configureRowOvAddEvent:(PMLButtonTableViewCell*)cell];
+            if(_snippetItem != nil || (_snippetItem == nil && _activeTab==PMLTabEvents)) {
+                if(indexPath.row < [[_infoProvider events] count]) {
+                    [self configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
+                } else {
+                    [self configureRowOvAddEvent:(PMLButtonTableViewCell*)cell];
+                }
+            } else if(_activeTab == PMLTabPlaces) {
+                [self configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:indexPath.row];
             }
             break;
         case kPMLSectionOvDesc:
@@ -648,10 +668,14 @@ typedef enum {
         case kPMLSectionOvHappyHours:
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvEvents:
-            if(indexPath.row<[[_infoProvider events] count]) {
-                return kPMLHeightOvEventRows;
-            } else {
-                return kPMLHeightOvAddEventRow;
+            if(_snippetItem!=nil || (_snippetItem==nil && _activeTab == PMLTabEvents)) {
+                if(indexPath.row<[[_infoProvider events] count]) {
+                    return kPMLHeightOvEventRows;
+                } else {
+                    return kPMLHeightOvAddEventRow;
+                }
+            } else if(_activeTab == PMLTabPlaces) {
+                return 80;
             }
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
@@ -706,7 +730,11 @@ typedef enum {
                 NSString *sectionTitle = [_infoProvider eventsSectionTitle];
                 if(sectionTitle!=nil) {
                     [_sectionTitleView setTitle:sectionTitle];
-                    return _sectionTitleView;
+                    if(_snippetItem!=nil) {
+                        return _sectionTitleView;
+                    } else {
+                        return _eventPlaceTabsTitleView;
+                    }
                 }
             }
             return nil;
@@ -742,8 +770,9 @@ typedef enum {
             return _sectionSummaryTitleView;
         }
         case kPMLSectionTopPlaces:
-            [_sectionTopPlacesTitleView setTitleLocalized:@"snippet.header.topPlaces"];
-            return _sectionTopPlacesTitleView;
+//            [_sectionTopPlacesTitleView setTitleLocalized:@"snippet.header.topPlaces"];
+//            return _sectionTopPlacesTitleView;
+            return nil;
         case kPMLSectionActivity:
             [_sectionActivityTitleView setTitleLocalized:@"snippet.header.activities"];
             return _sectionActivityTitleView;
@@ -799,15 +828,16 @@ typedef enum {
             case kPMLSectionActivity:
                 return [[_infoProvider activities] count ]>0 ? kPMLHeightActivityHeader : 0;
             case kPMLSectionTopPlaces:
-                if([[_infoProvider topPlaces] count ]>0) {
-                    return kPMLHeightTopPlacesHeader;
-                } else {
+//                if([[_infoProvider topPlaces] count ]>0) {
+//                    return kPMLHeightTopPlacesHeader;
+//                } else {
                     return 0;
-                }
+//                }
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
                     if([_infoProvider eventsSectionTitle]!=nil && [[_infoProvider events] count]>0) {
-                        return _sectionTitleView.bounds.size.height;
+//                        return _sectionTitleView.bounds.size.height;
+                        return _eventPlaceTabsTitleView.bounds.size.height;
                     }
                 }
                 return 0;
@@ -894,11 +924,15 @@ typedef enum {
             break;
         }
         case kPMLSectionOvEvents:
-            if(indexPath.row == [[_infoProvider events] count]) {
-                [self addEventTapped];
-            } else {
-                Event *event = [[_infoProvider events] objectAtIndex:indexPath.row];
-                [self pushSnippetFor:event];
+            if(_snippetItem != nil || (_snippetItem==nil && _activeTab == PMLTabEvents)) {
+                if(indexPath.row == [[_infoProvider events] count]) {
+                    [self addEventTapped];
+                } else {
+                    Event *event = [[_infoProvider events] objectAtIndex:indexPath.row];
+                    [self pushSnippetFor:event];
+                }
+            } else if(_activeTab == PMLTabPlaces) {
+                [self topPlaceTapped:indexPath.row];
             }
             break;
         case kPMLSectionReport: {
@@ -1717,6 +1751,7 @@ typedef enum {
     [self clearObservers];
     _snippetItem = snippetItem;
     _infoProvider = [TogaytherService.uiService infoProviderFor:_snippetItem];
+    [self updateTab];
     _hoursTypeMap = [_conversionService hashHoursByType:snippetItem];
     if(_snippetItem != nil) {
         [_dataService getOverviewData:_snippetItem];
@@ -1730,6 +1765,18 @@ typedef enum {
     [_observedProperties addObject:@"editingDesc"];
     [self.snippetItem addObserver:self forKeyPath:@"address" options:NSKeyValueObservingOptionNew context:NULL];
     [_observedProperties addObject:@"address"];
+}
+-(void)updateTab {
+    if([_infoProvider respondsToSelector:@selector(events)]) {
+        if([[_infoProvider events] count]>0) {
+            _activeTab = PMLTabEvents;
+        } else {
+            _activeTab = PMLTabPlaces;
+        }
+    } else {
+        _activeTab = PMLTabPlaces;
+    }
+    [_eventPlaceTabsTitleView setActiveTab:_activeTab];
 }
 - (void)didLike:(CALObject *)likedObject newLikes:(int)likeCount newDislikes:(int)dislikesCount liked:(BOOL)liked {
     [self.tableView reloadData];
@@ -2056,6 +2103,27 @@ typedef enum {
 }
 - (PMLPopupActionManager *)actionManager {
     return _actionManager;
+}
+#pragma mark - PMLEventPlaceTabsDelegate
+- (BOOL)eventsTabTapped {
+    if([_infoProvider respondsToSelector:@selector(events)]) {
+        if([[_infoProvider events] count]>0) {
+            _activeTab = PMLTabEvents;
+            [self.tableView reloadData];
+            return YES;
+        }
+    }
+    return NO;
+    
+}
+
+- (BOOL)placesTabTapped {
+    if([[_infoProvider topPlaces] count]>0) {
+        _activeTab = PMLTabPlaces;
+        [self.tableView reloadData];
+        return YES;
+    }
+    return NO;
 }
 
 @end
