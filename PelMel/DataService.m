@@ -204,7 +204,7 @@
         
         NSString *url = [[NSString alloc] initWithFormat:template,togaytherServer, location.coordinate.latitude, location.coordinate.longitude, user.token, retina ? @"true" : @"false",searchLat,searchLng];
         if(searchTerm != nil) {
-            NSString *encodedSearchTerm = [DataService urlencode:searchTerm];
+            NSString *encodedSearchTerm = [DataService urlencode:[searchTerm stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
             url = [NSString stringWithFormat:@"%@&searchText=%@",url,encodedSearchTerm];
         }
         if(parent!=nil) {

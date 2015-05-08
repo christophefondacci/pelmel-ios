@@ -107,9 +107,9 @@
             [_menuController presentControllerSnippet:snippetController];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET_EVENTS object:self];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_REFRESH_TIMER object:self];
-        });
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_REFRESH_TIMER object:self];
+//        });
         // Displays a warning if filters are active
         double delay = 2;
         if(![[TogaytherService settingsService] allFiltersActive]) {

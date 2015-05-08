@@ -4164,16 +4164,16 @@
                                             </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kqf-Jo-CG3">
-                                            <rect key="frame" x="56" y="8" width="208" height="19"/>
+                                            <rect key="frame" x="63" y="6" width="201" height="18"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="19" id="dOm-fi-4LO"/>
+                                                <constraint firstAttribute="height" constant="18" id="dOm-fi-4LO"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 hours ago" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gct-qt-hNZ">
-                                            <rect key="frame" x="56" y="31" width="208" height="17"/>
+                                            <rect key="frame" x="63" y="28" width="201" height="17"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="17" id="SDt-8c-m6B"/>
                                             </constraints>
@@ -4210,10 +4210,10 @@
                                         </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="Kqf-Jo-CG3" firstAttribute="leading" secondItem="bxy-th-qRF" secondAttribute="trailing" constant="8" id="0Y4-ql-WSm"/>
-                                        <constraint firstItem="Kqf-Jo-CG3" firstAttribute="top" secondItem="mfa-Qh-y0M" secondAttribute="top" constant="8" id="214-8X-6mN"/>
+                                        <constraint firstItem="Kqf-Jo-CG3" firstAttribute="leading" secondItem="bxy-th-qRF" secondAttribute="trailing" constant="15" id="0Y4-ql-WSm"/>
+                                        <constraint firstItem="Kqf-Jo-CG3" firstAttribute="top" secondItem="mfa-Qh-y0M" secondAttribute="top" constant="6" id="214-8X-6mN"/>
                                         <constraint firstItem="rlV-VK-0eb" firstAttribute="top" secondItem="mfa-Qh-y0M" secondAttribute="top" constant="6" id="3Nj-b9-P8l"/>
-                                        <constraint firstAttribute="bottom" secondItem="gct-qt-hNZ" secondAttribute="bottom" constant="3" id="6qh-P6-WIr"/>
+                                        <constraint firstAttribute="bottom" secondItem="gct-qt-hNZ" secondAttribute="bottom" constant="6" id="6qh-P6-WIr"/>
                                         <constraint firstItem="bxy-th-qRF" firstAttribute="leading" secondItem="mfa-Qh-y0M" secondAttribute="leading" constant="8" id="9l4-8y-5fT"/>
                                         <constraint firstAttribute="trailing" secondItem="rlV-VK-0eb" secondAttribute="trailing" constant="8" id="CmJ-90-A1F"/>
                                         <constraint firstItem="Kqf-Jo-CG3" firstAttribute="trailing" secondItem="gct-qt-hNZ" secondAttribute="trailing" id="MnG-UQ-WaZ"/>

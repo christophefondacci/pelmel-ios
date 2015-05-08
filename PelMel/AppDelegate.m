@@ -115,8 +115,11 @@ static BOOL isStarted;
         isStarted = YES;
     } else {
         [[TogaytherService dataService] setCurrentRadius:0];
-        [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
-        [[TogaytherService dataService] fetchNearbyPlaces];
+        if([[TogaytherService dataService] modelHolder].places.count>0) {
+            [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
+            [[TogaytherService dataService] fetchNearbyPlaces];
+        }
+
     }
 
 }

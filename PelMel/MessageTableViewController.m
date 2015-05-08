@@ -71,13 +71,13 @@
     if([userDefaults objectForKey:@"pushProposedForMessages"] == nil) {
         [userDefaults setObject:@"Done" forKey:@"pushProposedForMessages"];
         [messageService handlePushNotificationProposition:^(BOOL pushActive) {
-            if(!pushActive) {
-                NSString *title = NSLocalizedString(@"push.refused.title",@"");
-                NSString *message = NSLocalizedString(@"push.refused.msg",@"");
-                NSString *yes = NSLocalizedString(@"push.yes",@"");
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:yes otherButtonTitles:nil,nil];
-                [alert show];
-            }
+//            if(!pushActive) {
+//                NSString *title = NSLocalizedString(@"push.refused.title",@"");
+//                NSString *message = NSLocalizedString(@"push.refused.msg",@"");
+//                NSString *yes = NSLocalizedString(@"push.yes",@"");
+//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:yes otherButtonTitles:nil,nil];
+//                [alert show];
+//            }
         }];
     }
     // Displaying wait message and animation

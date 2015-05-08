@@ -1055,4 +1055,5 @@
     }
     _lastAuthorizationStatus = status;
 }
+
 @end
