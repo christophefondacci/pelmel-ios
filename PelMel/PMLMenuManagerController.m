@@ -26,7 +26,7 @@
 #import "SpringTransitioningDelegate.h"
 #import "PMLSnippetTableViewController.h"
 #import "PMLActivityStatisticsTableViewController.h"
-
+#import "PMLBannerEditorTableViewController.h"
 
 @interface PMLMenuManagerController ()
 @property (nonatomic, strong) SpringTransitioningDelegate *transitioningDelegate;
@@ -714,6 +714,8 @@ static void *MyParentMenuControllerKey;
         if(snippetCtrl.snippetItem.editing) {
             snippetHeight = kSnippetEditHeight;
         }
+    } else if([topMostChildController isKindOfClass:[PMLBannerEditorTableViewController class]] ) {
+        snippetHeight = kSnippetEditHeight;
     }
     
     CGRect myFrame = self.view.frame;

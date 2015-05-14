@@ -271,15 +271,7 @@
     }
     NSString *url = [[NSString alloc] initWithFormat:template,togaytherServer];
 
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:currentUser.token forKey:@"nxtpUserToken"];
-    if(isComment) {
-        [params setObject:message forKey:@"comment"];
-        [params setObject:object.key forKey:@"commentItemKey"];
-    } else {
-        [params setObject:object.key forKey:@"to"];
-        [params setObject:message forKey:@"msgText"];
-    }
+
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [_uiService reportProgress:(float)0.05f];
     AFHTTPRequestOperation *operation = [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -390,12 +382,12 @@
     
     [params setObject:user.token forKey:kParamToken];
     CLLocation *location = [[[TogaytherService dataService] modelHolder] userLocation];
-    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:kParamLat];
-    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:kParamLng];
+    [params setObject:[NSString stringWithFormat:@"%.5f",location.coordinate.latitude] forKey:kParamLat];
+    [params setObject:[NSString stringWithFormat:@"%.5f",location.coordinate.longitude] forKey:kParamLng];
     [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSLog(@"%@?nxtpUserToken=%@&lat=%f&lng=%f",url,user.token,user.lat,user.lng);
+    NSLog(@"%@?nxtpUserToken=%@&lat=%.5f&lng=%.5f",url,user.token,user.lat,user.lng);
     
     [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
@@ -487,8 +479,8 @@
     
     CLLocation *location = [[[TogaytherService dataService] modelHolder] userLocation];
     [params setObject:user.token forKey:kParamToken];
-    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:kParamLat];
-    [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:kParamLng];
+    [params setObject:[NSString stringWithFormat:@"%.5f",location.coordinate.latitude] forKey:kParamLat];
+    [params setObject:[NSString stringWithFormat:@"%.5f",location.coordinate.longitude] forKey:kParamLng];
     [params setObject:(isHd ? @"true" : @"false") forKey:kParamRetina];
     [params setObject:statActivityType forKey:kParamStatActivityType];
     

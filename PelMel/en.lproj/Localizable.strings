@@ -6,6 +6,9 @@
   Copyright (c) 2012 Christophe Fondacci. All rights reserved.
 */
 "account.button"="Account";
+"action.add.sheetTitle"="What do you want to add?";
+"action.add.place"="Add a place";
+"action.add.banner"="Create an ad banner";
 "action.attend"="Attend";
 "action.attend.cancel"="Cancel";
 "action.attend.feedbackMessage"="Other users will be able to see that you will be at this event!";
@@ -82,6 +85,7 @@
 "activity.K_PLAC"="%d guys checked in";
 "activity.O_PLAC"="%d new comments";
 "activity.I_EVNT"="%d guys have said they will attend to an event";
+"activity.U_EVNT"="%d events updated";
 "activity.MDIA_CREATION"="%d new photos have been uploaded";
 "activity.R_USER"="%d nearby users joined PELMEL!";
 "activity.EVNT_CREATION"="%d events were added";
@@ -107,7 +111,8 @@
 "activity.detail.EVNT_CREATION"="%@ has added event %@";
 "activity.detail.PLAC_CREATION"="%@ has added place %@";
 "activity.detail.O_PLAC"="%@ has commented place %@";
-
+"activity.detail.U_EVNT"="%@ has updated event %@";
+"banner.url.placeholder"="Landing URL";
 "barButton.list"="List";
 "calendar.daily"="Daily";
 "calendar.days"="Days of week";

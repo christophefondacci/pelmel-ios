@@ -10,6 +10,7 @@
 #import "MapViewController.h"
 #import "PMLMapPopupViewController.h"
 #import "TogaytherService.h"
+#import <MBProgressHUD.h>
 
 #define kPMLActionSheetCancel 0
 #define kPMLActionSheetSubmit 1
@@ -43,7 +44,12 @@ static PMLPopupEditor *_newObjectEditor;
         _dataService = TogaytherService.dataService;
     }
     return self;
+
 }
++ (instancetype)editorFor:(CALObject *)editedObject {
+    return [self editorFor:editedObject on:[[[TogaytherService uiService] menuManagerController] rootViewController]];
+}
+
 + (instancetype)editorFor:(CALObject *)editedObject on:(MapViewController *)mapViewController {
     PMLPopupEditor *editor = nil;
     if(editedObject.key != nil) {
@@ -61,7 +67,11 @@ static PMLPopupEditor *_newObjectEditor;
     }
     editor.editedObject = editedObject;
 //    editor.mapAnnotation = annotation;
-    editor.mapViewController = mapViewController;
+    if(mapViewController != nil) {
+        editor.mapViewController = mapViewController;
+    } else if(editor.mapViewController==nil) {
+        editor.mapViewController = [[[TogaytherService uiService] menuManagerController] rootViewController];
+    }
 
     return editor;
 }
@@ -172,12 +182,35 @@ static PMLPopupEditor *_newObjectEditor;
     }
 }
 - (void)submitEdition {
-    [_dataService updatePlace:(Place*)self.editedObject callback:^(Place *place) {
-        // Applying any commit action
-        for(EditionAction action in self.pendingConfirmActions) {
-            action();
-        }
-        [self endEdition];
-    }];
+    if([self.editedObject isKindOfClass:[Place class]]) {
+        [_dataService updatePlace:(Place*)self.editedObject callback:^(Place *place) {
+            [self applyCommitActions];
+        }];
+    } else if([self.editedObject isKindOfClass:[PMLBanner class]]) {
+        [_dataService updateBanner:(PMLBanner*)self.editedObject callback:^(PMLBanner *banner) {
+            [self applyCommitActions];
+            [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+
+        } failure:^(PMLBanner *banner) {
+            [self applyCancelActions];
+            [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+
+        }];
+    }
+}
+
+-(void)applyCommitActions {
+    // Applying any commit action
+    for(EditionAction action in self.pendingConfirmActions) {
+        action();
+    }
+    [self endEdition];
+}
+-(void)applyCancelActions {
+    // Applying any commit action
+    for(EditionAction action in self.pendingCancelActions) {
+        action();
+    }
+    [self endEdition];
 }
 @end

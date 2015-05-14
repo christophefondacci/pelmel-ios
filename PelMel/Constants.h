@@ -43,6 +43,7 @@
 #define SB_ID_ACTIVITY_STAT @"activityStats"
 #define SB_ID_ACTIVITY_DETAILS @"activityDetails"
 #define SB_ID_PHOTOS_COLLECTION @"photosCollectionView"
+#define SB_ID_BANNER_EDITOR @"bannerEditor"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 

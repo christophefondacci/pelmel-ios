@@ -81,6 +81,12 @@
 		B43123AA1ACDB141008EF107 /* Arrow.m in Sources */ = {isa = PBXBuildFile; fileRef = B43123A81ACDB141008EF107 /* Arrow.m */; };
 		B43123AD1ACDBDFB008EF107 /* PMLHelpService.h in Headers */ = {isa = PBXBuildFile; fileRef = B43123AB1ACDBDFB008EF107 /* PMLHelpService.h */; };
 		B43123AE1ACDBDFB008EF107 /* PMLHelpService.m in Sources */ = {isa = PBXBuildFile; fileRef = B43123AC1ACDBDFB008EF107 /* PMLHelpService.m */; };
+		B43143EE1B0270E900B189BA /* PMLBanner.h in Headers */ = {isa = PBXBuildFile; fileRef = B43143EC1B0270E900B189BA /* PMLBanner.h */; };
+		B43143EF1B0270E900B189BA /* PMLBanner.m in Sources */ = {isa = PBXBuildFile; fileRef = B43143ED1B0270E900B189BA /* PMLBanner.m */; };
+		B43143F31B0296A900B189BA /* PMLBannerEditorTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B43143F11B0296A900B189BA /* PMLBannerEditorTableViewCell.h */; };
+		B43143F41B0296A900B189BA /* PMLBannerEditorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B43143F21B0296A900B189BA /* PMLBannerEditorTableViewCell.m */; };
+		B43143F81B02987B00B189BA /* PMLBannerEditorTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B43143F61B02987B00B189BA /* PMLBannerEditorTableViewController.h */; };
+		B43143F91B02987B00B189BA /* PMLBannerEditorTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B43143F71B02987B00B189BA /* PMLBannerEditorTableViewController.m */; };
 		B43805B91A1D870100736051 /* PMLImagedTitleTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */; };
 		B43805BA1A1D870100736051 /* PMLImagedTitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */; };
 		B43D116F1A97A12B008476C7 /* DynamicDismissalAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = B43D11671A97A12B008476C7 /* DynamicDismissalAnimator.h */; };
@@ -493,6 +499,12 @@
 		B43123A81ACDB141008EF107 /* Arrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Arrow.m; sourceTree = "<group>"; };
 		B43123AB1ACDBDFB008EF107 /* PMLHelpService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLHelpService.h; sourceTree = "<group>"; };
 		B43123AC1ACDBDFB008EF107 /* PMLHelpService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLHelpService.m; sourceTree = "<group>"; };
+		B43143EC1B0270E900B189BA /* PMLBanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLBanner.h; sourceTree = "<group>"; };
+		B43143ED1B0270E900B189BA /* PMLBanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBanner.m; sourceTree = "<group>"; };
+		B43143F11B0296A900B189BA /* PMLBannerEditorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLBannerEditorTableViewCell.h; sourceTree = "<group>"; };
+		B43143F21B0296A900B189BA /* PMLBannerEditorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBannerEditorTableViewCell.m; sourceTree = "<group>"; };
+		B43143F61B02987B00B189BA /* PMLBannerEditorTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLBannerEditorTableViewController.h; sourceTree = "<group>"; };
+		B43143F71B02987B00B189BA /* PMLBannerEditorTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBannerEditorTableViewController.m; sourceTree = "<group>"; };
 		B43805B71A1D870100736051 /* PMLImagedTitleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLImagedTitleTableViewCell.h; sourceTree = "<group>"; };
 		B43805B81A1D870100736051 /* PMLImagedTitleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLImagedTitleTableViewCell.m; sourceTree = "<group>"; };
 		B43D11671A97A12B008476C7 /* DynamicDismissalAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDismissalAnimator.h; sourceTree = "<group>"; };
@@ -934,6 +946,24 @@
 			name = Help;
 			sourceTree = "<group>";
 		};
+		B43143F01B02968C00B189BA /* Advertising */ = {
+			isa = PBXGroup;
+			children = (
+				B43143F11B0296A900B189BA /* PMLBannerEditorTableViewCell.h */,
+				B43143F21B0296A900B189BA /* PMLBannerEditorTableViewCell.m */,
+			);
+			name = Advertising;
+			sourceTree = "<group>";
+		};
+		B43143F51B02986100B189BA /* Advertising */ = {
+			isa = PBXGroup;
+			children = (
+				B43143F61B02987B00B189BA /* PMLBannerEditorTableViewController.h */,
+				B43143F71B02987B00B189BA /* PMLBannerEditorTableViewController.m */,
+			);
+			name = Advertising;
+			sourceTree = "<group>";
+		};
 		B4322E39198DE1DF0037E260 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -1297,6 +1327,7 @@
 		B4D560B4160C9555003A738E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B43143F51B02986100B189BA /* Advertising */,
 				B4AA0A591AFABDCD00DCDE29 /* Activities */,
 				B43E76231997661B00153B46 /* Controls */,
 				B4322E39198DE1DF0037E260 /* Framework */,
@@ -1394,6 +1425,8 @@
 				B4AA0A3D1AF2E31C00DCDE29 /* PMLActivityStatistic.m */,
 				B4AA0A661AFD159300DCDE29 /* PMLMessageCacheEntry.h */,
 				B4AA0A671AFD159300DCDE29 /* PMLMessageCacheEntry.m */,
+				B43143EC1B0270E900B189BA /* PMLBanner.h */,
+				B43143ED1B0270E900B189BA /* PMLBanner.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1432,6 +1465,7 @@
 		B4D560DA16105B16003A738E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B43143F01B02968C00B189BA /* Advertising */,
 				B4AA0A481AF3F56500DCDE29 /* Activity */,
 				B431239C1ACDA49B008EF107 /* Help */,
 				B457A0F71A9AEFB000207D8E /* Event */,
@@ -1628,6 +1662,7 @@
 				B4A47D301AE0852F000178BD /* PMLWebViewController.h in Headers */,
 				B406CA43197D0F8300A7FFE2 /* PMLPlaceAnnotationView.h in Headers */,
 				B43D11791A97A603008476C7 /* UIImage+ImageEffects.h in Headers */,
+				B43143F81B02987B00B189BA /* PMLBannerEditorTableViewController.h in Headers */,
 				B4BB9F1219D7E8840070B03C /* PMLCityInfoProvider.h in Headers */,
 				B4A4667019A7518E004ADC7E /* PMLUserInfoProvider.h in Headers */,
 				B4FC959219B1F12400269E74 /* PMLCountersTableViewCell.h in Headers */,
@@ -1647,6 +1682,7 @@
 				B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */,
 				B45CAB3219721BD40089C7E8 /* DynamicObject.h in Headers */,
 				B4FC958A19B1EFAC00269E74 /* PMLSnippetTableViewCell.h in Headers */,
+				B43143F31B0296A900B189BA /* PMLBannerEditorTableViewCell.h in Headers */,
 				B470F429199D800500A03CAD /* KIImagePager.h in Headers */,
 				B49F98A319A2186300BD3B2F /* PMLOpenActionBehavior.h in Headers */,
 				B43D11711A97A12B008476C7 /* LinearDismissalAnimator.h in Headers */,
@@ -1683,6 +1719,7 @@
 				B457A1121A9D93D200207D8E /* PMLFakeViewController.h in Headers */,
 				B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */,
 				B43123AD1ACDBDFB008EF107 /* PMLHelpService.h in Headers */,
+				B43143EE1B0270E900B189BA /* PMLBanner.h in Headers */,
 				B4AA0A461AF2EFB100DCDE29 /* PMLActivityStatisticsTableViewController.h in Headers */,
 				B4AA0A4F1AF81C2A00DCDE29 /* PMLActivityDetailTableViewCell.h in Headers */,
 				B47A69D11AA764CE00877B58 /* PMLHorizontalFlowLayout.h in Headers */,
@@ -1989,6 +2026,7 @@
 				B4D56086160B673F003A738E /* AppDelegate.m in Sources */,
 				B49F98A019A2131100BD3B2F /* PMLDynamicActionObject.m in Sources */,
 				B4859DC91984BAD60036D8FF /* UITouchBehavior.m in Sources */,
+				B43143EF1B0270E900B189BA /* PMLBanner.m in Sources */,
 				B4AA0A691AFD159300DCDE29 /* PMLMessageCacheEntry.m in Sources */,
 				B4859DCF1984C39B0036D8FF /* UITextInputView.m in Sources */,
 				B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */,
@@ -2069,6 +2107,7 @@
 				B4270E1D19F631B700620773 /* PMLUserActionsView.m in Sources */,
 				B4A47D251AE06071000178BD /* PMLPhotoPickerPreviewViewController.m in Sources */,
 				B40668B419713AF20012DF71 /* MenuAction.m in Sources */,
+				B43143F91B02987B00B189BA /* PMLBannerEditorTableViewController.m in Sources */,
 				B4592A8C1623090A009688B8 /* UIInteractiveLabel.m in Sources */,
 				B449DEE216245B6600C362F8 /* ImageService.m in Sources */,
 				B457A0F61A9AA01300207D8E /* PMLButtonTableViewCell.m in Sources */,
@@ -2114,6 +2153,7 @@
 				B4AA0A651AFACCC100DCDE29 /* PMLPhotoLoadingView.m in Sources */,
 				B405E6751A9542AB00C49F64 /* PMLTimePickerDataSource.m in Sources */,
 				B452FC21169C45F100596D9E /* Tag.m in Sources */,
+				B43143F41B0296A900B189BA /* PMLBannerEditorTableViewCell.m in Sources */,
 				B4A290BC16A6BB03007F5AA9 /* TogaytherHeaderView.m in Sources */,
 				B4A290BF16A6C49C007F5AA9 /* UITableNoResultViewCell.m in Sources */,
 				B45CAB3B197278590089C7E8 /* UIMenuOpenBehavior.m in Sources */,

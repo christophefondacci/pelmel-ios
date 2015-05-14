@@ -19,12 +19,18 @@
 #import "MKNumberBadgeView.h"
 #import "PMLInfoProvider.h"
 #import "PMLHelpOverlayView.h"
+#import "PMLBanner.h"
+#import "PMLBannerEditorTableViewController.h"
 
 @import QuartzCore;
 
 #define kPMLMinimumPlacesForZoom 3
 
+#define kActionPlace 0
+#define kActionBanner 1
+#define kActionCancel 2
 
+#define kEditRange 10.0f
 
 @interface MapViewController ()
 
@@ -48,6 +54,8 @@
     BOOL newPointReady;
     Place *_editedPlace;
     UIImageView *_editedPlaceView;
+    PMLBanner *_editedBanner;
+    UIView *_editedRange;
     
     CALObject *_parentObject;
     
@@ -239,8 +247,17 @@
 -(void)initializeMenuActions {
     // Providing our menu action (add content)
     _menuAddAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnAdd"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
-        CLLocationCoordinate2D coords = _mapView.centerCoordinate;
-        [self addPlaceAtLatitude:coords.latitude longitude:coords.longitude];
+        
+        // Ask the user what to create
+        NSString *title= NSLocalizedString(@"action.add.sheetTitle","cancel");
+        NSString *cancel= NSLocalizedString(@"cancel","cancel");
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"action.add.place", "Place")];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"action.add.banner", "Banner")];
+        [actionSheet addButtonWithTitle:cancel];
+        actionSheet.cancelButtonIndex = kActionCancel;
+        [actionSheet showInView:self.view];
+
     }];
     _menuAddAction.rightMargin=5;
     _menuAddAction.bottomMargin=160;
@@ -288,6 +305,15 @@
     CLLocation *cornerLoc = [[CLLocation alloc] initWithLatitude:cornerCoords.latitude longitude:cornerCoords.longitude];
     CLLocationDistance distance = [centerLoc distanceFromLocation:cornerLoc];
     return distance;
+}
+-(CLLocationDistance)distanceForMapWidth {
+    CLLocationCoordinate2D leftCornerCoords = [_mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:_mapView];
+    CLLocationCoordinate2D rightCornerCoords = [_mapView convertPoint:CGPointMake(self.mapView.bounds.size.width, 0) toCoordinateFromView:_mapView];
+    CLLocation *leftLoc = [[CLLocation alloc] initWithLatitude:leftCornerCoords.latitude longitude:leftCornerCoords.longitude];
+    CLLocation *rightLoc = [[CLLocation alloc] initWithLatitude:rightCornerCoords.latitude longitude:rightCornerCoords.longitude];
+    CLLocationDistance distance = [leftLoc distanceFromLocation:rightLoc];
+    return distance;
+    
 }
 -(void)updateMap {
     // First updating annotations because we might need them to compute initial zoom
@@ -461,28 +487,28 @@
             // Adding annotation to our list
             [_placeAnnotations addObject:annotation];
         }
-        
-
-//    } else if([annotation.annotationView isKindOfClass:[PMLPlaceAnnotationView class]]) {
-//        [((PMLPlaceAnnotationView*)annotation.annotationView) updateData];
     }
 
     return annotation;
 }
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
 
-//
-//- (void)setCentralObject:(CALObject *)centralObject {
-//    _centralObject = centralObject;
-//    if([TogaytherService.uiService isIpad:self]) {
-//        [self updateMap];
-//    }
-//}
-//- (void)setCenter:(CLLocationCoordinate2D)center {
-//    _center = center;
-//    if([TogaytherService.uiService isIpad:self]) {
-//        [self updateMap];
-//    }
-//}
+    switch(buttonIndex) {
+        case kActionPlace: {
+            CLLocationCoordinate2D coords = _mapView.centerCoordinate;
+            [self addPlaceAtLatitude:coords.latitude longitude:coords.longitude];
+            break;
+        }
+        case kActionBanner: {
+            CLLocationCoordinate2D coords = _mapView.centerCoordinate;
+            [_dataService createBannerAtLatitude:coords.latitude longitude:coords.longitude forPlace:nil];
+            break;
+        }
+        case kActionCancel:
+            break;
+    }
+}
 
 #pragma mark - MKMapViewDelegate
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
@@ -698,6 +724,15 @@
         _editedPlaceView.frame = CGRectMake(mapCenter.x-CGRectGetWidth(frame)/2, mapCenter.y-CGRectGetHeight(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
         // Geocoding
         [self geocodePlaceAddress:_editedPlace];
+    } else if(_editedBanner != nil) {
+        // Setting lat/lng to map center
+        CLLocationCoordinate2D coords = [_mapView convertPoint:_editedRange.center toCoordinateFromView:_editedRange.superview];
+        _editedBanner.lat = coords.latitude;
+        _editedBanner.lng = coords.longitude;
+        
+        if(_editedRange != nil) {
+            [self updateEditedRange];
+        }
     }
 }
 
@@ -788,6 +823,7 @@
         [_uiService presentSnippetFor:_editedPlace opened:NO];
     }
 }
+
 -(void)geocodePlaceAddress:(Place*)place {
     [_conversionService reverseGeocodeAddressFor:place completion:^(NSString *address) {
         [place setAddress:address];
@@ -892,7 +928,38 @@
 -(void)objectCreated:(CALObject *)object {
     if([object isKindOfClass:[Place class]]) {
         [self editPlaceLocation:(Place*)object centerMapOnPlace:NO];
-     }
+    } else if([object isKindOfClass:[PMLBanner class]]) {
+        PMLPopupEditor *editor = [PMLPopupEditor editorFor:object on:self];
+        [editor startEditionWith:^{
+            [_editedRange removeFromSuperview];
+            _editedRange = nil;
+            _editedBanner = nil;
+        } cancelledBy:^{
+            [_editedRange removeFromSuperview];
+            _editedRange = nil;
+            _editedBanner = nil;
+
+        } mapEdition:NO];
+
+        _editedBanner = (PMLBanner*)object;
+        
+        // Creating range
+        if(_editedRange != nil) {
+            [_editedRange removeFromSuperview];
+        }
+        _editedRange = [[UIView alloc] init ];
+        _editedRange.layer.borderColor = [[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1] CGColor];
+        _editedRange.layer.borderWidth = 2;
+        _editedRange.layer.masksToBounds=YES;
+        _editedRange.userInteractionEnabled = NO;
+        _editedRange.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:0.4f];
+        [self.mapView addSubview:_editedRange] ; //] belowSubview:_editedPlaceView];
+        [self updateEditedRange];
+        
+        // Instantiating editor and displaying as a snippet
+        PMLBannerEditorTableViewController *bannerController = (PMLBannerEditorTableViewController*)[_uiService instantiateViewController:SB_ID_BANNER_EDITOR];
+        [_uiService presentSnippet:bannerController opened:NO root:YES];
+    }
     
 }
 - (void)didUpdatePlace:(Place *)place {
@@ -929,15 +996,8 @@
         [_editedPlaceView removeFromSuperview];
         _editedPlaceView = nil;
     } mapEdition:NO];
-
     
-    // Placing view
-    _editedPlaceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mapPinNewPlace"]];
-    CGRect imgFrame = CGRectMake(0, 0, 40, 40);
-    _editedPlaceView.bounds=imgFrame;
     CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
-    
-    
     if(!centerMap) {
         // Making sure place is at the center of map, altering place to be at map center
         CLLocationCoordinate2D coords = _mapView.centerCoordinate;
@@ -949,7 +1009,6 @@
     } else {
         // Otherwise we center the map on the place
         CLLocationCoordinate2D coords = CLLocationCoordinate2DMake(place.lat, place.lng);
-//        [_mapView setCenterCoordinate:coords animated:NO];
         _mapView.centerCoordinate = coords;
         if(place.key != nil) {
             MapAnnotation *ann = [_annotationsKeyMap objectForKey:place.key];
@@ -962,31 +1021,33 @@
     // Showing snippet
     [_uiService presentSnippetFor:place opened:NO];
     
-
-    _editedPlaceView.frame = CGRectMake(self.mapView.center.x-CGRectGetWidth(imgFrame)/2,mapCenter.y-CGRectGetHeight(imgFrame), CGRectGetWidth(imgFrame), CGRectGetHeight(imgFrame));
-    [self.mapView addSubview:_editedPlaceView];
+    // Adding central edition pin
+    [self addCentralPin];
     
     // Registering for map region change updates
     _editedPlace = place;
 }
-#pragma mark - UserLoginCallback
-//- (void)authenticationFailed:(NSString *)reason {
-//    [self performSegueWithIdentifier:@"login" sender:self];
-//}
-//- (void)dataLoginFailed {
-//    [_userService authenticateWithLastLogin:self];
-//}
-//-(void)initDataAfterLogin {
-//    [_dataService fetchPlacesFor:_parentObject];
-//}
-//- (void)userAuthenticated:(CurrentUser *)user {
-//    [self initDataAfterLogin];
-//}
 
--(void)searchText:(id)sender {
+-(void)addCentralPin {
+    CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
     
+    // Placing view
+    _editedPlaceView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"mapPinNewPlace"]];
+    CGRect imgFrame = CGRectMake(0, 0, 40, 40);
+    _editedPlaceView.bounds=imgFrame;
+    _editedPlaceView.frame = CGRectMake(self.mapView.center.x-CGRectGetWidth(imgFrame)/2,mapCenter.y-CGRectGetHeight(imgFrame), CGRectGetWidth(imgFrame), CGRectGetHeight(imgFrame));
+    [self.mapView addSubview:_editedPlaceView];
 }
-
+-(void)updateEditedRange {
+    CLLocationDistance dist = [self distanceForMapWidth];
+    double milesRadius = dist/1609.344f;
+    double milesPerPixels = milesRadius / (double)self.mapView.bounds.size.width;
+    double pixelsRadius = kEditRange / milesPerPixels;
+    
+    CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
+    _editedRange.frame = CGRectMake(mapCenter.x - pixelsRadius/2, mapCenter.y-pixelsRadius/2-kSnippetEditHeight/2, pixelsRadius, pixelsRadius);
+    _editedRange.layer.cornerRadius = pixelsRadius/2;
+}
 #pragma mark - KVO observing
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if([object isKindOfClass:[PMLMenuManagerController class]]) {

@@ -67,7 +67,7 @@
         </view>
     </objects>
     <resources>
-        <image name="bgTab" width="7" height="32"/>
-        <image name="bgTabDisabled" width="10" height="32"/>
+        <image name="bgTab" width="185" height="33"/>
+        <image name="bgTabDisabled" width="185" height="33"/>
     </resources>
 </document>

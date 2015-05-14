@@ -15,6 +15,7 @@
 #import "MessageService.h"
 #import "JsonService.h"
 #import "SizedTTLCacheService.h"
+#import "PMLBanner.h"
 
 @class AFNetworkReachabilityManager;
 
@@ -72,16 +73,18 @@ typedef enum {
 typedef void (^OverviewCompletionBlock)(CALObject*overviewObject);
 
 typedef void (^UpdatePlaceCompletionBlock)(Place *place );
+typedef void (^UpdateBannerCompletionBlock)(PMLBanner *banner );
 typedef void (^UpdateCalendarCompletionBlock)(PMLCalendar *calendar );
 typedef void (^UpdateEventCompletionBlock)(Event *calendar );
 typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage );
 
 @interface DataService : NSObject <CLLocationManagerDelegate>
 
-@property (strong, nonatomic) UserService *userService;
-@property (strong, nonatomic) ImageService *imageService;
-@property (strong, nonatomic) MessageService *messageService;
-@property (strong, nonatomic) JsonService *jsonService;
+@property (strong, nonatomic) UserService       *userService;
+@property (strong, nonatomic) ImageService      *imageService;
+@property (strong, nonatomic) MessageService    *messageService;
+@property (strong, nonatomic) JsonService       *jsonService;
+@property (strong, nonatomic) UIService         *uiService;
 @property (copy, nonatomic) NSString *searchTerm;
 @property (strong, nonatomic) AFNetworkReachabilityManager *reachabilityManager;
 @property (strong) ModelHolder *modelHolder;
@@ -147,9 +150,12 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 
 // Place update
 -(void)updatePlace:(Place*)place callback:(UpdatePlaceCompletionBlock)callback;
-
+// Banner update
+-(void)updateBanner:(PMLBanner*)banner callback:(UpdateBannerCompletionBlock)callback failure:(UpdateBannerCompletionBlock)failureCallback ;
 // Place creation
 - (void)createPlaceAtLatitude:(double)latitude longitude:(double)longitude;
+// Banner creation
+- (void)createBannerAtLatitude:(double)latitude longitude:(double)longitude forPlace:(Place*)place;
 
 -(void)cancelRunningProcesses;
 

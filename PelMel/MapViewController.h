@@ -21,7 +21,7 @@ typedef enum {
     PMLZoomUpdateFitResults         // Zoom fit new results
 } PMLZoomUpdateType;
 
-@interface MapViewController : UIViewController <MKMapViewDelegate,PMLDataListener, PMLUserCallback, UITextFieldDelegate,SettingsListener,CLLocationManagerDelegate>
+@interface MapViewController : UIViewController <MKMapViewDelegate,PMLDataListener, PMLUserCallback, UITextFieldDelegate,SettingsListener,CLLocationManagerDelegate, UIActionSheetDelegate>
 
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UILabel *warningLabel;

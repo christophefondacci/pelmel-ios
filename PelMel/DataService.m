@@ -19,6 +19,8 @@
 #import "NSString+HTML.h"
 #import <AFNetworking.h>
 #import "PMLPopupEditor.h"
+#import "PMLBanner.h"
+
 
 #define kPlaceListUrlFormat @"%@/mapPlaces.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&searchLat=%f&searchLng=%f"
 #define kEventListUrlFormat @"%@/mobileEvents.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
@@ -28,6 +30,7 @@
 #define kOverviewUserUrlFormat @"%@/api/user"
 #define kLikeUrlFormat @"%@/mobileIlike?id=%@&nxtpUserToken=%@&type=%@"
 #define kPlaceUpdateUrlFormat @"%@/mobileUpdatePlace"
+#define kBannerUpdateUrlFormat @"%@/mobileUpdateBanner"
 #define kCalendarUpdateUrlFormat @"%@/mobileUpdateEvent"
 #define kCalendarDeleteUrlFormat @"%@/mobileDeleteEvent"
 #define kReportAbuseUrl @"%@/mobileReport?key=%@&nxtpUserToken=%@&type=%d"
@@ -853,8 +856,62 @@
         }];
         
     });
+    
 }
+-(void)updateBanner:(PMLBanner*)banner callback:(UpdateBannerCompletionBlock)callback failure:(UpdateBannerCompletionBlock)failureCallback {
 
+    // Building server URL for banner update
+    NSString *url = [NSString stringWithFormat:kBannerUpdateUrlFormat,togaytherServer];
+    CurrentUser *user = [userService getCurrentUser];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [_uiService reportProgress:(float)0.05f];
+    AFHTTPRequestOperation *operation = [manager POST:url parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        if(banner.mainImage!=nil) {
+            NSData *imageData = UIImageJPEGRepresentation(banner.mainImage.fullImage, 1.0);
+            NSString *fileParam = @"media";
+            [formData appendPartWithFileData:imageData
+                                        name:fileParam
+                                    fileName:@"bannerImg" mimeType:@"image/jpeg"];
+        }
+        [formData appendPartWithFormData:[user.token dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:@"nxtpUserToken"];
+        [formData appendPartWithFormData:[([TogaytherService isRetina] ? @"true" : @"false") dataUsingEncoding:NSUTF8StringEncoding]   name:@"highRes"];
+        if(banner.key != nil) {
+            [formData appendPartWithFormData:[banner.key dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:@"bannerKey"];
+        }
+        if(banner.targetObject!=nil) {
+            [formData appendPartWithFormData:[banner.targetObject.key dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:@"targetItemKey"];
+        }
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%f",banner.lat] dataUsingEncoding:NSUTF8StringEncoding]   name:@"lat"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%f",banner.lng] dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:@"lng"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%f",[banner.radius doubleValue]]dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:@"radius"];
+        [formData appendPartWithFormData:[[NSString stringWithFormat:@"%ld",(long)banner.targetDisplayCount] dataUsingEncoding:NSUTF8StringEncoding]
+                                    name:@"targetDisplayCount"];
+    } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        banner.key = [((NSDictionary*)responseObject) objectForKey:@"key"];
+        callback(banner);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(failureCallback!=NULL) {
+            failureCallback(banner);
+        }
+    }];
+    
+    [_uiService reportProgress:(float)0.1f];
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        double progressPct = (double)totalBytesWritten/(double)totalBytesExpectedToWrite;
+        [_uiService reportProgress:0.1f+0.5f*(float)progressPct];
+    }];
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        double progressPct = (double)totalBytesRead/(double)totalBytesExpectedToRead;
+        [_uiService reportProgress:0.6f+0.4f*(float)progressPct];
+    }];
+
+}
 - (void)createPlaceAtLatitude:(double)latitude longitude:(double)longitude {
     // Building place
     Place *newPlace = [[Place alloc] init];
@@ -868,7 +925,16 @@
         [self notifyObjectCreated:newPlace];
     });
 }
-
+- (void)createBannerAtLatitude:(double)latitude longitude:(double)longitude forPlace:(Place *)place {
+    PMLBanner *banner = [[PMLBanner alloc] init];
+    banner.targetObject = place;
+    banner.lat = latitude;
+    banner.lng = longitude;
+    // Sending request
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self notifyObjectCreated:banner];
+    });
+}
 - (CALObject *)objectForKey:(NSString *)key {
     CALObject *object = [overviewCache objectForKey:key];
     if(object == nil) {

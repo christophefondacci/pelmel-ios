@@ -83,6 +83,7 @@
 "activity.K_PLAC"="%d mecs ont fait un checkin";
 "activity.O_PLAC"="%d nouveaux commentaires";
 "activity.I_EVNT"="%d mecs ont indiqué venir à un évènement";
+"activity.U_EVNT"="%d évènements mis à jour";
 "activity.MDIA_CREATION"="%d nouvelles photos ont été téléchargées";
 "activity.R_USER"="%d mecs autour de vous ont rejoint PELMEL !";
 "activity.EVNT_CREATION"="%d évènements ajoutés";
@@ -104,11 +105,13 @@
 "activity.detail.K_PLAC"="%@ a fait un checkin à %@";
 "activity.detail.I_EVNT"="%@ participera à %@";
 "activity.detail.I_EVNT.singular"="%@ participera à %@";
+"activity.detail.U_EVNT"="%@ has updated event %@";
+"activity.detail.U_EVNT.singular"="%@ has updated event %@";
 "activity.detail.R_USER"="%@ a rejoint PELMEL !";
 "activity.detail.EVNT_CREATION"="%@ a ajouté l'évènement %@";
 "activity.detail.PLAC_CREATION"="%@ a ajouté le lieu %@";
 "activity.detail.O_PLAC"="%@ a commenté le lieu %@";
-
+"banner.url.placeholder"="URL de destination";
 "barButton.list"="Liste";
 "calendar.daily"="Tous les jours";
 "calendar.days"="Jours de semaine";
@@ -327,11 +330,11 @@
 "push.refused.title"="C'est vous le chef";
 "push.refused.msg"="Ok, on ne vous demandera plus. Au cas où vous changeriez d'avis, vous pouvez activer/désactiver le push depuis les paramètres du menu en bas à gauche.";
 "push.disabled.registerSuccessTitle"="Push désactivé";
-"push.disabled.registerSuccess"="Les notifications PUSH ont été désactivées.";
+"push.disabled.registerSuccess"="Les notifications PUSH ont été désactivées. Vous pouvez les réactiver depuis le menu paramètre (bouton en haut à gauche, puis paramètres).";
 "push.registerFailedTitle"="Erreur Push";
 "push.registerFailed"="Une erreur est survenue lors de la tentative d'enregistrement de votre appareil pour les notifications push.";
 "push.registerSuccessTitle"="Push activé";
-"push.registerSuccess"="Les notifications PUSH ont été activées.";
+"push.registerSuccess"="Les notifications PUSH ont été activées. Vous pouvez les désactiver depuis le menu paramètre (bouton en haut à gauche, puis paramètres).";
 
 "push.yes"="Oui";
 "push.no"="Pas maintenant";

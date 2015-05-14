@@ -13,6 +13,7 @@
 #import "MessageService.h"
 #import "PMLMenuManagerController.h"
 #import "PMLSnippetTableViewController.h"
+#import "PMLBannerEditorTableViewController.h"
 
 #define CONFIG_FILE_NAME @"PelMel-config"
 
@@ -62,6 +63,7 @@
     _dataService.imageService= [TogaytherService imageService];
     _dataService.messageService = [TogaytherService getMessageService];
     _dataService.jsonService = [TogaytherService getJsonService];
+    _dataService.uiService = _uiService;
     
     
     // Injecting user services
@@ -120,7 +122,7 @@
     return _messageService;
 }
 + (void)applyCommonLookAndFeel:(UIViewController *)controller {
-    if([controller isKindOfClass:[PMLMenuManagerController class]] || [controller isKindOfClass:[PMLSnippetTableViewController class]]) {
+    if([controller isKindOfClass:[PMLMenuManagerController class]] || [controller isKindOfClass:[PMLSnippetTableViewController class]] || [controller isKindOfClass:[PMLBannerEditorTableViewController class]]) {
         controller.edgesForExtendedLayout = UIRectEdgeAll;
     } else {
         controller.edgesForExtendedLayout = UIRectEdgeNone;

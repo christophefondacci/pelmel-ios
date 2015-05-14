@@ -28,6 +28,7 @@ typedef void(^EditionAction)();
 @property (nonatomic) BOOL editing;
 
 + (instancetype)editorFor:(CALObject*)editedObject on:(MapViewController*)mapViewController;
++ (instancetype)editorFor:(CALObject *)editedObject;
 +(void)purgeEditors;
 -(void)cancel;
 -(void)commit;
