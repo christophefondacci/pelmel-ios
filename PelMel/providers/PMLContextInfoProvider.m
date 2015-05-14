@@ -149,15 +149,7 @@
     return _modelHolder.activities;
 }
 - (NSArray *)topPlaces {
-    int topPlacesCount = MIN((int)_modelHolder.places.count,10);
-    if(topPlacesCount>0) {
-        NSRange range;
-        range.location = 0;
-        range.length=topPlacesCount;
-        return [_modelHolder.places subarrayWithRange:range];;
-    } else {
-        return nil;
-    }
+    return _modelHolder.places;
 }
 
 - (NSObject<PMLThumbsPreviewProvider> *)likesThumbsProviderAtIndex:(NSInteger)row {

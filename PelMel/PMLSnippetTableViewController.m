@@ -470,7 +470,7 @@ typedef enum {
                     return kPMLRowAddEventId;
                 }
             } else if(_activeTab==PMLTabPlaces) {
-                return @"topPlace";
+                return kPMLRowEventId;
             }
             break;
         case kPMLSectionOvSummary:
@@ -506,7 +506,7 @@ typedef enum {
         case kPMLSectionActivity:
             return kPMLRowActivityId;
         case kPMLSectionTopPlaces:
-            return @"topPlace";
+            return kPMLRowEventId;
         case kPMLSectionReport:
             return kPMLRowReportButtonId;
 
@@ -589,7 +589,7 @@ typedef enum {
                     [self configureRowOvAddEvent:(PMLButtonTableViewCell*)cell];
                 }
             } else if(_activeTab == PMLTabPlaces) {
-                [self configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:indexPath.row];
+                [self configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
             }
             break;
         case kPMLSectionOvDesc:
@@ -675,7 +675,7 @@ typedef enum {
                     return kPMLHeightOvAddEventRow;
                 }
             } else if(_activeTab == PMLTabPlaces) {
-                return 80;
+                return kPMLHeightOvEventRows;
             }
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
@@ -1407,45 +1407,35 @@ typedef enum {
     cell.activityTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
     cell.activitySubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:12];
 }
--(void)configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:(NSInteger)row {
+-(void)configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
     Place *place = [[_infoProvider topPlaces] objectAtIndex:row];
-    cell.activityTitleLabel.text = place.title;
+    cell.dateLabel.text = place.title;
+    cell.titleLabel.text = [[[TogaytherService settingsService] getPlaceType:place.placeType] label];
     
     // Subtitle (like count)
-    cell.activitySubtitleLabel.text = [_uiService localizedString:@"counters.likes" forCount:place.likeCount];
-    CGSize size = [cell.activitySubtitleLabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
-    cell.widthSubtitleLabelConstraint.constant = size.width;
+    cell.countIcon.image = [UIImage imageNamed:@"snpIconLikeWhite"];
+    cell.countLabel.text = [_uiService localizedString:@"counters.likes" forCount:place.likeCount];
+    cell.locationLabel.text = place.cityName;
     
-    // Checkins count
-    if(place.inUserCount>0) {
-        cell.checkinLabel.text = [_uiService localizedString:@"counters.arehere" forCount:place.inUserCount];
-        cell.checkinImageView.image = [UIImage imageNamed:@"snpIconMarker"];
-    } else {
-        cell.checkinImageView.image = nil;
-        cell.checkinLabel.text = nil;
-    }
-    // Setting city
-    cell.cityLabel.text = place.cityName;
-    size = [cell.cityLabel sizeThatFits:CGSizeMake(MAXFLOAT, MAXFLOAT)];
-    cell.widthCityLabelConstraint.constant = size.width;
+//    // Checkins count
+//    if(place.inUserCount>0) {
+//        cell.checkinLabel.text = [_uiService localizedString:@"counters.arehere" forCount:place.inUserCount];
+//        cell.checkinImageView.image = [UIImage imageNamed:@"snpIconMarker"];
+//    } else {
+//        cell.checkinImageView.image = nil;
+//        cell.checkinLabel.text = nil;
+//    }
     
     // Setting distance
-    NSString *distance = [_conversionService distanceTo:place];
-    cell.distanceLabel.text = distance;
-    size = [cell.distanceLabel sizeThatFits:CGSizeZero];
-    cell.widthDistanceLabelConstraint.constant = size.width;
+//    NSString *distance = [_conversionService distanceTo:place];
+//    cell.distanceLabel.text = distance;
+//    size = [cell.distanceLabel sizeThatFits:CGSizeZero];
+//    cell.widthDistanceLabelConstraint.constant = size.width;
     
+    // Loading image
+    cell.image.image = [CALImage getDefaultThumb];
+    [_imageService load:place.mainImage to:cell.image thumb:NO];
     
-    cell.activityThumbImageView.image = [CALImage getDefaultThumb];
-    // Resetting height that might have been changed by an activity row
-    cell.heightTitleConstraint.constant = 21;
-    [_imageService load:place.mainImage to:cell.activityThumbImageView thumb:YES];
-    cell.activityThumbImageView.layer.borderColor = [[UIColor whiteColor] CGColor]; //[[_uiService colorForObject:place] CGColor];
-    cell.activityTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
-    cell.activitySubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:12];
-    for(UIGestureRecognizer *recognizer in cell.activityThumbImageView.gestureRecognizers) {
-        [cell.activityThumbImageView removeGestureRecognizer:recognizer];
-    }
 }
 
 -(void) configureRowTags:(PMLTagsTableViewCell*)cell atIndex:(NSInteger)index {
