@@ -187,7 +187,7 @@
         action.menuActionView.userInteractionEnabled=YES;
         
         // Adding menu action view
-        [_menuManagerController.view insertSubview:action.menuActionView belowSubview:_bottomView];
+        [_menuManagerController.containerView insertSubview:action.menuActionView belowSubview:_bottomView];
     }
     
 }
@@ -262,7 +262,7 @@
 - (void)didUpdatePlace:(Place *)place {
     [self loadingEnd];
 }
-- (void)didLoadData:(ModelHolder *)modelHolder {
+- (void)didLoadData:(ModelHolder *)modelHolder silent:(BOOL)isSilent {
     [self loadingEnd];
 //    [_menuManagerController.mainNavBarView.searchTextField setText:nil];
 }

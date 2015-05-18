@@ -27,10 +27,13 @@
 #import "PMLSnippetTableViewController.h"
 #import "PMLActivityStatisticsTableViewController.h"
 #import "PMLBannerEditorTableViewController.h"
+#import <PBWebViewController.h>
 
 @interface PMLMenuManagerController ()
 @property (nonatomic, strong) SpringTransitioningDelegate *transitioningDelegate;
 @property (nonatomic) CGRect menuStartFrame;
+@property (nonatomic, retain) UITapGestureRecognizer *adTapRecognizer;
+@property (nonatomic, retain) PMLBanner *banner;
 @end
 
 static void *MyParentMenuControllerKey;
@@ -156,9 +159,9 @@ static void *MyParentMenuControllerKey;
 
     
     // Do any additional setup after loading the view.
-    _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
-    _menuAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
-    [self.view insertSubview:self.rootViewController.view belowSubview:_topWarningView];
+    _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.containerView];
+    _menuAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.containerView];
+    [self.containerView insertSubview:self.rootViewController.view belowSubview:_topWarningView];
     [self.rootViewController didMoveToParentViewController:self];
     
     [self registerForKeyboardNotifications];
@@ -173,25 +176,30 @@ static void *MyParentMenuControllerKey;
     
     // Initializing the bottom view and adding to our controller view
     _bottomView = [[UIView alloc] initWithFrame:bottomFrame];
-    [self.view addSubview:_bottomView];
+    [self.containerView addSubview:_bottomView];
     
     // Status bar view
-    UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 20)];
+    UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.containerView.bounds.size.width, 20)];
     statusView.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1];
-    [self.view addSubview:statusView];
+    [self.containerView addSubview:statusView];
     
     // Grip
     _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpGripTop"]];
     
     // Help
-    CGRect snippetHelpRect = CGRectMake(CGRectGetMinX(self.view.bounds)+15, CGRectGetMaxY(self.view.bounds)-kSnippetHeight+15,CGRectGetWidth(self.view.bounds)-30,kSnippetHeight-27) ;
+    CGRect snippetHelpRect = CGRectMake(CGRectGetMinX(self.containerView.bounds)+15, CGRectGetMaxY(self.containerView.bounds)-kSnippetHeight+15,CGRectGetWidth(self.containerView.bounds)-30,kSnippetHeight-27) ;
     [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:snippetHelpRect cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet", @"hint.snippet") textPosition:PMLTextPositionTop whenSnippetOpened:NO] forNotification:PML_HELP_SNIPPET];
     [_helpService registerBubbleHint:[[PMLHelpBubble alloc] initWithRect:snippetHelpRect cornerRadius:10 helpText:NSLocalizedString(@"hint.snippet.events", @"hint.snippet.events") textPosition:PMLTextPositionTop whenSnippetOpened:NO] forNotification:PML_HELP_SNIPPET_EVENTS];
     // Warning label@
 //    [self configureWarningLabel];
 
+    
+    // Registering for banner change notification
+    [[_dataService modelHolder] addObserver:self forKeyPath:@"banner" options:NSKeyValueObservingOptionNew context:NULL];
 }
-
+- (void)dealloc {
+    [[_dataService modelHolder] removeObserver:self forKeyPath:@"banner"];
+}
 - (void)configureNavBar {
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLMainNavBarView" owner:self options:nil];
     _mainNavBarView = [views objectAtIndex:0];
@@ -249,7 +257,7 @@ static void *MyParentMenuControllerKey;
 
 - (void)viewDidAppear:(BOOL)animated {
     if(!_initialized) {
-        CGRect myFrame = self.view.frame;
+        CGRect myFrame = self.containerView.frame;
         CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height, myFrame.size.width, myFrame.size.height);
         _bottomView.frame = bottomFrame;
         // Initializing actions
@@ -302,9 +310,16 @@ static void *MyParentMenuControllerKey;
     // Default is not opened
     [self presentControllerSnippet:childViewController animated:animated opened:NO];
 }
+-(void) adjustBottomViewFrame {
+    CGRect myFrame = self.containerView.bounds;
+    CGRect bottomViewFrame = _bottomView.frame;
+    bottomViewFrame.size.height = myFrame.size.height;
+    _bottomView.frame = bottomViewFrame;
+    self.currentSnippetViewController.view.frame = CGRectMake(0, 0, myFrame.size.width, myFrame.size.height+1-[self offsetForOpenedSnippet]);
+}
 - (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated opened:(BOOL)opened {
     [self.rootViewController.view layoutIfNeeded];
-    CGRect myFrame = self.rootViewController.view.bounds;
+    CGRect myFrame = self.containerView.bounds;
 
     [self removeCurrentSnippetController];
     // Initializing child inside a sub navigation
@@ -347,7 +362,7 @@ static void *MyParentMenuControllerKey;
     // Putting menu underneath snippet
     if(_menuView != nil ) {
         [_menuView removeFromSuperview ];
-        [self.view insertSubview:_menuView belowSubview:_bottomView];
+        [self.containerView insertSubview:_menuView belowSubview:_bottomView];
     }
     
 }
@@ -362,7 +377,7 @@ static void *MyParentMenuControllerKey;
         // Animating (real de-allocation will be made if a new view controller is presented)
         [_animator removeAllBehaviors];
         
-        [self animateSnippetToOffset:self.view.bounds.size.height+_gripView.frame.size.height animated:YES];
+        [self animateSnippetToOffset:self.containerView.bounds.size.height+_gripView.frame.size.height animated:YES];
         dismissed= YES;
     } else {
         // No snippet equals dismissed
@@ -432,7 +447,7 @@ static void *MyParentMenuControllerKey;
 - (void)presentControllerMenu:(UIViewController *)viewController from:(CGPoint)origin withHeightPct:(CGFloat)pctHeight {
 
     // Adjusting frame
-    CGRect bounds = self.view.bounds;
+    CGRect bounds = self.containerView.bounds;
 //    CGRect menuFrame = CGRectMake(-bounds.size.width*3/4, 0, bounds.size.width*3/4, bounds.size.height);
     
     if(_menuViewController !=nil && [_menuViewController isKindOfClass:[viewController class]]) {
@@ -471,7 +486,7 @@ static void *MyParentMenuControllerKey;
         _menuView.layer.borderWidth=2;
         _menuView.layer.cornerRadius = 5;
         _menuView.clipsToBounds = YES;
-        [self.view insertSubview:_menuView belowSubview:_bottomView];
+        [self.containerView insertSubview:_menuView belowSubview:_bottomView];
         
 
         
@@ -540,12 +555,12 @@ static void *MyParentMenuControllerKey;
 #pragma mark - Warning label
 - (void)configureWarningLabel {
 //    self.topWarningLabel = [[UILabel alloc] init];
-//    [self.view addSubview:self.topWarningLabel];
+//    [self.containerView addSubview:self.topWarningLabel];
 //    NSDictionary *dic = @{@"warnLabel" : self.topWarningLabel};
 //    NSArray *width = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[warnLabel]-0-|" options:0 metrics:nil views:dic];
 //    NSArray *height = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[warnLabel(30)]" options:0 metrics:nil views:dic];
-//    [self.view addConstraints:width];
-//    [self.view addConstraints:height];
+//    [self.containerView addConstraints:width];
+//    [self.containerView addConstraints:height];
 //    self.topWarningLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:17];
 //    self.topWarningLabel.textColor = [UIColor whiteColor];
 //    self.topWarningLabel.hidden=YES;
@@ -596,14 +611,14 @@ static void *MyParentMenuControllerKey;
 - (void)activityTapped:(UITapGestureRecognizer*)sender {
     
     PMLActivityStatisticsTableViewController *activityStatController = (PMLActivityStatisticsTableViewController*)[_uiService instantiateViewController:SB_ID_ACTIVITY_STAT];
-    CGPoint topRight = CGPointMake(self.view.bounds.size.width-5, 5+self.navigationController.navigationBar.frame.size.height+20);
+    CGPoint topRight = CGPointMake(self.containerView.bounds.size.width-5, 5+self.navigationController.navigationBar.frame.size.height+20);
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:activityStatController];
     [self presentControllerMenu:navController from:topRight withHeightPct:0.7];
 }
 #pragma mark - PanGestureRecognizer
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state {
 
-    location.x = CGRectGetMidX(self.view.bounds);
+    location.x = CGRectGetMidX(self.containerView.bounds);
     if ( state == UIGestureRecognizerStateBegan) {
         [_animator removeAllBehaviors];
         
@@ -623,7 +638,7 @@ static void *MyParentMenuControllerKey;
     } else if (state  == UIGestureRecognizerStateEnded) {
         // Getting frames for whole view and bottom 'sliding' view
         CGRect bottomFrame = _bottomView.frame;
-        CGRect viewFrame = self.view.frame;
+        CGRect viewFrame = self.containerView.frame;
         CGFloat midY = CGRectGetMidY(viewFrame);
         NSInteger offset = 0;
         
@@ -632,9 +647,9 @@ static void *MyParentMenuControllerKey;
             // Then we open full page
             [self setSnippetFullyOpened:YES];
             offset = [self offsetForOpenedSnippet];
-        } else if(bottomFrame.origin.y > self.view.bounds.size.height-(kSnippetHeight/2)) {
+        } else if(bottomFrame.origin.y > self.containerView.bounds.size.height-(kSnippetHeight/2)) {
 //            [self setSnippetFullyOpened:NO];
-//            offset=self.view.bounds.size.height-kSnippetHeight+_gripView.frame.size.height;
+//            offset=self.containerView.bounds.size.height-kSnippetHeight+_gripView.frame.size.height;
             [self dismissControllerSnippet];
             return;
         } else {
@@ -657,7 +672,7 @@ static void *MyParentMenuControllerKey;
         frame.origin.x=0;
         if(_menuView!=nil && offset == [self offsetForOpenedSnippet]) {
             [_menuView removeFromSuperview];
-            [self.view insertSubview:_menuView belowSubview:_bottomView];
+            [self.containerView insertSubview:_menuView belowSubview:_bottomView];
         }
         if(animated) {
             [UIView animateWithDuration:0.3 animations:^{
@@ -676,7 +691,7 @@ static void *MyParentMenuControllerKey;
  * of the snippet. This method should only be called in the context of animateSnippetToOffset
  */
 -(void)completeAnimationtoTopOffset:(NSInteger)offset {
-    if(_bottomView.frame.origin.y>self.view.bounds.size.height) {
+    if(_bottomView.frame.origin.y>self.containerView.bounds.size.height) {
         [self removeCurrentSnippetController];
     }
     // Notifying delegate
@@ -685,7 +700,7 @@ static void *MyParentMenuControllerKey;
     }
     if(_menuView != nil && offset == [self offsetForMinimizedSnippet]) {
         [_menuView removeFromSuperview ];
-        [self.view insertSubview:_menuView aboveSubview:_bottomView];
+        [self.containerView insertSubview:_menuView aboveSubview:_bottomView];
         //        [self dismissControllerMenu:animated];
     }
         
@@ -695,7 +710,7 @@ static void *MyParentMenuControllerKey;
     // Callbacking delegate
 //    if([self.snippetDelegate respondsToSelector:@selector(menuManager:snippetPanned:)]) {
 //        CGPoint location = _bottomView.frame.origin;
-//        CGSize size = self.view.bounds.size;
+//        CGSize size = self.containerView.bounds.size;
 
 //        float pctOpened = 1.0f - ((float)(location.y-kPMLSnippetTopOffset) / (float)(size.height- (kSnippetHeight-kPMLSnippetTopOffset)));
 //                NSLog(@"PCT=%.02f / Loc y= %.02f / Height= %.02f",pctOpened, location.y,size.height);
@@ -718,11 +733,11 @@ static void *MyParentMenuControllerKey;
         snippetHeight = kSnippetEditHeight;
     }
     
-    CGRect myFrame = self.view.frame;
+    CGRect myFrame = self.containerView.frame;
     return myFrame.size.height  - snippetHeight;
 }
 -(NSInteger)offsetForOpenedSnippet {
-//    CGRect bounds = self.view.bounds;
+//    CGRect bounds = self.containerView.bounds;
     NSInteger top = kPMLSnippetTopOffset;
 //    if(bounds.size.height> 600) {
 //        top = MAX(bounds.size.height-600,0);
@@ -971,7 +986,7 @@ static void *MyParentMenuControllerKey;
         [_menuView removeFromSuperview];
         
         // Instantiating menu view if needed
-        CGRect frame = self.view.window.frame;
+        CGRect frame = self.containerView.window.frame;
         frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
         frame.size.height -= self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height-1;
         frame = CGRectOffset(frame, -frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height);
@@ -988,7 +1003,7 @@ static void *MyParentMenuControllerKey;
         _menuView.layer.borderColor = UIColorFromRGB(0xf36523).CGColor;
         _menuView.layer.borderWidth=1;
         _menuView.clipsToBounds = NO;
-        [self.view addSubview:_menuView];
+        [self.containerView addSubview:_menuView];
         
         // Building contents
         MainMenuTableViewController *rearView = (MainMenuTableViewController*)[_uiService instantiateViewController:SB_ID_FILTERS_CONTROLLER];
@@ -1031,5 +1046,60 @@ static void *MyParentMenuControllerKey;
     self.transitioningDelegate = [[SpringTransitioningDelegate alloc] initWithDelegate:self];
     self.transitioningDelegate.transitioningDirection = TransitioningDirectionDown;
     [self.transitioningDelegate presentViewController:controller];
+}
+
+#pragma mark - KVOObserving
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if(object == [_dataService modelHolder] && [keyPath isEqualToString:@"banner"]) {
+        self.banner = [[_dataService modelHolder] banner];
+        if(self.banner != nil) {
+            [[TogaytherService imageService] load:self.banner.mainImage to:self.adContainerImage thumb:NO callback:^(CALImage *image) {
+                [UIView animateWithDuration:0.8 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    self.bottomContainerConstraint.constant = 50;
+                } completion:^(BOOL finished) {
+                    if(_currentSnippetViewController!=nil && !_snippetFullyOpened) {
+                        [self animateSnippetToOffset:[self offsetForMinimizedSnippet] animated:YES];
+                    }
+                    [self adjustBottomViewFrame];
+                    
+                    // Handling ad clicks
+                    if(self.adTapRecognizer !=nil) {
+                        // Removing any former tap recognizer
+                        [self.adContainerImage removeGestureRecognizer:self.adTapRecognizer];
+                    }
+                    self.adTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adTapped:)];
+                    [self.adContainerImage addGestureRecognizer:self.adTapRecognizer];
+                    self.adContainerImage.userInteractionEnabled=YES;
+                }];
+            }];
+        } else {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [UIView animateWithDuration:0.8 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                    self.bottomContainerConstraint.constant = 0;
+                } completion:^(BOOL finished) {
+                    self.adContainerImage.image = nil;
+                }];
+            });
+        }
+    }
+}
+
+#pragma mark - Ad management
+-(void)adTapped:(UIGestureRecognizer*)recognizer {
+    if(self.banner.targetObject!=nil) {
+        [_uiService presentSnippetFor:self.banner.targetObject opened:YES];
+    } else {
+        PBWebViewController *webviewController= [[PBWebViewController alloc] init];
+        NSString *url = self.banner.targetUrl;
+        if(![[url lowercaseString] hasPrefix:@"http"]) {
+            url = [@"http://" stringByAppendingString:url];
+        }
+        webviewController.URL = [[NSURL alloc] initWithString:self.banner.targetUrl];
+        [TogaytherService applyCommonLookAndFeel:[_uiService menuManagerController]];
+        ((UINavigationController*)[_uiService menuManagerController].currentSnippetViewController).navigationBar.translucent=NO;
+        
+        [_uiService presentController:webviewController];
+
+    }
 }
 @end

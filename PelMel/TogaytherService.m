@@ -36,6 +36,7 @@
     static UIService *_uiService;
     static SettingsService *_settingsService;
     static PMLHelpService *_helpService;
+    static PMLStoreService *_storeService;
     static NSDictionary *properties;
 
     static BOOL hdModeLoaded;
@@ -57,6 +58,7 @@
     _uiService = [[UIService alloc] init];
     _settingsService = [[SettingsService alloc] init];
     _helpService = [[PMLHelpService alloc] init];
+    _storeService = [[PMLStoreService alloc] init];
     
     // Injecting data service
     _dataService.userService = [TogaytherService userService];

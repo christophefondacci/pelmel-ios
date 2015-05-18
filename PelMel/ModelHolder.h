@@ -12,6 +12,7 @@
 #import "Special.h"
 #import "City.h"
 #import "PMLInfoProvider.h"
+#import "PMLBanner.h"
 
 typedef enum {
     PLACES_LISTVIEW,
@@ -29,6 +30,7 @@ typedef enum {
 @property (strong) NSArray *activities;
 @property (strong) NSArray *activityStats;
 @property (strong) NSArray *users;
+@property (strong) PMLBanner *banner;
 @property (nonatomic) long maxLikes;
 @property (strong) NSMutableArray *allPlaces; // All places ever loaded
 @property (strong) City *localizedCity;

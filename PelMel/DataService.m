@@ -163,10 +163,10 @@
     return [encodedString stringByReplacingOccurrencesOfString: @"&" withString: @"%26"];
 }
 -(void)fetchPlacesAtLatitude:(double)latitude longitude:(double)longitude for:(CALObject *)parent searchTerm:(NSString *)searchTerm {
-    [self fetchPlacesAtLatitude:latitude longitude:longitude for:parent searchTerm:searchTerm radius:_currentRadius];
+    [self fetchPlacesAtLatitude:latitude longitude:longitude for:parent searchTerm:searchTerm radius:_currentRadius silent:NO];
 }
 
--(void)fetchPlacesAtLatitude:(double)latitude longitude:(double)longitude for:(CALObject *)parent searchTerm:(NSString *)searchTerm radius:(double)radius {
+-(void)fetchPlacesAtLatitude:(double)latitude longitude:(double)longitude for:(CALObject *)parent searchTerm:(NSString *)searchTerm radius:(double)radius silent:(BOOL)isSilent {
     self.searchTerm = searchTerm;
     [self startOp:@""];
     [self notify:@selector(willLoadData) with:nil mainThread:YES];
@@ -229,10 +229,10 @@
                 // Calling appropriate callback
                 switch(_modelHolder.currentListviewType) {
                     case PLACES_LISTVIEW:
-                        [self placesDataFetched:data];
+                        [self placesDataFetched:data silent:isSilent];
                         break;
                     case EVENTS_LISTVIEW:
-                        [self eventsDataFetched:data];
+                        [self eventsDataFetched:data silent:isSilent];
                         break;
                 }
             }
@@ -253,21 +253,21 @@
     switch(_modelHolder.currentListviewType) {
         case PLACES_LISTVIEW:
             if(_modelHolder.places.count>0) {
-                [self doCallback];
+                [self doCallback:NO];
             } else {
                 [self fetchPlacesFor:parent searchTerm:searchTerm];
             }
             break;
         case EVENTS_LISTVIEW:
             if(_modelHolder.events.count>0) {
-                [self doCallback];
+                [self doCallback:NO];
             } else {
                 [self fetchPlacesFor:parent searchTerm:searchTerm];
             }
             break;
     }
 }
-- (void)placesDataFetched:(NSData *)responseData {
+- (void)placesDataFetched:(NSData *)responseData silent:(BOOL)isSilent {
     NSLog(@"JSON place data fetched");
     //parse out the json data
     NSError* error;
@@ -351,6 +351,13 @@
     NSNumber *maxActivityId = [json objectForKey:@"maxActivityId"];
     [[TogaytherService getMessageService] setMaxActivityId:maxActivityId.longValue];
     
+    // Banners
+    NSDictionary *jsonBanner = [json objectForKey:@"banner"];
+    if(jsonBanner != nil && (id)jsonBanner != [NSNull null]) {
+        PMLBanner *banner = [jsonService convertJsonBannerToBanner:jsonBanner];
+        [_modelHolder setBanner:banner];
+    }
+    
     // Assigning to model holder for all-view synch
     [_modelHolder setPlaces:docs];
     [_modelHolder setEvents:events];
@@ -360,6 +367,7 @@
     [_modelHolder setUsers:users];
     [_modelHolder setLocalizedCity:localizedCity];
     [_modelHolder setMaxLikes:maxLikes];
+
     if(totalPlacesCount!=nil) {
         [_modelHolder setTotalPlacesCount:[totalPlacesCount intValue]];
     }
@@ -369,12 +377,12 @@
     
     // Callback on main thread
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self doCallback];
+        [self doCallback:isSilent];
     });
     
 }
 
-- (void)eventsDataFetched:(NSData *)responseData {
+- (void)eventsDataFetched:(NSData *)responseData silent:(BOOL)isSilent {
     NSLog(@"JSON events data fetched");
     //parse out the json data
     NSError* error;
@@ -398,8 +406,9 @@
     [_modelHolder setEvents:events];
     
     // Callback on main thread
-    [self performSelectorOnMainThread:@selector(doCallback)
-                           withObject:nil waitUntilDone:NO];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self doCallback:isSilent];
+    });
 }
 
 
@@ -666,8 +675,8 @@
         if(_modelHolder != nil && _modelHolder.places.count>0) {
             
             // Checking if implemented
-            if([callback respondsToSelector:@selector(didLoadData:)]) {
-                [callback didLoadData:_modelHolder];
+            if([callback respondsToSelector:@selector(didLoadData:silent:)]) {
+                [callback didLoadData:_modelHolder silent:NO];
             }
         }
     }
@@ -708,14 +717,14 @@
         }
     }
 }
-- (void) doCallback {
+- (void) doCallback:(BOOL)silent {
     
     // Iterating over all listeners
     for(NSObject<PMLDataListener> *callback in [NSArray arrayWithArray:dataListeners] ) {
         
         // Optional callback method
-        if([callback respondsToSelector:@selector(didLoadData:)]) {
-            [callback didLoadData:_modelHolder];
+        if([callback respondsToSelector:@selector(didLoadData:silent:)]) {
+            [callback didLoadData:_modelHolder silent:silent];
         }
     }
 }
@@ -860,6 +869,8 @@
 }
 -(void)updateBanner:(PMLBanner*)banner callback:(UpdateBannerCompletionBlock)callback failure:(UpdateBannerCompletionBlock)failureCallback {
 
+//    NSString *title = 
+//    [_uiService alertWithTitle:@"banner.purchase.title" text:@"banner.purchase.confirm" textObjectName:<#(NSString *)#>]
     // Building server URL for banner update
     NSString *url = [NSString stringWithFormat:kBannerUpdateUrlFormat,togaytherServer];
     CurrentUser *user = [userService getCurrentUser];

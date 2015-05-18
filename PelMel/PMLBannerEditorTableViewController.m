@@ -15,11 +15,16 @@
 #define kRowsEditor 1
 #define kRowHeightBannerEditor 150
 
+#define kPMLProductBanner1000 @"com.fgp.pelmel.banner1000"
+#define kPMLProductBanner2500 @"com.fgp.pelmel.banner2500"
+#define kPMLProductBanner5000 @"com.fgp.pelmel.banner5000"
+
 @interface PMLBannerEditorTableViewController ()
 
-@property (nonatomic,weak) ImageService *imageService;
-@property (nonatomic,weak) id<PMLInfoProvider> infoProvider;
-
+@property (nonatomic,retain) ImageService *imageService;
+@property (nonatomic,retain) id<PMLInfoProvider> infoProvider;
+@property (nonatomic,retain) SKProductsRequest *skProductsRequest;
+@property (nonatomic,retain) NSMutableDictionary *storeProducts;
 @end
 
 @implementation PMLBannerEditorTableViewController
@@ -42,19 +47,25 @@
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.view.backgroundColor = [UIColor clearColor];
     self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
-    
-    // Setting info provider
-    self.infoProvider = [[TogaytherService uiService] infoProviderFor:self.banner];
+
     
     if(self.banner == nil) {
         self.banner = [[PMLBanner alloc] init];
     }
+    
+    // Requesting products from Store Kit
+    self.skProductsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:[NSSet setWithArray:@[kPMLProductBanner1000,kPMLProductBanner2500,kPMLProductBanner5000]]];
+    self.skProductsRequest.delegate = self;
+    [self.skProductsRequest start];
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+-(void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -101,8 +112,32 @@
         cell.targetUrlTextField.text = self.banner.targetUrl;
         cell.targetUrlTextField.placeholder = NSLocalizedString(@"banner.url.placeholder", @"banner.url.placeholder");
     }
-    cell.delegate = self;
+    if(self.storeProducts == nil) {
+        cell.firstDisplayPackageContainer.hidden = YES;
+        cell.secondDisplayPackageContainer.hidden = YES;
+        cell.thirdDisplayPackageContainer.hidden = YES;
+    } else {
+        cell.firstDisplayPackageContainer.hidden = NO;
+        cell.secondDisplayPackageContainer.hidden = NO;
+        cell.thirdDisplayPackageContainer.hidden = NO;
+        
+        SKProduct *banner1000 = [self.storeProducts objectForKey:kPMLProductBanner1000];
+        cell.firstDisplayPackagePriceLabel.text = [self priceFromProduct:banner1000];
+        SKProduct *banner2500 = [self.storeProducts objectForKey:kPMLProductBanner2500];
+        cell.secondDisplayPackagePriceLabel.text = [self priceFromProduct:banner2500];
+        SKProduct *banner5000 = [self.storeProducts objectForKey:kPMLProductBanner5000];
+        cell.thirdDisplayPackagePriceLabel.text = [self priceFromProduct:banner5000];
 
+        if(self.banner.targetDisplayCount==0) {
+            self.banner.targetDisplayCount = 1000;
+        }
+    }
+    cell.targetUrlTextField.delegate = self;
+    cell.delegate = self;
+    [cell.targetUrlTextField addTarget:self
+                       action:@selector(targetUrlDidChange:)
+             forControlEvents:UIControlEventEditingChanged];
+    
     [[TogaytherService imageService] registerTappable:cell.bannerUploadButton forViewController:self callback:self];
     // Loading banner image
     [cell.bannerUploadButton setBackgroundImage:self.banner.mainImage.fullImage forState:UIControlStateNormal];
@@ -111,6 +146,13 @@
     }
     // Configure the cell...
     return cell;
+}
+-(NSString*)priceFromProduct:(SKProduct *)product {
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+    [formatter setLocale:product.priceLocale];
+     NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+    return localizedMoneyString;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return kRowHeightBannerEditor;
@@ -185,6 +227,21 @@
     PMLPopupEditor *editor = [PMLPopupEditor editorFor:self.banner];
     [editor cancel];
 }
+#pragma mark - UITextFieldDelegate
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    self.banner.targetUrl = textField.text;
+    [textField resignFirstResponder];
+    return YES;
+}
+-(BOOL)textFieldShouldClear:(UITextField *)textField {
+    self.banner.targetUrl = nil;
+    textField.text = nil;
+    return YES;
+}
+#pragma mark - Actions
+-(void)targetUrlDidChange:(UITextField*)textField {
+    self.banner.targetUrl = textField.text;
+}
 
 #pragma mark - PMLImagePickerCallback
 - (void)imagePicked:(CALImage *)image {
@@ -196,5 +253,25 @@
         [self.tableView reloadData];
     }
 }
+- (void)setBanner:(PMLBanner *)banner {
+    _banner = banner;
+    if(banner.targetObject!=nil) {
+        self.infoProvider = [[TogaytherService uiService] infoProviderFor:self.banner.targetObject];
+    } else {
+        self.infoProvider = nil;
+    }
+    [self.tableView reloadData];
+}
 
+#pragma mark - SKProductsRequestDelegate
+- (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
+    self.storeProducts = [[NSMutableDictionary alloc] init];
+    for(SKProduct *product in response.products) {
+        [self.storeProducts setObject:product forKey:product.productIdentifier];
+    }
+    [self.tableView reloadData];
+}
+- (void)request:(SKRequest *)request didFailWithError:(NSError *)error {
+    [[TogaytherService uiService] alertWithTitle:@"banner.store.failureTitle" text:@"banner.store.failure"];
+}
 @end

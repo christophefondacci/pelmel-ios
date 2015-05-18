@@ -132,7 +132,11 @@ static PMLPopupEditor *_newObjectEditor;
     // Purging editor
     if(self.editedObject.key != nil) {
         [_editorsKeyMap removeObjectForKey:self.editedObject.key];
-        [self.mapViewController reselectPlace:(Place*)self.editedObject];
+        
+        // TODO: Improve code by avoid Place cast (=> convert to commit action)
+        if([self.editedObject isKindOfClass:[Place class]]) {
+            [self.mapViewController reselectPlace:(Place*)self.editedObject];
+        }
     }
     _newObjectEditor = nil;
 }

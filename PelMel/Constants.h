@@ -73,6 +73,7 @@
 #define PML_HELP_SNIPPET @"PMLsnippet"
 #define PML_HELP_SNIPPET_EVENTS @"PMLsnippetEvents"
 
+#define METERS_PER_MILE 1609.344f
 
 // Property codes
 #define PML_PROPERTY_CODE_PHONE @"phone"

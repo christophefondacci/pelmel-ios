@@ -111,6 +111,10 @@
 "activity.detail.EVNT_CREATION"="%@ a ajouté l'évènement %@";
 "activity.detail.PLAC_CREATION"="%@ a ajouté le lieu %@";
 "activity.detail.O_PLAC"="%@ a commenté le lieu %@";
+"banner.button.addPlaceBanner"="Créer une bannière de pub";
+"banner.itemTitle"="%@ affichages de bannières pour %@";
+"banner.store.failureTitle"="Apple Store injoignable";
+"banner.store.failure"="Nous n'avons pas pu récupérer la liste des produits depuis l'Apple Store. Veuillez vérifier votre connexion et essayer à nouveau. PELMEL a besoin d'accéder à l'Apple Store pour vous permettre de poursuivre votre achat de bannière.";
 "banner.url.placeholder"="URL de destination";
 "barButton.list"="Liste";
 "calendar.daily"="Tous les jours";

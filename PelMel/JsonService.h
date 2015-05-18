@@ -15,6 +15,7 @@
 #import "Activity.h"
 #import "Special.h"
 #import "PMLCalendar.h"
+#import "PMLBanner.h"
 
 @interface JsonService : NSObject
 
@@ -52,6 +53,7 @@
  * Helper method that batch converts an array of JsonLightUser
  */
 - (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers;
+-(PMLBanner*)convertJsonBannerToBanner:(NSDictionary*)jsonBanner;
 /**
  * Converts a JsonHour bean (recurring event, opening hours) to a PMLCalendar object
  * @param jsonHour a dictionary representing JSON contents

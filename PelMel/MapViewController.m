@@ -725,11 +725,6 @@
         // Geocoding
         [self geocodePlaceAddress:_editedPlace];
     } else if(_editedBanner != nil) {
-        // Setting lat/lng to map center
-        CLLocationCoordinate2D coords = [_mapView convertPoint:_editedRange.center toCoordinateFromView:_editedRange.superview];
-        _editedBanner.lat = coords.latitude;
-        _editedBanner.lng = coords.longitude;
-        
         if(_editedRange != nil) {
             [self updateEditedRange];
         }
@@ -880,7 +875,7 @@
     [self setEditedObject:nil];
 }
 
-- (void)didLoadData:(ModelHolder *)modelHolder {
+- (void)didLoadData:(ModelHolder *)modelHolder silent:(BOOL)isSilent {
     if(selectedAnnotation != nil){
         [self.mapView deselectAnnotation:selectedAnnotation.annotation animated:YES];
     }
@@ -892,14 +887,11 @@
         [_placeKeys addObject:place.key];
     }
     
-    // Purging all our previous data
-//    [_annotationsKeyMap removeAllObjects];
-//    [_annotationsViewMap removeAllObjects];
-    
     // Updating map with new content
+    if(isSilent) {
+        _zoomUpdateType = PMLZoomUpdateNone;
+    }
     [self updateMap];
-//    [self updateAnnotations];
-//    [_mapView showAnnotations:[_placeAnnotations allObjects] animated:YES];
 }
 - (void)didLoadOverviewData:(CALObject *)object {
 //    _contextObject = object; //self.parentMenuController.contextObject;
@@ -934,6 +926,7 @@
             [_editedRange removeFromSuperview];
             _editedRange = nil;
             _editedBanner = nil;
+            [[_uiService menuManagerController] dismissControllerSnippet];
         } cancelledBy:^{
             [_editedRange removeFromSuperview];
             _editedRange = nil;
@@ -947,6 +940,15 @@
         if(_editedRange != nil) {
             [_editedRange removeFromSuperview];
         }
+        // Adjusting zoom so that we make sure the ad range is fully displayed in the map
+        CLLocationDistance dist = [self distanceForMapWidth];
+        if(dist/METERS_PER_MILE < 15) {
+            // Building our zoom rect around our center
+            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, 15*METERS_PER_MILE, 15*METERS_PER_MILE);
+            MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
+            MKMapRect mapRect = [self MKMapRectForCoordinateRegion:adjustedRegion];
+            [_mapView setVisibleMapRect:mapRect animated:NO];
+        }
         _editedRange = [[UIView alloc] init ];
         _editedRange.layer.borderColor = [[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1] CGColor];
         _editedRange.layer.borderWidth = 2;
@@ -958,6 +960,7 @@
         
         // Instantiating editor and displaying as a snippet
         PMLBannerEditorTableViewController *bannerController = (PMLBannerEditorTableViewController*)[_uiService instantiateViewController:SB_ID_BANNER_EDITOR];
+        bannerController.banner = _editedBanner;
         [_uiService presentSnippet:bannerController opened:NO root:YES];
     }
     
@@ -1040,13 +1043,18 @@
 }
 -(void)updateEditedRange {
     CLLocationDistance dist = [self distanceForMapWidth];
-    double milesRadius = dist/1609.344f;
+    double milesRadius = dist/METERS_PER_MILE;
     double milesPerPixels = milesRadius / (double)self.mapView.bounds.size.width;
     double pixelsRadius = kEditRange / milesPerPixels;
     
     CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
     _editedRange.frame = CGRectMake(mapCenter.x - pixelsRadius/2, mapCenter.y-pixelsRadius/2-kSnippetEditHeight/2, pixelsRadius, pixelsRadius);
     _editedRange.layer.cornerRadius = pixelsRadius/2;
+    
+    // Setting lat/lng to map center
+    CLLocationCoordinate2D coords = [_mapView convertPoint:_editedRange.center toCoordinateFromView:_editedRange.superview];
+    _editedBanner.lat = coords.latitude;
+    _editedBanner.lng = coords.longitude;
 }
 #pragma mark - KVO observing
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

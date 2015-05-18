@@ -409,6 +409,42 @@
     }
     return calendar;
 }
+-(PMLBanner*)convertJsonBannerToBanner:(NSDictionary*)jsonBanner {
+    NSString *key                   = [jsonBanner objectForKey:@"key"];
+    NSNumber *displayCount          = [jsonBanner objectForKey:@"displayCount"];
+    NSNumber *clickCount            = [jsonBanner objectForKey:@"clickCount"];
+    NSNumber *targetDisplayCount    = [jsonBanner objectForKey:@"targetDisplayCount"];
+    NSNumber *lat                   = [jsonBanner objectForKey:@"lat"];
+    NSNumber *lng                   = [jsonBanner objectForKey:@"lng"];
+    NSNumber *radius                = [jsonBanner objectForKey:@"radius"];
+    NSDictionary *targetPlace       = [jsonBanner objectForKey:@"targetPlace"];
+    NSDictionary *targetEvent       = [jsonBanner objectForKey:@"targetEvent"];
+    NSString *targetUrl             = [jsonBanner objectForKey:@"targetUrl"];
+    NSDictionary *jsonMedia         = [jsonBanner objectForKey:@"bannerImage"];
+
+    PMLBanner *banner = [[PMLBanner alloc] init];
+    banner.key = key;
+    banner.displayCount = displayCount.intValue;
+    banner.clickCount = clickCount.intValue;
+    banner.targetDisplayCount = targetDisplayCount.intValue;
+    banner.lat = lat.doubleValue;
+    banner.lng = lng.doubleValue;
+    banner.radius = radius;
+    if(targetPlace != nil && (id)targetPlace!=[NSNull null]) {
+        Place *p = [self convertJsonPlaceToPlace:targetPlace];
+        [banner setTargetObject:p];
+    }
+    if(targetEvent != nil && (id)targetEvent!=[NSNull null]) {
+        Event *e = [self convertJsonLightEventToEvent:targetEvent defaultEvent:nil];
+        [banner setTargetObject:e];
+    }
+    banner.targetUrl = targetUrl;
+    if(jsonMedia != nil && (id)jsonMedia!=[NSNull null]) {
+        CALImage *image = [imageService convertJsonImageToImage:jsonMedia];
+        banner.mainImage = image;
+    }
+    return banner;
+}
 -(Activity *)convertJsonActivityToActivity:(NSDictionary *)jsonActivity {
     NSString *jsonKey               = [jsonActivity objectForKey:@"key"];
     NSDictionary *jsonUser          = [jsonActivity objectForKey:@"user"];

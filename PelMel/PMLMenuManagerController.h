@@ -117,6 +117,10 @@ typedef void(^TextInputCallback)(NSString *text);
 @property (nonatomic,strong) PMLMainNavBarView *mainNavBarView; // Nav bar access
 @property (weak, nonatomic) IBOutlet UIView *topWarningView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topWarningViewTopContraint;
+@property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomContainerConstraint;
+
+@property (weak, nonatomic) IBOutlet UIImageView *adContainerImage;
 @property (weak, nonatomic) IBOutlet UILabel *topWarningLabel;
 @property (weak, nonatomic) UIViewController *currentSnippetViewController;
 @property (nonatomic,strong) UIView *bottomView;

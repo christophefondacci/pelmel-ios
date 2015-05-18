@@ -36,8 +36,12 @@ typedef enum {
 // Informs listeners that data is about to be refreshed
 -(void)willLoadData;
 
-// Method called as soon as the data is ready
--(void)didLoadData:(ModelHolder*)modelHolder;
+/**
+ * Method called as soon as the data is ready
+ * @param modelHolder the root bean holding all data references
+ * @param isSilent if set then the callbacks agree to not interfere with user interface and silently update data
+ */
+-(void)didLoadData:(ModelHolder*)modelHolder silent:(BOOL)isSilent;
 
 // Method called after the device has been located
 -(void)didLocalizeDevice:(CLLocation*)location;
@@ -112,7 +116,7 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 - (void)fetchPlacesFor:(CALObject*)parent;
 - (void)fetchPlacesFor:(CALObject*)parent searchTerm:(NSString*)searchTerm;
 - (void)fetchPlacesAtLatitude:(double)latitude longitude:(double)longitude for:(CALObject*)parent searchTerm:(NSString*)searchTerm;
-
+-(void)fetchPlacesAtLatitude:(double)latitude longitude:(double)longitude for:(CALObject *)parent searchTerm:(NSString *)searchTerm radius:(double)radius silent:(BOOL)isSilent;
 /**
  * Gets places near current position (or in a parent city if specified), optionally
  * filtered by a search term. Those methods use caching and may return a cached result.

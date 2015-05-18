@@ -343,6 +343,17 @@
     }];
     _reportForDeletionAction.color = UIColorFromRGB(kPMLReportColor);
     [self registerAction:_reportForDeletionAction forType:PMLActionTypeReportForDeletion];
+    
+    // Add a banner action
+    PopupAction *addBannerAction = [[PopupAction alloc] initWithAngle:kPMLReportAngle distance:kPMLReportDistance icon:nil titleCode:nil size:kPMLReportSize command:^{
+        NSLog(@"Add place banner");
+        CurrentUser *user = [_userService getCurrentUser];
+        [_dataService createBannerAtLatitude:user.lat longitude:user.lng forPlace:(Place*)_currentObject];
+    }];
+    addBannerAction.color = UIColorFromRGB(kPMLReportColor);
+    [self registerAction:addBannerAction forType:PMLActionTypeAddPlaceBanner];
+    
+    
     _cancelAction = [[PopupAction alloc] initWithAngle:kPMLCancelAngle distance:kPMLCancelDistance icon:[UIImage imageNamed:@"popActionCancel"] titleCode:nil size:kPMLCancelSize command:^{
         NSLog(@"Cancel");
         [[self popupEditor] cancel];
@@ -386,12 +397,8 @@
     _popupController = popupController;
     _currentObject = object;
     // Setting editor that handles history of changes
-//    if(annotation.popupEditor!=nil) {
-//        _currentEditor = annotation.popupEditor;
-//    } else {
-        PMLPopupEditor *_currentEditor = [PMLPopupEditor editorFor:_currentObject on:popupController.controller];
-        annotation.popupEditor = _currentEditor;
-//    }
+    PMLPopupEditor *_currentEditor = [PMLPopupEditor editorFor:_currentObject on:popupController.controller];
+    annotation.popupEditor = _currentEditor;
     _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
     
     // Preparing list of actions

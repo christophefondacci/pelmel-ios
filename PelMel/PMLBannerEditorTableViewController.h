@@ -10,8 +10,9 @@
 #import "PMLBannerEditorTableViewCell.h"
 #import "PMLBanner.h"
 #import "ImageService.h"
+#import <StoreKit/StoreKit.h>
 
-@interface PMLBannerEditorTableViewController : UITableViewController <PMLBannerEditorDelegate, PMLImagePickerCallback>
+@interface PMLBannerEditorTableViewController : UITableViewController <PMLBannerEditorDelegate, PMLImagePickerCallback, UITextFieldDelegate, SKProductsRequestDelegate>
 
 @property (nonatomic,retain) PMLBanner *banner;
 @end

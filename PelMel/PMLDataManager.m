@@ -75,7 +75,7 @@
 }
 
 #pragma mark - DataRefreshCallback
-- (void)didLoadData:(ModelHolder *)modelHolder {
+- (void)didLoadData:(ModelHolder *)modelHolder silent:(BOOL)isSilent {
     if(_nearbyLoad) {
         if(modelHolder.places.count == 0 ) {
             CLLocation *location = [[CLLocation alloc] initWithLatitude:_searchCenter.latitude longitude:_searchCenter.longitude];
@@ -101,7 +101,7 @@
         [self hideSpinner];
         
         UIService *uiService = TogaytherService.uiService;
-        if(![[uiService menuManagerController] snippetFullyOpened]) {
+        if(!isSilent) {
             PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
             
             [_menuController presentControllerSnippet:snippetController];

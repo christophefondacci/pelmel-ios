@@ -112,6 +112,10 @@
 "activity.detail.PLAC_CREATION"="%@ has added place %@";
 "activity.detail.O_PLAC"="%@ has commented place %@";
 "activity.detail.U_EVNT"="%@ has updated event %@";
+"banner.button.addPlaceBanner"="Create an ad banner";
+"banner.itemTitle"="%@ banner displays for %@";
+"banner.store.failureTitle"="Unable to connect to Apple Store";
+"banner.store.failure"="We cannot retrieve the list of products to purchase from the Apple Store. Please check your connection and try again. PELMEL needs to have access to the Apple Store to make a banner purchase.";
 "banner.url.placeholder"="Landing URL";
 "barButton.list"="List";
 "calendar.daily"="Daily";

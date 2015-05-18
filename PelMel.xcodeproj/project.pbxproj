@@ -166,6 +166,9 @@
 		B45CAB3B197278590089C7E8 /* UIMenuOpenBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = B45CAB39197278590089C7E8 /* UIMenuOpenBehavior.m */; };
 		B45CAB3E197375F70089C7E8 /* PMLDataManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B45CAB3C197375F70089C7E8 /* PMLDataManager.h */; };
 		B45CAB3F197375F70089C7E8 /* PMLDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B45CAB3D197375F70089C7E8 /* PMLDataManager.m */; };
+		B45E04951B06CA240013357B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B45E04941B06CA240013357B /* StoreKit.framework */; };
+		B45E04981B06D23C0013357B /* PMLStoreService.h in Headers */ = {isa = PBXBuildFile; fileRef = B45E04961B06D23C0013357B /* PMLStoreService.h */; };
+		B45E04991B06D23C0013357B /* PMLStoreService.m in Sources */ = {isa = PBXBuildFile; fileRef = B45E04971B06D23C0013357B /* PMLStoreService.m */; };
 		B46AD72C19E0E1E50021E1DE /* SettingsTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B46AD72A19E0E1E50021E1DE /* SettingsTableViewController.h */; };
 		B46AD72D19E0E1E50021E1DE /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46AD72B19E0E1E50021E1DE /* SettingsTableViewController.m */; };
 		B46AD73119E4FDD00021E1DE /* PMLLikeStatistic.h in Headers */ = {isa = PBXBuildFile; fileRef = B46AD72F19E4FDD00021E1DE /* PMLLikeStatistic.h */; };
@@ -591,6 +594,9 @@
 		B45CAB39197278590089C7E8 /* UIMenuOpenBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIMenuOpenBehavior.m; sourceTree = "<group>"; };
 		B45CAB3C197375F70089C7E8 /* PMLDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLDataManager.h; sourceTree = "<group>"; };
 		B45CAB3D197375F70089C7E8 /* PMLDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLDataManager.m; sourceTree = "<group>"; };
+		B45E04941B06CA240013357B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		B45E04961B06D23C0013357B /* PMLStoreService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLStoreService.h; sourceTree = "<group>"; };
+		B45E04971B06D23C0013357B /* PMLStoreService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLStoreService.m; sourceTree = "<group>"; };
 		B46AD72A19E0E1E50021E1DE /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		B46AD72B19E0E1E50021E1DE /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		B46AD72F19E4FDD00021E1DE /* PMLLikeStatistic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLLikeStatistic.h; sourceTree = "<group>"; };
@@ -873,6 +879,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B45E04951B06CA240013357B /* StoreKit.framework in Frameworks */,
 				B4AA0A2F1AF177DE00DCDE29 /* CoreData.framework in Frameworks */,
 				B42408DF18EC711600B8B898 /* QuartzCore.framework in Frameworks */,
 				B4E8293518AB28A80063715C /* ImageIO.framework in Frameworks */,
@@ -1124,6 +1131,8 @@
 				B43123AC1ACDBDFB008EF107 /* PMLHelpService.m */,
 				B4AA0A311AF178AE00DCDE29 /* PMLStorageService.h */,
 				B4AA0A321AF178AE00DCDE29 /* PMLStorageService.m */,
+				B45E04961B06D23C0013357B /* PMLStoreService.h */,
+				B45E04971B06D23C0013357B /* PMLStoreService.m */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1255,6 +1264,7 @@
 		B4D56074160B673F003A738E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B45E04941B06CA240013357B /* StoreKit.framework */,
 				B4AA0A2E1AF177DE00DCDE29 /* CoreData.framework */,
 				B4E288371A4A3A5900F84EA7 /* FacebookSDK.framework */,
 				B42408DE18EC711600B8B898 /* QuartzCore.framework */,
@@ -1752,6 +1762,7 @@
 				B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */,
 				B4A4666819A73A0B004ADC7E /* PMLInfoProvider.h in Headers */,
 				B43D11751A97A12B008476C7 /* SpringTransitioningDelegate.h in Headers */,
+				B45E04981B06D23C0013357B /* PMLStoreService.h in Headers */,
 				B4B82B3619FBB69900895C57 /* PMLPickerTableViewCell.h in Headers */,
 				B45CAB3E197375F70089C7E8 /* PMLDataManager.h in Headers */,
 				B4859DBC197FC7FF0036D8FF /* PMLPopupActionManager.h in Headers */,
@@ -2071,6 +2082,7 @@
 				B457A0F01A9A689100207D8E /* PMLSectionTitleView.m in Sources */,
 				B4AA0A341AF178AE00DCDE29 /* PMLStorageService.m in Sources */,
 				B40779C01614A52500D02F66 /* LoginViewController.m in Sources */,
+				B45E04991B06D23C0013357B /* PMLStoreService.m in Sources */,
 				B40779C31615913000D02F66 /* User.m in Sources */,
 				B43123AA1ACDB141008EF107 /* Arrow.m in Sources */,
 				B4E8293C18AC6F4C0063715C /* PostDelegate.m in Sources */,

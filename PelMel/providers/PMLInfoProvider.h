@@ -60,7 +60,7 @@ typedef enum {
 - (NSString*)itemTypeLabel;
 - (NSString*)city;
 - (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager*)actionManager;
-- (BOOL)canAddPhoto;   
+- (BOOL)canAddPhoto;
 @optional
 - (CALObject*)mapObjectForLocalization;
 // If a localization object is provided, the title for the localization section, nil or unimplemented will hide section title
@@ -71,6 +71,7 @@ typedef enum {
 - (PMLActionType)checkinActionType; // Default is Checkin
 - (PMLActionType)commentActionType; // Default is Comment
 - (PMLActionType)reportActionType; // Default is no report, if returning something, the report button will be displayed
+- (PMLActionType)advertisingActionType; // Default is no advertising, will display the create banner button if action type different from no action
 - (NSString*)reportText;
 // The subtitle to display
 - (NSString*)actionSubtitleFor:(PMLActionType)actionType;

@@ -98,6 +98,7 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="Sari-ExtraBold.otf">
             <string>Sari-ExtraBold</string>
@@ -2151,39 +2152,62 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cuT-Gk-A2S" userLabel="WarningView">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="zjH-Jg-o3c">
-                                        <rect key="frame" x="15" y="5" width="290" height="21"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="21" id="NFY-Tz-OC6"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AeP-56-fDZ">
+                                <rect key="frame" x="0.0" y="430" width="320" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="DXl-33-UBP"/>
-                                    <constraint firstAttribute="trailing" secondItem="zjH-Jg-o3c" secondAttribute="trailing" constant="15" id="H5H-bx-zLQ"/>
-                                    <constraint firstItem="zjH-Jg-o3c" firstAttribute="leading" secondItem="cuT-Gk-A2S" secondAttribute="leading" constant="15" id="c11-v7-cEJ"/>
-                                    <constraint firstAttribute="centerY" secondItem="zjH-Jg-o3c" secondAttribute="centerY" id="iqQ-XY-aih"/>
+                                    <constraint firstAttribute="width" constant="320" id="1Z5-7S-W6K"/>
+                                    <constraint firstAttribute="height" constant="50" id="AoO-px-qTA"/>
+                                </constraints>
+                            </imageView>
+                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G70-jP-ECI">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <subviews>
+                                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cuT-Gk-A2S" userLabel="WarningView">
+                                        <rect key="frame" x="0.0" y="64" width="320" height="30"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="zjH-Jg-o3c">
+                                                <rect key="frame" x="15" y="5" width="290" height="21"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="21" id="NFY-Tz-OC6"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="DXl-33-UBP"/>
+                                            <constraint firstAttribute="trailing" secondItem="zjH-Jg-o3c" secondAttribute="trailing" constant="15" id="H5H-bx-zLQ"/>
+                                            <constraint firstItem="zjH-Jg-o3c" firstAttribute="leading" secondItem="cuT-Gk-A2S" secondAttribute="leading" constant="15" id="c11-v7-cEJ"/>
+                                            <constraint firstAttribute="centerY" secondItem="zjH-Jg-o3c" secondAttribute="centerY" id="iqQ-XY-aih"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="cuT-Gk-A2S" firstAttribute="leading" secondItem="G70-jP-ECI" secondAttribute="leading" id="1gu-6y-tGC"/>
+                                    <constraint firstItem="cuT-Gk-A2S" firstAttribute="top" secondItem="G70-jP-ECI" secondAttribute="top" constant="64" id="ckN-CQ-KNE"/>
+                                    <constraint firstAttribute="trailing" secondItem="cuT-Gk-A2S" secondAttribute="trailing" id="sQa-uK-p0s"/>
                                 </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="cuT-Gk-A2S" secondAttribute="trailing" id="056-CF-gvY"/>
-                            <constraint firstItem="cuT-Gk-A2S" firstAttribute="top" secondItem="1fS-GB-UBV" secondAttribute="topMargin" id="3kc-NQ-7oG"/>
-                            <constraint firstItem="cuT-Gk-A2S" firstAttribute="leading" secondItem="1fS-GB-UBV" secondAttribute="leading" id="FZi-Q8-Gxt"/>
+                            <constraint firstAttribute="centerX" secondItem="AeP-56-fDZ" secondAttribute="centerX" id="6yQ-Gt-Qg9"/>
+                            <constraint firstItem="ke0-ZS-hTR" firstAttribute="top" secondItem="G70-jP-ECI" secondAttribute="bottom" id="ODT-Ct-cfn"/>
+                            <constraint firstItem="G70-jP-ECI" firstAttribute="leading" secondItem="1fS-GB-UBV" secondAttribute="leading" id="ahf-kN-6Qf"/>
+                            <constraint firstItem="ke0-ZS-hTR" firstAttribute="top" secondItem="AeP-56-fDZ" secondAttribute="bottom" id="fqL-gd-lv0"/>
+                            <constraint firstItem="G70-jP-ECI" firstAttribute="top" secondItem="1fS-GB-UBV" secondAttribute="top" id="oYN-Cj-ZKW"/>
+                            <constraint firstAttribute="trailing" secondItem="G70-jP-ECI" secondAttribute="trailing" id="uvV-zO-yOG"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="adContainerImage" destination="AeP-56-fDZ" id="wZ3-SO-flj"/>
+                        <outlet property="bottomContainerConstraint" destination="ODT-Ct-cfn" id="FaS-IN-Zr6"/>
+                        <outlet property="containerView" destination="G70-jP-ECI" id="jze-Dx-jv8"/>
                         <outlet property="topWarningLabel" destination="zjH-Jg-o3c" id="oWz-HA-AOl"/>
                         <outlet property="topWarningView" destination="cuT-Gk-A2S" id="u8I-HU-dXD"/>
-                        <outlet property="topWarningViewTopContraint" destination="3kc-NQ-7oG" id="vHF-gK-8F4"/>
                         <segue destination="9hg-XG-APo" kind="modal" identifier="login" id="enc-VM-87F"/>
                         <segue destination="eon-Zp-bcj" kind="push" identifier="editHours" id="FhV-fD-oJT"/>
                     </connections>
@@ -4508,8 +4532,8 @@
                                         </button>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="f4P-PU-7Bb">
                                             <rect key="frame" x="91" y="54" width="169" height="30"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" returnKeyType="done"/>
                                         </textField>
                                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Bs-fy-t7g">
                                             <rect key="frame" x="268" y="5" width="46" height="44"/>

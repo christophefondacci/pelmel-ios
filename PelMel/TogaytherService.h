@@ -17,6 +17,7 @@
 #import "UIService.h"
 #import "SettingsService.h"
 #import "PMLHelpService.h"
+#import "PMLStoreService.h"
 
 @interface TogaytherService : NSObject
 
@@ -48,6 +49,9 @@
 
 // Provides the help management service
 +(PMLHelpService*)helpService;
+
+// Store and in-app purchases service
++(PMLStoreService*)storeService;
 
 + (MessageService*)getMessageService;
 + (void)applyCommonLookAndFeel:(UIViewController*)controller;

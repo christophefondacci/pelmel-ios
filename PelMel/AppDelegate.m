@@ -117,10 +117,11 @@ static BOOL isStarted;
         [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
 
         // Refreshing places data
-        [[TogaytherService dataService] setCurrentRadius:0];
-        if([[TogaytherService dataService] modelHolder].places.count>0) {
+        DataService *dataService = [TogaytherService dataService];
+        [dataService setCurrentRadius:0];
+        if([dataService modelHolder].places.count>0) {
             [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
-            [[TogaytherService dataService] fetchNearbyPlaces];
+            [dataService fetchPlacesAtLatitude:dataService.modelHolder.userLocation.coordinate.latitude longitude:dataService.modelHolder.userLocation.coordinate.longitude for:nil searchTerm:nil radius:0 silent:YES];
         }
 
     }

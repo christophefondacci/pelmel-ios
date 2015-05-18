@@ -141,7 +141,7 @@
 #define kPMLReportRows 1
 #define kPMLRowReportButton 0
 #define kPMLHeightReportButton 62
-#define kPMLRowReportButtonId @"reportButton"
+#define kPMLRowButtonId @"buttonRow"
 
 #define kPMLHeightTopPlacesHeader 30
 
@@ -252,7 +252,7 @@ typedef enum {
     // Initializing external table view cells
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowEventId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
-    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowReportButtonId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowButtonId];
     // Loading header views
     _eventPlaceTabsTitleView = (PMLEventPlaceTabsTitleView*)[_uiService loadView:@"PMLEventPlaceTabsTitleView"];
     _eventPlaceTabsTitleView.delegate = self;
@@ -407,11 +407,16 @@ typedef enum {
                 double rows = (double)_snippetItem.tags.count / (double)kPMLMaxTagsPerRow; //((double)tableView.bounds.size.width / (double)kPMLOvTagWidth);
                 return (int)ceil(rows);
             }
-            case kPMLSectionReport:
+            case kPMLSectionReport: {
+                NSInteger rowCount = 0;
                 if([_infoProvider respondsToSelector:@selector(reportActionType)]) {
-                    return [_infoProvider reportActionType] == PMLActionTypeNoAction? 0 : kPMLReportRows;
+                    rowCount+= [_infoProvider reportActionType] == PMLActionTypeNoAction? 0 : 1;
                 }
-                return 0;
+                if([_infoProvider respondsToSelector:@selector(advertisingActionType)]) {
+                    rowCount+= [_infoProvider advertisingActionType] == PMLActionTypeNoAction? 0 : 1;
+                }
+                return rowCount;
+            }
 
         }
     } else {
@@ -508,7 +513,7 @@ typedef enum {
         case kPMLSectionTopPlaces:
             return kPMLRowEventId;
         case kPMLSectionReport:
-            return kPMLRowReportButtonId;
+            return kPMLRowButtonId;
 
     }
     return nil;
@@ -602,10 +607,15 @@ typedef enum {
             [self configureRowActivity:(PMLActivityTableViewCell*)cell atIndex:indexPath.row];
             break;
         case kPMLSectionTopPlaces:
-            [self configureRowTopPlace:(PMLActivityTableViewCell*)cell atIndex:indexPath.row];
+            // Should no longer be used, now part of the event section for proper tab headers
+            [self configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
             break;
         case kPMLSectionReport:
-            [self configureRowReport:(PMLButtonTableViewCell*)cell];
+            if(indexPath.row == 0 && [_infoProvider respondsToSelector:@selector(reportActionType)]) {
+                [self configureRowReport:(PMLButtonTableViewCell*)cell];
+            } else {
+                [self configureRowAdvertising:(PMLButtonTableViewCell*)cell];
+            }
             break;
     }
     return cell;
@@ -936,8 +946,13 @@ typedef enum {
             }
             break;
         case kPMLSectionReport: {
-            PopupAction *action = [_actionManager actionForType:[_infoProvider reportActionType]];
-            action.actionCommand();
+            if(indexPath.row == 0 && [_infoProvider respondsToSelector:@selector(reportActionType)]) {
+                PopupAction *action = [_actionManager actionForType:[_infoProvider reportActionType]];
+                action.actionCommand();
+            } else {
+                PopupAction *action = [_actionManager actionForType:[_infoProvider advertisingActionType]];
+                action.actionCommand();
+            }
             break;
         }
     }
@@ -1480,7 +1495,11 @@ typedef enum {
     cell.buttonLabel.text = [_infoProvider reportText];
     cell.buttonContainer.backgroundColor = UIColorFromRGBAlpha(0xc50000,0.2);
 }
-
+-(void) configureRowAdvertising:(PMLButtonTableViewCell*)cell {
+    cell.buttonImageView.image = [UIImage imageNamed:@"evtButtonAdd"];
+    cell.buttonLabel.text = NSLocalizedString(@"banner.button.addPlaceBanner", @"banner.button.addPlaceBanner");
+    cell.buttonContainer.backgroundColor = [UIColor clearColor];
+}
 -(NSString *) stringByStrippingHTML:(NSString*)html {
     NSRange r;
     NSString *s = [NSString stringWithString:html];
@@ -1864,7 +1883,7 @@ typedef enum {
     }
     switch(recognizer.state) {
         case UIGestureRecognizerStateBegan:
-            if (abs(self.tableView.contentOffset.y) < kPMLHeightSnippet) {
+            if (abs((int)self.tableView.contentOffset.y) < kPMLHeightSnippet) {
                 CGPoint location = [recognizer locationInView:self.parentMenuController.view];
                 location.x = CGRectGetMidX(self.parentMenuController.view.bounds);
                 _dragStartPoint=location;
