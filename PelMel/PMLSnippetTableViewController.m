@@ -1330,32 +1330,8 @@ typedef enum {
 }
 -(void)configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
     Event *event = [[_infoProvider events] objectAtIndex:row];
-    cell.image.image = nil;
-    
-    CALImage *calEventImage;
-    if([_infoProvider respondsToSelector:@selector(imageForEvent:)]) {
-        calEventImage = [_infoProvider imageForEvent:event];
-    } else {
-        calEventImage = [[TogaytherService imageService] imageOrPlaceholderFor:event allowAdditions:YES];
-    }
-    [_imageService load:calEventImage to:cell.image thumb:NO];
-    
-    cell.titleLabel.text = [_uiService nameForEvent:event];
-    cell.dateLabel.text = [_conversionService eventDateLabel:event isStart:YES];
-    cell.locationIcon.image = [UIImage imageNamed:@"snpIconMarker"];
-    if(event.place.cityName != nil) {
-        cell.locationLabel.text = [NSString stringWithFormat:@"%@, %@",event.place.title,event.place.cityName];
-    } else {
-        cell.locationLabel.text = event.place.title;
-    }
-    if(event.likeCount>0) {
-        cell.countLabel.text = [_uiService localizedString:@"snippet.event.inUsers" forCount:event.likeCount];
-        cell.countIcon.image=[UIImage imageNamed:@"snpIconEvent"];
-    } else {
-        cell.countIcon.image = nil;
-        cell.countLabel.text = nil;
-    }
-//    cell.backgroundColor = UIColorFromRGB(0x31363a);
+    [_uiService configureRowOvEvents:cell forEvent:event usingInfoProvider:_infoProvider];
+    //    cell.backgroundColor = UIColorFromRGB(0x31363a);
 }
 -(void)configureRowOvAddEvent:(PMLButtonTableViewCell*)cell {
     cell.buttonLabel.text = NSLocalizedString(@"events.addButton", @"Create and promote an event");
@@ -1424,33 +1400,7 @@ typedef enum {
 }
 -(void)configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
     Place *place = [[_infoProvider topPlaces] objectAtIndex:row];
-    cell.dateLabel.text = place.title;
-    cell.titleLabel.text = [[[TogaytherService settingsService] getPlaceType:place.placeType] label];
-    
-    // Subtitle (like count)
-    cell.countIcon.image = [UIImage imageNamed:@"snpIconLikeWhite"];
-    cell.countLabel.text = [_uiService localizedString:@"counters.likes" forCount:place.likeCount];
-    cell.locationLabel.text = place.cityName;
-    
-//    // Checkins count
-//    if(place.inUserCount>0) {
-//        cell.checkinLabel.text = [_uiService localizedString:@"counters.arehere" forCount:place.inUserCount];
-//        cell.checkinImageView.image = [UIImage imageNamed:@"snpIconMarker"];
-//    } else {
-//        cell.checkinImageView.image = nil;
-//        cell.checkinLabel.text = nil;
-//    }
-    
-    // Setting distance
-//    NSString *distance = [_conversionService distanceTo:place];
-//    cell.distanceLabel.text = distance;
-//    size = [cell.distanceLabel sizeThatFits:CGSizeZero];
-//    cell.widthDistanceLabelConstraint.constant = size.width;
-    
-    // Loading image
-    cell.image.image = [CALImage getDefaultThumb];
-    [_imageService load:place.mainImage to:cell.image thumb:NO];
-    
+    [_uiService configureRowPlace:cell place:place];
 }
 
 -(void) configureRowTags:(PMLTagsTableViewCell*)cell atIndex:(NSInteger)index {

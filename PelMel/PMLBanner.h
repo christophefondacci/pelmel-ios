@@ -16,5 +16,5 @@
 @property (nonatomic)           NSInteger  targetDisplayCount;
 @property (nonatomic)           NSInteger  displayCount;
 @property (nonatomic)           NSInteger  clickCount;
-
+@property (nonatomic,retain)    NSString   *storeProductId;
 @end

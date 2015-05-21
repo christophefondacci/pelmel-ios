@@ -18,6 +18,7 @@
 #import "PMLContextInfoProvider.h"
 #import "PMLCityInfoProvider.h"
 #import "PMLEventInfoProvider.h"
+#import "PMLEventTableViewCell.h"
 #import "UIImage+ImageEffects.h"
 #import <MBProgressHUD.h>
 
@@ -475,4 +476,63 @@
     }
     return [name uppercaseString];
 }
+
+#pragma mark - Factorized component display
+-(void)configureRowOvEvents:(PMLEventTableViewCell*)cell forEvent:(Event*)event usingInfoProvider:(id<PMLInfoProvider>)infoProvider {
+    cell.image.image = nil;
+    
+    CALImage *calEventImage;
+    if([infoProvider respondsToSelector:@selector(imageForEvent:)]) {
+        calEventImage = [infoProvider imageForEvent:event];
+    } else {
+        calEventImage = [[TogaytherService imageService] imageOrPlaceholderFor:event allowAdditions:YES];
+    }
+    [[TogaytherService imageService] load:calEventImage to:cell.image thumb:NO];
+    
+    cell.titleLabel.text = [self nameForEvent:event];
+    cell.dateLabel.text = [[TogaytherService getConversionService] eventDateLabel:event isStart:YES];
+    cell.locationIcon.image = [UIImage imageNamed:@"snpIconMarker"];
+    if(event.place.cityName != nil) {
+        cell.locationLabel.text = [NSString stringWithFormat:@"%@, %@",event.place.title,event.place.cityName];
+    } else {
+        cell.locationLabel.text = event.place.title;
+    }
+    if(event.likeCount>0) {
+        cell.countLabel.text = [self localizedString:@"snippet.event.inUsers" forCount:event.likeCount];
+        cell.countIcon.image=[UIImage imageNamed:@"snpIconEvent"];
+    } else {
+        cell.countIcon.image = nil;
+        cell.countLabel.text = nil;
+    }
+}
+-(void)configureRowPlace:(PMLEventTableViewCell*)cell place:(Place*)place {
+    cell.dateLabel.text = place.title;
+    cell.titleLabel.text = [[[TogaytherService settingsService] getPlaceType:place.placeType] label];
+    
+    // Subtitle (like count)
+    cell.countIcon.image = [UIImage imageNamed:@"snpIconLikeWhite"];
+    cell.countLabel.text = [self localizedString:@"counters.likes" forCount:place.likeCount];
+    cell.locationLabel.text = place.cityName;
+    
+    //    // Checkins count
+    //    if(place.inUserCount>0) {
+    //        cell.checkinLabel.text = [_uiService localizedString:@"counters.arehere" forCount:place.inUserCount];
+    //        cell.checkinImageView.image = [UIImage imageNamed:@"snpIconMarker"];
+    //    } else {
+    //        cell.checkinImageView.image = nil;
+    //        cell.checkinLabel.text = nil;
+    //    }
+    
+    // Setting distance
+    //    NSString *distance = [_conversionService distanceTo:place];
+    //    cell.distanceLabel.text = distance;
+    //    size = [cell.distanceLabel sizeThatFits:CGSizeZero];
+    //    cell.widthDistanceLabelConstraint.constant = size.width;
+    
+    // Loading image
+    cell.image.image = [CALImage getDefaultThumb];
+    [[TogaytherService imageService] load:place.mainImage to:cell.image thumb:NO];
+    
+}
+
 @end

@@ -86,6 +86,9 @@
     // Injecting settings service
     _settingsService.conversionService = _conversionService;
     
+    // Injecting store service
+    _storeService.userService = _userService;
+    
 }
 +(DataService *)dataService {
     return _dataService;
@@ -94,7 +97,9 @@
 + (UserService *)userService {
     return _userService;
 }
-
++ (PMLStoreService *)storeService {
+    return _storeService;
+}
 + (NSString *)getLanguageIso6391Code {
     return _language;
 }

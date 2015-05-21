@@ -60,6 +60,7 @@ typedef void (^ImageLoaderBlock)(CALImage *image);
  * Registers the specified view as tappable and assigns the provided callback to it
  */
 -(void)registerTappable:(UIView*)imageView forViewController:(UIViewController*)controller callback:(id<PMLImagePickerCallback>)callback;
+-(void)registerImageUploadFromLibrary:(UIView*)view forViewController:(UIViewController*)controller callback:(id<PMLImagePickerCallback>)callback;
 -(void)unregisterTappable:(UIView*)imageView;
 /**
  * Prompts the user to first select a photo source and then will retrieve the photo

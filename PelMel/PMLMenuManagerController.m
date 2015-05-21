@@ -1053,25 +1053,28 @@ static void *MyParentMenuControllerKey;
     if(object == [_dataService modelHolder] && [keyPath isEqualToString:@"banner"]) {
         self.banner = [[_dataService modelHolder] banner];
         if(self.banner != nil) {
-            [[TogaytherService imageService] load:self.banner.mainImage to:self.adContainerImage thumb:NO callback:^(CALImage *image) {
-                [UIView animateWithDuration:0.8 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                    self.bottomContainerConstraint.constant = 50;
-                } completion:^(BOOL finished) {
-                    if(_currentSnippetViewController!=nil && !_snippetFullyOpened) {
-                        [self animateSnippetToOffset:[self offsetForMinimizedSnippet] animated:YES];
-                    }
-                    [self adjustBottomViewFrame];
-                    
-                    // Handling ad clicks
-                    if(self.adTapRecognizer !=nil) {
-                        // Removing any former tap recognizer
-                        [self.adContainerImage removeGestureRecognizer:self.adTapRecognizer];
-                    }
-                    self.adTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adTapped:)];
-                    [self.adContainerImage addGestureRecognizer:self.adTapRecognizer];
-                    self.adContainerImage.userInteractionEnabled=YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[TogaytherService imageService] load:self.banner.mainImage to:self.adContainerImage thumb:NO callback:^(CALImage *image) {
+                    [UIView animateWithDuration:0.8 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+                        self.bottomContainerConstraint.constant = 50;
+                    } completion:^(BOOL finished) {
+                        if(_currentSnippetViewController!=nil && !_snippetFullyOpened) {
+                            [self animateSnippetToOffset:[self offsetForMinimizedSnippet] animated:YES];
+                        }
+                        [self adjustBottomViewFrame];
+                        
+                        // Handling ad clicks
+                        if(self.adTapRecognizer !=nil) {
+                            // Removing any former tap recognizer
+                            [self.adContainerImage removeGestureRecognizer:self.adTapRecognizer];
+                        }
+                        self.adTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(adTapped:)];
+                        [self.adContainerImage addGestureRecognizer:self.adTapRecognizer];
+                        self.adContainerImage.userInteractionEnabled=YES;
+                    }];
                 }];
-            }];
+
+            });
         } else {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [UIView animateWithDuration:0.8 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -1097,8 +1100,9 @@ static void *MyParentMenuControllerKey;
         webviewController.URL = [[NSURL alloc] initWithString:self.banner.targetUrl];
         [TogaytherService applyCommonLookAndFeel:[_uiService menuManagerController]];
         ((UINavigationController*)[_uiService menuManagerController].currentSnippetViewController).navigationBar.translucent=NO;
-        
-        [_uiService presentController:webviewController];
+        [[_uiService menuManagerController].navigationController setNavigationBarHidden:NO animated:YES];
+        [[_uiService menuManagerController].navigationController pushViewController:webviewController animated:YES];
+
 
     }
 }

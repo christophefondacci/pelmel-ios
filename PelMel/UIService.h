@@ -10,7 +10,7 @@
 #import "CALObject.h"
 #import "MapViewController.h"
 #import "PMLInfoProvider.h"
-
+#import "PMLEventTableViewCell.h"
 
 @interface UIService : NSObject <UISplitViewControllerDelegate>
 
@@ -152,4 +152,18 @@
  * @return the PMLProperty matching the given code, or nil if none or properties not supported
  */
 -(PMLProperty*)propertyFrom:(id<PMLInfoProvider>)infoProvider forCode:(NSString*)propertyCode;
+
+/**
+ * Factorization of setup of the event cell
+ * @param cell the PMLEventTableViewCell to configure
+ * @param event the event containing the information to fill in the cell
+ * @param infoProvider the PMLInfoProvider implementation to use
+ */
+-(void)configureRowOvEvents:(PMLEventTableViewCell*)cell forEvent:(Event*)event usingInfoProvider:(id<PMLInfoProvider>)infoProvider ;
+/**
+ * Factorization of the setup of the place cell
+ * @param cell the PMLEventTableViewCell to configure
+ * @param place the Place object containing information to fill in the cell
+ */
+-(void)configureRowPlace:(PMLEventTableViewCell*)cell place:(Place*)place;
 @end

@@ -37,7 +37,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>221</string>
+	<string>281</string>
 	<key>FacebookAppID</key>
 	<string>302478486488872</string>
 	<key>FacebookDisplayName</key>
@@ -48,6 +48,8 @@
 	<string>PelMel would like to access your location to tell you what's around</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>OpenSans-Semibold.ttf</string>
+		<string>OpenSans-Light.ttf</string>
 		<string>ComingSoon.ttf</string>
 		<string>Cooper Black.ttf</string>
 		<string>OpenSans-Bold.ttf</string>

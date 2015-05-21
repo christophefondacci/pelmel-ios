@@ -18,7 +18,7 @@
 #import "Activity.h"
 #import "NSString+HTML.h"
 #import <AFNetworking.h>
-#import "PMLPopupEditor.h"
+#import "PMLEditor.h"
 #import "PMLBanner.h"
 
 
@@ -126,7 +126,7 @@
  * Starting a refresh 
  */
 -(void)fetchPlacesFor:(CALObject *)parent searchTerm:(NSString *)searchTerm {
-    [PMLPopupEditor purgeEditors];
+    [PMLEditor purgeEditors];
 
     dispatch_async(kBgQueue, ^{
         BOOL isLocalized = NO;
@@ -895,6 +895,9 @@
         if(banner.targetObject!=nil) {
             [formData appendPartWithFormData:[banner.targetObject.key dataUsingEncoding:NSUTF8StringEncoding]
                                     name:@"targetItemKey"];
+        }
+        if(banner.targetUrl!=nil) {
+            [formData appendPartWithFormData:[banner.targetUrl dataUsingEncoding:NSUTF8StringEncoding] name:@"targetUrl"];
         }
         [formData appendPartWithFormData:[[NSString stringWithFormat:@"%f",banner.lat] dataUsingEncoding:NSUTF8StringEncoding]   name:@"lat"];
         [formData appendPartWithFormData:[[NSString stringWithFormat:@"%f",banner.lng] dataUsingEncoding:NSUTF8StringEncoding]

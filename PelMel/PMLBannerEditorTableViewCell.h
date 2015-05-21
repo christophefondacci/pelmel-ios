@@ -7,6 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PMLBanner.h"
+
+typedef enum {
+    PMLTargetTypePlace,
+    PMLTargetTypeEvent,
+    PMLTargetTypeURL
+} PMLTargetType;
 
 @class PMLBannerEditorTableViewCell;
 
@@ -17,7 +24,7 @@
  * @param bannerEditorCell the current cell which received the touch action
  * @param packageIndex the index of the package that has been selected
  */
--(void)bannerEditor:(PMLBannerEditorTableViewCell*)bannerEditorCell packageSelected:(NSInteger)packageIndex;
+-(void)bannerEditor:(PMLBannerEditorTableViewCell*)bannerEditorCell targetTypeSelected:(PMLTargetType)targetType;
 /**
  * Ok button tapped
  * @param bannerEditorCell the current cell
@@ -33,17 +40,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *displaysLabel;
 @property (weak, nonatomic) IBOutlet UILabel *targetLabel;
-@property (weak, nonatomic) IBOutlet UIView *firstDisplayPackageContainer;
-@property (weak, nonatomic) IBOutlet UILabel *firstDisplayPackageCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *firstDisplayPackagePriceLabel;
 
-@property (weak, nonatomic) IBOutlet UIView *secondDisplayPackageContainer;
-@property (weak, nonatomic) IBOutlet UILabel *secondDisplayPackageCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *secondDisplayPackagePriceLabel;
-
-@property (weak, nonatomic) IBOutlet UIView *thirdDisplayPackageContainer;
-@property (weak, nonatomic) IBOutlet UILabel *thirdDisplayPackageCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *thirdDisplayPackagePriceLabel;
+@property (weak, nonatomic) IBOutlet UIButton *placeButton;
+@property (weak, nonatomic) IBOutlet UIButton *eventButton;
+@property (weak, nonatomic) IBOutlet UIButton *urlButton;
 
 @property (weak, nonatomic) IBOutlet UIImageView *targetItemImage;
 @property (weak, nonatomic) IBOutlet UILabel *targetItemLabel;
@@ -57,4 +57,5 @@
 @property (weak,nonatomic) id<PMLBannerEditorDelegate> delegate;
 
 -(void)hookActions;
+-(void)refreshWithBanner:(PMLBanner*)banner;
 @end

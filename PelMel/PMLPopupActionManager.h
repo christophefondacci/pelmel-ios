@@ -10,7 +10,7 @@
 #import "CALObject.h"
 #import "DataService.h"
 #import "PopupAction.h"
-#import "PMLPopupEditor.h"
+#import "PMLEditor.h"
 
 @class PMLMapPopupViewController;
 @class MapAnnotation;

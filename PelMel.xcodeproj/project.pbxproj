@@ -169,6 +169,14 @@
 		B45E04951B06CA240013357B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B45E04941B06CA240013357B /* StoreKit.framework */; };
 		B45E04981B06D23C0013357B /* PMLStoreService.h in Headers */ = {isa = PBXBuildFile; fileRef = B45E04961B06D23C0013357B /* PMLStoreService.h */; };
 		B45E04991B06D23C0013357B /* PMLStoreService.m in Sources */ = {isa = PBXBuildFile; fileRef = B45E04971B06D23C0013357B /* PMLStoreService.m */; };
+		B45E049C1B0A8B970013357B /* PMLGenericEditorBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = B45E049A1B0A8B970013357B /* PMLGenericEditorBehavior.h */; };
+		B45E049D1B0A8B970013357B /* PMLGenericEditorBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = B45E049B1B0A8B970013357B /* PMLGenericEditorBehavior.m */; };
+		B45E04A01B0A8C240013357B /* PMLPlaceEditorBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = B45E049E1B0A8C240013357B /* PMLPlaceEditorBehavior.h */; };
+		B45E04A11B0A8C240013357B /* PMLPlaceEditorBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = B45E049F1B0A8C240013357B /* PMLPlaceEditorBehavior.m */; };
+		B45E04A41B0A904F0013357B /* PMLBannerEditorBehavior.h in Headers */ = {isa = PBXBuildFile; fileRef = B45E04A21B0A904F0013357B /* PMLBannerEditorBehavior.h */; };
+		B45E04A51B0A904F0013357B /* PMLBannerEditorBehavior.m in Sources */ = {isa = PBXBuildFile; fileRef = B45E04A31B0A904F0013357B /* PMLBannerEditorBehavior.m */; };
+		B45E04A81B0BFC120013357B /* PMLItemSelectionTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B45E04A61B0BFC120013357B /* PMLItemSelectionTableViewController.h */; };
+		B45E04A91B0BFC120013357B /* PMLItemSelectionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B45E04A71B0BFC120013357B /* PMLItemSelectionTableViewController.m */; };
 		B46AD72C19E0E1E50021E1DE /* SettingsTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B46AD72A19E0E1E50021E1DE /* SettingsTableViewController.h */; };
 		B46AD72D19E0E1E50021E1DE /* SettingsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B46AD72B19E0E1E50021E1DE /* SettingsTableViewController.m */; };
 		B46AD73119E4FDD00021E1DE /* PMLLikeStatistic.h in Headers */ = {isa = PBXBuildFile; fileRef = B46AD72F19E4FDD00021E1DE /* PMLLikeStatistic.h */; };
@@ -312,6 +320,8 @@
 		B4B560AC18B76CD0006E6D90 /* UIPelmelTitleView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B560AA18B76CD0006E6D90 /* UIPelmelTitleView.m */; };
 		B4B82B3619FBB69900895C57 /* PMLPickerTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4B82B3419FBB69900895C57 /* PMLPickerTableViewCell.h */; };
 		B4B82B3719FBB69900895C57 /* PMLPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */; };
+		B4BA87D11B0DA48D00612214 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */; };
+		B4BA87D31B0DA54600612214 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4BA87D21B0DA54600612214 /* OpenSans-Semibold.ttf */; };
 		B4BB9EFD19D4DE430070B03C /* PMLChatTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */; };
 		B4BB9EFE19D4DE430070B03C /* PMLChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */; };
 		B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */; };
@@ -375,8 +385,8 @@
 		B4EECAEE162EB8C4005F80DE /* ClosableBoxView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAED162EB8C4005F80DE /* ClosableBoxView.m */; };
 		B4EECAF3162FF140005F80DE /* UITableSearchViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAF2162FF13F005F80DE /* UITableSearchViewCell.m */; };
 		B4EECAF616300218005F80DE /* UITableSegmentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAF516300218005F80DE /* UITableSegmentViewCell.m */; };
-		B4FC957B19AF3B4B00269E74 /* PMLPopupEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4FC957919AF3B4B00269E74 /* PMLPopupEditor.h */; };
-		B4FC957C19AF3B4B00269E74 /* PMLPopupEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = B4FC957A19AF3B4B00269E74 /* PMLPopupEditor.m */; };
+		B4FC957B19AF3B4B00269E74 /* PMLEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4FC957919AF3B4B00269E74 /* PMLEditor.h */; };
+		B4FC957C19AF3B4B00269E74 /* PMLEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = B4FC957A19AF3B4B00269E74 /* PMLEditor.m */; };
 		B4FC958019B1E28B00269E74 /* Sari-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */; };
 		B4FC958119B1E28B00269E74 /* Sari-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC957E19B1E28B00269E74 /* Sari-Light.otf */; };
 		B4FC958219B1E28B00269E74 /* Sari-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */; };
@@ -597,6 +607,14 @@
 		B45E04941B06CA240013357B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B45E04961B06D23C0013357B /* PMLStoreService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLStoreService.h; sourceTree = "<group>"; };
 		B45E04971B06D23C0013357B /* PMLStoreService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLStoreService.m; sourceTree = "<group>"; };
+		B45E049A1B0A8B970013357B /* PMLGenericEditorBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLGenericEditorBehavior.h; sourceTree = "<group>"; };
+		B45E049B1B0A8B970013357B /* PMLGenericEditorBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLGenericEditorBehavior.m; sourceTree = "<group>"; };
+		B45E049E1B0A8C240013357B /* PMLPlaceEditorBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPlaceEditorBehavior.h; sourceTree = "<group>"; };
+		B45E049F1B0A8C240013357B /* PMLPlaceEditorBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPlaceEditorBehavior.m; sourceTree = "<group>"; };
+		B45E04A21B0A904F0013357B /* PMLBannerEditorBehavior.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLBannerEditorBehavior.h; sourceTree = "<group>"; };
+		B45E04A31B0A904F0013357B /* PMLBannerEditorBehavior.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBannerEditorBehavior.m; sourceTree = "<group>"; };
+		B45E04A61B0BFC120013357B /* PMLItemSelectionTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLItemSelectionTableViewController.h; sourceTree = "<group>"; };
+		B45E04A71B0BFC120013357B /* PMLItemSelectionTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLItemSelectionTableViewController.m; sourceTree = "<group>"; };
 		B46AD72A19E0E1E50021E1DE /* SettingsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsTableViewController.h; sourceTree = "<group>"; };
 		B46AD72B19E0E1E50021E1DE /* SettingsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsTableViewController.m; sourceTree = "<group>"; };
 		B46AD72F19E4FDD00021E1DE /* PMLLikeStatistic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLLikeStatistic.h; sourceTree = "<group>"; };
@@ -762,6 +780,8 @@
 		B4B82B3419FBB69900895C57 /* PMLPickerTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPickerTableViewCell.h; sourceTree = "<group>"; };
 		B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPickerTableViewCell.m; sourceTree = "<group>"; };
 		B4B82B3819FC6CBA00895C57 /* PMLPickerProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLPickerProvider.h; sourceTree = "<group>"; };
+		B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		B4BA87D21B0DA54600612214 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
 		B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTableViewCell.h; sourceTree = "<group>"; };
 		B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLChatTableViewCell.m; sourceTree = "<group>"; };
 		B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTimeTableViewCell.h; sourceTree = "<group>"; };
@@ -845,8 +865,8 @@
 		B4EECAF2162FF13F005F80DE /* UITableSearchViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableSearchViewCell.m; sourceTree = "<group>"; };
 		B4EECAF416300217005F80DE /* UITableSegmentViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableSegmentViewCell.h; sourceTree = "<group>"; };
 		B4EECAF516300218005F80DE /* UITableSegmentViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableSegmentViewCell.m; sourceTree = "<group>"; };
-		B4FC957919AF3B4B00269E74 /* PMLPopupEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPopupEditor.h; sourceTree = "<group>"; };
-		B4FC957A19AF3B4B00269E74 /* PMLPopupEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPopupEditor.m; sourceTree = "<group>"; };
+		B4FC957919AF3B4B00269E74 /* PMLEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLEditor.h; sourceTree = "<group>"; };
+		B4FC957A19AF3B4B00269E74 /* PMLEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLEditor.m; sourceTree = "<group>"; };
 		B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sari-ExtraBold.otf"; sourceTree = "<group>"; };
 		B4FC957E19B1E28B00269E74 /* Sari-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sari-Light.otf"; sourceTree = "<group>"; };
 		B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sari-Medium.otf"; sourceTree = "<group>"; };
@@ -967,6 +987,8 @@
 			children = (
 				B43143F61B02987B00B189BA /* PMLBannerEditorTableViewController.h */,
 				B43143F71B02987B00B189BA /* PMLBannerEditorTableViewController.m */,
+				B45E04A61B0BFC120013357B /* PMLItemSelectionTableViewController.h */,
+				B45E04A71B0BFC120013357B /* PMLItemSelectionTableViewController.m */,
 			);
 			name = Advertising;
 			sourceTree = "<group>";
@@ -1093,8 +1115,14 @@
 				B4859DB7197FC6810036D8FF /* PopupAction.m */,
 				B4859DBA197FC7FF0036D8FF /* PMLPopupActionManager.h */,
 				B4859DBB197FC7FF0036D8FF /* PMLPopupActionManager.m */,
-				B4FC957919AF3B4B00269E74 /* PMLPopupEditor.h */,
-				B4FC957A19AF3B4B00269E74 /* PMLPopupEditor.m */,
+				B4FC957919AF3B4B00269E74 /* PMLEditor.h */,
+				B4FC957A19AF3B4B00269E74 /* PMLEditor.m */,
+				B45E049A1B0A8B970013357B /* PMLGenericEditorBehavior.h */,
+				B45E049B1B0A8B970013357B /* PMLGenericEditorBehavior.m */,
+				B45E049E1B0A8C240013357B /* PMLPlaceEditorBehavior.h */,
+				B45E049F1B0A8C240013357B /* PMLPlaceEditorBehavior.m */,
+				B45E04A21B0A904F0013357B /* PMLBannerEditorBehavior.h */,
+				B45E04A31B0A904F0013357B /* PMLBannerEditorBehavior.m */,
 			);
 			name = Popups;
 			sourceTree = "<group>";
@@ -1448,10 +1476,12 @@
 				B4FC958319B1E64A00269E74 /* OpenSans-Bold.ttf */,
 				B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */,
 				B4FC958419B1E64A00269E74 /* OpenSans-Regular.ttf */,
+				B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */,
 				B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */,
 				B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */,
 				B4FC957E19B1E28B00269E74 /* Sari-Light.otf */,
 				B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */,
+				B4BA87D21B0DA54600612214 /* OpenSans-Semibold.ttf */,
 				B43123A51ACDB08D008EF107 /* ComingSoon.ttf */,
 				B4A290B816A5AC9F007F5AA9 /* hd_logo_small.gif */,
 				B4956552163ECD4A006A0451 /* bubble-orange.png */,
@@ -1687,6 +1717,7 @@
 				B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */,
 				B4B560AB18B76CD0006E6D90 /* UIPelmelTitleView.h in Headers */,
 				B4AA0A6E1AFD1D0400DCDE29 /* PMLEventPlaceTabsTitleView.h in Headers */,
+				B45E04A01B0A8C240013357B /* PMLPlaceEditorBehavior.h in Headers */,
 				B4AA0A421AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h in Headers */,
 				B4A47D2C1AE07C4E000178BD /* PMLPropertyTableViewCell.h in Headers */,
 				B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */,
@@ -1695,6 +1726,7 @@
 				B43143F31B0296A900B189BA /* PMLBannerEditorTableViewCell.h in Headers */,
 				B470F429199D800500A03CAD /* KIImagePager.h in Headers */,
 				B49F98A319A2186300BD3B2F /* PMLOpenActionBehavior.h in Headers */,
+				B45E04A81B0BFC120013357B /* PMLItemSelectionTableViewController.h in Headers */,
 				B43D11711A97A12B008476C7 /* LinearDismissalAnimator.h in Headers */,
 				B4AA0A5C1AFABE1900DCDE29 /* PMLPhotoView.h in Headers */,
 				B4E8293B18AC6F4C0063715C /* PostDelegate.h in Headers */,
@@ -1709,7 +1741,7 @@
 				B4A47D281AE078F2000178BD /* PMLProperty.h in Headers */,
 				B4BB9F1619D7F23E0070B03C /* PMLThumbsTableViewCell.h in Headers */,
 				B4BB9F0E19D4F9260070B03C /* HPTextViewInternal.h in Headers */,
-				B4FC957B19AF3B4B00269E74 /* PMLPopupEditor.h in Headers */,
+				B4FC957B19AF3B4B00269E74 /* PMLEditor.h in Headers */,
 				B405E6701A953F9400C49F64 /* PMLCalendarEditorTableViewController.h in Headers */,
 				B457A0FA1A9AF00A00207D8E /* PMLTextFieldTableViewCell.h in Headers */,
 				B4BD19181AE6BE3800510AC4 /* MessageTableViewController.h in Headers */,
@@ -1717,6 +1749,7 @@
 				B41DD754197B5FA5008F09D9 /* UIAttachmentView.h in Headers */,
 				B47A69D71AA7843B00877B58 /* PMLThumbHeaderView.h in Headers */,
 				B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */,
+				B45E049C1B0A8B970013357B /* PMLGenericEditorBehavior.h in Headers */,
 				B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */,
 				B405E66C1A953C9600C49F64 /* PMLDetailTableViewCell.h in Headers */,
 				B4AA0A4B1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.h in Headers */,
@@ -1724,6 +1757,7 @@
 				B4BD191E1AE6BFAD00510AC4 /* PMLChatInputBarView.h in Headers */,
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
 				B47A69DF1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h in Headers */,
+				B45E04A41B0A904F0013357B /* PMLBannerEditorBehavior.h in Headers */,
 				B43D11731A97A12B008476C7 /* PresentingSpringAnimator.h in Headers */,
 				B46AD73519E509580021E1DE /* PMLSnippetLikeTableViewCell.h in Headers */,
 				B457A1121A9D93D200207D8E /* PMLFakeViewController.h in Headers */,
@@ -1884,6 +1918,7 @@
 				B4D56080160B673F003A738E /* InfoPlist.strings in Resources */,
 				B4BD191B1AE6BF2C00510AC4 /* PMLChatInputBarView.xib in Resources */,
 				B457A0F21A9A9B7700207D8E /* PMLButtonTableViewCell.xib in Resources */,
+				B4BA87D31B0DA54600612214 /* OpenSans-Semibold.ttf in Resources */,
 				B4D56089160B673F003A738E /* MainStoryboard_iPhone.storyboard in Resources */,
 				B4D5608C160B673F003A738E /* MainStoryboard_iPad.storyboard in Resources */,
 				B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */,
@@ -1915,6 +1950,7 @@
 				B4EECAEB162EB6EE005F80DE /* ClosableBoxView.xib in Resources */,
 				B49C97231AB2AEE7009B9F8F /* JsonService in Resources */,
 				B41A13F2163942C600827E04 /* TogaytherHeaderView.xib in Resources */,
+				B4BA87D11B0DA48D00612214 /* OpenSans-Light.ttf in Resources */,
 				B4BD19111AE5CAB000510AC4 /* PMLChatLoaderView.xib in Resources */,
 				B47A69D41AA7837200877B58 /* PMLThumbHeaderView.xib in Resources */,
 				B4E9120C169ACD4E005D3CAF /* TogaytherTitleView.xib in Resources */,
@@ -2028,6 +2064,7 @@
 				B4FC959319B1F12400269E74 /* PMLCountersTableViewCell.m in Sources */,
 				B4592A991623255B009688B8 /* DescriptionEditorViewController.m in Sources */,
 				B4592A94162318A4009688B8 /* PickerInputTableViewCell.m in Sources */,
+				B45E04A91B0BFC120013357B /* PMLItemSelectionTableViewController.m in Sources */,
 				B4D560D2160E1BC1003A738E /* UIImageExtras.m in Sources */,
 				B4D56082160B673F003A738E /* main.m in Sources */,
 				B43805BA1A1D870100736051 /* PMLImagedTitleTableViewCell.m in Sources */,
@@ -2080,6 +2117,7 @@
 				B40779BD16149D9700D02F66 /* CurrentUser.m in Sources */,
 				B4FC959C19B1F2E300269E74 /* PMLSnippetTableViewController.m in Sources */,
 				B457A0F01A9A689100207D8E /* PMLSectionTitleView.m in Sources */,
+				B45E049D1B0A8B970013357B /* PMLGenericEditorBehavior.m in Sources */,
 				B4AA0A341AF178AE00DCDE29 /* PMLStorageService.m in Sources */,
 				B40779C01614A52500D02F66 /* LoginViewController.m in Sources */,
 				B45E04991B06D23C0013357B /* PMLStoreService.m in Sources */,
@@ -2123,7 +2161,7 @@
 				B4592A8C1623090A009688B8 /* UIInteractiveLabel.m in Sources */,
 				B449DEE216245B6600C362F8 /* ImageService.m in Sources */,
 				B457A0F61A9AA01300207D8E /* PMLButtonTableViewCell.m in Sources */,
-				B4FC957C19AF3B4B00269E74 /* PMLPopupEditor.m in Sources */,
+				B4FC957C19AF3B4B00269E74 /* PMLEditor.m in Sources */,
 				B46AD73219E4FDD00021E1DE /* PMLLikeStatistic.m in Sources */,
 				B4E8293018AAFAA10063715C /* SettingsService.m in Sources */,
 				B449DEE51625F3F100C362F8 /* PhotoManagerViewController.m in Sources */,
@@ -2148,6 +2186,7 @@
 				B40668BC19714CCE0012DF71 /* APLPositionToBoundsMapping.m in Sources */,
 				B41A13F91639662300827E04 /* TermsOfUseViewController.m in Sources */,
 				B4CDDB0D1680D140002C01C0 /* Event.m in Sources */,
+				B45E04A11B0A8C240013357B /* PMLPlaceEditorBehavior.m in Sources */,
 				B45CAB3F197375F70089C7E8 /* PMLDataManager.m in Sources */,
 				B4AA0A541AF81CC900DCDE29 /* PMLActivityDetailTableViewController.m in Sources */,
 				B46C4C3919D27D9D00C81DA3 /* PMLTagsTableViewCell.m in Sources */,
@@ -2156,6 +2195,7 @@
 				B4AC8ED9168C795C002E8381 /* MessageService.m in Sources */,
 				B4A47D311AE0852F000178BD /* PMLWebViewController.m in Sources */,
 				B4A6642F1695E32100732B6D /* MKNumberBadgeView.m in Sources */,
+				B45E04A51B0A904F0013357B /* PMLBannerEditorBehavior.m in Sources */,
 				B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */,
 				B4E91223169B226F005D3CAF /* TogaytherTabBarController.m in Sources */,
 				B4A4666D19A73A6A004ADC7E /* PMLPlaceInfoProvider.m in Sources */,

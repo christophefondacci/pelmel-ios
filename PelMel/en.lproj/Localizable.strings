@@ -114,6 +114,18 @@
 "activity.detail.U_EVNT"="%@ has updated event %@";
 "banner.button.addPlaceBanner"="Create an ad banner";
 "banner.itemTitle"="%@ banner displays for %@";
+"banner.loading"="Loading";
+"banner.price.free"="Free!";
+"banner.purchase.title"="Select a product";
+"banner.purchase.msg"="Please select the number of displays of your banner. This is the number of times your banner will be displayed to PELMEL users. Your banner will be displayed without any time limitation until it reaches that number.";
+"banner.purchase.productTemplate"="%@ banner displays for %@";
+"banner.store.notReadyTitle"="Waiting for App Store";
+"banner.store.notReadyMsg"="The App Store has not yet responded to our request, please wait a few seconds and try again. Also check your connection and make sure you have reliable network connection as you are about to start a payment process.";
+"banner.store.payment.inprogress"="Contacting App Store...";
+"banner.store.paymentDone.title"="Congratulations!";
+"banner.store.paymentDone"="Your purchase has been made and your banner will be displayed from now on the area you selected. You can view your banner performances or pause it from the left menu in the \"My Banners\" section.";
+"banner.store.paymentFailed.title"="Purchase failed!";
+"banner.store.paymentFailed"="We were unable to proceed with your purchase. Your banner has been saved and is currently in a \"pending payment\" state. You can retrieve it from the left menu in the \"My Banners\" section.";
 "banner.store.failureTitle"="Unable to connect to Apple Store";
 "banner.store.failure"="We cannot retrieve the list of products to purchase from the Apple Store. Please check your connection and try again. PELMEL needs to have access to the Apple Store to make a banner purchase.";
 "banner.url.placeholder"="Landing URL";
@@ -457,6 +469,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "user.status.online"="Available";
 "validation.errorTitle"="Invalid data";
 "validation.event.noday"="A reccurring event need to be enabled for at least one day of the week. Check your data and try again.";
+"validation.banner.missingTarget"="A banner must have a valid target URL or be defined on a PELMEL place";
 "validation.nolocation"="You must locate the place position on the map by dragging the pin to the desired place.";
 "validation.noname"="You must enter the name of the place you are editing or creating. Please check your data and try again.";
 "profile.mustBe18.title"="Age restriction";

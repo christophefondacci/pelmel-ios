@@ -262,15 +262,19 @@
     [activityIndicator startAnimating];
     activityIndicator.hidden = NO;
     // Asynchronously retrieve image
-    [TogaytherService.imageService load:[aImageUrls objectAtIndex:i] to:imageView thumb:isThumb callback:^(CALImage *image) {
-        // Stop and Remove Activity Indicator
-
-        if (activityIndicator) {
-            [activityIndicator stopAnimating];
-            activityIndicator.hidden=YES;
-            //                        [_activityIndicators removeObjectForKey:[NSString stringWithFormat:@"%d", i]];
-        }
-    }];
+    if(i<aImageUrls.count) {
+        [TogaytherService.imageService load:[aImageUrls objectAtIndex:i] to:imageView thumb:isThumb callback:^(CALImage *image) {
+            // Stop and Remove Activity Indicator
+            
+            if (activityIndicator) {
+                [activityIndicator stopAnimating];
+                activityIndicator.hidden=YES;
+                //                        [_activityIndicators removeObjectForKey:[NSString stringWithFormat:@"%d", i]];
+            }
+        }];
+    } else {
+        NSLog(@"ERROR: invalid image index %d while image URLs array only has %d items",i,aImageUrls.count);
+    }
 }
 - (void) imageTapped:(UITapGestureRecognizer *)sender
 {

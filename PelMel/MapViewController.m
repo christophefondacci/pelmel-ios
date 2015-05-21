@@ -834,7 +834,7 @@
     // Nullifying to prevent infinite recusrive loop
     _editedObject = nil;
     // Preserving editor when we change annotation
-    PMLPopupEditor *editor;
+    PMLEditor *editor;
     // Removing current annotation
     if(key != nil) {
         MKAnnotationView *annotationView = [_annotationsViewMap objectForKey:key];
@@ -921,7 +921,7 @@
     if([object isKindOfClass:[Place class]]) {
         [self editPlaceLocation:(Place*)object centerMapOnPlace:NO];
     } else if([object isKindOfClass:[PMLBanner class]]) {
-        PMLPopupEditor *editor = [PMLPopupEditor editorFor:object on:self];
+        PMLEditor *editor = [PMLEditor editorFor:object on:self];
         [editor startEditionWith:^{
             [_editedRange removeFromSuperview];
             _editedRange = nil;
@@ -982,7 +982,7 @@
     _editedPlace = nil;
 
     // Adding cancel action to remove view and restore lat/lng/address information
-    PMLPopupEditor *editor = [PMLPopupEditor editorFor:place on:self];
+    PMLEditor *editor = [PMLEditor editorFor:place on:self];
     
     __block double lat = place.lat;
     __block double lng = place.lng;

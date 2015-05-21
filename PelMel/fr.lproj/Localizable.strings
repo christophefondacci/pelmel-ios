@@ -113,6 +113,16 @@
 "activity.detail.O_PLAC"="%@ a commenté le lieu %@";
 "banner.button.addPlaceBanner"="Créer une bannière de pub";
 "banner.itemTitle"="%@ affichages de bannières pour %@";
+"banner.loading"="Chargement";
+"banner.price.free"="Gratuit!";
+"banner.purchase.title"="Sélectionnez un produit";
+"banner.purchase.msg"="Veuillez sélectionnez le nombre d'affichages de votre bannière. Il s'agit du nombre de fois que votre bannière sera affichée aux utilisateurs de PELMEL. Votre bannière continuera d'être affichée sans limitation de durée jusqu'à temps que ce nombre soit atteint.";
+"banner.purchase.productTemplate"="%@ affichages pour %@";
+"banner.store.paymentDone.title"="Félicitations !";
+"banner.store.paymentDone"="Votre paiement a été effectué et votre bannière est affichée à partir de maintenant dans la zone que vous avez sélectionné. Vous pouvez consultez les performances de votre bannière ou la mettre en pause à partir du menu de gauche via la section \"Mes Bannières\".";
+"banner.store.paymentFailed.title"="L'achat a échoué !";
+"banner.store.paymentFailed"="Nous n'avons pas réussi à procéder au paiement. Votre bannière a été sauvegardée et est actuellement en attente de paiement. Vous pouvez la retrouver à partir du menu de gauche dans la section \"Mes Bannières\".";
+"banner.store.failureTitle"="Unable to connect to Apple Store";
 "banner.store.failureTitle"="Apple Store injoignable";
 "banner.store.failure"="Nous n'avons pas pu récupérer la liste des produits depuis l'Apple Store. Veuillez vérifier votre connexion et essayer à nouveau. PELMEL a besoin d'accéder à l'Apple Store pour vous permettre de poursuivre votre achat de bannière.";
 "banner.url.placeholder"="URL de destination";

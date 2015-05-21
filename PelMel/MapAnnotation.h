@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "Place.h"
 
-@class PMLPopupEditor;
+@class PMLEditor;
 
 @interface MapAnnotation : NSObject <MKAnnotation>
 
@@ -19,7 +19,7 @@
 @property (nonatomic,assign) CLLocationCoordinate2D coordinate;
 @property (strong) CALObject *object;
 @property (nonatomic,weak) MKAnnotationView *annotationView;
-@property (nonatomic,strong) PMLPopupEditor *popupEditor;
+@property (nonatomic,strong) PMLEditor *popupEditor;
 
 -(id)initWithCoordinates:(CLLocationCoordinate2D)coordinates object:(CALObject*)object;
 @end

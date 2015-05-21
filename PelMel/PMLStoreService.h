@@ -8,8 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <StoreKit/StoreKit.h>
+#import "PMLBanner.h"
+#import "UserService.h"
 
-@interface PMLStoreService : NSObject <SKPaymentTransactionObserver>
-
-
+@interface PMLStoreService : NSObject <SKPaymentTransactionObserver,SKProductsRequestDelegate, PMLUserCallback>
+@property (nonatomic,retain) UserService *userService;
+- (void)loadProducts:(NSArray*)productIds;
+- (SKProduct*)productFromId:(NSString*)productId;
+- (void)startPaymentFor:(PMLBanner*)banner;
 @end

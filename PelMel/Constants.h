@@ -15,6 +15,7 @@
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
 
 #define PML_NOTIFICATION_PUSH_RECEIVED @"pmlPushReceived"
+#define PML_NOTIFICATION_PRODUCTS_LOADED @"pmlProductsLoaded"  // Products definition loaded from App Store
 
 #define VIEW_INDEX_PLACES 0
 #define VIEW_INDEX_MAP 1
@@ -44,6 +45,7 @@
 #define SB_ID_ACTIVITY_DETAILS @"activityDetails"
 #define SB_ID_PHOTOS_COLLECTION @"photosCollectionView"
 #define SB_ID_BANNER_EDITOR @"bannerEditor"
+#define SB_ID_ITEM_SELECTION @"itemSelector"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
@@ -81,5 +83,11 @@
 
 
 #define PML_ACTIVITY_PRIORITY @[@"I_PLAC",@"I_USER",@"K_PLAC",@"MDIA_CREATION",@"R_USER",@"I_EVNT",@"EVNT_CREATION",@"PLAC_CREATION",@"O_PLAC"]
+
+
+// Store product identifiers
+#define kPMLProductBanner1000 @"com.fgp.pelmel.banner1000"
+#define kPMLProductBanner2500 @"com.fgp.pelmel.banner2500"
+#define kPMLProductBanner6000 @"com.fgp.pelmel.banner6000"
 
 #endif

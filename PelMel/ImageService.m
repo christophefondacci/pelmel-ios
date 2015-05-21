@@ -108,7 +108,19 @@
     // Adding the gesture recognizer to the image view
     [imageView addGestureRecognizer:recognizer];
 }
+-(void)registerImageUploadFromLibrary:(UIView*)view forViewController:(UIViewController*)controller callback:(id<PMLImagePickerCallback>)callback {
+    // Creating our gesture recognizer
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTappedForLibraryUpload:)];
+    
+    // Saving info and associate it to image view
+    NSString *key = [self buildKeyFromPointer:view];
+    [tapImagesControllerMap setObject:controller forKey:key];
+    [tapImagesCallbackMap setObject:callback forKey:key];
+    
+    // Adding the gesture recognizer to the image view
+    [view addGestureRecognizer:recognizer];
 
+}
 - (void)imageTapped:(UITapGestureRecognizer*)recognizer {
 
     // Prompting
@@ -117,7 +129,13 @@
     id<PMLImagePickerCallback> callback = [tapImagesCallbackMap objectForKey:key];
     [self promptUserForPhoto:controller callback:callback];
 }
-
+- (void)imageTappedForLibraryUpload:(UITapGestureRecognizer*)recognizer {
+    NSString *key = [self buildKeyFromPointer:recognizer.view];
+    _pickerParentController = [tapImagesControllerMap objectForKey:key];
+    _pickerCallback = [tapImagesCallbackMap objectForKey:key];
+    UIImagePickerController *pickerController = [self imagePickerController];
+    [self showPicker:pickerController];
+}
 - (void)promptUserForPhoto:(UIViewController*)controller callback:(id<PMLImagePickerCallback>)callback {
     _pickerCallback = callback;
     _pickerParentController = controller;
@@ -139,6 +157,7 @@
     }
 }
 
+#pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if(buttonIndex == kActionCancelIndex) {
         [self cancelActionSheet];
@@ -150,13 +169,17 @@
     _pickerParentController = nil;
     _pickerCallback = nil;
 }
--(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+-(UIImagePickerController*)imagePickerController {
     UIImagePickerController *pickerController = [[UIImagePickerController alloc] init];
     pickerController.navigationBar.tintColor = [UIColor blackColor];
     pickerController.navigationBar.barStyle = UIBarStyleBlackOpaque;
     // We set ourselves as delegate
     pickerController.delegate = self;
-    
+    return pickerController;
+}
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+   
+    UIImagePickerController *pickerController = [self imagePickerController];
     // Photo or library mode
     switch(buttonIndex) {
         case kActionCameraIndex:
@@ -178,6 +201,7 @@
     // Here we go
     [_pickerParentController presentViewController:pickerController animated:NO completion:nil];
 }
+#pragma mark - UIImagePickerDelegate
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     // Dismissing picker

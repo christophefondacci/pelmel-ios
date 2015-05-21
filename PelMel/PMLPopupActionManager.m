@@ -11,7 +11,7 @@
 #import "PopupAction.h"
 #import "PMLMapPopupViewController.h"
 #import "PMLDataManager.h"
-#import "PMLPopupEditor.h"
+#import "PMLEditor.h"
 #import "MapAnnotation.h"
 #import "MessageViewController.h"
 #import "PMLCalendarTableViewController.h"
@@ -375,8 +375,8 @@
     [self registerAction:myProfileAction forType:PMLActionTypeMyProfile];
 }
 
--(PMLPopupEditor*)popupEditor {
-    return [PMLPopupEditor editorFor:_currentObject on:(MapViewController*)[[TogaytherService uiService] menuManagerController].rootViewController];
+-(PMLEditor*)popupEditor {
+    return [PMLEditor editorFor:_currentObject on:(MapViewController*)[[TogaytherService uiService] menuManagerController].rootViewController];
 }
 -(void) likeAction {
     if([_infoProvider respondsToSelector:@selector(likeTapped:callback:)]) {
@@ -397,7 +397,7 @@
     _popupController = popupController;
     _currentObject = object;
     // Setting editor that handles history of changes
-    PMLPopupEditor *_currentEditor = [PMLPopupEditor editorFor:_currentObject on:popupController.controller];
+    PMLEditor *_currentEditor = [PMLEditor editorFor:_currentObject on:popupController.controller];
     annotation.popupEditor = _currentEditor;
     _infoProvider = [TogaytherService.uiService infoProviderFor:_currentObject];
     
