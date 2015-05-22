@@ -160,6 +160,9 @@
         badgeVal+=((Place*)object).inUserCount;
     }
     [_badgeView removeFromSuperview];
+    if(!self.selected) {
+        self.layer.zPosition=-1;
+    }
     if(badgeVal>0) {
         _imageView.clipsToBounds=NO;
         _badgeView.hidden=NO;
