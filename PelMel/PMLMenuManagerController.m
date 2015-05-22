@@ -179,6 +179,7 @@ static void *MyParentMenuControllerKey;
     [self.containerView addSubview:_bottomView];
     
     // Status bar view
+    [self.containerView layoutIfNeeded];
     UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.containerView.bounds.size.width, 20)];
     statusView.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1];
     [self.containerView addSubview:statusView];
@@ -986,10 +987,12 @@ static void *MyParentMenuControllerKey;
         [_menuView removeFromSuperview];
         
         // Instantiating menu view if needed
-        CGRect frame = self.containerView.window.frame;
-        frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
-        frame.size.height -= self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height-1;
-        frame = CGRectOffset(frame, -frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height);
+        CGRect containerFrame = self.containerView.bounds;
+        CGFloat barHeight = self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height-1;
+        CGRect frame = CGRectMake(0, barHeight, MIN(4.0f/5.0f*containerFrame.size.width,300), containerFrame.size.height-barHeight);
+//        frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
+//        frame.size.height -= self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height-1;
+        frame = CGRectOffset(frame, -frame.size.width, 0);
         
         // Building standard menu
         _menuView = [[UIView alloc] initWithFrame:frame];
