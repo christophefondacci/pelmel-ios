@@ -10,8 +10,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
         </mutableArray>
-        <mutableArray key="Sari-Medium.otf">
-            <string>Sari-Medium</string>
+        <mutableArray key="SourceSansPro-Regular.ttf">
+            <string>SourceSansPro-Regular</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -21,26 +21,17 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="144"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YKj-0M-jIY" userLabel="bgLighter">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="3aA-wI-Ngj" userLabel="bgBorder">
                     <rect key="frame" x="0.0" y="2" width="320" height="140"/>
-                    <color key="backgroundColor" red="0.15294118225574493" green="0.16470588743686676" blue="0.18039216101169586" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="kV4-PM-cC2"/>
-                    </constraints>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
-                            <color key="value" red="0.29803921568627451" green="0.31764705882352939" blue="0.33333333333333331" alpha="1" colorSpace="calibratedRGB"/>
-                        </userDefinedRuntimeAttribute>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                             <integer key="value" value="1"/>
                         </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
+                            <color key="value" red="0.30061018466949463" green="0.29941263794898987" blue="0.29342496395111084" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
-                    <variation key="default">
-                        <mask key="constraints">
-                            <exclude reference="kV4-PM-cC2"/>
-                        </mask>
-                    </variation>
-                </view>
+                </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="GfB-ho-Chj">
                     <rect key="frame" x="15" y="19" width="105" height="105"/>
                     <constraints>
@@ -49,8 +40,8 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Friday Feb 20 8pm" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="7KN-BI-Y6W">
-                    <rect key="frame" x="158" y="24" width="154" height="21.5"/>
-                    <fontDescription key="fontDescription" name="Sari-Medium" family="Sari" pointSize="18"/>
+                    <rect key="frame" x="158" y="23" width="154" height="23"/>
+                    <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="18"/>
                     <color key="textColor" red="0.95686274509803915" green="0.83137254901960778" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -105,9 +96,7 @@
             </subviews>
             <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="YKj-0M-jIY" firstAttribute="leading" secondItem="ptQ-QN-afT" secondAttribute="leading" id="4td-fl-Ja5"/>
                 <constraint firstItem="0EY-1g-ZN4" firstAttribute="leading" secondItem="GfB-ho-Chj" secondAttribute="trailing" constant="20" id="9DN-uf-djJ"/>
-                <constraint firstItem="YKj-0M-jIY" firstAttribute="top" secondItem="ptQ-QN-afT" secondAttribute="top" constant="2" id="BKK-oi-sCf"/>
                 <constraint firstAttribute="trailing" secondItem="7KN-BI-Y6W" secondAttribute="trailing" constant="8" id="BRB-Ch-7fu"/>
                 <constraint firstAttribute="bottom" secondItem="0EY-1g-ZN4" secondAttribute="bottom" constant="8" id="BiI-4Z-Y8H"/>
                 <constraint firstItem="w5H-P0-nnS" firstAttribute="top" secondItem="7KN-BI-Y6W" secondAttribute="bottom" constant="5.5" id="C9A-p8-lmu"/>
@@ -118,22 +107,25 @@
                 <constraint firstItem="7KN-BI-Y6W" firstAttribute="leading" secondItem="dpN-yg-0aO" secondAttribute="leading" id="GkM-Sf-slQ"/>
                 <constraint firstItem="dpN-yg-0aO" firstAttribute="top" secondItem="LmS-eB-yuK" secondAttribute="bottom" constant="6" id="LHL-e6-jbt"/>
                 <constraint firstAttribute="centerY" secondItem="GfB-ho-Chj" secondAttribute="centerY" id="LgH-6r-FzK"/>
+                <constraint firstAttribute="bottom" secondItem="3aA-wI-Ngj" secondAttribute="bottom" constant="2" id="NV9-Mv-P6Y"/>
+                <constraint firstAttribute="trailing" secondItem="3aA-wI-Ngj" secondAttribute="trailing" id="ODw-Np-Xza"/>
+                <constraint firstItem="3aA-wI-Ngj" firstAttribute="leading" secondItem="ptQ-QN-afT" secondAttribute="leading" id="QAw-TV-DuX"/>
                 <constraint firstAttribute="trailing" secondItem="YKI-xQ-uTd" secondAttribute="trailing" constant="8" id="ZOd-qf-MCE"/>
                 <constraint firstItem="i0D-fE-Ln6" firstAttribute="leading" secondItem="LmS-eB-yuK" secondAttribute="trailing" constant="8" id="ZRk-kL-aTt"/>
                 <constraint firstItem="7KN-BI-Y6W" firstAttribute="leading" secondItem="LmS-eB-yuK" secondAttribute="leading" id="Zr5-TU-Myf"/>
-                <constraint firstAttribute="bottom" secondItem="YKj-0M-jIY" secondAttribute="bottom" constant="2" id="flo-Oq-unH"/>
                 <constraint firstItem="7KN-BI-Y6W" firstAttribute="width" secondItem="w5H-P0-nnS" secondAttribute="width" id="jVo-Do-DOJ"/>
                 <constraint firstAttribute="trailing" secondItem="i0D-fE-Ln6" secondAttribute="trailing" constant="8" id="jax-TQ-Nsu"/>
-                <constraint firstAttribute="trailing" secondItem="YKj-0M-jIY" secondAttribute="trailing" id="p7o-r9-mTm"/>
                 <constraint firstItem="GfB-ho-Chj" firstAttribute="top" secondItem="7KN-BI-Y6W" secondAttribute="bottom" constant="-27" id="qe0-vO-zBd"/>
                 <constraint firstItem="i0D-fE-Ln6" firstAttribute="bottom" secondItem="LmS-eB-yuK" secondAttribute="bottom" id="uUV-8F-R37"/>
                 <constraint firstItem="YKI-xQ-uTd" firstAttribute="bottom" secondItem="dpN-yg-0aO" secondAttribute="bottom" id="wSU-at-0bH"/>
+                <constraint firstItem="3aA-wI-Ngj" firstAttribute="top" secondItem="ptQ-QN-afT" secondAttribute="top" constant="2" id="ykx-ie-BTf"/>
                 <constraint firstItem="GfB-ho-Chj" firstAttribute="leading" secondItem="ptQ-QN-afT" secondAttribute="leading" constant="15" id="ymH-Oj-AWY"/>
                 <constraint firstItem="dpN-yg-0aO" firstAttribute="bottom" secondItem="GfB-ho-Chj" secondAttribute="bottom" id="zSG-M0-89y"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="bgBorderImage" destination="3aA-wI-Ngj" id="R9k-zM-Lyi"/>
                 <outlet property="countIcon" destination="dpN-yg-0aO" id="Fd7-EG-xtD"/>
                 <outlet property="countLabel" destination="YKI-xQ-uTd" id="EKw-ld-PIr"/>
                 <outlet property="dateLabel" destination="7KN-BI-Y6W" id="JLy-bh-ytL"/>
@@ -143,7 +135,7 @@
                 <outlet property="separatorImage" destination="0EY-1g-ZN4" id="L8u-u1-UhW"/>
                 <outlet property="titleLabel" destination="w5H-P0-nnS" id="yZa-wD-Qj5"/>
             </connections>
-            <point key="canvasLocation" x="-31" y="-28"/>
+            <point key="canvasLocation" x="-59" y="-48"/>
         </view>
     </objects>
     <resources>

@@ -330,6 +330,7 @@
 		B4BA87DF1B0FD43100612214 /* PMLBannerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BA87DD1B0FD43100612214 /* PMLBannerListTableViewController.m */; };
 		B4BA87E31B14D50100612214 /* PMLMiniMapViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BA87E11B14D50100612214 /* PMLMiniMapViewController.h */; };
 		B4BA87E41B14D50100612214 /* PMLMiniMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BA87E21B14D50100612214 /* PMLMiniMapViewController.m */; };
+		B4BA87EA1B16209400612214 /* SourceSansPro-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4BA87E91B16209400612214 /* SourceSansPro-Regular.ttf */; };
 		B4BB9EFD19D4DE430070B03C /* PMLChatTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */; };
 		B4BB9EFE19D4DE430070B03C /* PMLChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */; };
 		B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */; };
@@ -798,6 +799,7 @@
 		B4BA87DD1B0FD43100612214 /* PMLBannerListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBannerListTableViewController.m; sourceTree = "<group>"; };
 		B4BA87E11B14D50100612214 /* PMLMiniMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLMiniMapViewController.h; sourceTree = "<group>"; };
 		B4BA87E21B14D50100612214 /* PMLMiniMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLMiniMapViewController.m; sourceTree = "<group>"; };
+		B4BA87E91B16209400612214 /* SourceSansPro-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Regular.ttf"; sourceTree = "<group>"; };
 		B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTableViewCell.h; sourceTree = "<group>"; };
 		B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLChatTableViewCell.m; sourceTree = "<group>"; };
 		B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTimeTableViewCell.h; sourceTree = "<group>"; };
@@ -1510,6 +1512,7 @@
 				B4FC958419B1E64A00269E74 /* OpenSans-Regular.ttf */,
 				B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */,
 				B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */,
+				B4BA87E91B16209400612214 /* SourceSansPro-Regular.ttf */,
 				B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */,
 				B4FC957E19B1E28B00269E74 /* Sari-Light.otf */,
 				B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */,
@@ -1958,6 +1961,7 @@
 				B4D56089160B673F003A738E /* MainStoryboard_iPhone.storyboard in Resources */,
 				B4D5608C160B673F003A738E /* MainStoryboard_iPad.storyboard in Resources */,
 				B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */,
+				B4BA87EA1B16209400612214 /* SourceSansPro-Regular.ttf in Resources */,
 				B41CF0AE1899C0F40031FD7C /* PelMel-config.plist in Resources */,
 				B4AA0A5F1AFABE8B00DCDE29 /* PMLPhotoView.xib in Resources */,
 				B4859DCB1984C1060036D8FF /* UITextInputView.xib in Resources */,

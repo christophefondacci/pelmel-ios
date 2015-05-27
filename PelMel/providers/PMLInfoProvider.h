@@ -72,6 +72,7 @@ typedef enum {
 - (PMLActionType)commentActionType; // Default is Comment
 - (PMLActionType)reportActionType; // Default is no report, if returning something, the report button will be displayed
 - (PMLActionType)advertisingActionType; // Default is no advertising, will display the create banner button if action type different from no action
+-(BOOL)hasNavigation;   // Returns whether navigation bar should be hidden or visible (default = VISIBLE)
 - (NSString*)reportText;
 // The subtitle to display
 - (NSString*)actionSubtitleFor:(PMLActionType)actionType;

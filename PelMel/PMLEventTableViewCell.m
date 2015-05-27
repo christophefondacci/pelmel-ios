@@ -15,6 +15,10 @@
     self.separatorImage.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"ovvSeparatorV"]];
     self.separatorImage.image = nil;
     self.image.clipsToBounds=YES;
+    
+    UIView *bgColorView = [[UIView alloc] init];
+    bgColorView.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1];
+    [self setSelectedBackgroundView:bgColorView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -17,5 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *countLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *countIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *separatorImage;
+@property (weak, nonatomic) IBOutlet UIImageView *bgBorderImage;
 
 @end

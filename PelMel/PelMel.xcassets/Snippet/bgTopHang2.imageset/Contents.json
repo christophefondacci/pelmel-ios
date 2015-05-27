@@ -1,0 +1,32 @@
+{
+  "images" : [
+    {
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "resizing" : {
+        "mode" : "3-part-horizontal",
+        "center" : {
+          "mode" : "fill",
+          "width" : 12
+        },
+        "capInsets" : {
+          "right" : 0,
+          "left" : 0
+        }
+      },
+      "idiom" : "universal",
+      "filename" : "bgTopHang2.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}

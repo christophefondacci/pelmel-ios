@@ -504,16 +504,28 @@
         cell.countIcon.image = nil;
         cell.countLabel.text = nil;
     }
+    
+    // Separator
+    cell.separatorImage.image = [UIImage imageNamed:@"ovvSeparatorV"];
+    cell.separatorImage.layer.borderWidth=0;
+    cell.bgBorderImage.image = nil;
+    cell.bgBorderImage.backgroundColor = UIColorFromRGB(0x31363a);
 }
+
 -(void)configureRowPlace:(PMLEventTableViewCell*)cell place:(Place*)place {
     cell.dateLabel.text = place.title;
-    cell.titleLabel.text = [[[TogaytherService settingsService] getPlaceType:place.placeType] label];
+    NSString *distanceStr = [[TogaytherService getConversionService] distanceTo:place];
+    NSString *placeType = [[[TogaytherService settingsService] getPlaceType:place.placeType] label];
+    cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %@",distanceStr,placeType];
     
     // Subtitle (like count)
     cell.countIcon.image = [UIImage imageNamed:@"snpIconLikeWhite"];
     cell.countLabel.text = [self localizedString:@"counters.likes" forCount:place.likeCount];
     cell.locationLabel.text = place.cityName;
     
+    cell.separatorImage.image = nil;
+    cell.separatorImage.layer.borderWidth=1;
+    cell.separatorImage.layer.borderColor = [UIColorFromRGB(0x22405a) CGColor];
     //    // Checkins count
     //    if(place.inUserCount>0) {
     //        cell.checkinLabel.text = [_uiService localizedString:@"counters.arehere" forCount:place.inUserCount];
@@ -532,7 +544,8 @@
     // Loading image
     cell.image.image = [CALImage getDefaultThumb];
     [[TogaytherService imageService] load:place.mainImage to:cell.image thumb:NO];
-    
+    cell.bgBorderImage.image = [UIImage imageNamed:@"bgTopHang2"];
+    cell.bgBorderImage.backgroundColor = nil;
 }
 
 @end

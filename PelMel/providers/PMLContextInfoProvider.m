@@ -190,6 +190,9 @@
 -(id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
     return nil;
 }
+- (BOOL)hasNavigation {
+    return NO;
+}
 #pragma mark - Custom view
 - (void)configureCustomViewIn:(UIView *)parentView forController:(UIViewController *)controller {
     _snippetController = (PMLSnippetTableViewController*)controller;
