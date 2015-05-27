@@ -28,13 +28,14 @@
 #define kRowSettingLikes 1
 #define kRowSettingLikers 2
 
-#define kRowCountSettings 6
-#define kRowSettingMyPage 0
-#define kRowSettingProfile 1
-#define kRowSettingSettings 2
-#define kRowSettingFilters 3
-#define kRowSettingHints 4
-#define kRowSettingDisconnect 5
+#define kRowCountSettings 7
+#define kRowSettingMyBanners 0
+#define kRowSettingMyPage 1
+#define kRowSettingProfile 2
+#define kRowSettingSettings 3
+#define kRowSettingFilters 4
+#define kRowSettingHints 5
+#define kRowSettingDisconnect 6
 
 #define kCellIdPlaceType @"placeTypeCell"
 #define kCellIdProfile @"profileTableCell"
@@ -186,6 +187,13 @@
         case kSectionSettings: {
 
             switch(indexPath.row) {
+                case kRowSettingMyBanners: {
+                    placeTypeCell.label.text = NSLocalizedString(@"settings.mybanners","My banners");
+                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    placeTypeCell.image.image = [UIImage imageNamed:@"snpIconTicket"];
+                    placeTypeCell.badgeLabel.hidden=YES;
+                }
+                    break;
                 case kRowSettingSettings: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.settings","Settings");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -298,6 +306,11 @@
             break;
         case kSectionSettings:
             switch(indexPath.row) {
+                case kRowSettingMyBanners: {
+                    UIViewController *controller = [[TogaytherService uiService] instantiateViewController:SB_ID_BANNER_LIST];
+                    [self.parentMenuController.navigationController pushViewController:controller animated:YES];
+                    break;
+                }
                 case kRowSettingSettings:
                     [self performSegueWithIdentifier:@"settings" sender:self];
                     break;

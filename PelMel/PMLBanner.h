@@ -17,4 +17,6 @@
 @property (nonatomic)           NSInteger  displayCount;
 @property (nonatomic)           NSInteger  clickCount;
 @property (nonatomic,retain)    NSString   *storeProductId;
+@property (nonatomic,retain)    NSDate     *startDate;
+@property (nonatomic,retain)    NSString   *status;
 @end

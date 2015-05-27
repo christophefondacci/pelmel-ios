@@ -421,8 +421,14 @@
     NSDictionary *targetEvent       = [jsonBanner objectForKey:@"targetEvent"];
     NSString *targetUrl             = [jsonBanner objectForKey:@"targetUrl"];
     NSDictionary *jsonMedia         = [jsonBanner objectForKey:@"bannerImage"];
+    NSNumber *startDate             = [jsonBanner objectForKey:@"startDate"];
+    NSString *status                = [jsonBanner objectForKey:@"status"];
 
-    PMLBanner *banner = [[PMLBanner alloc] init];
+    PMLBanner *banner = [_objectCache objectForKey:key];
+    if(banner == nil) {
+        banner = [[PMLBanner alloc] init];
+        [_objectCache setObject:banner forKey:key];
+    }
     banner.key = key;
     banner.displayCount = displayCount.intValue;
     banner.clickCount = clickCount.intValue;
@@ -430,6 +436,9 @@
     banner.lat = lat.doubleValue;
     banner.lng = lng.doubleValue;
     banner.radius = radius;
+    banner.startDate = [NSDate dateWithTimeIntervalSince1970:[startDate longValue]];
+    banner.status = status;
+    
     if(targetPlace != nil && (id)targetPlace!=[NSNull null]) {
         Place *p = [self convertJsonPlaceToPlace:targetPlace];
         [banner setTargetObject:p];
@@ -444,6 +453,21 @@
         banner.mainImage = image;
     }
     return banner;
+}
+- (NSArray *)convertJsonBannersToBanners:(NSArray *)jsonBanners {
+    // Preparing resulting structure
+    NSMutableArray *banners = [[NSMutableArray alloc] init];
+    
+    // Iterating over every json structure
+    for(NSDictionary *jsonBanner in jsonBanners) {
+        
+        // Converting each json to a PMLBanner bean
+        PMLBanner *banner = [self convertJsonBannerToBanner:jsonBanner];
+        
+        // Filling the result array
+        [banners addObject:banner];
+    }
+    return banners;
 }
 -(Activity *)convertJsonActivityToActivity:(NSDictionary *)jsonActivity {
     NSString *jsonKey               = [jsonActivity objectForKey:@"key"];

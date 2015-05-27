@@ -46,6 +46,7 @@
 #define SB_ID_PHOTOS_COLLECTION @"photosCollectionView"
 #define SB_ID_BANNER_EDITOR @"bannerEditor"
 #define SB_ID_ITEM_SELECTION @"itemSelector"
+#define SB_ID_BANNER_LIST @"bannersList"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
@@ -90,4 +91,9 @@
 #define kPMLProductBanner2500 @"com.fgp.pelmel.banner2500"
 #define kPMLProductBanner6000 @"com.fgp.pelmel.banner6000"
 
+// Advertising
+#define kPMLBannerMilesRadius 10.0f
+#define kPMLBannerStatusReady @"READY"
+#define kPMLBannerStatusPendingPayment @"PENDING_PAYMENT"
+#define kPMLBannerStatusPaused @"PAUSED"
 #endif

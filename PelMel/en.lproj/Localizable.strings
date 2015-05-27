@@ -69,7 +69,7 @@
 "action.save"="Save";
 "action.searchHere"="Show";
 "action.wait"="Please wait...";
-"activity.title"="Recent activity";
+"activity.title"="Recently near you";
 "activity.title.photoGrid"="Recent photos";
 "activity.title.I_PLAC"="New likes";
 "activity.title.I_USER"="New likes";
@@ -114,6 +114,9 @@
 "activity.detail.U_EVNT"="%@ has updated event %@";
 "banner.button.addPlaceBanner"="Create an ad banner";
 "banner.itemTitle"="%@ banner displays for %@";
+"banner.list.pending"="Pending";
+"banner.list.startDateLabel"="Started On";
+"banner.list.usage"="Usage";
 "banner.loading"="Loading";
 "banner.price.free"="Free!";
 "banner.purchase.title"="Select a product";
@@ -390,6 +393,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "settings.likes"="I like";
 "settings.likers"="They like me";
 "settings.messages"="Messages";
+"settings.mybanners"="My Banners";
 "settings.mypage"="My Page";
 "settings.placeTypes.title"="Place filters";
 "settings.settings"="Settings";

@@ -113,6 +113,9 @@
 "activity.detail.O_PLAC"="%@ a commenté le lieu %@";
 "banner.button.addPlaceBanner"="Créer une bannière de pub";
 "banner.itemTitle"="%@ affichages de bannières pour %@";
+"banner.list.pending"="En attente";
+"banner.list.startDateLabel"="Débuté Le";
+"banner.list.usage"="Utilisation";
 "banner.loading"="Chargement";
 "banner.price.free"="Gratuit!";
 "banner.purchase.title"="Sélectionnez un produit";
@@ -390,6 +393,7 @@
 "settings.likes"="J'aime";
 "settings.likers"="Ils m'aiment";
 "settings.messages"="Messages";
+"settings.mybanners"="Mes Bannières";
 "settings.mypage"="Ma Page";
 "settings.placeTypes.title"="Filtres de lieu";
 "settings.settings"="Paramètres";

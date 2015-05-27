@@ -28,9 +28,12 @@
 #define kOverviewPlaceUrlFormat @"%@/api/place"
 #define kOverviewEventUrlFormat @"%@/api/event"
 #define kOverviewUserUrlFormat @"%@/api/user"
+#define kBannersListUrlFormat @"%@/api/banners"
+#define kBannersCycleUrlFormat @"%@/api/banner"
 #define kLikeUrlFormat @"%@/mobileIlike?id=%@&nxtpUserToken=%@&type=%@"
 #define kPlaceUpdateUrlFormat @"%@/mobileUpdatePlace"
 #define kBannerUpdateUrlFormat @"%@/mobileUpdateBanner"
+#define kBannerUpdateStatusUrlFormat @"%@/mobileUpdateBannerStatus"
 #define kCalendarUpdateUrlFormat @"%@/mobileUpdateEvent"
 #define kCalendarDeleteUrlFormat @"%@/mobileDeleteEvent"
 #define kReportAbuseUrl @"%@/mobileReport?key=%@&nxtpUserToken=%@&type=%d"
@@ -356,6 +359,8 @@
     if(jsonBanner != nil && (id)jsonBanner != [NSNull null]) {
         PMLBanner *banner = [jsonService convertJsonBannerToBanner:jsonBanner];
         [_modelHolder setBanner:banner];
+    } else {
+        [_modelHolder setBanner:nil];
     }
     
     // Assigning to model holder for all-view synch
@@ -702,6 +707,7 @@
             [callback didLoadOverviewData:object];
         }
     }
+    [self cycleBanner];
 }
 -(void)notifyLoginFailed {
     for(NSObject<PMLDataListener> *callback in dataListeners) {
@@ -924,6 +930,84 @@
         double progressPct = (double)totalBytesRead/(double)totalBytesExpectedToRead;
         [_uiService reportProgress:0.6f+0.4f*(float)progressPct];
     }];
+
+}
+
+-(void)listBanners:(ListBannerCompletionBlock)completion onFailure:(ErrorCompletionBlock)errorCompletion {
+    NSString *url = [NSString stringWithFormat:kBannersListUrlFormat,togaytherServer];
+    CurrentUser *user = [userService getCurrentUser];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:@{@"nxtpUserToken":user.token} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        // Getting JSON array
+        NSArray *jsonBanners = (NSArray*)responseObject;
+        
+        // Converting to bean array
+        NSArray *banners = [jsonService convertJsonBannersToBanners:jsonBanners];
+        
+        // Calling completion
+        completion(banners);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        if(errorCompletion!=nil) {
+            NSString *description = error.localizedDescription;
+            NSString *reason = error.localizedFailureReason;
+            NSString *errorMessage = [NSString stringWithFormat:@"%@ %@", description, reason];
+            errorCompletion(error.code, errorMessage);
+        }
+    }];
+    
+}
+- (void)updateBanner:(PMLBanner*)banner withStatus:(NSString*)status onSuccess:(UpdateBannerCompletionBlock)successCallback onFailure:(ErrorCompletionBlock)failureCallback {
+    // Building URL
+    NSString *url = [NSString stringWithFormat:kBannerUpdateStatusUrlFormat,togaytherServer];
+    CurrentUser *user = [userService getCurrentUser];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:@{@"nxtpUserToken":user.token, @"bannerKey":banner.key,@"status":status} success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSDictionary *json = (NSDictionary*)responseObject;
+        
+        // Unserializing
+        PMLBanner *resultBanner = [jsonService convertJsonBannerToBanner:json];
+        
+        // Calling back
+        successCallback(resultBanner);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(failureCallback!=nil) {
+            NSString *description = error.localizedDescription;
+            NSString *reason = error.localizedFailureReason;
+            NSString *errorMessage = [NSString stringWithFormat:@"%@ %@", description, reason];
+            failureCallback(error.code, errorMessage);
+        }
+    }];
+}
+-(void)cycleBanner {
+    
+    // Building URL
+    NSString *url = [NSString stringWithFormat:kBannersCycleUrlFormat,togaytherServer];
+    CurrentUser *user = [userService getCurrentUser];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:@{
+                                   @"nxtpUserToken":user.token,
+                                   @"currentBannerKey":_modelHolder.banner.key,
+                                   @"lat":[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.latitude],
+                                   @"lng":[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.longitude]
+                                   }
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              
+              NSDictionary *json = (NSDictionary*)responseObject;
+              if(json.allKeys.count >0) {
+                  // Unserializing
+                  PMLBanner *newBanner = [jsonService convertJsonBannerToBanner:json];
+                  _modelHolder.banner = newBanner;
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                  NSString *description = error.localizedDescription;
+                  NSString *reason = error.localizedFailureReason;
+                  NSString *errorMessage = [NSString stringWithFormat:@"%@ %@", description, reason];
+                  NSLog(@"ERROR: %d: %@",error.code, errorMessage);
+          }];
 
 }
 - (void)createPlaceAtLatitude:(double)latitude longitude:(double)longitude {

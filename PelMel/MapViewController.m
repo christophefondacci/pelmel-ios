@@ -30,7 +30,6 @@
 #define kActionBanner 1
 #define kActionCancel 2
 
-#define kEditRange 10.0f
 
 @interface MapViewController ()
 
@@ -942,9 +941,9 @@
         }
         // Adjusting zoom so that we make sure the ad range is fully displayed in the map
         CLLocationDistance dist = [self distanceForMapWidth];
-        if(dist/METERS_PER_MILE < 15) {
+        if(dist/METERS_PER_MILE < (kPMLBannerMilesRadius*1.5f)) {
             // Building our zoom rect around our center
-            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, 15*METERS_PER_MILE, 15*METERS_PER_MILE);
+            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE);
             MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
             MKMapRect mapRect = [self MKMapRectForCoordinateRegion:adjustedRegion];
             [_mapView setVisibleMapRect:mapRect animated:NO];
@@ -1045,7 +1044,7 @@
     CLLocationDistance dist = [self distanceForMapWidth];
     double milesRadius = dist/METERS_PER_MILE;
     double milesPerPixels = milesRadius / (double)self.mapView.bounds.size.width;
-    double pixelsRadius = kEditRange / milesPerPixels;
+    double pixelsRadius = kPMLBannerMilesRadius / milesPerPixels;
     
     CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
     _editedRange.frame = CGRectMake(mapCenter.x - pixelsRadius/2, mapCenter.y-pixelsRadius/2-kSnippetEditHeight/2, pixelsRadius, pixelsRadius);

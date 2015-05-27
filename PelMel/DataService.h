@@ -78,6 +78,7 @@ typedef void (^OverviewCompletionBlock)(CALObject*overviewObject);
 
 typedef void (^UpdatePlaceCompletionBlock)(Place *place );
 typedef void (^UpdateBannerCompletionBlock)(PMLBanner *banner );
+typedef void (^ListBannerCompletionBlock)(NSArray *banners );
 typedef void (^UpdateCalendarCompletionBlock)(PMLCalendar *calendar );
 typedef void (^UpdateEventCompletionBlock)(Event *calendar );
 typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage );
@@ -156,10 +157,13 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 -(void)updatePlace:(Place*)place callback:(UpdatePlaceCompletionBlock)callback;
 // Banner update
 -(void)updateBanner:(PMLBanner*)banner callback:(UpdateBannerCompletionBlock)callback failure:(UpdateBannerCompletionBlock)failureCallback ;
+// Listing user's banners
+-(void)listBanners:(ListBannerCompletionBlock)completion onFailure:(ErrorCompletionBlock)errorCompletion;
 // Place creation
 - (void)createPlaceAtLatitude:(double)latitude longitude:(double)longitude;
 // Banner creation
 - (void)createBannerAtLatitude:(double)latitude longitude:(double)longitude forPlace:(Place*)place;
+- (void)updateBanner:(PMLBanner*)banner withStatus:(NSString*)status onSuccess:(UpdateBannerCompletionBlock)successCallback onFailure:(ErrorCompletionBlock)failureCallback;
 
 -(void)cancelRunningProcesses;
 

@@ -54,6 +54,7 @@
  */
 - (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers;
 -(PMLBanner*)convertJsonBannerToBanner:(NSDictionary*)jsonBanner;
+-(NSArray*)convertJsonBannersToBanners:(NSArray*)jsonBanners;
 /**
  * Converts a JsonHour bean (recurring event, opening hours) to a PMLCalendar object
  * @param jsonHour a dictionary representing JSON contents

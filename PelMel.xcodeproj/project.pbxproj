@@ -322,6 +322,14 @@
 		B4B82B3719FBB69900895C57 /* PMLPickerTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4B82B3519FBB69900895C57 /* PMLPickerTableViewCell.m */; };
 		B4BA87D11B0DA48D00612214 /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */; };
 		B4BA87D31B0DA54600612214 /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4BA87D21B0DA54600612214 /* OpenSans-Semibold.ttf */; };
+		B4BA87D61B0FACDD00612214 /* PMLBannerViewTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BA87D41B0FACDC00612214 /* PMLBannerViewTableViewCell.h */; };
+		B4BA87D71B0FACDD00612214 /* PMLBannerViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BA87D51B0FACDC00612214 /* PMLBannerViewTableViewCell.m */; };
+		B4BA87DA1B0FC94B00612214 /* PMLBannerMapTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BA87D81B0FC94B00612214 /* PMLBannerMapTableViewCell.h */; };
+		B4BA87DB1B0FC94B00612214 /* PMLBannerMapTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BA87D91B0FC94B00612214 /* PMLBannerMapTableViewCell.m */; };
+		B4BA87DE1B0FD43100612214 /* PMLBannerListTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BA87DC1B0FD43100612214 /* PMLBannerListTableViewController.h */; };
+		B4BA87DF1B0FD43100612214 /* PMLBannerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BA87DD1B0FD43100612214 /* PMLBannerListTableViewController.m */; };
+		B4BA87E31B14D50100612214 /* PMLMiniMapViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BA87E11B14D50100612214 /* PMLMiniMapViewController.h */; };
+		B4BA87E41B14D50100612214 /* PMLMiniMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BA87E21B14D50100612214 /* PMLMiniMapViewController.m */; };
 		B4BB9EFD19D4DE430070B03C /* PMLChatTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */; };
 		B4BB9EFE19D4DE430070B03C /* PMLChatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */; };
 		B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */; };
@@ -782,6 +790,14 @@
 		B4B82B3819FC6CBA00895C57 /* PMLPickerProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLPickerProvider.h; sourceTree = "<group>"; };
 		B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Light.ttf"; sourceTree = "<group>"; };
 		B4BA87D21B0DA54600612214 /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		B4BA87D41B0FACDC00612214 /* PMLBannerViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLBannerViewTableViewCell.h; sourceTree = "<group>"; };
+		B4BA87D51B0FACDC00612214 /* PMLBannerViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBannerViewTableViewCell.m; sourceTree = "<group>"; };
+		B4BA87D81B0FC94B00612214 /* PMLBannerMapTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLBannerMapTableViewCell.h; sourceTree = "<group>"; };
+		B4BA87D91B0FC94B00612214 /* PMLBannerMapTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBannerMapTableViewCell.m; sourceTree = "<group>"; };
+		B4BA87DC1B0FD43100612214 /* PMLBannerListTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLBannerListTableViewController.h; sourceTree = "<group>"; };
+		B4BA87DD1B0FD43100612214 /* PMLBannerListTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLBannerListTableViewController.m; sourceTree = "<group>"; };
+		B4BA87E11B14D50100612214 /* PMLMiniMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLMiniMapViewController.h; sourceTree = "<group>"; };
+		B4BA87E21B14D50100612214 /* PMLMiniMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLMiniMapViewController.m; sourceTree = "<group>"; };
 		B4BB9EFB19D4DE430070B03C /* PMLChatTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTableViewCell.h; sourceTree = "<group>"; };
 		B4BB9EFC19D4DE430070B03C /* PMLChatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLChatTableViewCell.m; sourceTree = "<group>"; };
 		B4BB9EFF19D4E2460070B03C /* PMLChatTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLChatTimeTableViewCell.h; sourceTree = "<group>"; };
@@ -978,6 +994,10 @@
 			children = (
 				B43143F11B0296A900B189BA /* PMLBannerEditorTableViewCell.h */,
 				B43143F21B0296A900B189BA /* PMLBannerEditorTableViewCell.m */,
+				B4BA87D41B0FACDC00612214 /* PMLBannerViewTableViewCell.h */,
+				B4BA87D51B0FACDC00612214 /* PMLBannerViewTableViewCell.m */,
+				B4BA87D81B0FC94B00612214 /* PMLBannerMapTableViewCell.h */,
+				B4BA87D91B0FC94B00612214 /* PMLBannerMapTableViewCell.m */,
 			);
 			name = Advertising;
 			sourceTree = "<group>";
@@ -989,6 +1009,8 @@
 				B43143F71B02987B00B189BA /* PMLBannerEditorTableViewController.m */,
 				B45E04A61B0BFC120013357B /* PMLItemSelectionTableViewController.h */,
 				B45E04A71B0BFC120013357B /* PMLItemSelectionTableViewController.m */,
+				B4BA87DC1B0FD43100612214 /* PMLBannerListTableViewController.h */,
+				B4BA87DD1B0FD43100612214 /* PMLBannerListTableViewController.m */,
 			);
 			name = Advertising;
 			sourceTree = "<group>";
@@ -1235,6 +1257,17 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
+		B4BA87E01B14D4E500612214 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				B4D561101611BC27003A738E /* MapViewController.h */,
+				B4D561111611BC27003A738E /* MapViewController.m */,
+				B4BA87E11B14D50100612214 /* PMLMiniMapViewController.h */,
+				B4BA87E21B14D50100612214 /* PMLMiniMapViewController.m */,
+			);
+			name = Maps;
+			sourceTree = "<group>";
+		};
 		B4BB9EFA19D4DE2A0070B03C /* Chat */ = {
 			isa = PBXGroup;
 			children = (
@@ -1365,6 +1398,7 @@
 		B4D560B4160C9555003A738E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B4BA87E01B14D4E500612214 /* Maps */,
 				B43143F51B02986100B189BA /* Advertising */,
 				B4AA0A591AFABDCD00DCDE29 /* Activities */,
 				B43E76231997661B00153B46 /* Controls */,
@@ -1376,8 +1410,6 @@
 				B4D56087160B673F003A738E /* MainStoryboard_iPhone.storyboard */,
 				B4D5608A160B673F003A738E /* MainStoryboard_iPad.storyboard */,
 				B4322E3A198DE22F0037E260 /* Legacy */,
-				B4D561101611BC27003A738E /* MapViewController.h */,
-				B4D561111611BC27003A738E /* MapViewController.m */,
 				B40779BE1614A52500D02F66 /* LoginViewController.h */,
 				B40779BF1614A52500D02F66 /* LoginViewController.m */,
 				B4B503F8161EC7AC002D5669 /* ProfileTableViewController.h */,
@@ -1698,6 +1730,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4BA87DE1B0FD43100612214 /* PMLBannerListTableViewController.h in Headers */,
 				B47A69CC1AA693EA00877B58 /* PMLThumbView.h in Headers */,
 				B4A47D301AE0852F000178BD /* PMLWebViewController.h in Headers */,
 				B406CA43197D0F8300A7FFE2 /* PMLPlaceAnnotationView.h in Headers */,
@@ -1721,6 +1754,7 @@
 				B4AA0A421AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h in Headers */,
 				B4A47D2C1AE07C4E000178BD /* PMLPropertyTableViewCell.h in Headers */,
 				B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */,
+				B4BA87DA1B0FC94B00612214 /* PMLBannerMapTableViewCell.h in Headers */,
 				B45CAB3219721BD40089C7E8 /* DynamicObject.h in Headers */,
 				B4FC958A19B1EFAC00269E74 /* PMLSnippetTableViewCell.h in Headers */,
 				B43143F31B0296A900B189BA /* PMLBannerEditorTableViewCell.h in Headers */,
@@ -1735,6 +1769,7 @@
 				B40668BB19714CCE0012DF71 /* APLPositionToBoundsMapping.h in Headers */,
 				B47A69E31AA7FF6B00877B58 /* UIImage+IPImageUtils.h in Headers */,
 				B457A10A1A9D914100207D8E /* UIViewController+BackButtonHandler.h in Headers */,
+				B4BA87E31B14D50100612214 /* PMLMiniMapViewController.h in Headers */,
 				B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */,
 				B406CA47197D126300A7FFE2 /* MKCustomMapView.h in Headers */,
 				B4A47D201ADE0827000178BD /* AUIAutoGrowingTextView.h in Headers */,
@@ -1783,6 +1818,7 @@
 				B49F989F19A2131100BD3B2F /* PMLDynamicActionObject.h in Headers */,
 				B46AD73119E4FDD00021E1DE /* PMLLikeStatistic.h in Headers */,
 				B45B381E1AAE1D6C00730313 /* UIImageViewAligned.h in Headers */,
+				B4BA87D61B0FACDD00612214 /* PMLBannerViewTableViewCell.h in Headers */,
 				B42408E418F8EA9500B8B898 /* EGORefreshTableHeaderView.h in Headers */,
 				B41C6FF6198903ED00210474 /* CALayer+XibConfiguration.h in Headers */,
 				B40668B7197149B50012DF71 /* UIMenuManagerMainDelegate.h in Headers */,
@@ -2142,6 +2178,7 @@
 				B4B50401161EF150002D5669 /* DatePickerDataSource.m in Sources */,
 				B4B50404161F0194002D5669 /* ProfileHeaderView.m in Sources */,
 				B43123A01ACDA4B8008EF107 /* PMLHelpOverlayView.m in Sources */,
+				B4BA87DF1B0FD43100612214 /* PMLBannerListTableViewController.m in Sources */,
 				B4B50407161F25F7002D5669 /* ConversionService.m in Sources */,
 				B47A69C31AA64AC200877B58 /* PMLCountersView.m in Sources */,
 				B4B5040A161F39C6002D5669 /* LanguagePickerDataSource.m in Sources */,
@@ -2194,7 +2231,9 @@
 				B43123A41ACDA4DC008EF107 /* PMLHelpBubble.m in Sources */,
 				B4AC8ED9168C795C002E8381 /* MessageService.m in Sources */,
 				B4A47D311AE0852F000178BD /* PMLWebViewController.m in Sources */,
+				B4BA87E41B14D50100612214 /* PMLMiniMapViewController.m in Sources */,
 				B4A6642F1695E32100732B6D /* MKNumberBadgeView.m in Sources */,
+				B4BA87DB1B0FC94B00612214 /* PMLBannerMapTableViewCell.m in Sources */,
 				B45E04A51B0A904F0013357B /* PMLBannerEditorBehavior.m in Sources */,
 				B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */,
 				B4E91223169B226F005D3CAF /* TogaytherTabBarController.m in Sources */,
@@ -2202,6 +2241,7 @@
 				B4AA0A3B1AF19EBE00DCDE29 /* PMLManagedActivity.m in Sources */,
 				B4B1FCF919E012BD0068894C /* NSString+HTML.m in Sources */,
 				B42408E518F8EA9500B8B898 /* EGORefreshTableHeaderView.m in Sources */,
+				B4BA87D71B0FACDD00612214 /* PMLBannerViewTableViewCell.m in Sources */,
 				B4AA0A651AFACCC100DCDE29 /* PMLPhotoLoadingView.m in Sources */,
 				B405E6751A9542AB00C49F64 /* PMLTimePickerDataSource.m in Sources */,
 				B452FC21169C45F100596D9E /* Tag.m in Sources */,
