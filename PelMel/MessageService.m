@@ -335,7 +335,7 @@
     }
 }
 -(void)setUnreadMessageCount:(int)unreadMessageCount {
-    _unreadMessageCount = unreadMessageCount;
+    _unreadMessageCount = MAX(unreadMessageCount,0);
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:unreadMessageCount];
     [self refresh];
 }
@@ -350,7 +350,7 @@
 -(void) refresh {
     dispatch_async(dispatch_get_main_queue(), ^{
         _messageCountBadgeView.value = _unreadMessageCount;
-        _messageCountBadgeView.hidden = (_unreadMessageCount == 0);
+        _messageCountBadgeView.hidden = (_unreadMessageCount <= 0);
         NSNumber *maxActivityId = [_userDefaults objectForKey:kSettingMaxActivityId];
         if(_maxActivityId > maxActivityId.longValue) {
             _activityCountBadgeView.label = @"NEW";
