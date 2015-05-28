@@ -669,7 +669,9 @@
     CALImage *img = [imageService convertJsonImageToImage:jsonThumb];
     [user setKey:userKey];
     [user setPseudo:pseudo];
-    [user setMainImage:img];
+    if(img != nil) {
+        [user setMainImage:img];
+    }
     [user setIsOnline:[isOnline boolValue]];
     return user;
 }
