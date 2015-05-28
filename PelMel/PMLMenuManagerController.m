@@ -162,6 +162,18 @@ static void *MyParentMenuControllerKey;
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.containerView];
     _menuAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:self.containerView];
     [self.containerView insertSubview:self.rootViewController.view belowSubview:_topWarningView];
+    UIView *mapView = self.rootViewController.view;
+    [mapView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"H:|-0-[mapView]-0-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:NSDictionaryOfVariableBindings(mapView)]];
+    [self.view addConstraints:[NSLayoutConstraint
+                               constraintsWithVisualFormat:@"V:|-0-[mapView]-0-|"
+                               options:NSLayoutFormatDirectionLeadingToTrailing
+                               metrics:nil
+                               views:NSDictionaryOfVariableBindings(mapView)]];
     [self.rootViewController didMoveToParentViewController:self];
     
     [self registerForKeyboardNotifications];
@@ -1065,6 +1077,7 @@ static void *MyParentMenuControllerKey;
                             [self animateSnippetToOffset:[self offsetForMinimizedSnippet] animated:YES];
                         }
                         [self adjustBottomViewFrame];
+                        [self.menuManagerDelegate layoutMenuActions];
                         
                         // Handling ad clicks
                         if(self.adTapRecognizer !=nil) {
@@ -1084,6 +1097,7 @@ static void *MyParentMenuControllerKey;
                     self.bottomContainerConstraint.constant = 0;
                 } completion:^(BOOL finished) {
                     self.adContainerImage.image = nil;
+                    [self.menuManagerDelegate layoutMenuActions];
                 }];
             });
         }

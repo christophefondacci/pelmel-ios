@@ -149,7 +149,7 @@
     
 
 
-    CGSize size = _menuManagerController.view.bounds.size;
+    CGSize size = _menuManagerController.containerView.bounds.size;
     CGRect actionBounds = action.menuActionView.bounds;
     
     // Computing X-position
