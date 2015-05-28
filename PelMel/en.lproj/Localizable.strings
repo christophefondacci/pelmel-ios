@@ -113,6 +113,8 @@
 "activity.detail.O_PLAC"="%@ has commented place %@";
 "activity.detail.U_EVNT"="%@ has updated event %@";
 "banner.button.addPlaceBanner"="Create an ad banner";
+"banner.button.uploadImage"="Tap to upload 320x50 banner image";
+"banner.image.formatErrorTitle"="Incorrect image size";
 "banner.itemTitle"="%@ banner displays for %@";
 "banner.list.pending"="Pending";
 "banner.list.startDateLabel"="Started On";

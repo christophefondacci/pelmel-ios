@@ -267,14 +267,6 @@ typedef enum {
     
     // Animation init
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
-    
-    // Navigation
-    if([_infoProvider respondsToSelector:@selector(hasNavigation)]) {
-        if(![_infoProvider hasNavigation]) {
-            [self.navigationController setNavigationBarHidden:YES];
-        }
-    }
-    
 }
 - (void)viewWillAppear:(BOOL)animated {
     self.actionManager.menuManagerController = self.parentMenuController;
@@ -296,6 +288,12 @@ typedef enum {
         [self hideParentNavigationBar];
     }
 
+    // Navigation
+    if([_infoProvider respondsToSelector:@selector(hasNavigation)]) {
+        if(![_infoProvider hasNavigation]) {
+            [self.navigationController setNavigationBarHidden:YES];
+        }
+    }
 }
 - (void)viewDidAppear:(BOOL)animated {
     _actionManager.menuManagerController = [self parentMenuController];

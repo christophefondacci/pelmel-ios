@@ -48,7 +48,9 @@
         [place setKey:key];
         [place setTimezoneId:timezoneId];
         CALImage *img = [imageService convertJsonImageToImage:thumb];
-        [place setMainImage:img];
+        if(img != nil) {
+            [place setMainImage:img];
+        }
         
         return place;
     } else {

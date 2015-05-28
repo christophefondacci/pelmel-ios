@@ -10,11 +10,20 @@
 #import "PMLBannerEditorTableViewCell.h"
 #import "TogaytherService.h"
 #import "PMLItemSelectionTableViewController.h"
+#import "PMLImageTableViewCell.h"
+#import "PMLButtonTableViewCell.h"
 
 #define kSectionCount 1
 #define kSectionEditor 0
-#define kRowsEditor 1
-#define kRowHeightBannerEditor 150
+#define kRowsEditor 2
+
+#define kRowEditor 0
+#define kRowBanner 1
+
+#define kRowIdEditor @"editorCell"
+#define kRowIdButton @"buttonCell"
+#define kRowIdBanner @"bannerCell"
+#define kRowHeightBannerEditor 117
 
 
 @interface PMLBannerEditorTableViewController ()
@@ -51,6 +60,10 @@
     if(self.banner == nil) {
         self.banner = [[PMLBanner alloc] init];
     }
+    
+    // Registering custom nib for rows
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kRowIdButton];
+
     
     // Loading products
     [self.storeService loadProducts:@[kPMLProductBanner1000,kPMLProductBanner2500,kPMLProductBanner6000]];
@@ -89,26 +102,68 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    PMLBannerEditorTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"bannerEditorCell" forIndexPath:indexPath];
+    NSString *cellId;
+    switch(indexPath.row) {
+        case kRowEditor:
+            cellId = kRowIdEditor;
+            break;
+        default:
+            if(self.banner.mainImage != nil) {
+                cellId = kRowIdBanner;
+            } else {
+                cellId = kRowIdButton;
+            }
+    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
     
-
+    switch(indexPath.row) {
+        case kRowEditor:
+            [self configureRowEditor:(PMLBannerEditorTableViewCell*)cell];
+            break;
+        default:
+            if(self.banner.mainImage!=nil) {
+                [self configureRowBanner:(PMLImageTableViewCell*)cell];
+            } else {
+                [self configureRowButton:(PMLButtonTableViewCell*)cell];
+            }
+            break;
+    }
+    return cell;
+}
+-(void)configureRowEditor:(PMLBannerEditorTableViewCell*)cell {
     cell.targetUrlTextField.delegate = self;
     cell.delegate = self;
     [cell refreshWithBanner:self.banner];
     [cell.targetUrlTextField addTarget:self
                        action:@selector(targetUrlDidChange:)
              forControlEvents:UIControlEventEditingChanged];
-    
-    [[TogaytherService imageService] registerImageUploadFromLibrary:cell.bannerUploadButton forViewController:self callback:self];
-
-    // Configure the cell...
-    return cell;
+}
+-(void)configureRowBanner:(PMLImageTableViewCell*)cell {
+    // Loading banner image
+    cell.cellImageView.image = self.banner.mainImage.fullImage;
+    [[TogaytherService imageService] registerImageUploadFromLibrary:cell.cellImageView forViewController:self callback:self];
+}
+-(void)configureRowButton:(PMLButtonTableViewCell*)cell {
+    cell.buttonImageView.image = [UIImage imageNamed:@"btnAddPhoto"];
+    cell.buttonLabel.text = NSLocalizedString(@"banner.button.uploadImage",@"Tap to upload 320x50 banner image");
+    cell.backgroundColor = UIColorFromRGB(0x272a2e);
+    [[TogaytherService imageService] registerImageUploadFromLibrary:cell.buttonContainer forViewController:self callback:self];
 }
 
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return kRowHeightBannerEditor;
+    switch(indexPath.row) {
+        case kRowEditor:
+            return kRowHeightBannerEditor;
+        default:
+            if(self.banner.mainImage!=nil) {
+                return 50;
+            } else {
+                return 62;
+            }
+    }
+
 }
 /*
 // Override to support conditional editing of the table view.
@@ -183,8 +238,12 @@
 
 -(void)bannerEditorDidTapCancel:(PMLBannerEditorTableViewCell *)bannerEditorCell {
     NSLog(@"Cancel tapped");
-    PMLEditor *editor = [PMLEditor editorFor:self.banner];
-    [editor cancel];
+    if([bannerEditorCell.targetUrlTextField isFirstResponder]) {
+        [bannerEditorCell.targetUrlTextField resignFirstResponder];
+    } else {
+        PMLEditor *editor = [PMLEditor editorFor:self.banner];
+        [editor cancel];
+    }
 }
 #pragma mark - UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {

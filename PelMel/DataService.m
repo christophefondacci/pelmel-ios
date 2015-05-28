@@ -988,13 +988,18 @@
     CurrentUser *user = [userService getCurrentUser];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:url parameters:@{
-                                   @"nxtpUserToken":user.token,
-                                   @"currentBannerKey":_modelHolder.banner.key,
-                                   @"lat":[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.latitude],
-                                   @"lng":[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.longitude]
-                                   }
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    // Building params map
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:user.token forKey:@"nxtpUserToken"];
+    if(_modelHolder.banner.key != nil) {
+        [params setObject:_modelHolder.banner.key forKey:@"currentBannerKey"];
+    }
+    [params setObject:[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.latitude] forKey:@"lat"];
+    [params setObject:[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.longitude] forKey:@"lng"];
+    
+    // Webservice call
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
               
               NSDictionary *json = (NSDictionary*)responseObject;
               if(json.allKeys.count >0) {

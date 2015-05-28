@@ -190,7 +190,7 @@
                 case kRowSettingMyBanners: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.mybanners","My banners");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    placeTypeCell.image.image = [UIImage imageNamed:@"snpIconTicket"];
+                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconBanner"];
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;

@@ -920,6 +920,9 @@
     if([object isKindOfClass:[Place class]]) {
         [self editPlaceLocation:(Place*)object centerMapOnPlace:NO];
     } else if([object isKindOfClass:[PMLBanner class]]) {
+        // Hiding banner to avoid messing with current edition
+        _dataService.modelHolder.banner = nil;
+        // Starting edition
         PMLEditor *editor = [PMLEditor editorFor:object on:self];
         [editor startEditionWith:^{
             [_editedRange removeFromSuperview];

@@ -63,11 +63,7 @@
         self.targetUrlTextField.placeholder = NSLocalizedString(@"banner.url.placeholder", @"banner.url.placeholder");
     }
     
-    // Loading banner image
-    [self.bannerUploadButton setBackgroundImage:banner.mainImage.fullImage forState:UIControlStateNormal];
-    if(banner.mainImage.fullImage !=nil) {
-        [self.bannerUploadButton setTitle:nil forState:UIControlStateNormal];
-    }
+
 
 }
 
