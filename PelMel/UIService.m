@@ -508,6 +508,7 @@
     // Separator
     cell.separatorImage.image = [UIImage imageNamed:@"ovvSeparatorV"];
     cell.separatorImage.layer.borderWidth=0;
+    cell.verticalSepWidthConstraint.constant=2;
     cell.bgBorderImage.image = nil;
     cell.bgBorderImage.backgroundColor = UIColorFromRGB(0x31363a);
 }
@@ -525,7 +526,8 @@
     
     cell.separatorImage.image = nil;
     cell.separatorImage.layer.borderWidth=1;
-    cell.separatorImage.layer.borderColor = [UIColorFromRGB(0x22405a) CGColor];
+    cell.separatorImage.layer.borderColor = [UIColorFromRGB(0x224059) CGColor];
+    cell.verticalSepWidthConstraint.constant=1;
     //    // Checkins count
     //    if(place.inUserCount>0) {
     //        cell.checkinLabel.text = [_uiService localizedString:@"counters.arehere" forCount:place.inUserCount];

@@ -48,7 +48,7 @@
             break;
         case PMLTabPlaces:
             eventTabImg = @"bgTabDisabled";
-            placeTabImg = @"bgTab";
+            placeTabImg = @"bgTabHangout";
             break;
     }
     UIImage *eventImage =[UIImage imageNamed:eventTabImg];// stretchableImageWithLeftCapWidth:10 topCapHeight:10];
