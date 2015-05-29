@@ -10,7 +10,7 @@
 
 @implementation PopupAction
 
-- (instancetype)initWithAngle:(double)angle distance:(double)distance icon:(UIImage *)icon titleCode:(NSString *)titleCode size:(double)size command:(PopupActionBlock)actionCommand
+- (instancetype)initWithAngle:(double)angle distance:(double)distance icon:(UIImage *)icon titleCode:(NSString *)titleCode size:(double)size command:(PMLActionBlock)actionCommand
 {
     self = [super init];
     if (self) {
@@ -28,7 +28,7 @@
     return self;
 }
 
-- (instancetype)initWithIcon:(UIImage *)icon titleCode:(NSString *)titleCode size:(double)size command:(PopupActionBlock)actionCommand {
+- (instancetype)initWithIcon:(UIImage *)icon titleCode:(NSString *)titleCode size:(double)size command:(PMLActionBlock)actionCommand {
     self = [super init];
     if (self) {
         _icon = icon;
@@ -42,5 +42,12 @@
     return self;
     
 }
-
+- (instancetype)initWithCommand:(PMLActionBlock)actionCommand
+{
+    self = [super init];
+    if (self) {
+        _actionCommand = actionCommand;
+    }
+    return self;
+}
 @end

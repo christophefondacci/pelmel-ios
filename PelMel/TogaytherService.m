@@ -37,6 +37,7 @@
     static SettingsService *_settingsService;
     static PMLHelpService *_helpService;
     static PMLStoreService *_storeService;
+    static PMLActionManager *_actionManager;
     static NSDictionary *properties;
 
     static BOOL hdModeLoaded;
@@ -59,6 +60,7 @@
     _settingsService = [[SettingsService alloc] init];
     _helpService = [[PMLHelpService alloc] init];
     _storeService = [[PMLStoreService alloc] init];
+    _actionManager = [[PMLActionManager alloc] init];
     
     // Injecting data service
     _dataService.userService = [TogaytherService userService];
@@ -89,6 +91,11 @@
     // Injecting store service
     _storeService.userService = _userService;
     
+    // Injecting action manager
+    _actionManager.uiService = _uiService;
+    _actionManager.dataService = _dataService;
+    _actionManager.userService = _userService;
+    
 }
 +(DataService *)dataService {
     return _dataService;
@@ -99,6 +106,9 @@
 }
 + (PMLStoreService *)storeService {
     return _storeService;
+}
++ (PMLActionManager *)actionManager {
+    return _actionManager;
 }
 + (NSString *)getLanguageIso6391Code {
     return _language;

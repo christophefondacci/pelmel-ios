@@ -119,6 +119,7 @@
     
     // Adding the gesture recognizer to the image view
     [view addGestureRecognizer:recognizer];
+    view.userInteractionEnabled=YES;
 
 }
 - (void)imageTapped:(UITapGestureRecognizer*)recognizer {

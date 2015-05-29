@@ -157,11 +157,11 @@
         case kRowEditor:
             return kRowHeightBannerEditor;
         default:
-            if(self.banner.mainImage!=nil) {
-                return 50;
-            } else {
+//            if(self.banner.mainImage!=nil) {
+//                return 50;
+//            } else {
                 return 62;
-            }
+//            }
     }
 
 }
@@ -243,6 +243,7 @@
     } else {
         PMLEditor *editor = [PMLEditor editorFor:self.banner];
         [editor cancel];
+        [[[TogaytherService uiService] menuManagerController] dismissControllerSnippet];
     }
 }
 #pragma mark - UITextFieldDelegate

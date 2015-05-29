@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "CALImage.h"
-
+#import "CALObject.h"
 
 typedef enum {
     PMLActionTypeNoAction,
@@ -22,6 +22,7 @@ typedef enum {
     PMLActionTypeReport,
     PMLActionTypeReportForDeletion,
     PMLActionTypeAddPlaceBanner,
+    PMLActionTypeEditBanner,
     PMLActionTypeEditPlace,
     PMLActionTypeEditAddress,
     PMLActionTypeEditEvent,
@@ -37,6 +38,7 @@ typedef enum {
  * action and which will be executed when the action is triggerred.
  */
 typedef void (^PopupActionBlock)(void);
+typedef void (^PMLActionBlock)(CALObject *object);
 
 
 /**
@@ -56,11 +58,12 @@ typedef void (^PopupActionBlock)(void);
 @property (nonatomic,copy) NSString *title;
 @property (nonatomic,copy) NSNumber *badgeValue;
 @property (nonatomic,copy) UIColor *color;
-@property (nonatomic,copy) PopupActionBlock actionCommand;
+@property (nonatomic,copy) PMLActionBlock actionCommand;
 @property (nonatomic) BOOL showAttachment;
 /**
  * Initializes a new popup action with all its properties (none is optional)
  */
-- (instancetype) initWithAngle:(double)angle distance:(double)distance icon:(UIImage*)icon titleCode:(NSString*)titleCode size:(double)size command:(PopupActionBlock)actionCommand;
-- (instancetype) initWithIcon:(UIImage*)icon titleCode:(NSString*)titleCode size:(double)size command:(PopupActionBlock)actionCommand;
+- (instancetype) initWithAngle:(double)angle distance:(double)distance icon:(UIImage*)icon titleCode:(NSString*)titleCode size:(double)size command:(PMLActionBlock)actionCommand;
+- (instancetype) initWithIcon:(UIImage*)icon titleCode:(NSString*)titleCode size:(double)size command:(PMLActionBlock)actionCommand;
+- (instancetype)initWithCommand:(PMLActionBlock)actionCommand;
 @end

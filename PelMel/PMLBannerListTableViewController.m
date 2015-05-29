@@ -10,6 +10,7 @@
 #import "TogaytherService.h"
 #import "PMLBannerViewTableViewCell.h"
 #import "PMLBannerMapTableViewCell.h"
+#import <MBProgressHUD.h>
 
 #define kSectionCount 1
 #define kSectionBanners 0
@@ -18,7 +19,7 @@
 #define kRowIdMap @"mapCell"
 
 @interface PMLBannerListTableViewController ()
-@property (nonatomic,retain) NSArray *banners;
+@property (nonatomic,retain) NSMutableArray *banners;
 @property (nonatomic) BOOL mapVisible;
 @property (nonatomic) NSInteger mapIndex;
 @property (nonatomic,retain) DataService *dataService;
@@ -46,15 +47,23 @@
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
+
+}
+- (void)viewWillAppear:(BOOL)animated {
     // Loading data
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString(@"banner.loading", @"Loading");
+    [hud show:YES];
     [self.dataService listBanners:^(NSArray *banners) {
-        self.banners = banners;
+        self.banners = [banners mutableCopy];
         [self.tableView reloadData];
+        [hud hide:YES];
     } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+        [hud hide:YES];
         [[TogaytherService uiService] alertError];
     }];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -175,12 +184,32 @@
 }
 
 
-
+-(PMLBanner*)bannerFromIndexPath:(NSIndexPath*)indexPath {
+    NSInteger row = indexPath.row;
+    if(self.mapVisible && self.mapIndex<indexPath.row) {
+        row--;
+    }
+    return [self.banners objectAtIndex:row];
+}
 // Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        
+        PMLBanner *banner = [self bannerFromIndexPath:indexPath];
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.tableView animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        [hud show:YES];
+        [_dataService updateBanner:banner withStatus:kPMLBannerStatusDeleted onSuccess:^(PMLBanner *banner) {
+            [self.banners removeObject:banner];
+            // Delete the row from the data source
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [hud hide:YES];
+        } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+            NSLog(@"DeleteBannerFailed: %@", errorMessage);
+            [[TogaytherService uiService] alertError];
+            [hud hide:YES];
+        }];
+        
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
@@ -217,7 +246,8 @@
 }
 
 -(void)resumePaymentTapped:(UIButton*)sender {
-    
+    PMLBanner *banner = [self.banners objectAtIndex:sender.tag];
+    [[TogaytherService actionManager] execute:PMLActionTypeEditBanner onObject:banner];
 }
 
 -(void)resumeBannerDisplayTapped:(UIButton*)sender {

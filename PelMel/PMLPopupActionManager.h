@@ -22,15 +22,6 @@
 @interface PMLPopupActionManager : NSObject <PMLDataListener,UIActionSheetDelegate, UIAlertViewDelegate, UITextFieldDelegate>
 
 @property (nonatomic,retain) PMLMapPopupViewController *popupController;
-@property (nonatomic,retain) PMLMenuManagerController *menuManagerController;
-//@property (nonatomic,retain) PMLPopupEditor *currentEditor;
-
-/**
- * Instantiates a new action manager using the specified popup controller.
- * The popup controller could be used by the action manager to 'manually' add
- * new actions asynchronously.
- */
-//-(instancetype)initWith:(PMLMapPopupViewController*)popupController;
 
 /**
  * Instantiates an action manager dedicated to the given object using the provided menu manager
@@ -41,6 +32,5 @@
  * Provides an array of all actions to display given the provided object context
  */
 -(NSArray*)computeActionsFor:(CALObject*)object annotatedBy:(MapAnnotation*)annotation fromController:(PMLMapPopupViewController*)popupController;
--(PopupAction*)actionForType:(PMLActionType)type;
 -(void)dismiss;
 @end

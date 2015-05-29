@@ -122,7 +122,7 @@
             return 0;
     }
 }
-- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
+- (id<PMLCountersDatasource>)countersDatasource {
     return nil;
 }
 @end

@@ -59,7 +59,7 @@ typedef enum {
 // The label of the type of element being displayed
 - (NSString*)itemTypeLabel;
 - (NSString*)city;
-- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager*)actionManager;
+- (id<PMLCountersDatasource>)countersDatasource;
 - (BOOL)canAddPhoto;
 @optional
 - (CALObject*)mapObjectForLocalization;

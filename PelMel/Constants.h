@@ -96,4 +96,7 @@
 #define kPMLBannerStatusReady @"READY"
 #define kPMLBannerStatusPendingPayment @"PENDING_PAYMENT"
 #define kPMLBannerStatusPaused @"PAUSED"
+#define kPMLBannerStatusDeleted @"DELETED"
+
+#define kPMLBannerCycleTimeSeconds 10
 #endif

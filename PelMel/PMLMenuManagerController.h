@@ -15,6 +15,7 @@
 #define kPMLSnippetTopOffset 20
 #define kSnippetHeight 110
 #define kSnippetEditHeight 150
+#define kSnippetBannerEditHeight 179
 
 @class PMLDataManager;
 
@@ -66,7 +67,7 @@
  * could be informed of its presentation state change.
  */
 @protocol PMLSnippetDelegate <NSObject>
--(PMLPopupActionManager*)actionManager;
+
 @optional
 -(void)menuManager:(PMLMenuManagerController*)menuManager snippetWillOpen:(BOOL)animated;
 -(void)menuManagerSnippetDidOpen:(PMLMenuManagerController*)menuManager;
@@ -156,7 +157,7 @@ typedef void(^TextInputCallback)(NSString *text);
  */
 -(void)openCurrentSnippet:(BOOL)animated;
 -(void)minimizeCurrentSnippet:(BOOL)animated;
-
+-(void)refreshSnippetPosition;
 -(void) dragSnippet:(CGPoint)location velocity:(CGPoint)velocity state:(UIGestureRecognizerState)state;
 /**
  * Dismiss any currently displayed snippet

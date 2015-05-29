@@ -4515,13 +4515,13 @@
                                     <outlet property="urlButton" destination="wyH-em-Bl8" id="nwD-1N-tMW"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="bannerCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="bannerCell" rowHeight="51" id="gcB-9F-xpf" userLabel="bannerCell" customClass="PMLImageTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="bannerCell" selectionStyle="none" indentationWidth="10" reuseIdentifier="bannerCell" rowHeight="62" id="gcB-9F-xpf" userLabel="bannerCell" customClass="PMLImageTableViewCell">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gcB-9F-xpf" id="C4J-Mk-Bw9">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kwK-GE-ch6">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                            <rect key="frame" x="0.0" y="11" width="320" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="320" id="XCM-Tj-wMU"/>
                                                 <constraint firstAttribute="height" constant="50" id="tTk-qJ-vDB"/>

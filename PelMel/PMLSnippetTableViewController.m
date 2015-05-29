@@ -32,7 +32,7 @@
 #import "PMLEventTableViewController.h"
 #import "SpringTransitioningDelegate.h"
 #import "PMLFakeViewController.h"
-#import "PMLPopupActionManager.h"
+#import "PMLActionManager.h"
 #import "PMLCountersView.h"
 #import "UIImage+IPImageUtils.h"
 #import "UITouchBehavior.h"
@@ -165,7 +165,7 @@ typedef enum {
     // Providers
     NSObject<PMLInfoProvider> *_infoProvider;
     NSMutableArray *_observedProperties;
-    PMLPopupActionManager *_actionManager;
+    PMLActionManager *_actionManager;
     
     // Cells
     PMLSnippetDescTableViewCell *_snippetDescCell;
@@ -231,7 +231,7 @@ typedef enum {
     _dataService = TogaytherService.dataService;
     _settingsService = [TogaytherService settingsService];
     _conversionService = [TogaytherService getConversionService];
-    _actionManager = [[PMLPopupActionManager alloc] initWithObject:_snippetItem];
+    _actionManager = [TogaytherService actionManager];
     _infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
     _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
@@ -269,7 +269,6 @@ typedef enum {
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
 }
 - (void)viewWillAppear:(BOOL)animated {
-    self.actionManager.menuManagerController = self.parentMenuController;
     self.parentMenuController.snippetDelegate = self;
     [TogaytherService applyCommonLookAndFeel:self];
     self.navigationController.edgesForExtendedLayout=UIRectEdgeAll;
@@ -296,7 +295,6 @@ typedef enum {
     }
 }
 - (void)viewDidAppear:(BOOL)animated {
-    _actionManager.menuManagerController = [self parentMenuController];
 
     // Getting data
     [_dataService registerDataListener:self];
@@ -770,13 +768,13 @@ typedef enum {
             PMLProperty *phoneProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_PHONE];
             if(phoneProperty !=nil) {
                 // If yes we install the phone action
-                [actionsArray addObject:[self.actionManager actionForType:PMLActionTypePhoneCall]];
+                [actionsArray addObject:[_actionManager actionForType:PMLActionTypePhoneCall]];
             }
             // Do we have a website property?
             PMLProperty *websiteProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_WEBSITE];
             if(websiteProperty !=nil) {
                 // If yes we install the website action
-                [actionsArray addObject:[self.actionManager actionForType:PMLActionTypeWebsite]];
+                [actionsArray addObject:[_actionManager actionForType:PMLActionTypeWebsite]];
             }
             if(actionsArray.count>0) {
                 [_sectionSummaryTitleView installPopupActions:actionsArray];
@@ -952,11 +950,9 @@ typedef enum {
             break;
         case kPMLSectionReport: {
             if(indexPath.row == 0 && [_infoProvider respondsToSelector:@selector(reportActionType)]) {
-                PopupAction *action = [_actionManager actionForType:[_infoProvider reportActionType]];
-                action.actionCommand();
+                [_actionManager execute:[_infoProvider reportActionType] onObject:_snippetItem];
             } else {
-                PopupAction *action = [_actionManager actionForType:[_infoProvider advertisingActionType]];
-                action.actionCommand();
+                [_actionManager execute:[_infoProvider advertisingActionType] onObject:_snippetItem];
             }
             break;
         }
@@ -1140,7 +1136,7 @@ typedef enum {
             [cell.peopleView addSubview:_countersView];
         }
         _countersView.backgroundColor=BACKGROUND_COLOR;
-        id<PMLCountersDatasource> datasource = [_infoProvider countersDatasource:self.actionManager];
+        id<PMLCountersDatasource> datasource = [_infoProvider countersDatasource];
         _countersView.datasource = datasource;
         [_countersView reloadData];
     }
@@ -1227,10 +1223,7 @@ typedef enum {
 //    }
 }
 -(void)actionButtonTapped:(UIButton*)source {
-    PopupAction *action = [_actionManager actionForType:(PMLActionType)source.tag];
-    if(action.actionCommand!=nil) {
-        action.actionCommand();
-    }
+    [_actionManager execute:(PMLActionType)source.tag onObject:_snippetItem];
 }
 -(void)configureRowOvImage:(PMLImageTableViewCell*)cell {
     CALImage *image = [_imageService imageOrPlaceholderFor:_snippetItem allowAdditions:YES];
@@ -1510,37 +1503,40 @@ typedef enum {
 -(void)likeTapped {
     PMLActionType type = [self likeAction];
     if(type != PMLActionTypeNoAction) {
-        PopupAction *action = [self.actionManager actionForType:type];
+
         UITouchBehavior *touch = [[UITouchBehavior alloc] initWithTarget:_countersView.likeIcon];
         [touch setMagnitude:0.5];
         [_animator removeAllBehaviors];
         [_animator addBehavior:touch];
-        
-        action.actionCommand();
+        // Executing action
+        [_actionManager execute:type onObject:_snippetItem];
+
     }
 }
 -(void)checkinTapped {
     PMLActionType type = [self checkinAction];
     if(type != PMLActionTypeNoAction) {
-        PopupAction *action = [self.actionManager actionForType:type];
+
         UITouchBehavior *touch = [[UITouchBehavior alloc] initWithTarget:_countersView.checkinIcon];
         [touch setMagnitude:0.5];
         [_animator removeAllBehaviors];
         [_animator addBehavior:touch];
         
-        action.actionCommand();
+        // Executing action
+        [_actionManager execute:type onObject:_snippetItem];
     }
 }
 -(void)commentTapped {
     PMLActionType type = [self commentAction];
     if(type != PMLActionTypeNoAction) {
-        PopupAction *action = [self.actionManager actionForType:type];
         UITouchBehavior *touch = [[UITouchBehavior alloc] initWithTarget:_countersView.commentsIcon];
         [touch setMagnitude:0.5];
         [_animator removeAllBehaviors];
         [_animator addBehavior:touch];
         
-        action.actionCommand();
+        // Executing action
+        [_actionManager execute:type onObject:_snippetItem];
+
     }
 }
 -(NSArray*)indexPathArrayForMode:(ThumbPreviewMode)mode {
@@ -1574,16 +1570,9 @@ typedef enum {
     [self.navigationController pushViewController:childSnippet animated:YES];
 }
 -(void)addEventTapped {
-    // Getting edit event action
-    PopupAction *action = [_actionManager actionForType:PMLActionTypeEditEvent];
-    action.actionCommand();
-//    
-//    PMLEventTableViewController *eventController = (PMLEventTableViewController*)[_uiService instantiateViewController:@"eventEditor"];
-//    eventController.event = [[Event alloc] initWithPlace:(Place*)self.snippetItem];
-//    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:eventController];
-//    
-//    // Preparing transition
-//    [self.parentMenuController presentModal:navController];
+
+    // Executing action
+    [_actionManager execute:PMLActionTypeEditEvent onObject:_snippetItem];
 }
 
 -(void)descriptionDone:(id)sender {
@@ -1602,8 +1591,7 @@ typedef enum {
         _snippetItem.miniDesc = inputText;
         
         // Commiting changes
-        PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
-        action.actionCommand();
+        [_actionManager execute:PMLActionTypeConfirm onObject:_snippetItem];
     }
     [self.tableView reloadData];
     
@@ -1612,13 +1600,11 @@ typedef enum {
     if(![_snippetEditCell.addressTextField.text isEqualToString:((Place*)_snippetItem).address]) {
         [self updateAddress:_snippetEditCell.addressTextField.text];
     } else {
-        PopupAction *okAction = [_actionManager actionForType:PMLActionTypeConfirm];
-        okAction.actionCommand();
+        [_actionManager execute:PMLActionTypeConfirm onObject:_snippetItem];
     }
 }
 -(void)editCancelTapped:(id)sender {
-    PopupAction *cancelAction = [_actionManager actionForType:PMLActionTypeCancel];
-    cancelAction.actionCommand();
+    [_actionManager execute:PMLActionTypeCancel onObject:_snippetItem];
 }
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
@@ -1663,8 +1649,7 @@ typedef enum {
     if(index == -1) {
         if([_infoProvider canAddPhoto]) {
             // Offering to upload one
-            PopupAction *uploadAction = [_actionManager actionForType:PMLActionTypeAddPhoto];
-            uploadAction.actionCommand();
+            [_actionManager execute:PMLActionTypeAddPhoto onObject:_snippetItem];
         }
     } else {
         [self imageTappedAtIndex:(int)index image:nil];
@@ -1787,8 +1772,7 @@ typedef enum {
             NSString *title = [inputText stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             if(title.length>0) {
                 ((Place*)_snippetItem).title = inputText;
-                PopupAction *action = [self.actionManager actionForType:PMLActionTypeConfirm];
-                action.actionCommand();
+                [_actionManager execute:PMLActionTypeConfirm onObject:_snippetItem];
             }
         }
         [self.tableView reloadData];
@@ -2013,8 +1997,7 @@ typedef enum {
     navItem.leftBarButtonItem = self.navigationItem.backBarButtonItem;
 }
 -(void)navbarActionTapped:(UIButton*)source {
-    PopupAction *action = [_actionManager actionForType:(PMLActionType)source.tag];
-    action.actionCommand();
+    [_actionManager execute:(PMLActionType)source.tag onObject:_snippetItem];
 }
 -(void)hideNavigationBar {
     if(self.navigationController != self.parentMenuController.navigationController) {
@@ -2065,9 +2048,7 @@ typedef enum {
 - (void)menuManager:(PMLMenuManagerController *)menuManager snippetPanned:(float)pctOpened {
     _galleryPctHeight = pctOpened;
 }
-- (PMLPopupActionManager *)actionManager {
-    return _actionManager;
-}
+
 #pragma mark - PMLEventPlaceTabsDelegate
 - (BOOL)eventsTabTapped {
     if([_infoProvider respondsToSelector:@selector(events)]) {

@@ -134,6 +134,7 @@
                 <outlet property="locationLabel" destination="i0D-fE-Ln6" id="57N-vi-H4c"/>
                 <outlet property="separatorImage" destination="0EY-1g-ZN4" id="L8u-u1-UhW"/>
                 <outlet property="titleLabel" destination="w5H-P0-nnS" id="yZa-wD-Qj5"/>
+                <outlet property="verticalSepWidthConstraint" destination="6rB-2D-9fB" id="M03-Wn-lTo"/>
             </connections>
             <point key="canvasLocation" x="-59" y="-48"/>
         </view>

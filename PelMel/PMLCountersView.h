@@ -29,7 +29,7 @@
  * be bound, return PMLActionTypeNoAction
  */
 - (PMLActionType)counterActionAtIndex:(NSInteger)index;
-- (PMLPopupActionManager*)actionManager;
+- (CALObject*)counterObject;
 @optional
 - (UIImage *)counterImageAtIndex:(NSInteger)index;
 - (NSString*)counterImageNameAtIndex:(NSInteger)index;

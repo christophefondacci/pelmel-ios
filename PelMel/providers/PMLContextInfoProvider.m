@@ -187,7 +187,7 @@
 - (NSString *)eventsSectionTitle {
     return NSLocalizedString(@"snippet.title.events", @"Upcoming events");
 }
--(id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
+-(id<PMLCountersDatasource>)countersDatasource {
     return nil;
 }
 - (BOOL)hasNavigation {

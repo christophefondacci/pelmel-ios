@@ -473,7 +473,7 @@
         [_animator addBehavior:touchBehavior];
         PopupAction *action = [_popupActions objectAtIndex:sender.tag];
         if(action.actionCommand != nil) {
-            action.actionCommand();
+            action.actionCommand(_object);
         }
     }
 }

@@ -23,7 +23,6 @@
     UserService *_userService;
     PMLUserActionsView *_actionsView;
     PMLSnippetTableViewController *_snippetController;
-    PMLPopupActionManager *_actionManager;
     id<Likeable> _likeableDelegate;
 }
 
@@ -218,8 +217,7 @@
 
 #pragma mark - Likeable
 - (void)likeTapped {
-    PopupAction *action = [_snippetController.actionManager actionForType:PMLActionTypeLike];
-    action.actionCommand();
+    [[TogaytherService actionManager] execute:PMLActionTypeLike onObject:_user];
 }
 - (void)likeTapped:(CALObject *)likedObject callback:(LikeCompletionBlock)callback {
     [_likeableDelegate likeTapped:likedObject callback:callback];
@@ -253,8 +251,7 @@
     }
 }
 #pragma mark - PMLCounterDataSource
-- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
-    _actionManager = actionManager;
+- (id<PMLCountersDatasource>)countersDatasource {
     return self;
 }
 - (NSString *)counterLabelAtIndex:(NSInteger)index {
@@ -325,6 +322,9 @@
     }
     return nil;
 }
+- (CALObject *)counterObject {
+    return _user;
+}
 - (BOOL)isCounterSelectedAtIndex:(NSInteger)index {
     switch(index) {
         case kPMLCounterIndexLike:
@@ -337,9 +337,7 @@
     }
     return NO;
 }
-- (PMLPopupActionManager *)actionManager {
-    return _actionManager;
-}
+
 -(NSArray *)events {
     return _user.events;
 }

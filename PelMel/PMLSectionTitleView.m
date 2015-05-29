@@ -65,7 +65,7 @@
 
 #pragma mark - Action callbacks
 -(void)actionTapped:(UIButton*)button {
-    PopupAction *action = [_popupActions objectAtIndex:button.tag];
-    action.actionCommand();
+//    PopupAction *action = [_popupActions objectAtIndex:button.tag];
+//    action.actionCommand();
 }
 @end

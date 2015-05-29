@@ -42,6 +42,9 @@
     }
     return nil;
 }
-
+- (void)setBanner:(PMLBanner *)banner {
+    _banner = banner;
+    _lastBannerDate = [NSDate date];
+}
 
 @end

@@ -20,13 +20,15 @@
     NSObject<PMLInfoProvider> *_placeInfoProvider;
     Event *_event;
     id<Likeable> _likeableDelegate;
-    PMLPopupActionManager *_actionManager;
+    PMLActionManager *_actionManager;
 }
 
 - (instancetype)initWithEvent:(Event *)event
 {
     self = [super init];
+
     if (self) {
+        _actionManager = [TogaytherService actionManager];
         _imageService = [TogaytherService imageService];
         _conversionService = [TogaytherService getConversionService];
         _uiService = [TogaytherService uiService];
@@ -189,8 +191,7 @@
     return nil;
 }
 #pragma mark - PMLCounterDataSource
-- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
-    _actionManager = actionManager;
+- (id<PMLCountersDatasource>)countersDatasource {
     return self;
 }
 - (NSString *)counterLabelAtIndex:(NSInteger)index {
@@ -261,8 +262,8 @@
     }
     return NO;
 }
-- (PMLPopupActionManager *)actionManager {
-    return _actionManager;
+- (CALObject *)counterObject {
+    return _event;
 }
 -(CALObject *)mapObjectForLocalization {
     return [_placeInfoProvider mapObjectForLocalization];

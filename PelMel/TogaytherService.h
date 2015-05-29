@@ -18,6 +18,8 @@
 #import "SettingsService.h"
 #import "PMLHelpService.h"
 #import "PMLStoreService.h"
+#import "PMLActionManager.h"
+
 
 @interface TogaytherService : NSObject
 
@@ -52,6 +54,9 @@
 
 // Store and in-app purchases service
 +(PMLStoreService*)storeService;
+
+// Action manager
++(PMLActionManager*)actionManager;
 
 + (MessageService*)getMessageService;
 + (void)applyCommonLookAndFeel:(UIViewController*)controller;

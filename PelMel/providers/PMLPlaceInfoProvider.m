@@ -25,7 +25,6 @@
     
     // Parent controller
     PMLSnippetTableViewController *_snippetController;
-    PMLPopupActionManager *_actionManager;
     
     // Main place object
     Place *_place;
@@ -356,8 +355,7 @@
     return nil;
 }
 #pragma mark - PMLCounterDataSource
-- (id<PMLCountersDatasource>)countersDatasource:(PMLPopupActionManager *)actionManager {
-    _actionManager = actionManager;
+- (id<PMLCountersDatasource>)countersDatasource {
     return self;
 }
 - (NSString *)counterLabelAtIndex:(NSInteger)index {
@@ -445,9 +443,11 @@
     }
     return NO;
 }
-- (PMLPopupActionManager *)actionManager {
-    return _actionManager;
+
+-(CALObject *)counterObject {
+    return _place;
 }
+
 
 #pragma mark Localization
 -(CALObject *)mapObjectForLocalization {

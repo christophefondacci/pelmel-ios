@@ -743,7 +743,7 @@ static void *MyParentMenuControllerKey;
             snippetHeight = kSnippetEditHeight;
         }
     } else if([topMostChildController isKindOfClass:[PMLBannerEditorTableViewController class]] ) {
-        snippetHeight = kSnippetEditHeight;
+        snippetHeight = kSnippetBannerEditHeight;
     }
     
     CGRect myFrame = self.containerView.frame;
@@ -756,6 +756,16 @@ static void *MyParentMenuControllerKey;
 //        top = MAX(bounds.size.height-600,0);
 //    }
     return top;
+}
+
+- (void)refreshSnippetPosition {
+    NSInteger offset ;
+    if(_snippetFullyOpened) {
+        offset = [self offsetForOpenedSnippet];
+    } else {
+        offset = [self offsetForMinimizedSnippet];
+    }
+    [self animateSnippetToOffset:offset animated:YES];
 }
 #pragma mark - UIPanGestureRecognizerDelegate
 //- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -1078,6 +1088,7 @@ static void *MyParentMenuControllerKey;
                         }
                         [self adjustBottomViewFrame];
                         [self.menuManagerDelegate layoutMenuActions];
+                        [self refreshSnippetPosition];
                         
                         // Handling ad clicks
                         if(self.adTapRecognizer !=nil) {
@@ -1098,6 +1109,7 @@ static void *MyParentMenuControllerKey;
                 } completion:^(BOOL finished) {
                     self.adContainerImage.image = nil;
                     [self.menuManagerDelegate layoutMenuActions];
+                    [self refreshSnippetPosition];
                 }];
             });
         }

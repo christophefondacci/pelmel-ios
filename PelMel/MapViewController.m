@@ -53,7 +53,7 @@
     BOOL newPointReady;
     Place *_editedPlace;
     UIImageView *_editedPlaceView;
-    PMLBanner *_editedBanner;
+    CALObject *_editedRangeObject;
     UIView *_editedRange;
     
     CALObject *_parentObject;
@@ -245,7 +245,7 @@
 #pragma mark - Map contributed menu actions
 -(void)initializeMenuActions {
     // Providing our menu action (add content)
-    _menuAddAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnAdd"] pctWidth:1 pctHeight:1 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
+    _menuAddAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnAdd"] pctWidth:1 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController,MenuAction *menuAction) {
         
         // Ask the user what to create
         NSString *title= NSLocalizedString(@"action.add.sheetTitle","cancel");
@@ -259,7 +259,7 @@
 
     }];
     _menuAddAction.rightMargin=5;
-    _menuAddAction.bottomMargin=160;
+    _menuAddAction.topMargin=84+24+50+5+100;
     
     // Refresh action
     _menuRefreshAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnRefresh"] pctWidth:1 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
@@ -723,7 +723,7 @@
         _editedPlaceView.frame = CGRectMake(mapCenter.x-CGRectGetWidth(frame)/2, mapCenter.y-CGRectGetHeight(frame), CGRectGetWidth(frame), CGRectGetHeight(frame));
         // Geocoding
         [self geocodePlaceAddress:_editedPlace];
-    } else if(_editedBanner != nil) {
+    } else if(_editedRangeObject != nil) {
         if(_editedRange != nil) {
             [self updateEditedRange];
         }
@@ -920,52 +920,30 @@
     if([object isKindOfClass:[Place class]]) {
         [self editPlaceLocation:(Place*)object centerMapOnPlace:NO];
     } else if([object isKindOfClass:[PMLBanner class]]) {
-        // Hiding banner to avoid messing with current edition
-        _dataService.modelHolder.banner = nil;
-        // Starting edition
-        PMLEditor *editor = [PMLEditor editorFor:object on:self];
-        [editor startEditionWith:^{
-            [_editedRange removeFromSuperview];
-            _editedRange = nil;
-            _editedBanner = nil;
-            [[_uiService menuManagerController] dismissControllerSnippet];
-        } cancelledBy:^{
-            [_editedRange removeFromSuperview];
-            _editedRange = nil;
-            _editedBanner = nil;
-
-        } mapEdition:NO];
-
-        _editedBanner = (PMLBanner*)object;
-        
-        // Creating range
-        if(_editedRange != nil) {
-            [_editedRange removeFromSuperview];
-        }
-        // Adjusting zoom so that we make sure the ad range is fully displayed in the map
-        CLLocationDistance dist = [self distanceForMapWidth];
-        if(dist/METERS_PER_MILE < (kPMLBannerMilesRadius*1.5f)) {
-            // Building our zoom rect around our center
-            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE);
-            MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
-            MKMapRect mapRect = [self MKMapRectForCoordinateRegion:adjustedRegion];
-            [_mapView setVisibleMapRect:mapRect animated:NO];
-        }
-        _editedRange = [[UIView alloc] init ];
-        _editedRange.layer.borderColor = [[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1] CGColor];
-        _editedRange.layer.borderWidth = 2;
-        _editedRange.layer.masksToBounds=YES;
-        _editedRange.userInteractionEnabled = NO;
-        _editedRange.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:0.4f];
-        [self.mapView addSubview:_editedRange] ; //] belowSubview:_editedPlaceView];
-        [self updateEditedRange];
-        
-        // Instantiating editor and displaying as a snippet
-        PMLBannerEditorTableViewController *bannerController = (PMLBannerEditorTableViewController*)[_uiService instantiateViewController:SB_ID_BANNER_EDITOR];
-        bannerController.banner = _editedBanner;
-        [_uiService presentSnippet:bannerController opened:NO root:YES];
+        // Editing banner
+        [[TogaytherService actionManager] execute:PMLActionTypeEditBanner onObject:object];
     }
+}
+- (void)editRangeFor:(CALObject *)object {
+    // Starting edition
+    PMLEditor *editor = [PMLEditor editorFor:object on:self];
+    [editor startEditionWith:^{
+        [_editedRange removeFromSuperview];
+        _editedRange = nil;
+        _editedRangeObject = nil;
+        [[_uiService menuManagerController] dismissControllerSnippet];
+    } cancelledBy:^{
+        [_editedRange removeFromSuperview];
+        _editedRange = nil;
+        _editedRangeObject = nil;
+        
+    } mapEdition:NO];
     
+    _editedRangeObject = object;
+    
+    // Creating range hovering the map
+    [self createEditedRange:object];
+
 }
 - (void)didUpdatePlace:(Place *)place {
     [self cancelEdition];
@@ -1043,20 +1021,63 @@
     _editedPlaceView.frame = CGRectMake(self.mapView.center.x-CGRectGetWidth(imgFrame)/2,mapCenter.y-CGRectGetHeight(imgFrame), CGRectGetWidth(imgFrame), CGRectGetHeight(imgFrame));
     [self.mapView addSubview:_editedPlaceView];
 }
--(void)updateEditedRange {
+-(void)createEditedRange:(CALObject*)object {
+    // Adjusting zoom so that we make sure the ad range is fully displayed in the map
     CLLocationDistance dist = [self distanceForMapWidth];
+    if(dist/METERS_PER_MILE < (kPMLBannerMilesRadius*1.5f)) {
+        // Building our zoom rect around our center
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE);
+        MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
+        MKMapRect mapRect = [self MKMapRectForCoordinateRegion:adjustedRegion];
+        [_mapView setVisibleMapRect:mapRect animated:NO];
+    }
+
+    // Removing any previous range
+    if(_editedRange != nil) {
+        [_editedRange removeFromSuperview];
+        _editedRange = nil;
+    }
+    
+    // Centering if needed
+    if(object.lat!=0 && object.lng!=0) {
+        // Centering on object
+        CLLocationCoordinate2D coords = CLLocationCoordinate2DMake(object.lat, object.lng);
+        [_mapView setCenterCoordinate:coords animated:NO];
+        
+        // Offsetting center by kSnippetEditHeight/2 pixels
+        CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
+        CGPoint deltaCenter = CGPointMake(mapCenter.x, mapCenter.y+kSnippetEditHeight/2);
+        CLLocationCoordinate2D newCoords= [_mapView convertPoint:deltaCenter toCoordinateFromView:_mapView];
+        [_mapView setCenterCoordinate:newCoords animated:NO];
+    }
+    
+    // Creating range
+    _editedRange = [[UIView alloc] init ];
+    _editedRange.layer.borderColor = [[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1] CGColor];
+    _editedRange.layer.borderWidth = 2;
+    _editedRange.layer.masksToBounds=YES;
+    _editedRange.userInteractionEnabled = NO;
+    _editedRange.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:0.4f];
+    [self.mapView addSubview:_editedRange] ; //] belowSubview:_editedPlaceView];
+    [self updateEditedRange];
+
+}
+-(void)updateEditedRange {
+
+    CLLocationDistance dist = [self distanceForMapWidth];
+
     double milesRadius = dist/METERS_PER_MILE;
     double milesPerPixels = milesRadius / (double)self.mapView.bounds.size.width;
     double pixelsRadius = kPMLBannerMilesRadius / milesPerPixels;
     
     CGPoint mapCenter = [_mapView convertCoordinate:_mapView.centerCoordinate toPointToView:_mapView];
-    _editedRange.frame = CGRectMake(mapCenter.x - pixelsRadius/2, mapCenter.y-pixelsRadius/2-kSnippetEditHeight/2, pixelsRadius, pixelsRadius);
-    _editedRange.layer.cornerRadius = pixelsRadius/2;
+    _editedRange.frame = CGRectMake(mapCenter.x - pixelsRadius, mapCenter.y-pixelsRadius-kSnippetEditHeight/2, pixelsRadius*2, pixelsRadius*2);
+    _editedRange.layer.cornerRadius = pixelsRadius;
     
     // Setting lat/lng to map center
-    CLLocationCoordinate2D coords = [_mapView convertPoint:_editedRange.center toCoordinateFromView:_editedRange.superview];
-    _editedBanner.lat = coords.latitude;
-    _editedBanner.lng = coords.longitude;
+    CLLocationCoordinate2D coords = [_mapView convertPoint:_editedRange.center toCoordinateFromView:_mapView];
+    _editedRangeObject.lat = coords.latitude;
+    _editedRangeObject.lng = coords.longitude;
 }
 #pragma mark - KVO observing
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {

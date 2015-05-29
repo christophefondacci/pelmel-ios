@@ -859,8 +859,7 @@
                 
                 // If the place does not have a picture, prompt to add one
                 if(place.mainImage==nil) {
-                    PopupAction *photoAction = [[[[[TogaytherService uiService] menuManagerController] rootViewController] popupActionManager] actionForType:PMLActionTypeAddPhoto];
-                    photoAction.actionCommand();
+                    [[TogaytherService actionManager] execute:PMLActionTypeAddPhoto onObject:newPlace];
                 }
             });
             
@@ -983,37 +982,38 @@
 }
 -(void)cycleBanner {
     
-    // Building URL
-    NSString *url = [NSString stringWithFormat:kBannersCycleUrlFormat,togaytherServer];
-    CurrentUser *user = [userService getCurrentUser];
-    
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    
-    // Building params map
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-    [params setObject:user.token forKey:@"nxtpUserToken"];
-    if(_modelHolder.banner.key != nil) {
-        [params setObject:_modelHolder.banner.key forKey:@"currentBannerKey"];
+    if(_modelHolder.banner == nil || _modelHolder.lastBannerDate == nil ||[[NSDate date] timeIntervalSinceDate:_modelHolder.lastBannerDate]>kPMLBannerCycleTimeSeconds) {
+        // Building URL
+        NSString *url = [NSString stringWithFormat:kBannersCycleUrlFormat,togaytherServer];
+        CurrentUser *user = [userService getCurrentUser];
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        
+        // Building params map
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setObject:user.token forKey:@"nxtpUserToken"];
+        if(_modelHolder.banner.key != nil) {
+            [params setObject:_modelHolder.banner.key forKey:@"currentBannerKey"];
+        }
+        [params setObject:[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.latitude] forKey:@"lat"];
+        [params setObject:[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.longitude] forKey:@"lng"];
+        
+        // Webservice call
+        [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            
+            NSDictionary *json = (NSDictionary*)responseObject;
+            if(json.allKeys.count >0) {
+                // Unserializing
+                PMLBanner *newBanner = [jsonService convertJsonBannerToBanner:json];
+                _modelHolder.banner = newBanner;
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSString *description = error.localizedDescription;
+            NSString *reason = error.localizedFailureReason;
+            NSString *errorMessage = [NSString stringWithFormat:@"%@ %@", description, reason];
+            NSLog(@"ERROR: %ld: %@",(long)error.code, errorMessage);
+        }];
     }
-    [params setObject:[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.latitude] forKey:@"lat"];
-    [params setObject:[NSString stringWithFormat:@"%f",_modelHolder.userLocation.coordinate.longitude] forKey:@"lng"];
-    
-    // Webservice call
-    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              
-              NSDictionary *json = (NSDictionary*)responseObject;
-              if(json.allKeys.count >0) {
-                  // Unserializing
-                  PMLBanner *newBanner = [jsonService convertJsonBannerToBanner:json];
-                  _modelHolder.banner = newBanner;
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                  NSString *description = error.localizedDescription;
-                  NSString *reason = error.localizedFailureReason;
-                  NSString *errorMessage = [NSString stringWithFormat:@"%@ %@", description, reason];
-                  NSLog(@"ERROR: %d: %@",error.code, errorMessage);
-          }];
-
 }
 - (void)createPlaceAtLatitude:(double)latitude longitude:(double)longitude {
     // Building place

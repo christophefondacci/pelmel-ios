@@ -175,9 +175,7 @@
     NSInteger index = recognizer.view.tag;
     PMLActionType type = [_datasource counterActionAtIndex:index];
     if(type != PMLActionTypeNoAction) {
-        // Getting action
-        PopupAction *action = [_datasource.actionManager actionForType:type];
-        
+
         // Getting view for user feedback interaction
         UIView *animatedView = [self containerViewAtIndex:index];
         UIColor *color = animatedView.backgroundColor;
@@ -188,15 +186,9 @@
                 animatedView.backgroundColor = [self colorForViewAtIndex:index];
             } completion:NULL];
         }];
-//        animatedView.layer.anchorPoint=CGPointMake(0.5f, 0.5f);
-//        // Building animation
-//        UITouchBehavior *touch = [[UITouchBehavior alloc] initWithTarget:animatedView];
-//        [touch setMagnitude:0.5];
-//        [_animator removeAllBehaviors];
-//        [_animator addBehavior:touch];
         
         // Executing command
-        action.actionCommand();
+        [[TogaytherService actionManager] execute:type onObject:_datasource.counterObject];
     }
 }
 @end

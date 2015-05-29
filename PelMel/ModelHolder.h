@@ -24,20 +24,21 @@ typedef enum {
 
 @interface ModelHolder : NSObject
 
-@property (strong) NSArray *places;
-@property (strong) NSArray *cities;
-@property (strong) NSArray *events;
-@property (strong) NSArray *activities;
-@property (strong) NSArray *activityStats;
-@property (strong) NSArray *users;
-@property (strong) PMLBanner *banner;
+@property (nonatomic,strong) NSArray *places;
+@property (nonatomic,strong) NSArray *cities;
+@property (nonatomic,strong) NSArray *events;
+@property (nonatomic,strong) NSArray *activities;
+@property (nonatomic,strong) NSArray *activityStats;
+@property (nonatomic,strong) NSArray *users;
+@property (nonatomic,strong) PMLBanner *banner;
+@property (nonatomic,retain) NSDate *lastBannerDate;
 @property (nonatomic) long maxLikes;
-@property (strong) NSMutableArray *allPlaces; // All places ever loaded
-@property (strong) City *localizedCity;
-@property (strong) CLLocation *userLocation;
-@property (strong) CALObject *parentObject;
-@property (strong) NSString *searchedText;
-@property (strong) NSDate *dataTime;
+@property (nonatomic,strong) NSMutableArray *allPlaces; // All places ever loaded
+@property (nonatomic,strong) City *localizedCity;
+@property (nonatomic,strong) CLLocation *userLocation;
+@property (nonatomic,strong) CALObject *parentObject;
+@property (nonatomic,strong) NSString *searchedText;
+@property (nonatomic,strong) NSDate *dataTime;
 @property (nonatomic) ListviewType currentListviewType;
 @property (nonatomic) int totalPlacesCount;
 @property (nonatomic) int totalUsersCount;
