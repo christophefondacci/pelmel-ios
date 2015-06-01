@@ -327,9 +327,9 @@
     
     // Presenting in snippet
     [self presentSnippet:snippetController opened:opened root:root];
-    if(!opened && object.key != nil) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET object:self];
-    }
+//    if(!opened && object.key != nil) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET object:self];
+//    }
 }
 - (void)presentSnippet:(UIViewController *)snippetController opened:(BOOL)opened root:(BOOL)root {
     

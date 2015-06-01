@@ -114,8 +114,12 @@
 "activity.detail.U_EVNT"="%@ has updated event %@";
 "banner.button.addPlaceBanner"="Create an ad banner";
 "banner.button.uploadImage"="Tap to upload 640x100 image";
+"banner.editor.typeIntroLabel"="The banner ad is for a:";
+"banner.editor.targetIntroLabel"="The ad should link to:";
 "banner.image.formatErrorTitle"="Incorrect image size";
 "banner.itemTitle"="%@ banner displays for %@";
+"banner.hint.title"="Make a Banner Ad";
+"banner.hint"="Upload a 640x100 image which will be displayed in PELMEL after you link an existing Place, Event or URL.";
 "banner.list.pending"="Pending";
 "banner.list.startDateLabel"="Started On";
 "banner.list.title"="My Banners";

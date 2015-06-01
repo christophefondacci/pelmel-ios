@@ -68,8 +68,9 @@
         [self refreshWithTargetType:PMLTargetTypeURL];
     }
     
-
-
+    // Configuring labels
+    self.displaysLabel.text = NSLocalizedString(@"banner.editor.typeIntroLabel", @"The banner ad is for:");
+    self.targetLabel.text = NSLocalizedString(@"banner.editor.targetIntroLabel", @"The ad should link to:");
 }
 -(void)refreshWithTargetType:(PMLTargetType)targetType {
     self.placeButton.backgroundColor    = UIColorFromRGBAlpha(0x039ebd,targetType == PMLTargetTypePlace ? 1 : 0.15);

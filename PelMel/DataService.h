@@ -162,7 +162,7 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 // Place creation
 - (void)createPlaceAtLatitude:(double)latitude longitude:(double)longitude;
 // Banner creation
-- (void)createBannerAtLatitude:(double)latitude longitude:(double)longitude forPlace:(Place*)place;
+- (void)createBannerAtLatitude:(double)latitude longitude:(double)longitude forObject:(CALObject*)place;
 - (void)updateBanner:(PMLBanner*)banner withStatus:(NSString*)status onSuccess:(UpdateBannerCompletionBlock)successCallback onFailure:(ErrorCompletionBlock)failureCallback;
 
 -(void)cancelRunningProcesses;

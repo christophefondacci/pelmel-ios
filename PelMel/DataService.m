@@ -1028,9 +1028,9 @@
         [self notifyObjectCreated:newPlace];
     });
 }
-- (void)createBannerAtLatitude:(double)latitude longitude:(double)longitude forPlace:(Place *)place {
+- (void)createBannerAtLatitude:(double)latitude longitude:(double)longitude forObject:(CALObject *)target {
     PMLBanner *banner = [[PMLBanner alloc] init];
-    banner.targetObject = place;
+    banner.targetObject = target;
     banner.lat = latitude;
     banner.lng = longitude;
     // Sending request

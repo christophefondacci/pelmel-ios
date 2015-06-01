@@ -78,14 +78,14 @@
     // Dispose of any resources that can be recreated.
 }
 - (void)viewDidAppear:(BOOL)animated {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CGRect rect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:kRowHoursSpecials inSection:kSectionHours]];
-        rect = [self.tableView convertRect:rect toView:self.parentMenuController.view];
-        rect = CGRectInset(rect, 10, 5);
-        PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:10 helpText:NSLocalizedString(@"hint.filters",@"hint.filters") textPosition:PMLTextPositionBottom whenSnippetOpened:NO];
-        [[TogaytherService helpService] registerBubbleHint:bubble forNotification:PML_HELP_FILTERS];
-        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_FILTERS object:self];
-    });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        CGRect rect = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:kRowHoursSpecials inSection:kSectionHours]];
+//        rect = [self.tableView convertRect:rect toView:self.parentMenuController.view];
+//        rect = CGRectInset(rect, 10, 5);
+//        PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:10 helpText:NSLocalizedString(@"hint.filters",@"hint.filters") textPosition:PMLTextPositionBottom whenSnippetOpened:NO];
+//        [[TogaytherService helpService] registerBubbleHint:bubble forNotification:PML_HELP_FILTERS];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_FILTERS object:self];
+//    });
 }
 #pragma mark - Table view data source
 
@@ -158,9 +158,9 @@
                         rect = CGRectInset(rect, 10, 5);
                         
                         // Creating help bubble
-                        PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:10 helpText:NSLocalizedString(@"hint.filters.multi",@"hint.filters.multi") textPosition:PMLTextPositionTop whenSnippetOpened:NO];
-                        [[TogaytherService helpService] registerBubbleHint:bubble forNotification:PML_HELP_FILTERS_MULTI];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_FILTERS_MULTI object:self];
+//                        PMLHelpBubble *bubble = [[PMLHelpBubble alloc] initWithRect:rect cornerRadius:10 helpText:NSLocalizedString(@"hint.filters.multi",@"hint.filters.multi") textPosition:PMLTextPositionTop whenSnippetOpened:NO];
+//                        [[TogaytherService helpService] registerBubbleHint:bubble forNotification:PML_HELP_FILTERS_MULTI];
+//                        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_FILTERS_MULTI object:self];
                     }
                     break;
                 case kRowHoursEvents:

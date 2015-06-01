@@ -113,7 +113,11 @@
 "activity.detail.O_PLAC"="%@ a commenté le lieu %@";
 "banner.button.addPlaceBanner"="Créer une bannière de pub";
 "banner.button.uploadImage"="Choisissez une image 640x100";
+"banner.editor.typeIntroLabel"="La bannière-annonce concerne :";
+"banner.editor.targetIntroLabel"="L'annonce doit ouvrir :";
 "banner.itemTitle"="%@ affichages de bannières pour %@";
+"banner.hint.title"="Créez une Bannière de Pub";
+"banner.hint"="Téléchargez une image de bannière 640x100 qui sera affichée sur PELMEL dès que vous aurez lié un Lieu existant, un évènement ou une URL.";
 "banner.list.pending"="En attente";
 "banner.list.startDateLabel"="Débuté Le";
 "banner.list.title"="Mes Bannières";

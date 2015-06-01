@@ -500,8 +500,7 @@
             break;
         }
         case kActionBanner: {
-            CLLocationCoordinate2D coords = _mapView.centerCoordinate;
-            [_dataService createBannerAtLatitude:coords.latitude longitude:coords.longitude forPlace:nil];
+            [[TogaytherService actionManager] execute:PMLActionTypeAddPlaceBanner onObject:nil];
             break;
         }
         case kActionCancel:
@@ -920,6 +919,7 @@
     if([object isKindOfClass:[Place class]]) {
         [self editPlaceLocation:(Place*)object centerMapOnPlace:NO];
     } else if([object isKindOfClass:[PMLBanner class]]) {
+
         // Editing banner
         [[TogaytherService actionManager] execute:PMLActionTypeEditBanner onObject:object];
     }
@@ -956,6 +956,11 @@
     if(_editedPlace!=nil) {
         _editedPlace = nil;
         [_editedPlaceView removeFromSuperview];
+    }
+    if(_editedRange != nil) {
+        [_editedRange removeFromSuperview];
+        _editedRange = nil;
+        _editedRangeObject = nil;
     }
 }
 - (void)editPlaceLocation:(Place *)place centerMapOnPlace:(BOOL)centerMap {

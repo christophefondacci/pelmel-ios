@@ -293,8 +293,15 @@
             
         } else {
             NSLog(@"Add place banner");
+            [_uiService alertWithTitle:@"banner.hint.title" text:@"banner.hint"];
             CurrentUser *user = [_userService getCurrentUser];
-            [_dataService createBannerAtLatitude:user.lat longitude:user.lng forPlace:(Place*)object];
+            double lat = user.lat;
+            double lng = user.lng;
+            if(object != nil) {
+                lat = object.lat;
+                lng = object.lng;
+            }
+            [_dataService createBannerAtLatitude:user.lat longitude:user.lng forObject:(Place*)object];
         }
     }];
     [self registerAction:addBannerAction forType:PMLActionTypeAddPlaceBanner];
