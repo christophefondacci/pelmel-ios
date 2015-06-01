@@ -318,6 +318,9 @@ static void *MyParentMenuControllerKey;
         _currentSnippetViewController = nil;
         [_gripView removeFromSuperview];
     }
+    // Removing snippet container view
+    [_bottomView removeFromSuperview];
+    _bottomView = nil;
 }
 - (void)presentControllerSnippet:(UIViewController *)childViewController animated:(BOOL)animated {
     // Default is not opened
@@ -341,6 +344,10 @@ static void *MyParentMenuControllerKey;
     
     // Placing the frame at the bottom of the visible current view, outside
     CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height+1-[self offsetForOpenedSnippet]);
+    if(_bottomView == nil) {
+        _bottomView = [[UIView alloc] init];
+        [_containerView addSubview:_bottomView];
+    }
     _bottomView.frame = bottomFrame;
     _bottomView.opaque=YES;
     
