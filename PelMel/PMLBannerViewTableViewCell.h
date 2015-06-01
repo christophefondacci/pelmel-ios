@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import "PMLBanner.h"
 
 @interface PMLBannerViewTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *bannerImageView;
@@ -17,5 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *startDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *usageCounterLabel;
-
+@property (weak, nonatomic) IBOutlet UILabel *targetLinkLabel;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (nonatomic,retain) PMLBanner *banner;
 @end

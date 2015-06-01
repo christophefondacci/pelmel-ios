@@ -20,8 +20,8 @@
 
 @interface PMLBannerListTableViewController ()
 @property (nonatomic,retain) NSMutableArray *banners;
-@property (nonatomic) BOOL mapVisible;
-@property (nonatomic) NSInteger mapIndex;
+//@property (nonatomic) BOOL mapVisible;
+//@property (nonatomic) NSInteger mapIndex;
 @property (nonatomic,retain) DataService *dataService;
 @property (nonatomic,retain) ImageService *imageService;
 @property (nonatomic,retain) NSDateFormatter *dateFormatter;
@@ -43,7 +43,7 @@
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
     
     // Vars init
-    self.mapVisible = NO;
+//    self.mapVisible = NO;
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
@@ -77,68 +77,68 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.banners.count + (self.mapVisible ? 1 : 0);
+    return self.banners.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellId = (self.mapVisible && self.mapIndex == indexPath.row) ? kRowIdMap : kRowIdBanner;
+    NSString *cellId = kRowIdBanner;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
     
-    if([cellId isEqualToString:kRowIdBanner]){
+//    if([cellId isEqualToString:kRowIdBanner]){
         [self configureRowBanner:(PMLBannerViewTableViewCell*)cell forIndex:indexPath.row];
-    } else {
-        [self configureRowMap:(PMLBannerMapTableViewCell*)cell forIndex:indexPath.row];
-    }
+//    } else {
+//        [self configureRowMap:(PMLBannerMapTableViewCell*)cell forIndex:indexPath.row];
+//    }
     // Configure the cell...
     
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 110;
+    return 288;
 }
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(self.mapVisible) {
-        if(indexPath.row == self.mapIndex-1) {
-            self.mapVisible = NO;
-            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.mapIndex-1 inSection:kSectionBanners]];
-            [cell setSelected:NO animated:YES];
-        } else {
-            // Delta to add to map index after the delete / insert phase
-//            NSInteger delta = (self.mapIndex < indexPath.row) ? -1 : 0;
-//            self.mapIndex = indexPath.row + delta;
-//            [self.tableView reloadData];
-            
-            
-            
-            NSIndexPath *oldIndexPath = [NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners];
-            NSInteger mapRow = indexPath.row;
-            if(oldIndexPath == nil || oldIndexPath.row>indexPath.row ) {
-                mapRow ++;
-            }
-            self.mapIndex = mapRow;
-            
-            // Inserting picker
-            // Deleting any previous picker
-            [self.tableView beginUpdates];
-            [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self.tableView endUpdates];
-        }
-    } else {
-        self.mapVisible=YES;
-        self.mapIndex = indexPath.row+1;
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-- (void)configureRowBanner:(PMLBannerViewTableViewCell*)cell forIndex:(NSInteger)row {
+//
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+//    if(self.mapVisible) {
+//        if(indexPath.row == self.mapIndex-1) {
+//            self.mapVisible = NO;
+//            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.mapIndex-1 inSection:kSectionBanners]];
+//            [cell setSelected:NO animated:YES];
+//        } else {
+//            // Delta to add to map index after the delete / insert phase
+////            NSInteger delta = (self.mapIndex < indexPath.row) ? -1 : 0;
+////            self.mapIndex = indexPath.row + delta;
+////            [self.tableView reloadData];
+//            
+//            
+//            
+//            NSIndexPath *oldIndexPath = [NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners];
+//            NSInteger mapRow = indexPath.row;
+//            if(oldIndexPath == nil || oldIndexPath.row>indexPath.row ) {
+//                mapRow ++;
+//            }
+//            self.mapIndex = mapRow;
+//            
+//            // Inserting picker
+//            // Deleting any previous picker
+//            [self.tableView beginUpdates];
+//            [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            [self.tableView endUpdates];
+//        }
+//    } else {
+//        self.mapVisible=YES;
+//        self.mapIndex = indexPath.row+1;
+//        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//    }
+//}
+- (void)configureRowBanner:(PMLBannerViewTableViewCell*)cell forIndex:(NSInteger)bannerIndex {
     
-    NSInteger bannerIndex = row;
-    if(self.mapVisible && self.mapIndex<row) {
-        bannerIndex--;
-    }
+//    NSInteger bannerIndex = row;
+//    if(self.mapVisible && self.mapIndex<row) {
+//        bannerIndex--;
+//    }
     
     // Setting up banner information into cell
     PMLBanner *banner = [self.banners objectAtIndex:bannerIndex];
@@ -148,6 +148,15 @@
     cell.startedOnLabel.text = NSLocalizedString(@"banner.list.startDateLabel", @"banner.list.startDateLabel");
     cell.usageLabel.text = NSLocalizedString(@"banner.list.usage", @"Usage");
     cell.usageCounterLabel.text = [NSString stringWithFormat:@"%d / %d", (int)banner.displayCount,(int)banner.targetDisplayCount ];
+    
+    // Setting up banner link / target object name
+    if(banner.targetObject != nil) {
+        id<PMLInfoProvider> provider = [[TogaytherService uiService] infoProviderFor:banner.targetObject];
+        cell.targetLinkLabel.text = [provider title];
+    } else {
+        cell.targetLinkLabel.text = banner.targetUrl;
+    }
+    [cell setBanner:banner];
     
     // Buttons
     cell.playButton.tag = bannerIndex;
@@ -186,9 +195,9 @@
 
 -(PMLBanner*)bannerFromIndexPath:(NSIndexPath*)indexPath {
     NSInteger row = indexPath.row;
-    if(self.mapVisible && self.mapIndex<indexPath.row) {
-        row--;
-    }
+//    if(self.mapVisible && self.mapIndex<indexPath.row) {
+//        row--;
+//    }
     return [self.banners objectAtIndex:row];
 }
 // Override to support editing the table view.
