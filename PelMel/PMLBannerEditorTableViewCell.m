@@ -52,6 +52,10 @@
         
         // Setting up title
         self.targetItemLabel.text = [[[TogaytherService uiService] infoProviderFor:banner.targetObject ] title];
+        
+        // Refreshing type buttons enablement
+        [self refreshWithTargetType:([banner.targetObject isKindOfClass:[Place class]] ? PMLTargetTypePlace : PMLTargetTypeEvent)];
+        
     } else {
         // Adjusting visibility
         self.targetUrlTextField.hidden = NO;
@@ -61,18 +65,25 @@
         // Filling URL
         self.targetUrlTextField.text = banner.targetUrl;
         self.targetUrlTextField.placeholder = NSLocalizedString(@"banner.url.placeholder", @"banner.url.placeholder");
+        [self refreshWithTargetType:PMLTargetTypeURL];
     }
     
 
 
 }
+-(void)refreshWithTargetType:(PMLTargetType)targetType {
+    self.placeButton.backgroundColor    = UIColorFromRGBAlpha(0x039ebd,targetType == PMLTargetTypePlace ? 1 : 0.15);
+    self.eventButton.backgroundColor    = UIColorFromRGBAlpha(0x3ba414,targetType == PMLTargetTypeEvent ? 1 : 0.15);
+    self.urlButton.backgroundColor      = UIColorFromRGBAlpha(0xe8791f,targetType == PMLTargetTypeURL ? 1 : 0.15);
 
+}
 #pragma mark - Actions
 -(void)targetTypeTapped:(PMLTargetType)targetType {
-    self.placeButton.backgroundColor    = UIColorFromRGBAlpha(0x039ebd,targetType == PMLTargetTypePlace ? 1 : 0.5);
-    self.eventButton.backgroundColor    = UIColorFromRGBAlpha(0x3ba414,targetType == PMLTargetTypeEvent ? 1 : 0.5);
-    self.urlButton.backgroundColor      = UIColorFromRGBAlpha(0xe8791f,targetType == PMLTargetTypeURL ? 1 : 0.5);
-
+    
+    // Updating buttons color
+    [self refreshWithTargetType:targetType];
+    
+    // Calling delegate
     if(self.delegate != nil) {
         [self.delegate bannerEditor:self targetTypeSelected:targetType];
     }

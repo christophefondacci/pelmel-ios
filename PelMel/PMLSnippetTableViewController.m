@@ -44,7 +44,7 @@
 #import <PBWebViewController.h>
 
 
-#define kPMLSectionsCount 15
+#define kPMLSectionsCount 16
 
 #define kPMLSectionGallery 0
 #define kPMLSectionSnippet 1
@@ -56,11 +56,12 @@
 #define kPMLSectionOvHours 7
 #define kPMLSectionOvHappyHours 8
 #define kPMLSectionOvEvents 9
-#define kPMLSectionOvDesc 10
-#define kPMLSectionOvTags 11
-#define kPMLSectionTopPlaces 12
-#define kPMLSectionActivity 13
-#define kPMLSectionReport 14
+#define kPMLSectionOvAdvertising 10
+#define kPMLSectionOvDesc 11
+#define kPMLSectionOvTags 12
+#define kPMLSectionTopPlaces 13
+#define kPMLSectionActivity 14
+#define kPMLSectionReport 15
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -140,7 +141,7 @@
 
 #define kPMLReportRows 1
 #define kPMLRowReportButton 0
-#define kPMLHeightReportButton 62
+#define kPMLHeightButton 62
 #define kPMLRowButtonId @"buttonRow"
 
 #define kPMLHeightTopPlacesHeader 30
@@ -404,6 +405,12 @@ typedef enum {
                     return [[_infoProvider events] count]+addEventRowCount;
                 }
                 break;
+            case kPMLSectionOvAdvertising:
+                if([_infoProvider respondsToSelector:@selector(advertisingActionType)]) {
+                    return [_infoProvider advertisingActionType] == PMLActionTypeNoAction? 0 : 1;
+                } else {
+                    return 0;
+                }
             case kPMLSectionOvDesc:
                 return [[_infoProvider descriptionText] length]>0 ? kPMLOvDescRows : 0;
             case kPMLSectionOvTags: {
@@ -415,9 +422,7 @@ typedef enum {
                 if([_infoProvider respondsToSelector:@selector(reportActionType)]) {
                     rowCount+= [_infoProvider reportActionType] == PMLActionTypeNoAction? 0 : 1;
                 }
-                if([_infoProvider respondsToSelector:@selector(advertisingActionType)]) {
-                    rowCount+= [_infoProvider advertisingActionType] == PMLActionTypeNoAction? 0 : 1;
-                }
+                
                 return rowCount;
             }
 
@@ -507,6 +512,8 @@ typedef enum {
             return indexPath.row == 0 ? kPMLRowHoursTitleId : kPMLRowTextId;
         case kPMLSectionOvHappyHours:
             return indexPath.row == 0 ? kPMLRowHoursTitleId : kPMLRowTextId;
+        case kPMLSectionOvAdvertising:
+            return kPMLRowButtonId;
         case kPMLSectionOvDesc:
             return kPMLRowDescId;
         case kPMLSectionOvTags:
@@ -600,6 +607,9 @@ typedef enum {
                 [self configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
             }
             break;
+        case kPMLSectionOvAdvertising:
+            [self configureRowAdvertising:(PMLButtonTableViewCell*)cell];
+            break;
         case kPMLSectionOvDesc:
             [self configureRowOvDesc:(PMLDescriptionTableViewCell*)cell];
             break;
@@ -614,11 +624,7 @@ typedef enum {
             [self configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
             break;
         case kPMLSectionReport:
-            if(indexPath.row == 0 && [_infoProvider respondsToSelector:@selector(reportActionType)]) {
-                [self configureRowReport:(PMLButtonTableViewCell*)cell];
-            } else {
-                [self configureRowAdvertising:(PMLButtonTableViewCell*)cell];
-            }
+            [self configureRowReport:(PMLButtonTableViewCell*)cell];
             break;
     }
     return cell;
@@ -690,6 +696,8 @@ typedef enum {
             } else if(_activeTab == PMLTabPlaces) {
                 return kPMLHeightOvEventRows;
             }
+        case kPMLSectionOvAdvertising:
+            return kPMLHeightButton;
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
                 PMLDescriptionTableViewCell *descriptionCell = [self.tableView dequeueReusableCellWithIdentifier:kPMLRowDescId];
@@ -727,7 +735,7 @@ typedef enum {
         case kPMLSectionTopPlaces:
             return 80; //kPMLHeightActivityRows;
         case kPMLSectionReport:
-            return kPMLHeightReportButton;
+            return kPMLHeightButton;
     }
     return 44;
 
@@ -881,6 +889,7 @@ typedef enum {
         case kPMLSectionActivity:
         case kPMLSectionLocalization:
         case kPMLSectionReport:
+        case kPMLSectionOvAdvertising:
             return YES;
         case kPMLSectionOvProperties: {
             PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
@@ -936,6 +945,9 @@ typedef enum {
             [_uiService presentSnippetFor:locationObject opened:YES];
             break;
         }
+        case kPMLSectionOvAdvertising:
+            [_actionManager execute:[_infoProvider advertisingActionType] onObject:_snippetItem];
+            break;
         case kPMLSectionOvEvents:
             if(_snippetItem != nil || (_snippetItem==nil && _activeTab == PMLTabEvents)) {
                 if(indexPath.row == [[_infoProvider events] count]) {
@@ -949,11 +961,7 @@ typedef enum {
             }
             break;
         case kPMLSectionReport: {
-            if(indexPath.row == 0 && [_infoProvider respondsToSelector:@selector(reportActionType)]) {
-                [_actionManager execute:[_infoProvider reportActionType] onObject:_snippetItem];
-            } else {
-                [_actionManager execute:[_infoProvider advertisingActionType] onObject:_snippetItem];
-            }
+            [_actionManager execute:[_infoProvider reportActionType] onObject:_snippetItem];
             break;
         }
     }
@@ -1444,7 +1452,7 @@ typedef enum {
     cell.buttonContainer.backgroundColor = UIColorFromRGBAlpha(0xc50000,0.2);
 }
 -(void) configureRowAdvertising:(PMLButtonTableViewCell*)cell {
-    cell.buttonImageView.image = [UIImage imageNamed:@"evtButtonAdd"];
+    cell.buttonImageView.image = [UIImage imageNamed:@"btnAddBanner"];
     cell.buttonLabel.text = NSLocalizedString(@"banner.button.addPlaceBanner", @"banner.button.addPlaceBanner");
     cell.buttonContainer.backgroundColor = [UIColor clearColor];
 }
@@ -2042,7 +2050,11 @@ typedef enum {
     BOOL shouldRemoveGallery = _hasGallery && _snippetItem!=nil;
     _hasGallery = NO;
     if(shouldRemoveGallery) {
-        [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationTop];
+        @try {
+            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationTop];
+        } @catch(NSException *e) {
+            [self.tableView reloadData];
+        }
     }
 }
 - (void)menuManager:(PMLMenuManagerController *)menuManager snippetPanned:(float)pctOpened {
