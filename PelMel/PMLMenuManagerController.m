@@ -507,7 +507,11 @@ static void *MyParentMenuControllerKey;
         _menuView.layer.borderWidth=2;
         _menuView.layer.cornerRadius = 5;
         _menuView.clipsToBounds = YES;
-        [self.containerView insertSubview:_menuView belowSubview:_bottomView];
+        if(_bottomView != nil) {
+            [self.containerView insertSubview:_menuView belowSubview:_bottomView];
+        } else {
+            [self.containerView insertSubview:_menuView belowSubview:self.statusView];
+        }
         
 
         
