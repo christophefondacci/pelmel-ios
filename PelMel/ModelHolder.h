@@ -45,5 +45,9 @@ typedef enum {
 
 -(void)updatePlaces:(NSArray *)places location:(CLLocation *)userLocation dataTime:(NSDate *)dataTime;
 -(NSArray*)getCALObjects;
-
+/**
+ * Refreshes any object of the model holder by those places
+ * We might have different instances if memory caches have been purged
+ */
+-(void)refreshPlaces:(NSArray*)places;
 @end

@@ -20,4 +20,5 @@
 -(void)updateData;
 -(void)updateImage;
 -(void)updateSizeRatio;
+-(void)annotationDidChange;
 @end

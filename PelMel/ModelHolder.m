@@ -33,6 +33,35 @@
     _userLocation = userLocation;
     _dataTime = dataTime;
 }
+-(void)refreshPlaces:(NSArray*)places {
+    // Hashing all current places by their key
+    NSMutableDictionary *placesKeyMap = [[NSMutableDictionary alloc ] init];
+    for(Place *place in self.places) {
+        [placesKeyMap setObject:place forKey:place.key];
+    }
+    // Preparing new places array
+    NSMutableArray *newPlaces = [self.places mutableCopy];
+    // Iterating over places to refresh
+    for(Place *place in places) {
+        // Does it exist?
+        Place *currentPlace = [placesKeyMap objectForKey:place.key];
+        // If yes
+        if(currentPlace != nil) {
+            if(currentPlace!= place) {
+                // We replace the occurrence by the new one
+                NSInteger index = [newPlaces indexOfObject:currentPlace];
+                if(index!=NSNotFound) {
+                    [newPlaces removeObject:currentPlace];
+                    [newPlaces insertObject:place atIndex:index];
+                }
+            }
+        } else {
+            [newPlaces addObject:place];
+        }
+    }
+    // Switching
+    self.places = newPlaces;
+}
 - (NSArray *)getCALObjects {
     switch( _currentListviewType) {
         case PLACES_LISTVIEW:

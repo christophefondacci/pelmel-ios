@@ -234,4 +234,9 @@
     });
 
 }
+
+-(void) annotationDidChange {
+    [self clearObservers];
+    [self registerObservers:((MapAnnotation*)self.annotation).object];
+}
 @end

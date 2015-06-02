@@ -489,7 +489,7 @@
             [_placeAnnotations addObject:annotation];
         }
     }
-
+    annotation.object = place;
     return annotation;
 }
 #pragma mark - UIActionSheetDelegate

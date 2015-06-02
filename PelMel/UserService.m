@@ -473,6 +473,13 @@
         // Posting to server
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSDictionary *checkinResponse = (NSDictionary*)responseObject;
+            
+            NSString *previousPlaceKey      = [checkinResponse objectForKey:@"previousPlaceKey"];
+            NSNumber *previousPlaceCheckinCount=[checkinResponse objectForKey:@"previousPlaceUsersCount"];
+            NSString *newPlaceKey           = [checkinResponse objectForKey:@"newPlaceKey"];
+            NSNumber *newPlaceCheckinCount  = [checkinResponse objectForKey:@"newPlaceUsersCount"];
+            
             Place *previousLocation = _currentUser.lastLocation;
             if(!checkout) {
                 _currentUser.lastLocation = (Place*)place;
@@ -480,6 +487,17 @@
                 _currentUser.lastLocation = nil;
             }
             _currentUser.lastLocationDate = [NSDate new];
+            
+            // Updating counts
+            if(previousLocation != nil && [previousLocation.key isEqualToString:previousPlaceKey]) {
+                previousLocation.hasOverviewData=NO;
+                previousLocation.inUserCount = previousPlaceCheckinCount.intValue;
+            }
+            if([newPlaceKey isEqualToString:place.key]) {
+                place.hasOverviewData=NO;
+                ((Place*)place).inUserCount = newPlaceCheckinCount.intValue;
+            }
+            // Notifying
             if(!checkout) {
                 [self notifyUserCheckedIn:completor to:place previousLocation:previousLocation];
             } else {

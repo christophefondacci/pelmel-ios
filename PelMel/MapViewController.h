@@ -34,7 +34,7 @@ typedef enum {
 //@property (nonatomic) BOOL ignoreSelectionEvents;
 
 -(void)updateMap;
-
+-(NSArray*)updateAnnotations;
 /**
  * Selects the provided object, if currently displayed on the map
  */

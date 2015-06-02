@@ -377,13 +377,17 @@
     [[TogaytherService uiService] alertWithTitle:@"action.checkout.feedbackTitle" text:@"action.checkout.feedbackMessage" textObjectName:place.title];
 }
 - (void)user:(CurrentUser *)user didCheckInTo:(CALObject *)object previousLocation:(Place *)previousLocation {
+    NSMutableArray *newPlaces = [[NSMutableArray alloc] init];
+    
     if(previousLocation != nil) {
+        // Removing user from previous location
         for(User *u in [previousLocation.inUsers mutableCopy]) {
             if([u.key isEqualToString:user.key]) {
                 [previousLocation.inUsers removeObject:u];
-                previousLocation.inUserCount--;
             }
         }
+        // Adding previous location for update
+        [newPlaces addObject:previousLocation];
     }
     if([object isKindOfClass:[Place class]]) {
         Place *place = (Place*)object;
@@ -396,11 +400,17 @@
         }
         if(!alreadyCheckedIn) {
             [place.inUsers addObject:user];
-            place.inUserCount ++ ;
         }
+        // Adding new location for update
+        [newPlaces addObject:previousLocation];
         
         // Feedback message
         [[TogaytherService uiService] alertWithTitle:@"action.checkin.feedbackTitle" text:@"action.checkin.feedbackMessage" textObjectName:place.title];
+    }
+    // Refreshing places if at least one update (there should always be
+    if(newPlaces.count>0) {
+        [_dataService.modelHolder refreshPlaces:newPlaces];
+        [_menuController.rootViewController updateAnnotations];
     }
 }
 - (void)user:(CurrentUser *)user didFailCheckInTo:(CALObject *)object {
