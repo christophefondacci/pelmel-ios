@@ -6,6 +6,9 @@
   Copyright (c) 2012 Christophe Fondacci. All rights reserved.
 */
 "account.button"="Compte";
+"action.add.sheetTitle"="Que souhaitez-vous ?";
+"action.add.place"="Ajouter un Lieu";
+"action.add.banner"="Créer une Bannière de Pub";
 "action.attend"="J'y vais";
 "action.attend.cancel"="Annuler";
 "action.attend.feedbackMessage"="Les autres utilisateurs pourront voir que vous serez à cet évènement !";
@@ -111,9 +114,9 @@
 "activity.detail.EVNT_CREATION"="%@ a ajouté l'évènement %@";
 "activity.detail.PLAC_CREATION"="%@ a ajouté le lieu %@";
 "activity.detail.O_PLAC"="%@ a commenté le lieu %@";
-"banner.button.addPlaceBanner"="Créer une bannière de pub";
+"banner.button.addPlaceBanner"="Créer une Bannière de Pub";
 "banner.button.uploadImage"="Choisissez une image 640x100";
-"banner.editor.typeIntroLabel"="La bannière-annonce concerne :";
+"banner.editor.typeIntroLabel"="La bannière de pub concerne :";
 "banner.editor.targetIntroLabel"="L'annonce doit ouvrir :";
 "banner.itemTitle"="%@ affichages de bannières pour %@";
 "banner.hint.title"="Créez une Bannière de Pub";

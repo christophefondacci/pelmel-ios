@@ -152,7 +152,13 @@
     return _user.miniDesc;
 }
 - (NSString *)thumbSubtitleText {
-    return nil;
+    CLLocationDistance dist = _user.rawDistanceMeters;
+    if(dist == 0) {
+        return nil;
+    } else {
+        return [[TogaytherService getConversionService] distanceStringForMeters:dist];
+    }
+
 }
 -(UIColor *)thumbSubtitleColor {
     return [_uiService colorForObject:_user];

@@ -546,8 +546,9 @@
     // Loading image
     cell.image.image = [CALImage getDefaultThumb];
     [[TogaytherService imageService] load:place.mainImage to:cell.image thumb:NO];
-    cell.bgBorderImage.image = [UIImage imageNamed:@"bgTopHang2"];
-    cell.bgBorderImage.backgroundColor = nil;
+    cell.bgBorderImage.image = nil; //[UIImage imageNamed:@"bgTopHang2"];
+    cell.bgBorderImage.backgroundColor = UIColorFromRGB(0x31363a);
+//    cell.bgBorderImage.backgroundColor = UIColorFromRGB(0x232f3b);
 }
 
 @end

@@ -199,8 +199,10 @@
             _headerView.editButtonIcon.hidden=YES;
             _headerView.profileImageView.image= [CALImage getDefaultImage];
             if(self.place.mainImage) {
-                [_imageService load:self.place.mainImage to:_headerView.profileImageView thumb:YES];
+                [_imageService load:self.place.mainImage to:_headerView.profileImageView thumb:NO];
             }
+            _headerView.profileImageView.layer.cornerRadius=0;
+            _headerView.profileImageOutline.layer.cornerRadius = 0;
             return _headerView;
         case kPMLSectionOpening:
             _hoursTitleView.titleLabel.text = NSLocalizedString(@"calendar.opening",@"Opening hours");

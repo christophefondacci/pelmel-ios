@@ -5,20 +5,9 @@
       "scale" : "1x"
     },
     {
-      "resizing" : {
-        "mode" : "3-part-horizontal",
-        "center" : {
-          "mode" : "fill",
-          "width" : 126
-        },
-        "capInsets" : {
-          "right" : 6,
-          "left" : 8
-        }
-      },
       "idiom" : "universal",
-      "filename" : "bgTabHangout.png",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "tab.png"
     },
     {
       "idiom" : "universal",

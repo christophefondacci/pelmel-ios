@@ -12,6 +12,7 @@
 @interface ProfileHeaderView : UIView
 @property (weak, nonatomic) IBOutlet UILabel *pseudoLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *profileImageView;
+@property (weak, nonatomic) IBOutlet UIView *profileImageOutline;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nicknameLabelWidthConstraint;
 

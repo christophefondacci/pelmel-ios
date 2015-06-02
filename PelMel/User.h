@@ -25,6 +25,7 @@
 @property (readonly) NSMutableArray *events;
 @property (nonatomic,strong) Place *lastLocation;
 @property (strong) NSString *cityName;
+@property (nonatomic) double rawDistanceMeters;
 
 @property (strong) NSMutableArray *descriptions;
 -(void) addDescription:(NSString*)description language:(NSString*)language;

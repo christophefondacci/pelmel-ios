@@ -700,6 +700,7 @@
     NSArray *jsonCheckedInPlaces= [json objectForKey:@"checkedInPlaces"];
     NSNumber *liked         = [json objectForKey:@"liked"];
     NSArray *jsonEvents     = [json objectForKey:@"events"];
+    NSNumber *distance         = [json objectForKey:@"rawDistanceMeters"];
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
@@ -763,6 +764,9 @@
     
     // Flagging user as having its overview data
     [user setHasOverviewData:YES];
+    
+    // Setting distance
+    [user setRawDistanceMeters:distance.doubleValue];
     
     return user;
 }

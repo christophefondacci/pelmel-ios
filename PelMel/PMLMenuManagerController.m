@@ -34,6 +34,7 @@
 @property (nonatomic) CGRect menuStartFrame;
 @property (nonatomic, retain) UITapGestureRecognizer *adTapRecognizer;
 @property (nonatomic, retain) PMLBanner *banner;
+@property (nonatomic, retain) UIView *statusView;
 @end
 
 static void *MyParentMenuControllerKey;
@@ -192,9 +193,9 @@ static void *MyParentMenuControllerKey;
     
     // Status bar view
     [self.containerView layoutIfNeeded];
-    UIView *statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.containerView.bounds.size.width, 20)];
-    statusView.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1];
-    [self.containerView addSubview:statusView];
+    self.statusView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.containerView.bounds.size.width, 20)];
+    self.statusView.backgroundColor = [UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1];
+    [self.containerView addSubview:self.statusView];
     
     // Grip
     _gripView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"snpGripTop"]];
@@ -346,7 +347,7 @@ static void *MyParentMenuControllerKey;
     CGRect bottomFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y + myFrame.size.height-_kbSize.height, myFrame.size.width, myFrame.size.height+1-[self offsetForOpenedSnippet]);
     if(_bottomView == nil) {
         _bottomView = [[UIView alloc] init];
-        [_containerView addSubview:_bottomView];
+        [_containerView insertSubview:_bottomView belowSubview:self.statusView];
     }
     _bottomView.frame = bottomFrame;
     _bottomView.opaque=YES;

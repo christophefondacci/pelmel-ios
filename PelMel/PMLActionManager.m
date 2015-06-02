@@ -183,6 +183,7 @@
         // Was in the initial method, don't see any reason to call edit here
 //        [self initializeEditFor:object];
     }];
+    genericEdit.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:genericEdit forType:PMLActionTypeEdit];
 }
 -(void)registerPhoneCallAction {
@@ -336,12 +337,13 @@
     [self registerAction:cancelAction forType:PMLActionTypeCancel];
 }
 -(void)registerMyProfileAction {
-    PopupAction *myProfileAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+    PopupAction *myProfileAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^(CALObject *object) {
         
         NSLog(@"MY PROFILE");
         UIViewController *accountController = [[TogaytherService uiService] instantiateViewController:SB_ID_MYACCOUNT];
         [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:accountController animated:YES];
     }];
+    myProfileAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:myProfileAction forType:PMLActionTypeMyProfile];
 
 }

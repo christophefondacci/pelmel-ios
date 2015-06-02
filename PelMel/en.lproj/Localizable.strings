@@ -7,8 +7,8 @@
 */
 "account.button"="Account";
 "action.add.sheetTitle"="What do you want to add?";
-"action.add.place"="Add a place";
-"action.add.banner"="Create an ad banner";
+"action.add.place"="Add a Place";
+"action.add.banner"="Create a Banner Ad";
 "action.attend"="Attend";
 "action.attend.cancel"="Cancel";
 "action.attend.feedbackMessage"="Other users will be able to see that you will be at this event!";
@@ -112,7 +112,7 @@
 "activity.detail.PLAC_CREATION"="%@ has added place %@";
 "activity.detail.O_PLAC"="%@ has commented place %@";
 "activity.detail.U_EVNT"="%@ has updated event %@";
-"banner.button.addPlaceBanner"="Create an ad banner";
+"banner.button.addPlaceBanner"="Create a Banner Ad";
 "banner.button.uploadImage"="Tap to upload 640x100 image";
 "banner.editor.typeIntroLabel"="The banner ad is for a:";
 "banner.editor.targetIntroLabel"="The ad should link to:";
@@ -188,7 +188,7 @@
 "distance.template.miles"="%@ mi";
 "distance.template.feet"="%@ ft";
 "edit.title"="Enter a name";
-"events.addButton"="Create and promote an event";
+"events.addButton"="Create an Event";
 "events.new.placeholder"="Event Name";
 "events.title"="Events";
 "filters.hours.checkins"="Checkins";

@@ -211,7 +211,11 @@
         [_dataService updateBanner:banner withStatus:kPMLBannerStatusDeleted onSuccess:^(PMLBanner *banner) {
             [self.banners removeObject:banner];
             // Delete the row from the data source
-            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            @try {
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            } @catch(NSException *e) {
+                [tableView reloadData];
+            }
             [hud hide:YES];
         } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
             NSLog(@"DeleteBannerFailed: %@", errorMessage);
