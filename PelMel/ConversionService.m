@@ -265,7 +265,7 @@
             if (i > start.intValue + 1) {
                 buf = [buf stringByAppendingFormat:@"-%@",daySymbols[i-1]];
             }
-            sep = @",";
+            sep = @", ";
             start = nil;
         }
         i++;
