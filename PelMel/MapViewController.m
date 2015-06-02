@@ -27,8 +27,9 @@
 #define kPMLMinimumPlacesForZoom 3
 
 #define kActionPlace 0
-#define kActionBanner 1
-#define kActionCancel 2
+#define kActionEvent 1
+#define kActionBanner 2
+#define kActionCancel 3
 
 
 @interface MapViewController ()
@@ -252,6 +253,7 @@
         NSString *cancel= NSLocalizedString(@"cancel","cancel");
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
         [actionSheet addButtonWithTitle:NSLocalizedString(@"action.add.place", "Place")];
+        [actionSheet addButtonWithTitle:NSLocalizedString(@"action.add.event", "Add an Event")];
         [actionSheet addButtonWithTitle:NSLocalizedString(@"action.add.banner", "Banner")];
         [actionSheet addButtonWithTitle:cancel];
         actionSheet.cancelButtonIndex = kActionCancel;
@@ -499,10 +501,12 @@
             [self addPlaceAtLatitude:coords.latitude longitude:coords.longitude];
             break;
         }
-        case kActionBanner: {
+        case kActionEvent:
+            [[TogaytherService actionManager] execute:PMLActionTypeAddEvent onObject:nil];
+            break;
+        case kActionBanner:
             [[TogaytherService actionManager] execute:PMLActionTypeAddPlaceBanner onObject:nil];
             break;
-        }
         case kActionCancel:
             break;
     }

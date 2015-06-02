@@ -7,6 +7,7 @@
 */
 "account.button"="Compte";
 "action.add.sheetTitle"="Que souhaitez-vous ?";
+"action.add.event"="Ajouter un Évènement";
 "action.add.place"="Ajouter un Lieu";
 "action.add.banner"="Créer une Bannière de Pub";
 "action.attend"="J'y vais";
@@ -391,6 +392,8 @@
 "search.done.keep"="Local";
 "search.done.worldwide"="Monde";
 "search.placeholder"="Cherchez un lieu, ville, utilisateur";
+"selector.title.place"="Choisissez un lieu";
+"selector.title.event"="Choisissez un évènement";
 "settings.account.title"="Mon compte";
 "settings.account.cell"="Mon profil";
 "settings.filters"="Filtres";

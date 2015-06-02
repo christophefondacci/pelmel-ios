@@ -12,12 +12,13 @@
 #import "UIService.h"
 #import "UserService.h"
 #import "DataService.h"
+#import "PMLItemSelectionTableViewController.h"
 
 /**
  * The action manager provides a single entry point for generic UI actions. Actions are retrieved by specifying 
  * their PMLActionType and can be executed against any CAL object.
  */
-@interface PMLActionManager : NSObject <UIActionSheetDelegate,UIAlertViewDelegate,UITextFieldDelegate>
+@interface PMLActionManager : NSObject <UIActionSheetDelegate,UIAlertViewDelegate,UITextFieldDelegate,PMLItemSelectionDelegate>
 
 @property (nonatomic,weak) UIService *uiService;
 @property (nonatomic,weak) UserService *userService;

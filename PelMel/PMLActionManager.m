@@ -81,6 +81,7 @@
         [self registerReportAction];
         [self registerReportForDeletionAction];
         [self registerEditBannerAction];
+        [self registerAddEventAction];
     }
     return self;
 }
@@ -170,6 +171,15 @@
     }];
     editEventAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:editEventAction forType:PMLActionTypeEditEvent];
+}
+-(void)registerAddEventAction {
+    PopupAction *addEventAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        PMLItemSelectionTableViewController *itemSelectionController = (PMLItemSelectionTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_ITEM_SELECTION];
+        itemSelectionController.targetType = PMLTargetTypePlace;
+        itemSelectionController.delegate = self;
+        [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:itemSelectionController animated:YES];
+    }];
+    [self registerAction:addEventAction forType:PMLActionTypeAddEvent];
 }
 -(void)registerGenericEditAction {
     PopupAction *genericEdit =[[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^(CALObject *object) {
@@ -756,6 +766,14 @@
         
     }
     self.modalActionObject = nil;
+}
+
+#pragma mark - PMLItemSelectionDelegate
+
+- (void)itemSelected:(CALObject *)item {
+    // For now only event creation could land here,
+    // Need to place some state if we reuse item selector in other contexts
+    [self execute:PMLActionTypeEditEvent onObject:item];
 }
 
 @end

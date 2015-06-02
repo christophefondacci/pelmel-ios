@@ -34,6 +34,20 @@
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
+    
+    // Building title
+    NSString *titleKey;
+    switch(self.targetType) {
+        case PMLTargetTypePlace:
+            titleKey = @"selector.title.place";
+            break;
+        case PMLTargetTypeEvent:
+            titleKey = @"selector.title.event";
+            break;
+        default:
+            titleKey=nil;
+    }
+    self.title = NSLocalizedString(titleKey,titleKey);
 
     // Registering rows
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowId];

@@ -7,6 +7,7 @@
 */
 "account.button"="Account";
 "action.add.sheetTitle"="What do you want to add?";
+"action.add.event"="Add an Event";
 "action.add.place"="Add a Place";
 "action.add.banner"="Create a Banner Ad";
 "action.attend"="Attend";
@@ -389,6 +390,8 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "search.done.keep"="Local";
 "search.done.worldwide"="Worldwide";
 "search.placeholder"="Search a place, city, user";
+"selector.title.place"="Pick a place";
+"selector.title.event"="Pick an event";
 "settings.account.title"="My account";
 "settings.account.cell"="My profile";
 "settings.filters"="Filters";
