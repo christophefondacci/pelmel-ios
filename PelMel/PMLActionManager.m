@@ -158,7 +158,7 @@
 
 }
 -(void)registerEditEventAction {
-    PopupAction *editEventAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+    PopupAction *editEventAction = [[PopupAction alloc] initWithAngle:kPMLEditAngle distance:kPMLEditDistance icon:[UIImage imageNamed:@"popActionEdit"] titleCode:nil size:kPMLEditSize command:^(CALObject *object) {
         NSLog(@"MODIFY EVENT");
         
         // Displaying event editor if event is current object
@@ -168,6 +168,7 @@
             [self initializeEventEditFor:object];
         }
     }];
+    editEventAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:editEventAction forType:PMLActionTypeEditEvent];
 }
 -(void)registerGenericEditAction {
