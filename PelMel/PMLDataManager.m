@@ -369,10 +369,18 @@
     [self userAuthenticated:user];
 }
 - (void)user:(CurrentUser *)user didCheckOutFrom:(Place *)place {
-    if([place.inUsers containsObject:user]) {
-        [place.inUsers removeObject:user];
-        place.inUserCount--;
+    // Removing user from previous location
+    for(User *u in [place.inUsers mutableCopy]) {
+        if([u.key isEqualToString:user.key]) {
+            [place.inUsers removeObject:u];
+        }
     }
+    
+    // Refreshing data (models may have been switched because of memory pressure)
+    [_dataService.modelHolder refreshPlaces:@[place]];
+    // Updating map annotations
+    [_menuController.rootViewController updateAnnotations];
+    
     // Feedback message
     [[TogaytherService uiService] alertWithTitle:@"action.checkout.feedbackTitle" text:@"action.checkout.feedbackMessage" textObjectName:place.title];
 }

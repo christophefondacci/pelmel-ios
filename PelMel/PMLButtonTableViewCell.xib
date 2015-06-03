@@ -26,7 +26,7 @@
                                 <constraint firstAttribute="height" constant="28" id="cSl-ol-w7P"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create and promote" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="jW1-57-IOp">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create and promote" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="jW1-57-IOp">
                             <rect key="frame" x="65" y="12" width="188" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="Bxt-fP-WHR"/>
