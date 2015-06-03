@@ -20,7 +20,7 @@
 @property (weak,nonatomic) ImageService *imageService;
 @property (weak,nonatomic) MessageService *messageService;
 @property (weak,nonatomic) UIService *uiService;
-@property (retain,nonatomic) NSArray *activities;
+@property (retain,nonatomic) NSArray *objects;
 @property (nonatomic) BOOL loading;
 @property (nonatomic) NSInteger widthFit;
 @end
@@ -33,6 +33,7 @@ static NSString * const reuseIdentifier = @"Cell";
     [super viewDidLoad];
     
     [TogaytherService applyCommonLookAndFeel:self];
+    [self.navigationController setNavigationBarHidden:NO];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
     self.title = NSLocalizedString(@"activity.title.photoGrid", @"activity.title.photoGrid");
     self.collectionView.backgroundColor = UIColorFromRGB(0x272a2e);
@@ -43,16 +44,13 @@ static NSString * const reuseIdentifier = @"Cell";
     _messageService = [TogaytherService getMessageService];
     _uiService      = [TogaytherService uiService];
     
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
     // Register cell classes
-//    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView registerNib:[UINib nibWithNibName:@"PMLPhotoView" bundle:nil] forCellWithReuseIdentifier:reuseIdentifier];
     [self.collectionView registerNib:[UINib nibWithNibName:@"PMLPhotoLoadingView" bundle:nil] forCellWithReuseIdentifier:kCellIdLoading];
     
+    // Starting load
     _loading = YES;
-    [_messageService getNearbyActivitiesFor:self.activityStat.activityType hd:YES callback:self];
+    [self.provider photoControllerStartContentLoad:self];
     
     // Computing fit width for cells no larger than 130px
     float width = MAXFLOAT;
@@ -72,16 +70,8 @@ static NSString * const reuseIdentifier = @"Cell";
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
     self.navigationController.navigationBar.translucent=NO;
+    [self.collectionView reloadData];
 }
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark <UICollectionViewDataSource>
 
@@ -89,11 +79,10 @@ static NSString * const reuseIdentifier = @"Cell";
     return kSectionsCount;
 }
 
-
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     switch(section) {
         case kSectionPhotos:
-            return _activities.count;
+            return _objects.count;
         case kSectionLoading:
             return _loading ? 1 : 0;
     }
@@ -117,8 +106,8 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 -(void)configureCellPhoto:(PMLPhotoView*)cell forRow:(NSInteger)row {
-    Activity *activity = [self.activities objectAtIndex:row];
-    CALImage *image = activity.extraImage;
+    NSObject *activity = [self.objects objectAtIndex:row];
+    CALImage *image = [self.provider photoController:self imageForObject:activity];//activity.extraImage;
     if(image.fullImage != nil) {
         cell.photoImageView.image = image.fullImage;
     } else {
@@ -126,9 +115,9 @@ static NSString * const reuseIdentifier = @"Cell";
         //[_imageService imageOrPlaceholderFor:activity.activityObject allowAdditions:NO];
         
         // Resetting thumb image if not HD
-        [_imageService load:image to:cell.photoImageView thumb:YES];
+        [_imageService load:image to:cell.photoImageView thumb:!self.loadFullImage];
     }
-    cell.subtitleLabel.text = [_uiService delayStringFrom:activity.activityDate];
+    cell.subtitleLabel.text = [self.provider photoController:self labelForObject:activity]; //[_uiService delayStringFrom:activity.activityDate];
 }
 #pragma mark <UICollectionViewDelegate>
 
@@ -147,12 +136,8 @@ static NSString * const reuseIdentifier = @"Cell";
 */
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section == kSectionPhotos) {
-        Activity *activity = [_activities objectAtIndex:indexPath.row];
-        PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[_uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
-        snippetController.snippetItem = activity.activityObject;
-//        [snippetController menuManager:self.parentMenuController snippetWillOpen:YES];
-        [self.navigationController pushViewController:snippetController animated:YES];
-//        [_uiService presentController:snippetController];
+        NSObject *activity = [_objects objectAtIndex:indexPath.row];
+        [self.provider photoController:self objectTapped:activity];
     }
 }
 /*
@@ -172,20 +157,18 @@ static NSString * const reuseIdentifier = @"Cell";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return CGSizeMake(_widthFit, _widthFit);
 }
-#pragma mark - ActivitiesCallback
-
--(void)activityFetched:(NSArray *)activities {
-    self.activities = activities;
+- (void)updateData {
     _loading = NO;
+    self.objects = [self.provider allObjects];
     [self.collectionView reloadData];
-}
--(void)activityFetchFailed:(NSString *)errorMessage {
-    [_uiService alertError];
 }
 
 #pragma mark - Action callback
 -(void)closeMenu:(id)sender {
-    [self.parentMenuController dismissControllerSnippet];
+    if([self.provider respondsToSelector:@selector(photoControllerDidTapCloseMenu:)]) {
+        [self.provider photoControllerDidTapCloseMenu:self];
+    }
+
 }
 
 @end

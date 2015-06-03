@@ -875,6 +875,7 @@
 #pragma mark - DataRefreshCallback
 - (void)willLoadData {
     [self setEditedObject:nil];
+    [self cancelEdition];
 }
 
 - (void)didLoadData:(ModelHolder *)modelHolder silent:(BOOL)isSilent {

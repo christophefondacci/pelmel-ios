@@ -220,7 +220,7 @@
                 [imageView addSubview:activityIndicator];
                 [_activityIndicators setObject:activityIndicator forKey:[NSString stringWithFormat:@"%d", i]];
                 
-                [self loadImageAtIndex:i thumb:(i>0)];
+                [self loadImageAtIndex:i thumb:(i!=_pageControl.currentPage)];
 
             }
             

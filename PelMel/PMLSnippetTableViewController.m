@@ -42,7 +42,7 @@
 #import "PMLEventPlaceTabsTitleView.h"
 #import <MBProgressHUD.h>
 #import <PBWebViewController.h>
-
+#import "PMLCalObjectPhotoProvider.h"
 
 #define kPMLSectionsCount 16
 
@@ -1616,7 +1616,10 @@ typedef enum {
 }
 #pragma mark - PMLImageGalleryDelegate
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
-    [self toggleFullscreenGallery];
+    PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
+    photosController.provider = [[PMLCalObjectPhotoProvider alloc] initWithObject:_snippetItem];
+    [self.parentMenuController.navigationController pushViewController:photosController animated:YES];
+//    [self toggleFullscreenGallery];
 }
 -(void)toggleFullscreenGallery {
 

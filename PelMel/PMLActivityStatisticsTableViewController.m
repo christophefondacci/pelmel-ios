@@ -13,6 +13,7 @@
 #import "PMLActivityStatistic.h"
 #import "PMLActivityDetailTableViewController.h"
 #import "PMLPhotosCollectionViewController.h"
+#import "PMLActivityPhotoProvider.h"
 
 #define kSectionsCount 2
 #define kSectionStats 0
@@ -170,7 +171,8 @@
                 controller = activityDetailController;
             } else {
                 PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
-                photosController.activityStat = stat;
+                PMLActivityPhotoProvider *provider = [[PMLActivityPhotoProvider alloc] initWithActivityType:stat.activityType];
+                photosController.provider = provider;
                 controller = photosController;
             }
 //            [self.parentMenuController.navigationController pushViewController:controller animated:YES];
