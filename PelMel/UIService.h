@@ -166,4 +166,11 @@
  * @param place the Place object containing information to fill in the cell
  */
 -(void)configureRowPlace:(PMLEventTableViewCell*)cell place:(Place*)place;
+/**
+ * This method will sort objects for display, making sure that the objects with the more content are displayed 
+ * first.
+ * @param objects the array of objects to sort
+ * @return the sorted array containing same elements in a different order
+ */
+-(NSArray*)sortObjectsForDisplay:(NSArray*)objects;
 @end

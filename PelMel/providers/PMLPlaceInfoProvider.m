@@ -120,7 +120,8 @@
 // Provider of thumb displayed in the main snippet section
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
     _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_place items:_place.inUsers forType:PMLThumbsCheckin];
-    [_thumbsProvider addItems:_place.likers forType:PMLThumbsLike];
+    NSArray *likers = [_uiService sortObjectsForDisplay:_place.likers];
+    [_thumbsProvider addItems:likers forType:PMLThumbsLike];
     return _thumbsProvider;
 }
 

@@ -82,7 +82,8 @@
 
 // Provider of thumb displayed in the main snippet section
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
-    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:_event.likers forType:PMLThumbsUsersInEvent];
+    NSArray *likers = [_uiService sortObjectsForDisplay:_event.likers];
+    ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:_event items:likers forType:PMLThumbsUsersInEvent];
     return provider;
 }
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProviderFor:(ThumbPreviewMode)mode atIndex:(NSInteger)row {

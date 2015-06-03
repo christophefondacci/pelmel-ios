@@ -861,11 +861,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/providers/PMLEventInfoProvider.m"
-            timestampString = "454564207.762239"
+            timestampString = "455061014.45849"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "226"
-            endingLineNumber = "226"
+            startingLineNumber = "227"
+            endingLineNumber = "227"
             landmarkName = "-counterActionAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1629,11 +1629,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/providers/PMLUserInfoProvider.m"
-            timestampString = "454897672.132511"
+            timestampString = "455060971.24798"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "364"
-            endingLineNumber = "364"
+            startingLineNumber = "366"
+            endingLineNumber = "366"
             landmarkName = "-mapObjectForLocalization"
             landmarkType = "5">
          </BreakpointContent>
@@ -1645,11 +1645,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/providers/PMLUserInfoProvider.m"
-            timestampString = "454897672.132511"
+            timestampString = "455060971.24798"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "363"
-            endingLineNumber = "363"
+            startingLineNumber = "365"
+            endingLineNumber = "365"
             landmarkName = "-mapObjectForLocalization"
             landmarkType = "5">
          </BreakpointContent>
@@ -4972,11 +4972,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/providers/PMLUserInfoProvider.m"
-            timestampString = "454897672.132511"
+            timestampString = "455060971.24798"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "-thumbSubtitleText"
             landmarkType = "5">
          </BreakpointContent>
@@ -5174,6 +5174,22 @@
             startingLineNumber = "60"
             endingLineNumber = "60"
             landmarkName = "-viewDidLoad"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/providers/PMLPlaceInfoProvider.m"
+            timestampString = "455060971.24798"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
+            landmarkName = "-thumbsProviderFor:atIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

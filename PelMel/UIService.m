@@ -550,5 +550,27 @@
     cell.bgBorderImage.backgroundColor = UIColorFromRGB(0x31363a);
 //    cell.bgBorderImage.backgroundColor = UIColorFromRGB(0x232f3b);
 }
-
+-(NSArray*)sortObjectsForDisplay:(NSArray*)objects {
+    NSArray *sortedObjects = [objects sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+        CALObject *o1 = (CALObject*)obj1;
+        CALObject *o2 = (CALObject*)obj2;
+        if([obj1 isKindOfClass:[User class]] && [obj2 isKindOfClass:[User class]]) {
+            User *u1 = (User*)obj1;
+            User *u2 = (User*)obj2;
+            if (u1.isOnline && !u2.isOnline) {
+                return NSOrderedAscending;
+            } else if (!u1.isOnline && u2.isOnline) {
+                return NSOrderedDescending;
+            }
+        }
+        if (o1.mainImage != nil && o2.mainImage == nil) {
+            return NSOrderedAscending;
+        } else if (o2.mainImage != nil && o1.mainImage == nil) {
+            return NSOrderedDescending;
+        } else {
+            return [objects indexOfObject:obj1] < [objects indexOfObject:obj2] ? NSOrderedAscending : NSOrderedDescending;
+        }
+    }];
+    return sortedObjects;
+}
 @end

@@ -75,8 +75,10 @@
 }
 // Provider of thumb displayed in the main snippet section
 -(NSObject<PMLThumbsPreviewProvider>*) thumbsProvider {
-    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:_user.likedPlaces forType:PMLThumbsLike];
-    [_thumbsProvider addItems:_user.likers forType:PMLThumbsUserLike];
+    NSArray *likedPlaces = [_uiService sortObjectsForDisplay:_user.likedPlaces];
+    _thumbsProvider = [[ItemsThumbPreviewProvider alloc] initWithParent:_user items:likedPlaces forType:PMLThumbsLike];
+    NSArray *likers = [_uiService sortObjectsForDisplay:_user.likers];
+    [_thumbsProvider addItems:likers forType:PMLThumbsUserLike];
 //    [_thumbsProvider addItems:_user.checkedInPlaces forType:PMLThumbsCheckin];
 //    [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.checkin" forType:PMLThumbsCheckin];
     [_thumbsProvider setIntroLabelCode:@"thumbView.section.user.like" forType:PMLThumbsLike];
