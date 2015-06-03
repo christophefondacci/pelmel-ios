@@ -4601,7 +4601,7 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </view>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QxQ-p0-K17">
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QxQ-p0-K17">
                                             <rect key="frame" x="0.0" y="42" width="320" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="krL-B0-Mty"/>
