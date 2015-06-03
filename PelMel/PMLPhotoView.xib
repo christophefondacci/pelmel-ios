@@ -25,6 +25,12 @@
                             <constraint firstAttribute="height" constant="110" id="Oxp-Sc-GlG"/>
                             <constraint firstAttribute="width" constant="110" id="Zhx-WT-Jwc"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Oxp-Sc-GlG"/>
+                                <exclude reference="Zhx-WT-Jwc"/>
+                            </mask>
+                        </variation>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 days ago" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzW-g1-Jkz">
                         <rect key="frame" x="0.0" y="89" width="110" height="21"/>
@@ -45,8 +51,18 @@
                 <constraint firstAttribute="trailing" secondItem="gzW-g1-Jkz" secondAttribute="trailing" id="GjS-ql-rSx"/>
                 <constraint firstAttribute="bottom" secondItem="gzW-g1-Jkz" secondAttribute="bottom" id="Lln-cP-6Qk"/>
                 <constraint firstAttribute="centerX" secondItem="KXT-IK-uOp" secondAttribute="centerX" id="SCC-xQ-QU4"/>
+                <constraint firstItem="KXT-IK-uOp" firstAttribute="leading" secondItem="F8L-2Z-Epk" secondAttribute="leading" id="ZC7-Li-qLs"/>
+                <constraint firstItem="KXT-IK-uOp" firstAttribute="top" secondItem="F8L-2Z-Epk" secondAttribute="top" id="aJt-Pq-rhm"/>
+                <constraint firstAttribute="bottom" secondItem="KXT-IK-uOp" secondAttribute="bottom" id="gLz-3M-Q8v"/>
+                <constraint firstAttribute="trailing" secondItem="KXT-IK-uOp" secondAttribute="trailing" id="slu-cH-QoH"/>
             </constraints>
             <size key="customSize" width="302" height="247"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="9Yz-N7-NCl"/>
+                    <exclude reference="SCC-xQ-QU4"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="photoImageView" destination="KXT-IK-uOp" id="6sg-Ka-j5u"/>
                 <outlet property="subtitleLabel" destination="gzW-g1-Jkz" id="LTw-vH-5bc"/>
