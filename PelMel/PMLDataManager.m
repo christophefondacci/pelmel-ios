@@ -402,7 +402,7 @@
             [place.inUsers addObject:user];
         }
         // Adding new location for update
-        [newPlaces addObject:previousLocation];
+        [newPlaces addObject:place];
         
         // Feedback message
         [[TogaytherService uiService] alertWithTitle:@"action.checkin.feedbackTitle" text:@"action.checkin.feedbackMessage" textObjectName:place.title];
