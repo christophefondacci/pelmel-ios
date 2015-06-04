@@ -85,7 +85,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
         case kSectionStats:
-            return _dataService.modelHolder.activityStats.count;
+            return MAX(_dataService.modelHolder.activityStats.count,1);
         case kSectionLoading:
             return _loading ? 1 : 0;
     }
@@ -117,30 +117,38 @@
 }
 
 - (void)configureRowStats:(PMLActivityStatTableViewCell*)cell forRow:(NSInteger)row {
-    PMLActivityStatistic *stat = [_dataService.modelHolder.activityStats objectAtIndex:row];
-    NSString *locKey = [NSString stringWithFormat:@"activity.%@",stat.activityType];
-    cell.activityTitle.text = [_uiService localizedString:locKey forCount:stat.totalCount];
-    // Displaying background photo frames "stack" only when multiple images
-    if(stat.totalCount<=1) {
-        cell.activityImageBackground.hidden=YES;
-    } else {
+    if(_dataService.modelHolder.activityStats.count == 0) {
+        cell.activityTitle.text = NSLocalizedString(@"activity.noactivity", @"activity.noactivity");
         cell.activityImageBackground.hidden=NO;
-    }
-    cell.activityImage.image = [[CALImage defaultNoPhotoCalImage] thumbImage];
-    [_imageService load:stat.statImage to:cell.activityImage thumb:YES];
-    
-    self.maxActivityId = MAX(stat.maxActivityId.longValue, self.maxActivityId);
-    
-    // Badging
-    NSNumber *number = [_userDefaults objectForKey:[self activityStatKey:stat]];
-    if(number == nil || number.longValue < stat.maxActivityId.longValue ) {
-        [cell showBadge:YES];
+        [_imageService load:[[[TogaytherService userService] getCurrentUser] mainImage] to:cell.activityImage thumb:YES];
     } else {
-        [cell showBadge:NO];
+    
+        PMLActivityStatistic *stat = [_dataService.modelHolder.activityStats objectAtIndex:row];
+        NSString *locKey = [NSString stringWithFormat:@"activity.%@",stat.activityType];
+        cell.activityTitle.text = [_uiService localizedString:locKey forCount:stat.totalCount];
+        // Displaying background photo frames "stack" only when multiple images
+        if(stat.totalCount<=1) {
+            cell.activityImageBackground.hidden=YES;
+        } else {
+            cell.activityImageBackground.hidden=NO;
+        }
+        cell.activityImage.image = [[CALImage defaultNoPhotoCalImage] thumbImage];
+        [_imageService load:stat.statImage to:cell.activityImage thumb:YES];
+        
+        self.maxActivityId = MAX(stat.maxActivityId.longValue, self.maxActivityId);
+        
+        // Badging
+        NSNumber *number = [_userDefaults objectForKey:[self activityStatKey:stat]];
+        if(number == nil || number.longValue < stat.maxActivityId.longValue ) {
+            [cell showBadge:YES];
+        } else {
+            [cell showBadge:NO];
+        }
+        
     }
-
     CGSize fitSize = [cell.activityTitle sizeThatFits:CGSizeMake(self.view.bounds.size.width-cell.activityLeftMarginConstraint.constant-33, MAXFLOAT)];
     cell.activityHeightConstraint.constant=fitSize.height;
+
 //    cell.titleLabel.text = stat
 }
 -(NSString*)activityStatKey:(PMLActivityStatistic*)activityStat {
@@ -161,6 +169,10 @@
     return nil;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(_dataService.modelHolder.activityStats.count==0) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+        return ;
+    }
     switch(indexPath.section) {
         case kSectionStats: {
             PMLActivityStatistic *stat = [_dataService.modelHolder.activityStats objectAtIndex:indexPath.row];

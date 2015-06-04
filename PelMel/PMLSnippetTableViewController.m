@@ -814,11 +814,14 @@ typedef enum {
                 }
                 return 0;
             case kPMLSectionOvProperties:
-                if([[_infoProvider properties] count]>0) {
-                    return _sectionPropertiesTitleView.bounds.size.height;
-                } else {
-                    return 0;
+                if([_infoProvider respondsToSelector:@selector(properties)]) {
+                    if([[_infoProvider properties] count]>0) {
+                        return _sectionPropertiesTitleView.bounds.size.height;
+                    } else {
+                        return 0;
+                    }
                 }
+                break;
             case kPMLSectionOvSummary: {
                 NSInteger rows = [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
                 NSInteger height =38;
