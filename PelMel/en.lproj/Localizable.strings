@@ -10,6 +10,9 @@
 "action.add.event"="Add an Event";
 "action.add.place"="Add a Place";
 "action.add.banner"="Create a Banner Ad";
+"action.address.type"="See address";
+"action.address.directions"="Directions to here";
+"action.address.map"="See on Map";
 "action.attend"="Attend";
 "action.attend.cancel"="Cancel";
 "action.attend.feedbackMessage"="Other users will be able to see that you will be at this event!";
@@ -118,6 +121,7 @@
 "banner.editor.typeIntroLabel"="The banner ad is for a:";
 "banner.editor.targetIntroLabel"="The ad should link to:";
 "banner.image.formatErrorTitle"="Incorrect image size";
+"banner.image.formatError"="The format of a banner image must be a multiple of 320x50 image. For best result on retina displays we advise you to use a 640x100 image.";
 "banner.itemTitle"="%@ banner displays for %@";
 "banner.hint.title"="Make a Banner Ad";
 "banner.hint"="Upload a 640x100 image which will be displayed in PELMEL after you link an existing Place, Event or URL.";
@@ -425,10 +429,11 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.title.counters"="Related";
 "snippet.title.events"="Upcoming Events";
 "snippet.title.events.user"="He will attend";
-"snippet.title.localization.user"="Currently checked in at";
-"snippet.title.notitle" = "Tap to add a name";
 "snippet.title.happyhours"="Happy Hours";
 "snippet.title.hours"="Opening Hours";
+"snippet.title.localization.user"="Currently checked in at";
+"snippet.title.notitle" = "Tap to add a name";
+"snippet.title.properties"="Contact Information";
 "snippet.title.summary"="General information";
 "snippet.thumbIntro.userLikes"="%@ likes them:";
 "snippet.thumbIntro.userPlaceLikes"="%@ likes those places:";

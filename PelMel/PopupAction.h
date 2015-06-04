@@ -32,6 +32,7 @@ typedef enum {
     PMLActionTypeMyProfile,
     PMLActionTypePhoneCall,
     PMLActionTypeWebsite,
+    PMLActionTypeDirections,
 } PMLActionType;
 
 /**

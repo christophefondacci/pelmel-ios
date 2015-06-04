@@ -10,6 +10,9 @@
 "action.add.event"="Ajouter un Évènement";
 "action.add.place"="Ajouter un Lieu";
 "action.add.banner"="Créer une Bannière de Pub";
+"action.address.type"="Voir l'addresse";
+"action.address.directions"="Itinéraire vers ce lieu";
+"action.address.map"="Voir sur la carte";
 "action.attend"="J'y vais";
 "action.attend.cancel"="Annuler";
 "action.attend.feedbackMessage"="Les autres utilisateurs pourront voir que vous serez à cet évènement !";
@@ -25,6 +28,7 @@
 "action.checkout.feedbackTitle"="Vous êtes parti!";
 "action.checkout.feedbackMessage"="Vous êtes parti de %@, plus personne ne peut voir que vous êtes là! Personne ne peut voir que vous avez été ici.";
 "action.comment"="Commenter";
+
 "action.edit.address.geocoding"="Geocodage de l'addresse";
 "action.edit.address.geocodingFailedTitle"="Addresse non trouvée";
 "action.edit.address.geocodingFailed"="Nous n'avons pas pu trouver cette adresse ou il y a eu une erreur pendant le géocodage. Nous avons conservé le point à sa précédente position, vous devrez probablement vérifier qu'il correspond à cette adresse.";
@@ -119,6 +123,8 @@
 "banner.button.uploadImage"="Choisissez une image 640x100";
 "banner.editor.typeIntroLabel"="La bannière de pub concerne :";
 "banner.editor.targetIntroLabel"="L'annonce doit ouvrir :";
+"banner.image.formatErrorTitle"="Taille d'image incorrecte";
+"banner.image.formatError"="Le format de l'image d'une bannière doit être un multiple de 320x50. Pour un rendu optimal sur écran retina nous vous conseillons d'utiliser une image 640x100 pixels.";
 "banner.itemTitle"="%@ affichages de bannières pour %@";
 "banner.hint.title"="Créez une Bannière de Pub";
 "banner.hint"="Téléchargez une image de bannière 640x100 qui sera affichée sur PELMEL dès que vous aurez lié un Lieu existant, un évènement ou une URL.";
@@ -431,6 +437,7 @@
 "snippet.title.hours"="Heures d'ouverture";
 "snippet.title.localization.user"="S'est enregistré dans ce lieu";
 "snippet.title.notitle" = "Touchez pour ajouter un nom";
+"snippet.title.properties"="Contact";
 "snippet.title.summary"="Informations générales";
 "snippet.thumbIntro.userLikes"="%@ aime:";
 "snippet.thumbIntro.userPlaceLikes"="%@ aime ces lieux:";

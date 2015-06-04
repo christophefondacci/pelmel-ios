@@ -3619,7 +3619,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="snpIconBar" translatesAutoresizingMaskIntoConstraints="NO" id="WdK-01-7me" userLabel="mainImage">
-                                            <rect key="frame" x="130" y="9.5" width="18" height="18"/>
+                                            <rect key="frame" x="130" y="11" width="18" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="18" id="bOx-iB-YYj"/>
                                                 <constraint firstAttribute="height" constant="18" id="s4j-vm-gme"/>
@@ -3628,7 +3628,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="centerX" secondItem="Of7-H5-JLp" secondAttribute="centerX" constant="-9" id="eY2-5p-5QR"/>
-                                        <constraint firstItem="WdK-01-7me" firstAttribute="centerY" secondItem="Of7-H5-JLp" secondAttribute="centerY" constant="-1" id="jdd-IY-UoV"/>
+                                        <constraint firstItem="WdK-01-7me" firstAttribute="centerY" secondItem="Of7-H5-JLp" secondAttribute="centerY" id="jdd-IY-UoV"/>
                                         <constraint firstItem="Of7-H5-JLp" firstAttribute="leading" secondItem="WdK-01-7me" secondAttribute="trailing" constant="5" id="oge-8F-4Ma"/>
                                         <constraint firstItem="Of7-H5-JLp" firstAttribute="top" secondItem="ITX-AZ-M2N" secondAttribute="top" constant="9" id="r2c-gr-nOa"/>
                                     </constraints>

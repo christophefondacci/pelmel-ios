@@ -423,6 +423,14 @@ static void *MyParentMenuControllerKey;
         [self setSnippetFullyOpened:NO];
         NSInteger offset = [self offsetForMinimizedSnippet];
         [self animateSnippetToOffset:offset animated:animated];
+
+        // Trying to set offset of top view controller if tableview
+        if([self.currentSnippetViewController isKindOfClass:[UINavigationController class]]) {
+            UIViewController *topController = ((UINavigationController*)self.currentSnippetViewController).topViewController;
+            if([topController isKindOfClass:[UITableViewController class]]) {
+                [((UITableViewController*)topController).tableView setContentOffset:CGPointMake(0,0)];
+            }
+        }
     }
 }
 - (void)setSnippetFullyOpened:(BOOL)snippetFullyOpened {

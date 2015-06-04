@@ -35,6 +35,10 @@
 #define kPMLActionEditLocation 2
 #define kPMLActionEditMyLocation 3
 #define kPMLActionEditHours 4
+
+#define kActionAddressDirections 0
+#define kActionAddressMap 1
+
 #define kPMLPhotoColor 0x96ca4c
 #define kPMLEditDistance 63.0
 #define kPMLEditSize 65.0
@@ -53,6 +57,7 @@
 @property (nonatomic,retain) UIActionSheet *eventEditActionSheet;
 @property (nonatomic,retain) UIActionSheet *relocationConfirmActionSheet;
 @property (nonatomic,retain) UIActionSheet *descriptionActionSheet;
+@property (nonatomic,retain) UIActionSheet *addressActionSheet;
 @property (nonatomic,retain) UIAlertView *addressAlertView;
 @property (nonatomic,retain) CLGeocoder *geocoder;
 
@@ -82,6 +87,7 @@
         [self registerReportForDeletionAction];
         [self registerEditBannerAction];
         [self registerAddEventAction];
+        [self registerShowDirectionsAction];
     }
     return self;
 }
@@ -196,6 +202,22 @@
     }];
     genericEdit.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:genericEdit forType:PMLActionTypeEdit];
+}
+-(void)registerShowDirectionsAction {
+    PopupAction *directionsAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        self.modalActionObject = object;
+        // Ask the user the photo source
+        NSString *title = NSLocalizedString(@"action.address.type",@"See address");
+        NSString *cancel= NSLocalizedString(@"cancel","cancel");
+        _addressActionSheet = [[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [_addressActionSheet addButtonWithTitle:NSLocalizedString(@"action.address.directions", @"Directions to Here")];
+        [_addressActionSheet addButtonWithTitle:NSLocalizedString(@"action.address.map", @"See on Map")];
+        [_addressActionSheet addButtonWithTitle:cancel];
+        _addressActionSheet.cancelButtonIndex=2;
+        [_addressActionSheet showInView: [_uiService menuManagerController].view];
+        
+    }];
+    [self registerAction:directionsAction forType:PMLActionTypeDirections];
 }
 -(void)registerPhoneCallAction {
     PopupAction *phoneCall = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
@@ -480,6 +502,38 @@
                 [self editHours:self.modalActionObject];
                 break;
         }
+    } else if(_addressActionSheet == actionSheet) {
+        switch(buttonIndex) {
+            case kActionAddressDirections:
+                if([_modalActionObject isKindOfClass:[Place class]]) {
+                    Place *place = (Place*)_modalActionObject;
+                    
+                    [[TogaytherService getConversionService] reverseGeocodeAddressFor:[[TogaytherService userService] getCurrentUser] completion:^(NSString *address) {
+                        
+                        NSString *urlDestinationAddress = [place.address stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        NSString *urlSourceAddress = [address stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                        
+                        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://maps.apple.com/?saddr=%@&daddr=%@",urlSourceAddress,urlDestinationAddress]];
+                        [[UIApplication sharedApplication] openURL:url];
+                        
+                    }];
+                    
+                }
+                break;
+            case kActionAddressMap: {
+                id<PMLInfoProvider> infoProvider = [_uiService infoProviderFor:_modalActionObject];
+                if([infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
+                    CALObject *localizationObj = [infoProvider mapObjectForLocalization];
+                    if(localizationObj!=nil) {
+                        [[_uiService menuManagerController] minimizeCurrentSnippet:YES];
+                        [[_uiService menuManagerController].rootViewController selectCALObject:localizationObj];
+                    }
+                }
+                break;
+            }
+                
+        }
+        
     }
     // Clearing object
     self.modalActionObject = nil;

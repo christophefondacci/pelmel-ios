@@ -52,9 +52,9 @@
 #define kPMLSectionLocalization 3
 #define kPMLSectionOvSummary 4
 #define kPMLSectionOvAddress 5
-#define kPMLSectionOvProperties 6
-#define kPMLSectionOvHours 7
-#define kPMLSectionOvHappyHours 8
+#define kPMLSectionOvProperties 8
+#define kPMLSectionOvHours 6
+#define kPMLSectionOvHappyHours 7
 #define kPMLSectionOvEvents 9
 #define kPMLSectionOvAdvertising 10
 #define kPMLSectionOvDesc 11
@@ -185,6 +185,7 @@ typedef enum {
     PMLSectionTitleView *_sectionSummaryTitleView;
     PMLSectionTitleView *_sectionTopPlacesTitleView;
     PMLSectionTitleView *_sectionActivityTitleView;
+    PMLSectionTitleView *_sectionPropertiesTitleView;
     
     // Gallery
     BOOL _galleryFullscreen;
@@ -262,6 +263,7 @@ typedef enum {
     _sectionSummaryTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionTopPlacesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionActivityTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    _sectionPropertiesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     
     // Tab selection
     [self updateTab];
@@ -381,11 +383,10 @@ typedef enum {
             case kPMLSectionOvAddress:
                 return [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
             case kPMLSectionOvProperties:
+                if([_infoProvider respondsToSelector:@selector(properties)]) {
+                    return [[_infoProvider properties] count];
+                }
                 return 0;
-//                if([_infoProvider respondsToSelector:@selector(properties)]) {
-//                    return [[_infoProvider properties] count];
-//                }
-//                return 0;
             case kPMLSectionOvHours: {
                 NSInteger count = [[_hoursTypeMap objectForKey:SPECIAL_TYPE_OPENING] count];
                 return count == 0 ? 0 : count+1;
@@ -507,7 +508,7 @@ typedef enum {
                 return kPMLRowOvImagedTitleId;
             }
         case kPMLSectionOvProperties:
-            return kPMLRowOvPropertyId;
+            return kPMLRowOvImagedTitleId;
         case kPMLSectionOvHours:
             return indexPath.row == 0 ? kPMLRowHoursTitleId : kPMLRowTextId;
         case kPMLSectionOvHappyHours:
@@ -580,7 +581,7 @@ typedef enum {
             }
             break;
         case kPMLSectionOvProperties:
-            [self configureRowProperty:(PMLPropertyTableViewCell*)cell atIndex:indexPath.row];
+            [self configureRowProperty:(PMLImagedTitleTableViewCell*)cell atIndex:indexPath.row];
             break;
         case kPMLSectionOvHours:
             if(indexPath.row==0) {
@@ -681,7 +682,7 @@ typedef enum {
                 return kPMLHeightOvImagedTitle;
             }
         case kPMLSectionOvProperties:
-            return kPMLHeightOvPropertyRows;
+            return kPMLHeightOvImagedTitle;
         case kPMLSectionOvHours:
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvHappyHours:
@@ -770,26 +771,11 @@ typedef enum {
             return nil;
         case kPMLSectionOvSummary: {
             [_sectionSummaryTitleView setTitleLocalized:@"snippet.title.summary"];
-            NSMutableArray *actionsArray = [[NSMutableArray alloc] init];
-            
-            // Do we have a phone property?
-            PMLProperty *phoneProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_PHONE];
-            if(phoneProperty !=nil) {
-                // If yes we install the phone action
-                [actionsArray addObject:[_actionManager actionForType:PMLActionTypePhoneCall]];
-            }
-            // Do we have a website property?
-            PMLProperty *websiteProperty = [_uiService propertyFrom:_infoProvider forCode:PML_PROPERTY_CODE_WEBSITE];
-            if(websiteProperty !=nil) {
-                // If yes we install the website action
-                [actionsArray addObject:[_actionManager actionForType:PMLActionTypeWebsite]];
-            }
-            if(actionsArray.count>0) {
-                [_sectionSummaryTitleView installPopupActions:actionsArray];
-            }
-            
             return _sectionSummaryTitleView;
         }
+        case kPMLSectionOvProperties:
+            [_sectionPropertiesTitleView setTitleLocalized:@"snippet.title.properties"];
+            return _sectionPropertiesTitleView;
         case kPMLSectionTopPlaces:
 //            [_sectionTopPlacesTitleView setTitleLocalized:@"snippet.header.topPlaces"];
 //            return _sectionTopPlacesTitleView;
@@ -827,6 +813,12 @@ typedef enum {
                     }
                 }
                 return 0;
+            case kPMLSectionOvProperties:
+                if([[_infoProvider properties] count]>0) {
+                    return _sectionPropertiesTitleView.bounds.size.height;
+                } else {
+                    return 0;
+                }
             case kPMLSectionOvSummary: {
                 NSInteger rows = [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
                 NSInteger height =38;
@@ -893,7 +885,7 @@ typedef enum {
             return YES;
         case kPMLSectionOvProperties: {
             PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
-            return [p.propertyCode isEqualToString:@"website"];
+            return [p.propertyCode isEqualToString:@"website"] || [p.propertyCode isEqualToString:@"phone"];
         }
         case kPMLSectionOvAddress:
             if([_infoProvider city] !=nil) {
@@ -916,27 +908,23 @@ typedef enum {
             [self activityTapped:indexPath.row];
             break;
         case kPMLSectionOvAddress:
-            self.tableView.contentOffset = CGPointMake(0,0);
-            if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
-                CALObject *localizationObj = [_infoProvider mapObjectForLocalization];
-                if(localizationObj!=nil) {
-                    [self.parentMenuController minimizeCurrentSnippet:YES];
-                    [self.parentMenuController.rootViewController selectCALObject:localizationObj];
-                }
-            }
+            [_actionManager execute:PMLActionTypeDirections onObject:_snippetItem];
+//            self.tableView.contentOffset = CGPointMake(0,0);
+//            if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
+//                CALObject *localizationObj = [_infoProvider mapObjectForLocalization];
+//                if(localizationObj!=nil) {
+//                    [self.parentMenuController minimizeCurrentSnippet:YES];
+//                    [self.parentMenuController.rootViewController selectCALObject:localizationObj];
+//                }
+//            }
             [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
             break;
         case kPMLSectionOvProperties: {
             PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
             if([p.propertyCode isEqualToString:@"website"]) {
-//                PMLWebViewController *webviewController = (PMLWebViewController*)[_uiService instantiateViewController:SB_ID_WEBVIEW];
-//                [webviewController setUrl:p.propertyValue];
-                _webviewController= [[PBWebViewController alloc] init];
-                _webviewController.URL = [[NSURL alloc] initWithString:p.propertyValue];
-                [TogaytherService applyCommonLookAndFeel:self];
-                self.navigationController.navigationBar.translucent=NO;
-                [self.navigationController pushViewController:_webviewController animated:YES];
-
+                [_actionManager execute:PMLActionTypeWebsite onObject:_snippetItem];
+            } else if([p.propertyCode isEqualToString:@"phone"]) {
+                [_actionManager execute:PMLActionTypePhoneCall onObject:_snippetItem];
             }
             break;
         }
@@ -1264,41 +1252,22 @@ typedef enum {
     cell.cellTextLabel.textColor = [UIColor whiteColor];
 
 }
--(void)configureRowProperty:(PMLPropertyTableViewCell*)cell atIndex:(NSInteger)row {
+-(void)configureRowProperty:(PMLImagedTitleTableViewCell*)cell atIndex:(NSInteger)row {
     PMLProperty *property = [[_infoProvider properties] objectAtIndex:row];
     
     // Decoding property code
-    NSString *labelCode = [NSString stringWithFormat:@"property.label.%@",property.propertyCode];
-    NSString *label = NSLocalizedString(labelCode, labelCode);
-    if([label isEqualToString:labelCode]) {
-        label = property.defaultLabel;
-    }
+//    NSString *labelCode = [NSString stringWithFormat:@"property.label.%@",property.propertyCode];
+//    NSString *label = NSLocalizedString(labelCode, labelCode);
+//    if([label isEqualToString:labelCode]) {
+//        label = property.defaultLabel;
+//    }
+    cell.titleLabel.text = property.propertyValue;
+    CGSize size = [cell.titleLabel sizeThatFits:CGSizeZero];
+    cell.widthTitleConstraint.constant = size.width;
     if([@"phone" isEqualToString:property.propertyCode]) {
-        cell.propertyTextView.hidden=NO;
-        cell.propertyLabel.hidden=YES;
-        cell.propertyIcon.hidden=NO;
-        cell.propertyTextView.text = property.propertyValue;
-        cell.propertyTextView.textContainerInset = UIEdgeInsetsMake(3, 0, 3, 0);
-        cell.propertyTextView.textColor = UIColorFromRGB(0xababac);
-        cell.propertyTextView.tintColor = [UIColor whiteColor];
-        CGSize fitSize =  [cell.propertyTextView sizeThatFits:CGSizeMake(cell.bounds.size.width, cell.propertyTextView.bounds.size.height)];
-        cell.propertyLabelWidthConstraint.constant = fitSize.width;
-        cell.propertyIcon.image = [UIImage imageNamed:@"snpIconPhone"];
+        cell.titleImage.image = [UIImage imageNamed:@"btnActionPhone"];
     } else {
-        cell.propertyLabel.hidden=NO;
-        cell.propertyIcon.hidden=NO;
-        cell.propertyTextView.hidden=YES;
-        if([@"website" isEqualToString:property.propertyCode]) {
-            cell.propertyLabel.text = property.propertyValue;
-            cell.propertyLabel.textColor = UIColorFromRGB(0xababac);
-            CGSize fitSize =  [cell.propertyLabel sizeThatFits:CGSizeMake(cell.bounds.size.width, cell.propertyTextView.bounds.size.height)];
-            cell.propertyLabelWidthConstraint.constant=fitSize.width;
-            cell.propertyIcon.image = nil; //[UIImage imageNamed:@"snpIconWeb"];
-        } else {
-            cell.propertyLabel.text = [NSString stringWithFormat:@"%@ - %@",label,property.propertyValue];
-        }
-
-
+        cell.titleImage.image = [UIImage imageNamed:@"btnActionLink"];
     }
 }
 -(void)configureRowOvCity:(PMLImagedTitleTableViewCell*)cell {
