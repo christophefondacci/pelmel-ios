@@ -158,7 +158,10 @@
     if(dist == 0) {
         return nil;
     } else {
-        return [[TogaytherService getConversionService] distanceStringForMeters:dist];
+        dist = round(dist);
+        
+        NSString *distStr = [[TogaytherService getConversionService] distanceStringForMeters:MAX(dist,100)];
+        return [(dist<100 ? @"< " : @"") stringByAppendingString:distStr];
     }
 
 }

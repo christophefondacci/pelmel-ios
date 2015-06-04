@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="13F1077" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="OpenSans-Regular.ttf">
@@ -46,6 +46,7 @@
                 <constraint firstItem="AhG-PL-u5J" firstAttribute="centerY" secondItem="dXi-SI-gi3" secondAttribute="centerY" id="1Py-FX-vhH"/>
                 <constraint firstItem="nnM-Ti-TH6" firstAttribute="leading" secondItem="AhG-PL-u5J" secondAttribute="leading" id="2dA-af-0TF"/>
                 <constraint firstItem="dXi-SI-gi3" firstAttribute="leading" secondItem="AhG-PL-u5J" secondAttribute="trailing" constant="3" id="5Ct-Ku-hDS"/>
+                <constraint firstAttribute="bottom" secondItem="AhG-PL-u5J" secondAttribute="bottom" constant="1" id="93j-L2-CfW"/>
                 <constraint firstAttribute="bottom" secondItem="dXi-SI-gi3" secondAttribute="bottom" constant="-2" id="ceU-Zx-FVu"/>
                 <constraint firstAttribute="centerY" secondItem="AhG-PL-u5J" secondAttribute="centerY" id="d7L-vJ-6KU"/>
                 <constraint firstItem="AhG-PL-u5J" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="eFP-ah-H4k"/>
@@ -58,6 +59,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
                 <mask key="constraints">
+                    <exclude reference="d7L-vJ-6KU"/>
                     <exclude reference="ceU-Zx-FVu"/>
                     <exclude reference="nfR-s1-7Uw"/>
                 </mask>

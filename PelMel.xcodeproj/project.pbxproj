@@ -93,6 +93,8 @@
 		B43B1B8D1B1FB309000DB17B /* PMLActivityPhotoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B43B1B8B1B1FB309000DB17B /* PMLActivityPhotoProvider.m */; };
 		B43B1B901B1FB928000DB17B /* PMLCalObjectPhotoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B43B1B8E1B1FB928000DB17B /* PMLCalObjectPhotoProvider.h */; };
 		B43B1B911B1FB928000DB17B /* PMLCalObjectPhotoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B43B1B8F1B1FB928000DB17B /* PMLCalObjectPhotoProvider.m */; };
+		B43B1B941B20AFFF000DB17B /* PMLObjectsPhotoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B43B1B921B20AFFF000DB17B /* PMLObjectsPhotoProvider.h */; };
+		B43B1B951B20AFFF000DB17B /* PMLObjectsPhotoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B43B1B931B20AFFF000DB17B /* PMLObjectsPhotoProvider.m */; };
 		B43D116F1A97A12B008476C7 /* DynamicDismissalAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = B43D11671A97A12B008476C7 /* DynamicDismissalAnimator.h */; };
 		B43D11701A97A12B008476C7 /* DynamicDismissalAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = B43D11681A97A12B008476C7 /* DynamicDismissalAnimator.m */; };
 		B43D11711A97A12B008476C7 /* LinearDismissalAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = B43D11691A97A12B008476C7 /* LinearDismissalAnimator.h */; };
@@ -539,6 +541,8 @@
 		B43B1B8B1B1FB309000DB17B /* PMLActivityPhotoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivityPhotoProvider.m; sourceTree = "<group>"; };
 		B43B1B8E1B1FB928000DB17B /* PMLCalObjectPhotoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLCalObjectPhotoProvider.h; sourceTree = "<group>"; };
 		B43B1B8F1B1FB928000DB17B /* PMLCalObjectPhotoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLCalObjectPhotoProvider.m; sourceTree = "<group>"; };
+		B43B1B921B20AFFF000DB17B /* PMLObjectsPhotoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLObjectsPhotoProvider.h; sourceTree = "<group>"; };
+		B43B1B931B20AFFF000DB17B /* PMLObjectsPhotoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLObjectsPhotoProvider.m; sourceTree = "<group>"; };
 		B43D11671A97A12B008476C7 /* DynamicDismissalAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicDismissalAnimator.h; sourceTree = "<group>"; };
 		B43D11681A97A12B008476C7 /* DynamicDismissalAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicDismissalAnimator.m; sourceTree = "<group>"; };
 		B43D11691A97A12B008476C7 /* LinearDismissalAnimator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinearDismissalAnimator.h; sourceTree = "<group>"; };
@@ -1662,6 +1666,8 @@
 				B43B1B8B1B1FB309000DB17B /* PMLActivityPhotoProvider.m */,
 				B43B1B8E1B1FB928000DB17B /* PMLCalObjectPhotoProvider.h */,
 				B43B1B8F1B1FB928000DB17B /* PMLCalObjectPhotoProvider.m */,
+				B43B1B921B20AFFF000DB17B /* PMLObjectsPhotoProvider.h */,
+				B43B1B931B20AFFF000DB17B /* PMLObjectsPhotoProvider.m */,
 			);
 			name = Providers;
 			path = providers;
@@ -1878,6 +1884,7 @@
 				B43D116F1A97A12B008476C7 /* DynamicDismissalAnimator.h in Headers */,
 				B4BB9EFD19D4DE430070B03C /* PMLChatTableViewCell.h in Headers */,
 				B457A0FE1A9AF08A00207D8E /* PMLDatePickerTableViewCell.h in Headers */,
+				B43B1B941B20AFFF000DB17B /* PMLObjectsPhotoProvider.h in Headers */,
 				B4E8292F18AAFAA10063715C /* SettingsService.h in Headers */,
 				B457A1021A9AF1B100207D8E /* PMLEventTableViewController.h in Headers */,
 				B4A47D241AE06071000178BD /* PMLPhotoPickerPreviewViewController.h in Headers */,
@@ -2168,6 +2175,7 @@
 				B4B82B3719FBB69900895C57 /* PMLPickerTableViewCell.m in Sources */,
 				B496661F1612250800911FE5 /* UITablePlaceTypeViewCell.m in Sources */,
 				B457A1031A9AF1B100207D8E /* PMLEventTableViewController.m in Sources */,
+				B43B1B951B20AFFF000DB17B /* PMLObjectsPhotoProvider.m in Sources */,
 				B4966622161227C400911FE5 /* FiltersViewController.m in Sources */,
 				B4AA0A3F1AF2E31C00DCDE29 /* PMLActivityStatistic.m in Sources */,
 				B41CF0B11899C20A0031FD7C /* UIService.m in Sources */,

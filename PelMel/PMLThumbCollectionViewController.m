@@ -203,6 +203,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     return nil;
 }
+
 #pragma mark <UICollectionViewDelegate>
 
 /*

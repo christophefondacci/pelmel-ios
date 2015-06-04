@@ -1618,7 +1618,7 @@ typedef enum {
 - (void)imageTappedAtIndex:(int)index image:(CALImage *)image {
     PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
     photosController.provider = [[PMLCalObjectPhotoProvider alloc] initWithObject:_snippetItem];
-    [self.parentMenuController.navigationController pushViewController:photosController animated:YES];
+    [self.navigationController pushViewController:photosController animated:YES];
 //    [self toggleFullscreenGallery];
 }
 -(void)toggleFullscreenGallery {

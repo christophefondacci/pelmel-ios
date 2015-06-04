@@ -32,20 +32,29 @@
     [[TogaytherService getMessageService] getNearbyActivitiesFor:self.activityType hd:YES callback:self];
 }
 
-- (CALImage *)photoController:(PMLPhotosCollectionViewController *)controller imageForObject:(NSObject *)object {
+- (CALImage *)photoController:(PMLPhotosCollectionViewController *)controller imageForObject:(NSObject *)object inSection:(NSInteger)section{
     return ((Activity*)object).extraImage;
 }
 
-- (NSString *)photoController:(PMLPhotosCollectionViewController *)controller labelForObject:(NSObject *)object {
+- (NSString *)photoController:(PMLPhotosCollectionViewController *)controller labelForObject:(NSObject *)object inSection:(NSInteger)section {
     return [[TogaytherService uiService] delayStringFrom:((Activity*)object).activityDate];
 }
-- (void)photoController:(PMLPhotosCollectionViewController *)controller objectTapped:(NSObject *)object {
+- (void)photoController:(PMLPhotosCollectionViewController *)controller objectTapped:(NSObject *)object inSection:(NSInteger)section{
     PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
     snippetController.snippetItem = ((Activity*)object).activityObject;
     [controller.navigationController pushViewController:snippetController animated:YES];
 }
--(NSArray *)allObjects {
-    return self.activities;
+-(NSArray *)objectsForSection:(NSInteger)section {
+    if(section == 0) {
+        return self.activities;
+    }
+    return 0;
+}
+- (NSInteger)sectionsCount {
+    return 1;
+}
+- (NSString *)title {
+    return NSLocalizedString(@"activity.title.photoGrid", @"activity.title.photoGrid");
 }
 -(void)photoControllerDidTapCloseMenu:(PMLPhotosCollectionViewController *)controller {
     [controller.parentMenuController dismissControllerSnippet];

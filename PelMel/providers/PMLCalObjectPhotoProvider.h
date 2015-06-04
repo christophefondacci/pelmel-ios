@@ -9,9 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "CALObject.h"
 #import "PMLPhotosCollectionViewController.h"
+#import "DataService.h"
 
-@interface PMLCalObjectPhotoProvider : NSObject<PMLPhotosProvider>
+@interface PMLCalObjectPhotoProvider : NSObject<PMLPhotosProvider,PMLDataListener>
 
--(instancetype)initWithObject:(CALObject*)object;
+-(instancetype)initWithObject:(CALObject*)object ;
+
 
 @end

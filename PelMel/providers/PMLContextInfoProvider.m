@@ -12,6 +12,8 @@
 #import "ItemsThumbPreviewProvider.h"
 #import "PMLThumbCollectionViewController.h"
 #import "PMLSnippetTableViewController.h"
+#import "PMLPhotosCollectionViewController.h"
+#import "PMLObjectsPhotoProvider.h"
 
 @implementation PMLContextInfoProvider {
     
@@ -215,7 +217,12 @@
 
 #pragma mark - ThumbPreviewActionDelegate
 - (void)thumbsTableView:(PMLThumbCollectionViewController*)controller thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {
-    id selectedItem = [[controller.thumbProvider itemsForType:type] objectAtIndex:thumbIndex];
-    [_uiService presentSnippetFor:(CALObject*)selectedItem opened:YES];
+//    id selectedItem = [[controller.thumbProvider itemsForType:type] objectAtIndex:thumbIndex];
+//    [_uiService presentSnippetFor:(CALObject*)selectedItem opened:YES];
+    
+    PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
+    photosController.provider = [[PMLObjectsPhotoProvider alloc] initWithObjects:_modelHolder.users];
+    [controller.navigationController pushViewController:photosController animated:YES];
+    [[[TogaytherService uiService] menuManagerController] openCurrentSnippet:YES];
 }
 @end
