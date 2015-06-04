@@ -35,7 +35,7 @@
 #define kPMLActionEditLocation 2
 #define kPMLActionEditMyLocation 3
 #define kPMLActionEditHours 4
-
+#define kPMLPhotoColor 0x96ca4c
 #define kPMLEditDistance 63.0
 #define kPMLEditSize 65.0
 #define kPMLLikeAngle -M_PI/24
@@ -260,6 +260,7 @@
         [dataManager promptUserForPhotoUploadOn:object];
     }];
     photoAction.icon =[UIImage imageNamed:@"popActionPhoto"];
+    photoAction.color = UIColorFromRGB(kPMLPhotoColor);
     [self registerAction:photoAction forType:PMLActionTypeAddPhoto];
 }
 -(void)registerConfirmAction {

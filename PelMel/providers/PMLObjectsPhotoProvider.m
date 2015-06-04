@@ -63,4 +63,8 @@
     }
     return nil;
 }
+- (void)photoControllerDidTapCloseMenu:(PMLPhotosCollectionViewController *)controller {
+    [controller.navigationController popViewControllerAnimated:YES];
+    [controller.parentMenuController minimizeCurrentSnippet:YES];
+}
 @end
