@@ -916,12 +916,19 @@ static void *MyParentMenuControllerKey;
 
 -(void)searchFocused:(id)sender {
     _mainNavBarView.cancelButton.alpha = 0;
+    _mainNavBarView.appIconView.alpha = 1;
     _mainNavBarView.cancelButton.hidden = NO;
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         _mainNavBarView.leftContainerView.transform = CGAffineTransformMakeRotation(M_PI);
         _mainNavBarView.cancelButton.alpha = 1;
         _mainNavBarView.appIconView.alpha = 0;
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        @synchronized(_mainNavBarView) {
+            _mainNavBarView.cancelButton.alpha = 1;
+            _mainNavBarView.appIconView.alpha = 0;
+            _mainNavBarView.cancelButton.hidden=NO;
+        }
+    }];
 }
 -(void)searchCancelled:(id)sender {
 //    _mainNavBarView.searchTextField.text=nil;
@@ -929,12 +936,17 @@ static void *MyParentMenuControllerKey;
 }
 -(void)dismissSearch {
     [_mainNavBarView.searchTextField resignFirstResponder];
+    _mainNavBarView.cancelButton.hidden = NO;
     [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         _mainNavBarView.leftContainerView.transform = CGAffineTransformIdentity;
         _mainNavBarView.cancelButton.alpha = 0;
         _mainNavBarView.appIconView.alpha = 1;
     } completion:^(BOOL finished) {
-        _mainNavBarView.cancelButton.hidden = YES;
+        @synchronized(_mainNavBarView) {
+            _mainNavBarView.cancelButton.alpha = 0;
+            _mainNavBarView.appIconView.alpha = 1;
+            _mainNavBarView.cancelButton.hidden=YES;
+        }
     }];
 }
 #pragma mark - UIAlertViewDelegate
