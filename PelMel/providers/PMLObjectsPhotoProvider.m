@@ -19,6 +19,7 @@
     self = [super init];
     if (self) {
         self.objects = objects;
+        self.title = NSLocalizedString(@"grid.title.nearbyUsers", @"grid.title.nearbyUsers");
     }
     return self;
 }
@@ -41,7 +42,7 @@
     return [provider title];
 }
 - (NSString *)title {
-    return NSLocalizedString(@"grid.title.nearbyUsers", @"grid.title.nearbyUsers");
+    return _title;
 }
 - (void)photoController:(PMLPhotosCollectionViewController *)controller objectTapped:(NSObject *)object inSection:(NSInteger)section {
     [[TogaytherService uiService] presentSnippetFor:(CALObject*)object opened:YES];

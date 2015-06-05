@@ -11,6 +11,8 @@
 
 @interface PMLObjectsPhotoProvider : NSObject<PMLPhotosProvider>
 
+@property (nonatomic,retain) NSString *title;
+
 -(instancetype)initWithObjects:(NSArray*)objects;
 
 @end

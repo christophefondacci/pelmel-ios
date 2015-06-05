@@ -526,7 +526,7 @@
     
     cell.separatorImage.image = nil;
     cell.separatorImage.layer.borderWidth=1;
-    cell.separatorImage.layer.borderColor = [UIColorFromRGB(0x224059) CGColor];
+    cell.separatorImage.layer.borderColor = [UIColorFromRGB(0x434c51) CGColor];
     cell.verticalSepWidthConstraint.constant=1;
     //    // Checkins count
     //    if(place.inUserCount>0) {

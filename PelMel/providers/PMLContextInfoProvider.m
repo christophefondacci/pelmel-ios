@@ -221,7 +221,12 @@
 //    [_uiService presentSnippetFor:(CALObject*)selectedItem opened:YES];
     
     PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
-    photosController.provider = [[PMLObjectsPhotoProvider alloc] initWithObjects:_modelHolder.users];
+    NSArray *objects = _modelHolder.users.count > 0 ? _modelHolder.users : _modelHolder.places;
+    PMLObjectsPhotoProvider *provider = [[PMLObjectsPhotoProvider alloc] initWithObjects:objects];
+    if(_modelHolder.searchedText != nil) {
+        provider.title = NSLocalizedString(@"grid.title.searchResults", @"grid.title.searchResults");
+    }
+    photosController.provider = provider;
     [controller.navigationController pushViewController:photosController animated:YES];
     [[[TogaytherService uiService] menuManagerController] openCurrentSnippet:YES];
 }
