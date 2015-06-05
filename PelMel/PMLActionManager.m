@@ -300,7 +300,7 @@
         if(object!= nil) {
             MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
             msgController.withObject = object;
-            [_uiService presentController:msgController];
+            [[[_uiService menuManagerController] navigationController] pushViewController:msgController animated:YES];
         }
     }];
 
