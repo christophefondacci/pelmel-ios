@@ -115,7 +115,7 @@
             }
     }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-    
+    cell.backgroundColor = BACKGROUND_COLOR;
     switch(indexPath.row) {
         case kRowEditor:
             [self configureRowEditor:(PMLBannerEditorTableViewCell*)cell];

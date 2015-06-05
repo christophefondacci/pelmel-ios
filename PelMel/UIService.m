@@ -517,7 +517,7 @@
     cell.dateLabel.text = place.title;
     NSString *distanceStr = [[TogaytherService getConversionService] distanceTo:place];
     NSString *placeType = [[[TogaytherService settingsService] getPlaceType:place.placeType] label];
-    cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %@",distanceStr,placeType];
+    cell.titleLabel.text = [NSString stringWithFormat:@"%@ - %@",distanceStr != nil ? distanceStr :place.cityName,placeType];
     
     // Subtitle (like count)
     cell.countIcon.image = [UIImage imageNamed:@"snpIconLikeWhite"];
