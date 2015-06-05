@@ -62,7 +62,7 @@
         [_leftUsernameLabel setHidden:YES];
         [_rightUsernameLabel setHidden:YES];
         [_messageImage setHidden:YES];
-        [dateLabel setTextAlignment:NSTextAlignmentLeft];
+        [dateLabel setTextAlignment:NSTextAlignmentRight];
         currentActivity = _rightActivity;
         currentMessageImage = _messageImageSelf;
         bubbleColor = UIColorFromRGB(0x057efe);
@@ -80,7 +80,7 @@
         [_rightActivity setHidden:YES];
         [_rightUsernameLabel setHidden:YES];
         [_messageImageSelf setHidden:YES];
-        [dateLabel setTextAlignment:NSTextAlignmentRight];
+        [dateLabel setTextAlignment:NSTextAlignmentLeft];
         currentActivity = _leftActivity;
         currentMessageImage = _messageImage;
         bubbleColor = UIColorFromRGB(0xe5e5e5);
@@ -144,7 +144,7 @@
 
     // Setting the message's image content
     CALImage *image = message.mainImage;
-    if(image != nil) {
+    if(image != nil && !snippet) {
         currentMessageImage.hidden=NO;
         currentBubbleText.hidden=YES;
         [[TogaytherService imageService] load:image to:currentMessageImage thumb:NO];
@@ -158,7 +158,7 @@
     CGFloat maxHeight = snippet ? 30 : FLT_MAX;
     CGSize size = [currentBubbleText sizeThatFits:CGSizeMake(_threadNicknameLabel.bounds.size.width,maxHeight)];
     int minHeight = size.height; //MAX(size.height,_thumbImage.frame.size.height);
-    if(image==nil) {
+    if(image==nil || snippet) {
         _textHeightConstraint.constant = minHeight+1; // Adding 1 for fractional height !!
     } else {
         _textHeightConstraint.constant = currentMessageImage.bounds.size.height;

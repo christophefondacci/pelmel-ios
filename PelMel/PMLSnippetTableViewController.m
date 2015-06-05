@@ -2000,7 +2000,11 @@ typedef enum {
     BOOL shouldAddGallery = !_hasGallery && _snippetItem!=nil;
     _hasGallery = YES;
     if(shouldAddGallery) {
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationMiddle];
+        @try {
+            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:kPMLRowGallery inSection:kPMLSectionGallery]] withRowAnimation:UITableViewRowAnimationMiddle];
+        } @catch(NSException *e) {
+            [self.tableView reloadData];
+        }
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         if(animated) {
             // Setting edit button to appear / disappear

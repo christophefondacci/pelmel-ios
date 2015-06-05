@@ -85,7 +85,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
         case kSectionStats:
-            return MAX(_dataService.modelHolder.activityStats.count,1);
+            return MAX(_dataService.modelHolder.activityStats.count,_loading ? 0 : 1);
         case kSectionLoading:
             return _loading ? 1 : 0;
     }

@@ -1036,7 +1036,7 @@
     CLLocationDistance dist = [self distanceForMapWidth];
     if(dist/METERS_PER_MILE < (kPMLBannerMilesRadius*1.5f)) {
         // Building our zoom rect around our center
-        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE, kPMLBannerMilesRadius*1.5f*METERS_PER_MILE);
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(self.mapView.centerCoordinate, kPMLBannerMilesRadius*2*1.5f*METERS_PER_MILE, kPMLBannerMilesRadius*2*1.5f*METERS_PER_MILE);
         MKCoordinateRegion adjustedRegion = [_mapView regionThatFits:viewRegion];
         MKMapRect mapRect = [self MKMapRectForCoordinateRegion:adjustedRegion];
         [_mapView setVisibleMapRect:mapRect animated:NO];

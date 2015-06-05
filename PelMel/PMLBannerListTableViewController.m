@@ -11,12 +11,15 @@
 #import "PMLBannerViewTableViewCell.h"
 #import "PMLBannerMapTableViewCell.h"
 #import <MBProgressHUD.h>
+#import "PMLButtonTableViewCell.h"
 
-#define kSectionCount 1
-#define kSectionBanners 0
+#define kSectionCount 2
+#define kSectionButton 0
+#define kSectionBanners 1
 
 #define kRowIdBanner @"bannerCell"
 #define kRowIdMap @"mapCell"
+#define kRowIdButton @"addBanner"
 
 @interface PMLBannerListTableViewController ()
 @property (nonatomic,retain) NSMutableArray *banners;
@@ -41,12 +44,14 @@
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
     self.tableView.opaque=YES;
     self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
-    
+    self.title = NSLocalizedString(@"banner.list.title", @"banner.list.title");
     // Vars init
 //    self.mapVisible = NO;
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
+    // Registering button cell
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kRowIdButton];
 
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -77,68 +82,57 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.banners.count;
+    switch(section) {
+        case kSectionBanners:
+            return self.banners.count;
+        case kSectionButton:
+            return 1;
+    }
+    return 0;
 }
 
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == kSectionButton;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch(indexPath.section) {
+        case kSectionButton:
+            [[TogaytherService actionManager] execute:PMLActionTypeAddPlaceBanner onObject:nil];
+            break;
+    }
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellId = kRowIdBanner;
+    NSString *cellId = indexPath.section == kSectionBanners ? kRowIdBanner : kRowIdButton;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId forIndexPath:indexPath];
-    
-//    if([cellId isEqualToString:kRowIdBanner]){
-        [self configureRowBanner:(PMLBannerViewTableViewCell*)cell forIndex:indexPath.row];
-//    } else {
-//        [self configureRowMap:(PMLBannerMapTableViewCell*)cell forIndex:indexPath.row];
-//    }
-    // Configure the cell...
-    
+    cell.backgroundColor = BACKGROUND_COLOR;
+    switch(indexPath.section) {
+        case kSectionBanners:
+            [self configureRowBanner:(PMLBannerViewTableViewCell*)cell forIndex:indexPath.row];
+            break;
+        case kSectionButton:
+            [self configureRowButton:(PMLButtonTableViewCell*)cell];
+            break;
+    }
+
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 288;
+    switch(indexPath.section) {
+        case kSectionButton:
+            return 62;
+        default:
+            return 288;
+    }
+
 }
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if(self.mapVisible) {
-//        if(indexPath.row == self.mapIndex-1) {
-//            self.mapVisible = NO;
-//            [self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:self.mapIndex-1 inSection:kSectionBanners]];
-//            [cell setSelected:NO animated:YES];
-//        } else {
-//            // Delta to add to map index after the delete / insert phase
-////            NSInteger delta = (self.mapIndex < indexPath.row) ? -1 : 0;
-////            self.mapIndex = indexPath.row + delta;
-////            [self.tableView reloadData];
-//            
-//            
-//            
-//            NSIndexPath *oldIndexPath = [NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners];
-//            NSInteger mapRow = indexPath.row;
-//            if(oldIndexPath == nil || oldIndexPath.row>indexPath.row ) {
-//                mapRow ++;
-//            }
-//            self.mapIndex = mapRow;
-//            
-//            // Inserting picker
-//            // Deleting any previous picker
-//            [self.tableView beginUpdates];
-//            [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//            [self.tableView endUpdates];
-//        }
-//    } else {
-//        self.mapVisible=YES;
-//        self.mapIndex = indexPath.row+1;
-//        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:self.mapIndex inSection:kSectionBanners]] withRowAnimation:UITableViewRowAnimationAutomatic];
-//    }
-//}
+- (void)configureRowButton:(PMLButtonTableViewCell*)cell {
+    cell.buttonImageView.image = [UIImage imageNamed:@"btnAddBanner"];
+    cell.buttonLabel.text = NSLocalizedString(@"banner.button.addPlaceBanner", @"banner.button.addPlaceBanner");
+    cell.buttonContainer.backgroundColor = [UIColor clearColor];
+
+}
 - (void)configureRowBanner:(PMLBannerViewTableViewCell*)cell forIndex:(NSInteger)bannerIndex {
-    
-//    NSInteger bannerIndex = row;
-//    if(self.mapVisible && self.mapIndex<row) {
-//        bannerIndex--;
-//    }
     
     // Setting up banner information into cell
     PMLBanner *banner = [self.banners objectAtIndex:bannerIndex];
