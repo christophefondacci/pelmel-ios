@@ -492,6 +492,7 @@
 "user.loc.minutes.singular"="%d minute";
 "user.status.offline"="Hors ligne";
 "user.status.online"="Disponible";
+"validation.endDateError"="La date de fin doit être après la date de début.";
 "validation.errorTitle"="Données non valides";
 "validation.nolocation"="Vous devez définir la localisation du lieu sur la carte en déplaçant l'épingle sur le lieu souhaité.";
 "validation.noname"="Vous devez renseigner le nom du lieu que vous éditez ou que vous créez. Veuillez vérifier vos données et essayer à nouveau.";

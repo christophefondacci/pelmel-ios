@@ -489,11 +489,13 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "user.loc.minutes.singular"="%d minute";
 "user.status.offline"="OFFLINE";
 "user.status.online"="Available";
+"validation.endDateError"="The end date must be after the start date.";
 "validation.errorTitle"="Invalid data";
 "validation.event.noday"="A reccurring event need to be enabled for at least one day of the week. Check your data and try again.";
 "validation.banner.missingTarget"="A banner must have a valid target URL or be defined on a PELMEL place";
 "validation.nolocation"="You must locate the place position on the map by dragging the pin to the desired place.";
 "validation.noname"="You must enter the name of the place you are editing or creating. Please check your data and try again.";
+
 "profile.mustBe18.title"="Age restriction";
 "profile.mustBe18"="You must be over 12 to be able to use togayther, please define your correct birth date so that you can log in.";
 "terms.title"="Terms of use";

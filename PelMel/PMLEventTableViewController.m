@@ -314,6 +314,11 @@
     self.event.startDate = _editedStartDate;
     self.event.endDate = _editedEndDate;
     
+    if([self.event.endDate timeIntervalSinceDate:self.event.startDate]<0) {
+        [[TogaytherService uiService] alertWithTitle:@"validation.errorTitle" text:@"validation.endDateError"];
+        return;
+    }
+    
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     hud.labelText = NSLocalizedString(@"action.wait", @"Please wait...");
