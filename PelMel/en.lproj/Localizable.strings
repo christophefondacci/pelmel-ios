@@ -460,8 +460,9 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "specials.start.in"="Starts in";
 "specials.subtitleTemplate.current"="%@ left : %@";
 "specials.subtitleTemplate.soon"="In %@ : %@";
-"tabs.events"="Upcoming Events";
-"tabs.places"="Top Hangouts";
+"tabs.deals"="Deals";
+"tabs.events"="Events";
+"tabs.places"="Hangouts";
 "thumbView.section.checkin"="Checked in";
 "thumbView.section.event.users"="They will attend";
 "thumbView.section.like"="They Like";

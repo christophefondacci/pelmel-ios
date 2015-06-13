@@ -287,6 +287,7 @@
     NSMutableArray *docs = [[NSMutableArray alloc] initWithCapacity:[jsonPlaces count]];
     
     NSMutableArray *happyHoursEvents = [[NSMutableArray alloc] init];
+    NSMutableArray *themeNightsEvents = [[NSMutableArray alloc] init];
     long maxLikes = 0;
     // Preparing the no image thumb (default for every place at first)
     for(NSDictionary *jsonPlace in jsonPlaces) {
@@ -305,12 +306,20 @@
             if(![special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
                 special.hasOverviewData = NO;
                 if([special.endDate compare:now] == NSOrderedDescending) {
-                    [happyHoursEvents addObject:special];
+                    if([special.calendarType isEqualToString:SPECIAL_TYPE_HAPPY]) {
+                        [happyHoursEvents addObject:special];
+                    } else if([special.calendarType isEqualToString:SPECIAL_TYPE_THEME]) {
+                        [themeNightsEvents addObject:special];
+                    }
                 }
             }
         }
     }
-    
+    [happyHoursEvents sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Event *e1 = (Event*)obj1;
+        Event *e2 = (Event*)obj2;
+        return [e1.startDate compare:e2.startDate];
+    }];
     NSArray *jsonCities = [json objectForKey:@"cities"];
     NSMutableArray *cities = [[NSMutableArray alloc] initWithCapacity:jsonCities.count];
     for(NSDictionary *jsonCity in jsonCities) {
@@ -330,7 +339,7 @@
     }
     // Parsing events
     NSArray *jsonEvents = [json objectForKey:@"nearbyEvents"];
-    NSMutableArray *events = [[[jsonService convertJsonEventsToEvents:jsonEvents] arrayByAddingObjectsFromArray:happyHoursEvents] mutableCopy];
+    NSMutableArray *events = [[[jsonService convertJsonEventsToEvents:jsonEvents] arrayByAddingObjectsFromArray:themeNightsEvents ] mutableCopy];
     [events sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         Event *e1 = (Event*)obj1;
         Event *e2 = (Event*)obj2;
@@ -366,6 +375,7 @@
     // Assigning to model holder for all-view synch
     [_modelHolder setPlaces:docs];
     [_modelHolder setEvents:events];
+    [_modelHolder setHappyHours:happyHoursEvents];
     [[_modelHolder allPlaces] addObjectsFromArray:docs];
     [_modelHolder setCities:cities];
     [_modelHolder setActivities:activities];

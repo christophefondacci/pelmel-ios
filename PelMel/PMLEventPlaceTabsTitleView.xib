@@ -8,6 +8,7 @@
         <mutableArray key="OpenSans-Regular.ttf">
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -18,12 +19,12 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wac-Py-53T">
-                    <rect key="frame" x="1" y="8" width="157" height="31"/>
+                    <rect key="frame" x="1" y="8" width="103" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="145" id="1nh-gp-fMw"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
-                    <state key="normal" title="Upcoming Events" backgroundImage="bgTab">
+                    <state key="normal" title="Events" backgroundImage="bgTab">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <variation key="default">
@@ -33,33 +34,51 @@
                     </variation>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUa-ZP-nQW">
-                    <rect key="frame" x="162" y="8" width="157" height="31"/>
+                    <rect key="frame" x="216" y="8" width="103" height="31"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="145" id="4so-Mh-UIh"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
-                    <state key="normal" title="Top Hangouts" backgroundImage="bgTabDisabled"/>
+                    <state key="normal" title="Hangouts" backgroundImage="bgTabDisabled"/>
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="4so-Mh-UIh"/>
                         </mask>
                     </variation>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j70-u8-rCb">
+                    <rect key="frame" x="109" y="8" width="103" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="145" id="jkc-Hx-ysL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                    <state key="normal" title="Deals" backgroundImage="bgTabDisabled"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="jkc-Hx-ysL"/>
+                        </mask>
+                    </variation>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="Wac-Py-53T" firstAttribute="top" secondItem="j70-u8-rCb" secondAttribute="top" id="AVN-l7-pgt"/>
                 <constraint firstAttribute="bottom" secondItem="Wac-Py-53T" secondAttribute="bottom" constant="2" id="E8r-d3-5cb"/>
                 <constraint firstItem="Wac-Py-53T" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="1" id="KZx-x0-tNS"/>
                 <constraint firstItem="Wac-Py-53T" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="NWL-hj-qNh"/>
                 <constraint firstItem="XUa-ZP-nQW" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="PgA-Jh-RrV"/>
                 <constraint firstAttribute="bottom" secondItem="XUa-ZP-nQW" secondAttribute="bottom" constant="2" id="gvb-Mw-2S9"/>
                 <constraint firstAttribute="trailing" secondItem="XUa-ZP-nQW" secondAttribute="trailing" constant="1" id="lQ8-cn-Zq9"/>
-                <constraint firstItem="Wac-Py-53T" firstAttribute="width" secondItem="XUa-ZP-nQW" secondAttribute="width" id="t3h-TR-NDj"/>
-                <constraint firstItem="XUa-ZP-nQW" firstAttribute="leading" secondItem="Wac-Py-53T" secondAttribute="trailing" constant="4" id="xe2-Lj-jnJ"/>
+                <constraint firstItem="Wac-Py-53T" firstAttribute="width" secondItem="XUa-ZP-nQW" secondAttribute="width" id="sp2-1p-NsG"/>
+                <constraint firstItem="j70-u8-rCb" firstAttribute="leading" secondItem="Wac-Py-53T" secondAttribute="trailing" constant="5" id="wD5-V4-YET"/>
+                <constraint firstItem="Wac-Py-53T" firstAttribute="bottom" secondItem="j70-u8-rCb" secondAttribute="bottom" id="xNT-1G-dVg"/>
+                <constraint firstItem="XUa-ZP-nQW" firstAttribute="leading" secondItem="j70-u8-rCb" secondAttribute="trailing" constant="4" id="zSU-YJ-O68"/>
+                <constraint firstItem="Wac-Py-53T" firstAttribute="width" secondItem="j70-u8-rCb" secondAttribute="width" id="zyf-Os-q0c"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="dealsTabButton" destination="j70-u8-rCb" id="K3L-Y7-GIS"/>
                 <outlet property="eventsTabButton" destination="Wac-Py-53T" id="L6l-Bz-j6R"/>
                 <outlet property="placesTabButton" destination="XUa-ZP-nQW" id="KdV-Vo-Fwi"/>
             </connections>

@@ -26,6 +26,9 @@
       location = "group:castroSF.gpx">
    </FileRef>
    <FileRef
+      location = "group:tokyo.gpx">
+   </FileRef>
+   <FileRef
       location = "group:PelMel.xcodeproj">
    </FileRef>
    <FileRef

@@ -18,14 +18,21 @@
  * @return YES if the tab should be changed, NO to cancel the action
  */
 -(BOOL)placesTabTapped;
+/**
+ * Indicates the deals tab has been tapped.
+ * @return YES if the tab should be changed, NO to cancel the action
+ */
+-(BOOL)dealsTabTapped;
 @end
 typedef enum {
     PMLTabEvents,
+    PMLTabDeals,
     PMLTabPlaces
 }PMLTab;
 @interface PMLEventPlaceTabsTitleView : UIView
 @property (weak, nonatomic) IBOutlet UIButton *eventsTabButton;
 @property (weak, nonatomic) IBOutlet UIButton *placesTabButton;
+@property (weak, nonatomic) IBOutlet UIButton *dealsTabButton;
 @property (weak, nonatomic) id<PMLEventPlaceTabsDelegate> delegate;
 
 -(void)setActiveTab:(PMLTab)activeTab;

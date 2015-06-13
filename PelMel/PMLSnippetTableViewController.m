@@ -437,12 +437,16 @@ typedef enum {
             case kPMLSectionTopPlaces:
                 return 0;//[[_infoProvider topPlaces] count];
             case kPMLSectionOvEvents:
-                if(_activeTab == PMLTabEvents) {
-                    if([_infoProvider respondsToSelector:@selector(events)]) {
-                        return [[_infoProvider events] count];
-                    }
-                } else {
-                    return [[_infoProvider topPlaces] count];
+                switch(_activeTab) {
+                    case PMLTabEvents:
+                        if([_infoProvider respondsToSelector:@selector(events)]) {
+                            return [[_infoProvider events] count];
+                        }
+                        return 0;
+                    case PMLTabPlaces:
+                        return [[_infoProvider topPlaces] count];
+                    case PMLTabDeals:
+                        return [[[_dataService modelHolder] happyHours] count];
                 }
                 break;
         }
@@ -484,6 +488,8 @@ typedef enum {
                     return kPMLRowAddEventId;
                 }
             } else if(_activeTab==PMLTabPlaces) {
+                return kPMLRowEventId;
+            } else if(_activeTab ==PMLTabDeals) {
                 return kPMLRowEventId;
             }
             break;
@@ -606,6 +612,8 @@ typedef enum {
                 }
             } else if(_activeTab == PMLTabPlaces) {
                 [self configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
+            } else if(_activeTab == PMLTabDeals) {
+                [self configureRowOvHappyHours:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
             }
             break;
         case kPMLSectionOvAdvertising:
@@ -695,6 +703,8 @@ typedef enum {
                     return kPMLHeightOvAddEventRow;
                 }
             } else if(_activeTab == PMLTabPlaces) {
+                return kPMLHeightOvEventRows;
+            } else if(_activeTab == PMLTabDeals) {
                 return kPMLHeightOvEventRows;
             }
         case kPMLSectionOvAdvertising:
@@ -851,7 +861,7 @@ typedef enum {
 //                }
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(eventsSectionTitle)]) {
-                    if([_infoProvider eventsSectionTitle]!=nil && [[_infoProvider events] count]>0) {
+                    if([_infoProvider eventsSectionTitle]!=nil && ([[_infoProvider events] count]>0 || [[[_dataService modelHolder] happyHours] count]>0)) {
 //                        return _sectionTitleView.bounds.size.height;
                         return _eventPlaceTabsTitleView.bounds.size.height;
                     }
@@ -1310,6 +1320,10 @@ typedef enum {
     Event *event = [[_infoProvider events] objectAtIndex:row];
     [_uiService configureRowOvEvents:cell forEvent:event usingInfoProvider:_infoProvider];
     //    cell.backgroundColor = UIColorFromRGB(0x31363a);
+}
+-(void)configureRowOvHappyHours:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
+    Event *event = [[[_dataService modelHolder] happyHours] objectAtIndex:row];
+    [_uiService configureRowOvEvents:cell forEvent:event usingInfoProvider:_infoProvider];
 }
 -(void)configureRowOvAddEvent:(PMLButtonTableViewCell*)cell {
     cell.buttonLabel.text = NSLocalizedString(@"events.addButton", @"Create and promote an event");
@@ -2045,6 +2059,7 @@ typedef enum {
     if([_infoProvider respondsToSelector:@selector(events)]) {
         if([[_infoProvider events] count]>0) {
             _activeTab = PMLTabEvents;
+            [self updateScrollOffset];
             [self.tableView reloadData];
             return YES;
         }
@@ -2056,10 +2071,23 @@ typedef enum {
 - (BOOL)placesTabTapped {
     if([[_infoProvider topPlaces] count]>0) {
         _activeTab = PMLTabPlaces;
+        [self updateScrollOffset];
         [self.tableView reloadData];
         return YES;
     }
     return NO;
 }
+- (void)updateScrollOffset {
+    NSInteger height = [self tableView:self.tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:kPMLRowSnippet inSection:kPMLSectionSnippet]];
+    if(self.tableView.contentOffset.y>height) {
+        [self.tableView setContentOffset:CGPointMake(0, height)];
+    }
+}
+- (BOOL)dealsTabTapped {
 
+    _activeTab = PMLTabDeals;
+    [self updateScrollOffset];
+    [self.tableView reloadData];
+    return YES;
+}
 @end

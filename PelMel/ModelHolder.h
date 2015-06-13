@@ -27,6 +27,7 @@ typedef enum {
 @property (nonatomic,strong) NSArray *places;
 @property (nonatomic,strong) NSArray *cities;
 @property (nonatomic,strong) NSArray *events;
+@property (nonatomic,strong) NSArray *happyHours;
 @property (nonatomic,strong) NSArray *activities;
 @property (nonatomic,strong) NSArray *activityStats;
 @property (nonatomic,strong) NSArray *users;
