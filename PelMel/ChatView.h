@@ -33,7 +33,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *threadNicknameLabel;
 @property (strong, nonatomic) Message *message;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBottomConstraint;
 
-- (void) setup:(Message*)message forObject:(CALObject*)object snippet:(BOOL)snippet;
+/**
+ * Sets up the chat view for the given message and user.
+ * @param message the message that will be displayed in this view
+ * @param object the sender of the message
+ * @param snippet whether the view is a grouped message view or not
+ * @return the required height of the view
+ */
+- (NSInteger) setup:(Message*)message forObject:(CALObject*)object snippet:(BOOL)snippet;
 - (Message*)getMessage;
 @end

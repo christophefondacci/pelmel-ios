@@ -10,7 +10,7 @@
 #import "CALObject.h"
 #import "MessageService.h"
 
-@interface MessageTableViewController : UITableViewController <MessageCallback>
+@interface PMLMessageTableViewController : UITableViewController <MessageCallback, PMLImagePickerCallback>
 
 @property (strong,nonatomic) CALObject *withObject;
 

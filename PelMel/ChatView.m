@@ -34,7 +34,7 @@
 }
 */
 
-- (void)setup:(Message *)message forObject:(CALObject *)object snippet:(BOOL)snippet {
+- (NSInteger)setup:(Message *)message forObject:(CALObject *)object snippet:(BOOL)snippet {
     _message = message;
     _currentObject = object;
     // Initialization code
@@ -62,6 +62,11 @@
         [_leftUsernameLabel setHidden:YES];
         [_rightUsernameLabel setHidden:YES];
         [_messageImage setHidden:YES];
+        [_bubbleTextSelf setHidden:NO];
+        [_thumbImageSelf setHidden:NO];
+        [_rightActivity setHidden:NO];
+        [_rightUsernameLabel setHidden:NO];
+        [_messageImageSelf setHidden:NO];
         [dateLabel setTextAlignment:NSTextAlignmentRight];
         currentActivity = _rightActivity;
         currentMessageImage = _messageImageSelf;
@@ -80,6 +85,13 @@
         [_rightActivity setHidden:YES];
         [_rightUsernameLabel setHidden:YES];
         [_messageImageSelf setHidden:YES];
+        [_rightUsernameLabel setHidden:YES];
+        [_bubbleText setHidden:NO];
+        [_thumbImage setHidden:NO];
+        [_leftActivity setHidden:NO];
+        [_leftUsernameLabel setHidden:NO];
+
+        [_messageImage setHidden:NO];
         [dateLabel setTextAlignment:NSTextAlignmentLeft];
         currentActivity = _leftActivity;
         currentMessageImage = _messageImage;
@@ -164,7 +176,7 @@
         _textHeightConstraint.constant = currentMessageImage.bounds.size.height;
     }
     textWidthConstraint.constant = size.width+1;
-
+    return _textHeightConstraint.constant + _textTopConstraint.constant + _textBottomConstraint.constant;
 }
 
 - (Message *)getMessage {

@@ -757,12 +757,12 @@
         // Getting moved element
         CALImage *image = [self imageForIndexPath:fromIndexPath];
         [images removeObject:image];
-        [images insertObject:image atIndex:toIndexPath.row-1];
+        [images insertObject:image atIndex:toIndexPath.row];
         
         // Rearranging
         [self rearrangeImages:user images:images];
         operationInProgress = YES;
-        [imageService reorder:image newIndex:(int)toIndexPath.row-1 callback:self];
+        [imageService reorder:image newIndex:(int)toIndexPath.row callback:self];
     }
 }
 -(NSMutableArray*)getImagesArray:(Imaged*)user {

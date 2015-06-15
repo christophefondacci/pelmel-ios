@@ -297,7 +297,9 @@
                 <outlet property="rightActivity" destination="23" id="24"/>
                 <outlet property="rightThumbButton" destination="64L-2L-gEs" id="FfM-Gz-GVi"/>
                 <outlet property="rightUsernameLabel" destination="2bx-39-sCM" id="VI5-wD-90y"/>
+                <outlet property="textBottomConstraint" destination="fv5-nc-ZYE" id="pgM-5j-oU5"/>
                 <outlet property="textHeightConstraint" destination="fNG-KK-HaU" id="5hN-iQ-rIH"/>
+                <outlet property="textTopConstraint" destination="CKO-GK-c3F" id="03m-JF-EqN"/>
                 <outlet property="threadNicknameLabel" destination="i5N-2Q-2gR" id="M2J-wH-bIA"/>
                 <outlet property="thumbImage" destination="5" id="21"/>
                 <outlet property="thumbImageSelf" destination="14" id="20"/>

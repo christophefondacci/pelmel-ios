@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Christophe Fondacci. All rights reserved.
 //
 
-#import "MessageTableViewController.h"
+#import "PMLMessageTableViewController.h"
 #import "Message.h"
 #import "TogaytherService.h"
 #import "ChatView.h"
@@ -20,12 +20,13 @@
 #import "MKNumberBadgeView.h"
 #import "PMLChatLoaderView.h"
 #import "PMLChatInputBarView.h"
+#import "ChatViewCell.h"
 
-@interface MessageTableViewController ()
-
+@interface PMLMessageTableViewController ()
+@property (nonatomic,retain) ChatView *templateChatView;
 @end
 
-@implementation MessageTableViewController {
+@implementation PMLMessageTableViewController {
     UserService *userService;
     MessageService *messageService;
     ImageService *imageService;
@@ -57,6 +58,7 @@
     
     self.view.backgroundColor =UIColorFromRGB(0x272a2e);
     self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
+    self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
     
     userService = [TogaytherService userService];
     messageService = [TogaytherService getMessageService];
@@ -104,15 +106,15 @@
     CurrentUser *currentUser = [userService getCurrentUser];
     
     // Loading chat input bar view
-    if(![_withObject.key isEqualToString:currentUser.key]) {
-        _chatInputBarView = (PMLChatInputBarView*)[uiService loadView:@"PMLChatInputBarView"];
-        _chatInputBarView.chatTextView.textContainerInset = UIEdgeInsetsMake(2, 0, 2, 0);
-        _chatInputBarView.chatTextView.maxHeight = 120;
-        _chatInputBarView.chatTextView.text = nil;
-        self.tableView.tableFooterView = _chatInputBarView;
-    } else {
-        self.tableView.tableFooterView = [[UIView alloc] init];
-    }
+//    if(![_withObject.key isEqualToString:currentUser.key]) {
+//        _chatInputBarView = (PMLChatInputBarView*)[uiService loadView:@"PMLChatInputBarView"];
+//        _chatInputBarView.chatTextView.textContainerInset = UIEdgeInsetsMake(2, 0, 2, 0);
+//        _chatInputBarView.chatTextView.maxHeight = 120;
+//        _chatInputBarView.chatTextView.text = nil;
+//        self.tableView.tableFooterView = _chatInputBarView;
+//    } else {
+//        self.tableView.tableFooterView = [[UIView alloc] init];
+//    }
     
     if([_withObject.key isEqualToString:currentUser.key]) {
         self.title = NSLocalizedString(@"messages.my.title",@"Title of the my messages view");
@@ -124,6 +126,7 @@
     }
     
     [self.tableView registerNib:[UINib nibWithNibName:@"ChatViewCell" bundle:nil] forCellReuseIdentifier:@"chatView"];
+    self.templateChatView = (ChatView*)[[TogaytherService uiService] loadView:@"ChatView"];
     
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -139,8 +142,8 @@
         [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
         self.navigationController.navigationBar.translucent=NO;
     }
-    self.tableView.estimatedRowHeight = 122;
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+//    self.tableView.estimatedRowHeight = 122;
+//    self.tableView.rowHeight = UITableViewAutomaticDimension;
     // Disabled for now as table view might handle this natively
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
@@ -199,18 +202,29 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatView" forIndexPath:indexPath];
+    ChatViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatView" forIndexPath:indexPath];
     
     // Configure the cell...
-    [self configureChatView:(ChatView*)cell forRow:indexPath.row];
+    [self configureChatView:cell.chatView forRow:indexPath.row];
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    Message *message = [_messagesList objectAtIndex:indexPath.row];
+    NSInteger height = [self.templateChatView setup:message forObject:message.from snippet:[self isAllMessageView]];
+    return height;
+}
+-(BOOL) isAllMessageView {
+    CurrentUser *currentUser = [userService getCurrentUser];
+    BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
+    return isAllMessageView;
+}
 -(void) configureChatView:(ChatView*)view forRow:(NSInteger)row {
     
     Message *message = [_messagesList objectAtIndex:row];
     CurrentUser *currentUser = [userService getCurrentUser];
-    BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
+    BOOL isAllMessageView = [self isAllMessageView];
     
     // Setuping chat view
     [view setup:message forObject:message.from snippet:isAllMessageView];
@@ -362,6 +376,9 @@
     }] mutableCopy];
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [self.tableView reloadData];
+    if(![self isAllMessageView]) {
+        [self.tableView setContentOffset:CGPointMake(0,self.tableView.contentSize.height-self.tableView.bounds.size.height)];
+    }
 }
 - (void)messageSent:(Message *)message {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
@@ -412,7 +429,7 @@
             ChatView *chatView = (ChatView*)view;
             Message *message = chatView.getMessage;
             //        [self performSegueWithIdentifier:@"showDetailMessage" sender:message.from];
-            MessageTableViewController *targetController = (MessageTableViewController*)[uiService instantiateViewController:@"messageTableView"];
+            PMLMessageTableViewController *targetController = (PMLMessageTableViewController*)[uiService instantiateViewController:SB_ID_MESSAGES];
             [targetController setWithObject:message.from];
             if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
                 [self.navigationController pushViewController:targetController animated:YES];
@@ -480,5 +497,10 @@
     photoController.imaged = imaged;
     
     [self.navigationController pushViewController:photoController animated:YES];
+}
+
+#pragma mark - PMLImagePickerCallback
+- (void)imagePicked:(CALImage *)image {
+    [self sendMessage:@"" withImage:image];
 }
 @end

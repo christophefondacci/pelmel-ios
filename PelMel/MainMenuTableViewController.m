@@ -14,7 +14,7 @@
 #import "PMLMenuManagerController.h"
 #import "ProfileHeaderView.h"
 #import "UIPelmelTitleView.h"
-#import "MessageTableViewController.h"
+#import "PMLMessageTableViewController.h"
 #import "FiltersViewController.h"
 
 #define kSectionsCount 3
@@ -292,7 +292,7 @@
                     
                 case kRowSettingMessages: {
 //                    [self performSegueWithIdentifier:@"directMsg" sender:self];
-                    MessageTableViewController *msgController = (MessageTableViewController*)[_uiService instantiateViewController:@"messageView"];
+                    PMLMessageTableViewController *msgController = (PMLMessageTableViewController*)[_uiService instantiateViewController:@"messageView"];
                     [self.parentMenuController.navigationController pushViewController:msgController animated:YES];
                     break;
                 }

@@ -17,6 +17,7 @@
 typedef void(^PushPropositionCallback)(BOOL pushActive);
 
 @protocol MessageCallback
+@optional
 // Method called to inform that a list of messages have been fetched from the server
 -(void)messagesFetched:(NSArray*)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize;
 -(void)loadMessageFailed;

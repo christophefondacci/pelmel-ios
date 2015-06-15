@@ -36,6 +36,7 @@
 #define SB_ID_GALLERY @"imageGallery"
 #define SB_ID_FILTERS_MENU @"filtersMenu"
 #define SB_ID_MESSAGES @"messageView"
+#define SB_ID_MESSAGES_TABLE @"messageTableView"
 #define SB_ID_MYACCOUNT @"myAccount"
 #define SB_ID_MENU_MANAGER @"menuManager"
 #define SB_ID_PHOTO_GALLERY @"photoPreview"
