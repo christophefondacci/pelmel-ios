@@ -959,6 +959,8 @@ typedef enum {
                 }
             } else if(_activeTab == PMLTabPlaces) {
                 [self topPlaceTapped:indexPath.row];
+            } else if(_activeTab == PMLTabDeals) {
+                [self dealsTapped:indexPath.row];
             }
             break;
         case kPMLSectionReport: {
@@ -1545,6 +1547,10 @@ typedef enum {
 -(void)topPlaceTapped:(NSInteger)index {
      CALObject *item = [[_infoProvider topPlaces] objectAtIndex:index];
     [self pushSnippetFor:item];
+}
+-(void)dealsTapped:(NSInteger)index {
+    CALObject *deal = [[[_dataService modelHolder] happyHours] objectAtIndex:index];
+    [self pushSnippetFor:deal];
 }
 -(void)activityTapped:(NSInteger)index {
     Activity *activity = [[_infoProvider activities] objectAtIndex:index];
