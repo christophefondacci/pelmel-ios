@@ -25,16 +25,17 @@
 #import "PMLPickerTableViewCell.h"
 #import "PMLPickerProvider.h"
 #import "UIPelmelTitleView.h"
+#import "PMLTextTableViewCell.h"
 
 #define kSectionCount 5
 #define kSectionBirthday 0
 #define kSectionMeasure 1
-#define kSectionDescriptions 2
-#define kSectionPhotos 3
+#define kSectionDescriptions 3
+#define kSectionPhotos 2
 #define kSectionTags 4
 
 #define kRowCountBirthday 1
-#define kRowCountMeasure 2
+#define kRowCountMeasure 0
 #define kRowIndexHeight 0
 #define kRowIndexWeight 1
 
@@ -89,8 +90,8 @@
     NSMutableDictionary *_descHeightMap;
     
     // Pointers to add/modify cells
-    PMLAddTableViewCell *_addPhotoCell;
-    PMLAddTableViewCell *_addDescriptionCell;
+    PMLTextTableViewCell *_addPhotoCell;
+    PMLTextTableViewCell *_addDescriptionCell;
 }
 
 
@@ -159,6 +160,9 @@
     
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     
+    // Edition
+    [self setEditing:YES];
+    [self.tableView setAllowsSelectionDuringEditing:YES];
     
     // Registering external reused cells
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLAddModifyViewCell" bundle:nil] forCellReuseIdentifier:@"add"];
@@ -231,22 +235,24 @@
         case kSectionBirthday:
             return _pickerIndexPath!=nil && _pickerIndexPath.section == kSectionBirthday ? 2 : 1;
         case kSectionMeasure:
-            return 2;
+            return kRowCountMeasure;
         case kSectionDescriptions: {
             int descCount = (int)[user.descriptions count];
             return (descCount == 0 ? 1 : descCount)+1+(_pickerIndexPath.section == kSectionDescriptions ? 1 :0);
         }
-        case kSectionPhotos: {
-            int mainImageCount = user.mainImage == nil ? 0 : 1;
-            return user.otherImages.count+mainImageCount+1;
-        }
+        case kSectionPhotos:
+            return [self imageCount]+1;
         case kSectionTags:
             return settingsService.listTags.count;
     }
     // Return the number of rows in the section.
     return 0;
 }
-
+-(NSInteger) imageCount {
+    CurrentUser *user = userService.getCurrentUser;
+    int mainImageCount = user.mainImage == nil ? 0 : 1;
+    return user.otherImages.count+mainImageCount;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *birthdayCell = @"birthDate";
@@ -254,7 +260,7 @@
     static NSString *descCell = @"descriptionUnique";
     static NSString *tagCell = @"tag";
     static NSString *photosCell = @"photo";
-    static NSString *addCell = @"add";
+    static NSString *addCell = @"addRow";
     
     CurrentUser *user = userService.getCurrentUser;
     // Selecting the cell type
@@ -276,11 +282,11 @@
                 cellId = measureCell;
                 break;
             case kSectionDescriptions:
-                cellId = indexPath.row == 0 ? addCell :descCell;
+                cellId = indexPath.row == userService.getCurrentUser.descriptions.count ? addCell :descCell;
                 break;
             case kSectionPhotos:
                 // Last row of photo section is the add button, otherwise it is a photo cell
-                cellId = indexPath.row == 0 ? addCell : photosCell;
+                cellId = indexPath.row == [self imageCount] ? addCell : photosCell;
                 break;
             case kSectionTags:
                 cellId = tagCell;
@@ -337,9 +343,9 @@
                 }
                 break;
             case kSectionDescriptions: {
-                if(indexPath.row == 0) {
-                    _addDescriptionCell = (PMLAddTableViewCell*)cell;
-                    _addDescriptionCell.delegate = self;
+                if([self isAddRow:indexPath]) {
+                    _addDescriptionCell = (PMLTextTableViewCell*)cell;
+                    _addDescriptionCell.cellTextLabel.text = NSLocalizedString(@"profile.add.description", @"profile.add.description");
                 } else {
                     UITableDescriptionViewCell *descCell=(UITableDescriptionViewCell*)cell;
                     Description *d = [self getDescriptionFor:(int)indexPath.row];
@@ -356,11 +362,11 @@
                 break;
             }
             case kSectionPhotos:
-                if(indexPath.row > 0) {
+                if(![self isAddRow:indexPath]) {
                     UITablePhotoViewCell *photoCell = (UITablePhotoViewCell*)cell;
                     
                     CALImage *image = [self imageForIndexPath:indexPath];
-                    if(indexPath.row == 1) {
+                    if(indexPath.row == 0) {
                         photoCell.label.text = NSLocalizedString(@"photos.profile", @"Title of a profile photo in the photo list");
                     } else {
                         photoCell.label.text = nil; //[NSString stringWithFormat:NSLocalizedString(@"photos.other", @"Title of a non-profile photo in the photo list"),indexPath.row+1];
@@ -370,8 +376,8 @@
                     [photoCell.activity stopAnimating];
                     photoCell.activity.hidden=YES;
                 } else {
-                    _addPhotoCell = (PMLAddTableViewCell*)cell;
-                    _addPhotoCell.delegate = self;
+                    _addPhotoCell = (PMLTextTableViewCell*)cell;
+                    _addPhotoCell.cellTextLabel.text = NSLocalizedString(@"profile.add.photo", @"Add photo");
                 }
                 break;
                 
@@ -395,10 +401,10 @@
 -(CALImage*)imageForIndexPath:(NSIndexPath*)indexPath {
     CALImage *image;
     CurrentUser *user = userService.getCurrentUser;
-    if(indexPath.row == 1) {
+    if(indexPath.row == 0) {
         image = user.mainImage;
     } else {
-        image = [user.otherImages objectAtIndex:indexPath.row-2];
+        image = [user.otherImages objectAtIndex:indexPath.row-1];
     }
     return image;
 }
@@ -435,14 +441,16 @@
                 if(oldIndexPath) {
                     [self.tableView deleteRowsAtIndexPaths:@[oldIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 }
-                [self.tableView insertRowsAtIndexPaths:@[_pickerIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                if(oldIndexPath.section!=_pickerIndexPath.section) {
+                    [self.tableView insertRowsAtIndexPaths:@[_pickerIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                }
                 [self.tableView endUpdates];
                 // Setting current date
                 //            [datePickerDataSource setDate:user.birthDate picker:datePicker];
             }
                 break;
             case kSectionDescriptions: {
-                if(indexPath.row>0) {
+                if(![self isAddRow:indexPath]) {
                     Description *desc = [self getDescriptionFor:indexPath.row];
                     [self performSegueWithIdentifier:@"editDesc" sender:desc];
                 }
@@ -479,14 +487,14 @@
 
     
     // Default index
-    NSInteger descIndex = index-1;
+    NSInteger descIndex = index;
     // If a picker is somewhere in our description list we need
     // to pick the right description
     if(_pickerIndexPath.section == kSectionDescriptions) {
         if(index>_pickerIndexPath.row) {
             descIndex--;
         }
-    } else if(user.descriptions.count <= index-1) {
+    } else if(user.descriptions.count <= index) {
         NSString *language = [TogaytherService getLanguageIso6391Code];
         [user addDescription:@"" language:language];
     }
@@ -537,8 +545,9 @@
             return profileHeaderView;
         }
         case kSectionMeasure:
-            _sectionProfileHeaderView.titleLabel.text =NSLocalizedString(@"settings.account.cell", @"settings.account.cell");
-            return _sectionProfileHeaderView;
+//            _sectionProfileHeaderView.titleLabel.text =NSLocalizedString(@"settings.account.cell", @"settings.account.cell");
+//            return _sectionProfileHeaderView;
+            return nil;
         case kSectionDescriptions:
             _sectionDescriptionHeaderView.titleLabel.text = NSLocalizedString(@"profile.description", @"profile.description");
             return _sectionDescriptionHeaderView;
@@ -568,6 +577,7 @@
         case 0:
             return profileHeaderView.bounds.size.height;
         case kSectionMeasure:
+            return 0;
         case kSectionDescriptions:
         case kSectionPhotos:
         case kSectionTags:
@@ -584,7 +594,7 @@
     } else {
         switch(indexPath.section) {
             case kSectionDescriptions: {
-                if(indexPath.row == 0) {
+                if([self isAddRow:indexPath]) {
                     return 44;
                 } else {
                     NSString *text = [_descPathMap objectForKey:indexPath];
@@ -597,10 +607,11 @@
                         descCell.descriptionLabel.text = desc.descriptionText;
                         
                         // Computing adequate height constraining width
+
                         CGSize size = [descCell.descriptionLabel sizeThatFits:CGSizeMake(descCell.descriptionLabel.bounds.size.width, MAXFLOAT)];
                         
-                        NSLog(@"Desc height: %d",(int)(size.height+1+46+8));
-                        height = MAX(size.height+1+46+8,80);
+                        NSLog(@"Desc height: %d",(int)(size.height+7+7));
+                        height = MAX(size.height+7+7,44);
                         [_descHeightMap setObject:[NSNumber numberWithFloat:height] forKey:indexPath];
                         [_descPathMap setObject:desc.descriptionText forKey:indexPath];
                     } else {
@@ -642,7 +653,7 @@
     if([_pickerIndexPath isEqual:indexPath]) {
         return NO;
     } else {
-        return (indexPath.section == kSectionDescriptions && indexPath.row>0 && _descEdition ) || (indexPath.section == kSectionPhotos && indexPath.row>0 && _photoEdition);
+        return indexPath.section == kSectionDescriptions|| indexPath.section == kSectionPhotos;
     }
 }
 // Override to support conditional rearranging of the table view.
@@ -650,7 +661,7 @@
 {
     CurrentUser *user = userService.getCurrentUser;
     if(indexPath.section == kSectionPhotos) {
-        if(indexPath.row == 0) {
+        if([self isAddRow:indexPath]) {
             return NO;
         } else {
             
@@ -671,7 +682,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         switch (indexPath.section) {
-            case 2: {
+            case kSectionDescriptions: {
                 CurrentUser *user = [userService getCurrentUser];
                 if(user.descriptions.count > indexPath.row-1) {
                     // Description will be removed when validating profile
@@ -713,10 +724,29 @@
         }
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        if(indexPath.section == kSectionDescriptions) {
+            [self addDescriptionTapped];
+        } else if(indexPath.section == kSectionPhotos) {
+            [self addPhotoTapped];
+        }
     }
     
 }
-
+-(BOOL)isAddRow:(NSIndexPath*)indexPath {
+    if(indexPath.section == kSectionDescriptions) {
+        return userService.getCurrentUser.descriptions.count + (_pickerIndexPath!=nil && _pickerIndexPath.section == kSectionDescriptions ? 1 : 0 )== indexPath.row;
+    } else if(indexPath.section == kSectionPhotos) {
+        return [self imageCount] == indexPath.row;
+    }
+    return NO;
+}
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if([self isAddRow:indexPath]) {
+        return UITableViewCellEditingStyleInsert;
+    } else {
+        return UITableViewCellEditingStyleDelete;
+    }
+}
 
 // Override to support rearranging the table view.
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
@@ -951,7 +981,7 @@
 }
 
 #pragma mark - PMLAddModifyDelegate
-- (void)addTapped:(PMLAddTableViewCell *)sourceCell {
+- (void)addTapped:(PMLTextTableViewCell *)sourceCell {
     if(sourceCell == _addPhotoCell) {
         [self addPhotoTapped];
     } else if(sourceCell == _addDescriptionCell) {
@@ -960,7 +990,7 @@
         NSLog(@"Warning: no cell found for add/modify callback action");
     }
 }
-- (void)modifyTapped:(PMLAddTableViewCell *)sourceCell {
+- (void)modifyTapped:(PMLTextTableViewCell *)sourceCell {
     if(sourceCell == _addPhotoCell) {
         [self modifyPhotoTapped];
     } else if(sourceCell == _addDescriptionCell) {
