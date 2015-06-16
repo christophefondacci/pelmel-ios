@@ -35,9 +35,6 @@
         _event = event;
         if(_event.place!=nil) {
             _placeInfoProvider = [_uiService infoProviderFor:_event.place];
-            if(!_event.place.hasOverviewData) {
-                [[TogaytherService dataService] getOverviewData:_event.place];
-            }
         }
         _likeableDelegate = [[LikeableStrategyObjectWithLikers alloc] init];
     }

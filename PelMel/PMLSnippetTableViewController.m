@@ -1335,6 +1335,12 @@ typedef enum {
 
     // Getting provider of location object
     CALObject *mapObject = [_infoProvider mapObjectForLocalization];
+    
+    // Loading localization object because we are displaying it
+    if(!mapObject.hasOverviewData) {
+        [[TogaytherService dataService] getOverviewData:mapObject];
+    }
+
     id<PMLInfoProvider> provider = [_uiService infoProviderFor:mapObject];
     
     // Image
