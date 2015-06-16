@@ -38,6 +38,7 @@
     static PMLHelpService *_helpService;
     static PMLStoreService *_storeService;
     static PMLActionManager *_actionManager;
+    static PMLStorageService *_storageService;
     static NSDictionary *properties;
 
     static BOOL hdModeLoaded;
@@ -61,6 +62,7 @@
     _helpService = [[PMLHelpService alloc] init];
     _storeService = [[PMLStoreService alloc] init];
     _actionManager = [[PMLActionManager alloc] init];
+    _storageService = [[PMLStorageService alloc] init];
     
     // Injecting data service
     _dataService.userService = [TogaytherService userService];
@@ -106,6 +108,9 @@
 }
 + (PMLStoreService *)storeService {
     return _storeService;
+}
++ (PMLStorageService*)storageService {
+    return _storageService;
 }
 + (PMLActionManager *)actionManager {
     return _actionManager;

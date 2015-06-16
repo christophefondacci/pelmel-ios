@@ -19,7 +19,7 @@
 #import "PMLHelpService.h"
 #import "PMLStoreService.h"
 #import "PMLActionManager.h"
-
+#import "PMLStorageService.h"
 
 @interface TogaytherService : NSObject
 
@@ -54,6 +54,9 @@
 
 // Store and in-app purchases service
 +(PMLStoreService*)storeService;
+
+// Data storage service
++(PMLStorageService*)storageService;
 
 // Action manager
 +(PMLActionManager*)actionManager;

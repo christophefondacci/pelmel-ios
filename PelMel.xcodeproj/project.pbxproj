@@ -280,8 +280,6 @@
 		B4AA0A331AF178AE00DCDE29 /* PMLStorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A311AF178AE00DCDE29 /* PMLStorageService.h */; };
 		B4AA0A341AF178AE00DCDE29 /* PMLStorageService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A321AF178AE00DCDE29 /* PMLStorageService.m */; };
 		B4AA0A371AF17AC300DCDE29 /* PMLModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A351AF17AC300DCDE29 /* PMLModel.xcdatamodeld */; };
-		B4AA0A3A1AF19EBE00DCDE29 /* PMLManagedActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A381AF19EBE00DCDE29 /* PMLManagedActivity.h */; };
-		B4AA0A3B1AF19EBE00DCDE29 /* PMLManagedActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A391AF19EBE00DCDE29 /* PMLManagedActivity.m */; };
 		B4AA0A3E1AF2E31C00DCDE29 /* PMLActivityStatistic.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A3C1AF2E31C00DCDE29 /* PMLActivityStatistic.h */; };
 		B4AA0A3F1AF2E31C00DCDE29 /* PMLActivityStatistic.m in Sources */ = {isa = PBXBuildFile; fileRef = B4AA0A3D1AF2E31C00DCDE29 /* PMLActivityStatistic.m */; };
 		B4AA0A421AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A401AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h */; };
@@ -363,6 +361,10 @@
 		B4C199D518A8952F00F55196 /* Special.m in Sources */ = {isa = PBXBuildFile; fileRef = B4C199D418A8952F00F55196 /* Special.m */; };
 		B4CC31211B2F440800E755DA /* ChatViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4CC311F1B2F440800E755DA /* ChatViewCell.h */; };
 		B4CC31221B2F440800E755DA /* ChatViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC31201B2F440800E755DA /* ChatViewCell.m */; };
+		B4CC31251B2F7D9100E755DA /* PMLManagedActivity.h in Headers */ = {isa = PBXBuildFile; fileRef = B4CC31231B2F7D9100E755DA /* PMLManagedActivity.h */; };
+		B4CC31261B2F7D9100E755DA /* PMLManagedActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC31241B2F7D9100E755DA /* PMLManagedActivity.m */; };
+		B4CC31291B2F7D9100E755DA /* PMLManagedMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = B4CC31271B2F7D9100E755DA /* PMLManagedMessage.h */; };
+		B4CC312A1B2F7D9100E755DA /* PMLManagedMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC31281B2F7D9100E755DA /* PMLManagedMessage.m */; };
 		B4CDDB0D1680D140002C01C0 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CDDB0C1680D140002C01C0 /* Event.m */; };
 		B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = B4D26A7019DE1637004C5991 /* NSData+Conversion.h */; };
 		B4D26A7319DE1637004C5991 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D26A7119DE1637004C5991 /* NSData+Conversion.m */; };
@@ -750,8 +752,6 @@
 		B4AA0A311AF178AE00DCDE29 /* PMLStorageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLStorageService.h; sourceTree = "<group>"; };
 		B4AA0A321AF178AE00DCDE29 /* PMLStorageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLStorageService.m; sourceTree = "<group>"; };
 		B4AA0A361AF17AC300DCDE29 /* PMLModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PMLModel.xcdatamodel; sourceTree = "<group>"; };
-		B4AA0A381AF19EBE00DCDE29 /* PMLManagedActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLManagedActivity.h; sourceTree = "<group>"; };
-		B4AA0A391AF19EBE00DCDE29 /* PMLManagedActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLManagedActivity.m; sourceTree = "<group>"; };
 		B4AA0A3C1AF2E31C00DCDE29 /* PMLActivityStatistic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLActivityStatistic.h; sourceTree = "<group>"; };
 		B4AA0A3D1AF2E31C00DCDE29 /* PMLActivityStatistic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivityStatistic.m; sourceTree = "<group>"; };
 		B4AA0A401AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLLoadingTableViewCell.h; sourceTree = "<group>"; };
@@ -845,6 +845,10 @@
 		B4C199D418A8952F00F55196 /* Special.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Special.m; sourceTree = "<group>"; };
 		B4CC311F1B2F440800E755DA /* ChatViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewCell.h; sourceTree = "<group>"; };
 		B4CC31201B2F440800E755DA /* ChatViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewCell.m; sourceTree = "<group>"; };
+		B4CC31231B2F7D9100E755DA /* PMLManagedActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLManagedActivity.h; sourceTree = "<group>"; };
+		B4CC31241B2F7D9100E755DA /* PMLManagedActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLManagedActivity.m; sourceTree = "<group>"; };
+		B4CC31271B2F7D9100E755DA /* PMLManagedMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLManagedMessage.h; sourceTree = "<group>"; };
+		B4CC31281B2F7D9100E755DA /* PMLManagedMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLManagedMessage.m; sourceTree = "<group>"; };
 		B4CDDB0B1680D140002C01C0 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		B4CDDB0C1680D140002C01C0 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		B4D26A7019DE1637004C5991 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
@@ -1479,8 +1483,10 @@
 		B4D560B6160C9563003A738E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B4AA0A381AF19EBE00DCDE29 /* PMLManagedActivity.h */,
-				B4AA0A391AF19EBE00DCDE29 /* PMLManagedActivity.m */,
+				B4CC31271B2F7D9100E755DA /* PMLManagedMessage.h */,
+				B4CC31281B2F7D9100E755DA /* PMLManagedMessage.m */,
+				B4CC31231B2F7D9100E755DA /* PMLManagedActivity.h */,
+				B4CC31241B2F7D9100E755DA /* PMLManagedActivity.m */,
 				B4D560B7160C95A3003A738E /* Place.h */,
 				B4D560B8160C95A3003A738E /* Place.m */,
 				B4D561131611C239003A738E /* ModelBased.h */,
@@ -1807,6 +1813,7 @@
 				B43D11711A97A12B008476C7 /* LinearDismissalAnimator.h in Headers */,
 				B4AA0A5C1AFABE1900DCDE29 /* PMLPhotoView.h in Headers */,
 				B4E8293B18AC6F4C0063715C /* PostDelegate.h in Headers */,
+				B4CC31291B2F7D9100E755DA /* PMLManagedMessage.h in Headers */,
 				B4FC959B19B1F2E300269E74 /* PMLSnippetTableViewController.h in Headers */,
 				B43123A31ACDA4DC008EF107 /* PMLHelpBubble.h in Headers */,
 				B40668BB19714CCE0012DF71 /* APLPositionToBoundsMapping.h in Headers */,
@@ -1824,6 +1831,7 @@
 				B457A0FA1A9AF00A00207D8E /* PMLTextFieldTableViewCell.h in Headers */,
 				B4BD19181AE6BE3800510AC4 /* PMLMessageTableViewController.h in Headers */,
 				B45B38241AB0C1F200730313 /* PMLSnippetDescTableViewCell.h in Headers */,
+				B4CC31251B2F7D9100E755DA /* PMLManagedActivity.h in Headers */,
 				B41DD754197B5FA5008F09D9 /* UIAttachmentView.h in Headers */,
 				B47A69D71AA7843B00877B58 /* PMLThumbHeaderView.h in Headers */,
 				B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */,
@@ -1870,7 +1878,6 @@
 				B45C3C611AB7A61800D8B321 /* PMLSnippetEditTableViewCell.h in Headers */,
 				B4FC959F19B1F85D00269E74 /* PMLDescriptionTableViewCell.h in Headers */,
 				B41C63B819B311BE003C9B52 /* PMLContextInfoProvider.h in Headers */,
-				B4AA0A3A1AF19EBE00DCDE29 /* PMLManagedActivity.h in Headers */,
 				B4859DB8197FC6810036D8FF /* PopupAction.h in Headers */,
 				B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */,
 				B4A4666819A73A0B004ADC7E /* PMLInfoProvider.h in Headers */,
@@ -2185,6 +2192,7 @@
 				B457A0FF1A9AF08A00207D8E /* PMLDatePickerTableViewCell.m in Sources */,
 				B41CF0AA1895E1700031FD7C /* DisplayHelper.m in Sources */,
 				B457A1071A9CECE800207D8E /* PMLEventInfoProvider.m in Sources */,
+				B4CC31261B2F7D9100E755DA /* PMLManagedActivity.m in Sources */,
 				B47A69E41AA7FF6B00877B58 /* UIImage+IPImageUtils.m in Sources */,
 				B4B82B3719FBB69900895C57 /* PMLPickerTableViewCell.m in Sources */,
 				B496661F1612250800911FE5 /* UITablePlaceTypeViewCell.m in Sources */,
@@ -2219,6 +2227,7 @@
 				B457A0FB1A9AF00A00207D8E /* PMLTextFieldTableViewCell.m in Sources */,
 				B4AA0A6F1AFD1D0400DCDE29 /* PMLEventPlaceTabsTitleView.m in Sources */,
 				B42D2D461619715B00159EBD /* CALImage.m in Sources */,
+				B4CC312A1B2F7D9100E755DA /* PMLManagedMessage.m in Sources */,
 				B45CAB3519721BD40089C7E8 /* UIPopBehavior.m in Sources */,
 				B4BB9F1319D7E8840070B03C /* PMLCityInfoProvider.m in Sources */,
 				B4B503FA161EC7AC002D5669 /* ProfileTableViewController.m in Sources */,
@@ -2289,7 +2298,6 @@
 				B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */,
 				B4E91223169B226F005D3CAF /* TogaytherTabBarController.m in Sources */,
 				B4A4666D19A73A6A004ADC7E /* PMLPlaceInfoProvider.m in Sources */,
-				B4AA0A3B1AF19EBE00DCDE29 /* PMLManagedActivity.m in Sources */,
 				B4B1FCF919E012BD0068894C /* NSString+HTML.m in Sources */,
 				B42408E518F8EA9500B8B898 /* EGORefreshTableHeaderView.m in Sources */,
 				B4BA87D71B0FACDD00612214 /* PMLBannerViewTableViewCell.m in Sources */,

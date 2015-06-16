@@ -39,8 +39,12 @@
 #define kTopQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
 #define kSettingMaxActivityId @"activity.maxId"
-
+#define kSettingMaxMessageId @"message.maxId"
 #define kCacheKeyMessages @"allMessages"
+
+@interface MessageService()
+@property (nonatomic,retain) PMLStorageService *storageService;
+@end
 
 @implementation MessageService {
 
@@ -72,6 +76,7 @@
         _unreadMessageCount = 0;
         _messageCallbacks = [[NSMutableArray alloc] init];
         _messageCache = [[NSCache alloc] init];
+        _storageService = [TogaytherService storageService];
     }
     return self;
 }
@@ -110,7 +115,7 @@
     [self getMessagesWithUser:userKey messageCallback:callback page:0];
 }
 - (NSString*)cacheKeyFor:(NSString*)userKey page:(NSInteger)page {
-    return [NSString stringWithFormat:@"%@.%d",userKey,page];
+    return [NSString stringWithFormat:@"%@.%d",userKey,(int)page];
 }
 - (void)getMessagesWithUser:(NSString *)userKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page{
     // Getting current user and some device settings
@@ -186,6 +191,7 @@
     // Getting message list
     NSArray *messages = [jsonMessageList objectForKey:@"messages"];
     NSMutableArray *calMessages = [[NSMutableArray alloc] initWithCapacity:messages.count];
+
     for(NSDictionary *message in messages) {
         NSString *key       = [message objectForKey:@"key"];
         NSString *fromKey   = [message objectForKey:@"fromKey"];

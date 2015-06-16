@@ -2,7 +2,7 @@
 //  PMLManagedActivity.m
 //  PelMel
 //
-//  Created by Christophe Fondacci on 29/04/2015.
+//  Created by Christophe Fondacci on 15/06/2015.
 //  Copyright (c) 2015 Christophe Fondacci. All rights reserved.
 //
 
@@ -12,16 +12,16 @@
 @implementation PMLManagedActivity
 
 @dynamic activityDate;
-@dynamic activityType;
-@dynamic defaultTranslation;
-@dynamic userItemKey;
-@dynamic userName;
-@dynamic userThumbUrl;
-@dynamic userImageUrl;
+@dynamic activityItemImageUrl;
 @dynamic activityItemKey;
 @dynamic activityItemName;
 @dynamic activityItemThumbUrl;
-@dynamic activityItemImageUrl;
 @dynamic activityKey;
+@dynamic activityType;
+@dynamic defaultTranslation;
+@dynamic userImageUrl;
+@dynamic userItemKey;
+@dynamic userName;
+@dynamic userThumbUrl;
 
 @end
