@@ -12,7 +12,7 @@
 #import "PMLEventTableViewController.h"
 #import "PBWebViewController.h"
 #import "PMLDataManager.h"
-#import "MessageViewController.h"
+#import "PMLMessagingContainerController.h"
 #import "PMLBannerEditorTableViewController.h"
 #import <MBProgressHUD.h>
 
@@ -298,7 +298,7 @@
     PopupAction *commentAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         NSLog(@"COMMENT");
         if(object!= nil) {
-            MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
+            PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
             msgController.withObject = object;
             [[[_uiService menuManagerController] navigationController] pushViewController:msgController animated:YES];
         }

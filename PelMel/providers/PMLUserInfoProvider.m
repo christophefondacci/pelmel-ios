@@ -9,7 +9,8 @@
 #import "PMLUserInfoProvider.h"
 #import "ItemsThumbPreviewProvider.h"
 #import "TogaytherService.h"
-#import "MessageViewController.h"
+//#import "MessageViewController.h"
+#import "PMLMessagingContainerController.h"
 #import "PMLUserActionsView.h"
 #import "LikeableStrategyObjectWithLiked.h"
 #import "PMLSnippetTableViewController.h"
@@ -186,7 +187,7 @@
 
 
 -(void)chatButtonTapped:(id)sender {
-    MessageViewController *msgController = (MessageViewController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
+    PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
     msgController.withObject = _user;
     [_snippetController.navigationController pushViewController:msgController animated:YES];
 }

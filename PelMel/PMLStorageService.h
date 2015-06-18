@@ -15,5 +15,5 @@
  */
 @interface PMLStorageService : NSObject
 
-
+- (NSManagedObjectContext *)managedObjectContext;
 @end

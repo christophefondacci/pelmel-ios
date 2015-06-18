@@ -29,6 +29,7 @@
 
 - (void)photoControllerStartContentLoad:(PMLPhotosCollectionViewController *)controller {
     self.controller = controller;
+    controller.loadFullImage=YES;
     [[TogaytherService getMessageService] getNearbyActivitiesFor:self.activityType hd:YES callback:self];
 }
 

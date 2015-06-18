@@ -41,6 +41,10 @@
     self.chatTextView.maxHeight = 120;
     self.chatTextView.text = nil;
 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
+    [self.navigationController.navigationBar setTitleTextAttributes: @{
+                                                                       NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
+                                                                       NSForegroundColorAttributeName:[UIColor whiteColor]}];
     // Setting up chat input field constraint and title
     if([_withObject.key isEqualToString:currentUser.key]) {
         CGRect textFrame = _footerView.frame;
@@ -197,6 +201,14 @@
         [self.messageService postComment:text forObject:_withObject withImage:image messageCallback:self];
     }
     [_chatTextView resignFirstResponder];
+}
+-(void)closeMenu:(id)sender {
+    if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
+        [[TogaytherService uiService] presentSnippetFor:nil opened:NO];
+    } else {
+        [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
+        [self.parentMenuController dismissControllerMenu:YES];
+    }
 }
 #pragma mark - PMLImagePickerCallback
 - (void)imagePicked:(CALImage *)image {

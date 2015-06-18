@@ -15,7 +15,11 @@
 #import "PMLActivityStatistic.h"
 #import <AFNetworking/AFNetworking.h>
 #import "PMLMessageCacheEntry.h"
+#import <CoreData/CoreData.h>
+#import "PMLManagedMessage.h"
+#import "PMLManagedUser.h"
 
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 //#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
 //#define kMyMessagesListUrlFormat @"%@/mobileMyMessages?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
 //#define kReviewsListUrlFormat @"%@/mobileComments?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&id=%@"
@@ -32,6 +36,10 @@
 #define kParamId @"id"
 #define kParamFrom @"from"
 #define kParamPage @"page"
+#define kParamPageSize @"messagesPerPage"
+#define kParamUnreadMaxId @"unreadMaxId"
+#define kParamMarkUnreadOnly @"markUnreadOnly"
+#define kParamFromMessageId @"fromMessageId"
 #define kParamStatActivityType @"statActivityType"
 #define kParamLastActivityTime @"lastActivityTime"
 #define kSendMessageUrlFormat @"%@/mobileSendMsg"
@@ -44,6 +52,7 @@
 
 @interface MessageService()
 @property (nonatomic,retain) PMLStorageService *storageService;
+@property (nonatomic) BOOL messageFetchInProgress;
 @end
 
 @implementation MessageService {
@@ -123,60 +132,88 @@
     if(user == nil) {
         return;
     }
-    
-    // Getting cache information
-    PMLMessageCacheEntry *cacheEntry = [_messageCache objectForKey:[self cacheKeyFor:userKey page:page]];
-    if(cacheEntry != nil) {
-        // Immediate callback (but we still make the query)
-        [callback messagesFetched:cacheEntry.messages totalCount:cacheEntry.totalCount page:cacheEntry.page pageSize:cacheEntry.pageSize];
+    if(self.messageFetchInProgress) {
+        return;
+    } else {
+        self.messageFetchInProgress = YES;
     }
-    
+
     
     // Preparing params
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     
     // Building URL
-    NSString *url;
-    if([userKey isEqualToString:user.key]) {
-        url = [[NSString alloc] initWithFormat:kMyMessagesListUrlFormat,togaytherServer ];
-    } else {
-        url = [[NSString alloc] initWithFormat:kMessagesListUrlFormat,togaytherServer];
-        [params setObject:userKey forKey:kParamFrom];
-    }
+    NSString *url = [[NSString alloc] initWithFormat:kMyMessagesListUrlFormat,togaytherServer ];
     
     // Filling params
     BOOL retina = [TogaytherService isRetina];
     [params setObject:[NSString stringWithFormat:@"%f",user.lat] forKey:kParamLat];
     [params setObject:[NSString stringWithFormat:@"%f",user.lng] forKey:kParamLng];
     [params setObject:user.token forKey:kParamToken];
+    [params setObject:[NSNumber numberWithInt:300] forKey:kParamPageSize];
     [params setObject:(retina ? @"true" : @"false") forKey:kParamRetina];
     [params setObject:[NSString stringWithFormat:@"%ld",(long)page] forKey:kParamPage];
+    [params setObject:[self maxMessageId] forKey:kParamFromMessageId];
     
-    NSLog(@"URL: %@",url);
+    NSLog(@"URL: %@, maxId=%ld",url,[[self maxMessageId] longValue]);
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Processing JSON message response
         [self processJsonMessage:(NSDictionary*)responseObject messageCallback:callback forUserKey:userKey];
+        if(![userKey isEqualToString:user.key]) {
+            [self markReadConversationWithUser:userKey];
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [callback loadMessageFailed];
     }];
 }
+- (void)markReadConversationWithUser:(NSString*)userKey {
+    CurrentUser *user = userService.getCurrentUser;
+    
+    // Preparing params
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    [params setObject:[NSString stringWithFormat:@"%f",user.lat] forKey:kParamLat];
+    [params setObject:[NSString stringWithFormat:@"%f",user.lng] forKey:kParamLng];
+    [params setObject:user.token forKey:kParamToken];
+    [params setObject:userKey forKey:kParamFrom];
+    [params setObject:[self maxMessageId] forKey:kParamUnreadMaxId];
+    [params setObject:@"true" forKey:kParamMarkUnreadOnly];
+    NSString *url = [[NSString alloc] initWithFormat:kMessagesListUrlFormat,togaytherServer ];
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *json = (NSDictionary*)responseObject;
+        NSNumber *unreadMsg = [json objectForKey:@"unreadMsgCount"];
+        [self setUnreadMessageCount:unreadMsg.intValue];
+        NSLog(@"Marked as read!");
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Failed to mark as read, will be next time");
+    }];
+    
+}
+- (NSNumber *)maxMessageId {
+    NSNumber *maxMessageId = [_userDefaults objectForKey:kSettingMaxMessageId];
+    if(maxMessageId == nil) {
+        maxMessageId = @0;
+    }
+    return maxMessageId;
+}
 -(void)processJsonMessage:(NSDictionary*)jsonMessageList messageCallback:(id<MessageCallback>)callback forUserKey:(NSString*)userKey {
     CurrentUser *user = userService.getCurrentUser;
     NSMutableDictionary *usersMap = [[NSMutableDictionary alloc] init];
-    if([userKey isEqualToString:user.key] || userKey == nil) {
+//    if([userKey isEqualToString:user.key] || userKey == nil) {
         NSArray *jsonUsers = [jsonMessageList objectForKey:@"users"];
         for(NSDictionary *jsonUser in jsonUsers) {
             User *aUser = [_jsonService convertJsonUserToUser:jsonUser];
             [usersMap setValue:aUser forKey:aUser.key];
         }
         
-    } else {
-        // Getting other user
-        NSDictionary *jsonOtherUser = [jsonMessageList objectForKey:@"toUser"];
-        User *otherUser = [_jsonService convertJsonUserToUser:jsonOtherUser];
-        [usersMap setValue:otherUser forKey:otherUser.key];
-    }
+//    } else {
+//        // Getting other user
+//        NSDictionary *jsonOtherUser = [jsonMessageList objectForKey:@"toUser"];
+//        User *otherUser = [_jsonService convertJsonUserToUser:jsonOtherUser];
+//        [usersMap setValue:otherUser forKey:otherUser.key];
+//    }
     // Getting current user
     CurrentUser *currentUser = [userService getCurrentUser];
     [usersMap setValue:currentUser forKey:currentUser.key];
@@ -192,6 +229,11 @@
     NSArray *messages = [jsonMessageList objectForKey:@"messages"];
     NSMutableArray *calMessages = [[NSMutableArray alloc] initWithCapacity:messages.count];
 
+    NSMutableDictionary *messagesKeyMap = [[NSMutableDictionary alloc] init];
+    NSMutableSet *messagesKeys = [[NSMutableSet alloc] init];
+    NSMutableSet *messagesFromKeys = [[NSMutableSet alloc] init];
+    NSMutableDictionary *messagesFromKeysMap = [[NSMutableDictionary alloc] init];
+    NSNumber *maxId;
     for(NSDictionary *message in messages) {
         NSString *key       = [message objectForKey:@"key"];
         NSString *fromKey   = [message objectForKey:@"fromKey"];
@@ -210,6 +252,7 @@
         [m setFrom:fromUser];
         User *toUser = [usersMap objectForKey:toKey];
         [m setTo:toUser];
+        [m setToItemKey:toKey];
         [m setText:text];
         [m setDate:msgDate];
         [m setUnread:[unread boolValue]];
@@ -219,36 +262,128 @@
             CALImage *image = [[TogaytherService imageService] convertJsonImageToImage:media];
             [m setMainImage:image];
         }
+        // Registering collections and maps
+        [messagesKeyMap setObject:m forKey:key];
+        [messagesKeys addObject:key];
+        if(![messagesFromKeys containsObject:fromKey]) {
+            [messagesFromKeys addObject:fromKey];
+        }
+        
         // Augmenting our collection of messages
         [calMessages addObject:m];
-    }
-    
-    if([userKey isEqualToString:user.key]) {
-        // Reversing array and eliminating duplicates
-        NSMutableArray *filteredArray = [NSMutableArray arrayWithCapacity:calMessages.count];
-        NSMutableDictionary *keysMessageMap = [[NSMutableDictionary alloc] init];
-        for(Message *msg in [calMessages reverseObjectEnumerator]) {
-            Message *thread = [keysMessageMap objectForKey:msg.from.key];
-            if(thread == nil) {
-                msg.messageCount = 1;
-                [keysMessageMap setObject:msg forKey:msg.from.key];
-                [filteredArray addObject:msg];
-            } else {
-                thread.messageCount++;
-                thread.unreadCount+=msg.unreadCount;
-            }
+        NSNumber *msgId = [self idFromKey:key];
+        if(maxId == nil || maxId.longValue<msgId.longValue) {
+            maxId = msgId;
         }
-        // Switching
-        calMessages = filteredArray;
     }
-    // Storing cache
-    PMLMessageCacheEntry *cacheEntry =  [[PMLMessageCacheEntry alloc] init];
-    cacheEntry.messages = calMessages;
-    cacheEntry.totalCount = [totalMsgCount integerValue];
-    cacheEntry.page = [page integerValue];
-    cacheEntry.pageSize = [pageSize integerValue];
-    [_messageCache setObject:cacheEntry forKey:[self cacheKeyFor:userKey page:[page integerValue]]];
     
+    // Checking already existing messages
+    NSManagedObjectContext *context = [[TogaytherService storageService] managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PMLManagedMessage"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"messageKey IN %@",messagesKeys];
+    [fetchRequest setPredicate:predicate];
+    // Fetching objects
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for (PMLManagedMessage *msg in fetchedObjects) {
+        // Removing the objects which we already have in database
+        [messagesKeys removeObject:msg.messageKey];
+        NSLog(@"Skipping message %@ already in CoreData",msg.messageKey);
+    }
+    
+    // Fetching already existing users
+    fetchRequest = [[NSFetchRequest alloc] init];
+    entity = [NSEntityDescription entityForName:@"PMLManagedUser"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    predicate = [NSPredicate predicateWithFormat:@"itemKey IN %@",messagesFromKeys];
+    [fetchRequest setPredicate:predicate];
+    
+    // Fetching objects and storing users in a map
+    fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for (PMLManagedUser *user in fetchedObjects) {
+        [messagesFromKeysMap setObject:user forKey:user.itemKey];
+    }
+    
+    // Processing remaining messages
+    for(NSString *key in messagesKeys) {
+        Message *m = [messagesKeyMap objectForKey:key];
+        PMLManagedMessage *msg = [NSEntityDescription
+                                  insertNewObjectForEntityForName:@"PMLManagedMessage"
+                                  inManagedObjectContext:context];
+        msg.messageKey = m.key;
+        msg.messageDate = m.date;
+        msg.toItemKey = m.toItemKey;
+        msg.messageImageKey = m.mainImage.key;
+        msg.messageImageThumbUrl = m.mainImage.thumbUrl;
+        msg.messageImageUrl = m.mainImage.imageUrl;
+        msg.messageText = m.text;
+        msg.isUnread = [NSNumber numberWithBool:m.unread];
+        
+        // Getting from user
+        PMLManagedUser *user = [messagesFromKeysMap objectForKey:m.from.key];
+        if(user == nil) {
+            user = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
+            [messagesFromKeysMap setObject:user forKey:m.from.key];
+            NSLog(@"Storing user %@ in CoreData",m.key);
+        }
+        user.itemKey = m.from.key;
+        user.name=((User*)m.from).pseudo;
+        CALImage *image = ((User*)m.from).mainImage;
+        user.imageUrl = image.imageUrl;
+        user.thumbUrl = image.thumbUrl;
+        if(m.unread) {
+            user.unreadCount = user.unreadCount == nil ? @0 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
+        }
+        if(user.lastMessageDate == nil || [msg.messageDate compare:user.lastMessageDate] == NSOrderedDescending) {
+            user.lastMessageDate = msg.messageDate;
+        }
+        msg.from = user;
+        NSLog(@"Storing message %@ in CoreData",m.key);
+    }
+    // Saving entries
+    if(messagesKeys.count>0) {
+        if (![context save:&error]) {
+            NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        }
+    }
+    
+    // Registering ID
+    if([[self maxMessageId] longValue]<[maxId longValue]) {
+        [_userDefaults setObject:maxId forKey:kSettingMaxMessageId];
+    }
+    
+//    
+//    
+//    if([userKey isEqualToString:user.key]) {
+//        // Reversing array and eliminating duplicates
+//        NSMutableArray *filteredArray = [NSMutableArray arrayWithCapacity:calMessages.count];
+//        NSMutableDictionary *keysMessageMap = [[NSMutableDictionary alloc] init];
+//        for(Message *msg in [calMessages reverseObjectEnumerator]) {
+//            Message *thread = [keysMessageMap objectForKey:msg.from.key];
+//            if(thread == nil) {
+//                msg.messageCount = 1;
+//                [keysMessageMap setObject:msg forKey:msg.from.key];
+//                [filteredArray addObject:msg];
+//            } else {
+//                thread.messageCount++;
+//                thread.unreadCount+=msg.unreadCount;
+//            }
+//        }
+//        // Switching
+//        calMessages = filteredArray;
+//    }
+//    // Storing cache
+//    PMLMessageCacheEntry *cacheEntry =  [[PMLMessageCacheEntry alloc] init];
+//    cacheEntry.messages = calMessages;
+//    cacheEntry.totalCount = [totalMsgCount integerValue];
+//    cacheEntry.page = [page integerValue];
+//    cacheEntry.pageSize = [pageSize integerValue];
+//    [_messageCache setObject:cacheEntry forKey:[self cacheKeyFor:userKey page:[page integerValue]]];
+//    
     // Now invoking callback
     dispatch_async(dispatch_get_main_queue(), ^{
         [callback messagesFetched:calMessages totalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
@@ -256,8 +391,23 @@
             [callback messagesFetched:calMessages totalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
         }
     });
-}
+    
+    if([totalMsgCount intValue]>0) {
+        dispatch_async(kBgQueue, ^{
+            self.messageFetchInProgress = NO;
+            [self getMessagesWithUser:userKey messageCallback:callback];
+        });
+    } else {
+        self.messageFetchInProgress = NO;
+    }
 
+}
+-(NSNumber*)idFromKey:(NSString*)key {
+    NSString *maxIdStr = [key substringFromIndex:4];
+    NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+    f.numberStyle = NSNumberFormatterDecimalStyle;
+    return [f numberFromString:maxIdStr];
+}
 - (void)sendMessage:(NSString *)message toUser:(User *)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback {
     [self sendMessageOrComment:message forObject:user withImage:image isComment:NO messageCallback:callback];
 }

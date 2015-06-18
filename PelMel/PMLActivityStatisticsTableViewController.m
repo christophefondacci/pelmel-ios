@@ -120,12 +120,14 @@
     if(_dataService.modelHolder.activityStats.count == 0) {
         cell.activityTitle.text = NSLocalizedString(@"activity.noactivity", @"activity.noactivity");
         cell.activityImageBackground.hidden=NO;
+        cell.accessoryType = UITableViewCellAccessoryNone;
         [_imageService load:[[[TogaytherService userService] getCurrentUser] mainImage] to:cell.activityImage thumb:YES];
     } else {
     
         PMLActivityStatistic *stat = [_dataService.modelHolder.activityStats objectAtIndex:row];
         NSString *locKey = [NSString stringWithFormat:@"activity.%@",stat.activityType];
         cell.activityTitle.text = [_uiService localizedString:locKey forCount:stat.totalCount];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         // Displaying background photo frames "stack" only when multiple images
         if(stat.totalCount<=1) {
             cell.activityImageBackground.hidden=YES;

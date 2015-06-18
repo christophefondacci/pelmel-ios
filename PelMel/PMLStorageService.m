@@ -62,15 +62,15 @@
     
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",kDatastoreInitFilename,kDatastoreFilenameType]];
     
-    if (![[NSFileManager defaultManager] fileExistsAtPath:[storeURL path]]) {
-        NSURL *preloadURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:kDatastoreInitFilename ofType:kDatastoreFilenameType]];
-        
-        NSError* err = nil;
-        
-        if (![[NSFileManager defaultManager] copyItemAtURL:preloadURL toURL:storeURL error:&err]) {
-            NSLog(@"Oops, could not copy preloaded data");
-        }
-    }
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:[storeURL path]]) {
+//        NSURL *preloadURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:kDatastoreInitFilename ofType:kDatastoreFilenameType]];
+//        
+//        NSError* err = nil;
+//        
+//        if (![[NSFileManager defaultManager] copyItemAtURL:preloadURL toURL:storeURL error:&err]) {
+//            NSLog(@"Oops, could not copy preloaded data");
+//        }
+//    }
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];

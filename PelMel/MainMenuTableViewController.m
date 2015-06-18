@@ -293,7 +293,9 @@
                 case kRowSettingMessages: {
 //                    [self performSegueWithIdentifier:@"directMsg" sender:self];
                     PMLMessageTableViewController *msgController = (PMLMessageTableViewController*)[_uiService instantiateViewController:@"messageView"];
-                    [self.parentMenuController.navigationController pushViewController:msgController animated:YES];
+                    [_uiService.menuManagerController dismissControllerMenu:YES];
+                    [_uiService presentSnippet:msgController opened:YES root:YES];
+//                    [self.parentMenuController.navigationController pushViewController:msgController animated:YES];
                     break;
                 }
                 case kRowSettingLikes:

@@ -9,9 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "CALObject.h"
 #import "MessageService.h"
+#import <CoreData/CoreData.h>
 
-@interface PMLMessageTableViewController : UITableViewController <MessageCallback, PMLImagePickerCallback>
+@protocol PMLMessageProvider <NSObject>
+
+- (NSFetchedResultsController *)fetchedResultsController:(NSManagedObjectContext*)managedObjectContext delegate:(id<NSFetchedResultsControllerDelegate>)delegate;
+- (Message*)messageFromIndexPath:(NSIndexPath*)indexPath;
+- (NSInteger)numberOfResults;
+- (void)setNumberOfResults:(NSInteger)maxResults;
+@end
+@interface PMLMessageTableViewController : UITableViewController <MessageCallback,NSFetchedResultsControllerDelegate>
 
 @property (strong,nonatomic) CALObject *withObject;
+@property (strong,nonatomic) id<PMLMessageProvider> messageProvider;
 
 @end

@@ -48,6 +48,7 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 -(void)getMessagesWithUser:(NSString*)userKey messageCallback:(id<MessageCallback>)callback;
 -(void)getMessagesWithUser:(NSString*)userKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page;
 
+
 // Gets the list of reviews as messages
 -(void)getReviewsAsMessagesFor:(NSString*)itemKey messageCallback:(id<MessageCallback>)callback;
 -(void)getReviewsAsMessagesFor:(NSString *)itemKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page;

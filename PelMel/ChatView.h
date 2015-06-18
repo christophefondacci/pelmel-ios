@@ -35,7 +35,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textTopConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBottomConstraint;
-
+// Indicates whether this view is a template view to de-activate time-consuming operations
+@property (nonatomic) BOOL isTemplate;
 /**
  * Sets up the chat view for the given message and user.
  * @param message the message that will be displayed in this view

@@ -41,7 +41,8 @@
     userService = [TogaytherService userService];
     imageService = [TogaytherService imageService];
     _uiService = [TogaytherService uiService];
-
+    User *fromUser = (User*)message.from;
+    
     UIImageView *currentThumb;
     UITextView *currentBubbleText;
     UILabel *currentUsernameLabel;
@@ -52,6 +53,7 @@
     // Selecting right or left positioning
     CurrentUser *user = userService.getCurrentUser;
     UIColor *bubbleColor;
+
     if([object.key isEqualToString:user.key]) {
         currentThumb = _thumbImageSelf;
         currentBubbleText = _bubbleTextSelf;
@@ -72,7 +74,7 @@
         currentMessageImage = _messageImageSelf;
         bubbleColor = UIColorFromRGB(0x057efe);
         currentMessageImage.layer.borderColor = [bubbleColor CGColor];
-        currentBubbleText.textColor = [UIColor whiteColor];
+        currentBubbleText.textColor = UIColorFromRGB(0xffffff);
         self.bubbleTailSelf.hidden=NO;
         self.bubbleTail.hidden=YES;
         textWidthConstraint = _bubbleTextSelfWidthConstraint;
@@ -90,7 +92,8 @@
         [_thumbImage setHidden:NO];
         [_leftActivity setHidden:NO];
         [_leftUsernameLabel setHidden:NO];
-
+        [_rightThumbButton setHidden:YES];
+        
         [_messageImage setHidden:NO];
         [dateLabel setTextAlignment:NSTextAlignmentLeft];
         currentActivity = _leftActivity;
@@ -98,40 +101,42 @@
         bubbleColor = UIColorFromRGB(0xe5e5e5);
         currentMessageImage.layer.borderColor = [bubbleColor CGColor];
         if(!snippet) {
-            currentBubbleText.textColor = [UIColor blackColor];
+            currentBubbleText.textColor = UIColorFromRGB(0x0);
         }
         self.bubbleTailSelf.hidden=YES;
         self.bubbleTail.hidden=NO;
         textWidthConstraint = _bubbleTextWidthConstraint;
     }
-    if(snippet) {
-        self.bubbleTailSelf.hidden=YES;
-        self.bubbleTail.hidden=YES;
-    }
-    dateLabel.text = [_uiService delayStringFrom:message.date]; //[dateFormatter stringFromDate:message.date];
-    
-    // Thumb image setup
-    if(object.mainImage.thumbImage != nil) {
-        currentThumb.image = object.mainImage.thumbImage;
-        [currentActivity setHidden:YES];
-    } else {
-        if(object == nil) {
-            currentThumb.image = [UIImage imageNamed:@"logoMob"];
-            currentThumb.contentMode = UIViewContentModeScaleAspectFit;
-        } else {
-            currentThumb.image = [CALImage getDefaultUserThumb];
+    if(!self.isTemplate) {
+        if(snippet) {
+            self.bubbleTailSelf.hidden=YES;
+            self.bubbleTail.hidden=YES;
         }
-        [currentActivity setHidden:NO];
-        [currentActivity startAnimating];
+        dateLabel.text = [_uiService delayStringFrom:message.date]; //[dateFormatter stringFromDate:message.date];
+        
+        // Thumb image setup
+        if(object.mainImage.thumbImage != nil) {
+            currentThumb.image = object.mainImage.thumbImage;
+            [currentActivity setHidden:YES];
+        } else {
+            if(object == nil) {
+                currentThumb.image = [UIImage imageNamed:@"logoMob"];
+                currentThumb.contentMode = UIViewContentModeScaleAspectFit;
+            } else {
+                currentThumb.image = [CALImage getDefaultUserThumb];
+            }
+            [currentActivity setHidden:NO];
+            [currentActivity startAnimating];
+        }
+        
+        // Decorating thumb
+        if(fromUser.isOnline) {
+            currentThumb.layer.borderColor = [_uiService colorForObject:fromUser].CGColor;
+        } else {
+            currentThumb.layer.borderColor = [UIColor whiteColor].CGColor;
+        }
+        currentUsernameLabel.text = fromUser.pseudo;
     }
-    
-    // Decorating thumb
-    User *fromUser = (User*)message.from;
-    if(fromUser.isOnline) {
-        currentThumb.layer.borderColor = [_uiService colorForObject:fromUser].CGColor;
-    }
-    currentUsernameLabel.text = fromUser.pseudo;
-    
     // Setting the message's textual contents
     NSString *msgText = nil;
     if(snippet) {
@@ -156,7 +161,7 @@
 
     // Setting the message's image content
     CALImage *image = message.mainImage;
-    if(image != nil && !snippet) {
+    if(image != nil && !snippet && !self.isTemplate) {
         currentMessageImage.hidden=NO;
         currentBubbleText.hidden=YES;
         [[TogaytherService imageService] load:image to:currentMessageImage thumb:NO];

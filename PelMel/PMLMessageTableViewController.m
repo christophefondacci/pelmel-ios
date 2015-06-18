@@ -15,15 +15,30 @@
 #import "HPGrowingTextView.h"
 #import "PMLSnippetTableViewController.h"
 #import "PMLFakeViewController.h"
-#import <MBProgressHUD.h>
 #import "PhotoPreviewViewController.h"
 #import "MKNumberBadgeView.h"
 #import "PMLChatLoaderView.h"
 #import "PMLChatInputBarView.h"
 #import "ChatViewCell.h"
+#import "PMLManagedMessage.h"
+#import "PMLThreadMessageProvider.h"
+#import "PMLConversationMessageProvider.h"
+#import "PMLManagedUser.h"
+#import "PMLChatLoaderViewCell.h"
+
+#define kRowIdLoad @"loader"
+#define kRowIdChatView @"chatView"
+
+#define kSectionCount 3
+#define kSectionLoadMore 0
+#define kSectionMessages 1
+#define kSectionLoadMoreFooter 2
 
 @interface PMLMessageTableViewController ()
 @property (nonatomic,retain) ChatView *templateChatView;
+@property (nonatomic,retain) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic,retain) DataService *dataService;
+@property (nonatomic,retain) NSCache *heightCache;
 @end
 
 @implementation PMLMessageTableViewController {
@@ -31,13 +46,10 @@
     MessageService *messageService;
     ImageService *imageService;
     UIService *uiService;
-    NSMutableDictionary *imageViewsMap;
     int messagesFetchedCount;
-    PMLChatLoaderView *_loaderView;
-    PMLChatInputBarView *_chatInputBarView;
+
     
-    NSMutableArray *_messagesList;
-    NSMutableDictionary *_messagesViewsKeys;
+    PMLChatLoaderView *_loaderView;
     
     BOOL _keyboardVisible;
     CGPoint _dragStartOffset;
@@ -46,12 +58,15 @@
     CALImage *_pendingPhotoUpload;
     
     // Height
-    int _totalHeight;
     NSInteger _currentPage;
+
+    // Scrolling
+    BOOL shouldScrollToBottom;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [TogaytherService applyCommonLookAndFeel:self];
@@ -64,28 +79,19 @@
     messageService = [TogaytherService getMessageService];
     imageService = [TogaytherService imageService];
     uiService = [TogaytherService uiService];
-    
-    _messagesList = [[NSMutableArray alloc] init];
-    _totalHeight = 0;
-    _messagesViewsKeys = [[NSMutableDictionary alloc] init];
+    _dataService = [TogaytherService dataService];
+    _managedObjectContext = [[TogaytherService storageService] managedObjectContext];
+    self.heightCache = [[NSCache alloc] init];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if([userDefaults objectForKey:@"pushProposedForMessages"] == nil) {
         [userDefaults setObject:@"Done" forKey:@"pushProposedForMessages"];
-        [messageService handlePushNotificationProposition:^(BOOL pushActive) {
-//            if(!pushActive) {
-//                NSString *title = NSLocalizedString(@"push.refused.title",@"");
-//                NSString *message = NSLocalizedString(@"push.refused.msg",@"");
-//                NSString *yes = NSLocalizedString(@"push.yes",@"");
-//                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:yes otherButtonTitles:nil,nil];
-//                [alert show];
-//            }
-        }];
+        [messageService handlePushNotificationProposition:^(BOOL pushActive) {}];
     }
     // Displaying wait message and animation
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    hud.labelText = NSLocalizedString(@"messages.wait", @"The wait message which appears while loading messages");
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = NSLocalizedString(@"messages.wait", @"The wait message which appears while loading messages");
     
     // Checking if we have an input, otherwise current user is our input
     if(_withObject == nil) {
@@ -93,41 +99,48 @@
     }
     
     // Allocating internal cache structures for storing image thumbs map
-    imageViewsMap =  [[NSMutableDictionary alloc] init];
     messagesFetchedCount = 0;
     
     if(_withObject==nil || _withObject == [userService getCurrentUser]) {
         self.navigationController.navigationBar.barTintColor = UIColorFromRGB(0x2d3134);
     }
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
-    [self.navigationController.navigationBar setTitleTextAttributes: @{
-                                                                       NSFontAttributeName:[UIFont fontWithName:PML_FONT_DEFAULT size:18],
-                                                                       NSForegroundColorAttributeName:[UIColor whiteColor]}];
-    CurrentUser *currentUser = [userService getCurrentUser];
+
+
+    [self.tableView registerNib:[UINib nibWithNibName:@"ChatViewCell" bundle:nil] forCellReuseIdentifier:kRowIdChatView];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLChatLoaderViewCell" bundle:nil] forCellReuseIdentifier:kRowIdLoad];
     
-    // Loading chat input bar view
-//    if(![_withObject.key isEqualToString:currentUser.key]) {
-//        _chatInputBarView = (PMLChatInputBarView*)[uiService loadView:@"PMLChatInputBarView"];
-//        _chatInputBarView.chatTextView.textContainerInset = UIEdgeInsetsMake(2, 0, 2, 0);
-//        _chatInputBarView.chatTextView.maxHeight = 120;
-//        _chatInputBarView.chatTextView.text = nil;
-//        self.tableView.tableFooterView = _chatInputBarView;
-//    } else {
-//        self.tableView.tableFooterView = [[UIView alloc] init];
-//    }
-    
-    if([_withObject.key isEqualToString:currentUser.key]) {
-        self.title = NSLocalizedString(@"messages.my.title",@"Title of the my messages view");
-    } else if([_withObject isKindOfClass:[User class]]){
-        self.title = ((User*)_withObject).pseudo;
-    } else if([_withObject isKindOfClass:[Place class]]){
-        NSString *title = NSLocalizedString(@"message.reviews.title", nil);
-        self.title = title;
+    self.templateChatView = (ChatView*)[[TogaytherService uiService] loadView:@"ChatView"];
+    self.templateChatView.isTemplate = YES;
+
+    // Message provider
+    if([self isAllMessageView] ) {
+        self.messageProvider = [[PMLThreadMessageProvider alloc] init];
+    } else {
+        self.messageProvider = [[PMLConversationMessageProvider alloc] initWithFromUserKey:_withObject.key toUserKey:[[userService getCurrentUser] key]];
+        [self readConversationWith:_withObject.key];
     }
     
-    [self.tableView registerNib:[UINib nibWithNibName:@"ChatViewCell" bundle:nil] forCellReuseIdentifier:@"chatView"];
-    self.templateChatView = (ChatView*)[[TogaytherService uiService] loadView:@"ChatView"];
-    
+    // Scrolling
+    shouldScrollToBottom = ![self isAllMessageView];
+
+}
+-(void)readConversationWith:(NSString*)itemKey {
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSManagedObjectContext *context = [[TogaytherService storageService] managedObjectContext];
+    NSEntityDescription *entity = [NSEntityDescription
+                                   entityForName:@"PMLManagedUser" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemKey == %@", itemKey];
+    [fetchRequest setPredicate:predicate];
+
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for(PMLManagedUser *user in fetchedObjects) {
+        user.unreadCount = @0;
+    }
+    if(![context save:&error]) {
+        NSLog(@"Failed to save messages as read: %@", error.localizedDescription);
+    }
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -142,15 +155,18 @@
         [self.navigationController.navigationBar setBarTintColor:[UIColor colorWithRed:0.92 green:0.46 blue:0 alpha:1]];
         self.navigationController.navigationBar.translucent=NO;
     }
-//    self.tableView.estimatedRowHeight = 122;
-//    self.tableView.rowHeight = UITableViewAutomaticDimension;
-    // Disabled for now as table view might handle this natively
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [self configureChatInput];
     
     [[TogaytherService uiService] setProgressView:self.view];
     [self refreshContents];
+}
+- (void)scrollToBottom {
+    [self.tableView setContentOffset:CGPointMake(0,self.tableView.contentSize.height-self.tableView.bounds.size.height)];
+}
+-(void)viewDidLayoutSubviews {
+    if(shouldScrollToBottom) {
+        shouldScrollToBottom = NO;
+        [self scrollToBottom];
+    }
 }
 -(void)viewDidAppear:(BOOL)animated {
     [self.navigationController setToolbarHidden:YES];
@@ -161,20 +177,13 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:PML_NOTIFICATION_PUSH_RECEIVED object:nil];
 }
 - (void)viewWillDisappear:(BOOL)animated {
-    [_chatInputBarView.chatTextView resignFirstResponder];
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-#pragma mark - Chat Button
--(void)configureChatInput {
-    [_chatInputBarView.sendButton addTarget:self action:@selector(sendMsg:) forControlEvents:UIControlEventTouchUpInside];
-    [_chatInputBarView.sendButton setTitle:NSLocalizedString(@"message.action.send",@"Send") forState:UIControlStateNormal];
-    _chatInputBarView.sendButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-    [imageService registerTappable:_chatInputBarView.addPhotoButton forViewController:self callback:self];
-}
+
 #pragma mark - Notifications
 - (void)appBecameActive:(NSNotification*)notification {
     [self refreshContents];
@@ -188,49 +197,155 @@
     } else if([_withObject isKindOfClass:[CALObject class]]){
         [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
     }
+    [self refreshTable];
+}
+- (void)refreshTable {
+    NSError *error;
+    if(![[self.messageProvider fetchedResultsController:self.managedObjectContext delegate:self ] performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        [uiService alertError];
+    }
+
 }
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return kSectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    id  sectionInfo =
+    [[[self.messageProvider fetchedResultsController:self.managedObjectContext delegate:self ] sections] objectAtIndex:0];
+    NSInteger maxRows = [self.messageProvider numberOfResults];
+    NSInteger sectionRows = [sectionInfo numberOfObjects];
+    NSInteger msgRows = MIN(sectionRows,maxRows);
+
+    switch(section) {
+        case kSectionLoadMore:
+            return [self isAllMessageView] ? 0 : (msgRows == maxRows ? 1 : 0);
+        case kSectionMessages:
+            return msgRows;
+        case kSectionLoadMoreFooter:
+            return [self isAllMessageView] ? (msgRows == maxRows ? 1 : 0) : 0;
+
+    }
+    return 0;
+
     // Return the number of rows in the section.
-    return _messagesList.count;
+//    return _messagesList.count;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ChatViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"chatView" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:(indexPath.section == kSectionMessages ?   kRowIdChatView : kRowIdLoad) forIndexPath:indexPath];
+//    NSLog(@"Displaying cell %ld" ,(long)indexPath.row);
     
-    // Configure the cell...
-    [self configureChatView:cell.chatView forRow:indexPath.row];
+    switch(indexPath.section) {
+        case kSectionLoadMore:
+        case kSectionLoadMoreFooter:
+            [self configureLoaderView:(PMLChatLoaderViewCell*)cell];
+            break;
+        case kSectionMessages:
+            [self configureChatView:(ChatViewCell*)cell forRow:indexPath];
+    }
+
+ 
     return cell;
 }
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [self isAllMessageView];
+}
+- (Message*)messageFromIndexPath:(NSIndexPath*)indexPath {
+    if(![self isAllMessageView]) {
+        NSInteger rows = [self tableView:self.tableView numberOfRowsInSection:kSectionMessages];
+        return [self.messageProvider messageFromIndexPath:[NSIndexPath indexPathForRow:rows-(indexPath.row+1) inSection:0]];
+    } else {
+        return [self.messageProvider messageFromIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+    }
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
+    Message *message = [self messageFromIndexPath:indexPath];
+    PMLMessageTableViewController *targetController = (PMLMessageTableViewController*)[uiService instantiateViewController:SB_ID_MESSAGES];
+    [targetController setWithObject:message.from];
+    if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
+        [self.navigationController pushViewController:targetController animated:YES];
+    } else {
+        [self.parentMenuController.navigationController pushViewController:targetController animated:YES];
+    }
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    Message *message = [_messagesList objectAtIndex:indexPath.row];
-    NSInteger height = [self.templateChatView setup:message forObject:message.from snippet:[self isAllMessageView]];
-    return height;
+//    NSLog(@"Height for row: %ld",(long)indexPath.row);
+
+    switch(indexPath.section) {
+        case kSectionLoadMore:
+        case kSectionLoadMoreFooter:
+            return 48;
+        case kSectionMessages:
+            if([self isAllMessageView]) {
+                return 86;
+            } else {
+                NSNumber *height = [self.heightCache objectForKey:indexPath];
+                if(height == nil) {
+                    Message *message = [self messageFromIndexPath:indexPath];
+                    NSInteger rowHeight = [self.templateChatView setup:message forObject:message.from snippet:[self isAllMessageView]];
+                    height = [NSNumber numberWithLong:rowHeight];
+                    [self.heightCache setObject:height forKey:indexPath];
+                }
+                return height.floatValue;
+            }
+    }
+    return 0;
 }
 -(BOOL) isAllMessageView {
     CurrentUser *currentUser = [userService getCurrentUser];
     BOOL isAllMessageView = [_withObject.key isEqualToString:currentUser.key];
     return isAllMessageView;
 }
--(void) configureChatView:(ChatView*)view forRow:(NSInteger)row {
+- (void)configureLoaderView:(PMLChatLoaderViewCell*)cell {
+    _loaderView = cell.chatLoaderView;
     
-    Message *message = [_messagesList objectAtIndex:row];
+    // Localized labels for loading message and load button
+    _loaderView.loaderLabel.text = NSLocalizedString(@"message.loading",@"Loading");
+    [_loaderView.loadMessagesButton setTitle:NSLocalizedString(@"message.loadEarlier",@"Load earlier messages") forState:UIControlStateNormal];
+    
+    // Load button action
+    [_loaderView.loadMessagesButton addTarget:self action:@selector(loadEarlierMessages:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Adjusting loading message width to fit text
+    CGSize fitSize = [_loaderView.loaderLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width, _loaderView.loaderLabel.bounds.size.height)];
+    _loaderView.loaderWidthConstraint.constant = fitSize.width;
+    
+    
+    // Positioning at offset
+    _loaderView.loadMessagesButton.hidden=NO;
+}
+-(void) configureChatView:(ChatViewCell*)cell forRow:(NSIndexPath*)indexPath {
+    if([self isAllMessageView]) {
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    } else {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }
+    // Configure the cell...
+    cell.backgroundColor = BACKGROUND_COLOR;
+    if([self isAllMessageView]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    } else {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+
+    Message *message = [self messageFromIndexPath:indexPath];
     CurrentUser *currentUser = [userService getCurrentUser];
     BOOL isAllMessageView = [self isAllMessageView];
     
     // Setuping chat view
+    ChatView *view = cell.chatView;
     [view setup:message forObject:message.from snippet:isAllMessageView];
     if(isAllMessageView) {
-        [view.detailMessageButton setHidden:NO];
-        [view.detailMessageButton addTarget:self action:@selector(showMessageTapped:) forControlEvents:UIControlEventTouchUpInside];
+        view.bubbleText.userInteractionEnabled=NO;
+        view.bubbleTextSelf.userInteractionEnabled=NO;
     }
     
     // Handling tap on thumb
@@ -245,18 +360,18 @@
     }
     
     // Handling photo tap
-    view.messageImage.tag = row;
+    view.messageImage.tag = indexPath.row;
     [view.messageImage addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(messageImageTapped:)]];
     view.messageImage.userInteractionEnabled=YES;
-    view.messageImageSelf.tag = row;
+    view.messageImageSelf.tag = indexPath.row;
     [view.messageImageSelf addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(messageImageTapped:)]];
     view.messageImageSelf.userInteractionEnabled=YES;
     
-    if(row % 2 > 0) {
-        view.backgroundColor = UIColorFromRGB(0x343c42);
-    } else {
+//    if(indexPath.row % 2 > 0) {
+//        view.backgroundColor = UIColorFromRGB(0x343c42);
+//    } else {
         view.backgroundColor = UIColorFromRGB(0x272a2e);
-    }
+//    }
     // Setuping image
     CALImage *image = message.from.mainImage;
     [imageService load:image to:view.thumbImage thumb:YES];
@@ -333,161 +448,131 @@
 
 #pragma mark - Message management
 - (void)loadMessageFailed {
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+//    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [uiService alertError];
 }
 - (void) autoFillMessageList {
-    if(_messagesList.count == 0) {
-        id<PMLInfoProvider> provider  = [[TogaytherService uiService] infoProviderFor:_withObject];
-        NSString *msg;
-        if([_withObject isKindOfClass:[User class]]) {
-            CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
-            // Only if not listing our own message (inbox)
-            if(![currentUser.key isEqualToString:_withObject.key]) {
-                msg = NSLocalizedString(@"message.user.dummyMessage", @"Intro message");
-            }
-        } else if([_withObject isKindOfClass:[Place class]]) {
-            msg = NSLocalizedString(@"message.place.dummyMessage", @"Intro message");
-        } else if([_withObject isKindOfClass:[Event class]]) {
-            msg = NSLocalizedString(@"message.event.dummyMessage", @"Intro message");
-        }
-        if(msg != nil) {
-            Message *message = [[Message alloc] init];
-            message.from = nil;
-            message.date = [NSDate new];
-            NSString *title = [provider title];
-            message.text = [NSString stringWithFormat:msg,title == nil ? @"" : title ];
-            _messagesList = [@[message] mutableCopy];
-        }
-    }
+//    if(_messagesList.count == 0) {
+//        id<PMLInfoProvider> provider  = [[TogaytherService uiService] infoProviderFor:_withObject];
+//        NSString *msg;
+//        if([_withObject isKindOfClass:[User class]]) {
+//            CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+//            // Only if not listing our own message (inbox)
+//            if(![currentUser.key isEqualToString:_withObject.key]) {
+//                msg = NSLocalizedString(@"message.user.dummyMessage", @"Intro message");
+//            }
+//        } else if([_withObject isKindOfClass:[Place class]]) {
+//            msg = NSLocalizedString(@"message.place.dummyMessage", @"Intro message");
+//        } else if([_withObject isKindOfClass:[Event class]]) {
+//            msg = NSLocalizedString(@"message.event.dummyMessage", @"Intro message");
+//        }
+//        if(msg != nil) {
+//            Message *message = [[Message alloc] init];
+//            message.from = nil;
+//            message.date = [NSDate new];
+//            NSString *title = [provider title];
+//            message.text = [NSString stringWithFormat:msg,title == nil ? @"" : title ];
+//            _messagesList = [@[message] mutableCopy];
+//        }
+//    }
 }
 - (void)messagesFetched:(NSArray *)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize {
-    for(Message *msg in messagesList) {
-        Message *prevMsg = [_messagesViewsKeys objectForKey:msg.key];
-        if(prevMsg == nil) {
-            [_messagesList addObject:msg];
-            [_messagesViewsKeys setObject:msg forKey:msg.key];
-        }
-    }
-    _messagesList = [[_messagesList sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
-        Message *m1 = (Message*)obj1;
-        Message *m2 = (Message*)obj2;
-        return [m1.key compare:m2.key];
-    }] mutableCopy];
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    [self.tableView reloadData];
-    if(![self isAllMessageView]) {
-        [self.tableView setContentOffset:CGPointMake(0,self.tableView.contentSize.height-self.tableView.bounds.size.height)];
-    }
+
+//    for(Message *msg in messagesList) {
+//        Message *prevMsg = [_messagesViewsKeys objectForKey:msg.key];
+//        if(prevMsg == nil) {
+//            [_messagesList addObject:msg];
+//            [_messagesViewsKeys setObject:msg forKey:msg.key];
+//        }
+//    }
+//    _messagesList = [[_messagesList sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
+//        Message *m1 = (Message*)obj1;
+//        Message *m2 = (Message*)obj2;
+//        return [m1.key compare:m2.key];
+//    }] mutableCopy];
+//    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [self refreshTable ];
+//    if(![self isAllMessageView]) {
+//        [self.tableView setContentOffset:CGPointMake(0,self.tableView.contentSize.height-self.tableView.bounds.size.height)];
+//    }
 }
-- (void)messageSent:(Message *)message {
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+//- (void)messageSent:(Message *)message {
+//    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     
     // Adding a new bubble for this sent message
-    [_messagesList addObject:message];
+//    [_messagesList addObject:message];
     
-    [_chatInputBarView.chatTextView endEditing:YES];
-    if(message.mainImage==nil) {
-        _chatInputBarView.chatTextView.text=nil;
-    }
-    if(![_withObject isKindOfClass:[User class]]){
-        _withObject.reviewsCount++;
-    }
+//    [_chatInputBarView.chatTextView endEditing:YES];
+//    if(message.mainImage==nil) {
+//        _chatInputBarView.chatTextView.text=nil;
+//    }
+//    if(![_withObject isKindOfClass:[User class]]){
+//        _withObject.reviewsCount++;
+//    }
     
     // Adding this view
-    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_messagesList.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
-}
-- (void)messageSendFailed {
-    NSLog(@"Message sent failed");
-    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    [[TogaytherService uiService] alertWithTitle:@"message.sending.failed.title" text:@"message.sending.failed"];
-}
+//    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_messagesList.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
+//}
+//- (void)messageSendFailed {
+//    NSLog(@"Message sent failed");
+//    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+//    [[TogaytherService uiService] alertWithTitle:@"message.sending.failed.title" text:@"message.sending.failed"];
+//}
 
 #pragma mark - Message actions
-- (void)sendMsg:(id)sender {
-    [self sendMessage:_chatInputBarView.chatTextView.text withImage:nil];
-}
+//- (void)sendMsg:(id)sender {
+//    [self sendMessage:_chatInputBarView.chatTextView.text withImage:nil];
+//}
 
--(void)sendMessage:(NSString*)text withImage:(CALImage*)image {
-    //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //    hud.mode = MBProgressHUDModeIndeterminate;
-    //    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
-    
-    if([_withObject isKindOfClass:[User class]]) {
-        [messageService sendMessage:text toUser:(User*)_withObject withImage:image messageCallback:self];
-    } else {
-        [messageService postComment:text forObject:_withObject withImage:image messageCallback:self];
-    }
-    [_chatInputBarView.chatTextView resignFirstResponder];
-}
--(void)showMessageTapped:(id)sender {
-    UIButton *button = (UIButton*)sender;
-    
-    UIView *view = button.superview;
-    while(view != nil ) {
-        if([view isKindOfClass:[ChatView class]]) {
-            ChatView *chatView = (ChatView*)view;
-            Message *message = chatView.getMessage;
-            //        [self performSegueWithIdentifier:@"showDetailMessage" sender:message.from];
-            PMLMessageTableViewController *targetController = (PMLMessageTableViewController*)[uiService instantiateViewController:SB_ID_MESSAGES];
-            [targetController setWithObject:message.from];
-            if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
-                [self.navigationController pushViewController:targetController animated:YES];
-            } else {
-                [self.parentMenuController.navigationController pushViewController:targetController animated:YES];
-            }
-            return ;
-        }
-        view = view.superview;
-    }
-}
+//-(void)sendMessage:(NSString*)text withImage:(CALImage*)image {
+//    //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    //    hud.mode = MBProgressHUDModeIndeterminate;
+//    //    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
+//    
+//    if([_withObject isKindOfClass:[User class]]) {
+//        [messageService sendMessage:text toUser:(User*)_withObject withImage:image messageCallback:self];
+//    } else {
+//        [messageService postComment:text forObject:_withObject withImage:image messageCallback:self];
+//    }
+//    [_chatInputBarView.chatTextView resignFirstResponder];
+//}
+
 -(void)showFromUserTapped:(UIView*)sender {
-    ChatView *chatView = (ChatView*)sender.superview;
-    NSLog(@"Height : %d - Width : %d - Font : %@ - %d",(int)chatView.bubbleText.bounds.size.height,(int)chatView.bubbleText.bounds.size.width,chatView.bubbleText.font.fontName,(int)chatView.bubbleText.font.pointSize);
-    if([_withObject.key isEqualToString:[[userService getCurrentUser] key]]) {
-        [self showMessageTapped:sender];
-    } else {
-        UIButton *button = (UIButton*)sender;
-        UIView *view = button.superview;
-        if([view isKindOfClass:[ChatView class]]) {
-            ChatView *chatView = (ChatView*)view;
-            Message *message = chatView.getMessage;
-            
-            [[TogaytherService uiService] presentSnippetFor:message.from opened:YES root:YES];
-        }
+//    ChatView *chatView = (ChatView*)sender.superview;
+//    NSLog(@"Height : %d - Width : %d - Font : %@ - %d",(int)chatView.bubbleText.bounds.size.height,(int)chatView.bubbleText.bounds.size.width,chatView.bubbleText.font.fontName,(int)chatView.bubbleText.font.pointSize);
+    UIButton *button = (UIButton*)sender;
+    UIView *view = button.superview;
+    if([view isKindOfClass:[ChatView class]]) {
+        ChatView *chatView = (ChatView*)view;
+        Message *message = chatView.getMessage;
+        
+        [[TogaytherService uiService] presentSnippetFor:message.from opened:YES root:YES];
     }
+
 }
 
 -(void)dismiss:(id)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
--(void)closeMenu:(id)sender {
-    if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
-        //        PMLMenuManagerController *menuController = self.parentMenuController;
-        //        [self.parentMenuController dismissControllerSnippet];
-        [[TogaytherService uiService] presentSnippetFor:nil opened:NO];
-    } else {
-        [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
-        [self.parentMenuController dismissControllerMenu:YES];
-    }
-}
+
 - (void)messageImageTapped:(UIGestureRecognizer*)recognizer {
     // Tag is the index of image
     NSMutableArray *images = [[NSMutableArray alloc] init];
     int index = 0;
     CALImage *initialImage=nil;
-    for(Message *m in _messagesList) {
-        if(m.mainImage != nil) {
+    Message *msg= [self messageFromIndexPath:[NSIndexPath indexPathForRow:recognizer.view.tag inSection:kSectionMessages]];
+//    for(Message *m in _messagesList) {
+        if(msg.mainImage != nil) {
             // Adding to image list
-            [images addObject:m.mainImage];
+            [images addObject:msg.mainImage];
             
             // If this is our current tapped index, we save the corresponding index of the image array
             if(index == recognizer.view.tag) {
-                initialImage = m.mainImage;
+                initialImage = msg.mainImage;
             }
         }
         index++;
-    }
+//    }
     // Building new imaged from images
     Imaged *imaged = [[Imaged alloc] init];
     imaged.mainImage = [images objectAtIndex:0];
@@ -499,8 +584,108 @@
     [self.navigationController pushViewController:photoController animated:YES];
 }
 
-#pragma mark - PMLImagePickerCallback
-- (void)imagePicked:(CALImage *)image {
-    [self sendMessage:@"" withImage:image];
+
+-(void)loadEarlierMessages:(id)sender {
+//    _loaderView.loadMessagesButton.hidden=YES;
+    NSInteger offsetFromBottom = self.tableView.contentSize.height - self.tableView.contentOffset.y;
+    [self.messageProvider setNumberOfResults:[self.messageProvider numberOfResults]+20];
+    [self.heightCache removeAllObjects];
+    [self refreshTable];
+    [self.tableView reloadData];
+    if(![self isAllMessageView]) {
+        [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height-offsetFromBottom)];
+    }
 }
+#pragma mark - fetchedResultsController
+
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
+//    [self.tableView beginUpdates];
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    
+//    UITableView *tableView = self.tableView;
+//    NSIndexPath *shiftedNewIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row inSection:kSectionMessages];
+//    NSIndexPath *shiftedIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:kSectionMessages];
+//    NSInteger maxResults = [self.messageProvider numberOfResults];
+//
+//    switch(type) {
+//            
+//        case NSFetchedResultsChangeInsert:
+//            if(newIndexPath.row < maxResults) {
+//                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:shiftedNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            }
+//            if (rowsMessages == controller.fetchRequest.fetchLimit) {
+//                //Determining which row to delete depends on your sort descriptors
+//                [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:controller.fetchRequest.fetchLimit - 1 inSection:kSectionMessages]] withRowAnimation:UITableViewRowAnimationFade];
+//            }
+//            break;
+//            
+//        case NSFetchedResultsChangeDelete:
+//            if(indexPath.row < maxResults) {
+//                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:shiftedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            }
+//            break;
+//            
+//        case NSFetchedResultsChangeUpdate:
+//            if(indexPath.row < maxResults) {
+//                [self.tableView cellForRowAtIndexPath:shiftedIndexPath];
+//            }
+//            break;
+//            
+//        case NSFetchedResultsChangeMove:
+//            if(shiftedIndexPath.row< maxResults) {
+//                [tableView deleteRowsAtIndexPaths:[NSArray
+//                                                   arrayWithObject:shiftedIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//            }
+//            if(newIndexPath.row<maxResults) {
+//                [tableView insertRowsAtIndexPaths:[NSArray
+//                                                   arrayWithObject:shiftedNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+//                if (rowsMessages == controller.fetchRequest.fetchLimit) {
+//                    //Determining which row to delete depends on your sort descriptors
+//                    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForRow:controller.fetchRequest.fetchLimit - 1 inSection:kSectionMessages]] withRowAnimation:UITableViewRowAnimationFade];
+//                }
+//            }
+//            break;
+//
+//    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    
+    switch(type) {
+            
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        default:
+            break;
+    }
+}
+
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    
+//    id  sectionInfo =
+//    [[[self.messageProvider fetchedResultsController:self.managedObjectContext delegate:self ] sections] objectAtIndex:0];
+//    NSInteger maxRows = [self.messageProvider numberOfResults];
+//    NSInteger sectionRows = [sectionInfo numberOfObjects];
+//    
+//    if(!hasLoadingFooter && [self isAllMessageView] && sectionRows > maxRows) {
+//        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:kSectionLoadMoreFooter]] withRowAnimation:UITableViewRowAnimationFade];
+//    }
+//    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+//    [self.tableView endUpdates];
+    [self refreshContents];
+    [self.tableView reloadData];
+}
+
 @end
