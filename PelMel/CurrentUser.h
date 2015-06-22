@@ -13,7 +13,7 @@
 
 @property (strong) NSString *login;
 @property (strong) NSString *password;
-@property (strong) NSString *token;
+@property (nonatomic,strong) NSString *token;
 @property (nonatomic,assign) BOOL isImperial;
 
 /**

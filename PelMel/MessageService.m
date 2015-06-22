@@ -132,7 +132,7 @@
     if(user == nil) {
         return;
     }
-    if(self.messageFetchInProgress) {
+    if(self.messageFetchInProgress && [userKey isEqualToString:user.key]) {
         return;
     } else {
         self.messageFetchInProgress = YES;
@@ -160,7 +160,7 @@
     [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Processing JSON message response
         [self processJsonMessage:(NSDictionary*)responseObject messageCallback:callback forUserKey:userKey];
-        if(![userKey isEqualToString:user.key]) {
+        if(userKey != nil && ![userKey isEqualToString:user.key]) {
             [self markReadConversationWithUser:userKey];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -310,39 +310,20 @@
     
     // Processing remaining messages
     for(NSString *key in messagesKeys) {
-        Message *m = [messagesKeyMap objectForKey:key];
-        PMLManagedMessage *msg = [NSEntityDescription
-                                  insertNewObjectForEntityForName:@"PMLManagedMessage"
-                                  inManagedObjectContext:context];
-        msg.messageKey = m.key;
-        msg.messageDate = m.date;
-        msg.toItemKey = m.toItemKey;
-        msg.messageImageKey = m.mainImage.key;
-        msg.messageImageThumbUrl = m.mainImage.thumbUrl;
-        msg.messageImageUrl = m.mainImage.imageUrl;
-        msg.messageText = m.text;
-        msg.isUnread = [NSNumber numberWithBool:m.unread];
         
-        // Getting from user
+        // Getting message
+        Message *m = [messagesKeyMap objectForKey:key];
+        
+        // Fetching or creating user
         PMLManagedUser *user = [messagesFromKeysMap objectForKey:m.from.key];
         if(user == nil) {
             user = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
             [messagesFromKeysMap setObject:user forKey:m.from.key];
             NSLog(@"Storing user %@ in CoreData",m.key);
         }
-        user.itemKey = m.from.key;
-        user.name=((User*)m.from).pseudo;
-        CALImage *image = ((User*)m.from).mainImage;
-        user.imageUrl = image.imageUrl;
-        user.thumbUrl = image.thumbUrl;
-        if(m.unread) {
-            user.unreadCount = user.unreadCount == nil ? @0 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
-        }
-        if(user.lastMessageDate == nil || [msg.messageDate compare:user.lastMessageDate] == NSOrderedDescending) {
-            user.lastMessageDate = msg.messageDate;
-        }
-        msg.from = user;
-        NSLog(@"Storing message %@ in CoreData",m.key);
+        
+        // Storing message in the underlying store
+        [self storeMessage:m fromUser:user context:context];
     }
     // Saving entries
     if(messagesKeys.count>0) {
@@ -402,6 +383,68 @@
     }
 
 }
+
+-(void)storeMessage:(Message*)m {
+    NSManagedObjectContext *context = [[TogaytherService storageService] managedObjectContext];
+    
+    // Fetching message user from store
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PMLManagedUser"
+                         inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemKey = %@",m.from.key];
+    [fetchRequest setPredicate:predicate];
+    
+    // Fetching objects (should be 0 or 1)
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    PMLManagedUser *user;
+    if(fetchedObjects.count == 1) {
+        user = [fetchedObjects objectAtIndex:0];
+    } else {
+        user = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
+        NSLog(@"Storing user %@ in CoreData",m.key);
+    }
+
+    if(m.toItemKey==nil) {
+        m.toItemKey = m.to.key;
+    }
+    // Storing message
+    [self storeMessage:m fromUser:user context:context];
+    if(![context save:&error]) {
+        NSLog(@"Error saving message: %@",error.localizedDescription);
+    }
+    
+}
+-(void)storeMessage:(Message*)m fromUser:(PMLManagedUser*)user context:(NSManagedObjectContext*)context {
+    PMLManagedMessage *msg = [NSEntityDescription
+                              insertNewObjectForEntityForName:@"PMLManagedMessage"
+                              inManagedObjectContext:context];
+    msg.messageKey = m.key;
+    msg.messageDate = m.date;
+    msg.toItemKey = m.toItemKey;
+    msg.messageImageKey = m.mainImage.key;
+    msg.messageImageThumbUrl = m.mainImage.thumbUrl;
+    msg.messageImageUrl = m.mainImage.imageUrl;
+    msg.messageText = m.text;
+    msg.isUnread = [NSNumber numberWithBool:m.unread];
+    
+    // Getting from user
+
+    user.itemKey = m.from.key;
+    user.name=((User*)m.from).pseudo;
+    CALImage *image = ((User*)m.from).mainImage;
+    user.imageUrl = image.imageUrl;
+    user.thumbUrl = image.thumbUrl;
+    if(m.unread) {
+        user.unreadCount = user.unreadCount == nil ? @0 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
+    }
+    if(user.lastMessageDate == nil || [msg.messageDate compare:user.lastMessageDate] == NSOrderedDescending) {
+        user.lastMessageDate = msg.messageDate;
+    }
+    msg.from = user;
+    NSLog(@"Storing message %@ in CoreData",m.key);
+}
 -(NSNumber*)idFromKey:(NSString*)key {
     NSString *maxIdStr = [key substringFromIndex:4];
     NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
@@ -457,6 +500,9 @@
         [msg setDate:[NSDate date]];
         [msg setMainImage:image];
 
+        // Storing message locally
+        [self storeMessage:msg];
+        
         [callback messageSent:msg];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [callback messageSendFailed];

@@ -23,6 +23,15 @@
 #import <AFNetworkActivityLogger.h>
 #import <iRate.h>
 
+typedef void (^Callback)(CALObject *obj);
+
+@interface AppDelegate()
+
+// For deep linking state
+@property (nonatomic,retain) CALObject *deepLinkObject;
+@property (nonatomic,copy) Callback deepLinkCallback;
+
+@end
 @implementation AppDelegate
 
 static BOOL isStarted;
@@ -101,6 +110,8 @@ static BOOL isStarted;
         [[UITableViewCell appearance] setPreservesSuperviewLayoutMargins:NO];
     }
     
+    // Registering ourselves as a listener for deeplinking
+    [[TogaytherService dataService] registerDataListener:self];
     return YES;
 }
 							
@@ -232,14 +243,24 @@ static BOOL isStarted;
     if(key != nil) {
         CALObject *object = [[TogaytherService dataService] objectForKey:key];
         if(object != nil) {
+            self.deepLinkObject = object;
             if(isSearch) {
                 // Search
-                searchCallback(object);
+                self.deepLinkCallback = searchCallback;
             } else {
                 // Overview
-                overviewCallback(object);
+                self.deepLinkCallback = overviewCallback;
             }
         }
+    }
+}
+
+#pragma mark - PMLDataListener
+- (void)didLoadData:(ModelHolder *)modelHolder silent:(BOOL)isSilent {
+    if(self.deepLinkObject != nil) {
+        self.deepLinkCallback(self.deepLinkObject);
+        self.deepLinkObject = nil;
+        self.deepLinkCallback = nil;
     }
 }
 @end

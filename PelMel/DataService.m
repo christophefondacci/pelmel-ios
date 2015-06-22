@@ -509,7 +509,12 @@
             // Filling arguments
             NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
             [params setObject:object.key forKey:@"id"];
-            [params setObject:user.token forKey:@"nxtpUserToken"];
+            NSString *token = user.token;
+            if(token == nil) {
+                // Trying with last known token
+                token = [[NSUserDefaults standardUserDefaults] objectForKey:PML_PROP_USER_LAST_TOKEN];
+            }
+            [params setObject:token forKey:@"nxtpUserToken"];
             [params setObject:(isRetina ? @"true" : @"false") forKey:@"highRes"];
             [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.latitude] forKey:@"lat"];
             [params setObject:[NSString stringWithFormat:@"%f",location.coordinate.longitude] forKey:@"lng"];
@@ -991,11 +996,14 @@
     }];
 }
 -(void)cycleBanner {
-    
+    CurrentUser *user = [userService getCurrentUser];
+    if(user.token == nil) {
+        return;
+    }
     if(_modelHolder.banner == nil || _modelHolder.lastBannerDate == nil ||[[NSDate date] timeIntervalSinceDate:_modelHolder.lastBannerDate]>kPMLBannerCycleTimeSeconds) {
         // Building URL
         NSString *url = [NSString stringWithFormat:kBannersCycleUrlFormat,togaytherServer];
-        CurrentUser *user = [userService getCurrentUser];
+
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         

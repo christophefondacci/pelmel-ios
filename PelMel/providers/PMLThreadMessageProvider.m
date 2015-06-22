@@ -33,6 +33,7 @@
     
     
     if (_fetchedResultsController != nil) {
+        _fetchedResultsController.delegate = delegate;
         return _fetchedResultsController;
     }
     

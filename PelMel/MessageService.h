@@ -56,6 +56,9 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 // Sends an instant message to the given user
 -(void)sendMessage:(NSString*)message toUser:(User*)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback;
 
+// Stores the message
+-(void)storeMessage:(Message*)m;
+
 // Posts a comment on the given item 
 - (void)postComment:(NSString *)comment forObject:(CALObject *)object withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback;
 

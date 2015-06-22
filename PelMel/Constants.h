@@ -13,6 +13,7 @@
 
 #define PML_PROP_PUSH_ENABLED @"pushEnabled"
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
+#define PML_PROP_USER_LAST_TOKEN @"pmlUserLastToken"
 
 #define PML_NOTIFICATION_PUSH_RECEIVED @"pmlPushReceived"
 #define PML_NOTIFICATION_PRODUCTS_LOADED @"pmlProductsLoaded"  // Products definition loaded from App Store

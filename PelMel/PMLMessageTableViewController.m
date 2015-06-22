@@ -62,6 +62,7 @@
 
     // Scrolling
     BOOL shouldScrollToBottom;
+    BOOL controllerContentChanged;
 }
 
 - (void)viewDidLoad {
@@ -178,6 +179,7 @@
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    [self.messageProvider fetchedResultsController:self.managedObjectContext delegate:nil];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -584,6 +586,9 @@
     [self.navigationController pushViewController:photoController animated:YES];
 }
 
+- (void)messageSent:(Message *)message {
+    
+}
 
 -(void)loadEarlierMessages:(id)sender {
 //    _loaderView.loadMessagesButton.hidden=YES;
@@ -602,6 +607,7 @@
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
     // The fetch controller is about to start sending change notifications, so prepare the table view for updates.
 //    [self.tableView beginUpdates];
+    controllerContentChanged = NO;
 }
 
 
@@ -612,9 +618,14 @@
 //    NSIndexPath *shiftedIndexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:kSectionMessages];
 //    NSInteger maxResults = [self.messageProvider numberOfResults];
 //
-//    switch(type) {
-//            
-//        case NSFetchedResultsChangeInsert:
+    switch(type) {
+
+        case NSFetchedResultsChangeInsert:
+        case NSFetchedResultsChangeDelete:
+        case NSFetchedResultsChangeMove:
+            controllerContentChanged = YES;
+        default:
+            break;
 //            if(newIndexPath.row < maxResults) {
 //                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:shiftedNewIndexPath] withRowAnimation:UITableViewRowAnimationFade];
 //            }
@@ -651,24 +662,24 @@
 //            }
 //            break;
 //
-//    }
+    }
 }
 
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id )sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
     
-    switch(type) {
-            
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-            break;
-        default:
-            break;
-    }
+//    switch(type) {
+//            
+//        case NSFetchedResultsChangeInsert:
+//            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//            
+//        case NSFetchedResultsChangeDelete:
+//            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 
@@ -684,8 +695,10 @@
 //    }
 //    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
 //    [self.tableView endUpdates];
-    [self refreshContents];
-    [self.tableView reloadData];
+    if(controllerContentChanged) {
+        [self refreshContents];
+        [self.tableView reloadData];
+    }
 }
 
 @end
