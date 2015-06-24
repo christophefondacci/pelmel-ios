@@ -214,22 +214,12 @@
 
 - (void)loadingStart {
     dispatch_async(dispatch_get_main_queue(), ^{
-        _activityView.hidden = NO;
-        [_activityView startAnimating];
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _loaderAction.menuActionView.alpha=0.6;
-        } completion:nil];
-
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     });
 }
 - (void)loadingEnd {
     dispatch_async(dispatch_get_main_queue(), ^{
-        [UIView animateWithDuration:0.5 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _loaderAction.menuActionView.alpha = 0;
-        } completion:^(BOOL finished) {
-            [_activityView stopAnimating];
-            _activityView.hidden=YES;
-        }];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     });
 }
 -(void)actionTapped:(UIGestureRecognizer*)sender {

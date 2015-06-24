@@ -76,6 +76,7 @@
     MenuAction *_menuAddAction;
     MenuAction *_menuRefreshAction;
     MenuAction *_menuMyPositionAction;
+    MenuAction *_menuCheckinAction;
     BOOL _zoomAnimation;
     
     // Context filters
@@ -153,6 +154,7 @@
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuAddAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuRefreshAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuMyPositionAction];
+    [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuCheckinAction];
     
     [self.parentMenuController addObserver:self forKeyPath:@"contextObject" options:NSKeyValueObservingOptionNew context:NULL];
     
@@ -295,6 +297,12 @@
     _menuMyPositionAction.rightMargin = 5;
     _menuMyPositionAction.topMargin = 84+24; //topMargin = 50;
     
+    
+    _menuCheckinAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnCheckin"] pctWidth:0 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+        [[TogaytherService actionManager] execute:PMLActionTypeCheckin onObject:nil];
+    }];
+    _menuCheckinAction.leftMargin = 5;
+    _menuCheckinAction.topMargin = _menuMyPositionAction.topMargin; //topMargin
 }
 
 -(CLLocationDistance)distanceFromCornerPoint {

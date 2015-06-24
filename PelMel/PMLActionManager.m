@@ -61,6 +61,7 @@
 @property (nonatomic,retain) UIAlertView *addressAlertView;
 @property (nonatomic,retain) CLGeocoder *geocoder;
 
+@property (nonatomic) PMLActionType selectorActionType;
 @end
 @implementation PMLActionManager
 
@@ -108,34 +109,53 @@
 -(void)registerCheckinAction {
     PopupAction *checkinAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         NSLog(@"CHECKIN");
-        if(object.key != nil) {
-            [self.uiService.menuManagerController.menuManagerDelegate loadingStart];
+        [self.uiService.menuManagerController.menuManagerDelegate loadingStart];
+        
+        // Get the checkin object
+        Place *checkinObj = nil;
+        if([object isKindOfClass:[Place class]]) {
+            checkinObj = (Place*)object;
+        } else if([object isKindOfClass:[Event class]]) {
+            checkinObj = ((Event*)object).place;
+        }
+        if(checkinObj == nil) {
             
-            // Get the checkin object
-            Place *checkinObj = nil;
-            if([object isKindOfClass:[Place class]]) {
-                checkinObj = (Place*)object;
-            } else if([object isKindOfClass:[Event class]]) {
-                checkinObj = ((Event*)object).place;
-            }
+            // Building place selection controller
+            PMLItemSelectionTableViewController *itemSelectionController = (PMLItemSelectionTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_ITEM_SELECTION];
+            itemSelectionController.targetType = PMLTargetTypePlace;
+            itemSelectionController.delegate = self;
+            itemSelectionController.sortStrategy = PMLSortStrategyNearby;
+            itemSelectionController.filterStrategy = PMLFilterCheckin;
+            itemSelectionController.titleKey = @"checkin.placeSelector.title";
+            self.selectorActionType = PMLActionTypeCheckin;
             
-            if(checkinObj != nil) {
-                // Are we checked in here?
-                if([_userService isCheckedInAt:checkinObj ]) {
-                    [_userService checkout:checkinObj completion:^(id obj) {
-                        [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
-                    }];
-                } else {
-                    [_userService checkin:checkinObj completion:^(id obj) {
-                        [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
-                    }];
-                }
-            }
+            // Wrapping inside a nav controller
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemSelectionController];
+            
+            // Preparing transition
+            [_uiService.menuManagerController presentModal:navController];
+//            [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:itemSelectionController animated:YES];
+            
+        } else {
+            [self checkin:checkinObj];
         }
     }];
     [self registerAction:checkinAction forType:PMLActionTypeCheckin];
 }
-
+-(void)checkin:(Place*)checkinObj {
+    if(checkinObj != nil) {
+        // Are we checked in here?
+        if([_userService isCheckedInAt:checkinObj ]) {
+            [_userService checkout:checkinObj completion:^(id obj) {
+                [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
+            }];
+        } else {
+            [_userService checkin:checkinObj completion:^(id obj) {
+                [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
+            }];
+        }
+    }
+}
 -(void)registerLikeAction {
     PopupAction *likeAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         NSLog(@"LIKE");
@@ -183,7 +203,14 @@
         PMLItemSelectionTableViewController *itemSelectionController = (PMLItemSelectionTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_ITEM_SELECTION];
         itemSelectionController.targetType = PMLTargetTypePlace;
         itemSelectionController.delegate = self;
-        [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:itemSelectionController animated:YES];
+        itemSelectionController.sortStrategy = PMLSortStrategyName;
+        self.selectorActionType = PMLActionTypeAddEvent;
+        // Wrapping inside a nav controller
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemSelectionController];
+        
+        // Preparing transition
+        [_uiService.menuManagerController presentModal:navController];
+//        [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:itemSelectionController animated:YES];
     }];
     [self registerAction:addEventAction forType:PMLActionTypeAddEvent];
 }
@@ -825,10 +852,20 @@
 
 #pragma mark - PMLItemSelectionDelegate
 
-- (void)itemSelected:(CALObject *)item {
-    // For now only event creation could land here,
-    // Need to place some state if we reuse item selector in other contexts
-    [self execute:PMLActionTypeEditEvent onObject:item];
+- (BOOL)itemSelected:(CALObject *)item {
+    switch(self.selectorActionType) {
+        case PMLActionTypeAddEvent:
+            // For now only event creation could land here,
+            // Need to place some state if we reuse item selector in other contexts
+            [self execute:PMLActionTypeEditEvent onObject:item];
+            break;
+        case PMLActionTypeCheckin:
+            [self checkin:(Place*)item];
+            break;
+        default:
+            break;
+    }
+    return YES;
 }
 
 @end

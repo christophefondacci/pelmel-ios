@@ -165,7 +165,10 @@
 "calendar.title.placeholder"="Name (optional)";
 "cancel"="Cancel";
 "checkin.globalEnabled"="Check in and get noticed!";
+"checkin.noplace.title"="You are too far!";
+"checkin.noplace"="We cannot find any place eligible for check in. Please go closer to a PELMEL hangout, or verify your location services / connection.";
 "checkin.placeEnabled"="Check in here and let the fun begin!";
+"checkin.placeSelector.title"="Where are you now?";
 "city.label"="City";
 "city.withbars"="%d gay places";
 "counters.arehere"="%d are here";

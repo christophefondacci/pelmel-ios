@@ -166,7 +166,10 @@
 "calendar.title.placeholder"="Nom (facultatif)";
 "cancel"="Annuler";
 "checkin.globalEnabled"="Check in pour être remarqué !";
+"checkin.noplace.title"="Vous êtes trop loin!";
+"checkin.noplace"="Nous n'avons pu trouver aucun lieu éligible au check in. Veuillez vous placer plus près d'un lieu référencé par PELMEL ou vérifiez vos services de localisation ou votre connexion.";
 "checkin.placeEnabled"="Check in ici et c'est parti !";
+"checkin.placeSelector.title"="Où vous trouvez-vous ?";
 "city.label"="Ville";
 "city.withbars"="%d lieux gays";
 "counters.arehere"="%d y sont";
