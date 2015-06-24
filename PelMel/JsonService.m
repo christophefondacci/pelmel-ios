@@ -613,14 +613,18 @@
     
     // Building image array
     BOOL isFirst = YES;
+    NSMutableArray *otherImages = [[NSMutableArray alloc] init];
     for(NSDictionary *jsonOtherImage in media) {
         CALImage *image = [imageService convertJsonImageToImage:jsonOtherImage];
         if(isFirst) {
             [event setMainImage:image];
         } else {
-            [event.otherImages addObject:image];
+            [otherImages addObject:image];
         }
         isFirst = NO;
+    }
+    if(otherImages.count>0) {
+        event.otherImages = otherImages;
     }
     
     // Building the place data bean
