@@ -97,7 +97,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
         case kSectionButton:
-            [[TogaytherService actionManager] execute:PMLActionTypeAddPlaceBanner onObject:nil];
+            [[TogaytherService actionManager] execute:PMLActionTypeAddBanner onObject:nil];
             break;
     }
 }

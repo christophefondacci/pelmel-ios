@@ -513,7 +513,7 @@
             [[TogaytherService actionManager] execute:PMLActionTypeAddEvent onObject:nil];
             break;
         case kActionBanner:
-            [[TogaytherService actionManager] execute:PMLActionTypeAddPlaceBanner onObject:nil];
+            [[TogaytherService actionManager] execute:PMLActionTypeAddBanner onObject:nil];
             break;
         case kActionCancel:
             break;

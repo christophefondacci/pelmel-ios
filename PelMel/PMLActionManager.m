@@ -363,10 +363,10 @@
                 lat = object.lat;
                 lng = object.lng;
             }
-            [_dataService createBannerAtLatitude:user.lat longitude:user.lng forObject:(Place*)object];
+            [_dataService createBannerAtLatitude:user.lat longitude:user.lng forObject:object];
         }
     }];
-    [self registerAction:addBannerAction forType:PMLActionTypeAddPlaceBanner];
+    [self registerAction:addBannerAction forType:PMLActionTypeAddBanner];
 }
 -(void)registerEditBannerAction {
     PopupAction *editBannerAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {

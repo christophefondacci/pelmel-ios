@@ -287,11 +287,12 @@
     [self.tableView reloadData];
 }
 #pragma mark - PMLItemSelectionDelegate
-- (void)itemSelected:(CALObject *)item {
+- (BOOL)itemSelected:(CALObject *)item {
     if(item != nil) {
         self.banner.targetObject = item;
         self.banner.targetUrl = nil;
         [self.tableView reloadData];
     }
+    return YES;
 }
 @end

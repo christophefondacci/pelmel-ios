@@ -466,6 +466,6 @@
     return NSLocalizedString(@"snippet.button.report", @"Report a problem");
 }
 -(PMLActionType)advertisingActionType {
-    return PMLActionTypeAddPlaceBanner;
+    return PMLActionTypeAddBanner;
 }
 @end
