@@ -173,4 +173,10 @@
  * @return the sorted array containing same elements in a different order
  */
 -(NSArray*)sortObjectsForDisplay:(NSArray*)objects;
+/**
+ * Sort objects with images first, then others preserving original ordering
+ * @param objects the source array to sort
+ * @return an array of CAL objects sorted with image first, then others, preserving initial ordering within each category
+ */
+-(NSArray*)sortObjectsWithImageFirst:(NSArray*)objects;
 @end

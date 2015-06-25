@@ -426,7 +426,7 @@
     if(textObjName!=nil) {
         msg = [NSString stringWithFormat:msg,textObjName];
     }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
     [alert show];
 }
 - (void)alertError {
@@ -572,5 +572,16 @@
         }
     }];
     return sortedObjects;
+}
+-(NSArray*)sortObjectsWithImageFirst:(NSArray*)objects {
+    return [objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        CALObject *o1 = (CALObject*)obj1;
+        CALObject *o2 = (CALObject*)obj2;
+        if(o1.mainImage == nil && o2.mainImage !=nil) {
+            return NSOrderedDescending;
+        } else {
+            return [objects indexOfObject:obj1] > [objects indexOfObject:obj2] ? NSOrderedDescending : NSOrderedAscending;
+        }
+    }];
 }
 @end

@@ -17,7 +17,7 @@
 #define kSectionLikedPlaces 2
 
 @interface PMLCalObjectPhotoProvider()
-
+@property (nonatomic,retain) UIService *uiService;
 @property (nonatomic,retain) CALObject *object;
 @property (nonatomic,retain) NSArray *likers;
 @property (nonatomic,retain) NSArray *likedPlaces;
@@ -33,7 +33,7 @@
 {
     self = [super init];
     if (self) {
-
+        self.uiService = [TogaytherService uiService];
         self.object = object;
         // Listening to data changes
         [[TogaytherService dataService] registerDataListener:self];
@@ -42,10 +42,10 @@
 }
 - (void)setObject:(CALObject *)object {
     _object = object;
-    self.infoProvider = [[TogaytherService uiService] infoProviderFor:object];
-    self.likers = object.likers;
+    self.infoProvider = [self.uiService infoProviderFor:object];
+    self.likers = [self.uiService sortObjectsWithImageFirst:object.likers];
     if([object isKindOfClass:[User class]]) {
-        self.likedPlaces = ((User*)object).likedPlaces;
+        self.likedPlaces = [self.uiService sortObjectsWithImageFirst:((User*)object).likedPlaces];
     }
     // Building an array with all images
     self.images = [[NSMutableArray alloc] init];

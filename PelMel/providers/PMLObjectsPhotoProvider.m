@@ -19,15 +19,7 @@
     self = [super init];
     if (self) {
         self.objects = [objects copy];
-        self.objects = [self.objects sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-            CALObject *o1 = (CALObject*)obj1;
-            CALObject *o2 = (CALObject*)obj2;
-            if(o1.mainImage == nil && o2.mainImage !=nil) {
-                return NSOrderedDescending;
-            } else {
-                return [self.objects indexOfObject:obj1] > [self.objects indexOfObject:obj2] ? NSOrderedDescending : NSOrderedAscending;
-            }
-        }];
+        self.objects = [[TogaytherService uiService] sortObjectsWithImageFirst:self.objects];
         self.title = NSLocalizedString(@"grid.title.nearbyUsers", @"grid.title.nearbyUsers");
     }
     return self;

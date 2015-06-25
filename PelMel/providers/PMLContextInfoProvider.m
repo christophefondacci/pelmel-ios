@@ -202,6 +202,10 @@
     if(parentView.subviews.count == 0) {
         // Initializing thumb controller
         _thumbController = (PMLThumbCollectionViewController*)[_uiService instantiateViewController:@"thumbCollectionCtrl"];
+        
+        // Setting up max cells
+        _thumbController.hasShowMore = YES;
+        
         [controller addChildViewController:_thumbController];
         [parentView addSubview:_thumbController.view];
         [_thumbController didMoveToParentViewController:controller];
@@ -210,24 +214,27 @@
     _thumbController.thumbProvider = [self thumbsProvider];
     _thumbController.actionDelegate = self;
     _thumbController.view.frame = parentView.bounds;
-    _thumbController.size = @30;
+//    _thumbController.size = @30;
     [_thumbController.collectionView reloadData];
 
 }
 
 #pragma mark - ThumbPreviewActionDelegate
 - (void)thumbsTableView:(PMLThumbCollectionViewController*)controller thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {
-//    id selectedItem = [[controller.thumbProvider itemsForType:type] objectAtIndex:thumbIndex];
-//    [_uiService presentSnippetFor:(CALObject*)selectedItem opened:YES];
-    
-    PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
-    NSArray *objects = _modelHolder.users.count > 0 ? _modelHolder.users : _modelHolder.places;
-    PMLObjectsPhotoProvider *provider = [[PMLObjectsPhotoProvider alloc] initWithObjects:objects];
-    if(_modelHolder.searchedText != nil) {
-        provider.title = NSLocalizedString(@"grid.title.searchResults", @"grid.title.searchResults");
+    if(type!= PMLThumbShowMore) {
+        id selectedItem = [[controller.thumbProvider itemsForType:type] objectAtIndex:thumbIndex];
+        [_uiService presentSnippetFor:(CALObject*)selectedItem opened:YES];
+    } else {
+        
+        PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
+        NSArray *objects = _modelHolder.users.count > 0 ? _modelHolder.users : _modelHolder.places;
+        PMLObjectsPhotoProvider *provider = [[PMLObjectsPhotoProvider alloc] initWithObjects:objects];
+        if(_modelHolder.searchedText != nil) {
+            provider.title = NSLocalizedString(@"grid.title.searchResults", @"grid.title.searchResults");
+        }
+        photosController.provider = provider;
+        [controller.navigationController pushViewController:photosController animated:YES];
+        [[[TogaytherService uiService] menuManagerController] openCurrentSnippet:YES];
     }
-    photosController.provider = provider;
-    [controller.navigationController pushViewController:photosController animated:YES];
-    [[[TogaytherService uiService] menuManagerController] openCurrentSnippet:YES];
 }
 @end
