@@ -166,9 +166,9 @@
 "cancel"="Cancel";
 "checkin.globalEnabled"="Check in and get noticed!";
 "checkin.noplace.title"="You are too far!";
-"checkin.noplace"="We cannot find any place eligible for check in. Please go closer to a PELMEL hangout, or verify your location services / connection.";
+"checkin.noplace"="You seem to be too far away to check in to a PELMEL hangout (or your location services are disabled).";
 "checkin.placeEnabled"="Check in here and let the fun begin!";
-"checkin.placeSelector.title"="Where are you now?";
+"checkin.placeSelector.title"="Check in below";
 "city.label"="City";
 "city.withbars"="%d gay places";
 "counters.arehere"="%d are here";
@@ -420,7 +420,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "settings.placeTypes.title"="Place filters";
 "settings.settings"="Settings";
 
-"snippet.likes"="%d likes";
+
 "snippet.activity"="Nearby users";
 "snippet.button.report"="Report or mark as closed";
 "snippet.button.reportForDeletion"="Request removal";
@@ -433,6 +433,8 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "snippet.event.inUsers"="%d will attend";
 "snippet.header.topPlaces"="Popular places";
 "snippet.header.activities"="Recent activity";
+"snippet.likes"="%d likes";
+"snippet.showMore"="more";
 "snippet.title.counters"="Related";
 "snippet.title.events"="Upcoming Events";
 "snippet.title.events.user"="He will attend";
