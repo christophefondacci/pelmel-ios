@@ -27,12 +27,12 @@
 #import "UIPelmelTitleView.h"
 #import "PMLTextTableViewCell.h"
 
-#define kSectionCount 5
-#define kSectionBirthday 0
-#define kSectionMeasure 1
-#define kSectionDescriptions 3
-#define kSectionPhotos 2
-#define kSectionTags 4
+#define kSectionCount 6
+#define kSectionBirthday 1
+#define kSectionMeasure 2
+#define kSectionDescriptions 4
+#define kSectionPhotos 3
+#define kSectionTags 5
 
 #define kRowCountBirthday 1
 #define kRowCountMeasure 0
@@ -225,7 +225,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 5;
+    return kSectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -281,9 +281,15 @@
             case kSectionMeasure:
                 cellId = measureCell;
                 break;
-            case kSectionDescriptions:
-                cellId = indexPath.row == userService.getCurrentUser.descriptions.count ? addCell :descCell;
+            case kSectionDescriptions: {
+                NSInteger row = indexPath.row;
+                // We remove 1 if picker is before current row to ignore this picker row
+                if(_pickerIndexPath.section == kSectionDescriptions && _pickerIndexPath.row<indexPath.row) {
+                    row--;
+                }
+                cellId = row == userService.getCurrentUser.descriptions.count ? addCell :descCell;
                 break;
+            }
             case kSectionPhotos:
                 // Last row of photo section is the add button, otherwise it is a photo cell
                 cellId = indexPath.row == [self imageCount] ? addCell : photosCell;
@@ -352,7 +358,13 @@
                     NSString *language = [NSString stringWithFormat:@"language.%@",[d.languageCode lowercaseString]];
                     [descCell.editButton setTitle:NSLocalizedString(language,@"language") forState:UIControlStateNormal];
                     descCell.descriptionLabel.text = d.descriptionText;
-                    descCell.editButton.tag = indexPath.row;
+
+                    // Tagging the button by its corresponding description index, ignoring the picker row if displayed before current row
+                    if(_pickerIndexPath.section == kSectionDescriptions && _pickerIndexPath.row< indexPath.row) {
+                        descCell.editButton.tag = indexPath.row-1;
+                    } else {
+                        descCell.editButton.tag = indexPath.row;
+                    }
                     [descCell.editButton addTarget:self action:@selector(descriptionEditTapped:) forControlEvents:UIControlEventTouchUpInside];
                     //            UITableDescriptionViewCell *descCell=(UITableDescriptionViewCell*)cell;
                     //            descCell.inputView = picker;
@@ -453,12 +465,16 @@
                 if(![self isAddRow:indexPath]) {
                     Description *desc = [self getDescriptionFor:indexPath.row];
                     [self performSegueWithIdentifier:@"editDesc" sender:desc];
+                } else {
+                    [self addDescriptionTapped];
                 }
                 break;
             }
             case kSectionPhotos: {
-                if(indexPath.row >0) {
+                if(![self isAddRow:indexPath]) {
                     [self performSegueWithIdentifier:@"previewPhoto" sender:self];
+                } else {
+                    [self addPhotoTapped];
                 }
                 break;
             }
@@ -624,6 +640,8 @@
                 return 64;
             case kSectionTags:
                 return 35;
+            case kSectionBirthday:
+                return 44;
         }
         return [super tableView:tableView heightForRowAtIndexPath:indexPath];
     }
@@ -684,9 +702,13 @@
         switch (indexPath.section) {
             case kSectionDescriptions: {
                 CurrentUser *user = [userService getCurrentUser];
-                if(user.descriptions.count > indexPath.row-1) {
+                NSInteger row = indexPath.row;
+                if(_pickerIndexPath.section == kSectionDescriptions && _pickerIndexPath.row < indexPath.row) {
+                    row--;
+                }
+                if(user.descriptions.count > row) {
                     // Description will be removed when validating profile
-                    [user.descriptions removeObjectAtIndex:indexPath.row-1];
+                    [user.descriptions removeObjectAtIndex:row];
                 }
                 // Delete the row from the data source
                 if(user.descriptions.count>0) {
@@ -945,6 +967,7 @@
     if(![self hasDescriptionFor:currentLanguage]) {
         [user addDescription:@"" language:currentLanguage];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:user.descriptions.count inSection:kSectionDescriptions]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:user.descriptions.count-1 inSection:kSectionDescriptions]] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 -(void)editNicknameTapped:(UIButton*)button {
