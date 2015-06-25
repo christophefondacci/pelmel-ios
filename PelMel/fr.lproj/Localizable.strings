@@ -167,9 +167,9 @@
 "cancel"="Annuler";
 "checkin.globalEnabled"="Check in pour être remarqué !";
 "checkin.noplace.title"="Vous êtes trop loin!";
-"checkin.noplace"="Nous n'avons pu trouver aucun lieu éligible au check in. Veuillez vous placer plus près d'un lieu référencé par PELMEL ou vérifiez vos services de localisation ou votre connexion.";
+"checkin.noplace"="Vous semblez être trop loin pour faire un checkin sur un lieu PELMEL (ou vos services de localisation sont désactivés).";
 "checkin.placeEnabled"="Check in ici et c'est parti !";
-"checkin.placeSelector.title"="Où vous trouvez-vous ?";
+"checkin.placeSelector.title"="Check in ci-dessous";
 "city.label"="Ville";
 "city.withbars"="%d lieux gays";
 "counters.arehere"="%d y sont";
@@ -436,6 +436,7 @@
 "snippet.header.topPlaces"="Lieux populaires";
 "snippet.header.activities"="Activité récente";
 "snippet.likes"="%d aiment";
+"snippet.showMore"="Plus";
 "snippet.title.counters"="Connexe";
 "snippet.title.events"="Evènements à venir";
 "snippet.title.events.user"="Il y sera";

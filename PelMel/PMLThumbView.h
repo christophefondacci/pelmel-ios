@@ -14,5 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *onlineImage;
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *bottomDecorator;
+@property (weak, nonatomic) IBOutlet UILabel *showMoreLabel;
 
 @end

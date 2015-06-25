@@ -65,6 +65,11 @@ static NSString * const reuseIdentifier = @"Cell";
     self.collectionView.backgroundColor = [UIColor clearColor];
     self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.showsHorizontalScrollIndicator = NO;
+    
+    // Bounce
+    if(self.hasShowMore) {
+        self.collectionView.bounces = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -88,11 +93,20 @@ static NSString * const reuseIdentifier = @"Cell";
     return [[self.thumbProvider thumbTypes] count];
 }
 
-
+- (NSInteger)maxItems {
+    if(!self.hasShowMore) {
+        return MAXFLOAT;
+    } else {
+        CGRect bounds = self.view.bounds;
+        return (bounds.size.width / self.size.intValue);
+    }
+}
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     PMLThumbType type = [self.thumbProvider thumbTypeAtIndex:section];
     NSInteger count = [[self.thumbProvider itemsForType:type] count ];
-    return count>0 ? MAX(count,2) : count;
+    NSInteger itemsCount = count>0 ? MAX(count,2) : count;
+    
+    return MIN(itemsCount,[self maxItems]);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -130,9 +144,15 @@ static NSString * const reuseIdentifier = @"Cell";
     
 
     // Configuring image
-    cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
-    CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
-    [_imageService load:image to:cell.thumbImage thumb:YES];
+    BOOL isShowMore = self.hasShowMore && (indexPath.row == [self maxItems]-1);
+    if(isShowMore) {
+        cell.thumbImage.image = nil; //[UIImage imageNamed:@"dotdotdot"];
+        cell.thumbImage.backgroundColor = BACKGROUND_COLOR; //[UIColor blackColor]; // UIColorFromRGB(0xf0801f);
+    } else {
+        cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
+        CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
+        [_imageService load:image to:cell.thumbImage thumb:YES];
+    }
     // Setting rounded corners (or not)
     BOOL rounded= YES;
     if([self.thumbProvider respondsToSelector:@selector(rounded)]) {
@@ -153,15 +173,24 @@ static NSString * const reuseIdentifier = @"Cell";
         cell.thumbImage.layer.borderWidth=0;
     }
     
-    // Configuring decorator
-    if([self.thumbProvider respondsToSelector:@selector(colorFor:forType:)]) {
-        cell.thumbImage.layer.borderColor = [self.thumbProvider colorFor:indexPath.row forType:type].CGColor;
-    } else {
-        cell.thumbImage.layer.borderColor = [UIColor whiteColor].CGColor;
-    }
+
     
     // Configuring bottom right decorator
-    cell.titleLabel.text = [self.thumbProvider titleAtIndex:indexPath.row forType:type];
+    if(!isShowMore) {
+        cell.titleLabel.text = [self.thumbProvider titleAtIndex:indexPath.row forType:type];
+        cell.showMoreLabel = nil;
+        // Configuring decorator
+        if([self.thumbProvider respondsToSelector:@selector(colorFor:forType:)] && !isShowMore) {
+            cell.thumbImage.layer.borderColor = [self.thumbProvider colorFor:indexPath.row forType:type].CGColor;
+        } else {
+            cell.thumbImage.layer.borderColor = [UIColor whiteColor] .CGColor;
+        }
+    } else {
+        cell.titleLabel.text = nil;
+        cell.showMoreLabel.text = NSLocalizedString(@"snippet.showMore", @"Show more");
+        cell.thumbImage.layer.borderColor = [[UIColor whiteColor ] colorWithAlphaComponent:0.5f].CGColor; //FromRGB(0x70ff01).CGColor;
+        cell.showMoreLabel.textColor =[UIColor whiteColor];
+    }
     
     // Custom font size if supported
     if([self.thumbProvider respondsToSelector:@selector(fontSize)]) {
@@ -226,6 +255,9 @@ static NSString * const reuseIdentifier = @"Cell";
         // We check that user did not tap our "extra spacing cell"
         if(items.count>indexPath.row) {
             // Firing action
+            if(self.hasShowMore && (indexPath.row == [self maxItems]-1)) {
+                type = PMLThumbShowMore;
+            }
             [self.actionDelegate thumbsTableView:self thumbTapped:(int)indexPath.row forThumbType:type];
         }
     }

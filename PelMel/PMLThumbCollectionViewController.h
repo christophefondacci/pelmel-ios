@@ -20,5 +20,6 @@
 @property (nonatomic) id<PMLThumbsPreviewProvider> thumbProvider;
 @property (nonatomic) id<PMLThumbsCollectionViewActionDelegate> actionDelegate;
 @property (nonatomic) NSNumber *size; // Square size of cells (defaults to 50)
+@property (nonatomic) BOOL hasShowMore; // Limits the items to visible view and displays a "see all" last thumb
 
 @end

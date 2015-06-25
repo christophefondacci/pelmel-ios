@@ -8,6 +8,7 @@
     <customFonts key="customFonts">
         <mutableArray key="OpenSans-Regular.ttf">
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -57,16 +58,28 @@
                     <color key="textColor" red="1" green="0.99997437" blue="0.99999129769999995" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="9tU-py-RA5">
+                    <rect key="frame" x="11" y="19" width="47" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="znr-k0-quo"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="IvW-Db-erL" secondAttribute="trailing" id="34G-e0-TR0"/>
                 <constraint firstAttribute="centerX" secondItem="1b4-yv-bo9" secondAttribute="centerX" id="8L0-pj-Ta6"/>
+                <constraint firstItem="9tU-py-RA5" firstAttribute="leading" secondItem="1b4-yv-bo9" secondAttribute="leading" constant="5" id="BnT-6F-awx"/>
                 <constraint firstAttribute="trailing" secondItem="1b4-yv-bo9" secondAttribute="trailing" constant="9" id="KC7-Og-qn4"/>
+                <constraint firstItem="9tU-py-RA5" firstAttribute="trailing" secondItem="1b4-yv-bo9" secondAttribute="trailing" constant="-6" id="Nko-I9-AD5"/>
                 <constraint firstAttribute="trailing" secondItem="EI6-MK-eIF" secondAttribute="trailing" id="Pvi-jq-3Lj"/>
                 <constraint firstItem="IvW-Db-erL" firstAttribute="leading" secondItem="Ch1-aD-2T8" secondAttribute="leading" id="Q1y-qg-8RH"/>
                 <constraint firstItem="1b4-yv-bo9" firstAttribute="top" secondItem="Ch1-aD-2T8" secondAttribute="top" id="X5p-OI-Znw"/>
                 <constraint firstItem="1b4-yv-bo9" firstAttribute="leading" secondItem="Ch1-aD-2T8" secondAttribute="leading" constant="9" id="eQA-Da-yJW"/>
+                <constraint firstItem="9tU-py-RA5" firstAttribute="centerY" secondItem="1b4-yv-bo9" secondAttribute="centerY" constant="-3" id="ebu-M5-fr2"/>
                 <constraint firstAttribute="bottom" secondItem="1b4-yv-bo9" secondAttribute="bottom" constant="12" id="m6U-ID-lK7"/>
                 <constraint firstItem="EI6-MK-eIF" firstAttribute="top" secondItem="Ch1-aD-2T8" secondAttribute="top" id="sEX-63-mGA"/>
                 <constraint firstAttribute="width" secondItem="Ch1-aD-2T8" secondAttribute="height" multiplier="1:1" id="tnK-kZ-5oM"/>
@@ -82,6 +95,7 @@
             </variation>
             <connections>
                 <outlet property="bottomDecorator" destination="EI6-MK-eIF" id="nff-gU-Pc7"/>
+                <outlet property="showMoreLabel" destination="9tU-py-RA5" id="M9N-FA-Hea"/>
                 <outlet property="thumbImage" destination="1b4-yv-bo9" id="33d-BI-g2n"/>
                 <outlet property="titleLabel" destination="IvW-Db-erL" id="2g2-nU-hOV"/>
             </connections>
