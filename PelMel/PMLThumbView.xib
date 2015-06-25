@@ -59,7 +59,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="9tU-py-RA5">
-                    <rect key="frame" x="11" y="19" width="47" height="14"/>
+                    <rect key="frame" x="11" y="19" width="48" height="14"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="znr-k0-quo"/>
                     </constraints>
@@ -74,7 +74,7 @@
                 <constraint firstAttribute="centerX" secondItem="1b4-yv-bo9" secondAttribute="centerX" id="8L0-pj-Ta6"/>
                 <constraint firstItem="9tU-py-RA5" firstAttribute="leading" secondItem="1b4-yv-bo9" secondAttribute="leading" constant="5" id="BnT-6F-awx"/>
                 <constraint firstAttribute="trailing" secondItem="1b4-yv-bo9" secondAttribute="trailing" constant="9" id="KC7-Og-qn4"/>
-                <constraint firstItem="9tU-py-RA5" firstAttribute="trailing" secondItem="1b4-yv-bo9" secondAttribute="trailing" constant="-6" id="Nko-I9-AD5"/>
+                <constraint firstItem="9tU-py-RA5" firstAttribute="trailing" secondItem="1b4-yv-bo9" secondAttribute="trailing" constant="-5" id="Nko-I9-AD5"/>
                 <constraint firstAttribute="trailing" secondItem="EI6-MK-eIF" secondAttribute="trailing" id="Pvi-jq-3Lj"/>
                 <constraint firstItem="IvW-Db-erL" firstAttribute="leading" secondItem="Ch1-aD-2T8" secondAttribute="leading" id="Q1y-qg-8RH"/>
                 <constraint firstItem="1b4-yv-bo9" firstAttribute="top" secondItem="Ch1-aD-2T8" secondAttribute="top" id="X5p-OI-Znw"/>
