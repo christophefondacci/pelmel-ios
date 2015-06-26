@@ -1946,7 +1946,7 @@
                         <viewControllerLayoutGuide type="bottom" id="eQ0-ZW-HUW"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="AXh-8r-e7r">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="700"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -4832,10 +4832,10 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="hap-7x-4U2"/>
+        <segue reference="hk5-7z-xvn"/>
         <segue reference="enc-VM-87F"/>
         <segue reference="fnn-3s-KqK"/>
-        <segue reference="PYU-04-aVk"/>
-        <segue reference="hk5-7z-xvn"/>
         <segue reference="eKE-7K-Ihn"/>
     </inferredMetricsTieBreakers>
 </document>

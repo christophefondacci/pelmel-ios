@@ -159,10 +159,10 @@
 }
 - (void)scrollToBottom {
     [self.tableView setContentOffset:CGPointMake(0,self.tableView.contentSize.height-self.tableView.bounds.size.height)];
+    shouldScrollToBottom = NO;
 }
 -(void)viewDidLayoutSubviews {
     if(shouldScrollToBottom) {
-        shouldScrollToBottom = NO;
         [self scrollToBottom];
     }
 }
@@ -189,6 +189,7 @@
 }
 -(void)pushNotificationReceived:(NSNotification*)notification {
     [self refreshContents];
+    shouldScrollToBottom = YES;
 }
 - (void)refreshContents {
     if([_withObject isKindOfClass:[User class]]) {
@@ -485,7 +486,7 @@
 }
 
 - (void)messageSent:(Message *)message {
-    
+    [self scrollToBottom];
 }
 
 -(void)loadEarlierMessages:(id)sender {
@@ -588,6 +589,9 @@
         [self.heightCache removeAllObjects];
         [self refreshTable];
         [self.tableView reloadData];
+    if(shouldScrollToBottom) {
+        [self scrollToBottom];
+    }
 //    }
 }
 
