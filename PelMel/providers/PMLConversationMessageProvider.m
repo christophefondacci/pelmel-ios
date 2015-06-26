@@ -48,7 +48,8 @@
                                    entityForName:@"PMLManagedMessage" inManagedObjectContext:managedObjectContext];
     [fetchRequest setEntity:entity];
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"from.itemKey = %@ or toItemKey = %@",self.fromItemKey,self.fromItemKey];
+    CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@) or (toItemKey = %@ and from.itemKey=%@)",self.fromItemKey,user.key,self.fromItemKey,user.key];
     [fetchRequest setPredicate:predicate];
     [fetchRequest setFetchLimit:self.numberOfResults];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc]

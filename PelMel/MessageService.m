@@ -191,8 +191,13 @@
     }];
     
 }
+- (NSString *)maxMessageKey {
+    CurrentUser *user = [userService getCurrentUser];
+    NSString *key = [NSString stringWithFormat:@"%@.%@",kSettingMaxMessageId,user.key];
+    return key;
+}
 - (NSNumber *)maxMessageId {
-    NSNumber *maxMessageId = [_userDefaults objectForKey:kSettingMaxMessageId];
+    NSNumber *maxMessageId = [_userDefaults objectForKey:[self maxMessageKey]];
     if(maxMessageId == nil) {
         maxMessageId = @0;
     }
@@ -299,7 +304,7 @@
     entity = [NSEntityDescription entityForName:@"PMLManagedUser"
                                               inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
-    predicate = [NSPredicate predicateWithFormat:@"itemKey IN %@",messagesFromKeys];
+    predicate = [NSPredicate predicateWithFormat:@"currentUserKey=%@ and itemKey IN %@",currentUser.key,messagesFromKeys];
     [fetchRequest setPredicate:predicate];
     
     // Fetching objects and storing users in a map
@@ -334,7 +339,7 @@
     
     // Registering ID
     if([[self maxMessageId] longValue]<[maxId longValue]) {
-        [_userDefaults setObject:maxId forKey:kSettingMaxMessageId];
+        [_userDefaults setObject:maxId forKey:[self maxMessageKey]];
     }
     
 //    
@@ -430,7 +435,7 @@
     msg.isUnread = [NSNumber numberWithBool:m.unread];
     
     // Getting from user
-
+    user.currentUserKey = [[[TogaytherService userService] getCurrentUser] key];
     user.itemKey = m.from.key;
     user.name=((User*)m.from).pseudo;
     CALImage *image = ((User*)m.from).mainImage;

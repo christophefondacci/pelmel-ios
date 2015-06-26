@@ -42,7 +42,7 @@
                                    entityForName:@"PMLManagedUser" inManagedObjectContext:managedObjectContext];
     [fetchRequest setEntity:entity];
     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemKey != %@", user.key];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"currentUserKey=%@ and itemKey != %@", user.key,user.key];
     [fetchRequest setPredicate:predicate];
 
     NSSortDescriptor *sort = [[NSSortDescriptor alloc]

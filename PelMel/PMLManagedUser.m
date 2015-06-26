@@ -2,7 +2,7 @@
 //  PMLManagedUser.m
 //  PelMel
 //
-//  Created by Christophe Fondacci on 17/06/2015.
+//  Created by Christophe Fondacci on 25/06/2015.
 //  Copyright (c) 2015 Christophe Fondacci. All rights reserved.
 //
 
@@ -18,6 +18,7 @@
 @dynamic imageUrl;
 @dynamic thumbUrl;
 @dynamic unreadCount;
+@dynamic currentUserKey;
 @dynamic messages;
 
 @end
