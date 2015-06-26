@@ -62,6 +62,8 @@
 "action.photo"="Photo";
 "action.report.done.title"="Report d'information";
 "action.report.done"="Votre notification a été enregistrée et sera revue très vite. Merci de votre contribution!";
+"action.report.deletion.title"="Supprimer cet évènement ?";
+"action.report.deletion.message"="Vous êtes sur le point de rapporter que cet évènement devrait être supprimé de nos listes. Est-ce vraiment ce que vous souhaitez faire ?";
 "action.report.title"="Actions disponibles";
 "action.report.abuse"="La photo contient un abus";
 "action.report.closed"="Ce lieu n'existe plus";
@@ -302,6 +304,7 @@
 "noresult.title"="Pas de résultat à proximité";
 "noresult.subtitle"="Tapez ici pour rechercher dans le monde entier";
 "noresult.searching"="Recherche en cours...";
+"ok"="OK";
 "overview.inUser"="Ils étaient là";
 "overview.likeUser"="Ils aiment";
 "overview.events"="Evènements à venir";

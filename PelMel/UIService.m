@@ -426,7 +426,7 @@
     if(textObjName!=nil) {
         msg = [NSString stringWithFormat:msg,textObjName];
     }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:NSLocalizedString(@"ok",@"ok") otherButtonTitles:nil];
     [alert show];
 }
 - (void)alertError {

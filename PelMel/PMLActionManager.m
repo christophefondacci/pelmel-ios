@@ -59,6 +59,7 @@
 @property (nonatomic,retain) UIActionSheet *descriptionActionSheet;
 @property (nonatomic,retain) UIActionSheet *addressActionSheet;
 @property (nonatomic,retain) UIAlertView *addressAlertView;
+@property (nonatomic,retain) UIAlertView *reportConfirmAlertView;
 @property (nonatomic,retain) CLGeocoder *geocoder;
 
 @property (nonatomic) PMLActionType selectorActionType;
@@ -346,7 +347,13 @@
 -(void)registerReportForDeletionAction {
     PopupAction *reportForDeletionAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         NSLog(@"REPORT FOR DELETION");
-        [_dataService sendReportFor:object reportType:PMLReportTypeRemovalRequest];
+        NSString *title = NSLocalizedString(@"action.report.deletion.title", @"title");
+        NSString *message = NSLocalizedString(@"action.report.deletion.message", @"message");
+        NSString *cancel = NSLocalizedString(@"cancel", @"cancel");
+        NSString *ok = NSLocalizedString(@"ok", @"ok");
+        self.modalActionObject = object;
+        _reportConfirmAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:ok, nil];
+        [_reportConfirmAlertView show];
     }];
     [self registerAction:reportForDeletionAction forType:PMLActionTypeReportForDeletion];
 }
@@ -800,54 +807,59 @@
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
     if(buttonIndex != [alertView cancelButtonIndex]) {
-        Place *place = (Place*)self.modalActionObject;
-        UITextField *textField = [alertView textFieldAtIndex:0];
-        NSString *address = textField.text;
-        
-        // Adding cancel action that reverts address and latitude / longitude
-        NSString *oldAddress = place.address;
-        double oldLat = place.lat;
-        double oldLng = place.lng;
-        [[[PMLEditor editorFor:self.modalActionObject] pendingCancelActions] addObject:^{
-            place.address = oldAddress;
-            place.lat = oldLat;
-            place.lng = oldLng;
-        }];
-        
-        // Geolocating
-        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[TogaytherService uiService] menuManagerController] view] animated:NO];
-        hud.mode = MBProgressHUDModeIndeterminate;
-        hud.labelText = NSLocalizedString(@"action.edit.address.geocoding", @"Geocoding address");
-        
-        _geocoder = [[CLGeocoder alloc] init];
-        [_geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
-            if(error == nil && placemarks.count>0) {
-                // Computing current place location to compare distance
-                CLLocation *currentPlaceLocation = [[CLLocation alloc] initWithLatitude:place.lat longitude:place.lng];
-                for(CLPlacemark *placemark in placemarks) {
-                    place.address = [[TogaytherService getConversionService] addressFromPlacemark:placemark];
-                    // If address is more than 100 meters from current place, we relocate place
-                    if([placemark.location distanceFromLocation:currentPlaceLocation]>100) {
-                        place.lat = placemark.location.coordinate.latitude;
-                        place.lng = placemark.location.coordinate.longitude;
-                        
-                        [[[[TogaytherService uiService] menuManagerController] rootViewController] reselectPlace:place];
-                        [[[[TogaytherService uiService] menuManagerController] rootViewController] selectCALObject:place withSnippet:YES];
-                        [_uiService alertWithTitle:@"action.edit.address.geocodingMovedPlaceTitle" text:@"action.edit.address.geocodingMovedPlace"];
+        if(alertView == _addressAlertView) {
+
+            Place *place = (Place*)self.modalActionObject;
+            UITextField *textField = [alertView textFieldAtIndex:0];
+            NSString *address = textField.text;
+            
+            // Adding cancel action that reverts address and latitude / longitude
+            NSString *oldAddress = place.address;
+            double oldLat = place.lat;
+            double oldLng = place.lng;
+            [[[PMLEditor editorFor:self.modalActionObject] pendingCancelActions] addObject:^{
+                place.address = oldAddress;
+                place.lat = oldLat;
+                place.lng = oldLng;
+            }];
+            
+            // Geolocating
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[[TogaytherService uiService] menuManagerController] view] animated:NO];
+            hud.mode = MBProgressHUDModeIndeterminate;
+            hud.labelText = NSLocalizedString(@"action.edit.address.geocoding", @"Geocoding address");
+            
+            _geocoder = [[CLGeocoder alloc] init];
+            [_geocoder geocodeAddressString:address completionHandler:^(NSArray *placemarks, NSError *error) {
+                if(error == nil && placemarks.count>0) {
+                    // Computing current place location to compare distance
+                    CLLocation *currentPlaceLocation = [[CLLocation alloc] initWithLatitude:place.lat longitude:place.lng];
+                    for(CLPlacemark *placemark in placemarks) {
+                        place.address = [[TogaytherService getConversionService] addressFromPlacemark:placemark];
+                        // If address is more than 100 meters from current place, we relocate place
+                        if([placemark.location distanceFromLocation:currentPlaceLocation]>100) {
+                            place.lat = placemark.location.coordinate.latitude;
+                            place.lng = placemark.location.coordinate.longitude;
+                            
+                            [[[[TogaytherService uiService] menuManagerController] rootViewController] reselectPlace:place];
+                            [[[[TogaytherService uiService] menuManagerController] rootViewController] selectCALObject:place withSnippet:YES];
+                            [_uiService alertWithTitle:@"action.edit.address.geocodingMovedPlaceTitle" text:@"action.edit.address.geocodingMovedPlace"];
+                        }
+                        break;
                     }
-                    break;
+                } else {
+                    place.address = address;
+                    [_uiService alertWithTitle:@"action.edit.address.geocodingFailedTitle" text:@"action.edit.address.geocodingFailed"];
                 }
-            } else {
-                place.address = address;
-                [_uiService alertWithTitle:@"action.edit.address.geocodingFailedTitle" text:@"action.edit.address.geocodingFailed"];
-            }
-            
-            
-            // Done
-            [hud hide:YES];
-        }];
-        
+                
+                
+                // Done
+                [hud hide:YES];
+            }];
+
+    } else {
+        [_dataService sendReportFor:self.modalActionObject reportType:PMLReportTypeRemovalRequest];
     }
+                }
     self.modalActionObject = nil;
 }
 

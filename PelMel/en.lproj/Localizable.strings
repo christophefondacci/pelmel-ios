@@ -62,6 +62,8 @@
 "action.report.title"="Report what?";
 "action.report.abuse"="This photo contains abuse";
 "action.report.closed"="This place doesn't exist";
+"action.report.deletion.title"="Delete this event?";
+"action.report.deletion.message"="You are about to report that this event should be removed from our listings. Is this is really what you want to do?";
 "action.report.location"="Incorrect location";
 "action.report.location.infotitle"="Could you help us?";
 "action.report.location.infomsg"="If you know the proper location of this place, would you mind dragging the pin to the real location and validate so that other users can have correct information?";
@@ -303,6 +305,7 @@
 "noresult.title"="No nearby result found";
 "noresult.subtitle"="Tap here to search worldwide";
 "noresult.searching"="Searching...";
+"ok"="Okay";
 "overview.inUser"="They were there";
 "overview.likeUser"="They like";
 "overview.events"="Upcoming events";
