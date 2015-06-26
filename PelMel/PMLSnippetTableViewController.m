@@ -44,6 +44,8 @@
 #import <PBWebViewController.h>
 #import "PMLCalObjectPhotoProvider.h"
 
+#define kPMLSettingActiveTab @"pmlActiveSnippetTab"
+
 #define kPMLSectionsCount 16
 
 #define kPMLSectionGallery 0
@@ -270,6 +272,12 @@ typedef enum {
     
     // Animation init
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.tableView];
+    
+    // Tab init
+    NSNumber *activeTab = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLSettingActiveTab];
+    if(activeTab != nil) {
+        _activeTab = activeTab.intValue;
+    }
 }
 - (void)viewWillAppear:(BOOL)animated {
     self.parentMenuController.snippetDelegate = self;
@@ -765,6 +773,7 @@ typedef enum {
                     if(_snippetItem!=nil) {
                         return _sectionTitleView;
                     } else {
+                        [_eventPlaceTabsTitleView setActiveTab:_activeTab];
                         return _eventPlaceTabsTitleView;
                     }
                 }
@@ -2073,20 +2082,26 @@ typedef enum {
             _activeTab = PMLTabEvents;
             [self updateScrollOffset];
             [self.tableView reloadData];
+            [self saveActiveTab];
             return YES;
         }
     }
+
     return NO;
     
 }
-
+-(void)saveActiveTab {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:_activeTab] forKey:kPMLSettingActiveTab];
+}
 - (BOOL)placesTabTapped {
     if([[_infoProvider topPlaces] count]>0) {
         _activeTab = PMLTabPlaces;
         [self updateScrollOffset];
         [self.tableView reloadData];
+        [self saveActiveTab];
         return YES;
     }
+
     return NO;
 }
 - (void)updateScrollOffset {
@@ -2100,6 +2115,7 @@ typedef enum {
     _activeTab = PMLTabDeals;
     [self updateScrollOffset];
     [self.tableView reloadData];
+    [self saveActiveTab];
     return YES;
 }
 @end
