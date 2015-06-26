@@ -129,12 +129,13 @@
             itemSelectionController.titleKey = @"checkin.placeSelector.title";
             self.selectorActionType = PMLActionTypeCheckin;
             
-            // Wrapping inside a nav controller
-            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemSelectionController];
-            
-            // Preparing transition
-            [_uiService.menuManagerController presentModal:navController];
-//            [[[TogaytherService uiService] menuManagerController].navigationController pushViewController:itemSelectionController animated:YES];
+            if(![itemSelectionController isEmpty]) {
+                // Wrapping inside a nav controller
+                UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemSelectionController];
+                
+                // Preparing transition
+                [_uiService.menuManagerController presentModal:navController];
+            }
             
         } else {
             [self checkin:checkinObj];
@@ -866,6 +867,11 @@
             break;
     }
     return YES;
+}
+- (void)itemsListEmpty {
+    if(self.selectorActionType == PMLActionTypeCheckin) {
+        [_uiService alertWithTitle:@"checkin.noplace.title" text:@"checkin.noplace"];
+    }
 }
 
 @end

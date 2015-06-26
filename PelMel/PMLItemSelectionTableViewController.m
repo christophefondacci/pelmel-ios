@@ -64,25 +64,32 @@
 
     // Registering rows
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowId];
-    
-    // Snapshotting content
-    if(self.targetType == PMLTargetTypePlace) {
-        self.items = [[[[TogaytherService dataService] modelHolder] places] copy];
-        [self sortAndFilterItems];
-        if(self.items.count == 0) {
-            [_uiService alertWithTitle:@"checkin.noplace.title" text:@"checkin.noplace"];
-            [self dismissViewControllerAnimated:YES completion:NULL];
+    [self configureContents:NO];
+}
+-(void)configureContents:(BOOL)forceRefresh {
+    if(self.items == nil || forceRefresh) {
+        // Snapshotting content
+        if(self.targetType == PMLTargetTypePlace) {
+            self.items = [[[[TogaytherService dataService] modelHolder] places] copy];
+            [self sortAndFilterItems];
+            if(self.items.count == 0) {
+                [self.delegate itemsListEmpty];
+                [self dismissViewControllerAnimated:YES completion:NULL];
+            }
+        } else if(self.targetType == PMLTargetTypeEvent) {
+            self.items = [[[[TogaytherService dataService] modelHolder] events] copy];
         }
-    } else if(self.targetType == PMLTargetTypeEvent) {
-        self.items = [[[[TogaytherService dataService] modelHolder] events] copy];
     }
-    
+}
+-(BOOL)isEmpty {
+    [self configureContents:YES];
+    return self.items.count == 0;
 }
 -(void)sortAndFilterItems {
     if(self.filterStrategy == PMLSortStrategyNearby) {
         NSMutableArray *filteredItems = [[NSMutableArray alloc] init];
         for(CALObject *item in self.items) {
-            if([self.conversionService numericDistanceTo:item] <= PML_CHECKIN_DISTANCE) {
+            if([[TogaytherService getConversionService] numericDistanceTo:item] <= PML_CHECKIN_DISTANCE) {
                 [filteredItems addObject:item];
             }
         }

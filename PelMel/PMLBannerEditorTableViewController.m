@@ -301,4 +301,7 @@
     }
     return YES;
 }
+- (void)itemsListEmpty {
+    [[TogaytherService uiService] alertWithTitle:@"banner.editor.noItemsToSelectTitle" text:@"banner.editor.noItemsToSelect"];
+}
 @end

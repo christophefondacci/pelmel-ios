@@ -122,6 +122,8 @@
 "activity.detail.O_PLAC"="%@ a commenté le lieu %@";
 "banner.button.addPlaceBanner"="Créer une Bannière de Pub";
 "banner.button.uploadImage"="Choisissez une image 640x100";
+"banner.editor.noItemsToSelectTitle"="Rien à sélectionner";
+"banner.editor.noItemsToSelect"="Il n'y a pas de lieu ou évènement à sélectionner. Veuillez déplacer la carte vers une localité avec les lieux ou évènements pour lesquels vous voulez créer une bannière et tapez le bouton rafraîchir.";
 "banner.editor.typeIntroLabel"="La bannière de pub concerne :";
 "banner.editor.targetIntroLabel"="L'annonce doit ouvrir :";
 "banner.image.formatErrorTitle"="Taille d'image incorrecte";

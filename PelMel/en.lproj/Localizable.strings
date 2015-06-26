@@ -119,6 +119,8 @@
 "activity.detail.U_EVNT"="%@ has updated event %@";
 "banner.button.addPlaceBanner"="Create a Banner Ad";
 "banner.button.uploadImage"="Tap to upload 640x100 image";
+"banner.editor.noItemsToSelectTitle"="Nothing to select";
+"banner.editor.noItemsToSelect"="There is no place or event to select. Please move the map to a location with the places and events you want to create a banner for and hit refresh.";
 "banner.editor.typeIntroLabel"="The banner ad is for a:";
 "banner.editor.targetIntroLabel"="The ad should link to:";
 "banner.image.formatErrorTitle"="Incorrect image size";

@@ -23,7 +23,17 @@ typedef enum {
 
 @protocol PMLItemSelectionDelegate <NSObject>
 
+/**
+ * Called when an item has been selected by the user
+ * @param item the selected CALObject
+ * @return YES if the controller can dismiss the view or else NO 
+ */
 -(BOOL)itemSelected:(CALObject*)item;
+/**
+ * Called to inform the delegate that the current list is empty.
+ * The controller will dismiss the view after this method is called
+ */
+-(void)itemsListEmpty;
 
 @end
 @interface PMLItemSelectionTableViewController : UITableViewController
@@ -33,4 +43,10 @@ typedef enum {
 @property (nonatomic) PMLSortStrategy sortStrategy;
 @property (nonatomic) PMLFilterStrategy filterStrategy;
 @property (nonatomic) NSString *titleKey;
+
+/**
+ * Informs whether the controller, as configured at the time of calling, 
+ * would display empty contents.
+ */
+-(BOOL)isEmpty;
 @end
