@@ -132,7 +132,7 @@
         self.keyboardShown = YES;
         
         // Changing the constraint
-        self.bottomTextInputConstraint.constant = _kbSize.height;
+        self.bottomTextInputConstraint.constant = _kbSize.height- [[_uiService menuManagerController] bottomContainerConstraint].constant;
         [self.footerView setNeedsUpdateConstraints];
         [self.messageTableView setNeedsUpdateConstraints];
         // Then we move it above keyboard
@@ -163,12 +163,17 @@
     
     if(snippetBounds.origin.y>0 && _keyboardShown) {
         
+        self.bottomTextInputConstraint.constant=0;
+        [self.footerView setNeedsUpdateConstraints];
+        [self.messageTableView setNeedsUpdateConstraints];
         // Then we move it above keyboard
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:duration.doubleValue];
         [UIView setAnimationCurve:curve.intValue];
         [UIView setAnimationBeginsFromCurrentState:YES];
-        self.bottomTextInputConstraint.constant=0;
+        [self.footerView layoutIfNeeded];
+        [self.messageTableView layoutIfNeeded];
+
         [UIView commitAnimations];
     }
     _keyboardShown = NO;
