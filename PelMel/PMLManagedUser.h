@@ -20,6 +20,7 @@
 @property (nonatomic, retain) NSString * thumbUrl;
 @property (nonatomic, retain) NSNumber * unreadCount;
 @property (nonatomic, retain) NSString * currentUserKey;
+@property (nonatomic, retain) NSString * imageKey;
 @property (nonatomic, retain) NSSet *messages;
 @end
 

@@ -19,6 +19,7 @@
 @dynamic thumbUrl;
 @dynamic unreadCount;
 @dynamic currentUserKey;
+@dynamic imageKey;
 @dynamic messages;
 
 @end

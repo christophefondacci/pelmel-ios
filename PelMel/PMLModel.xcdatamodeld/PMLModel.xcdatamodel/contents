@@ -27,6 +27,7 @@
     </entity>
     <entity name="PMLManagedUser" representedClassName="PMLManagedUser" syncable="YES">
         <attribute name="currentUserKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageKey" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="itemKey" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="lastMessageDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -38,6 +39,6 @@
     <elements>
         <element name="PMLManagedActivity" positionX="-3897" positionY="-108" width="128" height="223"/>
         <element name="PMLManagedMessage" positionX="-3483" positionY="-54" width="128" height="178"/>
-        <element name="PMLManagedUser" positionX="-3681" positionY="-9" width="128" height="163"/>
+        <element name="PMLManagedUser" positionX="-3681" positionY="-9" width="128" height="178"/>
     </elements>
 </model>

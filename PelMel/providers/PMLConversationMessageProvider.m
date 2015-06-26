@@ -49,8 +49,14 @@
     [fetchRequest setEntity:entity];
 
     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@) or (toItemKey = %@ and from.itemKey=%@)",self.fromItemKey,user.key,self.fromItemKey,user.key];
-    [fetchRequest setPredicate:predicate];
+    
+    if([self.fromItemKey hasPrefix:@"USER"]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@) or (toItemKey = %@ and from.itemKey=%@)",self.fromItemKey,user.key,self.fromItemKey,user.key];
+        [fetchRequest setPredicate:predicate];
+    } else {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"toItemKey=%@",self.fromItemKey];
+        [fetchRequest setPredicate:predicate];
+    }
     [fetchRequest setFetchLimit:self.numberOfResults];
     NSSortDescriptor *sort = [[NSSortDescriptor alloc]
                               initWithKey:@"messageDate" ascending:NO];
@@ -77,25 +83,10 @@
     message.key = msg.messageKey;
     message.date = msg.messageDate;
     
-    //    message.from = [[User alloc] init];
-    NSString *fromItemKey = msg.from.itemKey;
-    [_dataService getObject:fromItemKey callback:^(CALObject *overviewObject) {
-        message.from = overviewObject;
-        if(message.from == nil) {
-            message.from = [[User alloc] init];
-            message.from.key = fromItemKey;
-            [_dataService.jsonService.objectCache setObject:message.from forKey:fromItemKey];
-        }
-    }];
-    NSString *toItemKey = msg.toItemKey;
-    [_dataService getObject:toItemKey callback:^(CALObject *overviewObject) {
-        message.to = overviewObject;
-        if(message.to == nil) {
-            message.to = [[User alloc] init];
-            message.to.key = toItemKey;
-            [_dataService.jsonService.objectCache setObject:message.to forKey:toItemKey];
-        }
-    }];
+    // Setting up from / to user
+    message.from = [[TogaytherService getMessageService] userFromManagedUser:msg.from];
+    message.to = [[TogaytherService userService] getCurrentUser];
+ 
     message.text = msg.messageText;
     NSString *imageUrl = msg.messageImageUrl;
     if(imageUrl != nil) {

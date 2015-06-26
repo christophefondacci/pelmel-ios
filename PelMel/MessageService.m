@@ -439,6 +439,7 @@
     user.itemKey = m.from.key;
     user.name=((User*)m.from).pseudo;
     CALImage *image = ((User*)m.from).mainImage;
+    user.imageKey = image.key;
     user.imageUrl = image.imageUrl;
     user.thumbUrl = image.thumbUrl;
     if(m.unread) {
@@ -699,6 +700,20 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [callback activityFetchFailed:error.domain];
     }];
+}
+
+-(User*)userFromManagedUser:(PMLManagedUser*)user {
+    User *fromUser = [[TogaytherService dataService].jsonService.objectCache objectForKey:user.itemKey];
+    if(fromUser == nil) {
+        fromUser = [[User alloc] init];
+        fromUser.key = user.itemKey;
+        fromUser.pseudo = user.name;
+        if(user.imageUrl !=nil) {
+            fromUser.mainImage = [[CALImage alloc] initWithKey:user.imageKey url:user.imageUrl thumbUrl:user.thumbUrl];
+        }
+        [[TogaytherService dataService].jsonService.objectCache setObject:fromUser forKey:user.itemKey];
+    }
+    return fromUser;
 }
 #pragma mark - Push notification management
 - (void)setPushEnabled:(BOOL)pushEnabled {

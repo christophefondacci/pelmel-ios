@@ -217,7 +217,13 @@
             PMLItemSelectionTableViewController *itemSelectionController = (PMLItemSelectionTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_ITEM_SELECTION];
             itemSelectionController.targetType = targetType;
             itemSelectionController.delegate = self;
-            [self.parentMenuController.navigationController pushViewController:itemSelectionController animated:YES];
+            itemSelectionController.sortStrategy = PMLSortStrategyName;
+            // Wrapping inside a nav controller
+            UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:itemSelectionController];
+            
+            // Preparing transition
+            [[TogaytherService uiService].menuManagerController presentModal:navController];
+//            [self.parentMenuController.navigationController pushViewController:itemSelectionController animated:YES];
             break;
         }
         case PMLTargetTypeURL:

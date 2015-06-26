@@ -71,28 +71,8 @@
     message.date = user.lastMessageDate;
     
     //    message.from = [[User alloc] init];
-    NSString *fromItemKey = user.itemKey;
-    [_dataService getObject:fromItemKey callback:^(CALObject *overviewObject) {
-        message.from = overviewObject;
-        if(message.from == nil) {
-            message.from = [[User alloc] init];
-            message.from.key = fromItemKey;
-            if(user.imageUrl !=nil) {
-                message.from.mainImage = [[CALImage alloc] initWithKey:nil url:user.imageUrl thumbUrl:user.thumbUrl];
-            }
-            ((User*)message.from).pseudo = user.name;
-            [_dataService.jsonService.objectCache setObject:message.from forKey:fromItemKey];
-        }
-    }];
-    NSString *toItemKey = [[[TogaytherService userService] getCurrentUser] key];
-    [_dataService getObject:toItemKey callback:^(CALObject *overviewObject) {
-        message.to = overviewObject;
-        if(message.to == nil) {
-            message.to = [[TogaytherService userService] getCurrentUser];
-
-            [_dataService.jsonService.objectCache setObject:message.to forKey:toItemKey];
-        }
-    }];
+    message.from = [[TogaytherService getMessageService] userFromManagedUser:user];
+    message.to = [[TogaytherService userService] getCurrentUser];
     message.text = nil;
     message.unreadCount = user.unreadCount.integerValue;
     message.unread = user.unreadCount >0;

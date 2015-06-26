@@ -11,6 +11,7 @@
 #import "Message.h"
 #import "UserService.h"
 #import "MKNumberBadgeView.h"
+#import "PMLManagedUser.h"
 
 #define kPMLNotificationActivityChanged @"PMLActivityChanged"
 
@@ -85,4 +86,5 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 // Delegate for the AppDelegate method (handling proper callback / completion)
 -(void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 -(void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
+-(User*)userFromManagedUser:(PMLManagedUser*)user;
 @end
