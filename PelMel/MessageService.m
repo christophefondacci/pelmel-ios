@@ -199,7 +199,7 @@
     return maxMessageId;
 }
 -(void)processJsonMessage:(NSDictionary*)jsonMessageList messageCallback:(id<MessageCallback>)callback forUserKey:(NSString*)userKey {
-    CurrentUser *user = userService.getCurrentUser;
+
     NSMutableDictionary *usersMap = [[NSMutableDictionary alloc] init];
 //    if([userKey isEqualToString:user.key] || userKey == nil) {
         NSArray *jsonUsers = [jsonMessageList objectForKey:@"users"];
@@ -437,7 +437,7 @@
     user.imageUrl = image.imageUrl;
     user.thumbUrl = image.thumbUrl;
     if(m.unread) {
-        user.unreadCount = user.unreadCount == nil ? @0 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
+        user.unreadCount = user.unreadCount == nil ? @1 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
     }
     if(user.lastMessageDate == nil || [msg.messageDate compare:user.lastMessageDate] == NSOrderedDescending) {
         user.lastMessageDate = msg.messageDate;

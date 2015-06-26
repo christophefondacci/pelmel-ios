@@ -187,8 +187,12 @@ static BOOL isStarted;
     } else {
         
         NSLog(@"Active");
-        User *currentUser = [[TogaytherService userService] getCurrentUser];
-        [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+        NSDictionary *aps = [userInfo objectForKey:@"aps"];
+        if(aps != nil) {
+            NSNumber *unreadMsgCount = [aps objectForKey:@"badge"];
+            [[TogaytherService getMessageService] setUnreadMessageCount:unreadMsgCount.intValue];
+        }
+
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PUSH_RECEIVED object:self];
         
     }

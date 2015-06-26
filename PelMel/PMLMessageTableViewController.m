@@ -89,10 +89,6 @@
         [userDefaults setObject:@"Done" forKey:@"pushProposedForMessages"];
         [messageService handlePushNotificationProposition:^(BOOL pushActive) {}];
     }
-    // Displaying wait message and animation
-//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    hud.mode = MBProgressHUDModeIndeterminate;
-//    hud.labelText = NSLocalizedString(@"messages.wait", @"The wait message which appears while loading messages");
     
     // Checking if we have an input, otherwise current user is our input
     if(_withObject == nil) {
@@ -159,6 +155,7 @@
     
     [[TogaytherService uiService] setProgressView:self.view];
     [self refreshContents];
+    [self.tableView reloadData];
 }
 - (void)scrollToBottom {
     [self.tableView setContentOffset:CGPointMake(0,self.tableView.contentSize.height-self.tableView.bounds.size.height)];
@@ -233,8 +230,6 @@
     }
     return 0;
 
-    // Return the number of rows in the section.
-//    return _messagesList.count;
 }
 
 
@@ -403,50 +398,6 @@
     }
 
 }
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 #pragma mark - Message management
 - (void)loadMessageFailed {
@@ -480,68 +431,15 @@
 }
 - (void)messagesFetched:(NSArray *)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize {
 
-//    for(Message *msg in messagesList) {
-//        Message *prevMsg = [_messagesViewsKeys objectForKey:msg.key];
-//        if(prevMsg == nil) {
-//            [_messagesList addObject:msg];
-//            [_messagesViewsKeys setObject:msg forKey:msg.key];
-//        }
-//    }
-//    _messagesList = [[_messagesList sortedArrayWithOptions:NSSortStable usingComparator:^NSComparisonResult(id obj1, id obj2) {
-//        Message *m1 = (Message*)obj1;
-//        Message *m2 = (Message*)obj2;
-//        return [m1.key compare:m2.key];
-//    }] mutableCopy];
-//    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [self refreshTable ];
-//    if(![self isAllMessageView]) {
-//        [self.tableView setContentOffset:CGPointMake(0,self.tableView.contentSize.height-self.tableView.bounds.size.height)];
-//    }
+
 }
-//- (void)messageSent:(Message *)message {
-//    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-    
-    // Adding a new bubble for this sent message
-//    [_messagesList addObject:message];
-    
-//    [_chatInputBarView.chatTextView endEditing:YES];
-//    if(message.mainImage==nil) {
-//        _chatInputBarView.chatTextView.text=nil;
-//    }
-//    if(![_withObject isKindOfClass:[User class]]){
-//        _withObject.reviewsCount++;
-//    }
-    
-    // Adding this view
-//    [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:_messagesList.count-1 inSection:0]] withRowAnimation:UITableViewRowAnimationBottom];
-//}
-//- (void)messageSendFailed {
-//    NSLog(@"Message sent failed");
-//    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
-//    [[TogaytherService uiService] alertWithTitle:@"message.sending.failed.title" text:@"message.sending.failed"];
-//}
 
 #pragma mark - Message actions
-//- (void)sendMsg:(id)sender {
-//    [self sendMessage:_chatInputBarView.chatTextView.text withImage:nil];
-//}
 
-//-(void)sendMessage:(NSString*)text withImage:(CALImage*)image {
-//    //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-//    //    hud.mode = MBProgressHUDModeIndeterminate;
-//    //    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
-//    
-//    if([_withObject isKindOfClass:[User class]]) {
-//        [messageService sendMessage:text toUser:(User*)_withObject withImage:image messageCallback:self];
-//    } else {
-//        [messageService postComment:text forObject:_withObject withImage:image messageCallback:self];
-//    }
-//    [_chatInputBarView.chatTextView resignFirstResponder];
-//}
 
 -(void)showFromUserTapped:(UIView*)sender {
-//    ChatView *chatView = (ChatView*)sender.superview;
-//    NSLog(@"Height : %d - Width : %d - Font : %@ - %d",(int)chatView.bubbleText.bounds.size.height,(int)chatView.bubbleText.bounds.size.width,chatView.bubbleText.font.fontName,(int)chatView.bubbleText.font.pointSize);
+
     UIButton *button = (UIButton*)sender;
     UIView *view = button.superview;
     if([view isKindOfClass:[ChatView class]]) {
@@ -684,21 +582,13 @@
 
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
-    
-//    id  sectionInfo =
-//    [[[self.messageProvider fetchedResultsController:self.managedObjectContext delegate:self ] sections] objectAtIndex:0];
-//    NSInteger maxRows = [self.messageProvider numberOfResults];
-//    NSInteger sectionRows = [sectionInfo numberOfObjects];
-//    
-//    if(!hasLoadingFooter && [self isAllMessageView] && sectionRows > maxRows) {
-//        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:kSectionLoadMoreFooter]] withRowAnimation:UITableViewRowAnimationFade];
-//    }
-//    // The fetch controller has sent all current change notifications, so tell the table view to process all updates.
+
 //    [self.tableView endUpdates];
-    if(controllerContentChanged) {
-        [self refreshContents];
+//    if(controllerContentChanged) {
+        [self.heightCache removeAllObjects];
+        [self refreshTable];
         [self.tableView reloadData];
-    }
+//    }
 }
 
 @end
