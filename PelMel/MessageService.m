@@ -293,10 +293,10 @@
     // Fetching objects
     NSError *error;
     NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    NSMutableDictionary *existingMessagesKeys = [[NSMutableDictionary alloc] init];
     for (PMLManagedMessage *msg in fetchedObjects) {
         // Removing the objects which we already have in database
-        [messagesKeys removeObject:msg.messageKey];
-        NSLog(@"Skipping message %@ already in CoreData",msg.messageKey);
+        [existingMessagesKeys setObject:msg forKey:msg.messageKey];
     }
     
     // Fetching already existing users
@@ -328,7 +328,8 @@
         }
         
         // Storing message in the underlying store
-        [self storeMessage:m fromUser:user context:context];
+        PMLManagedMessage *existingMsg = [existingMessagesKeys objectForKey:key];
+        [self storeMessage:m fromUser:user context:context using:existingMsg];
     }
     // Saving entries
     if(messagesKeys.count>0) {
@@ -415,16 +416,18 @@
         m.toItemKey = m.to.key;
     }
     // Storing message
-    [self storeMessage:m fromUser:user context:context];
+    [self storeMessage:m fromUser:user context:context using:nil];
     if(![context save:&error]) {
         NSLog(@"Error saving message: %@",error.localizedDescription);
     }
     
 }
--(void)storeMessage:(Message*)m fromUser:(PMLManagedUser*)user context:(NSManagedObjectContext*)context {
-    PMLManagedMessage *msg = [NSEntityDescription
+-(void)storeMessage:(Message*)m fromUser:(PMLManagedUser*)user context:(NSManagedObjectContext*)context using:(PMLManagedMessage*)msg {
+    if(msg == nil) {
+        msg = [NSEntityDescription
                               insertNewObjectForEntityForName:@"PMLManagedMessage"
                               inManagedObjectContext:context];
+    }
     msg.messageKey = m.key;
     msg.messageDate = m.date;
     msg.toItemKey = m.toItemKey;

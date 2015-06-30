@@ -132,7 +132,8 @@
         self.keyboardShown = YES;
         
         // Changing the constraint
-        self.bottomTextInputConstraint.constant = _kbSize.height- [[_uiService menuManagerController] bottomContainerConstraint].constant;
+        NSInteger footerHeight = [[_uiService menuManagerController] bottomContainerConstraint].constant;
+        self.bottomTextInputConstraint.constant = _kbSize.height - footerHeight;
         [self.footerView setNeedsUpdateConstraints];
         [self.messageTableView setNeedsUpdateConstraints];
         // Then we move it above keyboard
@@ -143,9 +144,10 @@
         // Computing proper Y
         [self.footerView layoutIfNeeded];
         [self.messageTableView layoutIfNeeded];
-        CGPoint contentOffset = self.messageTableController.tableView.contentOffset;
-        [self.messageTableController.tableView setContentOffset:CGPointMake(contentOffset.x,contentOffset.y+_kbSize.height)];
-//        self.footerView.frame = CGRectMake(snippetBounds.origin.x, snippetBounds.origin.y-_kbSize.height, snippetBounds.size.width, snippetBounds.size.height);
+        CGSize size = self.messageTableController.tableView.contentSize;
+        CGRect frame =self.messageTableController.tableView.frame;
+//        CGPoint contentOffset = self.messageTableController.tableView.contentOffset;
+        [self.messageTableController.tableView setContentOffset:CGPointMake(0,size.height-frame.size.height)];
         
         [UIView commitAnimations];
         
