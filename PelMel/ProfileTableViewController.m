@@ -238,7 +238,7 @@
             return kRowCountMeasure;
         case kSectionDescriptions: {
             int descCount = (int)[user.descriptions count];
-            return (descCount == 0 ? 1 : descCount)+1+(_pickerIndexPath.section == kSectionDescriptions ? 1 :0);
+            return descCount+1+(_pickerIndexPath.section == kSectionDescriptions ? 1 :0);
         }
         case kSectionPhotos:
             return [self imageCount]+1;
@@ -510,9 +510,9 @@
         if(index>_pickerIndexPath.row) {
             descIndex--;
         }
-    } else if(user.descriptions.count <= index) {
-        NSString *language = [TogaytherService getLanguageIso6391Code];
-        [user addDescription:@"" language:language];
+//    } else if(user.descriptions.count <= index) {
+//        NSString *language = [TogaytherService getLanguageIso6391Code];
+//        [user addDescription:@"" language:language];
     }
     return [user.descriptions objectAtIndex:descIndex];
 }
@@ -615,6 +615,10 @@
                 } else {
                     NSString *text = [_descPathMap objectForKey:indexPath];
                     Description *desc = [self getDescriptionFor:indexPath.row];
+                    // In case the description was auto-added here
+                    if([self isAddRow:indexPath]) {
+                        return 44;
+                    }
                     CGFloat height;
                     if(text == nil || ![text isEqualToString:desc.descriptionText]) {
 
@@ -712,7 +716,15 @@
                 }
                 // Delete the row from the data source
                 if(user.descriptions.count>0) {
-                    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                    // We delete the row and also resign any picker if after current row
+                    NSMutableArray *rowsToDelete = [[NSMutableArray alloc] init];
+                    [rowsToDelete addObject:indexPath];
+                    // Adding picker row for deletion if after current one
+                    if(_pickerIndexPath.row>indexPath.row && _pickerIndexPath.section == kSectionDescriptions) {
+                        [rowsToDelete addObject:_pickerIndexPath];
+                        _pickerIndexPath = nil;
+                    }
+                    [tableView deleteRowsAtIndexPaths:rowsToDelete withRowAnimation:UITableViewRowAnimationFade];
                 } else {
                     [tableView reloadData];
                 }
@@ -756,7 +768,7 @@
 }
 -(BOOL)isAddRow:(NSIndexPath*)indexPath {
     if(indexPath.section == kSectionDescriptions) {
-        return userService.getCurrentUser.descriptions.count + (_pickerIndexPath!=nil && _pickerIndexPath.section == kSectionDescriptions ? 1 : 0 )== indexPath.row;
+        return (userService.getCurrentUser.descriptions.count + (_pickerIndexPath!=nil && _pickerIndexPath.section == kSectionDescriptions ? 1 : 0 ) )== indexPath.row;
     } else if(indexPath.section == kSectionPhotos) {
         return [self imageCount] == indexPath.row;
     }

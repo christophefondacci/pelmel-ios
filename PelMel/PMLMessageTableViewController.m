@@ -189,7 +189,9 @@
 }
 -(void)pushNotificationReceived:(NSNotification*)notification {
     [self refreshContents];
-    shouldScrollToBottom = YES;
+    if(![self isAllMessageView]) {
+        shouldScrollToBottom = YES;
+    }
 }
 - (void)refreshContents {
     if([_withObject isKindOfClass:[User class]]) {
