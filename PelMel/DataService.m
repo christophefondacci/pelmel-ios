@@ -171,6 +171,10 @@
 
 -(void)fetchPlacesAtLatitude:(double)latitude longitude:(double)longitude for:(CALObject *)parent searchTerm:(NSString *)searchTerm radius:(double)radius silent:(BOOL)isSilent {
     self.searchTerm = searchTerm;
+    self.currentLatitude = latitude;
+    self.currentLongitude = longitude;
+    self.currentRadius = radius;
+    
     [self startOp:@""];
     [self notify:@selector(willLoadData) with:nil mainThread:YES];
     BOOL retina = [TogaytherService isRetina];

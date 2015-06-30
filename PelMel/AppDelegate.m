@@ -144,10 +144,10 @@ static BOOL isStarted;
 
         // Refreshing places data
         DataService *dataService = [TogaytherService dataService];
-        [dataService setCurrentRadius:0];
+//        [dataService setCurrentRadius:0];
         if([dataService modelHolder].places.count>0) {
-            [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
-            [dataService fetchPlacesAtLatitude:dataService.modelHolder.userLocation.coordinate.latitude longitude:dataService.modelHolder.userLocation.coordinate.longitude for:nil searchTerm:nil radius:0 silent:YES];
+//            [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
+            [dataService fetchPlacesAtLatitude:dataService.currentLatitude longitude:dataService.currentLongitude for:nil searchTerm:dataService.searchTerm radius:dataService.currentRadius silent:YES];
         }
 
     }

@@ -43,6 +43,7 @@
 #import <MBProgressHUD.h>
 #import <PBWebViewController.h>
 #import "PMLCalObjectPhotoProvider.h"
+#import "PMLCalendarTableViewController.h"
 
 #define kPMLSettingActiveTab @"pmlActiveSnippetTab"
 
@@ -905,6 +906,9 @@ typedef enum {
         case kPMLSectionReport:
         case kPMLSectionOvAdvertising:
             return YES;
+        case kPMLSectionOvHours:
+        case kPMLSectionOvHappyHours:
+            return YES;
         case kPMLSectionOvProperties: {
             PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
             return [p.propertyCode isEqualToString:@"website"] || [p.propertyCode isEqualToString:@"phone"];
@@ -947,6 +951,15 @@ typedef enum {
                 [_actionManager execute:PMLActionTypeWebsite onObject:_snippetItem];
             } else if([p.propertyCode isEqualToString:@"phone"]) {
                 [_actionManager execute:PMLActionTypePhoneCall onObject:_snippetItem];
+            }
+            break;
+        }
+        case kPMLSectionOvHours:
+        case kPMLSectionOvHappyHours: {
+            PMLCalendarTableViewController *calendarController = (PMLCalendarTableViewController*)[_uiService instantiateViewController:@"calendarEditor"];
+            if([_snippetItem isKindOfClass:[Place class]]) {
+                calendarController.place = (Place*)_snippetItem;
+                [(UINavigationController*)_uiService.menuManagerController.currentSnippetViewController pushViewController:calendarController animated:YES];
             }
             break;
         }

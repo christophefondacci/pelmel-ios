@@ -94,6 +94,8 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 @property (strong, nonatomic) AFNetworkReachabilityManager *reachabilityManager;
 @property (strong) ModelHolder *modelHolder;
 @property (nonatomic) double currentRadius;
+@property (nonatomic) double currentLatitude;
+@property (nonatomic) double currentLongitude;
 
 /**
  * Registers a listener that will be notified of data changes.

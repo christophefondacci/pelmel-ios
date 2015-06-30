@@ -28,14 +28,14 @@
 #define kRowSettingLikes 1
 #define kRowSettingLikers 2
 
-#define kRowCountSettings 7
+#define kRowCountSettings 6
 #define kRowSettingMyBanners 0
-#define kRowSettingMyPage 1
-#define kRowSettingProfile 2
-#define kRowSettingSettings 3
-#define kRowSettingFilters 4
-#define kRowSettingHints 5
-#define kRowSettingDisconnect 6
+//#define kRowSettingMyPage 1
+#define kRowSettingProfile 1
+#define kRowSettingSettings 2
+#define kRowSettingFilters 3
+#define kRowSettingHints 4
+#define kRowSettingDisconnect 5
 
 #define kCellIdPlaceType @"placeTypeCell"
 #define kCellIdProfile @"profileTableCell"
@@ -201,19 +201,19 @@
                     placeTypeCell.badgeLabel.hidden=YES;
                 }
                     break;
-                case kRowSettingMyPage: {
-                    placeTypeCell.label.text = NSLocalizedString(@"settings.mypage", @"My Page");
-                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    placeTypeCell.image.image = [CALImage getDefaultUserThumb];
-                    CALImage *image = [_imageService imageOrPlaceholderFor:[_userService getCurrentUser] allowAdditions:NO];
-                    [_imageService load:image to:placeTypeCell.image thumb:YES];
-                    placeTypeCell.badgeLabel.hidden=YES;
-                    placeTypeCell.image.layer.cornerRadius=15;
-                    placeTypeCell.image.layer.masksToBounds=YES;
-                    placeTypeCell.image.layer.borderWidth=1;
-                    placeTypeCell.image.layer.borderColor=[[UIColor whiteColor] CGColor];
-                    break;
-                }
+//                case kRowSettingMyPage: {
+//                    placeTypeCell.label.text = NSLocalizedString(@"settings.mypage", @"My Page");
+//                    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//                    placeTypeCell.image.image = [CALImage getDefaultUserThumb];
+//                    CALImage *image = [_imageService imageOrPlaceholderFor:[_userService getCurrentUser] allowAdditions:NO];
+//                    [_imageService load:image to:placeTypeCell.image thumb:YES];
+//                    placeTypeCell.badgeLabel.hidden=YES;
+//                    placeTypeCell.image.layer.cornerRadius=15;
+//                    placeTypeCell.image.layer.masksToBounds=YES;
+//                    placeTypeCell.image.layer.borderWidth=1;
+//                    placeTypeCell.image.layer.borderColor=[[UIColor whiteColor] CGColor];
+//                    break;
+//                }
                 case kRowSettingProfile: {
                     placeTypeCell.label.text = NSLocalizedString(@"settings.account.cell", @"Edit my profile");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -316,9 +316,9 @@
                 case kRowSettingSettings:
                     [self performSegueWithIdentifier:@"settings" sender:self];
                     break;
-                case kRowSettingMyPage:
-                    [_uiService presentSnippetFor:[_userService getCurrentUser] opened:YES];
-                    break;
+//                case kRowSettingMyPage:
+//                    [_uiService presentSnippetFor:[_userService getCurrentUser] opened:YES];
+//                    break;
                 case kRowSettingProfile: {
                     UIViewController *accountController = [[TogaytherService uiService] instantiateViewController:SB_ID_MYACCOUNT];
                     [self.parentMenuController.navigationController pushViewController:accountController animated:YES];

@@ -59,9 +59,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="9tU-py-RA5">
-                    <rect key="frame" x="11" y="19" width="48" height="14"/>
+                    <rect key="frame" x="11" y="17" width="48" height="19"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="14" id="znr-k0-quo"/>
+                        <constraint firstAttribute="height" constant="19" id="znr-k0-quo"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
@@ -79,7 +79,7 @@
                 <constraint firstItem="IvW-Db-erL" firstAttribute="leading" secondItem="Ch1-aD-2T8" secondAttribute="leading" id="Q1y-qg-8RH"/>
                 <constraint firstItem="1b4-yv-bo9" firstAttribute="top" secondItem="Ch1-aD-2T8" secondAttribute="top" id="X5p-OI-Znw"/>
                 <constraint firstItem="1b4-yv-bo9" firstAttribute="leading" secondItem="Ch1-aD-2T8" secondAttribute="leading" constant="9" id="eQA-Da-yJW"/>
-                <constraint firstItem="9tU-py-RA5" firstAttribute="centerY" secondItem="1b4-yv-bo9" secondAttribute="centerY" constant="-3" id="ebu-M5-fr2"/>
+                <constraint firstItem="9tU-py-RA5" firstAttribute="centerY" secondItem="1b4-yv-bo9" secondAttribute="centerY" constant="-2" id="ebu-M5-fr2"/>
                 <constraint firstAttribute="bottom" secondItem="1b4-yv-bo9" secondAttribute="bottom" constant="12" id="m6U-ID-lK7"/>
                 <constraint firstItem="EI6-MK-eIF" firstAttribute="top" secondItem="Ch1-aD-2T8" secondAttribute="top" id="sEX-63-mGA"/>
                 <constraint firstAttribute="width" secondItem="Ch1-aD-2T8" secondAttribute="height" multiplier="1:1" id="tnK-kZ-5oM"/>

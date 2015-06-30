@@ -105,9 +105,9 @@ static NSString * const reuseIdentifier = @"Cell";
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     PMLThumbType type = [self.thumbProvider thumbTypeAtIndex:section];
     NSInteger count = [[self.thumbProvider itemsForType:type] count ];
-    NSInteger itemsCount = count>0 ? MAX(count,2) : count;
+//    NSInteger itemsCount = count>0 ? MAX(count,2) : count;
     
-    return MIN(itemsCount,[self maxItems]);
+    return MIN(count,[self maxItems]);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
