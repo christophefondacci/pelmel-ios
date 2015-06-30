@@ -111,4 +111,10 @@ typedef void (^ImageLoaderBlock)(CALImage *image);
  */
 //-(void)getOverviewOtherImage:(Imaged*)imaged index:(NSInteger)index callback:(id<ImageRefreshCallback>)callback;
 
+/**
+ * Checks that there is no conflicting operation running for this image view, loading a potentially different URL.
+ * If such a conflict is found, the operation is cancelled.
+ */
+-(BOOL)checkCurrentImageViewTask:(UIImageView*)imageView url:(NSString*)url;
+
 @end

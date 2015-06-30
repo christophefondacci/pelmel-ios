@@ -97,6 +97,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if(!self.hasShowMore) {
         return MAXFLOAT;
     } else {
+        [self.view layoutIfNeeded];
         CGRect bounds = self.view.bounds;
         return (bounds.size.width / self.size.intValue);
     }
@@ -127,7 +128,8 @@ static NSString * const reuseIdentifier = @"Cell";
             cell.thumbImage.layer.borderWidth=0;
             cell.titleLabel.text = nil;
             // Just in case, passing through image service to make sure everything cancelled
-            [_imageService load:nil to:cell.thumbImage thumb:YES];
+            [_imageService checkCurrentImageViewTask:cell.thumbImage url:nil];
+//            [_imageService load:nil to:cell.thumbImage thumb:YES];
             return cell;
         }
     }
@@ -145,14 +147,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
     // Configuring image
     BOOL isShowMore = self.hasShowMore && (indexPath.row == [self maxItems]-1);
-    if(isShowMore) {
-        cell.thumbImage.image = nil; //[UIImage imageNamed:@"dotdotdot"];
-        cell.thumbImage.backgroundColor = BACKGROUND_COLOR; //[UIColor blackColor]; // UIColorFromRGB(0xf0801f);
-    } else {
-        cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
-        CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
-        [_imageService load:image to:cell.thumbImage thumb:YES];
-    }
+
     // Setting rounded corners (or not)
     BOOL rounded= YES;
     if([self.thumbProvider respondsToSelector:@selector(rounded)]) {
@@ -178,16 +173,22 @@ static NSString * const reuseIdentifier = @"Cell";
     // Configuring bottom right decorator
     if(!isShowMore) {
         cell.titleLabel.text = [self.thumbProvider titleAtIndex:indexPath.row forType:type];
-        cell.showMoreLabel = nil;
+        cell.showMoreLabel.text = nil;
         // Configuring decorator
-        if([self.thumbProvider respondsToSelector:@selector(colorFor:forType:)] && !isShowMore) {
+        if([self.thumbProvider respondsToSelector:@selector(colorFor:forType:)]) {
             cell.thumbImage.layer.borderColor = [self.thumbProvider colorFor:indexPath.row forType:type].CGColor;
         } else {
             cell.thumbImage.layer.borderColor = [UIColor whiteColor] .CGColor;
         }
+        cell.thumbImage.image= [CALImage getDefaultThumb]; //image.thumbImage;
+        CALImage *image = [self.thumbProvider imageAtIndex:indexPath.row forType:type];
+        [_imageService load:image to:cell.thumbImage thumb:YES];
     } else {
         cell.titleLabel.text = nil;
         cell.showMoreLabel.text = NSLocalizedString(@"snippet.showMore", @"Show more");
+        cell.thumbImage.image=nil;
+        [_imageService checkCurrentImageViewTask:cell.thumbImage url:nil];
+        cell.thumbImage.backgroundColor = BACKGROUND_COLOR;
         cell.thumbImage.layer.borderColor = [[UIColor whiteColor ] colorWithAlphaComponent:0.5f].CGColor; //FromRGB(0x70ff01).CGColor;
         cell.showMoreLabel.textColor =[UIColor whiteColor];
     }
