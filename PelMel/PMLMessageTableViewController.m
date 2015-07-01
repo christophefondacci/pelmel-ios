@@ -290,6 +290,10 @@
                 NSNumber *height = [self.heightCache objectForKey:indexPath];
                 if(height == nil) {
                     Message *message = [self messageFromIndexPath:indexPath];
+                    // Adjusting width to current view width
+                    CGRect frame = self.templateChatView.frame;
+                    self.templateChatView.frame = CGRectMake(frame.origin.x, frame.origin.y, self.view.frame.size.width, frame.size.height);
+                    [self.templateChatView layoutIfNeeded];
                     NSInteger rowHeight = [self.templateChatView setup:message forObject:message.from snippet:[self isAllMessageView]];
                     height = [NSNumber numberWithLong:rowHeight];
                     [self.heightCache setObject:height forKey:indexPath];
