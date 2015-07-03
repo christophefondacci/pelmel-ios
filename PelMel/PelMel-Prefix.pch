@@ -30,6 +30,7 @@
 #define PML_ICON_LIKE @"snpIconLikeWhite"
 #define PML_ICON_CHECKIN @"ovvIconCheckinWhite"
 #define PML_ICON_COMMENT @"ovvIconCommentWhite"
+#define PML_ICON_PRIVATE_NETWORK @"snpIconEvent"
 
 #define PML_CHECKIN_SECONDS 10800 
 

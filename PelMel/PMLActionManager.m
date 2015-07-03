@@ -90,6 +90,9 @@
         [self registerEditBannerAction];
         [self registerAddEventAction];
         [self registerShowDirectionsAction];
+        [self registerPrivateNetworkRequest:PMLPrivateNetworkActionRequest forType:PMLActionTypePrivateNetworkRequest];
+        [self registerPrivateNetworkRequest:PMLPrivateNetworkActionCancel forType:PMLActionTypePrivateNetworkCancel];
+        [self registerPrivateNetworkRequest:PMLPrivateNetworkActionAccept forType:PMLActionTypePrivateNetworkAccept];
     }
     return self;
 }
@@ -414,6 +417,22 @@
     }];
     myProfileAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:myProfileAction forType:PMLActionTypeMyProfile];
+
+}
+-(void) registerPrivateNetworkRequest:(PMLPrivateNetworkAction)action forType:(PMLActionType)actionType {
+    PopupAction *requestAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+
+        NSLog(@"NETWORK REQUEST");
+        [self.uiService.menuManagerController.menuManagerDelegate loadingStart];
+        [_userService privateNetworkAction:action withUser:(User*)object success:^(id obj) {
+            [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
+        } failure:^(id obj) {
+            [self.uiService alertError];
+            [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
+        }];
+    }];
+    requestAction.color = UIColorFromRGB(kPMLEditColor);
+    [self registerAction:requestAction forType:actionType];
 
 }
 -(void) likeAction:(CALObject*)object {

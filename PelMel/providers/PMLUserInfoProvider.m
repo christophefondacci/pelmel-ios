@@ -270,8 +270,13 @@
     switch(index) {
         case kPMLCounterIndexLike:
             return [_uiService localizedString:@"counters.likes.user" forCount:_user.likeCount];
-        case kPMLCounterIndexCheckin:
-            return nil; //[_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
+        case kPMLCounterIndexCheckin: {
+//            PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:_user];
+//            switch(status) {
+//                    case PMLUserPrivateNetworkPendingApproval
+//            }
+            return NSLocalizedString(@"counters.network", @"Private network"); //[_uiService localizedString:@"counters.checkins" forCount:_user.checkedInPlacesCount];
+        }
         case kPMLCounterIndexComment:
             return nil; //[_uiService localizedString:@"counters.chat" forCount:0];
     }
@@ -281,8 +286,19 @@
     switch(index) {
         case kPMLCounterIndexLike:
             return PMLActionTypeLike;
-        case kPMLCounterIndexCheckin:
-            return PMLActionTypeNoAction;
+        case kPMLCounterIndexCheckin: {
+            PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:_user];
+            switch(status) {
+                case PMLUserPrivateNetworkNotInNetwork:
+                    return PMLActionTypePrivateNetworkRequest;
+                case PMLUserPrivateNetworkInNetwork:
+                case PMLUserPrivateNetworkPendingRequest:
+                    return PMLActionTypePrivateNetworkCancel;
+                case PMLUserPrivateNetworkPendingApproval:
+                    return PMLActionTypePrivateNetworkAccept;
+            }
+
+        }
         case kPMLCounterIndexComment:
             return PMLActionTypeComment;
     }
@@ -294,9 +310,25 @@
         case kPMLCounterIndexLike:
             code = _user.isLiked ? @"action.unlike" : @"action.like";
             break;
-        case kPMLCounterIndexCheckin:
-            code = nil;
+        case kPMLCounterIndexCheckin: {
+            PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:_user];
+            switch(status) {
+                case PMLUserPrivateNetworkNotInNetwork:
+                    code = @"counters.network.add";
+                    break;
+                case PMLUserPrivateNetworkPendingRequest:
+                    code = @"counters.network.cancel";
+                    break;
+                case PMLUserPrivateNetworkInNetwork:
+                    code = @"counters.network.friends";
+                    break;
+                case PMLUserPrivateNetworkPendingApproval:
+                    code = @"counters.network.accept";
+                    break;
+            }
+            code = (status == PMLUserPrivateNetworkNotInNetwork) ? @"counters.network.add" : @"counters.network.cancel";
             break;
+        }
         case kPMLCounterIndexComment:
             code= @"counters.chat";
     }
@@ -305,6 +337,7 @@
     }
     return nil;
 }
+
 - (UIColor *)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected {
     if(selected) {
         switch(index) {
@@ -328,7 +361,7 @@
         case kPMLCounterIndexLike:
             return PML_ICON_LIKE;
         case kPMLCounterIndexCheckin:
-            return nil;// PML_ICON_CHECKIN;
+            return PML_ICON_PRIVATE_NETWORK;// PML_ICON_CHECKIN;
         case kPMLCounterIndexComment:
             return PML_ICON_COMMENT;
     }
@@ -342,7 +375,12 @@
         case kPMLCounterIndexLike:
             return _user.isLiked;
         case kPMLCounterIndexCheckin:
-            return NO;
+        {
+            PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:_user];
+            return status != PMLUserPrivateNetworkNotInNetwork;
+            break;
+        }
+         
         case kPMLCounterIndexComment:
             // TODO return selected when messages with user
             return NO;

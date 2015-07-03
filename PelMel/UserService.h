@@ -13,6 +13,18 @@
 #import "ImageService.h"
 #import "JsonService.h"
 
+typedef enum {
+    PMLUserPrivateNetworkNotInNetwork,
+    PMLUserPrivateNetworkPendingApproval,
+    PMLUserPrivateNetworkPendingRequest,
+    PMLUserPrivateNetworkInNetwork
+} PMLUserPrivateNetworkStatus;
+
+typedef enum {
+    PMLPrivateNetworkActionRequest,
+    PMLPrivateNetworkActionAccept,
+    PMLPrivateNetworkActionCancel,
+} PMLPrivateNetworkAction;
 
 typedef void(^Completor)(id obj);
 
@@ -28,7 +40,7 @@ typedef void(^Completor)(id obj);
 - (void)user:(CurrentUser*)user didCheckInTo:(CALObject*)object previousLocation:(Place*)previousLocation;
 - (void)user:(CurrentUser*)user didCheckOutFrom:(Place*)object;
 - (void)user:(CurrentUser*)user didFailCheckInTo:(CALObject*)object;
-
+- (void)userDidChangePrivateNetwork:(CurrentUser*)user ;
 @end
 
 @interface UserService : NSObject 
@@ -104,4 +116,12 @@ typedef void(^Completor)(id obj);
 -(BOOL)isCheckedInAt:(Place*)place;
 -(BOOL)user:(User*)user isCheckedInAt:(Place *)place;
 -(Place*)checkedInPlace;
+/**
+ * Indicates the status of this user regarding the currently connected user private network.
+ * @param user the user to check against logged in user private network
+ * @return a PMLUserPrivateNetworkStatus indicating the current state of the connection
+ */
+-(PMLUserPrivateNetworkStatus)privateNetworkStatusFor:(User*)user;
+//-(void)sendPrivateNetworkRequestTo:(User*)user success:(Completor)success failure:(Completor)failure;
+-(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(User*)user success:(Completor)success failure:(Completor)failure;
 @end

@@ -869,6 +869,25 @@
         [user setLastLocationDate:lastLocDate];
     }
     [_objectCache setObject:user forKey:user.key];
+    
+    
+    // Extracting private network info
+    CurrentUser *currentUser = [_userService getCurrentUser];
+    if([user.key isEqualToString:currentUser.key]) {
+        [self fillPrivateNetworkInfo:jsonLoginInfo inUser:currentUser];
+    }
+}
+-(void)fillPrivateNetworkInfo:(NSDictionary*)privateNetworkContainer inUser:(CurrentUser*)currentUser {
+    NSArray *jsonNetworkPendingApprovals = [privateNetworkContainer objectForKey:@"pendingApprovals"];
+    NSArray *jsonNetworkPendingRequests = [privateNetworkContainer objectForKey:@"pendingRequests"];
+    NSArray *jsonNetworkUsers = [privateNetworkContainer objectForKey:@"networkUsers"];
+    
+    NSArray *networkPendingApprovals = [self convertJsonUsersToUsers:jsonNetworkPendingApprovals];
+    NSArray *networkPendingRequests = [self convertJsonUsersToUsers:jsonNetworkPendingRequests];
+    NSArray *networkUsers = [self convertJsonUsersToUsers:jsonNetworkUsers];
+    currentUser.networkPendingApprovals = networkPendingApprovals;
+    currentUser.networkPendingRequests = networkPendingRequests;
+    currentUser.networkUsers = networkUsers;
 }
 -(NSString*)getMiniDesc:(NSArray*)descriptions {
     NSMutableDictionary *descLangMap = [[NSMutableDictionary alloc] init];

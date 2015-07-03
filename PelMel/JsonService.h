@@ -16,6 +16,7 @@
 #import "Special.h"
 #import "PMLCalendar.h"
 #import "PMLBanner.h"
+#import "CurrentUser.h"
 
 @interface JsonService : NSObject
 
@@ -55,6 +56,12 @@
 - (NSArray *)convertJsonUsersToUsers:(NSArray *)jsonUsers;
 -(PMLBanner*)convertJsonBannerToBanner:(NSDictionary*)jsonBanner;
 -(NSArray*)convertJsonBannersToBanners:(NSArray*)jsonBanners;
+/**
+ * Fills information regarding private network definition from the given dictionary into the given user.
+ * @param privateNetworkContainer a dictionary with pendingApprovals, pendingRequests and pendingNetworkUsers to extract data from 
+ * @param currentUser the CurrentUser to fill with private network definitions
+ */
+-(void)fillPrivateNetworkInfo:(NSDictionary*)privateNetworkContainer inUser:(CurrentUser*)currentUser;
 /**
  * Converts a JsonHour bean (recurring event, opening hours) to a PMLCalendar object
  * @param jsonHour a dictionary representing JSON contents

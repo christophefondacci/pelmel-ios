@@ -16,6 +16,7 @@
 
 #define kFBLoginUrlFormat @"%@/mobileFacebookLogin"
 #define kLoginUrlFormat @"%@/mobileLogin" //?email=%@&password=%@&highRes=%@"
+#define kPrivateNetworkUrlFormat @"%@/mobilePrivateList" //?email=%@&password=%@&highRes=%@"
 #define kResetPasswordUrlFormat @"%@/lostPassword"
 #define kParamEmail @"email"
 #define kParamPassword @"password"
@@ -34,6 +35,12 @@
 #define kParamCheckinKey @"checkInKey"
 #define kParamCheckout @"checkout"
 #define kParamFBAccessToken @"fbAccessToken"
+#define kParamUserKey @"userKey"
+#define kParamAction @"action"
+
+#define kPrivateNetworkActionRequest @"REQUEST"
+#define kPrivateNetworkActionCancel @"CANCEL"
+#define kPrivateNetworkActionConfirm @"CONFIRM"
 
 #define kLoginParamsFormat      @"email=%@&password=%@&highRes=%@"
 #define kDisconnectUrlFormat    @"%@/mobileDisconnect?nxtpUserToken=%@"
@@ -530,6 +537,55 @@
         }
     }
 }
+#pragma mark - Private network
+-(void)sendPrivateNetworkRequestTo:(User*)user success:(Completor)success failure:(Completor)failure {
+    [self privateNetworkAction:PMLPrivateNetworkActionRequest withUser:user success:success failure:failure];
+}
+
+-(void)cancelPrivateNetworkWith:(User*)user success:(Completor)success failure:(Completor)failure {
+    [self privateNetworkAction:PMLPrivateNetworkActionCancel withUser:user success:success failure:failure];
+}
+
+-(void)confirmPrivateNetworkWith:(User*)user success:(Completor)success failure:(Completor)failure {
+    [self privateNetworkAction:PMLPrivateNetworkActionAccept withUser:user success:success failure:failure];
+}
+
+-(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(User*)user success:(Completor)success failure:(Completor)failure {
+    NSString *url = [NSString  stringWithFormat:kPrivateNetworkUrlFormat,togaytherServer];
+    
+    // Assigning action code
+    NSString *actionCode ;
+    switch(action) {
+        case PMLPrivateNetworkActionRequest:
+            actionCode = kPrivateNetworkActionRequest;
+            break;
+        case PMLPrivateNetworkActionAccept:
+            actionCode = kPrivateNetworkActionConfirm;
+            break;
+        case PMLPrivateNetworkActionCancel:
+            actionCode = kPrivateNetworkActionCancel;
+            break;
+    }
+    
+    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+    NSDictionary *params = @{ kParamUserKey : user.key,kParamUserToken : currentUser.token, kParamAction : actionCode};
+    
+    AFHTTPRequestOperationManager *manager= [AFHTTPRequestOperationManager manager];
+    [manager GET:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+
+        // Filling new private network definition into current user
+        CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+        [jsonService fillPrivateNetworkInfo:(NSDictionary*)responseObject inUser:currentUser];
+        
+        // Calling back
+        success(responseObject);
+        [self notifyUserChangedPrivateNetwork];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        failure(error);
+    }];
+
+}
+
 #pragma mark - Tools
 - (void)resetPasswordFor:(NSString *)email success:(Completor)success failure:(Completor)failure {
     NSString *url = [NSString  stringWithFormat:kResetPasswordUrlFormat,togaytherServer];
@@ -605,6 +661,13 @@
         }
     }
 }
+-(void)notifyUserChangedPrivateNetwork {
+    for(NSObject<PMLUserCallback> *c in _listeners) {
+        if([c respondsToSelector:@selector(userDidChangePrivateNetwork:)]) {
+            [c userDidChangePrivateNetwork:_currentUser];
+        }
+    }
+}
 -(void)notifyUserRegistered:(NSObject<PMLUserCallback>*)callback {
     NSMutableSet *callbacks = [NSMutableSet setWithSet:_listeners];
     if(callback != nil) {
@@ -638,5 +701,24 @@
         return _currentUser.lastLocation;
     }
     return nil;
+}
+
+- (PMLUserPrivateNetworkStatus)privateNetworkStatusFor:(User *)user {
+    for(User *u in _currentUser.networkPendingApprovals) {
+        if([u.key isEqualToString:user.key]) {
+            return PMLUserPrivateNetworkPendingApproval;
+        }
+    }
+    for(User *u in _currentUser.networkPendingRequests) {
+        if([u.key isEqualToString:user.key]) {
+            return PMLUserPrivateNetworkPendingRequest;
+        }
+    }
+    for(User *u in _currentUser.networkUsers) {
+        if([u.key isEqualToString:user.key]) {
+            return PMLUserPrivateNetworkInNetwork;
+        }
+    }
+    return PMLUserPrivateNetworkNotInNetwork;
 }
 @end

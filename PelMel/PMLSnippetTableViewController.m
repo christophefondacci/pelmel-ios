@@ -1769,6 +1769,9 @@ typedef enum {
 - (void)user:(CurrentUser *)user didCheckOutFrom:(Place *)object {
     [self.tableView reloadData];
 }
+-(void)userDidChangePrivateNetwork:(CurrentUser *)user {
+    [self.tableView reloadData];
+}
 
 #pragma mark - UITextFieldDelegate
 - (void)titleTextChanged:(UITextField*) textField {

@@ -190,6 +190,11 @@
 "counters.likes.singular"="%d Likes It";
 "counters.likes.user"="%d Like Him";
 "counters.likes.user.singular"="%d Likes Him";
+"counters.network"="Private Network";
+"counters.network.accept"="Accept";
+"counters.network.add"="Add";
+"counters.network.cancel"="Cancel";
+"counters.network.friends"="Friends";
 //"counters.likes.singular"="%d Like";
 "description"="Description";
 "description.placeholder"="Write a description in %@";

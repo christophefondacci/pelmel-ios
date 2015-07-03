@@ -193,6 +193,11 @@
 "counters.likes.user.singular"="%d l'aime";
 "counters.likes"="%d Aiment";
 "counters.likes.singular"="%d Aime";
+"counters.network"="Réseau Privé";
+"counters.network.accept"="Accepter";
+"counters.network.add"="Ajouter";
+"counters.network.cancel"="Annuler";
+"counters.network.friends"="Amis";
 "description"="Description";
 "description.placeholder"="Ecrire en %@";
 "description.edition.title"="Choisissez votre langue";

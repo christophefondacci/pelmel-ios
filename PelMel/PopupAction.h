@@ -33,6 +33,9 @@ typedef enum {
     PMLActionTypePhoneCall,
     PMLActionTypeWebsite,
     PMLActionTypeDirections,
+    PMLActionTypePrivateNetworkRequest,
+    PMLActionTypePrivateNetworkAccept,
+    PMLActionTypePrivateNetworkCancel,
 } PMLActionType;
 
 /**

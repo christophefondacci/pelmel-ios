@@ -15,6 +15,9 @@
 @property (strong) NSString *password;
 @property (nonatomic,strong) NSString *token;
 @property (nonatomic,assign) BOOL isImperial;
+@property (nonatomic,retain) NSArray *networkPendingApprovals;
+@property (nonatomic,retain) NSArray *networkPendingRequests;
+@property (nonatomic,retain) NSArray *networkUsers;
 
 /**
  * Convenience initializer
