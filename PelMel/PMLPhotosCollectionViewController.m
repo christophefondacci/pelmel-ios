@@ -101,7 +101,8 @@ static NSString * const reuseIdentifier = @"Cell";
             return _loading ? 1 : 0;
         default: {
             NSArray *objects = [self.provider objectsForSection:section-1];
-            return objects.count;
+            
+            return objects.count + ([self canAddToSection:section] ? 1 : 0);
         }
             
     }
@@ -126,36 +127,45 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 -(void)configureCellPhoto:(PMLPhotoView*)cell forRow:(NSInteger)row inSection:(NSInteger)section {
-    NSObject *activity = [[self.provider objectsForSection:section] objectAtIndex:row];
-    CALImage *image = [self.provider photoController:self imageForObject:activity inSection:section];//activity.extraImage;
-    if(image.fullImage != nil) {
-        cell.photoImageView.image = image.fullImage;
+
+    // Getting activity object
+    NSArray *objects = [self.provider objectsForSection:section];
+    if(row == objects.count) {
+        cell.photoImageView.image = [UIImage imageNamed:@"btnThumbAdd"];
+        cell.subtitleLabel.text = nil;
+        cell.photoImageView.layer.borderWidth=0;
     } else {
-        cell.photoImageView.image = [CALImage getDefaultThumb];
-        
-        // If provider defines a default image we use it
-        if([self.provider respondsToSelector:@selector(defaultImageFor:)]) {
+        NSObject *activity = [objects objectAtIndex:row];
+        CALImage *image = [self.provider photoController:self imageForObject:activity inSection:section];//activity.extraImage;
+        if(image.fullImage != nil) {
+            cell.photoImageView.image = image.fullImage;
+        } else {
+            cell.photoImageView.image = [CALImage getDefaultThumb];
             
-            // Getting image
-            UIImage *defaultImage=[self.provider defaultImageFor:activity];
-            
-            // Only using it if not null (so that returning nil from provider will use defaultThumb)
-            if(defaultImage != nil) {
-                cell.photoImageView.image = defaultImage;
+            // If provider defines a default image we use it
+            if([self.provider respondsToSelector:@selector(defaultImageFor:)]) {
+                
+                // Getting image
+                UIImage *defaultImage=[self.provider defaultImageFor:activity];
+                
+                // Only using it if not null (so that returning nil from provider will use defaultThumb)
+                if(defaultImage != nil) {
+                    cell.photoImageView.image = defaultImage;
+                }
             }
+            
+            
+            // Resetting thumb image if not HD
+            [_imageService load:image to:cell.photoImageView thumb:!self.loadFullImage];
         }
-        
-        
-        // Resetting thumb image if not HD
-        [_imageService load:image to:cell.photoImageView thumb:!self.loadFullImage];
-    }
-    cell.subtitleLabel.text = [self.provider photoController:self labelForObject:activity inSection:section];
-    cell.photoImageView.layer.borderWidth=0;
-    if([self.provider respondsToSelector:@selector(borderColorFor:)]) {
-        UIColor *color = [self.provider borderColorFor:activity];
-        if(color!=nil) {
-            cell.photoImageView.layer.borderWidth=1;
-            cell.photoImageView.layer.borderColor = color.CGColor;
+        cell.subtitleLabel.text = [self.provider photoController:self labelForObject:activity inSection:section];
+        cell.photoImageView.layer.borderWidth=0;
+        if([self.provider respondsToSelector:@selector(borderColorFor:)]) {
+            UIColor *color = [self.provider borderColorFor:activity];
+            if(color!=nil) {
+                cell.photoImageView.layer.borderWidth=1;
+                cell.photoImageView.layer.borderColor = color.CGColor;
+            }
         }
     }
 }
@@ -176,8 +186,13 @@ static NSString * const reuseIdentifier = @"Cell";
 */
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     if(indexPath.section != kSectionLoading) {
-        NSObject *activity = [[self.provider objectsForSection:indexPath.section-1] objectAtIndex:indexPath.row];
-        [self.provider photoController:self objectTapped:activity inSection:indexPath.section-1];
+        NSArray *objects = [self.provider objectsForSection:indexPath.section-1];
+        if(indexPath.row==objects.count) {
+            
+        } else {
+            NSObject *activity = [objects objectAtIndex:indexPath.row];
+            [self.provider photoController:self objectTapped:activity inSection:indexPath.section-1];
+        }
     }
 }
 /*
@@ -218,14 +233,21 @@ static NSString * const reuseIdentifier = @"Cell";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     return CGSizeMake(_widthFit, _widthFit);
 }
+/**
+ * Factorizes detection of method availability from provider and always provide a YES/NO result
+ */
+-(BOOL)canAddToSection:(NSInteger)section {
+    BOOL canAddToSection = NO;
+    if([self.provider respondsToSelector:@selector(canAddToSection:)])      {
+        canAddToSection = [self.provider canAddToSection:section-1];
+    }
+    return canAddToSection;
+}
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     if(section != kSectionLoading && [self numberOfSectionsInCollectionView:collectionView]>2) {
         
-        BOOL canAddToSection = NO;
-        if([self.provider respondsToSelector:@selector(canAddToSection:)])      {
-            canAddToSection = [self.provider canAddToSection:section-1];
-        }
-        if(([self collectionView:self.collectionView numberOfItemsInSection:section]>0 || canAddToSection) && [self.provider respondsToSelector:@selector(labelForSection:)]) {
+        
+        if(([self collectionView:self.collectionView numberOfItemsInSection:section]>0 || [self canAddToSection:section]) && [self.provider respondsToSelector:@selector(labelForSection:)]) {
             if([self.provider labelForSection:section-1]!=nil) {
                 return CGSizeMake(self.collectionView.bounds.size.width, 39);
             }

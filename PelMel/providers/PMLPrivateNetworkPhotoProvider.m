@@ -108,7 +108,8 @@
  */
 -(void)photoControllerDidTapCloseMenu:(PMLPhotosCollectionViewController*)controller {
     [[[[TogaytherService uiService] menuManagerController] navigationController] popToRootViewControllerAnimated:YES];
-    [[[TogaytherService uiService] menuManagerController] dismissControllerSnippet];
+//    [[[TogaytherService uiService] menuManagerController] dismissControllerSnippet];
+    [[TogaytherService uiService] presentSnippetFor:nil opened:NO root:YES];
 }
 /**
  * The label of the title for this section

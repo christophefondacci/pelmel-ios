@@ -326,7 +326,6 @@
                     code = @"counters.network.accept";
                     break;
             }
-            code = (status == PMLUserPrivateNetworkNotInNetwork) ? @"counters.network.add" : @"counters.network.cancel";
             break;
         }
         case kPMLCounterIndexComment:
