@@ -221,7 +221,11 @@
 "gallery.removalFailed.title"="Suppression impossible";
 "geoloc.deactivated.title"="Localisation désactivée";
 "geoloc.deactivated.subtitle"="Modifiez réglages > confidentiel > localisation";
+"grid.section.networkApprovals"="En attente de votre approbation";
+"grid.section.networkUsers"="Votre réseau privé";
+"grid.section.networkRequests"="Demandes envoyées, en attente";
 "grid.title.nearbyUsers"="Mecs à Proximité";
+"grid.title.privateNetwork"="Votre réseau privé";
 "grid.title.searchResults"="Résultats";
 "hint.addPlace"="Ce bouton ajoute un nouveau lieu à PELMEL\nEntrez le nom, le type, ajustez la localisation et c'est fait !";
 "hint.badge"="Ce chiffre indique que %d personnes se trouvent actuellement là";

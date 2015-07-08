@@ -53,6 +53,19 @@
 -(NSString*)title;
 @optional
 /**
+ * Whether or not an element could be added to the given section. If implemented and returning YES then a 
+ * "plus" button will be appended to this section. Tapping this button will call the other method photoController:addToSectionTapped
+ * @param section the section index
+ */
+-(BOOL)canAddToSection:(NSInteger)section;
+/**
+ * Called when the "add" button of a section has been tapped. 
+ * @param controller the current PMLPhotosCollectionViewController
+ * @param section the section index
+ */
+-(void)photoController:(PMLPhotosCollectionViewController*)controller didTapAddToSection:(NSInteger)section;
+
+/**
  * Notifies that the user has tapped the close menu button
  */
 -(void)photoControllerDidTapCloseMenu:(PMLPhotosCollectionViewController*)controller;

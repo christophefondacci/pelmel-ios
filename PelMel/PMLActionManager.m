@@ -15,6 +15,8 @@
 #import "PMLMessagingContainerController.h"
 #import "PMLBannerEditorTableViewController.h"
 #import <MBProgressHUD.h>
+#import "PMLPhotosCollectionViewController.h"
+#import "PMLPrivateNetworkPhotoProvider.h"
 
 #define kPMLConfirmDistance 21.0
 #define kPMLConfirmSize 52.0
@@ -93,6 +95,7 @@
         [self registerPrivateNetworkRequest:PMLPrivateNetworkActionRequest forType:PMLActionTypePrivateNetworkRequest];
         [self registerPrivateNetworkRequest:PMLPrivateNetworkActionCancel forType:PMLActionTypePrivateNetworkCancel];
         [self registerPrivateNetworkRequest:PMLPrivateNetworkActionAccept forType:PMLActionTypePrivateNetworkAccept];
+        [self registerShowPrivateNetwork];
     }
     return self;
 }
@@ -434,6 +437,15 @@
     requestAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:requestAction forType:actionType];
 
+}
+-(void)registerShowPrivateNetwork {
+    PopupAction *showAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
+        PMLPrivateNetworkPhotoProvider *provider = [[PMLPrivateNetworkPhotoProvider alloc] init];
+        photosController.provider = provider;
+        [_uiService presentSnippet:photosController opened:YES root:YES];
+    }];
+    [self registerAction:showAction forType:PMLActionTypePrivateNetworkShow];
 }
 -(void) likeAction:(CALObject*)object {
     

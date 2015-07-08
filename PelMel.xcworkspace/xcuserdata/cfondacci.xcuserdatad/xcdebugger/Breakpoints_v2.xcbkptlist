@@ -4171,11 +4171,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MapViewController.m"
-            timestampString = "456781896.678965"
+            timestampString = "457654269.788539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1060"
-            endingLineNumber = "1060"
+            startingLineNumber = "1068"
+            endingLineNumber = "1068"
             landmarkName = "-createEditedRange:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4187,11 +4187,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MapViewController.m"
-            timestampString = "456781896.678965"
+            timestampString = "457654269.788539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1097"
-            endingLineNumber = "1097"
+            startingLineNumber = "1105"
+            endingLineNumber = "1105"
             landmarkName = "-updateEditedRange"
             landmarkType = "5">
          </BreakpointContent>
@@ -4203,11 +4203,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MapViewController.m"
-            timestampString = "456781896.678965"
+            timestampString = "457654269.788539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1091"
-            endingLineNumber = "1091"
+            startingLineNumber = "1099"
+            endingLineNumber = "1099"
             landmarkName = "-updateEditedRange"
             landmarkType = "5">
          </BreakpointContent>
@@ -4316,11 +4316,11 @@
             condition = "[place.key isEqualToString:@&quot;PLAC10967&quot;]"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MapViewController.m"
-            timestampString = "456781896.678965"
+            timestampString = "457654269.788539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "454"
-            endingLineNumber = "454"
+            startingLineNumber = "462"
+            endingLineNumber = "462"
             landmarkName = "-updateAnnotations"
             landmarkType = "5">
          </BreakpointContent>
@@ -4398,11 +4398,11 @@
             condition = "[place.key isEqualToString:@&quot;PLAC4172&quot;]"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MapViewController.m"
-            timestampString = "456781896.678965"
+            timestampString = "457654269.788539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "455"
-            endingLineNumber = "455"
+            startingLineNumber = "463"
+            endingLineNumber = "463"
             landmarkName = "-updateAnnotations"
             landmarkType = "5">
          </BreakpointContent>
@@ -4415,11 +4415,11 @@
             condition = "[place.key isEqualToString:@&quot;PLAC4202&quot;]"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MapViewController.m"
-            timestampString = "456781896.678965"
+            timestampString = "457654269.788539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "452"
-            endingLineNumber = "452"
+            startingLineNumber = "460"
+            endingLineNumber = "460"
             landmarkName = "-updateAnnotations"
             landmarkType = "5">
          </BreakpointContent>
@@ -4672,11 +4672,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLPhotosCollectionViewController.m"
-            timestampString = "455128179.442841"
+            timestampString = "457893511.712297"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "225"
-            endingLineNumber = "225"
+            startingLineNumber = "230"
+            endingLineNumber = "230"
             landmarkName = "-collectionView:layout:referenceSizeForHeaderInSection:"
             landmarkType = "5">
          </BreakpointContent>
@@ -4688,7 +4688,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLPhotosCollectionViewController.m"
-            timestampString = "455128179.442841"
+            timestampString = "457655974.296762"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "222"
@@ -6225,11 +6225,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/MapViewController.m"
-            timestampString = "456781975.91615"
+            timestampString = "457654269.788539"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "302"
-            endingLineNumber = "302"
+            startingLineNumber = "304"
+            endingLineNumber = "304"
             landmarkName = "-initializeMenuActions"
             landmarkType = "5">
          </BreakpointContent>
@@ -6865,11 +6865,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLActionManager.m"
-            timestampString = "457581225.446159"
+            timestampString = "457654232.220998"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "352"
-            endingLineNumber = "352"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
             landmarkName = "-registerReportForDeletionAction"
             landmarkType = "5">
          </BreakpointContent>
@@ -6881,11 +6881,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLActionManager.m"
-            timestampString = "457581225.446159"
+            timestampString = "457654232.220998"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "879"
-            endingLineNumber = "879"
+            startingLineNumber = "891"
+            endingLineNumber = "891"
             landmarkName = "-alertView:willDismissWithButtonIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7191,6 +7191,22 @@
             startingLineNumber = "577"
             endingLineNumber = "577"
             landmarkName = "-privateNetworkAction:withUser:success:failure:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/providers/PMLPrivateNetworkPhotoProvider.m"
+            timestampString = "457655091.499588"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "40"
+            endingLineNumber = "40"
+            landmarkName = "-objectsForSection:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

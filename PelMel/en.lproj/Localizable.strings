@@ -219,7 +219,11 @@
 "gallery.removalFailed.title"="Cannot delete photo";
 "geoloc.deactivated.title"="Location services disabled";
 "geoloc.deactivated.subtitle"="Go to settings > privacy > location";
+"grid.section.networkApprovals"="Awaiting your approval";
+"grid.section.networkUsers"="Your private network";
+"grid.section.networkRequests"="Requests you sent, not yet approved";
 "grid.title.nearbyUsers"="Nearby Guys";
+"grid.title.privateNetwork"="Your private network";
 "grid.title.searchResults"="Results Grid";
 "hint.addPlace"="Tap this button to add a new hangout to PELMEL\nSet a name, a type, adjust location and it's done!";
 "hint.badge"="This number indicates that %d persons are currently here";

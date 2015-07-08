@@ -220,7 +220,12 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     if(section != kSectionLoading && [self numberOfSectionsInCollectionView:collectionView]>2) {
-        if([self.provider respondsToSelector:@selector(labelForSection:)]) {
+        
+        BOOL canAddToSection = NO;
+        if([self.provider respondsToSelector:@selector(canAddToSection:)])      {
+            canAddToSection = [self.provider canAddToSection:section-1];
+        }
+        if(([self collectionView:self.collectionView numberOfItemsInSection:section]>0 || canAddToSection) && [self.provider respondsToSelector:@selector(labelForSection:)]) {
             if([self.provider labelForSection:section-1]!=nil) {
                 return CGSizeMake(self.collectionView.bounds.size.width, 39);
             }

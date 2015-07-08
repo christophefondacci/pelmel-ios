@@ -374,6 +374,8 @@
 		B4CC31501B3278B000E755DA /* PMLChatLoaderViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC314E1B3278B000E755DA /* PMLChatLoaderViewCell.m */; };
 		B4CC31571B3D0F6900E755DA /* PMLManagedUser.h in Headers */ = {isa = PBXBuildFile; fileRef = B4CC31551B3D0F6900E755DA /* PMLManagedUser.h */; };
 		B4CC31581B3D0F6900E755DA /* PMLManagedUser.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC31561B3D0F6900E755DA /* PMLManagedUser.m */; };
+		B4CC315B1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B4CC31591B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.h */; };
+		B4CC315C1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CC315A1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.m */; };
 		B4CDDB0D1680D140002C01C0 /* Event.m in Sources */ = {isa = PBXBuildFile; fileRef = B4CDDB0C1680D140002C01C0 /* Event.m */; };
 		B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */ = {isa = PBXBuildFile; fileRef = B4D26A7019DE1637004C5991 /* NSData+Conversion.h */; };
 		B4D26A7319DE1637004C5991 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D26A7119DE1637004C5991 /* NSData+Conversion.m */; };
@@ -867,6 +869,8 @@
 		B4CC314E1B3278B000E755DA /* PMLChatLoaderViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLChatLoaderViewCell.m; sourceTree = "<group>"; };
 		B4CC31551B3D0F6900E755DA /* PMLManagedUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLManagedUser.h; sourceTree = "<group>"; };
 		B4CC31561B3D0F6900E755DA /* PMLManagedUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLManagedUser.m; sourceTree = "<group>"; };
+		B4CC31591B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPrivateNetworkPhotoProvider.h; sourceTree = "<group>"; };
+		B4CC315A1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPrivateNetworkPhotoProvider.m; sourceTree = "<group>"; };
 		B4CDDB0B1680D140002C01C0 /* Event.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Event.h; sourceTree = "<group>"; };
 		B4CDDB0C1680D140002C01C0 /* Event.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Event.m; sourceTree = "<group>"; };
 		B4D26A7019DE1637004C5991 /* NSData+Conversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
@@ -1713,6 +1717,8 @@
 				B4CC312C1B3089D100E755DA /* PMLThreadMessageProvider.m */,
 				B4CC312F1B30924700E755DA /* PMLConversationMessageProvider.h */,
 				B4CC31301B30924700E755DA /* PMLConversationMessageProvider.m */,
+				B4CC31591B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.h */,
+				B4CC315A1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.m */,
 			);
 			name = Providers;
 			path = providers;
@@ -1820,6 +1826,7 @@
 				B4859DCE1984C39B0036D8FF /* UITextInputView.h in Headers */,
 				B43E762A199781D200153B46 /* PMLImageTableViewController.h in Headers */,
 				B4FC958E19B1F0D200269E74 /* PMLGalleryTableViewCell.h in Headers */,
+				B4CC315B1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.h in Headers */,
 				B4A4666C19A73A6A004ADC7E /* PMLPlaceInfoProvider.h in Headers */,
 				B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */,
 				B4B560AB18B76CD0006E6D90 /* UIPelmelTitleView.h in Headers */,
@@ -2260,6 +2267,7 @@
 				B47A69C71AA6927D00877B58 /* PMLThumbCollectionViewController.m in Sources */,
 				B41CF0A41895BF6D0031FD7C /* ThumbCell.m in Sources */,
 				B457A0FB1A9AF00A00207D8E /* PMLTextFieldTableViewCell.m in Sources */,
+				B4CC315C1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.m in Sources */,
 				B4AA0A6F1AFD1D0400DCDE29 /* PMLEventPlaceTabsTitleView.m in Sources */,
 				B42D2D461619715B00159EBD /* CALImage.m in Sources */,
 				B45CAB3519721BD40089C7E8 /* UIPopBehavior.m in Sources */,

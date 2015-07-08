@@ -72,11 +72,12 @@
     CLLocationManager *_locationManager;
     int _lastAuthorizationStatus;
     
-    // Menu management
+    // Menu management (referencing to avoid auto release)
     MenuAction *_menuAddAction;
     MenuAction *_menuRefreshAction;
     MenuAction *_menuMyPositionAction;
     MenuAction *_menuCheckinAction;
+    MenuAction *_menuNetworkAction;
     BOOL _zoomAnimation;
     
     // Context filters
@@ -155,6 +156,7 @@
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuRefreshAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuMyPositionAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuCheckinAction];
+    [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuNetworkAction];
     
     [self.parentMenuController addObserver:self forKeyPath:@"contextObject" options:NSKeyValueObservingOptionNew context:NULL];
     
@@ -303,6 +305,12 @@
     }];
     _menuCheckinAction.leftMargin = 5;
     _menuCheckinAction.topMargin = _menuMyPositionAction.topMargin; //topMargin
+    
+    _menuNetworkAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnNetwork"] pctWidth:0 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+        [[TogaytherService actionManager] execute:PMLActionTypePrivateNetworkShow onObject:nil];
+    }];
+    _menuNetworkAction.leftMargin = 5;
+    _menuNetworkAction.topMargin = _menuCheckinAction.topMargin+50+5;
 }
 
 -(CLLocationDistance)distanceFromCornerPoint {
