@@ -458,7 +458,11 @@
         // Building new group for group message
         PMLRecipientsGroup *group = [[PMLRecipientsGroup alloc] initWithUsers:networkUsers];
         
-        [self execute:PMLActionTypeComment onObject:group];
+        PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
+        msgController.withObject = group;
+        [_uiService presentSnippet:msgController opened:YES root:NO];
+        
+//        [self execute:PMLActionTypeComment onObject:group];
     }];
     [self registerAction:showAction forType:PMLActionTypeGroupChat];
 }

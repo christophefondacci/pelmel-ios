@@ -387,8 +387,10 @@ static void *MyParentMenuControllerKey;
     }
     
 }
-
 - (BOOL)dismissControllerSnippet {
+    return [self dismissControllerSnippet:YES];
+}
+- (BOOL)dismissControllerSnippet:(BOOL)animated {
     BOOL dismissed = NO;
     if(_inputView != nil) {
         [_inputView removeFromSuperview];
@@ -398,7 +400,7 @@ static void *MyParentMenuControllerKey;
         // Animating (real de-allocation will be made if a new view controller is presented)
         [_animator removeAllBehaviors];
         
-        [self animateSnippetToOffset:self.containerView.bounds.size.height+_gripView.frame.size.height animated:YES];
+        [self animateSnippetToOffset:self.containerView.bounds.size.height+_gripView.frame.size.height animated:animated];
         dismissed= YES;
     } else {
         // No snippet equals dismissed

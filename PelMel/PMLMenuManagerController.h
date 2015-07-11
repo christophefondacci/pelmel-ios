@@ -165,6 +165,7 @@ typedef void(^TextInputCallback)(NSString *text);
  *          (like a user input dialog)
  */
 -(BOOL)dismissControllerSnippet;
+-(BOOL)dismissControllerSnippet:(BOOL)animated;
 -(void)dismissSearch;
 //- (void)installNavigationFor:(UIViewController*)controller;
 //- (void)uninstallNavigation;

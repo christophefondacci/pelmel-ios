@@ -243,12 +243,9 @@
     [_chatTextView resignFirstResponder];
 }
 -(void)closeMenu:(id)sender {
-    if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
-        [[TogaytherService uiService] presentSnippetFor:nil opened:NO];
-    } else {
-        [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
-        [self.parentMenuController dismissControllerMenu:YES];
-    }
+    [[[TogaytherService uiService] menuManagerController] dismissControllerSnippet:NO];
+    [[TogaytherService uiService] presentSnippetFor:nil opened:NO root:YES];
+    [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
 }
 #pragma mark - PMLImagePickerCallback
 - (void)imagePicked:(CALImage *)image {
