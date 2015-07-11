@@ -12,6 +12,8 @@
 #import "UserService.h"
 #import "MKNumberBadgeView.h"
 #import "PMLManagedUser.h"
+#import "PMLManagedRecipientsGroup.h"
+#import "PMLRecipientsGroup.h"
 
 #define kPMLNotificationActivityChanged @"PMLActivityChanged"
 
@@ -20,7 +22,7 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 @protocol MessageCallback
 @optional
 // Method called to inform that a list of messages have been fetched from the server
--(void)messagesFetched:(NSArray*)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize;
+-(void)messagesFetchedWithTotalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize;
 -(void)loadMessageFailed;
 -(void)messageSent:(Message*)message;
 -(void)messageSendFailed;
@@ -54,8 +56,8 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 -(void)getReviewsAsMessagesFor:(NSString*)itemKey messageCallback:(id<MessageCallback>)callback;
 -(void)getReviewsAsMessagesFor:(NSString *)itemKey messageCallback:(id<MessageCallback>)callback page:(NSInteger)page;
 
-// Sends an instant message to the given user
--(void)sendMessage:(NSString*)message toUser:(User*)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback;
+// Sends an instant message to the given user or recipient (PMLRecipientsGroup)
+-(void)sendMessage:(NSString*)message toRecipient:(CALObject*)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback;
 
 // Stores the message
 -(void)storeMessage:(Message*)m;
@@ -87,4 +89,15 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 -(void)didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken;
 -(void)didFailToRegisterForRemoteNotificationsWithError:(NSError *)error;
 -(User*)userFromManagedUser:(PMLManagedUser*)user;
+
+/**
+ * Provides the recipients group associated with the given key
+ */
+-(PMLManagedRecipientsGroup*)managedRecipientsGroupForKey:(NSString*)recipientsGroupKey;
+/**
+ * Provides the recipients group as a model object from its key.
+ * @param recipientsGroupKey the item key of the group to retrieve
+ * @return a PMLRecipientsGroup instance with the declaration of this group
+ */
+-(PMLRecipientsGroup *)recipientsGroupForKey:(NSString *)recipientsGroupKey;
 @end

@@ -9,6 +9,7 @@
 #import "PMLThreadMessageProvider.h"
 #import "TogaytherService.h"
 #import "PMLManagedUser.h"
+#import "PMLManagedMessage.h"
 
 @interface PMLThreadMessageProvider()
 @property (nonatomic,retain) NSFetchedResultsController *fetchedResultsController;
@@ -39,10 +40,10 @@
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"PMLManagedUser" inManagedObjectContext:managedObjectContext];
+                                   entityForName:@"PMLManagedRecipient" inManagedObjectContext:managedObjectContext];
     [fetchRequest setEntity:entity];
     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"currentUserKey=%@ and itemKey != %@", user.key,user.key];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"currentUserKey=%@ and itemKey != %@ and lastMessageDate!=nil", user.key,user.key];
     [fetchRequest setPredicate:predicate];
 
     NSSortDescriptor *sort = [[NSSortDescriptor alloc]
@@ -64,19 +65,23 @@
 
 - (Message*)messageFromIndexPath:(NSIndexPath*)indexPath {
     // Getting result (might be dictionary or PMLManagedMessage)
-    PMLManagedUser *user = [_fetchedResultsController objectAtIndexPath:indexPath];
+    PMLManagedRecipient *recipient = [_fetchedResultsController objectAtIndexPath:indexPath];
     Message *message = [[Message alloc] init];
     
     message.key = nil;
-    message.date = user.lastMessageDate;
+    message.date = recipient.lastMessageDate;
     
     //    message.from = [[User alloc] init];
-    message.from = [[TogaytherService getMessageService] userFromManagedUser:user];
+    if([recipient isKindOfClass:[PMLManagedUser class]]) {
+        message.from = [[TogaytherService getMessageService] userFromManagedUser:(PMLManagedUser*)recipient];
+    } else {
+        message.recipientsGroupKey = ((PMLManagedRecipientsGroup*)recipient).itemKey;
+    }
     message.to = [[TogaytherService userService] getCurrentUser];
     message.text = nil;
-    message.unreadCount = user.unreadCount.integerValue;
-    message.unread = user.unreadCount >0;
-    message.messageCount = user.messages.count; //[((NSNumber*)[values objectForKey:@"count"]) integerValue];
+    message.unreadCount = recipient.unreadCount.integerValue;
+    message.unread = recipient.unreadCount >0;
+    message.messageCount = recipient.recipientMessages.count;
     return message;
 }
 

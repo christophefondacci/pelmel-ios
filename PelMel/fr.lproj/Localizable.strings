@@ -221,6 +221,7 @@
 "gallery.removalFailed.title"="Suppression impossible";
 "geoloc.deactivated.title"="Localisation désactivée";
 "geoloc.deactivated.subtitle"="Modifiez réglages > confidentiel > localisation";
+"grid.action.groupChat"="Chat groupé";
 "grid.section.networkApprovals"="En attente de votre approbation";
 "grid.section.networkUsers"="Votre réseau privé";
 "grid.section.networkRequests"="Demandes envoyées, en attente";
@@ -303,6 +304,7 @@
 "message.sending.failed.title"="Envoi Impossible";
 "message.thread.message"="%d messages";
 "messages.my.title"="Chats";
+"messaging.title.groupChat"="Chat groupé";
 "modify"="Modifier";
 "moreresults.title"="Voir plus de résultats";
 "moreresults.subtitle"="Tapez ici pour rechercher tous les lieux et villes";
@@ -487,6 +489,7 @@
 "tabs.deals"="Promos";
 "tabs.events"="Evènements";
 "tabs.places"="Lieux";
+"thumbView.section.chatUsers"="Destinataires";
 "thumbView.section.checkin"="Ils y sont";
 "thumbView.section.checkin.singular"="Il y est";
 "thumbView.section.event.users"="Ils y seront";

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="PMLManagedActivity" representedClassName="PMLManagedActivity" syncable="YES">
+        <attribute name="activityDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="activityItemImageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="activityItemKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="activityItemName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="activityItemThumbUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="activityKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="activityType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="defaultTranslation" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userImageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userItemKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userThumbUrl" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="PMLManagedMessage" representedClassName="PMLManagedMessage" syncable="YES">
+        <attribute name="isUnread" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="messageDate" attributeType="Date" indexed="YES" syncable="YES"/>
+        <attribute name="messageImageKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageImageThumbUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageImageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="messageKey" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="messageText" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="toItemKey" attributeType="String" indexed="YES" syncable="YES"/>
+        <relationship name="from" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PMLManagedUser" inverseName="messages" inverseEntity="PMLManagedUser" syncable="YES"/>
+        <relationship name="replyTo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PMLManagedRecipient" inverseName="recipientMessages" inverseEntity="PMLManagedRecipient" syncable="YES"/>
+    </entity>
+    <entity name="PMLManagedRecipient" representedClassName="PMLManagedRecipient" isAbstract="YES" syncable="YES">
+        <attribute name="currentUserKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastMessageDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="unreadCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <relationship name="recipientMessages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PMLManagedMessage" inverseName="replyTo" inverseEntity="PMLManagedMessage" syncable="YES"/>
+    </entity>
+    <entity name="PMLManagedRecipientsGroup" representedClassName="PMLManagedRecipientsGroup" parentEntity="PMLManagedRecipient" syncable="YES">
+        <relationship name="groupUsers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PMLManagedRecipientsGroupUser" inverseName="recipientsGroup" inverseEntity="PMLManagedRecipientsGroupUser" syncable="YES"/>
+    </entity>
+    <entity name="PMLManagedRecipientsGroupUser" representedClassName="PMLManagedRecipientsGroupUser" syncable="YES">
+        <relationship name="recipientsGroup" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PMLManagedRecipientsGroup" inverseName="groupUsers" inverseEntity="PMLManagedRecipientsGroup" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PMLManagedUser" inverseName="recipientsGroups" inverseEntity="PMLManagedUser" syncable="YES"/>
+    </entity>
+    <entity name="PMLManagedUser" representedClassName="PMLManagedUser" parentEntity="PMLManagedRecipient" syncable="YES">
+        <attribute name="imageKey" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="thumbUrl" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PMLManagedMessage" inverseName="from" inverseEntity="PMLManagedMessage" syncable="YES"/>
+        <relationship name="recipientsGroups" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PMLManagedRecipientsGroupUser" inverseName="user" inverseEntity="PMLManagedRecipientsGroupUser" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="PMLManagedActivity" positionX="-3897" positionY="-108" width="128" height="223"/>
+        <element name="PMLManagedMessage" positionX="-3483" positionY="-54" width="128" height="195"/>
+        <element name="PMLManagedRecipient" positionX="-3672" positionY="-198" width="128" height="120"/>
+        <element name="PMLManagedRecipientsGroup" positionX="-3681" positionY="-73" width="128" height="60"/>
+        <element name="PMLManagedRecipientsGroupUser" positionX="-3726" positionY="161" width="128" height="73"/>
+        <element name="PMLManagedUser" positionX="-3683" positionY="284" width="128" height="135"/>
+    </elements>
+</model>

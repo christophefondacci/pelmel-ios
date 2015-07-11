@@ -25,6 +25,8 @@
 #import "PMLConversationMessageProvider.h"
 #import "PMLManagedUser.h"
 #import "PMLChatLoaderViewCell.h"
+#import "PMLRecipientsGroup.h"
+
 
 #define kRowIdLoad @"loader"
 #define kRowIdChatView @"chatView"
@@ -125,15 +127,15 @@
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
     NSManagedObjectContext *context = [[TogaytherService storageService] managedObjectContext];
     NSEntityDescription *entity = [NSEntityDescription
-                                   entityForName:@"PMLManagedUser" inManagedObjectContext:context];
+                                   entityForName:@"PMLManagedRecipient" inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemKey == %@", itemKey];
     [fetchRequest setPredicate:predicate];
 
     NSError *error;
     NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    for(PMLManagedUser *user in fetchedObjects) {
-        user.unreadCount = @0;
+    for(PMLManagedRecipient *recipient in fetchedObjects) {
+        recipient.unreadCount = @0;
     }
     if(![context save:&error]) {
         NSLog(@"Failed to save messages as read: %@", error.localizedDescription);
@@ -194,7 +196,9 @@
     }
 }
 - (void)refreshContents {
-    if([_withObject isKindOfClass:[User class]]) {
+    if([_withObject isKindOfClass:[PMLRecipientsGroup class]]) {
+        
+    } else if([_withObject isKindOfClass:[User class]]) {
         [messageService getMessagesWithUser:_withObject.key messageCallback:self];
     } else if([_withObject isKindOfClass:[CALObject class]]){
         [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
@@ -267,7 +271,14 @@
 
     Message *message = [self messageFromIndexPath:indexPath];
     PMLMessageTableViewController *targetController = (PMLMessageTableViewController*)[uiService instantiateViewController:SB_ID_MESSAGES];
-    [targetController setWithObject:message.from];
+    
+    // Setting with object, handling group chat
+    if(message.recipientsGroupKey != nil) {
+        PMLRecipientsGroup *group = [messageService recipientsGroupForKey:message.recipientsGroupKey];
+        [targetController setWithObject:group];
+    } else {
+        [targetController setWithObject:message.from];
+    }
     if(self.navigationController == self.parentMenuController.currentSnippetViewController) {
         [self.navigationController pushViewController:targetController animated:YES];
     } else {
@@ -436,8 +447,7 @@
 //        }
 //    }
 }
-- (void)messagesFetched:(NSArray *)messagesList totalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize {
-
+- (void)messagesFetchedWithTotalCount:(NSInteger)totalCount page:(NSInteger)page pageSize:(NSInteger)pageSize {
     [self refreshTable ];
 
 }

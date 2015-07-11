@@ -50,8 +50,11 @@
 
     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
     
-    if([self.fromItemKey hasPrefix:@"USER"]) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@) or (toItemKey = %@ and from.itemKey=%@)",self.fromItemKey,user.key,self.fromItemKey,user.key];
+    if([self.fromItemKey hasPrefix:@"RCPT"]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"replyTo.itemKey=%@ and toItemKey=%@",self.fromItemKey,user.key];
+        [fetchRequest setPredicate:predicate];
+    } else if([self.fromItemKey hasPrefix:@"USER"]) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@ and replyTo.itemKey=from.itemKey) or (toItemKey = %@ and from.itemKey=%@ and replyTo.itemKey=from.itemKey)",self.fromItemKey,user.key,self.fromItemKey,user.key];
         [fetchRequest setPredicate:predicate];
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"toItemKey=%@",self.fromItemKey];

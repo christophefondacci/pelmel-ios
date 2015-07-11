@@ -17,6 +17,7 @@
 #import <MBProgressHUD.h>
 #import "PMLPhotosCollectionViewController.h"
 #import "PMLPrivateNetworkPhotoProvider.h"
+#import "PMLRecipientsGroup.h"
 
 #define kPMLConfirmDistance 21.0
 #define kPMLConfirmSize 52.0
@@ -96,6 +97,7 @@
         [self registerPrivateNetworkRequest:PMLPrivateNetworkActionCancel forType:PMLActionTypePrivateNetworkCancel];
         [self registerPrivateNetworkRequest:PMLPrivateNetworkActionAccept forType:PMLActionTypePrivateNetworkAccept];
         [self registerShowPrivateNetwork];
+        [self registerGroupChatAction];
     }
     return self;
 }
@@ -447,6 +449,19 @@
     }];
     [self registerAction:showAction forType:PMLActionTypePrivateNetworkShow];
 }
+-(void)registerGroupChatAction {
+    PopupAction *showAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        
+        CurrentUser *user = [_userService getCurrentUser];
+        NSArray *networkUsers = user.networkUsers;
+        
+        // Building new group for group message
+        PMLRecipientsGroup *group = [[PMLRecipientsGroup alloc] initWithUsers:networkUsers];
+        
+        [self execute:PMLActionTypeComment onObject:group];
+    }];
+    [self registerAction:showAction forType:PMLActionTypeGroupChat];
+}
 -(void) likeAction:(CALObject*)object {
     
     // Getting provider
@@ -773,6 +788,7 @@
     if([object isKindOfClass:[Place class]]) {
         calendarController.place = (Place*)object;
         [(UINavigationController*)_uiService.menuManagerController.currentSnippetViewController pushViewController:calendarController animated:YES];
+        [_uiService.menuManagerController openCurrentSnippet:YES];
     } else {
         NSLog(@"WARNING: Expected a Place object but got %@", NSStringFromClass([object class]) );
     }

@@ -857,19 +857,27 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gug-us-laP" userLabel="messageViewContainer">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="441"/>
+                                <rect key="frame" x="0.0" y="55" width="320" height="386"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B1Y-al-ucP" userLabel="messageHeader">
+                                <rect key="frame" x="0.0" y="5" width="320" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="trailing" secondItem="B1Y-al-ucP" secondAttribute="trailing" id="0Uo-OP-073"/>
                             <constraint firstAttribute="trailing" secondItem="gug-us-laP" secondAttribute="trailing" id="0jH-H7-EUK"/>
                             <constraint firstAttribute="bottom" secondItem="fCm-ks-M7O" secondAttribute="bottom" id="APw-N9-qGF"/>
-                            <constraint firstItem="gug-us-laP" firstAttribute="top" secondItem="DNO-N7-rj1" secondAttribute="top" id="FxI-Sd-NVu"/>
+                            <constraint firstItem="gug-us-laP" firstAttribute="top" secondItem="DNO-N7-rj1" secondAttribute="top" constant="55" id="FxI-Sd-NVu"/>
                             <constraint firstAttribute="trailing" secondItem="fCm-ks-M7O" secondAttribute="trailing" id="Tp0-Xd-h15"/>
+                            <constraint firstItem="B1Y-al-ucP" firstAttribute="top" secondItem="DNO-N7-rj1" secondAttribute="top" constant="5" id="VLt-L4-5tX"/>
                             <constraint firstItem="fCm-ks-M7O" firstAttribute="leading" secondItem="DNO-N7-rj1" secondAttribute="leading" id="Wnu-X0-rZO"/>
                             <constraint firstItem="gug-us-laP" firstAttribute="leading" secondItem="DNO-N7-rj1" secondAttribute="leading" id="XZ0-1V-05S"/>
                             <constraint firstItem="fCm-ks-M7O" firstAttribute="top" secondItem="gug-us-laP" secondAttribute="bottom" constant="-1" id="XmB-I0-2E3"/>
+                            <constraint firstItem="B1Y-al-ucP" firstAttribute="leading" secondItem="DNO-N7-rj1" secondAttribute="leading" id="iBt-L1-den"/>
+                            <constraint firstItem="gug-us-laP" firstAttribute="top" secondItem="B1Y-al-ucP" secondAttribute="bottom" id="xnG-wQ-NZC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="5fU-z1-wWf"/>
@@ -880,6 +888,8 @@
                         <outlet property="footerView" destination="fCm-ks-M7O" id="tYf-Pl-Hhe"/>
                         <outlet property="messageTableView" destination="gug-us-laP" id="brp-2w-IAS"/>
                         <outlet property="sendButton" destination="rKT-aB-sR8" id="gUu-bR-Q5N"/>
+                        <outlet property="topHeaderConstraint" destination="FxI-Sd-NVu" id="Qdk-UA-uhL"/>
+                        <outlet property="topHeaderContainerView" destination="B1Y-al-ucP" id="TCa-Fu-BuC"/>
                         <segue destination="ek0-vZ-CFQ" kind="push" identifier="showUserSnippet" id="IGM-Wx-sPx"/>
                     </connections>
                 </viewController>

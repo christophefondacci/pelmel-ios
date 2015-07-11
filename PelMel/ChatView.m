@@ -8,6 +8,7 @@
 
 #import "ChatView.h"
 #import "TogaytherService.h"
+#import "PMLManagedRecipientsGroupUser.h"
 
 @implementation ChatView {
     CALObject *_currentObject;
@@ -142,7 +143,20 @@
     if(snippet) {
         msgText = [NSString stringWithFormat:NSLocalizedString(@"message.thread.message", @"message.thread.message"),message.messageCount];
         self.threadNicknameLabel.hidden=NO;
-        self.threadNicknameLabel.text = fromUser.pseudo;
+        if(message.recipientsGroupKey == fromUser.key || message.recipientsGroupKey == nil) {
+            self.threadNicknameLabel.text = fromUser.pseudo;
+        } else {
+            PMLManagedRecipientsGroup *group = [[TogaytherService getMessageService] managedRecipientsGroupForKey:message.recipientsGroupKey];
+            // Building comma seperated list of recipients
+            NSMutableString *fromStr = [[NSMutableString alloc] init];
+            NSString *separator = @"";
+            for(PMLManagedRecipientsGroupUser *groupUser in group.groupUsers) {
+                [fromStr appendString:separator];
+                [fromStr appendString:groupUser.user.name];
+                separator = @", ";
+            }
+            self.threadNicknameLabel.text = fromStr;
+        }
         UIEdgeInsets insets = currentBubbleText.textContainerInset;
         currentBubbleText.textContainerInset = UIEdgeInsetsMake(15, insets.left, insets.bottom, insets.right);
         currentUsernameLabel.text = nil;

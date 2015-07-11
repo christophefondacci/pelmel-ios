@@ -18,6 +18,9 @@
 #import <CoreData/CoreData.h>
 #import "PMLManagedMessage.h"
 #import "PMLManagedUser.h"
+#import "PMLManagedRecipientsGroup.h"
+#import "PMLManagedRecipientsGroupUser.h"
+#import "PMLRecipientsGroup.h"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 //#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
@@ -47,7 +50,7 @@
 #define kTopQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
 
 #define kSettingMaxActivityId @"activity.maxId"
-#define kSettingMaxMessageId @"message.maxId"
+#define kSettingMaxMessageId @"message.maxId26"
 #define kCacheKeyMessages @"allMessages"
 
 @interface MessageService()
@@ -164,6 +167,7 @@
             [self markReadConversationWithUser:userKey];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        self.messageFetchInProgress = NO;
         [callback loadMessageFailed];
     }];
 }
@@ -203,25 +207,144 @@
     }
     return maxMessageId;
 }
+
+/**
+ * Converts an array of JSON users into an array of managed users stored in database
+ */
+-(NSArray*)managedUsersFromJson:(NSArray*)jsonUsers usingMap:(NSMutableDictionary*)managedUsersMap {
+    
+    NSMutableDictionary *usersMap = [[NSMutableDictionary alloc] init];
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    // Iterating over all JSON structures
+    for(NSDictionary *jsonUser in jsonUsers) {
+        
+        // Have we already got this managed object?
+        NSString *key = [jsonUser objectForKey:@"key"];
+        PMLManagedUser *user = [managedUsersMap objectForKey:key];
+        
+        if(user == nil) {
+            
+            // If not then we deserialize
+            User *aUser = [_jsonService convertJsonUserToUser:jsonUser];
+            [usersMap setObject:aUser forKey:aUser.key];
+        } else {
+            [users addObject:user];
+        }
+    }
+    
+    // Now we query the database
+    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+    NSManagedObjectContext *context = [[TogaytherService storageService] managedObjectContext];
+
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PMLManagedUser"
+                         inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"currentUserKey=%@ and itemKey IN %@",currentUser.key,usersMap.allKeys];
+    [fetchRequest setPredicate:predicate];
+    
+    // Fetching objects and storing users in a map
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    for (PMLManagedUser *user in fetchedObjects) {
+        [managedUsersMap setObject:user forKey:user.itemKey];
+        [users addObject:user];
+        [usersMap removeObjectForKey:user.itemKey];
+    }
+    
+    // Remaining users, we create managed object
+    for(NSString *userKey in usersMap.allKeys) {
+        
+        User *user = [usersMap objectForKey:userKey];
+        PMLManagedUser *managedUser = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
+        managedUser.currentUserKey = currentUser.key;
+        managedUser.itemKey = user.key;
+        managedUser.name = user.pseudo;
+        managedUser.imageKey = user.mainImage.key;
+        managedUser.imageUrl = user.mainImage.imageUrl;
+        managedUser.thumbUrl = user.mainImage.thumbUrl;
+
+        [managedUsersMap setObject:managedUser forKey:userKey];
+        [users addObject:managedUser];
+    }
+    return users;
+}
+-(NSMutableDictionary *)managedRecipientsGroupsFromJson:(NSArray*)jsonRecipientsGroups usingMap:(NSMutableDictionary*)usersMap {
+    
+    NSMutableDictionary *recipientsGroupMap = [[NSMutableDictionary alloc] init];
+    
+    // Hashing groups by key and converting users to managed users
+    for(NSDictionary *jsonRecipientsGroup in jsonRecipientsGroups) {
+        
+        // Extracting JSON info
+        NSString *key = [jsonRecipientsGroup objectForKey:@"key"];
+        NSArray *jsonUsers = [jsonRecipientsGroup objectForKey:@"users"];
+        
+        // Converting user
+        NSArray *managedUsers = [self managedUsersFromJson:jsonUsers usingMap:usersMap];
+        
+        // Filling map
+        [recipientsGroupMap setObject:managedUsers forKey:key];
+    }
+    
+    // Fetching already existing groups
+    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+    NSManagedObjectContext *context = [[TogaytherService storageService] managedObjectContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc ] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PMLManagedRecipientsGroup" inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"currentUserKey=%@ and itemKey IN %@",currentUser.key,recipientsGroupMap.allKeys];
+    [fetchRequest setPredicate:predicate];
+    
+    // Executing query
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    
+    // Hashing existing groups by key
+    NSMutableDictionary *recipientsGroupKeysMap = [[NSMutableDictionary alloc] init];
+    for(PMLManagedRecipientsGroup *group in fetchedObjects) {
+        [recipientsGroupKeysMap setObject:group forKey:group.itemKey];
+    }
+
+    for(NSString *key in recipientsGroupMap.allKeys) {
+        PMLManagedRecipientsGroup *group = [recipientsGroupKeysMap objectForKeyedSubscript:key];
+        if(group == nil) {
+            
+            // Getting managed users
+            NSArray *managedUsers = [recipientsGroupMap objectForKey:key];
+            
+            // Creating the group
+            group = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedRecipientsGroup" inManagedObjectContext:context];
+            [recipientsGroupKeysMap setObject:group forKey:key];
+            group.itemKey = key;
+            group.currentUserKey = currentUser.key;
+            
+            // Associating users with this group
+            for(PMLManagedUser *user in managedUsers) {
+                // Creating new user / group intersection
+                PMLManagedRecipientsGroupUser *groupUser = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedRecipientsGroupUser" inManagedObjectContext:context];
+                groupUser.user = user;
+                groupUser.recipientsGroup = group;
+            }
+        }
+    }
+    return recipientsGroupKeysMap;
+}
 -(void)processJsonMessage:(NSDictionary*)jsonMessageList messageCallback:(id<MessageCallback>)callback forUserKey:(NSString*)userKey {
 
-    NSMutableDictionary *usersMap = [[NSMutableDictionary alloc] init];
-//    if([userKey isEqualToString:user.key] || userKey == nil) {
-        NSArray *jsonUsers = [jsonMessageList objectForKey:@"users"];
-        for(NSDictionary *jsonUser in jsonUsers) {
-            User *aUser = [_jsonService convertJsonUserToUser:jsonUser];
-            [usersMap setValue:aUser forKey:aUser.key];
-        }
-        
-//    } else {
-//        // Getting other user
-//        NSDictionary *jsonOtherUser = [jsonMessageList objectForKey:@"toUser"];
-//        User *otherUser = [_jsonService convertJsonUserToUser:jsonOtherUser];
-//        [usersMap setValue:otherUser forKey:otherUser.key];
-//    }
+    // Building a map of users
+    NSMutableDictionary *managedUsersMap = [[NSMutableDictionary alloc] init];
+    NSArray *jsonUsers = [jsonMessageList objectForKey:@"users"];
+    [self managedUsersFromJson:jsonUsers usingMap:managedUsersMap];
+    
     // Getting current user
     CurrentUser *currentUser = [userService getCurrentUser];
-    [usersMap setValue:currentUser forKey:currentUser.key];
+//    [usersMap setValue:currentUser forKey:currentUser.key];
+    
+    // Hashing recipients group per group key
+    NSArray *jsonRecipientsGroups = [jsonMessageList objectForKey:@"recipientsGroups"];
+    NSMutableDictionary *recipientsGroupMap = [self managedRecipientsGroupsFromJson:jsonRecipientsGroups usingMap:managedUsersMap];
+    
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [jsonMessageList objectForKey:@"unreadMsgCount"];
@@ -232,50 +355,16 @@
     
     // Getting message list
     NSArray *messages = [jsonMessageList objectForKey:@"messages"];
-    NSMutableArray *calMessages = [[NSMutableArray alloc] initWithCapacity:messages.count];
 
     NSMutableDictionary *messagesKeyMap = [[NSMutableDictionary alloc] init];
-    NSMutableSet *messagesKeys = [[NSMutableSet alloc] init];
-    NSMutableSet *messagesFromKeys = [[NSMutableSet alloc] init];
-    NSMutableDictionary *messagesFromKeysMap = [[NSMutableDictionary alloc] init];
     NSNumber *maxId;
     for(NSDictionary *message in messages) {
         NSString *key       = [message objectForKey:@"key"];
-        NSString *fromKey   = [message objectForKey:@"fromKey"];
-        NSString *toKey     = [message objectForKey:@"toKey"];
-        NSString *text      = [message objectForKey:@"message"];
-        NSNumber *msgTime   = [message objectForKey:@"time"];
-        NSNumber *unread    = [message objectForKey:@"unread"];
-        NSDictionary *media = [message objectForKey:@"media"];
-        
-        long time = [msgTime longValue];
-        NSDate *msgDate = [[NSDate alloc] initWithTimeIntervalSince1970:time];
-        
-        Message *m = [[Message alloc] init];
-        m.key = key;
-        User *fromUser = [usersMap objectForKey:fromKey];
-        [m setFrom:fromUser];
-        User *toUser = [usersMap objectForKey:toKey];
-        [m setTo:toUser];
-        [m setToItemKey:toKey];
-        [m setText:text];
-        [m setDate:msgDate];
-        [m setUnread:[unread boolValue]];
-        [m setUnreadCount:[unread integerValue]];
-        
-        if(media != nil) {
-            CALImage *image = [[TogaytherService imageService] convertJsonImageToImage:media];
-            [m setMainImage:image];
-        }
+
         // Registering collections and maps
-        [messagesKeyMap setObject:m forKey:key];
-        [messagesKeys addObject:key];
-        if(![messagesFromKeys containsObject:fromKey]) {
-            [messagesFromKeys addObject:fromKey];
-        }
-        
+        [messagesKeyMap setObject:message forKey:key];
+
         // Augmenting our collection of messages
-        [calMessages addObject:m];
         NSNumber *msgId = [self idFromKey:key];
         if(maxId == nil || maxId.longValue<msgId.longValue) {
             maxId = msgId;
@@ -288,7 +377,7 @@
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"PMLManagedMessage"
                                               inManagedObjectContext:context];
     [fetchRequest setEntity:entity];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"messageKey IN %@",messagesKeys];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"messageKey IN %@",messagesKeyMap.allKeys];
     [fetchRequest setPredicate:predicate];
     // Fetching objects
     NSError *error;
@@ -299,87 +388,95 @@
         [existingMessagesKeys setObject:msg forKey:msg.messageKey];
     }
     
-    // Fetching already existing users
-    fetchRequest = [[NSFetchRequest alloc] init];
-    entity = [NSEntityDescription entityForName:@"PMLManagedUser"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    predicate = [NSPredicate predicateWithFormat:@"currentUserKey=%@ and itemKey IN %@",currentUser.key,messagesFromKeys];
-    [fetchRequest setPredicate:predicate];
-    
-    // Fetching objects and storing users in a map
-    fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    for (PMLManagedUser *user in fetchedObjects) {
-        [messagesFromKeysMap setObject:user forKey:user.itemKey];
-    }
-    
     // Processing remaining messages
-    for(NSString *key in messagesKeys) {
+    for(NSString *key in messagesKeyMap.allKeys) {
         
         // Getting message
-        Message *m = [messagesKeyMap objectForKey:key];
+        NSDictionary *message = [messagesKeyMap objectForKey:key];
+        NSString *fromKey   = [message objectForKey:@"fromKey"];
+        NSString *toKey     = [message objectForKey:@"toKey"];
+        NSString *text      = [message objectForKey:@"message"];
+        NSNumber *msgTime   = [message objectForKey:@"time"];
+        NSNumber *unread    = [message objectForKey:@"unread"];
+        NSDictionary *media = [message objectForKey:@"media"];
+        NSString *recipientsGroupKey=[message objectForKey:@"recipientsGroupKey"];
         
-        // Fetching or creating user
-        PMLManagedUser *user = [messagesFromKeysMap objectForKey:m.from.key];
-        if(user == nil) {
-            user = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
-            [messagesFromKeysMap setObject:user forKey:m.from.key];
-            NSLog(@"Storing user %@ in CoreData",m.key);
+        long time = [msgTime longValue];
+        NSDate *msgDate = [[NSDate alloc] initWithTimeIntervalSince1970:time];
+        CALImage *msgImage = nil;
+        if(media != nil) {
+            msgImage = [[TogaytherService imageService] convertJsonImageToImage:media];
         }
         
-        // Storing message in the underlying store
-        PMLManagedMessage *existingMsg = [existingMessagesKeys objectForKey:key];
-        [self storeMessage:m fromUser:user context:context using:existingMsg];
+        // For group messages, we only consider messages to self
+        if(recipientsGroupKey != nil && (id)recipientsGroupKey != [NSNull null] && ![toKey isEqualToString:currentUser.key]) {
+            continue;
+        }
+        
+        PMLManagedMessage *msg = [existingMessagesKeys objectForKey:key];
+        BOOL newMsg = NO;
+        if(msg == nil) {
+            msg = [NSEntityDescription
+                   insertNewObjectForEntityForName:@"PMLManagedMessage"
+                   inManagedObjectContext:context];
+            newMsg = YES;
+        }
+        
+        msg.messageKey = key;
+        msg.messageDate = msgDate;
+        msg.toItemKey = toKey;
+        msg.messageImageKey = msgImage.key;
+        msg.messageImageThumbUrl = msgImage.thumbUrl;
+        msg.messageImageUrl = msgImage.imageUrl;
+        msg.messageText = text;
+        msg.isUnread = unread;
+
+        PMLManagedUser *fromUser = [managedUsersMap objectForKey:fromKey];
+        msg.from = fromUser;
+        PMLManagedRecipientsGroup *group = [recipientsGroupMap objectForKey:recipientsGroupKey];
+        if(group != nil) {
+            msg.replyTo = group;
+        } else {
+            msg.replyTo = fromUser;
+        }
+        
+
+        if(newMsg && unread.boolValue) {
+            fromUser.unreadCount = fromUser.unreadCount == nil ? @1 : [NSNumber numberWithInt:fromUser.unreadCount.intValue + 1];
+            group.unreadCount = group.unreadCount == nil ? @1 : [NSNumber numberWithInt:group.unreadCount.intValue+1];
+        }
+        if(fromUser.lastMessageDate == nil || [msg.messageDate compare:fromUser.lastMessageDate] == NSOrderedDescending) {
+            fromUser.lastMessageDate = msg.messageDate;
+        }
+        if(group.lastMessageDate ==nil || [msg.messageDate compare:group.lastMessageDate]==NSOrderedDescending) {
+            group.lastMessageDate = msg.messageDate;
+        }
     }
     // Saving entries
-    if(messagesKeys.count>0) {
+    BOOL saveError = NO;
+    if(messagesKeyMap.allKeys.count>0) {
         if (![context save:&error]) {
+            saveError = YES;
             NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+        } else {
+            // Registering ID
+            if([[self maxMessageId] longValue]<[maxId longValue]) {
+                [_userDefaults setObject:maxId forKey:[self maxMessageKey]];
+            }
         }
     }
     
-    // Registering ID
-    if([[self maxMessageId] longValue]<[maxId longValue]) {
-        [_userDefaults setObject:maxId forKey:[self maxMessageKey]];
-    }
+
     
-//    
-//    
-//    if([userKey isEqualToString:user.key]) {
-//        // Reversing array and eliminating duplicates
-//        NSMutableArray *filteredArray = [NSMutableArray arrayWithCapacity:calMessages.count];
-//        NSMutableDictionary *keysMessageMap = [[NSMutableDictionary alloc] init];
-//        for(Message *msg in [calMessages reverseObjectEnumerator]) {
-//            Message *thread = [keysMessageMap objectForKey:msg.from.key];
-//            if(thread == nil) {
-//                msg.messageCount = 1;
-//                [keysMessageMap setObject:msg forKey:msg.from.key];
-//                [filteredArray addObject:msg];
-//            } else {
-//                thread.messageCount++;
-//                thread.unreadCount+=msg.unreadCount;
-//            }
-//        }
-//        // Switching
-//        calMessages = filteredArray;
-//    }
-//    // Storing cache
-//    PMLMessageCacheEntry *cacheEntry =  [[PMLMessageCacheEntry alloc] init];
-//    cacheEntry.messages = calMessages;
-//    cacheEntry.totalCount = [totalMsgCount integerValue];
-//    cacheEntry.page = [page integerValue];
-//    cacheEntry.pageSize = [pageSize integerValue];
-//    [_messageCache setObject:cacheEntry forKey:[self cacheKeyFor:userKey page:[page integerValue]]];
-//    
     // Now invoking callback
     dispatch_async(dispatch_get_main_queue(), ^{
-        [callback messagesFetched:calMessages totalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
+        [callback messagesFetchedWithTotalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
         for(id<MessageCallback> callback in _messageCallbacks) {
-            [callback messagesFetched:calMessages totalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
+            [callback messagesFetchedWithTotalCount:[totalMsgCount integerValue] page:[page integerValue] pageSize:[pageSize integerValue]];
         }
     });
     
-    if([totalMsgCount intValue]>0) {
+    if([totalMsgCount intValue]>0 && !saveError) {
         dispatch_async(kBgQueue, ^{
             self.messageFetchInProgress = NO;
             [self getMessagesWithUser:userKey messageCallback:callback];
@@ -423,10 +520,12 @@
     
 }
 -(void)storeMessage:(Message*)m fromUser:(PMLManagedUser*)user context:(NSManagedObjectContext*)context using:(PMLManagedMessage*)msg {
+    BOOL newMsg = NO;
     if(msg == nil) {
         msg = [NSEntityDescription
                               insertNewObjectForEntityForName:@"PMLManagedMessage"
                               inManagedObjectContext:context];
+        newMsg = YES;
     }
     msg.messageKey = m.key;
     msg.messageDate = m.date;
@@ -445,14 +544,61 @@
     user.imageKey = image.key;
     user.imageUrl = image.imageUrl;
     user.thumbUrl = image.thumbUrl;
-    if(m.unread) {
+    if(m.unread && newMsg) {
         user.unreadCount = user.unreadCount == nil ? @1 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
     }
     if(user.lastMessageDate == nil || [msg.messageDate compare:user.lastMessageDate] == NSOrderedDescending) {
         user.lastMessageDate = msg.messageDate;
     }
     msg.from = user;
+    if(m.recipientsGroupKey != nil) {
+
+        PMLManagedRecipientsGroup *group = [self managedRecipientsGroupForKey:m.recipientsGroupKey];
+        if(group == nil) {
+            group = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
+            group.itemKey = m.recipientsGroupKey;
+            group.unreadCount = m.unread ? @1 : @0;
+            NSLog(@"Storing user %@ in CoreData",m.key);
+        }
+        msg.replyTo = group;
+    } else {
+        msg.replyTo=user;
+    }
     NSLog(@"Storing message %@ in CoreData",m.key);
+}
+-(PMLManagedRecipientsGroup*)managedRecipientsGroupForKey:(NSString*)recipientsGroupKey {
+    NSManagedObjectContext *context = [[TogaytherService storageService] managedObjectContext];
+    // Fetching message user from store
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"PMLManagedRecipientsGroup"
+                                              inManagedObjectContext:context];
+    [fetchRequest setEntity:entity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"itemKey = %@ and currentUserKey = %@",recipientsGroupKey,[[userService getCurrentUser] key] ];
+    [fetchRequest setPredicate:predicate];
+    
+    // Fetching objects (should be 0 or 1)
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if(fetchedObjects.count==1) {
+        return [fetchedObjects objectAtIndex:0];
+    } else {
+        return nil;
+    }
+}
+-(PMLRecipientsGroup *)recipientsGroupForKey:(NSString *)recipientsGroupKey {
+    PMLManagedRecipientsGroup *managedGroup = [self managedRecipientsGroupForKey:recipientsGroupKey];
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    
+    // Iterating over all database users
+    for(PMLManagedRecipientsGroupUser *groupUser in managedGroup.groupUsers) {
+
+        // Converting to model
+        User *user = [self userFromManagedUser:groupUser.user];
+        [users addObject:user];
+    }
+    PMLRecipientsGroup *group = [[PMLRecipientsGroup alloc] initWithUsers:users];
+    group.key = recipientsGroupKey;
+    return group;
 }
 -(NSNumber*)idFromKey:(NSString*)key {
     NSString *maxIdStr = [key substringFromIndex:4];
@@ -460,8 +606,8 @@
     f.numberStyle = NSNumberFormatterDecimalStyle;
     return [f numberFromString:maxIdStr];
 }
-- (void)sendMessage:(NSString *)message toUser:(User *)user withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback {
-    [self sendMessageOrComment:message forObject:user withImage:image isComment:NO messageCallback:callback];
+- (void)sendMessage:(NSString *)message toRecipient:(CALObject *)recipient withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback {
+    [self sendMessageOrComment:message forObject:recipient withImage:image isComment:NO messageCallback:callback];
 }
 
 - (void)postComment:(NSString *)comment forObject:(CALObject *)object withImage:(CALImage*)image messageCallback:(id<MessageCallback>)callback {
@@ -492,23 +638,54 @@
         }
         [formData appendPartWithFormData:[currentUser.token dataUsingEncoding:NSUTF8StringEncoding]
                                     name:@"nxtpUserToken"];
-        [formData appendPartWithFormData:[object.key dataUsingEncoding:NSUTF8StringEncoding]
+        if([object isKindOfClass:[PMLRecipientsGroup class]]) {
+            
+            // Getting recipients group
+            PMLRecipientsGroup *group = (PMLRecipientsGroup *)object;
+            NSMutableString *keysList = [[NSMutableString alloc] init];
+            
+            // If we have a key we use it, the server will know the list
+            if(group.key !=nil) {
+                [keysList appendString:group.key];
+            } else {
+                // Otherwise we build the list of recipients user keys
+                NSString *separator = @"";
+                for(User *user in ((PMLRecipientsGroup*)object).users) {
+                    [keysList appendString:separator];
+                    [keysList appendString:user.key];
+                    separator = @",";
+                }
+            }
+            // Passing argument
+            [formData appendPartWithFormData:[keysList dataUsingEncoding:NSUTF8StringEncoding]
+                                        name:(isComment ? @"commentItemKey" : @"to")];
+        } else {
+            [formData appendPartWithFormData:[object.key dataUsingEncoding:NSUTF8StringEncoding]
                                     name:(isComment ? @"commentItemKey" : @"to")];
+        }
         [formData appendPartWithFormData:[message dataUsingEncoding:NSUTF8StringEncoding]
                                     name:(isComment ? @"comment" : @"msgText")];
     } success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *jsonMsg = (NSDictionary*)responseObject;
         NSString *msgKey = [jsonMsg objectForKey:@"key"];
+        NSString *recipientsGroupKey = [jsonMsg objectForKey:@"recipientsGroupKey"];
         
         Message *msg = [[Message alloc] init];
         [msg setKey:msgKey];
         [msg setFrom:currentUser];
-        [msg setTo:object];
+        if([object isKindOfClass:[PMLRecipientsGroup class]]) {
+            [msg setTo:[userService getCurrentUser]];
+        } else {
+            [msg setTo:object];
+        }
         [msg setText:message];
         [msg setDate:[NSDate date]];
         [msg setMainImage:image];
-
+        if((id)recipientsGroupKey != [NSNull null]) {
+            [msg setRecipientsGroupKey:recipientsGroupKey];
+        }
+        
         // Storing message locally
         [self storeMessage:msg];
         

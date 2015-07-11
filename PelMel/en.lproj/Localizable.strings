@@ -219,6 +219,7 @@
 "gallery.removalFailed.title"="Cannot delete photo";
 "geoloc.deactivated.title"="Location services disabled";
 "geoloc.deactivated.subtitle"="Go to settings > privacy > location";
+"grid.action.groupChat"="Group Chat";
 "grid.section.networkApprovals"="Awaiting your approval";
 "grid.section.networkUsers"="Your private network";
 "grid.section.networkRequests"="Requests you sent, not yet approved";
@@ -303,6 +304,7 @@
 "message.sending.failed.title"="Cannot send message";
 "message.thread.message"="%d messages";
 "messages.my.title"="Chats";
+"messaging.title.groupChat"="Group chat";
 "modify"="Modify";
 "moreresults.title"="Search more results";
 "moreresults.subtitle"="Tap here to search for all places and cities";
@@ -484,6 +486,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "tabs.deals"="Deals";
 "tabs.events"="Events";
 "tabs.places"="Hangouts";
+"thumbView.section.chatUsers"="Recipients";
 "thumbView.section.checkin"="Checked in";
 "thumbView.section.event.users"="They will attend";
 "thumbView.section.like"="They Like";

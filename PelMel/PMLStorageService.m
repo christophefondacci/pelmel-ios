@@ -12,6 +12,7 @@
 
 #define kDatastoreFilenameType @"sqlite"
 #define kDatastoreInitFilename @"PMLModel"
+#define kDatastoreRevision 2
 
 @interface PMLStorageService ()
 @property (nonatomic,retain) NSManagedObjectContext *managedObjectContext;
@@ -60,7 +61,7 @@
         return _persistentStoreCoordinator;
     }
     
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.%@",kDatastoreInitFilename,kDatastoreFilenameType]];
+    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:[NSString stringWithFormat:@"%@-%d.%@",kDatastoreInitFilename,kDatastoreRevision,kDatastoreFilenameType]];
     
 //    if (![[NSFileManager defaultManager] fileExistsAtPath:[storeURL path]]) {
 //        NSURL *preloadURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:kDatastoreInitFilename ofType:kDatastoreFilenameType]];
@@ -74,7 +75,14 @@
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+    
+    // Options for migration
+    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
+                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
+                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+
+    
+    if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
          

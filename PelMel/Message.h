@@ -16,6 +16,7 @@
 @property (strong,nonatomic) NSDate *date;
 @property (strong,nonatomic) NSString *text;
 @property (strong,nonatomic) NSString *key;
+@property (strong,nonatomic) NSString *recipientsGroupKey;
 @property (strong,nonatomic) CALImage *mainImage;
 @property (nonatomic) BOOL unread;
 @property (nonatomic) NSInteger unreadCount;    // Unread message count in thread (if thread)

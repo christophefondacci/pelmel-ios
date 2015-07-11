@@ -2,26 +2,24 @@
 //  PMLManagedUser.h
 //  PelMel
 //
-//  Created by Christophe Fondacci on 25/06/2015.
+//  Created by Christophe Fondacci on 09/07/2015.
 //  Copyright (c) 2015 Christophe Fondacci. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "PMLManagedRecipient.h"
 
-@class PMLManagedMessage;
+@class PMLManagedMessage, PMLManagedRecipientsGroupUser;
 
-@interface PMLManagedUser : NSManagedObject
+@interface PMLManagedUser : PMLManagedRecipient
 
-@property (nonatomic, retain) NSString * itemKey;
-@property (nonatomic, retain) NSString * name;
-@property (nonatomic, retain) NSDate * lastMessageDate;
-@property (nonatomic, retain) NSString * imageUrl;
-@property (nonatomic, retain) NSString * thumbUrl;
-@property (nonatomic, retain) NSNumber * unreadCount;
-@property (nonatomic, retain) NSString * currentUserKey;
 @property (nonatomic, retain) NSString * imageKey;
+@property (nonatomic, retain) NSString * imageUrl;
+@property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSString * thumbUrl;
 @property (nonatomic, retain) NSSet *messages;
+@property (nonatomic, retain) NSSet *recipientsGroups;
 @end
 
 @interface PMLManagedUser (CoreDataGeneratedAccessors)
@@ -30,5 +28,10 @@
 - (void)removeMessagesObject:(PMLManagedMessage *)value;
 - (void)addMessages:(NSSet *)values;
 - (void)removeMessages:(NSSet *)values;
+
+- (void)addRecipientsGroupsObject:(PMLManagedRecipientsGroupUser *)value;
+- (void)removeRecipientsGroupsObject:(PMLManagedRecipientsGroupUser *)value;
+- (void)addRecipientsGroups:(NSSet *)values;
+- (void)removeRecipientsGroups:(NSSet *)values;
 
 @end

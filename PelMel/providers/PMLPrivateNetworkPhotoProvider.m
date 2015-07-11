@@ -10,9 +10,11 @@
 #import "TogaytherService.h"
 
 
-#define kSectionToApprove 0
-#define kSectionMyNetwork 1
-#define kSectionPendingRequests 2
+#define kSectionCount 4
+#define kSectionActions 0
+#define kSectionToApprove 1
+#define kSectionMyNetwork 2
+#define kSectionPendingRequests 3
 
 @interface PMLPrivateNetworkPhotoProvider()
 @property (nonatomic,retain) UserService *userService;
@@ -38,6 +40,8 @@
 -(NSArray*)objectsForSection:(NSInteger)section {
     CurrentUser *user = [_userService getCurrentUser];
     switch(section) {
+        case kSectionActions:
+            return @[[NSNumber numberWithInt:PMLActionTypeGroupChat]];
         case kSectionToApprove:
             return user.networkPendingApprovals;
         case kSectionPendingRequests:
@@ -48,6 +52,13 @@
     }
     return nil;
 }
+
+-(PMLActionType)actionFromObject:(NSObject*)object {
+    // Unwrapping action type
+    PMLActionType actionType = ((NSNumber*)object).intValue;
+
+    return actionType;
+}
 /**
  * Provides the image to display for this object
  * @param controller the photo grid controller
@@ -55,7 +66,23 @@
  * @return the CALImage to display
  */
 -(CALImage*)photoController:(PMLPhotosCollectionViewController*)controller imageForObject:(NSObject*)object inSection:(NSInteger)section {
-    return ((CALObject*)object).mainImage;
+    
+    // Actions specific
+    if(section == kSectionActions) {
+        
+        // Unwrapping action type
+        PMLActionType actionType = [self actionFromObject:object];
+        
+        // Selecting tile image
+        if(actionType == PMLActionTypeGroupChat) {
+            return [CALImage calImageWithImage:[UIImage imageNamed:@"btnThumbChat"]];
+        }
+        return nil;
+    } else {
+        
+        // Default is the main CAL image
+        return ((CALObject*)object).mainImage;
+    }
 }
 /**
  * Provides the label to display for this object
@@ -64,7 +91,16 @@
  * @return the label to display below the image
  */
 -(NSString*)photoController:(PMLPhotosCollectionViewController*)controller labelForObject:(NSObject*)object inSection:(NSInteger)section {
-    return ((User*)object).pseudo;
+    if(section == kSectionActions) {
+        // Unwrapping action type
+        PMLActionType actionType = [self actionFromObject:object];
+        if(actionType == PMLActionTypeGroupChat) {
+            return NSLocalizedString(@"grid.action.groupChat", @"grid.action.groupChat");
+        }
+        return nil;
+    } else {
+        return ((User*)object).pseudo;
+    }
 }
 /**
  * Asks the provider to react on a user tap on the given element
@@ -72,13 +108,22 @@
  * @param object the object that received the tap
  */
 -(void)photoController:(PMLPhotosCollectionViewController*)controller objectTapped:(NSObject*)object inSection:(NSInteger)section {
-    [[TogaytherService uiService] presentSnippetFor:(CALObject*)object opened:YES];
+    if(section == kSectionActions) {
+        
+        // Unwrapping action type
+        PMLActionType actionType = [self actionFromObject:object];
+
+        // Executing action on network users
+        [[TogaytherService actionManager] execute:actionType onObject:[_userService getCurrentUser]];
+    } else {
+        [[TogaytherService uiService] presentSnippetFor:(CALObject*)object opened:YES];
+    }
 }
 /**
  * Provide the number of sections
  */
 -(NSInteger)sectionsCount {
-    return 3; 
+    return kSectionCount;
 }
 /**
  * The title of the view

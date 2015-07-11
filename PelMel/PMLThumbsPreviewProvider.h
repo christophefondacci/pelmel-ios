@@ -11,7 +11,7 @@
 #import "CALObject.h"
 
 typedef enum {
-    PMLThumbNone, PMLThumbsLike,PMLThumbsCheckin,PMLThumbsUserLike, PMLThumbsUsersInEvent, PMLThumbsOther, PMLThumbsLocation, PMLThumbShowMore
+    PMLThumbNone, PMLThumbsLike,PMLThumbsCheckin,PMLThumbsUserLike, PMLThumbsUsersInEvent, PMLThumbsOther, PMLThumbsLocation, PMLThumbShowMore,PMLThumbChatUsers
 } PMLThumbType;
 
 

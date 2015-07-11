@@ -90,6 +90,7 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    [self.collectionView.collectionViewLayout invalidateLayout];
     return [[self.thumbProvider thumbTypes] count];
 }
 
@@ -97,7 +98,8 @@ static NSString * const reuseIdentifier = @"Cell";
     if(!self.hasShowMore) {
         return MAXFLOAT;
     } else {
-        [self.view layoutIfNeeded];
+        // TODO: Check on iPad / 6Plus if more is at the right position
+//        [self.view layoutIfNeeded];
         CGRect bounds = self.view.bounds;
         return (bounds.size.width / self.size.intValue);
     }

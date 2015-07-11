@@ -11,11 +11,14 @@
 #import "CALObject.h"
 #import "ImageService.h"
 #import "MessageService.h"
+#import "PMLThumbCollectionViewController.h"
 
-@interface PMLMessagingContainerController : UIViewController <MessageCallback,PMLImagePickerCallback>
+@interface PMLMessagingContainerController : UIViewController <MessageCallback,PMLImagePickerCallback,PMLThumbsCollectionViewActionDelegate>
 @property (weak, nonatomic) IBOutlet UIView *messageTableView;
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomTextInputConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *topHeaderConstraint;
+@property (weak, nonatomic) IBOutlet UIView *topHeaderContainerView;
 @property (weak, nonatomic) IBOutlet AUIAutoGrowingTextView *chatTextView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 @property (weak, nonatomic) IBOutlet UIButton *addPhotoButton;

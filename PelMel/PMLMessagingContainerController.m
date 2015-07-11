@@ -9,6 +9,9 @@
 #import "PMLMessagingContainerController.h"
 #import "PMLMessageTableViewController.h"
 #import "TogaytherService.h"
+#import "PMLRecipientsGroup.h"
+#import "PMLThumbCollectionViewController.h"
+#import "ItemsThumbPreviewProvider.h"
 
 @interface PMLMessagingContainerController ()
 @property (nonatomic,retain) PMLMessageTableViewController *messageTableController;
@@ -16,6 +19,7 @@
 @property (nonatomic,retain) ImageService *imageService;
 @property (nonatomic,retain) MessageService *messageService;
 @property (nonatomic) BOOL keyboardShown;
+@property (nonatomic,retain) PMLThumbCollectionViewController *thumbController;
 @end
 
 @implementation PMLMessagingContainerController
@@ -55,6 +59,35 @@
     } else if([_withObject isKindOfClass:[Place class]]){
         NSString *title = NSLocalizedString(@"message.reviews.title", nil);
         self.title = title;
+    }
+    if([_withObject isKindOfClass:[PMLRecipientsGroup class]]) {
+        self.title = NSLocalizedString(@"messaging.title.groupChat",@"Group chat");
+        self.topHeaderConstraint.constant=92;
+        self.topHeaderContainerView.backgroundColor = BACKGROUND_COLOR;
+        
+        // Initializing thumb controller
+        _thumbController = (PMLThumbCollectionViewController*)[_uiService instantiateViewController:@"thumbCollectionCtrl"];
+        
+        // Building provider
+        PMLRecipientsGroup *group = (PMLRecipientsGroup *)_withObject;
+        NSObject<PMLThumbsPreviewProvider> *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:nil items:group.users forType:PMLThumbChatUsers];
+    
+        [self addChildViewController:_thumbController];
+        
+        // Assigning to controller
+        _thumbController.actionDelegate = self;
+        _thumbController.size = @62;
+        _thumbController.thumbProvider = provider;
+        _thumbController.view.frame = self.topHeaderContainerView.bounds;
+        
+        // Adding view in hierarchy
+        [self.topHeaderContainerView addSubview:_thumbController.view];
+        [_thumbController didMoveToParentViewController:self];
+//        [_thumbController.collectionView reloadData];
+        
+
+    } else {
+        self.topHeaderConstraint.constant=0;
     }
     
     // Wiring chat actions
@@ -202,8 +235,8 @@
         return;
     }
     
-    if([_withObject isKindOfClass:[User class]]) {
-        [self.messageService sendMessage:text toUser:(User*)_withObject withImage:image messageCallback:self];
+    if([_withObject isKindOfClass:[User class]] || [_withObject isKindOfClass:[PMLRecipientsGroup class]]) {
+        [self.messageService sendMessage:text toRecipient:_withObject withImage:image messageCallback:self];
     } else {
         [self.messageService postComment:text forObject:_withObject withImage:image messageCallback:self];
     }
@@ -238,5 +271,17 @@
     NSLog(@"Message sent failed");
     [self.uiService progressDone ];
     [[TogaytherService uiService] alertWithTitle:@"message.sending.failed.title" text:@"message.sending.failed"];
+}
+
+#pragma mark - PMLThumbsCollectionViewActionDelegate
+- (void)thumbsTableView:(PMLThumbCollectionViewController *)thumbsController thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {
+    NSLog(@"thumb tapped %d",thumbIndex);
+    
+    // Selecting the user tapped
+    PMLRecipientsGroup *group = (PMLRecipientsGroup *)_withObject;
+    User *user = [group.users objectAtIndex:thumbIndex];
+    
+    // Opening
+    [_uiService presentSnippetFor:user opened:YES];
 }
 @end
