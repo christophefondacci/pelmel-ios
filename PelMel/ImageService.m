@@ -538,6 +538,12 @@
     // Getting requested URL for thumb or main image
     NSString *url = thumb ? calImage.thumbUrl : calImage.imageUrl;
     
+    // If a task is already running for same URL we return,
+    // Any pre-existing task for a different URL will be cancelled here
+    if([self checkCurrentImageViewTask:imageView url:url]) {
+        return;
+    }
+    
     // Setting appropriate default image
     UIImage *defaultImage;
     if(imageView.image == nil) {
@@ -556,43 +562,41 @@
             defaultImage = calImage.thumbImage;
         }
         
-        // If no URL
-        //    if(url == nil) {
-        // Then setting default image and that's it
+        // Setting default image
         imageView.image = defaultImage;
-        //    } else {
     }
 
+    // Do we already have full image if full requested
     if(calImage.fullImage && !thumb) {
         imageView.image = calImage.fullImage;
         if(callback) {
             callback(calImage);
         }
-        [self checkCurrentImageViewTask:imageView url:url];
         return ;
     } else if(calImage.thumbImage) {
+        // Or thumb requested and we got it?
         imageView.image = calImage.thumbImage;
         if(thumb) {
             if(callback) {
                 callback(calImage);
             }
-            [self checkCurrentImageViewTask:imageView url:url];
             return ;
         }
     }
     
     if(url!=nil) {
         __block ImageLoaderBlock localCallback = callback;
-        
-        // If a task is already running for same URL we return,
-        // Any pre-existing task for a different URL will be cancelled here
-        if([self checkCurrentImageViewTask:imageView url:url]) {
-            return;
-        }
 
         // Async load
         __block NSString *imageViewId = [self buildKeyFromPointer:imageView];
         id<SDWebImageOperation> operation = [[SDWebImageManager sharedManager] downloadImageWithURL:[NSURL URLWithString:url] options:SDWebImageRetryFailed progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            
+            // Checking whether URL matches
+            NSString *expectedUrl = [urlMap objectForKey:imageViewId];
+            if(![expectedUrl isEqualToString:[imageURL absoluteString]]) {
+                NSLog(@"URL does not match:\n%@\nVS\n%@",expectedUrl,imageURL.absoluteString);
+                return;
+            }
             // If everything is fine, we store thumb as we may need it for first preview
             if(image != nil) {
                 if(thumb) {

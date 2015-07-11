@@ -137,6 +137,7 @@ static NSString * const reuseIdentifier = @"Cell";
     } else {
         NSObject *activity = [objects objectAtIndex:row];
         CALImage *image = [self.provider photoController:self imageForObject:activity inSection:section];//activity.extraImage;
+
         if(image.fullImage != nil) {
             cell.photoImageView.image = image.fullImage;
         } else {
@@ -153,11 +154,10 @@ static NSString * const reuseIdentifier = @"Cell";
                     cell.photoImageView.image = defaultImage;
                 }
             }
-            
-            
-            // Resetting thumb image if not HD
-            [_imageService load:image to:cell.photoImageView thumb:!self.loadFullImage];
         }
+        // Resetting thumb image if not HD
+        [_imageService load:image to:cell.photoImageView thumb:!self.loadFullImage];
+        
         cell.subtitleLabel.text = [self.provider photoController:self labelForObject:activity inSection:section];
         cell.photoImageView.layer.borderWidth=0;
         if([self.provider respondsToSelector:@selector(borderColorFor:)]) {
