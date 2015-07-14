@@ -104,7 +104,8 @@
     if([_datasource respondsToSelector:@selector(counterColorAtIndex:selected:)]) {
         return [_datasource counterColorAtIndex:i selected:selected];
     } else if(selected) {
-        return [UIColor colorWithWhite:1 alpha:0.25];
+//        return [UIColor colorWithWhite:1 alpha:0.25];
+        return UIColorFromRGB(0xe9791e);
     } else {
         return [UIColor colorWithWhite:1 alpha:0.05];
     }

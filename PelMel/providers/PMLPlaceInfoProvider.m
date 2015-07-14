@@ -398,16 +398,16 @@
     }
     return PMLActionTypeNoAction;
 }
-- (UIColor *)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected {
-    if(!selected) {
-        switch (index) {
-            case kPMLCounterIndexLike:
-            case kPMLCounterIndexCheckin:
-                return UIColorFromRGB(0xe9791e);
-        }
-    }
-    return [UIColor colorWithWhite:1 alpha:0.3];
-}
+//- (UIColor *)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected {
+//    if(!selected) {
+//        switch (index) {
+//            case kPMLCounterIndexLike:
+//            case kPMLCounterIndexCheckin:
+//                return UIColorFromRGB(0xe9791e);
+//        }
+//    }
+//    return [UIColor colorWithWhite:1 alpha:0.3];
+//}
 - (NSString *)counterActionLabelAtIndex:(NSInteger)index {
     NSString *code;
     switch(index) {

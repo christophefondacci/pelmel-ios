@@ -190,7 +190,9 @@ static BOOL isStarted;
         NSDictionary *aps = [userInfo objectForKey:@"aps"];
         if(aps != nil) {
             NSNumber *unreadMsgCount = [aps objectForKey:@"badge"];
-            [[TogaytherService getMessageService] setUnreadMessageCount:unreadMsgCount.intValue];
+            NSNumber *unreadNetworkCount = [aps objectForKey:@"unreadNetwork"];
+            [[TogaytherService getMessageService] setUnreadMessageCount:unreadMsgCount.intValue-unreadNetworkCount.intValue];
+            [[TogaytherService getMessageService] setUnreadMessageCount:unreadNetworkCount.intValue];
         }
 
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PUSH_RECEIVED object:self];

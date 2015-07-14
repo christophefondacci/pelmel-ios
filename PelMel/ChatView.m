@@ -116,12 +116,18 @@
         dateLabel.text = [_uiService delayStringFrom:message.date]; //[dateFormatter stringFromDate:message.date];
         
         // Thumb image setup
+        currentThumb.alpha=1;
         if(object.mainImage.thumbImage != nil) {
             currentThumb.image = object.mainImage.thumbImage;
             [currentActivity setHidden:YES];
         } else {
             if(object == nil) {
-                currentThumb.image = [UIImage imageNamed:@"logoMob"];
+                if(message.recipientsGroupKey == nil) {
+                    currentThumb.image = [UIImage imageNamed:@"logoMob"];
+                } else {
+                    currentThumb.image = [UIImage imageNamed:@"imgChatGroup"];
+                    currentThumb.alpha=0.6;
+                }
                 currentThumb.contentMode = UIViewContentModeScaleAspectFit;
             } else {
                 currentThumb.image = [CALImage getDefaultUserThumb];

@@ -469,8 +469,8 @@
     
     if(_popupActions.count>sender.tag) {
         [_animator removeAllBehaviors];
-        UITouchBehavior *touchBehavior = [[UITouchBehavior alloc] initWithTarget:sender];
-        [_animator addBehavior:touchBehavior];
+//        UITouchBehavior *touchBehavior = [[UITouchBehavior alloc] initWithTarget:sender];
+//        [_animator addBehavior:touchBehavior];
         PopupAction *action = [_popupActions objectAtIndex:sender.tag];
         if(action.actionCommand != nil) {
             action.actionCommand(_object);

@@ -557,7 +557,9 @@
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
+    NSNumber *unreadNetworkCount=[json objectForKey:@"unreadNetworkNotificationsCount"];
     [messageService setUnreadMessageCount:[unreadMsgCount intValue]];
+    [messageService setUnreadNetworkCount:unreadNetworkCount.intValue];
     
     // Building event from JSON
     event = [jsonService convertJsonEventToEvent:json defaultEvent:event];

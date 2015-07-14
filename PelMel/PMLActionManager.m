@@ -55,6 +55,7 @@
 @property (nonatomic,retain) NSMutableDictionary *actionRegistry;
 
 @property (nonatomic,retain) CALObject *modalActionObject;
+@property (nonatomic) PMLPrivateNetworkAction modalPrivateNetworkAction;
 @property (nonatomic,retain) UIActionSheet *editActionSheet;
 @property (nonatomic,retain) UIActionSheet *reportActionSheet;
 @property (nonatomic,retain) UIActionSheet *eventEditActionSheet;
@@ -63,6 +64,7 @@
 @property (nonatomic,retain) UIActionSheet *addressActionSheet;
 @property (nonatomic,retain) UIAlertView *addressAlertView;
 @property (nonatomic,retain) UIAlertView *reportConfirmAlertView;
+@property (nonatomic,retain) UIAlertView *privateNetworkAlertView;
 @property (nonatomic,retain) CLGeocoder *geocoder;
 
 @property (nonatomic) PMLActionType selectorActionType;
@@ -428,17 +430,52 @@
     PopupAction *requestAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
 
         NSLog(@"NETWORK REQUEST");
-        [self.uiService.menuManagerController.menuManagerDelegate loadingStart];
-        [_userService privateNetworkAction:action withUser:(User*)object success:^(id obj) {
-            [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
-        } failure:^(id obj) {
-            [self.uiService alertError];
-            [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
-        }];
+        PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:(User*)object];
+        switch(action) {
+            case PMLPrivateNetworkActionRequest:
+                [self privateNetworkConfirmWithMessage:@"network.confirm.request" action:action onUser:(User*)object];
+                break;
+            case PMLPrivateNetworkActionCancel:
+                switch(status) {
+                    case PMLUserPrivateNetworkInNetwork:
+                    case PMLUserPrivateNetworkPendingApproval:
+                        [self privateNetworkConfirmWithMessage:@"network.confirm.cancel" action:action onUser:(User*)object];
+                        break;
+                    case PMLUserPrivateNetworkPendingRequest:
+                        [self privateNetworkAction:action onUser:(User*)object];
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case PMLPrivateNetworkActionAccept:
+                [self privateNetworkAction:action onUser:(User*)object];
+                break;
+        }
+
     }];
     requestAction.color = UIColorFromRGB(kPMLEditColor);
     [self registerAction:requestAction forType:actionType];
 
+}
+-(void)privateNetworkConfirmWithMessage:(NSString*)messageKey action:(PMLPrivateNetworkAction)action onUser:(User*)user {
+    NSString *title = NSLocalizedString(@"network.confirm.title", @"Confirm request");
+    NSString *msg = NSLocalizedString(messageKey, messageKey);
+    NSString *cancel = NSLocalizedString(@"cancel", @"cancel");
+    NSString *ok = NSLocalizedString(@"ok", @"ok");
+    _modalActionObject = user;
+    _modalPrivateNetworkAction = action;
+    _privateNetworkAlertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cancel otherButtonTitles:ok, nil];
+    [_privateNetworkAlertView show];
+}
+-(void)privateNetworkAction:(PMLPrivateNetworkAction)action onUser:(User*)user {
+    [self.uiService.menuManagerController.menuManagerDelegate loadingStart];
+    [_userService privateNetworkAction:action withUser:user success:^(id obj) {
+        [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
+    } failure:^(id obj) {
+        [self.uiService alertError];
+        [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
+    }];
 }
 -(void)registerShowPrivateNetwork {
     PopupAction *showAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
@@ -933,11 +970,13 @@
                 // Done
                 [hud hide:YES];
             }];
-
-    } else {
-        [_dataService sendReportFor:self.modalActionObject reportType:PMLReportTypeRemovalRequest];
+            
+        } else if(alertView == _reportConfirmAlertView) {
+            [_dataService sendReportFor:self.modalActionObject reportType:PMLReportTypeRemovalRequest];
+        } else if(alertView == _privateNetworkAlertView) {
+            [self privateNetworkAction:_modalPrivateNetworkAction onUser:(User*)_modalActionObject];
+        }
     }
-                }
     self.modalActionObject = nil;
 }
 
