@@ -339,19 +339,16 @@
 
 - (UIColor *)counterColorAtIndex:(NSInteger)index selected:(BOOL)selected {
     if(selected) {
-        switch(index) {
-            case kPMLCounterIndexLike:
-                return UIColorFromRGB(0xffcc80);
-            default:
-                return [UIColor colorWithWhite:1 alpha:0.3];
-                
+        if(index != kPMLCounterIndexCheckin) {
+            return [UIColor colorWithWhite:1 alpha:0.25];
+        } else {
+            return [UIColor blackColor];
         }
     } else {
-        switch (index) {
-            case kPMLCounterIndexLike:
-                return UIColorFromRGB(0xe9791e);
-            default:
-                return [UIColor colorWithWhite:1 alpha:0.3];
+        if(index == kPMLCounterIndexCheckin) {
+            return [UIColor colorWithWhite:1 alpha:0.02];
+        } else {
+            return [UIColor colorWithWhite:1 alpha:0.05];
         }
     }
 }
@@ -359,8 +356,19 @@
     switch(index) {
         case kPMLCounterIndexLike:
             return PML_ICON_LIKE;
-        case kPMLCounterIndexCheckin:
+        case kPMLCounterIndexCheckin: {
+            PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:_user];
+            switch(status) {
+                case PMLUserPrivateNetworkNotInNetwork:
+                    return @"icoNetworkAdd";
+                case PMLUserPrivateNetworkInNetwork:
+                    return @"icoNetworkFriends";
+                case PMLUserPrivateNetworkPendingApproval:
+                case PMLUserPrivateNetworkPendingRequest:
+                    return @"icoNetworkPending";
+            }
             return PML_ICON_PRIVATE_NETWORK;// PML_ICON_CHECKIN;
+        }
         case kPMLCounterIndexComment:
             return PML_ICON_COMMENT;
     }

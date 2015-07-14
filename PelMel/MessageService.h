@@ -100,4 +100,14 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
  * @return a PMLRecipientsGroup instance with the declaration of this group
  */
 -(PMLRecipientsGroup *)recipientsGroupForKey:(NSString *)recipientsGroupKey;
+/**
+ * Stores the last created recipients group
+ * @param group the recipients group newly created
+ */
+-(void)setLastRecipientsGroup:(PMLRecipientsGroup*)group;
+/**
+ * Retrieves the last created recipients group, if any
+ * @return the last PMLRecipientsGroup used, or nil if none
+ */
+-(PMLRecipientsGroup*)lastRecipientsGroup;
 @end

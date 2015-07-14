@@ -100,7 +100,10 @@
 }
 
 - (UIColor*)colorForViewAtIndex:(NSInteger)i {
-    if([_datasource isCounterSelectedAtIndex:i]) {
+    BOOL selected = [_datasource isCounterSelectedAtIndex:i];
+    if([_datasource respondsToSelector:@selector(counterColorAtIndex:selected:)]) {
+        return [_datasource counterColorAtIndex:i selected:selected];
+    } else if(selected) {
         return [UIColor colorWithWhite:1 alpha:0.25];
     } else {
         return [UIColor colorWithWhite:1 alpha:0.05];

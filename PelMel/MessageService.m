@@ -51,6 +51,7 @@
 
 #define kSettingMaxActivityId @"activity.maxId"
 #define kSettingMaxMessageId @"message.maxId26"
+#define kSettingLastRecipientsGroup @"message.lastRecipientsGroup"
 #define kCacheKeyMessages @"allMessages"
 
 @interface MessageService()
@@ -445,11 +446,12 @@
             fromUser.unreadCount = fromUser.unreadCount == nil ? @1 : [NSNumber numberWithInt:fromUser.unreadCount.intValue + 1];
             group.unreadCount = group.unreadCount == nil ? @1 : [NSNumber numberWithInt:group.unreadCount.intValue+1];
         }
-        if(fromUser.lastMessageDate == nil || [msg.messageDate compare:fromUser.lastMessageDate] == NSOrderedDescending) {
+        if( group != nil) {
+            if(group.lastMessageDate ==nil || [msg.messageDate compare:group.lastMessageDate]==NSOrderedDescending) {
+                group.lastMessageDate = msg.messageDate;
+            }
+        } else if(fromUser.lastMessageDate == nil || [msg.messageDate compare:fromUser.lastMessageDate] == NSOrderedDescending) {
             fromUser.lastMessageDate = msg.messageDate;
-        }
-        if(group.lastMessageDate ==nil || [msg.messageDate compare:group.lastMessageDate]==NSOrderedDescending) {
-            group.lastMessageDate = msg.messageDate;
         }
     }
     // Saving entries
@@ -590,11 +592,15 @@
     NSMutableArray *users = [[NSMutableArray alloc] init];
     
     // Iterating over all database users
+    NSMutableDictionary *userKeys = [[NSMutableDictionary alloc] init];
     for(PMLManagedRecipientsGroupUser *groupUser in managedGroup.groupUsers) {
 
         // Converting to model
         User *user = [self userFromManagedUser:groupUser.user];
-        [users addObject:user];
+        if([userKeys objectForKey:user.key]==nil) {
+            [users addObject:user];
+        }
+        [userKeys setObject:user forKey:user.key];
     }
     PMLRecipientsGroup *group = [[PMLRecipientsGroup alloc] initWithUsers:users];
     group.key = recipientsGroupKey;
@@ -682,7 +688,7 @@
         [msg setText:message];
         [msg setDate:[NSDate date]];
         [msg setMainImage:image];
-        if((id)recipientsGroupKey != [NSNull null]) {
+        if((id)recipientsGroupKey != [NSNull null] && recipientsGroupKey.length>0) {
             [msg setRecipientsGroupKey:recipientsGroupKey];
         }
         
@@ -894,6 +900,17 @@
         [[TogaytherService dataService].jsonService.objectCache setObject:fromUser forKey:user.itemKey];
     }
     return fromUser;
+}
+-(void)setLastRecipientsGroup:(PMLRecipientsGroup*)group {
+    [_userDefaults setObject:group.key forKey:kSettingLastRecipientsGroup];
+}
+-(PMLRecipientsGroup*)lastRecipientsGroup {
+    NSString *groupKey = [_userDefaults objectForKey:kSettingLastRecipientsGroup];
+    if(groupKey != nil) {
+        PMLRecipientsGroup *group = [self recipientsGroupForKey:groupKey];
+        return group;
+    }
+    return nil;
 }
 #pragma mark - Push notification management
 - (void)setPushEnabled:(BOOL)pushEnabled {

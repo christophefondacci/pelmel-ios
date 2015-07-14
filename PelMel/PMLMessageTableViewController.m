@@ -191,14 +191,13 @@
 }
 -(void)pushNotificationReceived:(NSNotification*)notification {
     [self refreshContents];
+    [self readConversationWith:_withObject.key];
     if(![self isAllMessageView]) {
         shouldScrollToBottom = YES;
     }
 }
 - (void)refreshContents {
-    if([_withObject isKindOfClass:[PMLRecipientsGroup class]]) {
-        
-    } else if([_withObject isKindOfClass:[User class]]) {
+    if([_withObject isKindOfClass:[PMLRecipientsGroup class]] || [_withObject isKindOfClass:[User class]]) {
         [messageService getMessagesWithUser:_withObject.key messageCallback:self];
     } else if([_withObject isKindOfClass:[CALObject class]]){
         [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
@@ -502,6 +501,16 @@
 }
 
 - (void)messageSent:(Message *)message {
+    if(message.recipientsGroupKey != nil && [_withObject isKindOfClass:[PMLRecipientsGroup class]]) {
+        PMLRecipientsGroup *group = (PMLRecipientsGroup*)_withObject;
+        if(group.key == nil) {
+            group.key = message.recipientsGroupKey;
+            self.messageProvider = [[PMLConversationMessageProvider alloc] initWithFromUserKey:group.key toUserKey:[[userService getCurrentUser] key] ];
+            [messageService setLastRecipientsGroup:group];
+            [self refreshTable];
+            [self.tableView reloadData];
+        }
+    }
     [self scrollToBottom];
 }
 
