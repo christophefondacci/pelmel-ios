@@ -52,14 +52,7 @@ static NSString * const reuseIdentifier = @"Cell";
     _loading = YES;
     [self.provider photoControllerStartContentLoad:self];
     
-    // Computing fit width for cells no larger than 130px
-    float width = MAXFLOAT;
-    int i = 1;
-    while(width>130) {
-        width = ((float)self.view.bounds.size.width-(i+1)*2) / (float)i;
-        i++;
-    }
-    _widthFit = (NSInteger)width;
+
     
     // Collection view layout
 //    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
@@ -80,6 +73,14 @@ static NSString * const reuseIdentifier = @"Cell";
     // Dispose of any resources that can be recreated.
 }
 - (void)viewWillAppear:(BOOL)animated {
+    // Computing fit width for cells no larger than 130px
+    float width = MAXFLOAT;
+    int i = 1;
+    while(width>130) {
+        width = ((float)self.view.bounds.size.width-(i+1)*2) / (float)i;
+        i++;
+    }
+    _widthFit = (NSInteger)width;
     [TogaytherService applyCommonLookAndFeel:self];
     self.navigationController.navigationBar.translucent=NO;
     [self.collectionView reloadData];
@@ -188,7 +189,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if(indexPath.section != kSectionLoading) {
         NSArray *objects = [self.provider objectsForSection:indexPath.section-1];
         if(indexPath.row==objects.count) {
-            
+            [self.provider photoController:self didTapAddToSection:indexPath.section-1];
         } else {
             NSObject *activity = [objects objectAtIndex:indexPath.row];
             [self.provider photoController:self objectTapped:activity inSection:indexPath.section-1];

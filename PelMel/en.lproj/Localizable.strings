@@ -190,7 +190,7 @@
 "counters.likes.singular"="%d Likes It";
 "counters.likes.user"="%d Like Him";
 "counters.likes.user.singular"="%d Likes Him";
-"counters.network"="Friends Network";
+"counters.network"="My Network";
 "counters.network.accept"="Accept";
 "counters.network.add"="Add";
 "counters.network.cancel"="Cancel";
@@ -221,10 +221,11 @@
 "geoloc.deactivated.subtitle"="Go to settings > privacy > location";
 "grid.action.groupChat"="Group Chat";
 "grid.section.networkApprovals"="Awaiting your approval";
-"grid.section.networkUsers"="Your friends network";
+"grid.section.networkUsers"="Your network";
 "grid.section.networkRequests"="Requests you sent, not yet approved";
 "grid.title.nearbyUsers"="Nearby Guys";
-"grid.title.privateNetwork"="Your friends network";
+"grid.title.networkUsers"="Add to network";
+"grid.title.privateNetwork"="Your network";
 "grid.title.searchResults"="Results Grid";
 "hint.addPlace"="Tap this button to add a new hangout to PELMEL\nSet a name, a type, adjust location and it's done!";
 "hint.badge"="This number indicates that %d persons are currently here";
@@ -314,7 +315,7 @@
 "network.error"="An error occurred, tap refresh";
 "network.connecting"="Trying to connect...";
 
-"network.confirm.cancel"="This will cancel the connection you have with this user. To re-establish it you will have to send him a new request. Are you sure you want to remove this user from your friends network?";
+"network.confirm.cancel"="This will cancel the connection you have with this user. To re-establish it you will have to send him a new request. Are you sure you want to remove this user from your network?";
 "network.confirm.request"="This will send an invite that this user will have to accept. You will then be able to group chat with him, invite him to events, and see where he is if he's checked in.\nDo you want to send a request now?";
 "network.confirm.title"="Confirm action";
 

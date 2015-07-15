@@ -197,6 +197,8 @@
 		B46EEC1D1AD47A0500A471B4 /* PelMel.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B46EEC1C1AD47A0500A471B4 /* PelMel.xcassets */; };
 		B470F429199D800500A03CAD /* KIImagePager.h in Headers */ = {isa = PBXBuildFile; fileRef = B470F427199D800500A03CAD /* KIImagePager.h */; };
 		B470F42A199D800500A03CAD /* KIImagePager.m in Sources */ = {isa = PBXBuildFile; fileRef = B470F428199D800500A03CAD /* KIImagePager.m */; };
+		B4726FB91B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B4726FB71B56B74800441BDF /* PMLNetworkUsersAdditionPhotoProvider.h */; };
+		B4726FBA1B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4726FB81B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m */; };
 		B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */; };
 		B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69C01AA64AC200877B58 /* PMLCountersView.h */; };
 		B47A69C31AA64AC200877B58 /* PMLCountersView.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69C11AA64AC200877B58 /* PMLCountersView.m */; };
@@ -677,6 +679,8 @@
 		B46EEC1C1AD47A0500A471B4 /* PelMel.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = PelMel.xcassets; sourceTree = "<group>"; };
 		B470F427199D800500A03CAD /* KIImagePager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KIImagePager.h; sourceTree = "<group>"; };
 		B470F428199D800500A03CAD /* KIImagePager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIImagePager.m; sourceTree = "<group>"; };
+		B4726FB71B56B74800441BDF /* PMLNetworkUsersAdditionPhotoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLNetworkUsersAdditionPhotoProvider.h; sourceTree = "<group>"; };
+		B4726FB81B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLNetworkUsersAdditionPhotoProvider.m; sourceTree = "<group>"; };
 		B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLCountersView.xib; sourceTree = "<group>"; };
 		B47A69C01AA64AC200877B58 /* PMLCountersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLCountersView.h; sourceTree = "<group>"; };
 		B47A69C11AA64AC200877B58 /* PMLCountersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLCountersView.m; sourceTree = "<group>"; };
@@ -1744,6 +1748,8 @@
 				B4CC31301B30924700E755DA /* PMLConversationMessageProvider.m */,
 				B4CC31591B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.h */,
 				B4CC315A1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.m */,
+				B4726FB71B56B74800441BDF /* PMLNetworkUsersAdditionPhotoProvider.h */,
+				B4726FB81B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m */,
 			);
 			name = Providers;
 			path = providers;
@@ -1882,6 +1888,7 @@
 				B4BA87E31B14D50100612214 /* PMLMiniMapViewController.h in Headers */,
 				B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */,
 				B406CA47197D126300A7FFE2 /* MKCustomMapView.h in Headers */,
+				B4726FB91B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.h in Headers */,
 				B4A47D201ADE0827000178BD /* AUIAutoGrowingTextView.h in Headers */,
 				B4A47D281AE078F2000178BD /* PMLProperty.h in Headers */,
 				B4BB9F1619D7F23E0070B03C /* PMLThumbsTableViewCell.h in Headers */,
@@ -2337,6 +2344,7 @@
 				B43123AE1ACDBDFB008EF107 /* PMLHelpService.m in Sources */,
 				B449DEE81626AA9700C362F8 /* UITablePhotoViewCell.m in Sources */,
 				B46AD72D19E0E1E50021E1DE /* SettingsTableViewController.m in Sources */,
+				B4726FBA1B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m in Sources */,
 				B449DEED1626F29200C362F8 /* PhotoPreviewViewController.m in Sources */,
 				B43E762B199781D200153B46 /* PMLImageTableViewController.m in Sources */,
 				B4CC31501B3278B000E755DA /* PMLChatLoaderViewCell.m in Sources */,

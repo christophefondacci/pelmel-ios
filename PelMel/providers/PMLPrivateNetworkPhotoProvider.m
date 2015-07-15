@@ -8,7 +8,7 @@
 
 #import "PMLPrivateNetworkPhotoProvider.h"
 #import "TogaytherService.h"
-
+#import "PMLNetworkUsersAdditionPhotoProvider.h"
 
 #define kSectionCount 4
 #define kSectionActions 0
@@ -108,16 +108,18 @@
  * @param object the object that received the tap
  */
 -(void)photoController:(PMLPhotosCollectionViewController*)controller objectTapped:(NSObject*)object inSection:(NSInteger)section {
+    
     if(section == kSectionActions) {
         
         // Unwrapping action type
         PMLActionType actionType = [self actionFromObject:object];
-
+        
         // Executing action on network users
         [[TogaytherService actionManager] execute:actionType onObject:[_userService getCurrentUser]];
     } else {
         [[TogaytherService uiService] presentSnippetFor:(CALObject*)object opened:YES];
     }
+
 }
 /**
  * Provide the number of sections
@@ -145,7 +147,16 @@
  * @param section the section index
  */
 -(void)photoController:(PMLPhotosCollectionViewController*)controller didTapAddToSection:(NSInteger)section {
-    // TODO implement me
+
+    // Building the photo grid controller
+    PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_PHOTOS_COLLECTION];
+    
+    // Initializing it with a provider of current nearby users
+    PMLNetworkUsersAdditionPhotoProvider *provider = [[PMLNetworkUsersAdditionPhotoProvider alloc] init];
+    photosController.provider = provider;
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:photosController];
+    // Presenting it modalling
+    [[[TogaytherService uiService] menuManagerController] presentModal:navController];
 }
 
 /**

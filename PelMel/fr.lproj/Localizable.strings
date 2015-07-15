@@ -193,7 +193,7 @@
 "counters.likes.user.singular"="%d l'aime";
 "counters.likes"="%d Aiment";
 "counters.likes.singular"="%d Aime";
-"counters.network"="Réseau d'amis";
+"counters.network"="Mon Réseau";
 "counters.network.accept"="Accepter";
 "counters.network.add"="Ajouter";
 "counters.network.cancel"="Annuler";
@@ -223,10 +223,11 @@
 "geoloc.deactivated.subtitle"="Modifiez réglages > confidentiel > localisation";
 "grid.action.groupChat"="Chat groupé";
 "grid.section.networkApprovals"="En attente de votre approbation";
-"grid.section.networkUsers"="Votre réseau d'amis";
+"grid.section.networkUsers"="Votre réseau";
 "grid.section.networkRequests"="Demandes envoyées, en attente";
 "grid.title.nearbyUsers"="Mecs à Proximité";
-"grid.title.privateNetwork"="Votre réseau d'amis";
+"grid.title.networkUsers"="Ajouter au réseau";
+"grid.title.privateNetwork"="Votre réseau";
 "grid.title.searchResults"="Résultats";
 "hint.addPlace"="Ce bouton ajoute un nouveau lieu à PELMEL\nEntrez le nom, le type, ajustez la localisation et c'est fait !";
 "hint.badge"="Ce chiffre indique que %d personnes se trouvent actuellement là";

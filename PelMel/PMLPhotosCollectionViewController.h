@@ -91,8 +91,7 @@
 
 @interface PMLPhotosCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
 
-// Array of CALImage
-//@property (nonatomic,retain) PMLActivityStatistic *activityStat;
+// The provider of information: objects, photos, labels
 @property (nonatomic,retain) id<PMLPhotosProvider> provider;
 @property (nonatomic) BOOL loadFullImage;
 -(void)updateData;
