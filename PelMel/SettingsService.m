@@ -21,6 +21,11 @@
 #define kPlaceTypeFilterIconFormat @"icon.filter.%@"
 #define kPlaceTypeSponsoredFormat @"placetype.sponsored"
 
+@interface SettingsService ()
+
+@property (nonatomic,retain) NSCache *filtersCache;
+
+@end
 @implementation SettingsService {
     NSMutableDictionary *placeTypesMap;
     NSArray *definedPlaceTypes;
@@ -28,6 +33,7 @@
     
     NSMutableSet *listeners;
     NSUserDefaults *_defaults;
+
     
 }
 
@@ -38,7 +44,7 @@
         listeners = [[NSMutableSet alloc] init];
         placeTypesMap = [[NSMutableDictionary alloc] init];
         _defaults = [NSUserDefaults standardUserDefaults];
-        
+        _filtersCache = [[NSCache alloc] init];
         // Initializing place types from constant definition
         NSString *strPlaceTypes = NSLocalizedString(@"placetypes",nil);
         NSArray *placeCodes = [strPlaceTypes componentsSeparatedByString:@","];
@@ -124,7 +130,10 @@
 - (BOOL)isVisible:(CALObject*)object {
     BOOL filtersActive = NO;
     BOOL placeActive = NO;
-    if([object isKindOfClass:[Place class]]) {
+    NSNumber *visible = [_filtersCache objectForKey:object.key];
+    if(visible != nil) {
+        return [visible boolValue];
+    } else if([object isKindOfClass:[Place class]]) {
         Place *place = (Place*)object;
         for(PlaceType *t in definedPlaceTypes) {
             if(t.visible) {
@@ -163,8 +172,10 @@
             placeActive = (range.location != NSNotFound) ;
         }
     }
+    BOOL visibleBool = !filtersActive || placeActive;
+    [_filtersCache setObject:[NSNumber numberWithBool:visibleBool] forKey:object.key];
     // If nothing filtered, everything visible, else we check place type filter
-    return !filtersActive || placeActive;
+    return visibleBool;
 }
 
 -(BOOL)isOpened:(Place*)place {
@@ -231,6 +242,7 @@
 }
 
 -(void)notifyFiltersChanged {
+    [_filtersCache removeAllObjects];
     // Notifying listeners
     for(NSObject<SettingsListener> *listener in listeners) {
         
