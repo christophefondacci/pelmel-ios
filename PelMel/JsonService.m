@@ -195,7 +195,7 @@
     NSNumber *unreadNetworkCount=[json objectForKey:@"unreadNetworkNotificationsCount"];    
     NSNumber *maxActivityId = [json objectForKey:@"maxActivityId"];
     [_messageService setUnreadMessageCount:[unreadMsgCount intValue]];
-    [_messageService setUnreadNetworkCount:unreadNetworkCount.intValue];
+//    [_messageService setUnreadNetworkCount:unreadNetworkCount.intValue];
     [_messageService setMaxActivityId:[maxActivityId intValue]];
     
     // Getting place
@@ -712,7 +712,7 @@
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
     NSNumber *unreadNetworkCount=[json objectForKey:@"unreadNetworkNotificationsCount"];
     [_messageService setUnreadMessageCount:[unreadMsgCount intValue]];
-    [_messageService setUnreadNetworkCount:[unreadNetworkCount intValue]];
+//    [_messageService setUnreadNetworkCount:[unreadNetworkCount intValue]];
     
     // Preparing thumbs list to download
     NSMutableArray *thumbsToDownload = [[NSMutableArray alloc] initWithCapacity:jsonLikeUsers.count+jsonLikedPlaces.count];
@@ -805,7 +805,7 @@
     int unreadCount = (int)[unreadMsgCount integerValue];
     
     [[TogaytherService getMessageService] setUnreadMessageCount:unreadCount];
-    [[TogaytherService getMessageService] setUnreadNetworkCount:unreadNetworkCount.intValue];
+//    [[TogaytherService getMessageService] setUnreadNetworkCount:unreadNetworkCount.intValue];
     
     user.pseudo     = pseudo;
     user.key        = key;
@@ -894,6 +894,8 @@
     currentUser.networkPendingApprovals = networkPendingApprovals;
     currentUser.networkPendingRequests = networkPendingRequests;
     currentUser.networkUsers = networkUsers;
+    
+    [[TogaytherService getMessageService] setUnreadNetworkCount:networkPendingApprovals.count];
 }
 -(NSString*)getMiniDesc:(NSArray*)descriptions {
     NSMutableDictionary *descLangMap = [[NSMutableDictionary alloc] init];

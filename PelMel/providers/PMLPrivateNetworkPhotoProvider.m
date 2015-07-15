@@ -18,6 +18,7 @@
 
 @interface PMLPrivateNetworkPhotoProvider()
 @property (nonatomic,retain) UserService *userService;
+@property (nonatomic,weak) PMLPhotosCollectionViewController *controller;
 @end
 
 @implementation PMLPrivateNetworkPhotoProvider
@@ -31,7 +32,15 @@
     return self;
 }
 -(void)photoControllerStartContentLoad:(PMLPhotosCollectionViewController*)controller {
+    _controller = controller;
     controller.loadFullImage=YES;
+    // Registering for notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:PML_NOTIFICATION_PUSH_RECEIVED object:nil];
+    [_userService privateNetworkListWithSuccess:^(id obj) {
+        [controller updateData];
+    } failure:^(id obj) {
+        [[TogaytherService uiService] alertError];
+    }];
     [controller updateData];
 }
 /**
@@ -195,4 +204,11 @@
     return [[CALImage getDefaultUserCalImage] fullImage];
 }
 
+-(void)controllerWillDealloc:(PMLPhotosCollectionViewController *)controller {
+    _controller= nil;
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
+-(void)pushNotificationReceived:(NSNotification*)notification {
+    [self photoControllerStartContentLoad:_controller];
+}
 @end

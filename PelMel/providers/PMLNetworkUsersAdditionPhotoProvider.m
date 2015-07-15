@@ -12,7 +12,7 @@
 
 @interface PMLNetworkUsersAdditionPhotoProvider()
 @property (nonatomic,retain) NSMutableArray *users;
-@property (nonatomic,retain) PMLPhotosCollectionViewController *controller;
+@property (nonatomic,weak) PMLPhotosCollectionViewController *controller;
 @end
 
 @implementation PMLNetworkUsersAdditionPhotoProvider
@@ -42,6 +42,7 @@
                 [_users addObject:user];
             }
         }
+        _users = [[[TogaytherService uiService] sortObjectsWithImageFirst:_users] mutableCopy];
     }
     return self;
 }

@@ -233,19 +233,19 @@
         }
         // Resetting position / sizes
         CGPoint center = actionView.center;
-//        actionView.bounds = CGRectMake(center.x-action.initialWidth/2, center.y-action.initialHeight/2, action.initialWidth, action.initialHeight);
-        // Touch animation
-//        _menuTouchBehavior = [[UITouchBehavior alloc] initWithTarget:actionView];
-//        [_animator addBehavior:_menuTouchBehavior];
-        [UIView animateWithDuration:0.1 animations:^{
-            CGFloat width =1.1*action.initialWidth;
-            CGFloat height=1.1*action.initialHeight;
-            actionView.bounds = CGRectMake(center.x-width/2, center.y-height/2, width, height);
-        } completion:^(BOOL finished) {
-            [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:0.7 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                actionView.bounds = CGRectMake(center.x-action.initialWidth/2, center.y-action.initialHeight/2, action.initialWidth, action.initialHeight);
-            } completion:nil];
-        }];
+        actionView.bounds = CGRectMake(center.x-action.initialWidth/2, center.y-action.initialHeight/2, action.initialWidth, action.initialHeight);
+//         Touch animation
+        _menuTouchBehavior = [[UITouchBehavior alloc] initWithTarget:actionView];
+        [_animator addBehavior:_menuTouchBehavior];
+//        [UIView animateWithDuration:0.1 animations:^{
+//            CGFloat width =1.1*action.initialWidth;
+//            CGFloat height=1.1*action.initialHeight;
+//            actionView.bounds = CGRectMake(center.x-width/2, center.y-height/2, width, height);
+//        } completion:^(BOOL finished) {
+//            [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:0.7 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+//                actionView.bounds = CGRectMake(center.x-action.initialWidth/2, center.y-action.initialHeight/2, action.initialWidth, action.initialHeight);
+//            } completion:nil];
+//        }];
         // Executing action
         if(action.menuAction) {
             action.menuAction(_menuManagerController,action);

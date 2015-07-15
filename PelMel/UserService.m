@@ -585,7 +585,29 @@
     }];
 
 }
-
+-(void)privateNetworkListWithSuccess:(Completor)success failure:(Completor)failure {
+    NSString *url = [NSString  stringWithFormat:kPrivateNetworkUrlFormat,togaytherServer];
+    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+    NSDictionary *params = @{ kParamUserKey : currentUser.key,kParamUserToken : currentUser.token};
+    
+    AFHTTPRequestOperationManager *manager= [AFHTTPRequestOperationManager manager];
+    [manager GET:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        // Filling new private network definition into current user
+        CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+        [jsonService fillPrivateNetworkInfo:(NSDictionary*)responseObject inUser:currentUser];
+        
+        // Calling back
+        if(success != nil) {
+            success(responseObject);
+        }
+        [self notifyUserChangedPrivateNetwork];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(failure != nil) {
+            failure(error);
+        }
+    }];
+}
 #pragma mark - Tools
 - (void)resetPasswordFor:(NSString *)email success:(Completor)success failure:(Completor)failure {
     NSString *url = [NSString  stringWithFormat:kResetPasswordUrlFormat,togaytherServer];
