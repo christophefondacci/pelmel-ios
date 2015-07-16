@@ -51,11 +51,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-//    [TogaytherService applyCommonLookAndFeel:self];
-//    [self.navigationController setNavigationBarHidden:NO ];
+    [TogaytherService applyCommonLookAndFeel:self];
+    [self.navigationController setNavigationBarHidden:NO ];
     self.view.backgroundColor =UIColorFromRGB(0x272a2e);
     self.tableView.backgroundColor =  UIColorFromRGB(0x272a2e);
     self.tableView.separatorColor = [UIColor clearColor];
+    self.navigationItem.rightBarButtonItem=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
     
     // Services init
     _conversionService  = [TogaytherService getConversionService];
@@ -370,5 +371,10 @@
         self.editing = NO;
     }
     [self setEditing:(_editingSections>0) animated:YES];
+}
+
+-(void)closeMenu:(id)sender {
+    [_uiService presentSnippetFor:nil opened:NO root:YES];
+    [[[_uiService menuManagerController] navigationController] popToRootViewControllerAnimated:YES];
 }
 @end
