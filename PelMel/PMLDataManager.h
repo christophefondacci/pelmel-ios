@@ -11,7 +11,7 @@
 
 @class PMLMenuManagerController;
 
-@interface PMLDataManager : NSObject <PMLDataListener,PMLUserCallback,PMLImagePickerCallback,PMLImageUploadCallback>
+@interface PMLDataManager : NSObject <PMLDataListener,PMLUserCallback,PMLImagePickerCallback,PMLImageUploadCallback,UIAlertViewDelegate>
 
 /**
  * Initializes the data manager on the given view controller

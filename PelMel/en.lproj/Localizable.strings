@@ -25,6 +25,10 @@
 "action.checkin"="Check in";
 "action.checkin.feedbackTitle"="You checked in!";
 "action.checkin.feedbackMessage"="You checked in %@, other users will be able to see that you are here. You can do a 'check out' to stop sharing that information. If you forget to check out, you will be automatically checked out after some time.";
+"action.checkin.feedbackNetworkTitle"="Invite your network";
+"action.checkin.feedbackNetworkMessage"="Invite your network to join you at %@! They will receive a notification that you are there and would like them to join you.";
+"action.checkin.feedbackNetworkNotNow"="Not Now";
+"action.checkin.feedbackNetworkInvite"="Invite Friends";
 "action.checkout.feedbackTitle"="You checked out!";
 "action.checkout.feedbackMessage"="You checked out from %@, other users can no longer see that you are here. Nobody will ever see that you were there.";
 "action.comment"="Comment";

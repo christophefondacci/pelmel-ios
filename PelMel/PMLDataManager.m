@@ -41,6 +41,8 @@
     CALObject *_initialContextObject;
     BOOL _initialContextSearch;
     
+    Place *_checkedInPlace;
+    
 }
 
 
@@ -413,7 +415,18 @@
         [newPlaces addObject:place];
         
         // Feedback message
-        [[TogaytherService uiService] alertWithTitle:@"action.checkin.feedbackTitle" text:@"action.checkin.feedbackMessage" textObjectName:place.title];
+        if(user.networkUsers.count>0) {
+            NSString *title = NSLocalizedString(@"action.checkin.feedbackNetworkTitle", @"action.checkin.feedbackNetworkTitle");
+            NSString *msg = NSLocalizedString(@"action.checkin.feedbackNetworkMessage", @"action.checkin.feedbackNetworkMessage");
+            msg = [NSString stringWithFormat:msg,place.title];
+            NSString *btnNotNow = NSLocalizedString(@"action.checkin.feedbackNetworkNotNow", @"action.checkin.feedbackNetworkTitle");
+            NSString *btnInvite = NSLocalizedString(@"action.checkin.feedbackNetworkInvite", @"action.checkin.feedbackNetworkTitle");
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:btnNotNow otherButtonTitles:btnInvite,nil];
+            _checkedInPlace = place;
+            [alertView show];
+        } else {
+            [[TogaytherService uiService] alertWithTitle:@"action.checkin.feedbackTitle" text:@"action.checkin.feedbackMessage" textObjectName:place.title];
+        }
     }
     // Refreshing places if at least one update (there should always be
     if(newPlaces.count>0) {
@@ -473,5 +486,16 @@
 - (void)setInitialContext:(CALObject *)object isSearch:(BOOL)isSearch {
     _initialContextObject = object;
     _initialContextSearch = isSearch;
+}
+#pragma mark - UIAlertViewDelegate 
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if(alertView.cancelButtonIndex != buttonIndex) {
+        [_userService privateNetworkAction:PMLPrivateNetworkActionInvite withUser:_checkedInPlace success:^(id obj) {
+            NSLog(@"Success");
+        } failure:^(id obj) {
+            [[TogaytherService uiService] alertError];
+        }];
+    }
+    _checkedInPlace = nil;
 }
 @end

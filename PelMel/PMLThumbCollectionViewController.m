@@ -50,6 +50,7 @@ static NSString * const reuseIdentifier = @"Cell";
 //        _size = [NSNumber numberWithInt:self.view.frame.size.height-19];
     } else {
         layout = [[UICollectionViewFlowLayout alloc] init];
+        layout.headerReferenceSize = CGSizeMake(0, 0);
 //        _size = [NSNumber numberWithInt:self.view.frame.size.height];
     }
     layout.scrollDirection=UICollectionViewScrollDirectionHorizontal;
@@ -212,7 +213,7 @@ static NSString * const reuseIdentifier = @"Cell";
     if([self.thumbProvider respondsToSelector:@selector(labelForType:)]) {
         NSString *label = [self.thumbProvider labelForType:type];
         UIImage *image = [self.thumbProvider imageForType:type];
-        if(label != nil) {
+//        if(label != nil) {
             NSAssert([kind isEqualToString:UICollectionElementKindSectionHeader], @"Unexpected supplementary element kind");
             UICollectionReusableView* cell = [collectionView dequeueReusableSupplementaryViewOfKind:kind
                                                                                 withReuseIdentifier:@"header"
@@ -231,7 +232,7 @@ static NSString * const reuseIdentifier = @"Cell";
             // custom content
             
             return cell;
-        }
+//        }
     }
     return nil;
 }
@@ -266,6 +267,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 
 }
+
 /*
 // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {

@@ -159,14 +159,23 @@
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuNetworkAction];
     
     // Adding the badge view for messages
-    MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
-    badgeView.frame = CGRectMake(_menuNetworkAction.menuActionView.frame.size.width-20, -5, 30, 20);
-    badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
-    badgeView.shadow = NO;
-    badgeView.shine=NO;
-    badgeView.hidden=YES;
-    [_menuNetworkAction.menuActionView addSubview:badgeView];
-    [[TogaytherService getMessageService] setNetworkCountBadgeView:badgeView];
+    BOOL badgeViewExists = NO;
+    for(UIView *subview in _menuNetworkAction.menuActionView.subviews) {
+        if([subview isKindOfClass:[MKNumberBadgeView class]]) {
+            badgeViewExists = YES;
+            break;
+        }
+    }
+    if(!badgeViewExists) {
+        MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
+        badgeView.frame = CGRectMake(_menuNetworkAction.menuActionView.frame.size.width-20, -5, 30, 20);
+        badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
+        badgeView.shadow = NO;
+        badgeView.shine=NO;
+        badgeView.hidden=YES;
+        [_menuNetworkAction.menuActionView addSubview:badgeView];
+        [[TogaytherService getMessageService] setNetworkCountBadgeView:badgeView];
+    }
     
     
     [self.parentMenuController addObserver:self forKeyPath:@"contextObject" options:NSKeyValueObservingOptionNew context:NULL];

@@ -15,7 +15,7 @@
 - (void)thumbsTableView:(PMLThumbCollectionViewController*)thumbsController thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type;
 @end
 
-@interface PMLThumbCollectionViewController : UICollectionViewController
+@interface PMLThumbCollectionViewController : UICollectionViewController <UICollectionViewDelegateFlowLayout>
 
 @property (nonatomic) id<PMLThumbsPreviewProvider> thumbProvider;
 @property (nonatomic) id<PMLThumbsCollectionViewActionDelegate> actionDelegate;

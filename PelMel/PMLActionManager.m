@@ -15,8 +15,7 @@
 #import "PMLMessagingContainerController.h"
 #import "PMLBannerEditorTableViewController.h"
 #import <MBProgressHUD.h>
-#import "PMLPhotosCollectionViewController.h"
-#import "PMLPrivateNetworkPhotoProvider.h"
+#import "PMLNetworkViewController.h"
 #import "PMLRecipientsGroup.h"
 
 #define kPMLConfirmDistance 21.0
@@ -479,10 +478,8 @@
 }
 -(void)registerShowPrivateNetwork {
     PopupAction *showAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
-        PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[_uiService instantiateViewController:SB_ID_PHOTOS_COLLECTION];
-        PMLPrivateNetworkPhotoProvider *provider = [[PMLPrivateNetworkPhotoProvider alloc] init];
-        photosController.provider = provider;
-        [_uiService presentSnippet:photosController opened:YES root:YES];
+        PMLNetworkViewController *networkController = (PMLNetworkViewController*)[_uiService instantiateViewController:SB_ID_NETWORK];
+        [_uiService presentSnippet:networkController opened:YES root:YES];
     }];
     [self registerAction:showAction forType:PMLActionTypePrivateNetworkShow];
 }

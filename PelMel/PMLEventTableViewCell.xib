@@ -93,10 +93,15 @@
                         <constraint firstAttribute="width" constant="2" id="6rB-2D-9fB"/>
                     </constraints>
                 </imageView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JYW-U3-G23" userLabel="container">
+                    <rect key="frame" x="158" y="74" width="160" height="62"/>
+                    <color key="backgroundColor" red="0.1529411765" green="0.1647058824" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="0EY-1g-ZN4" firstAttribute="leading" secondItem="GfB-ho-Chj" secondAttribute="trailing" constant="20" id="9DN-uf-djJ"/>
+                <constraint firstAttribute="bottom" secondItem="JYW-U3-G23" secondAttribute="bottom" constant="8" id="AHb-vo-2yw"/>
                 <constraint firstAttribute="trailing" secondItem="7KN-BI-Y6W" secondAttribute="trailing" constant="8" id="BRB-Ch-7fu"/>
                 <constraint firstAttribute="bottom" secondItem="0EY-1g-ZN4" secondAttribute="bottom" constant="8" id="BiI-4Z-Y8H"/>
                 <constraint firstItem="w5H-P0-nnS" firstAttribute="top" secondItem="7KN-BI-Y6W" secondAttribute="bottom" constant="5.5" id="C9A-p8-lmu"/>
@@ -115,9 +120,12 @@
                 <constraint firstItem="7KN-BI-Y6W" firstAttribute="leading" secondItem="LmS-eB-yuK" secondAttribute="leading" id="Zr5-TU-Myf"/>
                 <constraint firstItem="7KN-BI-Y6W" firstAttribute="width" secondItem="w5H-P0-nnS" secondAttribute="width" id="jVo-Do-DOJ"/>
                 <constraint firstAttribute="trailing" secondItem="i0D-fE-Ln6" secondAttribute="trailing" constant="8" id="jax-TQ-Nsu"/>
+                <constraint firstItem="JYW-U3-G23" firstAttribute="leading" secondItem="7KN-BI-Y6W" secondAttribute="leading" id="kwn-ih-ZkH"/>
+                <constraint firstItem="JYW-U3-G23" firstAttribute="top" secondItem="w5H-P0-nnS" secondAttribute="bottom" constant="3" id="mAF-YF-UQg"/>
                 <constraint firstItem="GfB-ho-Chj" firstAttribute="top" secondItem="7KN-BI-Y6W" secondAttribute="bottom" constant="-27" id="qe0-vO-zBd"/>
                 <constraint firstItem="i0D-fE-Ln6" firstAttribute="bottom" secondItem="LmS-eB-yuK" secondAttribute="bottom" id="uUV-8F-R37"/>
                 <constraint firstItem="YKI-xQ-uTd" firstAttribute="bottom" secondItem="dpN-yg-0aO" secondAttribute="bottom" id="wSU-at-0bH"/>
+                <constraint firstAttribute="trailing" secondItem="JYW-U3-G23" secondAttribute="trailing" constant="2" id="xz6-SE-fdq"/>
                 <constraint firstItem="3aA-wI-Ngj" firstAttribute="top" secondItem="ptQ-QN-afT" secondAttribute="top" constant="2" id="ykx-ie-BTf"/>
                 <constraint firstItem="GfB-ho-Chj" firstAttribute="leading" secondItem="ptQ-QN-afT" secondAttribute="leading" constant="15" id="ymH-Oj-AWY"/>
                 <constraint firstItem="dpN-yg-0aO" firstAttribute="bottom" secondItem="GfB-ho-Chj" secondAttribute="bottom" id="zSG-M0-89y"/>
@@ -134,6 +142,7 @@
                 <outlet property="locationLabel" destination="i0D-fE-Ln6" id="57N-vi-H4c"/>
                 <outlet property="separatorImage" destination="0EY-1g-ZN4" id="L8u-u1-UhW"/>
                 <outlet property="titleLabel" destination="w5H-P0-nnS" id="yZa-wD-Qj5"/>
+                <outlet property="usersContainerView" destination="JYW-U3-G23" id="lZW-Mf-tVl"/>
                 <outlet property="verticalSepWidthConstraint" destination="6rB-2D-9fB" id="M03-Wn-lTo"/>
             </connections>
             <point key="canvasLocation" x="-59" y="-48"/>

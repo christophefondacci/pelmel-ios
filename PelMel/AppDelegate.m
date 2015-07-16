@@ -140,16 +140,18 @@ static BOOL isStarted;
     } else {
         // Downloading messages for proper count display
         User *currentUser = [[TogaytherService userService] getCurrentUser];
-        [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
-
-        // Refreshing places data
-        DataService *dataService = [TogaytherService dataService];
-//        [dataService setCurrentRadius:0];
-        if([dataService modelHolder].places.count>0) {
-//            [[[[TogaytherService uiService] menuManagerController] rootViewController] setZoomUpdateType:PMLZoomUpdateNone];
-            [dataService fetchPlacesAtLatitude:dataService.currentLatitude longitude:dataService.currentLongitude for:nil searchTerm:dataService.searchTerm radius:dataService.currentRadius silent:YES];
+        if(currentUser !=nil) {
+            [[TogaytherService getMessageService] getMessagesWithUser:currentUser.key messageCallback:nil];
+            
+            // Refreshing places data
+            DataService *dataService = [TogaytherService dataService];
+            if([dataService modelHolder].places.count>0) {
+                [dataService fetchPlacesAtLatitude:dataService.currentLatitude longitude:dataService.currentLongitude for:nil searchTerm:dataService.searchTerm radius:dataService.currentRadius silent:YES];
+            }
+            
+            // Refreshing private network info
+            [[TogaytherService userService] privateNetworkListWithSuccess:nil failure:nil];
         }
-
     }
 
 }

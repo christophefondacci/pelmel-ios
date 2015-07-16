@@ -41,6 +41,7 @@
 #define kPrivateNetworkActionRequest @"REQUEST"
 #define kPrivateNetworkActionCancel @"CANCEL"
 #define kPrivateNetworkActionConfirm @"CONFIRM"
+#define kPrivateNetworkActionInvite @"INVITE"
 
 #define kLoginParamsFormat      @"email=%@&password=%@&highRes=%@"
 #define kDisconnectUrlFormat    @"%@/mobileDisconnect?nxtpUserToken=%@"
@@ -550,7 +551,7 @@
     [self privateNetworkAction:PMLPrivateNetworkActionAccept withUser:user success:success failure:failure];
 }
 
--(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(User*)user success:(Completor)success failure:(Completor)failure {
+-(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(CALObject*)user success:(Completor)success failure:(Completor)failure {
     NSString *url = [NSString  stringWithFormat:kPrivateNetworkUrlFormat,togaytherServer];
     
     // Assigning action code
@@ -564,6 +565,9 @@
             break;
         case PMLPrivateNetworkActionCancel:
             actionCode = kPrivateNetworkActionCancel;
+            break;
+        case PMLPrivateNetworkActionInvite:
+            actionCode = kPrivateNetworkActionInvite;
             break;
     }
     

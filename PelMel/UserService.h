@@ -24,6 +24,7 @@ typedef enum {
     PMLPrivateNetworkActionRequest,
     PMLPrivateNetworkActionAccept,
     PMLPrivateNetworkActionCancel,
+    PMLPrivateNetworkActionInvite
 } PMLPrivateNetworkAction;
 
 typedef void(^Completor)(id obj);
@@ -123,6 +124,6 @@ typedef void(^Completor)(id obj);
  */
 -(PMLUserPrivateNetworkStatus)privateNetworkStatusFor:(User*)user;
 //-(void)sendPrivateNetworkRequestTo:(User*)user success:(Completor)success failure:(Completor)failure;
--(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(User*)user success:(Completor)success failure:(Completor)failure;
+-(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(CALObject*)user success:(Completor)success failure:(Completor)failure;
 -(void)privateNetworkListWithSuccess:(Completor)success failure:(Completor)failure;
 @end

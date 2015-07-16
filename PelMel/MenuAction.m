@@ -11,7 +11,10 @@
 @implementation MenuAction
 
 - (instancetype)initWithIcon:(UIImage *)icon pctWidth:(float)pctWidth pctHeight:(float)pctHeight action:(MenuActionBlock)menuAction {
-    return [self initWithView:[[UIImageView alloc] initWithImage:icon] pctWidth:pctWidth pctHeight:pctHeight action:menuAction];
+    UIButton *button = [[UIButton alloc] init];
+    [button setBackgroundImage:icon forState:UIControlStateNormal];
+    button.frame = CGRectMake(0, 0, icon.size.width, icon.size.height);
+    return [self initWithView:button pctWidth:pctWidth pctHeight:pctHeight action:menuAction];
 }
 - (instancetype)initWithView:(UIView *)view pctWidth:(float)pctWidth pctHeight:(float)pctHeight action:(MenuActionBlock)menuAction
 {

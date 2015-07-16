@@ -244,9 +244,9 @@ typedef enum {
     _hoursTypeMap = [[NSMutableDictionary alloc] init];
     _galleryPctHeight = 0;
     
-    self.tableView.backgroundColor = UIColorFromRGB(0x272a2e);
+    self.tableView.backgroundColor = BACKGROUND_COLOR;
     self.tableView.opaque=YES;
-    self.tableView.separatorColor = UIColorFromRGB(0x272a2e);
+    self.tableView.separatorColor = BACKGROUND_COLOR;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.showsHorizontalScrollIndicator = NO;
     // Navigation

@@ -199,6 +199,10 @@
 		B470F42A199D800500A03CAD /* KIImagePager.m in Sources */ = {isa = PBXBuildFile; fileRef = B470F428199D800500A03CAD /* KIImagePager.m */; };
 		B4726FB91B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B4726FB71B56B74800441BDF /* PMLNetworkUsersAdditionPhotoProvider.h */; };
 		B4726FBA1B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B4726FB81B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m */; };
+		B4726FBD1B56E7D000441BDF /* PMLNetworkViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4726FBB1B56E7D000441BDF /* PMLNetworkViewController.h */; };
+		B4726FBE1B56E7D000441BDF /* PMLNetworkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4726FBC1B56E7D000441BDF /* PMLNetworkViewController.m */; };
+		B4726FC11B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4726FBF1B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.h */; };
+		B4726FC21B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4726FC01B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.m */; };
 		B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */; };
 		B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69C01AA64AC200877B58 /* PMLCountersView.h */; };
 		B47A69C31AA64AC200877B58 /* PMLCountersView.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69C11AA64AC200877B58 /* PMLCountersView.m */; };
@@ -681,6 +685,10 @@
 		B470F428199D800500A03CAD /* KIImagePager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KIImagePager.m; sourceTree = "<group>"; };
 		B4726FB71B56B74800441BDF /* PMLNetworkUsersAdditionPhotoProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLNetworkUsersAdditionPhotoProvider.h; sourceTree = "<group>"; };
 		B4726FB81B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLNetworkUsersAdditionPhotoProvider.m; sourceTree = "<group>"; };
+		B4726FBB1B56E7D000441BDF /* PMLNetworkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLNetworkViewController.h; sourceTree = "<group>"; };
+		B4726FBC1B56E7D000441BDF /* PMLNetworkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLNetworkViewController.m; sourceTree = "<group>"; };
+		B4726FBF1B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLNetworkCheckinsTableViewController.h; sourceTree = "<group>"; };
+		B4726FC01B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLNetworkCheckinsTableViewController.m; sourceTree = "<group>"; };
 		B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLCountersView.xib; sourceTree = "<group>"; };
 		B47A69C01AA64AC200877B58 /* PMLCountersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLCountersView.h; sourceTree = "<group>"; };
 		B47A69C11AA64AC200877B58 /* PMLCountersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLCountersView.m; sourceTree = "<group>"; };
@@ -1522,6 +1530,10 @@
 				B4BD19171AE6BE3800510AC4 /* PMLMessageTableViewController.m */,
 				B4DE4E8F1B2F398800748ECB /* PMLMessagingContainerController.h */,
 				B4DE4E901B2F398800748ECB /* PMLMessagingContainerController.m */,
+				B4726FBB1B56E7D000441BDF /* PMLNetworkViewController.h */,
+				B4726FBC1B56E7D000441BDF /* PMLNetworkViewController.m */,
+				B4726FBF1B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.h */,
+				B4726FC01B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1859,6 +1871,7 @@
 				B43E762A199781D200153B46 /* PMLImageTableViewController.h in Headers */,
 				B4FC958E19B1F0D200269E74 /* PMLGalleryTableViewCell.h in Headers */,
 				B4CC315B1B47322A00E755DA /* PMLPrivateNetworkPhotoProvider.h in Headers */,
+				B4726FBD1B56E7D000441BDF /* PMLNetworkViewController.h in Headers */,
 				B4A4666C19A73A6A004ADC7E /* PMLPlaceInfoProvider.h in Headers */,
 				B45BBF02196AB883001C1DF5 /* UIWaitingView.h in Headers */,
 				B4B560AB18B76CD0006E6D90 /* UIPelmelTitleView.h in Headers */,
@@ -1889,6 +1902,7 @@
 				B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */,
 				B406CA47197D126300A7FFE2 /* MKCustomMapView.h in Headers */,
 				B4726FB91B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.h in Headers */,
+				B4726FC11B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.h in Headers */,
 				B4A47D201ADE0827000178BD /* AUIAutoGrowingTextView.h in Headers */,
 				B4A47D281AE078F2000178BD /* PMLProperty.h in Headers */,
 				B4BB9F1619D7F23E0070B03C /* PMLThumbsTableViewCell.h in Headers */,
@@ -2256,6 +2270,7 @@
 				B4AA0A4C1AF3F5C800DCDE29 /* PMLActivityStatTableViewCell.m in Sources */,
 				B4BB9F0219D4E2460070B03C /* PMLChatTimeTableViewCell.m in Sources */,
 				B4CC313E1B30ABFB00E755DA /* PMLManagedActivity.m in Sources */,
+				B4726FBE1B56E7D000441BDF /* PMLNetworkViewController.m in Sources */,
 				B4AA0A431AF2EEFB00DCDE29 /* PMLLoadingTableViewCell.m in Sources */,
 				B4D561161611C259003A738E /* ModelHolder.m in Sources */,
 				B41C63B919B311BE003C9B52 /* PMLContextInfoProvider.m in Sources */,
@@ -2347,6 +2362,7 @@
 				B4726FBA1B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.m in Sources */,
 				B449DEED1626F29200C362F8 /* PhotoPreviewViewController.m in Sources */,
 				B43E762B199781D200153B46 /* PMLImageTableViewController.m in Sources */,
+				B4726FC21B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.m in Sources */,
 				B4CC31501B3278B000E755DA /* PMLChatLoaderViewCell.m in Sources */,
 				B45CAB3319721BD40089C7E8 /* DynamicObject.m in Sources */,
 				B4BB9F0D19D4F9260070B03C /* HPGrowingTextView.m in Sources */,

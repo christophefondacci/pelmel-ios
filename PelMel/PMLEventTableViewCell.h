@@ -19,5 +19,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *separatorImage;
 @property (weak, nonatomic) IBOutlet UIImageView *bgBorderImage;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSepWidthConstraint;
+@property (weak, nonatomic) IBOutlet UIView *usersContainerView;
 
 @end

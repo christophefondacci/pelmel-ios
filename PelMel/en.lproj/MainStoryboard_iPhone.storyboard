@@ -102,6 +102,8 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="OpenSans-Semibold.ttf">
             <string>OpenSans-Semibold</string>
@@ -4529,6 +4531,118 @@
             </objects>
             <point key="canvasLocation" x="2799" y="-371"/>
         </scene>
+        <!--Network View Controller-->
+        <scene sceneID="nbr-11-mTb">
+            <objects>
+                <viewController storyboardIdentifier="networkController" id="bXK-SX-RdX" customClass="PMLNetworkViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kwM-ln-LKf"/>
+                        <viewControllerLayoutGuide type="bottom" id="dGK-wy-vxD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="WRX-1c-CS9">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e8z-l3-Ijx">
+                                <rect key="frame" x="0.0" y="43" width="320" height="437"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="abt-1H-6Xw">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjS-cO-XLM">
+                                        <rect key="frame" x="5" y="5" width="153" height="37"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="145" id="KH6-Cg-Xoq"/>
+                                            <constraint firstAttribute="height" constant="37" id="LWA-SJ-J6J"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                        <state key="normal" title="Network" backgroundImage="bgTab">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="KH6-Cg-Xoq"/>
+                                            </mask>
+                                        </variation>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cyF-cZ-fuI">
+                                        <rect key="frame" x="163" y="5" width="152" height="37"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="145" id="WgJ-ov-2X5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
+                                        <state key="normal" title="Checkins" backgroundImage="bgTab">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <variation key="default">
+                                            <mask key="constraints">
+                                                <exclude reference="WgJ-ov-2X5"/>
+                                            </mask>
+                                        </variation>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="cyF-cZ-fuI" firstAttribute="height" secondItem="hjS-cO-XLM" secondAttribute="height" id="2DC-gn-Ic3"/>
+                                    <constraint firstAttribute="trailing" secondItem="cyF-cZ-fuI" secondAttribute="trailing" constant="5" id="6Fk-yP-ok3"/>
+                                    <constraint firstItem="hjS-cO-XLM" firstAttribute="leading" secondItem="abt-1H-6Xw" secondAttribute="leading" constant="5" id="Fgw-9Q-hji"/>
+                                    <constraint firstAttribute="height" constant="43" id="Gr5-XC-fm5"/>
+                                    <constraint firstItem="cyF-cZ-fuI" firstAttribute="leading" secondItem="hjS-cO-XLM" secondAttribute="trailing" constant="5" id="ISP-lX-YsL"/>
+                                    <constraint firstItem="hjS-cO-XLM" firstAttribute="top" secondItem="abt-1H-6Xw" secondAttribute="top" constant="5" id="J4Z-vu-hcc"/>
+                                    <constraint firstItem="cyF-cZ-fuI" firstAttribute="top" secondItem="hjS-cO-XLM" secondAttribute="top" id="rEl-iA-PO0"/>
+                                    <constraint firstItem="cyF-cZ-fuI" firstAttribute="width" secondItem="hjS-cO-XLM" secondAttribute="width" id="ufh-O9-mBk"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="e8z-l3-Ijx" firstAttribute="top" secondItem="abt-1H-6Xw" secondAttribute="bottom" id="5DV-HJ-es2"/>
+                            <constraint firstAttribute="trailing" secondItem="e8z-l3-Ijx" secondAttribute="trailing" id="CKN-hp-mGa"/>
+                            <constraint firstAttribute="trailing" secondItem="abt-1H-6Xw" secondAttribute="trailing" id="H01-Ta-MDE"/>
+                            <constraint firstItem="abt-1H-6Xw" firstAttribute="top" secondItem="WRX-1c-CS9" secondAttribute="top" id="Zky-xz-o3N"/>
+                            <constraint firstItem="e8z-l3-Ijx" firstAttribute="leading" secondItem="WRX-1c-CS9" secondAttribute="leading" id="pc0-CV-b4x"/>
+                            <constraint firstItem="abt-1H-6Xw" firstAttribute="leading" secondItem="WRX-1c-CS9" secondAttribute="leading" id="tnX-oE-r1i"/>
+                            <constraint firstAttribute="bottom" secondItem="e8z-l3-Ijx" secondAttribute="bottom" id="xmi-rR-1pv"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="checkinsTab" destination="cyF-cZ-fuI" id="PSp-fV-Md2"/>
+                        <outlet property="mainContainerView" destination="e8z-l3-Ijx" id="Dxp-U9-t86"/>
+                        <outlet property="networkTab" destination="hjS-cO-XLM" id="idB-dv-elk"/>
+                        <outlet property="tabContainerView" destination="abt-1H-6Xw" id="rEv-kH-a5M"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AIl-55-pwt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2401" y="183"/>
+        </scene>
+        <!--Network Checkins Table View Controller-->
+        <scene sceneID="QGA-Cr-3eP">
+            <objects>
+                <tableViewController storyboardIdentifier="networkCheckins" id="tX5-tc-dsF" customClass="PMLNetworkCheckinsTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="YHW-VK-L9K">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="emC-SS-fUB">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="emC-SS-fUB" id="lpf-Uf-Lqk">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="tX5-tc-dsF" id="qRK-2I-clp"/>
+                            <outlet property="delegate" destination="tX5-tc-dsF" id="ach-UD-MGu"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KN3-mH-8R8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2402" y="708"/>
+        </scene>
         <!--Banner List Table View Controller-->
         <scene sceneID="Jtu-R4-C6r">
             <objects>
@@ -4811,6 +4925,7 @@
     </scenes>
     <resources>
         <image name="bgPhotoFrame3" width="47" height="47"/>
+        <image name="bgTab" width="7" height="32"/>
         <image name="btnPause" width="35" height="34"/>
         <image name="btnPlay" width="35" height="34"/>
         <image name="chat.png" width="30" height="30"/>

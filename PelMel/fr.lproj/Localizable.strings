@@ -25,6 +25,10 @@
 "action.checkin"="Check In";
 "action.checkin.feedbackTitle"="Vous avez checkiné!";
 "action.checkin.feedbackMessage"="Votre présence à %@ est désormais visible par les autres utilisateurs. Vous pouvez faire un 'checkout' pour ne plus partager cette information.";
+"action.checkin.feedbackNetworkTitle"="Invitez votre réseau";
+"action.checkin.feedbackNetworkMessage"="Invitez votre réseau à vous rejoindre à %@! Les membres de votre réseau recevront une notification que vous êtes ici et que vous aimeriez qu'ils vous rejoignent.";
+"action.checkin.feedbackNetworkNotNow"="Pas maintenant";
+"action.checkin.feedbackNetworkInvite"="Inviter !";
 "action.checkout.feedbackTitle"="Vous êtes parti!";
 "action.checkout.feedbackMessage"="Vous êtes parti de %@, plus personne ne peut voir que vous êtes là! Personne ne peut voir que vous avez été ici.";
 "action.comment"="Commenter";

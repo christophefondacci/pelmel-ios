@@ -34,13 +34,6 @@
 -(void)photoControllerStartContentLoad:(PMLPhotosCollectionViewController*)controller {
     _controller = controller;
     controller.loadFullImage=YES;
-    // Registering for notification
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:PML_NOTIFICATION_PUSH_RECEIVED object:nil];
-    [_userService privateNetworkListWithSuccess:^(id obj) {
-        [controller updateData];
-    } failure:^(id obj) {
-        [[TogaytherService uiService] alertError];
-    }];
     [controller updateData];
 }
 /**
@@ -50,7 +43,7 @@
     CurrentUser *user = [_userService getCurrentUser];
     switch(section) {
         case kSectionActions:
-            return @[[NSNumber numberWithInt:PMLActionTypeGroupChat]];
+            return user.networkUsers.count>0 ? @[[NSNumber numberWithInt:PMLActionTypeGroupChat]] : nil;
         case kSectionToApprove:
             return user.networkPendingApprovals;
         case kSectionPendingRequests:
@@ -208,7 +201,5 @@
     _controller= nil;
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
--(void)pushNotificationReceived:(NSNotification*)notification {
-    [self photoControllerStartContentLoad:_controller];
-}
+
 @end

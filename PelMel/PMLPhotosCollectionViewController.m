@@ -132,6 +132,7 @@ static NSString * const reuseIdentifier = @"Cell";
     // Getting activity object
     NSArray *objects = [self.provider objectsForSection:section];
     if(row == objects.count) {
+        [_imageService checkCurrentImageViewTask:cell.photoImageView url:@"btnThumbAdd"];
         cell.photoImageView.image = [UIImage imageNamed:@"btnThumbAdd"];
         cell.subtitleLabel.text = nil;
         cell.photoImageView.layer.borderWidth=0;

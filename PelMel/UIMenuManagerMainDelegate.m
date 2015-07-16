@@ -36,7 +36,6 @@
 
     
     // Menu controls
-    NSMutableArray *_menuActions;
     NSMutableSet *_initializedActions;
     
     // Loader
@@ -53,7 +52,6 @@
     self = [super init];
     if (self) {
         // List initializations
-        _menuActions = [[NSMutableArray alloc] init];
         _initializedActions = [[NSMutableSet alloc] init];
         _actions = [[NSMutableArray alloc] init];
         _dataService = TogaytherService.dataService;
@@ -141,7 +139,7 @@
     [self setupMenuAction:_eventsAction];
 }
 - (void)layoutMenuActions {
-    for(MenuAction *action in _menuActions) {
+    for(MenuAction *action in _actions) {
         [self setupMenuAction:action];
     }
 }
@@ -175,16 +173,18 @@
     if(![_initializedActions containsObject:action]) {
         [_initializedActions addObject:action];
         [_actions addObject:action];
-        // Adding to our list of menu views for global animation
-        [_menuActions addObject:action];
-        
-        // Adding tap gesture
-        UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapped:)];
         
         // Tagging so that we know who is tapped
         action.menuActionView.tag = [_actions indexOfObject:action];
-        [action.menuActionView addGestureRecognizer:tapRecognizer];
-        action.menuActionView.userInteractionEnabled=YES;
+        if([action.menuActionView isKindOfClass:[UIButton class]]) {
+            UIButton *button = (UIButton*)action.menuActionView;
+            [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        } else {
+            // Adding tap gesture
+            UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionTapped:)];
+            [action.menuActionView addGestureRecognizer:tapRecognizer];
+            action.menuActionView.userInteractionEnabled=YES;
+        }
         
         // Adding menu action view
         [_menuManagerController.containerView insertSubview:action.menuActionView belowSubview:_bottomView];
@@ -209,7 +209,7 @@
 }
 
 - (NSArray *)menuActions {
-    return _menuActions;
+    return _actions;
 }
 
 - (void)loadingStart {
@@ -224,28 +224,20 @@
 }
 -(void)actionTapped:(UIGestureRecognizer*)sender {
     MenuAction *action = [_actions objectAtIndex:sender.view.tag];
-    if(action != nil) {
-        MenuAction *action = [_menuActions objectAtIndex:sender.view.tag];
+    [self menuActionTapped:action];
+}
+-(void)buttonTapped:(UIButton*)button {
+    MenuAction *action = [_actions objectAtIndex:button.tag];
+    [self menuActionTapped:action];
+}
+-(void)menuActionTapped:(MenuAction *)action {
 
-        UIView *actionView = action.menuActionView;
+    if(action != nil) {
+
         if(_menuTouchBehavior != nil) {
             [_animator removeBehavior:_menuTouchBehavior];
         }
-        // Resetting position / sizes
-        CGPoint center = actionView.center;
-        actionView.bounds = CGRectMake(center.x-action.initialWidth/2, center.y-action.initialHeight/2, action.initialWidth, action.initialHeight);
-//         Touch animation
-        _menuTouchBehavior = [[UITouchBehavior alloc] initWithTarget:actionView];
-        [_animator addBehavior:_menuTouchBehavior];
-//        [UIView animateWithDuration:0.1 animations:^{
-//            CGFloat width =1.1*action.initialWidth;
-//            CGFloat height=1.1*action.initialHeight;
-//            actionView.bounds = CGRectMake(center.x-width/2, center.y-height/2, width, height);
-//        } completion:^(BOOL finished) {
-//            [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:0.9 initialSpringVelocity:0.7 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-//                actionView.bounds = CGRectMake(center.x-action.initialWidth/2, center.y-action.initialHeight/2, action.initialWidth, action.initialHeight);
-//            } completion:nil];
-//        }];
+
         // Executing action
         if(action.menuAction) {
             action.menuAction(_menuManagerController,action);

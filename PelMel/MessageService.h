@@ -45,8 +45,8 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
 @property (strong,nonatomic) MKNumberBadgeView *networkCountBadgeView;
 @property (nonatomic) long maxActivityId;
 @property (nonatomic) BOOL pushEnabled;
-@property (nonatomic) int unreadMessageCount;
-@property (nonatomic) int unreadNetworkCount;
+@property (nonatomic) NSInteger unreadMessageCount;
+@property (nonatomic) NSInteger unreadNetworkCount;
 @property (strong,nonatomic) NSCache *messageCache;
 
 // Gets the list of messages exchanged with this user

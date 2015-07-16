@@ -656,6 +656,8 @@
     NSString *userKey   = [jsonUser objectForKey:@"key"];
     NSString *pseudo    = [jsonUser objectForKey:@"pseudo"];
     NSDictionary *jsonThumb  = [jsonUser objectForKey:@"thumb"];
+    NSDictionary *jsonLocation=[jsonUser objectForKey:@"lastLocation"];
+    NSNumber *jsonLocationTime=[jsonUser objectForKey:@"lastLocationTime"];
     
     // Online flag
     NSNumber *isOnline  = [jsonUser objectForKey:@"online"];
@@ -679,6 +681,14 @@
         [user setMainImage:img];
     }
     [user setIsOnline:[isOnline boolValue]];
+    
+    // Last location information
+    if(jsonLocation != nil && (id)jsonLocation!=[NSNull null]) {
+        Place *lastLocation = [self convertJsonPlaceToPlace:jsonLocation];
+        [user setLastLocation:lastLocation];
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:jsonLocationTime.longValue];
+        [user setLastLocationDate:date];
+    }
     return user;
 }
 -(User*)convertJsonOverviewUserToUser:(NSDictionary*)json  defaultUser:(User*)defaultUser {
@@ -801,7 +811,7 @@
     NSArray *tags       =[jsonLoginInfo objectForKey:@"tags"];
     NSNumber *isOnline  =[jsonLoginInfo objectForKey:@"online"];
     NSNumber *unreadMsgCount=[jsonLoginInfo objectForKey:@"unreadMsgCount"];
-    NSNumber *unreadNetworkCount=[jsonLoginInfo objectForKey:@"unreadNetworkNotificationsCount"];
+//    NSNumber *unreadNetworkCount=[jsonLoginInfo objectForKey:@"unreadNetworkNotificationsCount"];
     int unreadCount = (int)[unreadMsgCount integerValue];
     
     [[TogaytherService getMessageService] setUnreadMessageCount:unreadCount];
@@ -895,7 +905,15 @@
     currentUser.networkPendingRequests = networkPendingRequests;
     currentUser.networkUsers = networkUsers;
     
-    [[TogaytherService getMessageService] setUnreadNetworkCount:networkPendingApprovals.count];
+    // Counting current friend's checkins
+    NSInteger checkinsCount = 0;
+    for(User *networkUser in networkUsers) {
+        if(networkUser.lastLocation!=nil) {
+            checkinsCount++;
+        }
+    }
+    
+    [[TogaytherService getMessageService] setUnreadNetworkCount:networkPendingApprovals.count + checkinsCount];
 }
 -(NSString*)getMiniDesc:(NSArray*)descriptions {
     NSMutableDictionary *descLangMap = [[NSMutableDictionary alloc] init];

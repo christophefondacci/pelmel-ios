@@ -66,7 +66,6 @@
     NSMutableDictionary *uploadMessagesMap;
     UIViewController *currentViewController;
     MKNumberBadgeView *numberBadge;
-    int _unreadMessageCount;
     UIButton *badgeButton;
     
     NSUserDefaults *_userDefaults;
@@ -410,7 +409,7 @@
         }
         
         // For group messages, we only consider messages to self
-        if(recipientsGroupKey != nil && (id)recipientsGroupKey != [NSNull null] && ![toKey isEqualToString:currentUser.key]) {
+        if(recipientsGroupKey != nil && recipientsGroupKey.length>0 && (id)recipientsGroupKey != [NSNull null] && ![toKey isEqualToString:currentUser.key]) {
             continue;
         }
         
@@ -728,14 +727,13 @@
         [currentViewController performSegueWithIdentifier:@"showMyMessages" sender:self];
     }
 }
--(void)setUnreadMessageCount:(int)unreadMessageCount {
+-(void)setUnreadMessageCount:(NSInteger)unreadMessageCount {
     _unreadMessageCount = MAX(unreadMessageCount,0);
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:_unreadMessageCount+_unreadNetworkCount];
     [self refresh];
 }
--(void)setUnreadNetworkCount:(int)unreadNetworkCount {
+-(void)setUnreadNetworkCount:(NSInteger)unreadNetworkCount {
     _unreadNetworkCount = MAX(unreadNetworkCount,0);
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:_unreadMessageCount+_unreadNetworkCount];
     [self refresh];
 }
 -(void)setMaxActivityId:(long)maxActivityId {
@@ -769,6 +767,12 @@
 -(void)setActivityCountBadgeView:(MKNumberBadgeView *)activityCountBadgeView {
     _activityCountBadgeView = activityCountBadgeView;
     [self refresh];
+}
+-(void) setNetworkCountBadgeView:(MKNumberBadgeView *)networkCountBadgeView {
+    if(_networkCountBadgeView==nil) {
+        _networkCountBadgeView = networkCountBadgeView;
+        [self refresh];
+    }
 }
 #pragma mark - Activity management
 - (void)getNearbyActivitiesStats:(id<ActivitiesStatsCallback>)callback {

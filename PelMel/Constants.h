@@ -49,6 +49,8 @@
 #define SB_ID_BANNER_EDITOR @"bannerEditor"
 #define SB_ID_ITEM_SELECTION @"itemSelector"
 #define SB_ID_BANNER_LIST @"bannersList"
+#define SB_ID_NETWORK @"networkController"
+#define SB_ID_NETWORK_CHECKINS @"networkCheckins"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
