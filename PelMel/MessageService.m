@@ -442,8 +442,11 @@
         
 
         if(newMsg && unread.boolValue) {
-            fromUser.unreadCount = fromUser.unreadCount == nil ? @1 : [NSNumber numberWithInt:fromUser.unreadCount.intValue + 1];
-            group.unreadCount = group.unreadCount == nil ? @1 : [NSNumber numberWithInt:group.unreadCount.intValue+1];
+            if(group == nil) {
+                fromUser.unreadCount = fromUser.unreadCount == nil ? @1 : [NSNumber numberWithInt:fromUser.unreadCount.intValue + 1];
+            } else {
+                group.unreadCount = group.unreadCount == nil ? @1 : [NSNumber numberWithInt:group.unreadCount.intValue+1];
+            }
         }
         if( group != nil) {
             if(group.lastMessageDate ==nil || [msg.messageDate compare:group.lastMessageDate]==NSOrderedDescending) {
@@ -545,12 +548,6 @@
     user.imageKey = image.key;
     user.imageUrl = image.imageUrl;
     user.thumbUrl = image.thumbUrl;
-    if(m.unread && newMsg) {
-        user.unreadCount = user.unreadCount == nil ? @1 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
-    }
-    if(user.lastMessageDate == nil || [msg.messageDate compare:user.lastMessageDate] == NSOrderedDescending) {
-        user.lastMessageDate = msg.messageDate;
-    }
     msg.from = user;
     if(m.recipientsGroupKey != nil) {
 
@@ -558,12 +555,23 @@
         if(group == nil) {
             group = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
             group.itemKey = m.recipientsGroupKey;
-            group.unreadCount = m.unread ? @1 : @0;
             NSLog(@"Storing user %@ in CoreData",m.key);
+        }
+        if(m.unread && newMsg) {
+            group.unreadCount = group.unreadCount == nil ? @1 : [NSNumber numberWithInt:group.unreadCount.intValue+1];
+        }
+        if(group.lastMessageDate ==nil || [msg.messageDate compare:group.lastMessageDate]==NSOrderedDescending) {
+            group.lastMessageDate = msg.messageDate;
         }
         msg.replyTo = group;
     } else {
         msg.replyTo=user;
+        if(m.unread && newMsg) {
+            user.unreadCount = user.unreadCount == nil ? @1 : [NSNumber numberWithInt:user.unreadCount.intValue + 1];
+        }
+        if(user.lastMessageDate == nil || [msg.messageDate compare:user.lastMessageDate] == NSOrderedDescending) {
+            user.lastMessageDate = msg.messageDate;
+        }
     }
     NSLog(@"Storing message %@ in CoreData",m.key);
 }
