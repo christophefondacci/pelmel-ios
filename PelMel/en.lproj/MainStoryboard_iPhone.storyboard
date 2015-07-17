@@ -4097,10 +4097,9 @@
                                         <constraint firstItem="VC7-0c-8f2" firstAttribute="leading" secondItem="ECq-07-Cgo" secondAttribute="leading" constant="8" id="7mv-3z-iD3"/>
                                         <constraint firstAttribute="trailing" secondItem="w6C-YF-jPM" secondAttribute="trailing" priority="999" id="NnZ-f8-Vga"/>
                                         <constraint firstItem="w6C-YF-jPM" firstAttribute="leading" secondItem="ECq-07-Cgo" secondAttribute="leading" constant="65" id="YME-1M-7Jb"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="w6C-YF-jPM" secondAttribute="bottom" constant="5" id="aLV-c6-tQv"/>
                                         <constraint firstItem="VC7-0c-8f2" firstAttribute="top" secondItem="ECq-07-Cgo" secondAttribute="top" constant="5" id="bbS-E2-gTg"/>
                                         <constraint firstItem="w6C-YF-jPM" firstAttribute="top" secondItem="ECq-07-Cgo" secondAttribute="top" constant="5" id="g8G-qV-IZm"/>
-                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="VC7-0c-8f2" secondAttribute="bottom" constant="5" id="wNI-tJ-3kV"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="VC7-0c-8f2" secondAttribute="bottom" priority="999" constant="5" id="wNI-tJ-3kV"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
@@ -4235,7 +4234,7 @@
                                         <constraint firstItem="Kqf-Jo-CG3" firstAttribute="leading" secondItem="bxy-th-qRF" secondAttribute="trailing" constant="15" id="0Y4-ql-WSm"/>
                                         <constraint firstItem="Kqf-Jo-CG3" firstAttribute="top" secondItem="mfa-Qh-y0M" secondAttribute="top" constant="6" id="214-8X-6mN"/>
                                         <constraint firstItem="rlV-VK-0eb" firstAttribute="top" secondItem="mfa-Qh-y0M" secondAttribute="top" constant="6" id="3Nj-b9-P8l"/>
-                                        <constraint firstAttribute="bottom" secondItem="gct-qt-hNZ" secondAttribute="bottom" constant="6" id="6qh-P6-WIr"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="gct-qt-hNZ" secondAttribute="bottom" priority="999" constant="6" id="6qh-P6-WIr"/>
                                         <constraint firstItem="bxy-th-qRF" firstAttribute="leading" secondItem="mfa-Qh-y0M" secondAttribute="leading" constant="8" id="9l4-8y-5fT"/>
                                         <constraint firstAttribute="trailing" secondItem="rlV-VK-0eb" secondAttribute="trailing" constant="8" id="CmJ-90-A1F"/>
                                         <constraint firstItem="Kqf-Jo-CG3" firstAttribute="trailing" secondItem="gct-qt-hNZ" secondAttribute="trailing" id="MnG-UQ-WaZ"/>

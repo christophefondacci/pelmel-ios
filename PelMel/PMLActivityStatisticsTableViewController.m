@@ -55,7 +55,12 @@
     self.title = NSLocalizedString(@"activity.title", @"Activity");
     // Querying nearby activity
     [_messageService getNearbyActivitiesStats:self];
-    
+    self.tableView.estimatedRowHeight = 52;
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+    } else {
+        self.tableView.rowHeight = 52;
+    }
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -63,8 +68,7 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 - (void)viewWillAppear:(BOOL)animated {
-    self.tableView.estimatedRowHeight = 52;
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+
     [self.tableView reloadData];
 }
 - (void)viewWillDisappear:(BOOL)animated {

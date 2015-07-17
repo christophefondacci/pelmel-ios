@@ -63,11 +63,26 @@
         self.title = NSLocalizedString(@"activity.title", @"activity.title");
     }
     
+    // Auto-height config
+    self.tableView.estimatedRowHeight = 52;
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.0")) {
+        self.tableView.rowHeight = UITableViewAutomaticDimension;
+    } else {
+        if([self.activityStatistic.activityType hasPrefix:@"EVNT"] || [self.activityStatistic.activityType hasSuffix:@"EVNT"]) {
+            self.tableView.rowHeight = 72;
+        } else {
+            self.tableView.rowHeight = 52;
+        }
+
+    }
+    
     // Misc init
     _defaults = [NSUserDefaults standardUserDefaults];
     
     // Loading data 
     [[TogaytherService getMessageService] getNearbyActivitiesFor:_activityStatistic.activityType callback:self];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,8 +100,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [TogaytherService applyCommonLookAndFeel:self];
     self.navigationController.navigationBar.translucent=NO;
-    self.tableView.estimatedRowHeight = 52;
-    self.tableView.rowHeight = UITableViewAutomaticDimension;
+
 }
 #pragma mark - Table view data source
 
