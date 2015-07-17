@@ -295,7 +295,7 @@
                 case PMLUserPrivateNetworkPendingRequest:
                     return PMLActionTypePrivateNetworkCancel;
                 case PMLUserPrivateNetworkPendingApproval:
-                    return PMLActionTypePrivateNetworkAccept;
+                    return PMLActionTypePrivateNetworkRespond;
             }
 
         }

@@ -29,6 +29,7 @@ PODS:
   - SDWebImage (3.7.1):
     - SDWebImage/Core (= 3.7.1)
   - SDWebImage/Core (3.7.1)
+  - TWMessageBarManager (1.7.2)
 
 DEPENDENCIES:
   - AFNetworkActivityLogger (~> 2.0.4)
@@ -37,6 +38,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 0.9)
   - PBWebViewController
   - SDWebImage (~> 3.7.1)
+  - TWMessageBarManager (~> 1.7.2)
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
@@ -45,5 +47,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: d8e7ea388dc1549a42e0d219067cf5f2c898fb66
   PBWebViewController: 909b1505da6ba7c5c82519a6457246027926061e
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
+  TWMessageBarManager: e7adc066ee425174f5dee79473fce913b1cd1662
 
 COCOAPODS: 0.36.3

@@ -43,6 +43,9 @@
 #define kActionAddressDirections 0
 #define kActionAddressMap 1
 
+#define kPMLActionNetworkAccept 0
+#define kPMLActionNetworkDecline 1
+
 #define kPMLPhotoColor 0x96ca4c
 #define kPMLEditDistance 63.0
 #define kPMLEditSize 65.0
@@ -63,6 +66,7 @@
 @property (nonatomic,retain) UIActionSheet *relocationConfirmActionSheet;
 @property (nonatomic,retain) UIActionSheet *descriptionActionSheet;
 @property (nonatomic,retain) UIActionSheet *addressActionSheet;
+@property (nonatomic,retain) UIActionSheet *privateNetworkActionSheet;
 @property (nonatomic,retain) UIAlertView *addressAlertView;
 @property (nonatomic,retain) UIAlertView *reportConfirmAlertView;
 @property (nonatomic,retain) UIAlertView *privateNetworkAlertView;
@@ -102,6 +106,7 @@
         [self registerShowPrivateNetwork];
         [self registerGroupChatAction];
         [self registerAddToPrivateNetworkAction];
+        [self registerPrivateNetworkRespond];
     }
     return self;
 }
@@ -461,6 +466,24 @@
     [self registerAction:requestAction forType:actionType];
 
 }
+-(void)registerPrivateNetworkRespond {
+    PopupAction *respondAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        // Ask the user the photo source
+        NSString *sheetTitle = NSLocalizedString(@"action.network.respond.actionSheetTitle",@"Respond to invite");
+        NSString *btnAccept = NSLocalizedString(@"action.network.respond.accept",@"Accept invite");
+        NSString *btnDecline = NSLocalizedString(@"action.network.respond.decline",@"Decline invite");
+        NSString *btnCancel= NSLocalizedString(@"cancel","cancel");
+        _privateNetworkActionSheet = [[UIActionSheet alloc] initWithTitle:sheetTitle delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [_privateNetworkActionSheet addButtonWithTitle:btnAccept];
+        [_privateNetworkActionSheet addButtonWithTitle:btnDecline];
+        [_privateNetworkActionSheet addButtonWithTitle:btnCancel];
+        _privateNetworkActionSheet.cancelButtonIndex=2;
+        _modalActionObject = object;
+        [_privateNetworkActionSheet showInView: [_uiService menuManagerController].view];
+
+    }];
+    [self registerAction:respondAction forType:PMLActionTypePrivateNetworkRespond];
+}
 -(void)privateNetworkConfirmWithMessage:(NSString*)messageKey action:(PMLPrivateNetworkAction)action onUser:(User*)user {
     NSString *title = NSLocalizedString(@"network.confirm.title", @"Confirm request");
     NSString *msg = NSLocalizedString(messageKey, messageKey);
@@ -700,6 +723,17 @@
                 
         }
         
+    } else if(_privateNetworkActionSheet == actionSheet) {
+        switch(buttonIndex) {
+            case kPMLActionNetworkAccept:
+                [self privateNetworkAction:PMLPrivateNetworkActionAccept onUser:_modalActionObject];
+                break;
+            case kPMLActionNetworkDecline:
+                [self privateNetworkAction:PMLPrivateNetworkActionCancel onUser:_modalActionObject];
+                break;
+            default:
+                break;
+        }
     }
     // Clearing object
     self.modalActionObject = nil;

@@ -88,6 +88,7 @@
     _hoursTypeMap = [_conversionService hashHoursByType:_place];
 }
 - (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController.navigationBar setTranslucent:NO];
     [self refresh];
     [self.tableView reloadData];
 }

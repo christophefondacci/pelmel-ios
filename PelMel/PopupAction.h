@@ -38,6 +38,7 @@ typedef enum {
     PMLActionTypePrivateNetworkCancel,
     PMLActionTypePrivateNetworkShow,
     PMLActionTypePrivateNetworkAddUsers,
+    PMLActionTypePrivateNetworkRespond,
     PMLActionTypeGroupChat
 } PMLActionType;
 

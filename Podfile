@@ -9,4 +9,4 @@ pod 'MBProgressHUD', '~> 0.9'
 pod 'AFNetworkActivityLogger', '~>2.0.4'
 pod 'PBWebViewController'
 pod 'iRate','~>1.11.4'
-
+pod 'TWMessageBarManager','~>1.7.2'

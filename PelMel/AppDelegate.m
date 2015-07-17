@@ -22,6 +22,8 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <AFNetworkActivityLogger.h>
 #import <iRate.h>
+#import <TWMessageBarManager.h>
+
 
 typedef void (^Callback)(CALObject *obj);
 
@@ -193,6 +195,19 @@ static BOOL isStarted;
         if(aps != nil) {
             NSNumber *unreadMsgCount = [aps objectForKey:@"badge"];
             NSNumber *unreadNetworkCount = [userInfo objectForKey:@"unreadNetwork"];
+            NSString *message = [aps objectForKey:@"alert"];
+            
+            // Displaying banner
+            if(message.length>0) {
+                [[TWMessageBarManager sharedInstance] showMessageWithTitle:nil
+                                                               description:message
+                                                                      type:TWMessageBarMessageTypeInfo
+                                                                  duration:6.0 callback:^{
+                                                                      UIViewController *msgController = [[TogaytherService uiService] instantiateViewController:@"messageView"];
+                                                                      [[TogaytherService uiService] presentSnippet:msgController opened:YES root:YES];
+                                                                  }];
+            }
+            
             [[TogaytherService getMessageService] setUnreadMessageCount:unreadMsgCount.intValue-unreadNetworkCount.intValue];
             if(unreadNetworkCount != nil && (id)unreadNetworkCount!=[NSNull null]){
                 if(unreadNetworkCount.intValue>0) {
@@ -200,6 +215,8 @@ static BOOL isStarted;
                     [[TogaytherService userService] privateNetworkListWithSuccess:nil failure:nil];
                 }
             }
+            
+
         }
 
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PUSH_RECEIVED object:self];

@@ -17,6 +17,7 @@
 #import <SDWebImage/SDWebImageManager.h>
 #import <AFNetworking.h>
 
+#define PML_DEBUG_IMG NO
 #define kAddMediaUrl @"%@/mobileAddMedia"
 #define kReorderMediaUrl @"%@/moveMedia?id=%@&parent=%@&newIndex=%d&nxtpUserToken=%@"
 #define kRemoveMediaUrl @"%@/mobileDeleteMedia?id=%@&nxtpUserToken=%@&confirmed=true"
@@ -646,10 +647,14 @@
         // If old operation is for same url then we have nothing to do (same image view + same url)
         NSString *oldUrl = [urlMap objectForKey:imageViewId];
         if([url isEqualToString:oldUrl]) {
-            NSLog(@"Process already running for imageView %p",imageView);
+            if(PML_DEBUG_IMG)  {
+                NSLog(@"Process already running for imageView %p",imageView);
+            }
             return YES;
         } else {
-            NSLog(@"Cancelled task for imageView %p",imageView);
+            if(PML_DEBUG_IMG) {
+                NSLog(@"Cancelled task for imageView %p",imageView);
+            }
             [operation cancel];
         }
     }

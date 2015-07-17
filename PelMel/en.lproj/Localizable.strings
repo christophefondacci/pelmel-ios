@@ -60,6 +60,9 @@
 "action.like.feedbackMessage"="Your like has been saved, thank you!";
 "action.myposition.alertTitle"="Enable location services";
 "action.myposition.alertMsg"="You have not authorized PelMel to access your location. You can change this by opening the settings app and going into Privacy > Location > PelMel and authorize.";
+"action.network.respond.actionSheetTitle"="Respond to invite";
+"action.network.respond.accept"="Accept";
+"action.network.respond.decline"="Decline";
 "action.photo"="Photo";
 "action.report.done.title"="Reporting information";
 "action.report.done"="Your notification has been stored and will be reviewed shortly. Thank you for contributing!";
@@ -195,7 +198,7 @@
 "counters.likes.user"="%d Like Him";
 "counters.likes.user.singular"="%d Likes Him";
 "counters.network"="My Network";
-"counters.network.accept"="Accept";
+"counters.network.accept"="Respond";
 "counters.network.add"="Add";
 "counters.network.cancel"="Cancel";
 "counters.network.friends"="Friends";

@@ -612,6 +612,25 @@
         }
     }];
 }
+
+- (PMLUserPrivateNetworkStatus)privateNetworkStatusFor:(User *)user {
+    for(User *u in _currentUser.networkPendingApprovals) {
+        if([u.key isEqualToString:user.key]) {
+            return PMLUserPrivateNetworkPendingApproval;
+        }
+    }
+    for(User *u in _currentUser.networkPendingRequests) {
+        if([u.key isEqualToString:user.key]) {
+            return PMLUserPrivateNetworkPendingRequest;
+        }
+    }
+    for(User *u in _currentUser.networkUsers) {
+        if([u.key isEqualToString:user.key]) {
+            return PMLUserPrivateNetworkInNetwork;
+        }
+    }
+    return PMLUserPrivateNetworkNotInNetwork;
+}
 #pragma mark - Tools
 - (void)resetPasswordFor:(NSString *)email success:(Completor)success failure:(Completor)failure {
     NSString *url = [NSString  stringWithFormat:kResetPasswordUrlFormat,togaytherServer];
@@ -729,22 +748,5 @@
     return nil;
 }
 
-- (PMLUserPrivateNetworkStatus)privateNetworkStatusFor:(User *)user {
-    for(User *u in _currentUser.networkPendingApprovals) {
-        if([u.key isEqualToString:user.key]) {
-            return PMLUserPrivateNetworkPendingApproval;
-        }
-    }
-    for(User *u in _currentUser.networkPendingRequests) {
-        if([u.key isEqualToString:user.key]) {
-            return PMLUserPrivateNetworkPendingRequest;
-        }
-    }
-    for(User *u in _currentUser.networkUsers) {
-        if([u.key isEqualToString:user.key]) {
-            return PMLUserPrivateNetworkInNetwork;
-        }
-    }
-    return PMLUserPrivateNetworkNotInNetwork;
-}
+
 @end
