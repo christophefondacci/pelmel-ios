@@ -6752,11 +6752,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLActionManager.m"
-            timestampString = "458687339.338134"
+            timestampString = "458767789.84488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "358"
-            endingLineNumber = "358"
+            startingLineNumber = "361"
+            endingLineNumber = "361"
             landmarkName = "-registerReportForDeletionAction"
             landmarkType = "5">
          </BreakpointContent>
@@ -6768,11 +6768,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLActionManager.m"
-            timestampString = "458687339.338134"
+            timestampString = "458767789.84488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "971"
-            endingLineNumber = "971"
+            startingLineNumber = "991"
+            endingLineNumber = "991"
             landmarkName = "-alertView:willDismissWithButtonIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -7712,11 +7712,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLActionManager.m"
-            timestampString = "458687339.338134"
+            timestampString = "458767789.84488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "339"
-            endingLineNumber = "339"
+            startingLineNumber = "342"
+            endingLineNumber = "342"
             landmarkName = "-registerCommentAction"
             landmarkType = "5">
          </BreakpointContent>
@@ -7776,11 +7776,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLActionManager.m"
-            timestampString = "458687339.338134"
+            timestampString = "458767789.84488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "497"
-            endingLineNumber = "497"
+            startingLineNumber = "517"
+            endingLineNumber = "517"
             landmarkName = "-registerGroupChatAction"
             landmarkType = "5">
          </BreakpointContent>
@@ -7792,11 +7792,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLActionManager.m"
-            timestampString = "458687339.338134"
+            timestampString = "458767789.84488"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "511"
-            endingLineNumber = "511"
+            startingLineNumber = "531"
+            endingLineNumber = "531"
             landmarkName = "-registerGroupChatAction"
             landmarkType = "5">
          </BreakpointContent>
@@ -8048,11 +8048,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLNetworkCheckinsTableViewController.m"
-            timestampString = "458694189.930656"
+            timestampString = "458766050.91818"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
+            startingLineNumber = "185"
+            endingLineNumber = "185"
             landmarkName = "-configureRowCheckins:forIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8092,7 +8092,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/UserService.m"
@@ -8160,11 +8160,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLNetworkViewController.m"
-            timestampString = "458757180.301048"
+            timestampString = "458769362.136613"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
             landmarkName = "-updateData"
             landmarkType = "5">
          </BreakpointContent>
@@ -8176,12 +8176,108 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLNetworkViewController.m"
-            timestampString = "458757180.301048"
+            timestampString = "458769362.136613"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "95"
+            endingLineNumber = "95"
             landmarkName = "-updateData"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLActionManager.m"
+            timestampString = "458767789.84488"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "436"
+            endingLineNumber = "436"
+            landmarkName = "-registerPrivateNetworkRequest:forType:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/providers/PMLNetworkUsersAdditionPhotoProvider.m"
+            timestampString = "458768292.371736"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
+            landmarkName = "-close:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLNetworkViewController.m"
+            timestampString = "458769362.136613"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
+            landmarkName = "-updateData"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[PMLNetworkViewController updateData]"
+                  moduleName = "PelMel"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cfondacci/Dev/iOS/togayther.mobile/PelMel/PMLNetworkViewController.m"
+                  timestampString = "458768592.485214"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "46">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__38-[PMLNetworkViewController updateData]_block_invoke"
+                  moduleName = "PelMel"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/cfondacci/Dev/iOS/togayther.mobile/PelMel/PMLNetworkViewController.m"
+                  timestampString = "458768592.485517"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "78"
+                  endingLineNumber = "78"
+                  offsetFromSymbolStart = "76">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/PMLNetworkViewController.m"
+            timestampString = "458769362.136613"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "189"
+            endingLineNumber = "189"
+            landmarkName = "-pushNotificationReceived:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

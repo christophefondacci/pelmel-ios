@@ -150,15 +150,7 @@
  */
 -(void)photoController:(PMLPhotosCollectionViewController*)controller didTapAddToSection:(NSInteger)section {
 
-    // Building the photo grid controller
-    PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_PHOTOS_COLLECTION];
-    
-    // Initializing it with a provider of current nearby users
-    PMLNetworkUsersAdditionPhotoProvider *provider = [[PMLNetworkUsersAdditionPhotoProvider alloc] init];
-    photosController.provider = provider;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:photosController];
-    // Presenting it modalling
-    [[[TogaytherService uiService] menuManagerController] presentModal:navController];
+    [[TogaytherService actionManager] execute:PMLActionTypePrivateNetworkAddUsers onObject:nil];
 }
 
 /**

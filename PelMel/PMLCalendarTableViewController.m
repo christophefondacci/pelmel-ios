@@ -162,7 +162,7 @@
             } else {
                 titledCell.titleLabel.text = calendarLabel;
             }
-            [titledCell.deleteButton addTarget:self action:@selector(removeHoursTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [titledCell.cellButton addTarget:self action:@selector(removeHoursTapped:) forControlEvents:UIControlEventTouchUpInside];
             UIImage *icon = nil;
             switch(indexPath.section) {
                 case kPMLSectionHappy:

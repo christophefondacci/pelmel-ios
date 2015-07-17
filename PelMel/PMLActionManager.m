@@ -17,6 +17,8 @@
 #import <MBProgressHUD.h>
 #import "PMLNetworkViewController.h"
 #import "PMLRecipientsGroup.h"
+#import "PMLPhotosCollectionViewController.h"
+#import "PMLNetworkUsersAdditionPhotoProvider.h"
 
 #define kPMLConfirmDistance 21.0
 #define kPMLConfirmSize 52.0
@@ -99,6 +101,7 @@
         [self registerPrivateNetworkRequest:PMLPrivateNetworkActionAccept forType:PMLActionTypePrivateNetworkAccept];
         [self registerShowPrivateNetwork];
         [self registerGroupChatAction];
+        [self registerAddToPrivateNetworkAction];
     }
     return self;
 }
@@ -448,7 +451,8 @@
                 }
                 break;
             case PMLPrivateNetworkActionAccept:
-                [self privateNetworkAction:action onUser:(User*)object];
+            case PMLPrivateNetworkActionInvite:
+                [self privateNetworkAction:action onUser:(CALObject*)object];
                 break;
         }
 
@@ -467,7 +471,7 @@
     _privateNetworkAlertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cancel otherButtonTitles:ok, nil];
     [_privateNetworkAlertView show];
 }
--(void)privateNetworkAction:(PMLPrivateNetworkAction)action onUser:(User*)user {
+-(void)privateNetworkAction:(PMLPrivateNetworkAction)action onUser:(CALObject*)user {
     [self.uiService.menuManagerController.menuManagerDelegate loadingStart];
     [_userService privateNetworkAction:action withUser:user success:^(id obj) {
         [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
@@ -475,6 +479,22 @@
         [self.uiService alertError];
         [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
     }];
+}
+-(void)registerAddToPrivateNetworkAction {
+    PopupAction *addToNetworkAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        // Building the photo grid controller
+        PMLPhotosCollectionViewController *photosController = (PMLPhotosCollectionViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_PHOTOS_COLLECTION];
+        
+        // Initializing it with a provider of current nearby users
+        PMLNetworkUsersAdditionPhotoProvider *provider = [[PMLNetworkUsersAdditionPhotoProvider alloc] init];
+        photosController.provider = provider;
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:photosController];
+        
+        // Presenting it modally
+        [[[TogaytherService uiService] menuManagerController] presentModal:navController];
+    }];
+    [self registerAction:addToNetworkAction forType:PMLActionTypePrivateNetworkAddUsers];
+
 }
 -(void)registerShowPrivateNetwork {
     PopupAction *showAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {

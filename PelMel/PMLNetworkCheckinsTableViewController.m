@@ -10,12 +10,15 @@
 #import "TogaytherService.h"
 #import "ItemsThumbPreviewProvider.h"
 #import "PMLThumbCollectionViewController.h"
+#import "PMLImagedTitleTableViewCell.h"
 
 #define kSectionCount 1
 #define kSectionCheckins 0
 
 #define kRowIdPlace @"place"
+#define kRowIdNoCheckin @"noCheckin"
 #define kRowCheckinsHeight 144
+#define kRowNoCheckinHeight 150
 
 @interface PMLNetworkCheckinsTableViewController ()
 
@@ -110,18 +113,23 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
         case kSectionCheckins:
-            return _places.count;
+            return MAX(_places.count,1);
     }
     return 0;
 }
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kRowIdPlace forIndexPath:indexPath];
+    NSString *rowId = _places.count>0 ? kRowIdPlace : kRowIdNoCheckin;
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rowId forIndexPath:indexPath];
     
     switch(indexPath.section) {
         case kSectionCheckins:
-            [self configureRowCheckins:(PMLEventTableViewCell*)cell forIndexPath:indexPath];
+            if(_places.count>0) {
+                [self configureRowCheckins:(PMLEventTableViewCell*)cell forIndexPath:indexPath];
+            } else {
+                [self configureRowNoCheckin:(PMLImagedTitleTableViewCell*)cell];
+            }
             break;
     }
 
@@ -133,7 +141,11 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
         case kSectionCheckins:
-            return kRowCheckinsHeight;
+            if(_places.count>0) {
+                return kRowCheckinsHeight;
+            } else {
+                return kRowNoCheckinHeight;
+            }
     }
     return 0;
 }
@@ -187,6 +199,39 @@
 
     }
 }
+-(void)configureRowNoCheckin:(PMLImagedTitleTableViewCell*)cell {
+    CurrentUser *user = [_userService getCurrentUser];
+    NSString *titleMsg = nil;
+    NSString *buttonTitle = nil;
+    NSString *buttonImageName = nil;
+    [cell.cellButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
+    if(user.networkUsers.count==0) {
+        titleMsg = @"netword.checkins.noNetworkMessage";
+        buttonTitle = @"netword.checkins.addToNetwork";
+        buttonImageName = @"icoNetworkButton";
+        [cell.cellButton addTarget:self action:@selector(buildNetworkTapped:) forControlEvents:UIControlEventTouchUpInside];
+    } else {
+        titleMsg = @"netword.checkins.noCheckinMessage";
+        buttonTitle =@"netword.checkins.startChat";
+        buttonImageName =@"snpIconChat";
+        [cell.cellButton addTarget:self action:@selector(startGroupChatTapped:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    cell.titleLabel.text = NSLocalizedString(titleMsg,titleMsg);
+    [cell.cellButton setTitle:NSLocalizedString(buttonTitle,buttonTitle) forState:UIControlStateNormal];
+    [cell.cellButton setImage:[UIImage imageNamed:buttonImageName] forState:UIControlStateNormal];
+
+    [cell.cellButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch(indexPath.section) {
+        case kSectionCheckins:
+            if(_places.count>0) {
+                Place *place = [_places objectAtIndex:indexPath.row];
+                [_uiService presentSnippetFor:place opened:YES];
+            }
+            break;
+    }
+}
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -232,6 +277,14 @@
 */
 #pragma mark - PMLThumbsCollectionViewActionDelegate
 - (void)thumbsTableView:(PMLThumbCollectionViewController *)thumbsController thumbTapped:(int)thumbIndex forThumbType:(PMLThumbType)type {
-    
+    CALObject *object = [thumbsController.thumbProvider objectAtIndex:thumbIndex forType:type];
+    [_uiService presentSnippetFor:object opened:YES];
+}
+
+-(void)startGroupChatTapped:(id)sender {
+    [[TogaytherService actionManager] execute:PMLActionTypeGroupChat onObject:nil];
+}
+-(void)buildNetworkTapped:(id)sender {
+    [[TogaytherService actionManager] execute:PMLActionTypePrivateNetworkAddUsers onObject:nil];
 }
 @end

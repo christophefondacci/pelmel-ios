@@ -31,6 +31,7 @@
     // Service init
     _uiService = [TogaytherService uiService];
     
+    // Appearance
     self.title = NSLocalizedString(@"grid.title.privateNetwork", @"grid.title.privateNetwork");
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
     
@@ -49,7 +50,7 @@
     // Badging
     _networkBadgeView = [[MKNumberBadgeView alloc] init];
     CGRect frame = _networkTab.frame;
-    _networkBadgeView.frame = CGRectMake(frame.size.width-30, frame.size.height/2-10, 30, 10);
+    _networkBadgeView.frame = CGRectMake(frame.size.width-30, frame.size.height/2-10, 30, 20);
     _networkBadgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
     _networkBadgeView.shadow = NO;
     _networkBadgeView.shine=NO;
@@ -69,11 +70,16 @@
     
     // Registering for notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:PML_NOTIFICATION_PUSH_RECEIVED object:nil];
-    [self updateData];
+    
 
     // Do any additional setup after loading the view.
 }
-
+-(void)viewWillAppear:(BOOL)animated {
+    // Appearance
+    [TogaytherService applyCommonLookAndFeel:self];
+    [self.navigationController.navigationBar setTranslucent:NO];
+    [self updateData];
+}
 - (void)updateData {
     [[TogaytherService userService] privateNetworkListWithSuccess:^(id obj) {
         CurrentUser *user = [[TogaytherService userService] getCurrentUser];

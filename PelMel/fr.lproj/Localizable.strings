@@ -322,6 +322,8 @@
 "network.confirm.cancel"="Cela va annuler la relation que vous avez avec cet utilisateur. Pour la rétablir vous devrez lui envoyer une nouvelle demande. Êtes-vous certain de vouloir supprimer cet utilisateur de votre réseau ?";
 "network.confirm.request"="Cela va envoyer une demande que l'utilisateur devra accepter. Vous pourrez ensuite l'inclure dans des discussions de groupe, l'inviter à des évènements, et voir ses checkins.\nVoulez-vous lui envoyer une demande maintenant ?";
 "network.confirm.title"="Confirmation d'action";
+"netword.checkins.noCheckinMessage"="Aucun checkin dans votre réseau\nInvitez-les à vous rejoindre !";
+"netword.checkins.startChat"="Démarrer un chat en groupe";
 
 "noresult.title"="Pas de résultat à proximité";
 "noresult.subtitle"="Tapez ici pour rechercher dans le monde entier";

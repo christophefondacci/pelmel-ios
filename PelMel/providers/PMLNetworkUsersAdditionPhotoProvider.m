@@ -88,6 +88,8 @@
  * @param object the object that received the tap
  */
 -(void)photoController:(PMLPhotosCollectionViewController*)controller objectTapped:(NSObject*)object inSection:(NSInteger)section {
+//    [[TogaytherService actionManager] execute:PMLActionTypePrivateNetworkRequest onObject:(User*)object];
+//
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
     hud.mode = MBProgressHUDModeIndeterminate;
     [hud show:YES];
@@ -123,6 +125,9 @@
         return [color colorWithAlphaComponent:0.5];
     }
     return nil;
+}
+-(void)photoControllerDidTapCloseMenu:(PMLPhotosCollectionViewController *)controller {
+    [self.controller dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)close:(id)sender {
     [self.controller dismissViewControllerAnimated:YES completion:nil];
