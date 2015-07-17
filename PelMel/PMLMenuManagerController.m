@@ -1045,7 +1045,7 @@ static void *MyParentMenuControllerKey;
         // Instantiating menu view if needed
         CGRect containerFrame = self.containerView.bounds;
         CGFloat barHeight = self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height-1;
-        CGRect frame = CGRectMake(0, barHeight, MIN(4.0f/5.0f*containerFrame.size.width,300), containerFrame.size.height-barHeight);
+        CGRect frame = CGRectMake(0, barHeight, MIN(4.0f/5.0f*containerFrame.size.width,300), containerFrame.size.height-barHeight+1);
 //        frame.size.width = MIN(4.0f/5.0f*frame.size.width,300);
 //        frame.size.height -= self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height-1;
         frame = CGRectOffset(frame, -frame.size.width, 0);

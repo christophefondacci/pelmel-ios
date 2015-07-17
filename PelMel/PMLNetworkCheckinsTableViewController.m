@@ -206,13 +206,13 @@
     NSString *buttonImageName = nil;
     [cell.cellButton removeTarget:nil action:NULL forControlEvents:UIControlEventTouchUpInside];
     if(user.networkUsers.count==0) {
-        titleMsg = @"netword.checkins.noNetworkMessage";
-        buttonTitle = @"netword.checkins.addToNetwork";
+        titleMsg = @"network.checkins.noNetworkMessage";
+        buttonTitle = @"network.checkins.addToNetwork";
         buttonImageName = @"icoNetworkButton";
         [cell.cellButton addTarget:self action:@selector(buildNetworkTapped:) forControlEvents:UIControlEventTouchUpInside];
     } else {
-        titleMsg = @"netword.checkins.noCheckinMessage";
-        buttonTitle =@"netword.checkins.startChat";
+        titleMsg = @"network.checkins.noCheckinMessage";
+        buttonTitle =@"network.checkins.startChat";
         buttonImageName =@"snpIconChat";
         [cell.cellButton addTarget:self action:@selector(startGroupChatTapped:) forControlEvents:UIControlEventTouchUpInside];
     }

@@ -439,9 +439,16 @@
         NSLog(@"NETWORK REQUEST");
         PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:(User*)object];
         switch(action) {
-            case PMLPrivateNetworkActionRequest:
+            case PMLPrivateNetworkActionRequest: {
+                CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+                if([currentUser.key isEqualToString:object.key]) {
+                    [[TogaytherService uiService] alertWithTitle:@"network.error.addSelfTitle" text:@"network.error.addSelfMsg"];
+                    return;
+                }
+
                 [self privateNetworkConfirmWithMessage:@"network.confirm.request" action:action onUser:(User*)object];
                 break;
+            }
             case PMLPrivateNetworkActionCancel:
                 switch(status) {
                     case PMLUserPrivateNetworkInNetwork:
@@ -484,6 +491,7 @@
     }];
     [self registerAction:respondAction forType:PMLActionTypePrivateNetworkRespond];
 }
+
 -(void)privateNetworkConfirmWithMessage:(NSString*)messageKey action:(PMLPrivateNetworkAction)action onUser:(User*)user {
     NSString *title = NSLocalizedString(@"network.confirm.title", @"Confirm request");
     NSString *msg = NSLocalizedString(messageKey, messageKey);

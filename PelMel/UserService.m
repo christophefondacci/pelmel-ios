@@ -554,6 +554,11 @@
 -(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(CALObject*)user success:(Completor)success failure:(Completor)failure {
     NSString *url = [NSString  stringWithFormat:kPrivateNetworkUrlFormat,togaytherServer];
     
+    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+    if([currentUser.key isEqualToString:user.key]) {
+        [[TogaytherService uiService] alertWithTitle:@"network.error.addSelfTitle" text:@"network.error.addSelfMsg"];
+        return;
+    }
     // Assigning action code
     NSString *actionCode ;
     switch(action) {
@@ -571,7 +576,7 @@
             break;
     }
     
-    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+
     NSDictionary *params = @{ kParamUserKey : user.key,kParamUserToken : currentUser.token, kParamAction : actionCode};
     
     AFHTTPRequestOperationManager *manager= [AFHTTPRequestOperationManager manager];

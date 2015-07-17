@@ -35,7 +35,7 @@
         for(User *user in notEligibleUsers) {
             [notEligibleKeys addObject:user.key];
         }
-        
+        [notEligibleKeys addObject:currentUser.key];
         // Building list
         for(User *user in [[[TogaytherService dataService] modelHolder] users]) {
             if(![notEligibleKeys containsObject:user.key]) {

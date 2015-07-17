@@ -325,10 +325,12 @@
 "network.confirm.cancel"="This will cancel the connection you have with this user. To re-establish it you will have to send him a new request. Are you sure you want to remove this user from your network?";
 "network.confirm.request"="This will send an invite that this user will have to accept. You will then be able to group chat with him, invite him to events, and see where he is if he's checked in.\nDo you want to send a request now?";
 "network.confirm.title"="Confirm action";
-"netword.checkins.noNetworkMessage"="Nobody is in your network yet.\nBuild your network by adding nearby friends";
-"netword.checkins.noCheckinMessage"="No check-in in your network now.\nInvite your network to meet somewhere!";
-"netword.checkins.startChat"="Start a group chat";
-"netword.checkins.addToNetwork"="Build my network";
+"network.checkins.noNetworkMessage"="Nobody is in your network yet.\nBuild your network by adding nearby friends";
+"network.checkins.noCheckinMessage"="No check-in in your network now.\nInvite your network to meet somewhere!";
+"network.checkins.startChat"="Start a group chat";
+"network.checkins.addToNetwork"="Build my network";
+"network.error.addSelfTitle"="Action not supported";
+"network.error.addSelfMsg"="Adding yourself to your network is not possible.";
 
 "noresult.title"="No nearby result found";
 "noresult.subtitle"="Tap here to search worldwide";
