@@ -12,6 +12,7 @@
 
 @interface PMLNetworkUsersAdditionPhotoProvider()
 @property (nonatomic,retain) NSMutableArray *users;
+@property (nonatomic,retain) User *pendingAlertUser;
 @property (nonatomic,weak) PMLPhotosCollectionViewController *controller;
 @end
 
@@ -88,18 +89,13 @@
  * @param object the object that received the tap
  */
 -(void)photoController:(PMLPhotosCollectionViewController*)controller objectTapped:(NSObject*)object inSection:(NSInteger)section {
-//    [[TogaytherService actionManager] execute:PMLActionTypePrivateNetworkRequest onObject:(User*)object];
-//
-    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:controller.view animated:YES];
-    hud.mode = MBProgressHUDModeIndeterminate;
-    [hud show:YES];
-    [[TogaytherService userService] privateNetworkAction:PMLPrivateNetworkActionRequest withUser:(User*)object success:^(id obj) {
-        [MBProgressHUD hideAllHUDsForView:controller.view animated:YES];
-        [controller dismissViewControllerAnimated:YES completion:nil];
-    } failure:^(id obj) {
-        [MBProgressHUD hideAllHUDsForView:controller.view animated:YES];
-        [[TogaytherService uiService] alertError];
-    }];
+    NSString *title = NSLocalizedString(@"network.confirm.title", @"Confirm request");
+    NSString *msg = NSLocalizedString(@"network.confirm.request", @"network.confirm.request");
+    NSString *cancel = NSLocalizedString(@"cancel", @"cancel");
+    NSString *ok = NSLocalizedString(@"ok", @"ok");
+    self.pendingAlertUser = (User*)object;
+    UIAlertView *privateNetworkAlertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:cancel otherButtonTitles:ok, nil];
+    [privateNetworkAlertView show];
 }
 /**
  * Provide the number of sections
@@ -131,5 +127,21 @@
 }
 -(void)close:(id)sender {
     [self.controller dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if(buttonIndex != alertView.cancelButtonIndex) {
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:_controller.view animated:YES];
+        hud.mode = MBProgressHUDModeIndeterminate;
+        [hud show:YES];
+        [[TogaytherService userService] privateNetworkAction:PMLPrivateNetworkActionRequest withUser:_pendingAlertUser success:^(id obj) {
+            [MBProgressHUD hideAllHUDsForView:_controller.view animated:YES];
+            [_controller dismissViewControllerAnimated:YES completion:nil];
+        } failure:^(id obj) {
+            [MBProgressHUD hideAllHUDsForView:_controller.view animated:YES];
+            [[TogaytherService uiService] alertError];
+        }];
+    }
 }
 @end

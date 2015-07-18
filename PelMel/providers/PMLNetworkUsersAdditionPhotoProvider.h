@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "PMLPhotosCollectionViewController.h"
 
-@interface PMLNetworkUsersAdditionPhotoProvider : NSObject<PMLPhotosProvider>
+@interface PMLNetworkUsersAdditionPhotoProvider : NSObject<PMLPhotosProvider,UIAlertViewDelegate>
 
 @end

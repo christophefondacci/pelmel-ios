@@ -71,7 +71,11 @@
     // Registering for notification
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushNotificationReceived:) name:PML_NOTIFICATION_PUSH_RECEIVED object:nil];
     
-
+    // Check if empty
+    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+    if(currentUser.networkUsers.count==0 && currentUser.networkPendingRequests.count==0) {
+        [_uiService alertWithTitle:@"network.empty.title" text:@"network.empty.msg"];
+    }
     // Do any additional setup after loading the view.
 }
 -(void)viewWillAppear:(BOOL)animated {

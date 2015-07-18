@@ -329,6 +329,8 @@
 "network.checkins.noCheckinMessage"="No check-in in your network now.\nInvite your network to meet somewhere!";
 "network.checkins.startChat"="Start a group chat";
 "network.checkins.addToNetwork"="Build my network";
+"network.empty.title"="Your network";
+"network.empty.msg"="Build your network by adding your friends. This will enable you to send invites, start group chats, and list their real-time check-ins.";
 "network.error.addSelfTitle"="Action not supported";
 "network.error.addSelfMsg"="Adding yourself to your network is not possible.";
 
