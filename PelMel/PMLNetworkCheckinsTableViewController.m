@@ -179,7 +179,14 @@
     
     // Configuring cell
     [_uiService configureRowPlace:cell place:place];
-    
+    cell.locationIcon.hidden=YES;
+    cell.locationLabel.hidden = YES;
+    cell.countLabel.hidden=YES;
+    cell.countIcon.hidden = YES;
+    cell.actionButton.hidden=NO;
+    [cell.actionButton setBackgroundImage:[UIImage imageNamed:@"snpIconChat80"] forState:UIControlStateNormal];
+    cell.actionButton.tag= indexPath.row;
+    [cell.actionButton addTarget:self action:@selector(groupChatTapped:) forControlEvents:UIControlEventTouchUpInside];
     // Getting checked in users
     NSArray *users = [_usersPlaceKeyMap objectForKey:place.key];
     ItemsThumbPreviewProvider *provider = [[ItemsThumbPreviewProvider alloc] initWithParent:place items:users moreSegueId:nil labelKey:nil icon:nil];
@@ -286,5 +293,10 @@
 }
 -(void)buildNetworkTapped:(id)sender {
     [[TogaytherService actionManager] execute:PMLActionTypePrivateNetworkAddUsers onObject:nil];
+}
+-(void)groupChatTapped:(UIButton*)button {
+    Place *place = [_places objectAtIndex:button.tag];
+    NSArray *users = [_usersPlaceKeyMap objectForKey:place.key];
+    [[TogaytherService getMessageService] startChat:users];
 }
 @end

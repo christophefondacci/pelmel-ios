@@ -538,46 +538,11 @@
     PopupAction *showAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         
         CurrentUser *currentUser = [_userService getCurrentUser];
-        NSMutableArray *networkUsers = [currentUser.networkUsers mutableCopy];
-        [networkUsers addObject:currentUser];
-        
-        // Building new group for group message
-        PMLRecipientsGroup *group = [[TogaytherService getMessageService] lastRecipientsGroup];
-        
-        // Checking if last used group has same user definition
-        if(group != nil) {
-            if(networkUsers.count == group.users.count) {
-                
-                // Hashing user keys
-                NSMutableDictionary *userKeys = [[NSMutableDictionary alloc] init];
-                for(User *user in networkUsers) {
-                    [userKeys setObject:user forKey:user.key];
-                }
-                
-                // Checking group definition
-                for(User *user in group.users) {
-                    User *otherUser = [userKeys objectForKey:user.key];
-                    // If not existing, then we should not use this group
-                    if(otherUser == nil && ![user.key isEqualToString:currentUser.key]) {
-                        group = nil;
-                    }
-                }
-            } else {
-                group = nil;
-            }
-        }
-        if(group == nil) {
-            group = [[PMLRecipientsGroup alloc] initWithUsers:networkUsers];
-        }
-        
-        PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
-        msgController.withObject = group;
-        [_uiService presentSnippet:msgController opened:YES root:NO];
-        
-//        [self execute:PMLActionTypeComment onObject:group];
+        [[TogaytherService getMessageService] startChat:currentUser.networkUsers];
     }];
     [self registerAction:showAction forType:PMLActionTypeGroupChat];
 }
+
 -(void) likeAction:(CALObject*)object {
     
     // Getting provider

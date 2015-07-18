@@ -112,4 +112,10 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
  * @return the last PMLRecipientsGroup used, or nil if none
  */
 -(PMLRecipientsGroup*)lastRecipientsGroup;
+/**
+ * Starts a chat or a group chat with the users in the given list and opens the chat view on an empty thread. It will resume the last group chat conversation if the users list is stricly the same. Current user will be automatically appended if not part of the users list.
+ * appended if not part of the list yet.
+ * @param usersList the list of User objects to include in the chat
+ */
+-(void)startChat:(NSArray*)usersList;
 @end

@@ -21,6 +21,7 @@
 #import "PMLManagedRecipientsGroup.h"
 #import "PMLManagedRecipientsGroupUser.h"
 #import "PMLRecipientsGroup.h"
+#import "PMLMessagingContainerController.h"
 
 #define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 //#define kMessagesListUrlFormat @"%@/mobileMyMessagesReply?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&from=%@"
@@ -781,6 +782,70 @@
         _networkCountBadgeView = networkCountBadgeView;
         [self refresh];
     }
+}
+-(void)startChat:(NSArray*)usersList {
+    
+    CurrentUser *currentUser = [[TogaytherService userService] getCurrentUser];
+    
+    // Making a copy to not alter input list
+    NSMutableArray *chatUsers = [usersList mutableCopy];
+    
+    // Checking if current user is already part of the list
+    BOOL hasCurrentUser = NO;
+    CALObject *otherObject = nil;
+    for(User *user in usersList) {
+        if([user.key isEqualToString:currentUser.key]) {
+            hasCurrentUser = YES;
+            break;
+        } else {
+            otherObject = user;
+        }
+    }
+    // If not part of the list, we add current user
+    if(!hasCurrentUser) {
+        [chatUsers addObject:currentUser];
+    }
+    
+    // Is it a group chat or a conversation?
+    if(chatUsers.count == 2) {
+        PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
+        msgController.withObject = otherObject;
+        [_uiService presentSnippet:msgController opened:YES root:NO];
+    } else {
+        // Building new group for group message
+        PMLRecipientsGroup *group = [self lastRecipientsGroup];
+        
+        // Checking if last used group has same user definition
+        if(group != nil) {
+            if(chatUsers.count == group.users.count) {
+                
+                // Hashing user keys
+                NSMutableDictionary *userKeys = [[NSMutableDictionary alloc] init];
+                for(User *user in chatUsers) {
+                    [userKeys setObject:user forKey:user.key];
+                }
+                
+                // Checking group definition
+                for(User *user in group.users) {
+                    User *otherUser = [userKeys objectForKey:user.key];
+                    // If not existing, then we should not use this group
+                    if(otherUser == nil && ![user.key isEqualToString:currentUser.key]) {
+                        group = nil;
+                    }
+                }
+            } else {
+                group = nil;
+            }
+        }
+        if(group == nil) {
+            group = [[PMLRecipientsGroup alloc] initWithUsers:chatUsers];
+        }
+        
+        PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
+        msgController.withObject = group;
+        [_uiService presentSnippet:msgController opened:YES root:NO];
+    }
+
 }
 #pragma mark - Activity management
 - (void)getNearbyActivitiesStats:(id<ActivitiesStatsCallback>)callback {

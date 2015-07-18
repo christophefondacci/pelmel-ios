@@ -20,5 +20,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *bgBorderImage;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSepWidthConstraint;
 @property (weak, nonatomic) IBOutlet UIView *usersContainerView;
+@property (weak, nonatomic) IBOutlet UIButton *actionButton;
 
 @end

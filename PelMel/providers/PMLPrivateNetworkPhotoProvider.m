@@ -182,8 +182,16 @@
  * @param sectionCount number of the section for which we need an icon
  * @return the UIImage for the icon
  */
--(UIImage*)iconForSection:(NSInteger)sectionCount {
-    return [UIImage imageNamed:@"snpIconEvent"];
+-(UIImage*)iconForSection:(NSInteger)section {
+    switch(section) {
+        case kSectionMyNetwork:
+            return [UIImage imageNamed:@"icoNetworkMember"];
+        case kSectionPendingRequests:
+            return [UIImage imageNamed:@"icoNetworkRequested"];
+        case kSectionToApprove:
+            return [UIImage imageNamed:@"icoNetworkAwaiting"];
+    }
+    return nil;
 }
 -(UIImage*)defaultImageFor:(NSObject*)object {
     return [[CALImage getDefaultUserCalImage] fullImage];

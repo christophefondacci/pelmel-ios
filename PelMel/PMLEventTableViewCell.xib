@@ -97,6 +97,12 @@
                     <rect key="frame" x="158" y="74" width="160" height="62"/>
                     <color key="backgroundColor" red="0.1529411765" green="0.1647058824" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
+                <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0BP-gi-YEj">
+                    <rect key="frame" x="275" y="3" width="40" height="40"/>
+                    <state key="normal">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
             </subviews>
             <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -133,6 +139,7 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="actionButton" destination="0BP-gi-YEj" id="WPU-vG-kve"/>
                 <outlet property="bgBorderImage" destination="3aA-wI-Ngj" id="R9k-zM-Lyi"/>
                 <outlet property="countIcon" destination="dpN-yg-0aO" id="Fd7-EG-xtD"/>
                 <outlet property="countLabel" destination="YKI-xQ-uTd" id="EKw-ld-PIr"/>

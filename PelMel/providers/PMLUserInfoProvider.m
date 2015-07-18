@@ -360,12 +360,12 @@
             PMLUserPrivateNetworkStatus status = [_userService privateNetworkStatusFor:_user];
             switch(status) {
                 case PMLUserPrivateNetworkNotInNetwork:
-                    return @"icoNetworkAdd";
+                    return @"btnNetworkAdd";
                 case PMLUserPrivateNetworkInNetwork:
-                    return @"icoNetworkFriends";
+                    return @"btnNetworkFriends";
                 case PMLUserPrivateNetworkPendingApproval:
                 case PMLUserPrivateNetworkPendingRequest:
-                    return @"icoNetworkPending";
+                    return @"btnNetworkPending";
             }
             return PML_ICON_PRIVATE_NETWORK;// PML_ICON_CHECKIN;
         }
