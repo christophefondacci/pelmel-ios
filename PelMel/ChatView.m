@@ -170,6 +170,7 @@
         self.threadNicknameLabel.hidden=YES;
         msgText = message.text;
     }
+    currentBubbleText.text=nil; // Link detection bug workaround
     currentBubbleText.text = msgText; //[NSString stringWithFormat:@"\"%@\"",message.text];
     
     // Setting up the bubble

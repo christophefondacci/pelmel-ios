@@ -122,7 +122,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *rowId = _places.count>0 ? kRowIdPlace : kRowIdNoCheckin;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rowId forIndexPath:indexPath];
-    
+    cell.backgroundColor = BACKGROUND_COLOR;
     switch(indexPath.section) {
         case kSectionCheckins:
             if(_places.count>0) {

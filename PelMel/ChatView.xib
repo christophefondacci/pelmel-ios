@@ -144,7 +144,7 @@
                         <constraint firstAttribute="height" constant="17" id="cum-Ik-cob"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="12"/>
-                    <color key="textColor" red="0.92549020051956177" green="0.46666666865348816" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.92549019607843142" green="0.46666666666666667" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 </label>

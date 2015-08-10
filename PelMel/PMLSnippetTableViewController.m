@@ -278,6 +278,10 @@ typedef enum {
     NSNumber *activeTab = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLSettingActiveTab];
     if(activeTab != nil) {
         _activeTab = activeTab.intValue;
+        if([self tableView:self.tableView numberOfRowsInSection:kPMLSectionOvEvents]==0) {
+            _activeTab = PMLTabPlaces;
+        }
+
     }
 }
 - (void)viewWillAppear:(BOOL)animated {
@@ -293,7 +297,8 @@ typedef enum {
     
     // Edit visibility
     self.navigationItem.rightBarButtonItem=nil;
-    _editVisible = PMLVisibityStateInvisible;
+    _editVisible = PMLVisibityStateVisible; //Invisible;
+    [self adjustEditVisibility];
     
     if(_opened) {
         [self hideParentNavigationBar];
@@ -1145,16 +1150,15 @@ typedef enum {
     // Setting colored line
     UIColor *color = _infoProvider.color;
     cell.colorLineView.backgroundColor = [UIColor clearColor]; // color; // Removing color for grip
+    
     // Thumb border
     cell.thumbView.layer.borderColor = color.CGColor;
 
-    
     // Fonts
     cell.hoursBadgeTitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:10];
     cell.hoursBadgeSubtitleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:8];
     cell.titleLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:16];
     
-
     // If custom view then configuring it
     if([_infoProvider respondsToSelector:@selector(configureCustomViewIn:forController:)]) {
         [_infoProvider configureCustomViewIn:cell.peopleView forController:self];
@@ -1229,6 +1233,7 @@ typedef enum {
         cell.addPhotoButton.tag=PMLActionTypeAddPhoto;
         cell.addPhotoButton.layer.borderColor = [action.color CGColor];
         [cell.addPhotoButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.addPhotoButton setBackgroundImage:action.icon forState:UIControlStateNormal];
     } else {
         cell.addPhotoButton.hidden=YES;
     }
@@ -1905,49 +1910,58 @@ typedef enum {
     }
 }
 - (void)adjustEditVisibility {
-    // TODO Avoid the class test here
-    if([_snippetItem isKindOfClass:[User class]] && ![_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
-        return;
+    if(self.navigationItem.rightBarButtonItem==nil) {
+        [self installNavBarEdit];
     }
-    // Computing if we are at the bottom of the scroll view
-    CGPoint offset = self.tableView.contentOffset;
-    CGRect bounds = self.tableView.bounds;
-    CGSize size = self.tableView.contentSize;
-    UIEdgeInsets inset = self.tableView.contentInset;
-    CGRect snippetFrame = self.parentMenuController.bottomView.frame;
-    float y = offset.y + bounds.size.height - inset.bottom - snippetFrame.origin.y;
-    float h = size.height;
+    _editVisible = PMLVisibityStateVisible;
+    // Showing help if needed
+    if([_snippetItem isKindOfClass:[Place class]]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
+    }
     
-    float reload_distance = 50;
-    BOOL bottom = NO;
-    if(y > (h - reload_distance)) {
-        bottom = YES;
-    }
-    // Showing edit button if scrolled beyond gallery OR if already at the bottom of the screen
-    if(_editVisible == PMLVisibityStateInvisible && (self.tableView.contentOffset.y >kPMLHeightGallery || bottom) && _opened) {
-        _editVisible = PMLVisibityStateTransitioning;
-        if(self.navigationItem.rightBarButtonItem==nil) {
-            [self installNavBarEdit];
-        }
-        [UIView animateWithDuration:0.3 animations:^{
-            self.navigationItem.rightBarButtonItem.customView.alpha=1;
-        } completion:^(BOOL finished) {
-            _editVisible = PMLVisibityStateVisible;
-            
-            // Showing help if needed
-            if(_didOpened && [_snippetItem isKindOfClass:[Place class]]) {
-                [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
-            }
-        }];
-    } else if(_editVisible == PMLVisibityStateVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom && _opened) {
-        _editVisible = PMLVisibityStateTransitioning;
-
-        [UIView animateWithDuration:0.3 animations:^{
-            self.navigationItem.rightBarButtonItem.customView.alpha=0;
-        } completion:^(BOOL finished) {
-            _editVisible = PMLVisibityStateInvisible;
-        }];
-    }
+    // TODO Avoid the class test here
+//    if([_snippetItem isKindOfClass:[User class]] && ![_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
+//        return;
+//    }
+//    // Computing if we are at the bottom of the scroll view
+//    CGPoint offset = self.tableView.contentOffset;
+//    CGRect bounds = self.tableView.bounds;
+//    CGSize size = self.tableView.contentSize;
+//    UIEdgeInsets inset = self.tableView.contentInset;
+//    CGRect snippetFrame = self.parentMenuController.bottomView.frame;
+//    float y = offset.y + bounds.size.height - inset.bottom - snippetFrame.origin.y;
+//    float h = size.height;
+//    
+//    float reload_distance = 50;
+//    BOOL bottom = NO;
+//    if(y > (h - reload_distance)) {
+//        bottom = YES;
+//    }
+//    // Showing edit button if scrolled beyond gallery OR if already at the bottom of the screen
+//    if(_editVisible == PMLVisibityStateInvisible && (self.tableView.contentOffset.y >kPMLHeightGallery || bottom) && _opened) {
+//        _editVisible = PMLVisibityStateTransitioning;
+//        if(self.navigationItem.rightBarButtonItem==nil) {
+//            [self installNavBarEdit];
+//        }
+//        [UIView animateWithDuration:0.3 animations:^{
+//            self.navigationItem.rightBarButtonItem.customView.alpha=1;
+//        } completion:^(BOOL finished) {
+//            _editVisible = PMLVisibityStateVisible;
+//            
+//            // Showing help if needed
+//            if(_didOpened && [_snippetItem isKindOfClass:[Place class]]) {
+//                [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
+//            }
+//        }];
+//    } else if(_editVisible == PMLVisibityStateVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom && _opened) {
+//        _editVisible = PMLVisibityStateTransitioning;
+//
+//        [UIView animateWithDuration:0.3 animations:^{
+//            self.navigationItem.rightBarButtonItem.customView.alpha=0;
+//        } completion:^(BOOL finished) {
+//            _editVisible = PMLVisibityStateInvisible;
+//        }];
+//    }
 }
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     if(_parentDragging) {
@@ -1972,7 +1986,7 @@ typedef enum {
         if(editType!=PMLActionTypeNoAction) {
             UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
             self.navigationItem.rightBarButtonItem = barItem;
-            barItem.customView.alpha=0;
+//            barItem.customView.alpha=0;
         } else {
             self.navigationItem.rightBarButtonItem=nil;
         }
@@ -1981,7 +1995,7 @@ typedef enum {
             UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeMyProfile selector:@selector(navbarActionTapped:)];
             //            _navbarEdit = YES;
             self.navigationItem.rightBarButtonItem = barItem;
-            barItem.customView.alpha=0;
+//            barItem.customView.alpha=0;
         } else {
             self.navigationItem.rightBarButtonItem = nil;
         }

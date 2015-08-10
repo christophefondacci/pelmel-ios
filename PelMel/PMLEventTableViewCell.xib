@@ -74,7 +74,7 @@
                         <constraint firstAttribute="height" constant="17" id="ok9-00-dhz"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="12"/>
-                    <color key="textColor" red="0.67843137254901964" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.67843137254901964" green="0.67450980392156867" blue="0.67450980392156867" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="125 guys are in" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YKI-xQ-uTd">
@@ -104,7 +104,7 @@
                     </state>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="0EY-1g-ZN4" firstAttribute="leading" secondItem="GfB-ho-Chj" secondAttribute="trailing" constant="20" id="9DN-uf-djJ"/>
                 <constraint firstAttribute="bottom" secondItem="JYW-U3-G23" secondAttribute="bottom" constant="8" id="AHb-vo-2yw"/>

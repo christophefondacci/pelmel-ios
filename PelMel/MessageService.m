@@ -247,10 +247,15 @@
     // Fetching objects and storing users in a map
     NSError *error;
     NSArray *fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    for (PMLManagedUser *user in fetchedObjects) {
-        [managedUsersMap setObject:user forKey:user.itemKey];
-        [users addObject:user];
-        [usersMap removeObjectForKey:user.itemKey];
+    for (PMLManagedUser *managedUser in fetchedObjects) {
+        [managedUsersMap setObject:managedUser forKey:managedUser.itemKey];
+        
+        User *user = [usersMap objectForKey:managedUser.itemKey];
+        if(user != nil) {
+            [self fillManagedUser:managedUser fromUser:user];
+        }
+        [users addObject:managedUser];
+        [usersMap removeObjectForKey:managedUser.itemKey];
     }
     
     // Remaining users, we create managed object
@@ -258,17 +263,21 @@
         
         User *user = [usersMap objectForKey:userKey];
         PMLManagedUser *managedUser = [NSEntityDescription insertNewObjectForEntityForName:@"PMLManagedUser" inManagedObjectContext:context];
-        managedUser.currentUserKey = currentUser.key;
-        managedUser.itemKey = user.key;
-        managedUser.name = user.pseudo;
-        managedUser.imageKey = user.mainImage.key;
-        managedUser.imageUrl = user.mainImage.imageUrl;
-        managedUser.thumbUrl = user.mainImage.thumbUrl;
+        [self fillManagedUser:managedUser fromUser:user];
 
         [managedUsersMap setObject:managedUser forKey:userKey];
         [users addObject:managedUser];
     }
     return users;
+}
+-(void)fillManagedUser:(PMLManagedUser*)managedUser fromUser:(User*)user {
+    CurrentUser *currentUser = [userService getCurrentUser];
+    managedUser.currentUserKey = currentUser.key;
+    managedUser.itemKey = user.key;
+    managedUser.name = user.pseudo;
+    managedUser.imageKey = user.mainImage.key;
+    managedUser.imageUrl = user.mainImage.imageUrl;
+    managedUser.thumbUrl = user.mainImage.thumbUrl;
 }
 -(NSMutableDictionary *)managedRecipientsGroupsFromJson:(NSArray*)jsonRecipientsGroups usingMap:(NSMutableDictionary*)usersMap {
     

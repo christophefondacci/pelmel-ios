@@ -23,12 +23,12 @@
                         <constraint firstAttribute="height" constant="21" id="wMg-7P-TxE"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
-                    <color key="textColor" red="0.53333336114883423" green="0.53333336114883423" blue="0.53333336114883423" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.53333333333333333" green="0.53333333333333333" blue="0.53333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2p5-i6-WXd">
                     <rect key="frame" x="15" y="31" width="290" height="1"/>
-                    <color key="backgroundColor" red="0.31764705882352939" green="0.32941176470588235" blue="0.34901960784313724" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.31764705882352939" green="0.32941176470588235" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="d8p-M4-fA1"/>
                     </constraints>
@@ -64,7 +64,7 @@
                     </state>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.15294117647058825" green="0.16470588235294117" blue="0.1803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="2p5-i6-WXd" firstAttribute="leading" secondItem="bid-Z9-TZu" secondAttribute="trailing" constant="8" id="Fyq-3w-ndS"/>
                 <constraint firstItem="dzv-Wo-P1L" firstAttribute="bottom" secondItem="nx6-ku-WAZ" secondAttribute="bottom" id="KJO-uS-dzr"/>
