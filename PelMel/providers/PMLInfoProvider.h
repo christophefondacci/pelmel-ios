@@ -70,14 +70,20 @@ typedef enum {
 - (PMLActionType)likeActionType; // Default is Like
 - (PMLActionType)checkinActionType; // Default is Checkin
 - (PMLActionType)commentActionType; // Default is Comment
-- (PMLActionType)reportActionType; // Default is no report, if returning something, the report button will be displayed
+
 - (PMLActionType)advertisingActionType; // Default is no advertising, will display the create banner button if action type different from no action
 -(BOOL)hasNavigation;   // Returns whether navigation bar should be hidden or visible (default = VISIBLE)
-- (NSString*)reportText;
+
 // The subtitle to display
 - (NSString*)actionSubtitleFor:(PMLActionType)actionType;
 - (NSString*)subtitleIntro; // Text displayed on top of the subtitle text (top right corner)
 - (NSArray*)properties; // List of properties
+
+- (NSInteger)footerButtonsCount;
+- (PMLActionType)footerButtonActionAtIndex:(NSInteger)buttonIndex; // Action to execute when button index is tapped
+- (NSString*)footerButtonTextAtIndex:(NSInteger)buttonIndex; // Text to display on the button
+- (UIImage*)footerButtonIconAtIndex:(NSInteger)buttonIndex; // Icon to display on the button
+- (UIColor*)footerButtonColorAtIndex:(NSInteger)buttonIndex;
 
 
 

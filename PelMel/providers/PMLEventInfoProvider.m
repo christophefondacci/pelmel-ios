@@ -272,12 +272,21 @@
 - (PMLActionType)advertisingActionType {
     return PMLActionTypeAddBanner;
 }
-#pragma mark - Reports
-- (PMLActionType)reportActionType {
+#pragma mark - Buttons
+- (NSInteger)footerButtonsCount {
+    return 1;
+}
+- (PMLActionType)footerButtonActionAtIndex:(NSInteger)buttonIndex {
     return PMLActionTypeReportForDeletion;
 }
-- (NSString *)reportText {
+- (UIImage *)footerButtonIconAtIndex:(NSInteger)buttonIndex {
+    return [UIImage imageNamed:@"snpButtonReport"];
+}
+- (NSString *)footerButtonTextAtIndex:(NSInteger)buttonIndex {
     return NSLocalizedString(@"snippet.button.reportForDeletion", @"Request removal");
+}
+- (UIColor *)footerButtonColorAtIndex:(NSInteger)buttonIndex {
+    return UIColorFromRGBAlpha(0xc50000,0.2);
 }
 
 @end

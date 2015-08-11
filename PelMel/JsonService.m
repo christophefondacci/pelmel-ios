@@ -192,7 +192,7 @@
     
     // Getting unread message count
     NSNumber *unreadMsgCount= [json objectForKey:@"unreadMsgCount"];
-    NSNumber *unreadNetworkCount=[json objectForKey:@"unreadNetworkNotificationsCount"];    
+//    NSNumber *unreadNetworkCount=[json objectForKey:@"unreadNetworkNotificationsCount"];    
     NSNumber *maxActivityId = [json objectForKey:@"maxActivityId"];
     [_messageService setUnreadMessageCount:[unreadMsgCount intValue]];
 //    [_messageService setUnreadNetworkCount:unreadNetworkCount.intValue];
@@ -720,7 +720,7 @@
     
     // Getting unread message count
     NSNumber *unreadMsgCount = [json objectForKey:@"unreadMsgCount"];
-    NSNumber *unreadNetworkCount=[json objectForKey:@"unreadNetworkNotificationsCount"];
+//    NSNumber *unreadNetworkCount=[json objectForKey:@"unreadNetworkNotificationsCount"];
     [_messageService setUnreadMessageCount:[unreadMsgCount intValue]];
 //    [_messageService setUnreadNetworkCount:[unreadNetworkCount intValue]];
     

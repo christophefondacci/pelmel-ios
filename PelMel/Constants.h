@@ -51,6 +51,7 @@
 #define SB_ID_BANNER_LIST @"bannersList"
 #define SB_ID_NETWORK @"networkController"
 #define SB_ID_NETWORK_CHECKINS @"networkCheckins"
+#define SB_ID_PURCHASE @"purchaseController"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 

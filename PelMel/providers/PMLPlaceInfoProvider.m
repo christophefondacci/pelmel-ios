@@ -459,12 +459,46 @@
     }
 }
 #pragma mark Report
-- (PMLActionType)reportActionType {
-    return PMLActionTypeReport;
+- (NSInteger)footerButtonsCount {
+    return 2;
 }
-- (NSString *)reportText {
-    return NSLocalizedString(@"snippet.button.report", @"Report a problem");
+- (PMLActionType)footerButtonActionAtIndex:(NSInteger)buttonIndex {
+    switch(buttonIndex) {
+        case 0:
+            return PMLActionTypeClaim;
+        case 1:
+            return PMLActionTypeReport;
+    }
+    return PMLActionTypeNoAction;
 }
+- (UIImage *)footerButtonIconAtIndex:(NSInteger)buttonIndex {
+    switch(buttonIndex) {
+        case 0:
+        case 1:
+            return [UIImage imageNamed:@"snpButtonReport"];
+    }
+        return PMLActionTypeNoAction;
+
+}
+- (NSString *)footerButtonTextAtIndex:(NSInteger)buttonIndex {
+    switch(buttonIndex) {
+        case 0:
+            return NSLocalizedString(@"snippet.button.claim", @"Claim this place");
+        case 1:
+            return NSLocalizedString(@"snippet.button.report", @"Report a problem");
+    }
+    return nil;
+}
+- (UIColor *)footerButtonColorAtIndex:(NSInteger)buttonIndex {
+    switch(buttonIndex) {
+        case 0:
+            return nil;
+        case 1:
+            return UIColorFromRGBAlpha(0xc50000,0.2);
+    }
+    return nil;
+}
+
 -(PMLActionType)advertisingActionType {
     return PMLActionTypeAddBanner;
 }

@@ -64,7 +64,7 @@
 #define kPMLSectionOvTags 12
 #define kPMLSectionTopPlaces 13
 #define kPMLSectionActivity 14
-#define kPMLSectionReport 15
+#define kPMLSectionButtons 15
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -142,8 +142,9 @@
 #define kPMLHeightActivityRows 60
 #define kPMLHeightActivityHeader 30
 
-#define kPMLReportRows 1
-#define kPMLRowReportButton 0
+#define kPMLReportRows 2
+#define kPMLRowClaimButton 0
+#define kPMLRowReportButton 1
 #define kPMLHeightButton 62
 #define kPMLRowButtonId @"buttonRow"
 
@@ -432,10 +433,10 @@ typedef enum {
                 double rows = (double)_snippetItem.tags.count / (double)kPMLMaxTagsPerRow; //((double)tableView.bounds.size.width / (double)kPMLOvTagWidth);
                 return (int)ceil(rows);
             }
-            case kPMLSectionReport: {
+            case kPMLSectionButtons: {
                 NSInteger rowCount = 0;
-                if([_infoProvider respondsToSelector:@selector(reportActionType)]) {
-                    rowCount+= [_infoProvider reportActionType] == PMLActionTypeNoAction? 0 : 1;
+                if([_infoProvider respondsToSelector:@selector(footerButtonsCount)]) {
+                    rowCount = [_infoProvider footerButtonsCount];
                 }
                 
                 return rowCount;
@@ -543,7 +544,7 @@ typedef enum {
             return kPMLRowActivityId;
         case kPMLSectionTopPlaces:
             return kPMLRowEventId;
-        case kPMLSectionReport:
+        case kPMLSectionButtons:
             return kPMLRowButtonId;
 
     }
@@ -646,8 +647,8 @@ typedef enum {
             // Should no longer be used, now part of the event section for proper tab headers
             [self configureRowTopPlace:(PMLEventTableViewCell*)cell atIndex:indexPath.row];
             break;
-        case kPMLSectionReport:
-            [self configureRowReport:(PMLButtonTableViewCell*)cell];
+        case kPMLSectionButtons:
+            [self configureRowButton:(PMLButtonTableViewCell*)cell forIndex:indexPath.row];
             break;
     }
     return cell;
@@ -759,7 +760,7 @@ typedef enum {
             break;
         case kPMLSectionTopPlaces:
             return 80; //kPMLHeightActivityRows;
-        case kPMLSectionReport:
+        case kPMLSectionButtons:
             return kPMLHeightButton;
     }
     return 44;
@@ -908,7 +909,7 @@ typedef enum {
         case kPMLSectionTopPlaces:
         case kPMLSectionActivity:
         case kPMLSectionLocalization:
-        case kPMLSectionReport:
+        case kPMLSectionButtons:
         case kPMLSectionOvAdvertising:
             return YES;
         case kPMLSectionOvHours:
@@ -990,8 +991,8 @@ typedef enum {
                 [self dealsTapped:indexPath.row];
             }
             break;
-        case kPMLSectionReport: {
-            [_actionManager execute:[_infoProvider reportActionType] onObject:_snippetItem];
+        case kPMLSectionButtons: {
+            [_actionManager execute:[_infoProvider footerButtonActionAtIndex:indexPath.row] onObject:_snippetItem];
             break;
         }
     }
@@ -1467,11 +1468,13 @@ typedef enum {
     [cell layoutIfNeeded];
     
 }
--(void) configureRowReport:(PMLButtonTableViewCell*)cell {
-    cell.buttonImageView.image = [UIImage imageNamed:@"snpButtonReport"];
-    cell.buttonLabel.text = [_infoProvider reportText];
-    cell.buttonContainer.backgroundColor = UIColorFromRGBAlpha(0xc50000,0.2);
+
+-(void) configureRowButton:(PMLButtonTableViewCell*)cell forIndex:(NSInteger)index {
+    cell.buttonImageView.image = [_infoProvider footerButtonIconAtIndex:index];
+    cell.buttonLabel.text = [_infoProvider footerButtonTextAtIndex:index];
+    cell.buttonContainer.backgroundColor = [_infoProvider footerButtonColorAtIndex:index];
 }
+
 -(void) configureRowAdvertising:(PMLButtonTableViewCell*)cell {
     cell.buttonImageView.image = [UIImage imageNamed:@"btnAddBanner"];
     cell.buttonLabel.text = NSLocalizedString(@"banner.button.addPlaceBanner", @"banner.button.addPlaceBanner");

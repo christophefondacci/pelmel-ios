@@ -21,6 +21,7 @@ typedef enum {
     PMLActionTypeCancel,
     PMLActionTypeReport,
     PMLActionTypeReportForDeletion,
+    PMLActionTypeClaim,
     PMLActionTypeAddBanner,
     PMLActionTypeEditBanner,
     PMLActionTypeEditPlace,

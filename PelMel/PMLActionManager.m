@@ -19,6 +19,8 @@
 #import "PMLRecipientsGroup.h"
 #import "PMLPhotosCollectionViewController.h"
 #import "PMLNetworkUsersAdditionPhotoProvider.h"
+#import "PMLPurchaseTableViewController.h"
+#import "PMLClaimPurchaseProvider.h"
 
 #define kPMLConfirmDistance 21.0
 #define kPMLConfirmSize 52.0
@@ -107,6 +109,7 @@
         [self registerGroupChatAction];
         [self registerAddToPrivateNetworkAction];
         [self registerPrivateNetworkRespond];
+        [self registerClaimAction];
     }
     return self;
 }
@@ -557,6 +560,15 @@
             [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
         }];
     }
+}
+
+-(void)registerClaimAction {
+    PopupAction *claimAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        PMLPurchaseTableViewController *purchaseController = (PMLPurchaseTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_PURCHASE];
+        purchaseController.provider = [[PMLClaimPurchaseProvider alloc] initWithPlace:(Place*)object];
+        [self.uiService.menuManagerController presentModal:purchaseController];
+    }];
+    [self registerAction:claimAction forType:PMLActionTypeClaim];
 }
 
 #pragma mark - Edition sheets
