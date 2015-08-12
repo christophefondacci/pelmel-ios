@@ -11,7 +11,10 @@
 #import <AFNetworking.h>
 #import <MBProgressHUD.h>
 #define kURLUpdateBannerPayment @"%@/mobileUpdateBannerPayment"
+#define kURLSubscribe @"%@/mobileSubscribe"
 #define kPMLKeyPendingBannerPayment @"banner.pendingPayment"
+#define kPMLKeyPendingClaimedPlacePayment @"placeClaimed.pendingPayment"
+
 
 @interface PMLStoreService ()
 
@@ -78,6 +81,19 @@
         [[SKPaymentQueue defaultQueue] addPayment:payment];
     }
 }
+- (void)startPaymentForClaim:(Place *)place productId:(NSString *)productId {
+    SKProduct *product = [self productFromId:productId];
+    
+    if(product != nil) {
+        // Storing the banner for asynchronous retrieval once payment is confirmed by Apple
+        [[NSUserDefaults standardUserDefaults] setObject:place.key forKey:kPMLKeyPendingClaimedPlacePayment];
+        
+        // App store payment
+        SKPayment *payment = [SKPayment paymentWithProduct:product];
+        [[SKPaymentQueue defaultQueue] addPayment:payment];
+    }
+}
+
 -(NSString*)defaultsKeyForProduct:(NSString*)productId {
     return [NSString stringWithFormat:@"bannerProduct.%@",productId ];
 }
@@ -118,44 +134,87 @@
         NSLog(@"ERROR: No receipt");
         [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
     } else {
-        // Building URL string
-        NSString *serverUrl = [TogaytherService propertyFor:PML_PROP_SERVER];
-        NSString *url = [NSString stringWithFormat:kURLUpdateBannerPayment,serverUrl];
         
-        // Current user for auth
-        CurrentUser *user = [[TogaytherService userService] getCurrentUser];
-        
-        // Getting pending purchase
-        NSString *bannerKey = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLKeyPendingBannerPayment];
-        
-        if(bannerKey!=nil) {
-            // We might be called before login so we need to check if we have a token
-            if(user.token != nil) {
-                // Building params list
-                NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
-                [params setObject:user.token forKey:@"nxtpUserToken"];
-                [params setObject:[receipt base64EncodedStringWithOptions:0] forKey:@"appStoreReceipt"];
-                [params setObject:bannerKey forKey:@"bannerKey"];
-                
-                AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-                [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                    NSLog(@"success");
-                    [[TogaytherService uiService] alertWithTitle:@"banner.store.paymentDone.title" text:@"banner.store.paymentDone"];
-                    [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
-                    [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
-                } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                    NSLog(@"failure");
-                    [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
-                }];
-            }
-            
-        } else {
-            [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
-            // TODO: We should log back to the server as the client may have paid and got nothing
-            [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+        if([transaction.payment.productIdentifier hasPrefix:kPMLProductBannerPrefix]) {
+            [self completeBannerPayment:transaction receipt:receipt];
+        } else if([transaction.payment.productIdentifier isEqualToString:kPMLProductClaim30]) {
+            [self completeClaimPayment:transaction receipt:receipt];
         }
     }
     
+}
+-(void)completeClaimPayment:(SKPaymentTransaction*)transaction receipt:(NSData*)receipt {
+    // Building URL string
+    NSString *serverUrl = [TogaytherService propertyFor:PML_PROP_SERVER];
+    NSString *url = [NSString stringWithFormat:kURLSubscribe,serverUrl];
+    
+    // Current user for auth
+    CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+    
+    // Getting pending purchase
+    NSString *placeKey = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLKeyPendingClaimedPlacePayment];
+    
+
+    // We might be called before login so we need to check if we have a token
+    if(user.token != nil) {
+        // Building params list
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setObject:user.token forKey:@"nxtpUserToken"];
+        [params setObject:[receipt base64EncodedStringWithOptions:0] forKey:@"appStoreReceipt"];
+        if(placeKey != nil) {
+            [params setObject:placeKey forKey:@"subscribedKey"];
+        }
+        
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"success");
+            [[TogaytherService uiService] alertWithTitle:@"store.claim.paymentDone.title" text:@"store.claim.paymentDone"];
+            [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+            [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"failure");
+            [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+        }];
+    }
+
+}
+-(void)completeBannerPayment:(SKPaymentTransaction*)transaction receipt:(NSData*)receipt {
+    // Building URL string
+    NSString *serverUrl = [TogaytherService propertyFor:PML_PROP_SERVER];
+    NSString *url = [NSString stringWithFormat:kURLUpdateBannerPayment,serverUrl];
+    
+    // Current user for auth
+    CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+    
+    // Getting pending purchase
+    NSString *bannerKey = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLKeyPendingBannerPayment];
+    
+    if(bannerKey!=nil) {
+        // We might be called before login so we need to check if we have a token
+        if(user.token != nil) {
+            // Building params list
+            NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+            [params setObject:user.token forKey:@"nxtpUserToken"];
+            [params setObject:[receipt base64EncodedStringWithOptions:0] forKey:@"appStoreReceipt"];
+            [params setObject:bannerKey forKey:@"bannerKey"];
+            
+            AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+            [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                NSLog(@"success");
+                [[TogaytherService uiService] alertWithTitle:@"banner.store.paymentDone.title" text:@"banner.store.paymentDone"];
+                [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+                [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                NSLog(@"failure");
+                [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+            }];
+        }
+        
+    } else {
+        [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+        // TODO: We should log back to the server as the client may have paid and got nothing
+        [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
+    }
 }
 -(void)failedTransaction:(SKPaymentTransaction*)transaction {
     NSLog(@"failedTransaction");

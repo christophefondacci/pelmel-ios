@@ -61,6 +61,7 @@
     return NO;
 }
 - (void)didTapPurchaseButton {
-
+    [[TogaytherService storeService] startPaymentForClaim:_place productId:kPMLProductClaim30];
 }
+
 @end

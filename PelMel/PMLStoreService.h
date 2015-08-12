@@ -15,5 +15,15 @@
 @property (nonatomic,retain) UserService *userService;
 - (void)loadProducts:(NSArray*)productIds;
 - (SKProduct*)productFromId:(NSString*)productId;
+/**
+ * Starts the App Store payment for the given banner
+ * @param banner the banner to pay for
+ */
 - (void)startPaymentFor:(PMLBanner*)banner;
+/**
+ * Starts the payment process for the claim a place feature
+ * @param place the Place to claim
+ * @param productId the productId to pay (membership type)
+ */
+- (void)startPaymentForClaim:(Place*)place productId:(NSString*)productId;
 @end

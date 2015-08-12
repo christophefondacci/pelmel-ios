@@ -10,6 +10,7 @@
 #import "PMLImagedTitleTableViewCell.h"
 #import "PMLButtonTableViewCell.h"
 #import "PMLTextViewTableViewCell.h"
+#import "TogaytherService.h"
 
 #define kSectionCount 1
 
@@ -35,6 +36,8 @@
     self.view.layer.masksToBounds=YES;
     self.view.layer.borderWidth=2;
     self.view.layer.borderColor = UIColorFromRGB(0xe0e0e1).CGColor;
+    
+    [[TogaytherService storeService] loadProducts:@[kPMLProductClaim30]];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -144,6 +147,17 @@
     }
     return 44;
 }
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch(indexPath.section) {
+        case kSectionFeatures:
+            if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-2) {
+                [_provider didTapPurchaseButton];
+            }
+            break;
+    }
+}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

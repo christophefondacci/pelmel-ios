@@ -515,6 +515,10 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "specials.start.in"="Starts in";
 "specials.subtitleTemplate.current"="%@ left : %@";
 "specials.subtitleTemplate.soon"="In %@ : %@";
+"store.claim.paymentDone.title"="Congratulations!";
+"store.claim.paymentDone"="Your purchase has been made and you now have ownership of your place on PELMEL and can access your reports.";
+"store.claim.paymentFailed.title"="Purchase failed!";
+"store.claim.paymentFailed"="We were unable to proceed with your purchase.";
 "tabs.deals"="Deals";
 "tabs.events"="Events";
 "tabs.places"="Hangouts";

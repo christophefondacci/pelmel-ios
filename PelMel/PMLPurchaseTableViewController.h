@@ -20,6 +20,7 @@
 - (UIImage*)purchaseButtonIcon;
 - (void)didTapPurchaseButton;
 - (BOOL)didCancel;
+
 @end
 @interface PMLPurchaseTableViewController : UITableViewController
 
