@@ -85,6 +85,10 @@ typedef enum {
 - (UIImage*)footerButtonIconAtIndex:(NSInteger)buttonIndex; // Icon to display on the button
 - (UIColor*)footerButtonColorAtIndex:(NSInteger)buttonIndex;
 
+// Deals management (implement all or nothing)
+-(NSArray*)deals; // List of available deals on that element
+-(NSString*)ownerKey; // Item key of the owner of the element (with administration rights)
+
 
 
 - (NSString*)commentsCounterTitle;

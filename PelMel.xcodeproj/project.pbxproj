@@ -209,6 +209,14 @@
 		B47523F31B7A728400FD5B22 /* PMLClaimPurchaseProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B47523F11B7A728400FD5B22 /* PMLClaimPurchaseProvider.m */; };
 		B47523F61B7A995700FD5B22 /* PMLTextViewTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B47523F41B7A995700FD5B22 /* PMLTextViewTableViewCell.h */; };
 		B47523F71B7A995700FD5B22 /* PMLTextViewTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B47523F51B7A995700FD5B22 /* PMLTextViewTableViewCell.m */; };
+		B47523FA1B7BFB4A00FD5B22 /* PMLActivateDealTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47523F91B7BFB4A00FD5B22 /* PMLActivateDealTableViewCell.xib */; };
+		B47523FC1B7BFE3A00FD5B22 /* PMLDealTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47523FB1B7BFE3A00FD5B22 /* PMLDealTableViewCell.xib */; };
+		B47523FF1B7C049300FD5B22 /* PMLDealTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B47523FD1B7C049300FD5B22 /* PMLDealTableViewCell.h */; };
+		B47524001B7C049300FD5B22 /* PMLDealTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B47523FE1B7C049300FD5B22 /* PMLDealTableViewCell.m */; };
+		B47524031B7C055800FD5B22 /* PMLActivateDealTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B47524011B7C055800FD5B22 /* PMLActivateDealTableViewCell.h */; };
+		B47524041B7C055800FD5B22 /* PMLActivateDealTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B47524021B7C055800FD5B22 /* PMLActivateDealTableViewCell.m */; };
+		B47524071B7C241800FD5B22 /* Deal.h in Headers */ = {isa = PBXBuildFile; fileRef = B47524051B7C241800FD5B22 /* Deal.h */; };
+		B47524081B7C241800FD5B22 /* Deal.m in Sources */ = {isa = PBXBuildFile; fileRef = B47524061B7C241800FD5B22 /* Deal.m */; };
 		B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */; };
 		B47A69C21AA64AC200877B58 /* PMLCountersView.h in Headers */ = {isa = PBXBuildFile; fileRef = B47A69C01AA64AC200877B58 /* PMLCountersView.h */; };
 		B47A69C31AA64AC200877B58 /* PMLCountersView.m in Sources */ = {isa = PBXBuildFile; fileRef = B47A69C11AA64AC200877B58 /* PMLCountersView.m */; };
@@ -701,6 +709,14 @@
 		B47523F11B7A728400FD5B22 /* PMLClaimPurchaseProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLClaimPurchaseProvider.m; sourceTree = "<group>"; };
 		B47523F41B7A995700FD5B22 /* PMLTextViewTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLTextViewTableViewCell.h; sourceTree = "<group>"; };
 		B47523F51B7A995700FD5B22 /* PMLTextViewTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLTextViewTableViewCell.m; sourceTree = "<group>"; };
+		B47523F91B7BFB4A00FD5B22 /* PMLActivateDealTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLActivateDealTableViewCell.xib; sourceTree = "<group>"; };
+		B47523FB1B7BFE3A00FD5B22 /* PMLDealTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLDealTableViewCell.xib; sourceTree = "<group>"; };
+		B47523FD1B7C049300FD5B22 /* PMLDealTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLDealTableViewCell.h; sourceTree = "<group>"; };
+		B47523FE1B7C049300FD5B22 /* PMLDealTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLDealTableViewCell.m; sourceTree = "<group>"; };
+		B47524011B7C055800FD5B22 /* PMLActivateDealTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLActivateDealTableViewCell.h; sourceTree = "<group>"; };
+		B47524021B7C055800FD5B22 /* PMLActivateDealTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLActivateDealTableViewCell.m; sourceTree = "<group>"; };
+		B47524051B7C241800FD5B22 /* Deal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Deal.h; sourceTree = "<group>"; };
+		B47524061B7C241800FD5B22 /* Deal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Deal.m; sourceTree = "<group>"; };
 		B47A69BE1AA63E3900877B58 /* PMLCountersView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLCountersView.xib; sourceTree = "<group>"; };
 		B47A69C01AA64AC200877B58 /* PMLCountersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLCountersView.h; sourceTree = "<group>"; };
 		B47A69C11AA64AC200877B58 /* PMLCountersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLCountersView.m; sourceTree = "<group>"; };
@@ -1223,6 +1239,19 @@
 			name = Menus;
 			sourceTree = "<group>";
 		};
+		B47523F81B7BFB2300FD5B22 /* Deals */ = {
+			isa = PBXGroup;
+			children = (
+				B47523F91B7BFB4A00FD5B22 /* PMLActivateDealTableViewCell.xib */,
+				B47523FB1B7BFE3A00FD5B22 /* PMLDealTableViewCell.xib */,
+				B47523FD1B7C049300FD5B22 /* PMLDealTableViewCell.h */,
+				B47523FE1B7C049300FD5B22 /* PMLDealTableViewCell.m */,
+				B47524011B7C055800FD5B22 /* PMLActivateDealTableViewCell.h */,
+				B47524021B7C055800FD5B22 /* PMLActivateDealTableViewCell.m */,
+			);
+			name = Deals;
+			sourceTree = "<group>";
+		};
 		B4859DB5197FC6700036D8FF /* Popups */ = {
 			isa = PBXGroup;
 			children = (
@@ -1617,6 +1646,8 @@
 				B43143ED1B0270E900B189BA /* PMLBanner.m */,
 				B4CCFD111B4F50BA002D34DA /* PMLRecipientsGroup.h */,
 				B4CCFD121B4F50BA002D34DA /* PMLRecipientsGroup.m */,
+				B47524051B7C241800FD5B22 /* Deal.h */,
+				B47524061B7C241800FD5B22 /* Deal.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1658,6 +1689,7 @@
 		B4D560DA16105B16003A738E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B47523F81B7BFB2300FD5B22 /* Deals */,
 				B43143F01B02968C00B189BA /* Advertising */,
 				B4AA0A481AF3F56500DCDE29 /* Activity */,
 				B431239C1ACDA49B008EF107 /* Help */,
@@ -1916,6 +1948,7 @@
 				B4FC959B19B1F2E300269E74 /* PMLSnippetTableViewController.h in Headers */,
 				B43123A31ACDA4DC008EF107 /* PMLHelpBubble.h in Headers */,
 				B40668BB19714CCE0012DF71 /* APLPositionToBoundsMapping.h in Headers */,
+				B47524031B7C055800FD5B22 /* PMLActivateDealTableViewCell.h in Headers */,
 				B47A69E31AA7FF6B00877B58 /* UIImage+IPImageUtils.h in Headers */,
 				B457A10A1A9D914100207D8E /* UIViewController+BackButtonHandler.h in Headers */,
 				B4BA87E31B14D50100612214 /* PMLMiniMapViewController.h in Headers */,
@@ -1970,10 +2003,12 @@
 				B4FC959619B1F20A00269E74 /* PMLTextTableViewCell.h in Headers */,
 				B4B1FCF819E012BD0068894C /* NSString+HTML.h in Headers */,
 				B457A0EF1A9A689100207D8E /* PMLSectionTitleView.h in Headers */,
+				B47523FF1B7C049300FD5B22 /* PMLDealTableViewCell.h in Headers */,
 				B49F989F19A2131100BD3B2F /* PMLDynamicActionObject.h in Headers */,
 				B46AD73119E4FDD00021E1DE /* PMLLikeStatistic.h in Headers */,
 				B45B381E1AAE1D6C00730313 /* UIImageViewAligned.h in Headers */,
 				B4BA87D61B0FACDD00612214 /* PMLBannerViewTableViewCell.h in Headers */,
+				B47524071B7C241800FD5B22 /* Deal.h in Headers */,
 				B42408E418F8EA9500B8B898 /* EGORefreshTableHeaderView.h in Headers */,
 				B41C6FF6198903ED00210474 /* CALayer+XibConfiguration.h in Headers */,
 				B40668B7197149B50012DF71 /* UIMenuManagerMainDelegate.h in Headers */,
@@ -2116,6 +2151,8 @@
 				B4BD191B1AE6BF2C00510AC4 /* PMLChatInputBarView.xib in Resources */,
 				B457A0F21A9A9B7700207D8E /* PMLButtonTableViewCell.xib in Resources */,
 				B4BA87D31B0DA54600612214 /* OpenSans-Semibold.ttf in Resources */,
+				B47523FC1B7BFE3A00FD5B22 /* PMLDealTableViewCell.xib in Resources */,
+				B47523FA1B7BFB4A00FD5B22 /* PMLActivateDealTableViewCell.xib in Resources */,
 				B4D56089160B673F003A738E /* MainStoryboard_iPhone.storyboard in Resources */,
 				B4D5608C160B673F003A738E /* MainStoryboard_iPad.storyboard in Resources */,
 				B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */,
@@ -2285,6 +2322,7 @@
 				B47523EF1B7A681100FD5B22 /* PMLPurchaseTableViewController.m in Sources */,
 				B4FC959719B1F20A00269E74 /* PMLTextTableViewCell.m in Sources */,
 				B43D11701A97A12B008476C7 /* DynamicDismissalAnimator.m in Sources */,
+				B47524081B7C241800FD5B22 /* Deal.m in Sources */,
 				B4CC31321B30924700E755DA /* PMLConversationMessageProvider.m in Sources */,
 				B4D5610B161199B5003A738E /* MenuViewController.m in Sources */,
 				B4D561121611BC27003A738E /* MapViewController.m in Sources */,
@@ -2376,6 +2414,7 @@
 				B46AD73219E4FDD00021E1DE /* PMLLikeStatistic.m in Sources */,
 				B43B1B8D1B1FB309000DB17B /* PMLActivityPhotoProvider.m in Sources */,
 				B4E8293018AAFAA10063715C /* SettingsService.m in Sources */,
+				B47524041B7C055800FD5B22 /* PMLActivateDealTableViewCell.m in Sources */,
 				B4CC31221B2F440800E755DA /* ChatViewCell.m in Sources */,
 				B449DEE51625F3F100C362F8 /* PhotoManagerViewController.m in Sources */,
 				B43123AE1ACDBDFB008EF107 /* PMLHelpService.m in Sources */,
@@ -2437,6 +2476,7 @@
 				B41DD74D197A4E5B008F09D9 /* PMLMapPopupViewController.m in Sources */,
 				B4FC958B19B1EFAC00269E74 /* PMLSnippetTableViewCell.m in Sources */,
 				B43E9ADF19F47F5300F91FC1 /* PMLAddTableViewCell.m in Sources */,
+				B47524001B7C049300FD5B22 /* PMLDealTableViewCell.m in Sources */,
 				B4FC95A019B1F85D00269E74 /* PMLDescriptionTableViewCell.m in Sources */,
 				B4FE2A2D16AE96EF001BE53D /* LikeableStrategyObjectWithLikers.m in Sources */,
 				B4D26A7319DE1637004C5991 /* NSData+Conversion.m in Sources */,

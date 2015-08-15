@@ -161,6 +161,7 @@
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
         [params setObject:user.token forKey:@"nxtpUserToken"];
         [params setObject:[receipt base64EncodedStringWithOptions:0] forKey:@"appStoreReceipt"];
+        [params setObject:transaction.transactionIdentifier forKey:@"transactionId"];
         if(placeKey != nil) {
             [params setObject:placeKey forKey:@"subscribedKey"];
         }
@@ -171,6 +172,13 @@
             [[TogaytherService uiService] alertWithTitle:@"store.claim.paymentDone.title" text:@"store.claim.paymentDone"];
             [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
             [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+            
+            // Resetting overview info
+            if(placeKey!=nil) {
+                CALObject *place = [[TogaytherService getJsonService] objectForKey:placeKey];
+                place.hasOverviewData = NO;
+                [[TogaytherService dataService] getOverviewData:place];
+            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure");
             [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];

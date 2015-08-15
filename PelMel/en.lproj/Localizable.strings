@@ -202,6 +202,11 @@
 "counters.network.add"="Add";
 "counters.network.cancel"="Cancel";
 "counters.network.friends"="Friends";
+"deal.activate.headline"="Get MORE clients!";
+"deal.activate.button"="Activate your deal NOW";
+"deal.report.button"="View my statistics";
+"deal.twoforone.template"="2 for 1 deal %@";
+
 //"counters.likes.singular"="%d Like";
 "description"="Description";
 "description.placeholder"="Write a description in %@";

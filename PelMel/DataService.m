@@ -1063,7 +1063,7 @@
     });
 }
 - (CALObject *)objectForKey:(NSString *)key {
-    CALObject *object = [overviewCache objectForKey:key];
+    CALObject *object = [jsonService.objectCache objectForKey:key];
     if(object == nil) {
         if([key hasPrefix:@"PLAC"]) {
             object = [[Place alloc] init];
@@ -1075,7 +1075,7 @@
             object = [[Event alloc] init];
         }
         object.key = key;
-        [overviewCache setObject:object forKey:key];
+        [jsonService.objectCache setObject:object forKey:key];
     }
     return object;
 }

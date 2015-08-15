@@ -502,4 +502,11 @@
 -(PMLActionType)advertisingActionType {
     return PMLActionTypeAddBanner;
 }
+#pragma mark - Deals
+- (NSArray *)deals {
+    return _place.deals;
+}
+- (NSString *)ownerKey {
+    return _place.ownerKey;
+}
 @end

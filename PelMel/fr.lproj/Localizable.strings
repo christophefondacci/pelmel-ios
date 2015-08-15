@@ -205,6 +205,12 @@
 "counters.network.add"="Ajouter";
 "counters.network.cancel"="Annuler";
 "counters.network.friends"="Amis";
+"deal.activate.headline"="Attirez PLUS de clients !";
+"deal.activate.button"="Activez une promotion MAINTENANT";
+"deal.report.button"="Voir mes statistiques";
+"deal.twoforone.template"="1 acheté = 1 offert %@";
+"deal.status.RUNNING"="ACTIVE";
+"deal.status.PAUSED"="PAUSED";
 "description"="Description";
 "description.placeholder"="Ecrire en %@";
 "description.edition.title"="Choisissez votre langue";

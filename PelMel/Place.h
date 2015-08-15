@@ -17,6 +17,7 @@
 @property (strong) NSString *distance;
 @property (strong) NSString *cityName;
 @property (strong) NSString *timezoneId;
+@property (nonatomic,strong) NSString *ownerKey;
 @property (nonatomic) double rawDistance;
 @property (strong) NSString *placeType;
 @property (nonatomic) NSInteger inUserCount; // Number of users currently in this place
@@ -24,6 +25,7 @@
 @property (strong,nonatomic) NSMutableArray *events;
 @property (nonatomic) int closedReportsCount;
 @property (strong,nonatomic) NSMutableArray *hours;
+@property (strong,nonatomic) NSMutableArray *deals;
 @property (strong,nonatomic) NSMutableArray *properties;
 
 - (id)initFull:(NSString*)title distance:(NSString *)distance miniDesc:(NSString*)desc;

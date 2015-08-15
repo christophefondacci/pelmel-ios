@@ -57,6 +57,41 @@
         return nil;
     }
 }
+-(void)fillPlace:(Place*)place fromJsonPlace:(NSDictionary*)json {
+    
+    // Owner management
+    NSString *ownerKey          = [json objectForKey:@"ownerKey"];
+    place.ownerKey = ownerKey;
+    
+    // Deal management
+    NSArray *jsonDeals          = [json objectForKey:@"deals"];
+    NSMutableArray *deals       = [NSMutableArray new];
+    for(NSDictionary *jsonDeal in jsonDeals) {
+        NSString *key               = [jsonDeal objectForKey:@"key"];
+        NSString *relatedItemKey    = [jsonDeal objectForKey:@"relatedItemKey"];
+        NSString *status            = [jsonDeal objectForKey:@"status"];
+        NSString *type              = [jsonDeal objectForKey:@"type"];
+        NSNumber *startTime         = [jsonDeal objectForKey:@"startDate"];
+        
+        Deal *deal = [_objectCache objectForKey:key];
+        if(deal == nil) {
+            deal = [[Deal alloc ] init];
+            [_objectCache setObject:deal forKey:key];
+        }
+        
+        // Filling deal
+        deal.key = key;
+        deal.relatedObject = place;
+        deal.dealStartDate = [[NSDate alloc] initWithTimeIntervalSince1970:startTime.longValue];
+        deal.dealType = type;
+        deal.dealStatus = status;
+        
+        // Augmenting deal array
+        [deals addObject:deal];
+    }
+    // Injecting deals
+    place.deals = deals;
+}
 -(Place*)convertFullJsonPlaceToPlace:(NSDictionary*)obj {
     // Extracting information from JSON
     NSString *itemKey       = [obj objectForKey:@"itemKey"];
@@ -74,6 +109,7 @@
     NSArray *otherImages    = [obj objectForKey:@"otherImages"];
     NSString *timezoneId    = [obj objectForKey:@"timezoneId"];
     NSArray *specials       = [obj objectForKey:@"specials"];
+
     
     // Building image array
     NSMutableArray *imagesArray = [[NSMutableArray alloc] initWithCapacity:[otherImages count]];
@@ -101,6 +137,7 @@
         // Caching result
         [_objectCache setObject:data forKey:itemKey];
     }
+    [self fillPlace:data fromJsonPlace:obj];
     [data setRawDistance:[rawDistance doubleValue]];
     [data setOtherImages:imagesArray];
     [data setMainImage:mainImage];

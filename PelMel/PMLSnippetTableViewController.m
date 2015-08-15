@@ -44,27 +44,30 @@
 #import <PBWebViewController.h>
 #import "PMLCalObjectPhotoProvider.h"
 #import "PMLCalendarTableViewController.h"
+#import "PMLActivateDealTableViewCell.h"
+#import "PMLDealTableViewCell.h"
 
 #define kPMLSettingActiveTab @"pmlActiveSnippetTab"
 
-#define kPMLSectionsCount 16
+#define kPMLSectionsCount 17
 
 #define kPMLSectionGallery 0
 #define kPMLSectionSnippet 1
-#define kPMLSectionCounters 2
-#define kPMLSectionLocalization 3
-#define kPMLSectionOvSummary 4
-#define kPMLSectionOvAddress 5
-#define kPMLSectionOvProperties 8
-#define kPMLSectionOvHours 6
-#define kPMLSectionOvHappyHours 7
-#define kPMLSectionOvEvents 9
-#define kPMLSectionOvAdvertising 10
-#define kPMLSectionOvDesc 11
-#define kPMLSectionOvTags 12
-#define kPMLSectionTopPlaces 13
-#define kPMLSectionActivity 14
-#define kPMLSectionButtons 15
+#define kPMLSectionCounters 3
+#define kPMLSectionDeals 2
+#define kPMLSectionLocalization 4
+#define kPMLSectionOvSummary 5
+#define kPMLSectionOvAddress 6
+#define kPMLSectionOvProperties 9
+#define kPMLSectionOvHours 7
+#define kPMLSectionOvHappyHours 8
+#define kPMLSectionOvEvents 10
+#define kPMLSectionOvAdvertising 11
+#define kPMLSectionOvDesc 12
+#define kPMLSectionOvTags 13
+#define kPMLSectionTopPlaces 14
+#define kPMLSectionActivity 15
+#define kPMLSectionButtons 16
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -88,6 +91,9 @@
 #define kPMLThumbSize @62
 #define kPMLThumbTypesSize @45
 
+#define kPMLRowDealActivateId @"dealActivate"
+#define kPMLRowDealInfoId @"dealInfo"
+#define kPMLRowDealStatsButtonId @"dealStats"
 
 #define kPMLOvSummaryRows 0
 #define kPMLRowOvSeparator 40
@@ -157,7 +163,7 @@ typedef enum {
     PMLVisibityStateInvisible
 } PMLVisibityState;
 @interface PMLSnippetTableViewController ()
-
+@property (nonatomic,retain) NSDateFormatter *dateFormatter;
 @end
 
 @implementation PMLSnippetTableViewController {
@@ -259,6 +265,8 @@ typedef enum {
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowEventId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowAddEventId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowButtonId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLActivateDealTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealActivateId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLDealTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealInfoId];
     // Loading header views
     _eventPlaceTabsTitleView = (PMLEventPlaceTabsTitleView*)[_uiService loadView:@"PMLEventPlaceTabsTitleView"];
     _eventPlaceTabsTitleView.delegate = self;
@@ -282,8 +290,11 @@ typedef enum {
         if([self tableView:self.tableView numberOfRowsInSection:kPMLSectionOvEvents]==0) {
             _activeTab = PMLTabPlaces;
         }
-
     }
+    
+    // Date formatter for deals
+    self.dateFormatter = [[NSDateFormatter alloc] init];
+    [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
 }
 - (void)viewWillAppear:(BOOL)animated {
     self.parentMenuController.snippetDelegate = self;
@@ -382,6 +393,27 @@ typedef enum {
                 return _hasGallery ? 1 : 0;
             case kPMLSectionCounters:
                 return [_infoProvider thumbsRowCountForMode:ThumbPreviewModeLikes]+[_infoProvider thumbsRowCountForMode:ThumbPreviewModeCheckins] >0 ? 1 : 0;
+            case kPMLSectionDeals: {
+                if([_infoProvider respondsToSelector:@selector(deals)]) {
+                    
+                    // Determining whether current user is owner
+                    CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+                    BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
+                    
+                    NSInteger dealsRows = [[_infoProvider deals] count];
+                    if(isOwner) {
+                        // If no deal, section to add a deal
+                        if(dealsRows == 0) {
+                            dealsRows++;
+                        }
+                        // Last row for accessing stats
+                        dealsRows++;
+                    }
+                    return dealsRows;
+
+                }
+                return 0;
+            }
             case kPMLSectionLocalization: {
                 if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
                     CALObject *locationObject = [_infoProvider mapObjectForLocalization];
@@ -493,6 +525,25 @@ typedef enum {
                     return kPMLRowThumbPreviewId;
 //            }
             break;
+        case kPMLSectionDeals: {
+            
+            CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+            NSInteger dealsCount = [[_infoProvider deals] count];
+            BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
+            
+            // No deals, owner, first row => deal activation row
+            if(isOwner && indexPath.row == 0 && dealsCount == 0) {
+                return kPMLRowDealActivateId;
+            } else if(!isOwner && indexPath.row < dealsCount) {
+                // Not owner, displaying deal
+                return kPMLRowDealInfoId;
+            } else if(isOwner && indexPath.row < dealsCount) {
+                // Owner, displaying deal stats
+                return kPMLRowDealInfoId;
+            } else {
+                return kPMLRowButtonId;
+            }
+        }
         case kPMLSectionLocalization:
             return kPMLRowEventId;
         case kPMLSectionOvEvents:
@@ -576,6 +627,23 @@ typedef enum {
         case kPMLSectionCounters:
             [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:indexPath.row];
             break;
+        case kPMLSectionDeals: {
+            CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+            NSInteger dealsCount = [[_infoProvider deals] count];
+            BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
+            if(indexPath.row == 0 && isOwner && dealsCount == 0) {
+                [self configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell];
+            } else if(indexPath.row < dealsCount) {
+                if(!isOwner) {
+                    [self configureRowDisplayDeal:nil forIndex:indexPath.row];
+                } else {
+                    [self configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:indexPath.row];
+                }
+            } else {
+                [self configureRowPlaceReportButton:(PMLButtonTableViewCell*)cell];
+            }
+            break;
+        }
         case kPMLSectionLocalization:
             [self configureRowLocalization:(PMLEventTableViewCell*)cell];
             break;
@@ -682,6 +750,17 @@ typedef enum {
                     return kPMLHeightThumbPreview;
             }
             break;
+        case kPMLSectionDeals: {
+            NSString *rowId = [self rowIdForIndexPath:indexPath];
+            if([rowId isEqualToString:kPMLRowDealActivateId]) {
+                return 102;
+            } else if([rowId isEqualToString:kPMLRowDealInfoId]) {
+                return 102;
+            } else if([rowId isEqualToString:kPMLRowButtonId]) {
+                return kPMLHeightButton;
+            }
+            break;
+        }
         case kPMLSectionLocalization:
             return kPMLHeightOvEventRows;
         case kPMLSectionOvSummary:
@@ -1064,11 +1143,11 @@ typedef enum {
 //        NSLog(@" -> %@", p.key );
 //    }
 
-    if(_infoProvider.title == nil) {
-        cell.titleLabel.text = NSLocalizedString(@"snippet.title.notitle", @"Tap to enter a name");
-    } else {
+//    if(_infoProvider.title == nil) {
+//        cell.titleLabel.text = NSLocalizedString(@"snippet.title.notitle", @"Tap to enter a name");
+//    } else {
         cell.titleLabel.text = _infoProvider.title;
-    }
+//    }
     cell.titleDecorationImage.image = _infoProvider.titleIcon;
     
     // Tappable label for name edition
@@ -1479,6 +1558,28 @@ typedef enum {
     cell.buttonImageView.image = [UIImage imageNamed:@"btnAddBanner"];
     cell.buttonLabel.text = NSLocalizedString(@"banner.button.addPlaceBanner", @"banner.button.addPlaceBanner");
     cell.buttonContainer.backgroundColor = [UIColor clearColor];
+}
+-(void)configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell {
+    cell.activateHeadlineLabel.text = NSLocalizedString(@"deal.activate.headline", @"Get MORE clients!");
+    [cell.activateButton setTitle:NSLocalizedString(@"deal.activate.button", @"Activate your deal now") forState:UIControlStateNormal];
+}
+- (void)configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:(NSInteger)index {
+    Deal *deal = [[_infoProvider deals] objectAtIndex:index];
+    NSString *statusCode = [NSString stringWithFormat:@"deal.status.%@",deal.dealStatus];
+    NSString *statusLabel= NSLocalizedString(statusCode, statusCode);
+    NSString *template = NSLocalizedString(@"deal.twoforone.template", @"deal.twoforone.template");
+    NSString *headline = [NSString stringWithFormat:template, statusLabel];
+    
+    cell.dealHeadlineLabel.text = headline;
+    cell.dealStartLabel.text = NSLocalizedString(@"banner.list.startDateLabel", @"banner.list.startDateLabel");
+    cell.dealStartValueLabel.text = [_dateFormatter stringFromDate:deal.dealStartDate];
+}
+-(void) configureRowPlaceReportButton:(PMLButtonTableViewCell*)cell {
+    cell.buttonLabel.text= NSLocalizedString(@"deal.report.button", @"deal.report.button");
+    
+}
+-(void)configureRowDisplayDeal:(UITableViewCell*)cell forIndex:(NSInteger)row {
+    
 }
 -(NSString *) stringByStrippingHTML:(NSString*)html {
     NSRange r;

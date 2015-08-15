@@ -20,6 +20,8 @@
 #import "PMLStoreService.h"
 #import "PMLActionManager.h"
 #import "PMLStorageService.h"
+#import "Deal.h"
+
 
 @interface TogaytherService : NSObject
 
