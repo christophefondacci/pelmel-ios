@@ -20,7 +20,7 @@
 #import <AFNetworking.h>
 #import "PMLEditor.h"
 #import "PMLBanner.h"
-
+#import "PMLReportData.h"
 
 #define kPlaceListUrlFormat @"%@/mapPlaces.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@&searchLat=%f&searchLng=%f"
 #define kEventListUrlFormat @"%@/mobileEvents.action?lat=%f&lng=%f&nxtpUserToken=%@&highRes=%@"
@@ -30,6 +30,9 @@
 #define kOverviewUserUrlFormat @"%@/api/user"
 #define kBannersListUrlFormat @"%@/api/banners"
 #define kBannersCycleUrlFormat @"%@/api/banner"
+
+#define kReportingUrlFormat @"%@/admin/ownerReport"
+
 #define kLikeUrlFormat @"%@/mobileIlike?id=%@&nxtpUserToken=%@&type=%@"
 #define kPlaceUpdateUrlFormat @"%@/mobileUpdatePlace"
 #define kBannerUpdateUrlFormat @"%@/mobileUpdateBanner"
@@ -1197,5 +1200,51 @@
         }];
     });
 
+}
+
+- (void)fetchReportFor:(Place *)place timeRange:(PMLReportRange)timeRange onSuccess:(ReportingCompletionBlock)callback onFailure:(ErrorCompletionBlock)errorCompletion {
+    
+    NSString *url = [[NSString alloc] initWithFormat:kReportingUrlFormat,togaytherServer ];
+    
+    // Getting birth date components
+    NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
+    CurrentUser *user = userService.getCurrentUser;
+    
+    // Injecting parameters
+    [paramValues setObject:place.key forKey:@"placeKey"];
+    [paramValues setObject:[NSNumber numberWithInt:timeRange] forKey:@"reportPeriodDays"];
+    [paramValues setObject:user.token forKey:@"nxtpUserToken"];
+    
+    // Preparing POST request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        NSArray *reportDataList = (NSArray*)responseObject;
+        NSMutableArray *reports = [[NSMutableArray alloc] init];
+        
+        // Iterating over JSON array
+        for(NSDictionary *reportData in reportDataList) {
+            
+            // Extracting point data
+            NSNumber *reportDateTime= [reportData objectForKey:@"statDate"];
+            NSString *dataType      = [reportData objectForKey:@"statType"];
+            NSNumber *count         = [reportData objectForKey:@"count"];
+            
+            // Converting date
+            NSDate *reportDate = [NSDate dateWithTimeIntervalSince1970:reportDateTime.longValue];
+            
+            // Building model object
+            PMLReportData *data = [[PMLReportData alloc] initWithDate:reportDate type:dataType count:count];
+            
+            // Appending to our result structure
+            [reports addObject:data];
+        }
+        // Calling back
+        callback(reports);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(errorCompletion!=nil) {
+            errorCompletion(-1,error.localizedDescription);
+        }
+    }];
 }
 @end

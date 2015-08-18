@@ -474,6 +474,7 @@
 - (UIImage *)footerButtonIconAtIndex:(NSInteger)buttonIndex {
     switch(buttonIndex) {
         case 0:
+            return [UIImage imageNamed:@"snpButtonClaim"];
         case 1:
             return [UIImage imageNamed:@"snpButtonReport"];
     }

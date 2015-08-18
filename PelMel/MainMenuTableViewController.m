@@ -16,12 +16,15 @@
 #import "UIPelmelTitleView.h"
 #import "PMLMessageTableViewController.h"
 #import "FiltersViewController.h"
+#import "PMLReportingTableViewController.h"
 
-#define kSectionsCount 3
+
+#define kSectionsCount 4
 
 #define kSectionHeading 0
 #define kSectionNetwork 1
-#define kSectionSettings 2
+#define kSectionMyPlaces 2
+#define kSectionSettings 3
 
 #define kRowCountNetwork 3
 #define kRowSettingMessages 0
@@ -59,6 +62,7 @@
     // Header views
     ProfileHeaderView *_profileHeaderView;
     UIPelmelTitleView *_sectionNetworkHeaderView;
+    UIPelmelTitleView *_sectionMyPlacesHeaderView;
     UIPelmelTitleView *_sectionSettingsHeaderView;
 }
 
@@ -86,6 +90,7 @@
     // Preparing header view
     _profileHeaderView = (ProfileHeaderView*)[_uiService loadView:@"ProfileHeader"];
     _sectionNetworkHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
+    _sectionMyPlacesHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
     _sectionSettingsHeaderView = (UIPelmelTitleView*)[_uiService loadView:@"PMLHoursSectionTitleView"];
     placeTypes = [_settingsService listPlaceTypes];
 
@@ -137,6 +142,10 @@
     switch(section) {
         case kSectionNetwork:
             return kRowCountNetwork;
+        case kSectionMyPlaces: {
+            CurrentUser *user = [_userService getCurrentUser];
+            return user.ownedPlaces.count;
+        }
         case kSectionSettings:
             return kRowCountSettings;
     }
@@ -161,7 +170,7 @@
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     if(_messageService.unreadMessageCount>0) {
                         placeTypeCell.badgeLabel.hidden=NO;
-                        placeTypeCell.badgeLabel.text = [NSString stringWithFormat:@"%d",_messageService.unreadMessageCount];
+                        placeTypeCell.badgeLabel.text = [NSString stringWithFormat:@"%d",(int)_messageService.unreadMessageCount];
                     } else {
                         placeTypeCell.badgeLabel.hidden=YES;
                     }
@@ -183,6 +192,9 @@
                     break;
 
             }
+            break;
+        case kSectionMyPlaces:
+            [self configureRowMyPlace:placeTypeCell forRow:indexPath.row];
             break;
         case kSectionSettings: {
 
@@ -249,6 +261,20 @@
     
     return cell;
 }
+-(void)configureRowMyPlace:(UITablePlaceTypeViewCell*)placeTypeCell forRow:(NSInteger)row {
+    
+    Place *place = [[[_userService getCurrentUser] ownedPlaces] objectAtIndex:row];
+    placeTypeCell.label.text = place.title;
+    placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    placeTypeCell.image.image = [CALImage getDefaultThumb];
+    CALImage *image = [_imageService imageOrPlaceholderFor:place allowAdditions:NO];
+    [_imageService load:image to:placeTypeCell.image thumb:YES];
+    placeTypeCell.badgeLabel.hidden=YES;
+    placeTypeCell.image.layer.cornerRadius=15;
+    placeTypeCell.image.layer.masksToBounds=YES;
+    placeTypeCell.image.layer.borderWidth=1;
+    placeTypeCell.image.layer.borderColor=[[UIColor whiteColor] CGColor];
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     switch(section) {
@@ -266,6 +292,9 @@
         case kSectionNetwork:
             _sectionNetworkHeaderView.titleLabel.text = NSLocalizedString(@"menu.section.network",@"My network");
             return _sectionNetworkHeaderView;
+        case kSectionMyPlaces:
+            _sectionMyPlacesHeaderView.titleLabel.text = NSLocalizedString(@"menu.section.places",@"My places");
+            return _sectionMyPlacesHeaderView;
         case kSectionSettings:
             _sectionSettingsHeaderView.titleLabel.text = NSLocalizedString(@"menu.section.settings",@"My Settings");
             return _sectionSettingsHeaderView;
@@ -277,6 +306,12 @@
     switch(section) {
         case kSectionHeading:
             return _profileHeaderView.bounds.size.height;
+        case kSectionMyPlaces:
+            if([[[_userService getCurrentUser] ownedPlaces] count]>0) {
+                return _sectionMyPlacesHeaderView.bounds.size.height;
+            } else {
+                return 0;
+            }
         case kSectionNetwork:
             return _sectionNetworkHeaderView.bounds.size.height;
         case kSectionSettings:
@@ -306,6 +341,14 @@
                     break;
             }
             break;
+        case kSectionMyPlaces: {
+            CurrentUser *user = [_userService getCurrentUser];
+            
+            PMLReportingTableViewController *controller =(PMLReportingTableViewController*) [_uiService instantiateViewController:SB_ID_REPORTING];
+            controller.reportingPlace = [user.ownedPlaces objectAtIndex:indexPath.row];
+            [[[_uiService menuManagerController] navigationController] pushViewController:controller animated:YES];
+            break;
+        }
         case kSectionSettings:
             switch(indexPath.row) {
                 case kRowSettingMyBanners: {

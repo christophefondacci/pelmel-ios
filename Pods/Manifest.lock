@@ -23,7 +23,9 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - CorePlot (1.6)
   - iRate (1.11.4)
+  - JBChartView (2.8.15)
   - MBProgressHUD (0.9)
   - PBWebViewController (0.3)
   - SDWebImage (3.7.1):
@@ -34,7 +36,9 @@ PODS:
 DEPENDENCIES:
   - AFNetworkActivityLogger (~> 2.0.4)
   - AFNetworking (~> 2.2)
+  - CorePlot (~> 1.6)
   - iRate (~> 1.11.4)
+  - JBChartView (~> 2.8.15)
   - MBProgressHUD (~> 0.9)
   - PBWebViewController
   - SDWebImage (~> 3.7.1)
@@ -43,7 +47,9 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 05b9f6e3aa5ac45bc383b4bb108ef338080a26c7
+  CorePlot: 820901f6c147f2d84549ffa1f0902869f980d74d
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
+  JBChartView: d77d6a713a32547b24ccfaeba90958e7274f0c9d
   MBProgressHUD: d8e7ea388dc1549a42e0d219067cf5f2c898fb66
   PBWebViewController: 909b1505da6ba7c5c82519a6457246027926061e
   SDWebImage: ed3095af2ff88b436426037444979b917f6c5575

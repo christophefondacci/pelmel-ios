@@ -16,6 +16,7 @@
 #import "JsonService.h"
 #import "SizedTTLCacheService.h"
 #import "PMLBanner.h"
+#import "PMLReportConstants.h"
 
 @class AFNetworkReachabilityManager;
 
@@ -26,6 +27,8 @@ typedef enum {
     PMLReportTypeNotGay = 4,
     PMLReportTypeRemovalRequest = 5
 } PMLReportType;
+
+
 
 @protocol PMLDataListener
 @optional
@@ -81,6 +84,7 @@ typedef void (^UpdateBannerCompletionBlock)(PMLBanner *banner );
 typedef void (^ListBannerCompletionBlock)(NSArray *banners );
 typedef void (^UpdateCalendarCompletionBlock)(PMLCalendar *calendar );
 typedef void (^UpdateEventCompletionBlock)(Event *calendar );
+typedef void (^ReportingCompletionBlock)(NSArray *reportDataList );
 typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage );
 
 @interface DataService : NSObject <CLLocationManagerDelegate>
@@ -183,6 +187,8 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 - (void)deleteCalendar:(PMLCalendar *)calendar callback:(UpdateCalendarCompletionBlock)callback errorCallback:(ErrorCompletionBlock)errorCallback;
 
 -(void)updateEvent:(Event*)event callback:(UpdateEventCompletionBlock)callback errorCallback:(ErrorCompletionBlock)errorCallback;
+
+-(void)fetchReportFor:(Place*)place timeRange:(PMLReportRange)timeRange onSuccess:(ReportingCompletionBlock)callback onFailure:(ErrorCompletionBlock)errorCompletion;
 @end
 
 

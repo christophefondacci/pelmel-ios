@@ -112,6 +112,11 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="OpenSans-Semibold.ttf">
             <string>OpenSans-Semibold</string>
@@ -2440,6 +2445,7 @@
                         <segue destination="s47-dq-ftH" kind="push" identifier="settings" id="7db-cU-KNT"/>
                         <segue destination="hwY-Lk-EtC" kind="push" identifier="likes" id="eKE-7K-Ihn"/>
                         <segue destination="hwY-Lk-EtC" kind="push" identifier="likers" id="FQz-aE-p6t"/>
+                        <segue destination="DeF-Sr-gsx" kind="push" identifier="showReports" id="y7D-Nx-P0N"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lwM-Kf-yja" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2680,6 +2686,154 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ebg-1I-FeX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1465" y="3503"/>
+        </scene>
+        <!--Reporting Table View Controller-->
+        <scene sceneID="HPv-4p-JXj">
+            <objects>
+                <tableViewController storyboardIdentifier="reportController" id="DeF-Sr-gsx" customClass="PMLReportingTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="NKI-xU-0rV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="graphCell" rowHeight="200" id="l9q-e6-YIF" customClass="PMLGraphTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="l9q-e6-YIF" id="GbB-iZ-879">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uGN-Am-mmz" customClass="JBLineChartView">
+                                            <rect key="frame" x="20" y="24" width="300" height="145.5"/>
+                                            <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report name:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0iE-YA-fd8">
+                                            <rect key="frame" x="8" y="0.0" width="304" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="JFk-N6-yVn"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="17"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zsn-8d-Ssd">
+                                            <rect key="frame" x="0.0" y="129.5" width="18" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="b66-4c-VMn"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="11"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" translatesAutoresizingMaskIntoConstraints="NO" id="MzI-Pt-CWZ">
+                                            <rect key="frame" x="2" y="24" width="23" height="15"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="15" id="YQl-A0-L2T"/>
+                                                <constraint firstAttribute="width" constant="23" id="zKF-Tx-xyk"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="11"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPu-IQ-wfy">
+                                            <rect key="frame" x="192" y="153" width="120" height="40"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="50"/>
+                                            <color key="textColor" red="0.92549019610000005" green="0.46666666670000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2015/02/03 10:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HzA-iC-pwy">
+                                            <rect key="frame" x="8" y="169" width="181" height="30"/>
+                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="20"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="uGN-Am-mmz" firstAttribute="top" secondItem="0iE-YA-fd8" secondAttribute="bottom" id="5SA-od-RWx"/>
+                                        <constraint firstAttribute="bottom" secondItem="uGN-Am-mmz" secondAttribute="bottom" constant="30" id="6g3-yp-WnS"/>
+                                        <constraint firstItem="uGN-Am-mmz" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" constant="20" id="DKH-ui-dC1"/>
+                                        <constraint firstItem="uGN-Am-mmz" firstAttribute="leading" secondItem="zsn-8d-Ssd" secondAttribute="trailing" constant="2" id="Gec-Rp-h3e"/>
+                                        <constraint firstAttribute="trailing" secondItem="uGN-Am-mmz" secondAttribute="trailing" id="PEr-5S-NJM"/>
+                                        <constraint firstItem="MzI-Pt-CWZ" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" constant="2" id="bda-h7-0XC"/>
+                                        <constraint firstItem="MzI-Pt-CWZ" firstAttribute="top" secondItem="0iE-YA-fd8" secondAttribute="bottom" id="iWR-7a-T9W"/>
+                                        <constraint firstItem="0iE-YA-fd8" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" constant="8" id="loj-bx-jjd"/>
+                                        <constraint firstAttribute="trailing" secondItem="0iE-YA-fd8" secondAttribute="trailing" constant="8" id="pPu-N1-Ez9"/>
+                                        <constraint firstItem="zsn-8d-Ssd" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" id="quR-fP-S7A"/>
+                                        <constraint firstItem="0iE-YA-fd8" firstAttribute="top" secondItem="GbB-iZ-879" secondAttribute="top" id="ukT-Zq-ZRl"/>
+                                        <constraint firstAttribute="bottom" secondItem="zsn-8d-Ssd" secondAttribute="bottom" constant="20" id="yJi-K6-yKI"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.15294118225574493" green="0.16470588743686676" blue="0.18039216101169586" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="chartView" destination="uGN-Am-mmz" id="aL7-rq-nLf"/>
+                                    <outlet property="maxYLabel" destination="MzI-Pt-CWZ" id="tvL-zR-Lgu"/>
+                                    <outlet property="minYLabel" destination="zsn-8d-Ssd" id="VHB-It-5DS"/>
+                                    <outlet property="reportTitleLabel" destination="0iE-YA-fd8" id="Zpm-Cd-wuN"/>
+                                    <outlet property="selectionDateLabel" destination="HzA-iC-pwy" id="hoE-Nd-uwV"/>
+                                    <outlet property="selectionValueLabel" destination="dPu-IQ-wfy" id="Vgn-My-6fq"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="rangeSelector" id="nOd-hj-qcJ" customClass="PMLReportRangeSelectorTableViewCell">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nOd-hj-qcJ" id="awp-uJ-NDi">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uwi-Vr-DZZ">
+                                            <rect key="frame" x="8" y="5" width="50" height="34"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="6 mo.">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Czn-iv-Dnv">
+                                            <rect key="frame" x="71" y="5" width="50" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="3 mo.">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sct-ga-iqg">
+                                            <rect key="frame" x="135" y="5" width="50" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="1 mo.">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4a-bx-GoL">
+                                            <rect key="frame" x="262" y="5" width="50" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="24h">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ews-ZX-Em8">
+                                            <rect key="frame" x="199" y="5" width="50" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <state key="normal" title="1 week">
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                        </button>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="rangeMaxButton" destination="uwi-Vr-DZZ" id="V8X-fk-Lm0"/>
+                                    <outlet property="rangeMediumButton" destination="sct-ga-iqg" id="W0V-bh-mol"/>
+                                    <outlet property="rangeMediumHighButton" destination="Czn-iv-Dnv" id="qTa-59-ICY"/>
+                                    <outlet property="rangeMediumLowButton" destination="ews-ZX-Em8" id="yyo-Hr-nai"/>
+                                    <outlet property="rangeMinButton" destination="b4a-bx-GoL" id="FPU-hF-xTw"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="DeF-Sr-gsx" id="t97-oY-7z0"/>
+                            <outlet property="delegate" destination="DeF-Sr-gsx" id="hFq-wK-OPe"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="cOI-t0-kXD"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1yk-eV-PhT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1468" y="4083"/>
         </scene>
         <!--Filters View Controller-->
         <scene sceneID="c0l-CS-UZY">
@@ -3959,7 +4113,7 @@
                                 <rect key="frame" x="16" y="94" width="288" height="109"/>
                                 <string key="text">Claim it on PELMEL and: - See statistics and reports on users coming to your place - Lock your information - Offer deals to users to drag them to your place - Send one promotional message per week to your audience</string>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -4026,7 +4180,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claim it on PELMEL and:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rx1-ov-Ira">
                                             <rect key="frame" x="8" y="12" width="304" height="21"/>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -4053,7 +4207,7 @@
                                                 <constraint firstAttribute="width" constant="219" id="uYh-2o-arQ"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="13"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icoBulletRibbon" translatesAutoresizingMaskIntoConstraints="NO" id="I6p-HY-gNl">

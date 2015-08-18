@@ -46,6 +46,7 @@
 #import "PMLCalendarTableViewController.h"
 #import "PMLActivateDealTableViewCell.h"
 #import "PMLDealTableViewCell.h"
+#import "PMLReportingTableViewController.h"
 
 #define kPMLSettingActiveTab @"pmlActiveSnippetTab"
 
@@ -401,7 +402,7 @@ typedef enum {
                     BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
                     
                     NSInteger dealsRows = [[_infoProvider deals] count];
-                    if(isOwner) {
+                    if(isOwner || user.isAdmin) {
                         // If no deal, section to add a deal
                         if(dealsRows == 0) {
                             dealsRows++;
@@ -529,7 +530,7 @@ typedef enum {
             
             CurrentUser *user = [[TogaytherService userService] getCurrentUser];
             NSInteger dealsCount = [[_infoProvider deals] count];
-            BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
+            BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key] || user.isAdmin;
             
             // No deals, owner, first row => deal activation row
             if(isOwner && indexPath.row == 0 && dealsCount == 0) {
@@ -631,10 +632,10 @@ typedef enum {
             CurrentUser *user = [[TogaytherService userService] getCurrentUser];
             NSInteger dealsCount = [[_infoProvider deals] count];
             BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
-            if(indexPath.row == 0 && isOwner && dealsCount == 0) {
+            if(indexPath.row == 0 && (isOwner || user.isAdmin) && dealsCount == 0) {
                 [self configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell];
             } else if(indexPath.row < dealsCount) {
-                if(!isOwner) {
+                if(!isOwner && !user.isAdmin) {
                     [self configureRowDisplayDeal:nil forIndex:indexPath.row];
                 } else {
                     [self configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:indexPath.row];
@@ -994,6 +995,8 @@ typedef enum {
         case kPMLSectionOvHours:
         case kPMLSectionOvHappyHours:
             return YES;
+        case kPMLSectionDeals:
+            return ([kPMLRowButtonId isEqualToString:[self rowIdForIndexPath:indexPath]]);
         case kPMLSectionOvProperties: {
             PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
             return [p.propertyCode isEqualToString:@"website"] || [p.propertyCode isEqualToString:@"phone"];
@@ -1017,6 +1020,13 @@ typedef enum {
             break;
         case kPMLSectionActivity:
             [self activityTapped:indexPath.row];
+            break;
+        case kPMLSectionDeals:
+            if([kPMLRowButtonId isEqualToString:[self rowIdForIndexPath:indexPath]]) {
+                PMLReportingTableViewController *controller = (PMLReportingTableViewController*)[_uiService instantiateViewController:SB_ID_REPORTING];
+                controller.reportingPlace = (Place*)_snippetItem;
+                [[[_uiService menuManagerController] navigationController] pushViewController:controller animated:YES];
+            }
             break;
         case kPMLSectionOvAddress:
             [_actionManager execute:PMLActionTypeDirections onObject:_snippetItem];

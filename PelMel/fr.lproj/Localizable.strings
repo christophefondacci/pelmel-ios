@@ -453,6 +453,12 @@
 
     N'ayez crainte, nous avons simplement besoin d'un email, un mot de passe, un pseudo et votre date de naissance. Votre email sert uniquement en tant qu'identifiant unique interne à nos services et n'est jamais exposé à qui que ce soit. Nous vous encourageons à ne jamais utiliser vos informations personnelles dans votre pseudo (comme votre nom) mais d'utiliser des données qui ne permettent jamais de vous identifier personnellement.
 ";
+"reporting.graphTitles.VIEW"="Nombre de vues (utilisateurs uniques)";
+"reporting.graphTitles.LOCALIZATION_AUTO_STAT"="Utilisateurs uniques à proximité";
+"reporting.graphTitles.CHECKIN"="Checkins (utilisateurs uniques)";
+"reporting.graphTitles.DEAL"="Utilisations de la promotion";
+"reporting.graphTitles.CHECKOUT"="Checkouts (utilisateurs uniques)";
+
 "search.done.serverTitle"="Recherche mondiale ?";
 "search.done.serverMsg"="Souhaitez-vous chercher des résultats dans le monde entier ou préférez vous rester local sur votre carte actuelle ?";
 "search.done.keep"="Local";

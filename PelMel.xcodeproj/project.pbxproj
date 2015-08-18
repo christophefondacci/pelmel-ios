@@ -121,6 +121,17 @@
 		B452EDF719B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B452EDF519B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h */; };
 		B452EDF819B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B452EDF619B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m */; };
 		B452FC21169C45F100596D9E /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = B452FC20169C45F100596D9E /* Tag.m */; };
+		B455E7731B8009B0002B79E0 /* PMLReportingTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7711B8009B0002B79E0 /* PMLReportingTableViewController.h */; };
+		B455E7741B8009B0002B79E0 /* PMLReportingTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E7721B8009B0002B79E0 /* PMLReportingTableViewController.m */; };
+		B455E7771B8009EF002B79E0 /* PMLReportData.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7751B8009EF002B79E0 /* PMLReportData.h */; };
+		B455E7781B8009EF002B79E0 /* PMLReportData.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E7761B8009EF002B79E0 /* PMLReportData.m */; };
+		B455E77B1B800EF0002B79E0 /* PMLGraphTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7791B800EF0002B79E0 /* PMLGraphTableViewCell.h */; };
+		B455E77C1B800EF0002B79E0 /* PMLGraphTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E77A1B800EF0002B79E0 /* PMLGraphTableViewCell.m */; };
+		B455E7821B82625C002B79E0 /* JBLineChartFooterView.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7801B82625C002B79E0 /* JBLineChartFooterView.h */; };
+		B455E7831B82625C002B79E0 /* JBLineChartFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E7811B82625C002B79E0 /* JBLineChartFooterView.m */; };
+		B455E7851B82643E002B79E0 /* JBFontConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7841B82643E002B79E0 /* JBFontConstants.h */; };
+		B455E7881B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7861B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h */; };
+		B455E7891B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E7871B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m */; };
 		B457A0E61A980DDA00207D8E /* PMLEventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B457A0E51A980DDA00207D8E /* PMLEventTableViewCell.xib */; };
 		B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B457A0E71A999C3E00207D8E /* PMLEventTableViewCell.h */; };
 		B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B457A0E81A999C3E00207D8E /* PMLEventTableViewCell.m */; };
@@ -619,6 +630,18 @@
 		B452EDF619B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPlaceTypesThumbProvider.m; sourceTree = "<group>"; };
 		B452FC1F169C45F100596D9E /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; };
 		B452FC20169C45F100596D9E /* Tag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tag.m; sourceTree = "<group>"; };
+		B455E7711B8009B0002B79E0 /* PMLReportingTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLReportingTableViewController.h; sourceTree = "<group>"; };
+		B455E7721B8009B0002B79E0 /* PMLReportingTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLReportingTableViewController.m; sourceTree = "<group>"; };
+		B455E7751B8009EF002B79E0 /* PMLReportData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLReportData.h; sourceTree = "<group>"; };
+		B455E7761B8009EF002B79E0 /* PMLReportData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLReportData.m; sourceTree = "<group>"; };
+		B455E7791B800EF0002B79E0 /* PMLGraphTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLGraphTableViewCell.h; sourceTree = "<group>"; };
+		B455E77A1B800EF0002B79E0 /* PMLGraphTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLGraphTableViewCell.m; sourceTree = "<group>"; };
+		B455E7801B82625C002B79E0 /* JBLineChartFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBLineChartFooterView.h; sourceTree = "<group>"; };
+		B455E7811B82625C002B79E0 /* JBLineChartFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JBLineChartFooterView.m; sourceTree = "<group>"; };
+		B455E7841B82643E002B79E0 /* JBFontConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JBFontConstants.h; sourceTree = "<group>"; };
+		B455E7861B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLReportRangeSelectorTableViewCell.h; sourceTree = "<group>"; };
+		B455E7871B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLReportRangeSelectorTableViewCell.m; sourceTree = "<group>"; };
+		B455E78A1B82A08F002B79E0 /* PMLReportConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLReportConstants.h; sourceTree = "<group>"; };
 		B457A0E51A980DDA00207D8E /* PMLEventTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLEventTableViewCell.xib; sourceTree = "<group>"; };
 		B457A0E71A999C3E00207D8E /* PMLEventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLEventTableViewCell.h; sourceTree = "<group>"; };
 		B457A0E81A999C3E00207D8E /* PMLEventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLEventTableViewCell.m; sourceTree = "<group>"; };
@@ -1204,6 +1227,15 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
+		B455E7701B80098F002B79E0 /* Reporting */ = {
+			isa = PBXGroup;
+			children = (
+				B455E7711B8009B0002B79E0 /* PMLReportingTableViewController.h */,
+				B455E7721B8009B0002B79E0 /* PMLReportingTableViewController.m */,
+			);
+			name = Reporting;
+			sourceTree = "<group>";
+		};
 		B457A0F71A9AEFB000207D8E /* Event */ = {
 			isa = PBXGroup;
 			children = (
@@ -1242,12 +1274,20 @@
 		B47523F81B7BFB2300FD5B22 /* Deals */ = {
 			isa = PBXGroup;
 			children = (
+				B455E7841B82643E002B79E0 /* JBFontConstants.h */,
+				B455E7801B82625C002B79E0 /* JBLineChartFooterView.h */,
+				B455E7811B82625C002B79E0 /* JBLineChartFooterView.m */,
 				B47523F91B7BFB4A00FD5B22 /* PMLActivateDealTableViewCell.xib */,
 				B47523FB1B7BFE3A00FD5B22 /* PMLDealTableViewCell.xib */,
 				B47523FD1B7C049300FD5B22 /* PMLDealTableViewCell.h */,
 				B47523FE1B7C049300FD5B22 /* PMLDealTableViewCell.m */,
 				B47524011B7C055800FD5B22 /* PMLActivateDealTableViewCell.h */,
 				B47524021B7C055800FD5B22 /* PMLActivateDealTableViewCell.m */,
+				B455E7791B800EF0002B79E0 /* PMLGraphTableViewCell.h */,
+				B455E77A1B800EF0002B79E0 /* PMLGraphTableViewCell.m */,
+				B455E7861B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h */,
+				B455E7871B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m */,
+				B455E78A1B82A08F002B79E0 /* PMLReportConstants.h */,
 			);
 			name = Deals;
 			sourceTree = "<group>";
@@ -1527,6 +1567,7 @@
 		B4D560B4160C9555003A738E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B455E7701B80098F002B79E0 /* Reporting */,
 				B4BA87E01B14D4E500612214 /* Maps */,
 				B43143F51B02986100B189BA /* Advertising */,
 				B4AA0A591AFABDCD00DCDE29 /* Activities */,
@@ -1648,6 +1689,8 @@
 				B4CCFD121B4F50BA002D34DA /* PMLRecipientsGroup.m */,
 				B47524051B7C241800FD5B22 /* Deal.h */,
 				B47524061B7C241800FD5B22 /* Deal.m */,
+				B455E7751B8009EF002B79E0 /* PMLReportData.h */,
+				B455E7761B8009EF002B79E0 /* PMLReportData.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1904,6 +1947,7 @@
 				B4BA87DE1B0FD43100612214 /* PMLBannerListTableViewController.h in Headers */,
 				B47A69CC1AA693EA00877B58 /* PMLThumbView.h in Headers */,
 				B4A47D301AE0852F000178BD /* PMLWebViewController.h in Headers */,
+				B455E7851B82643E002B79E0 /* JBFontConstants.h in Headers */,
 				B406CA43197D0F8300A7FFE2 /* PMLPlaceAnnotationView.h in Headers */,
 				B43D11791A97A603008476C7 /* UIImage+ImageEffects.h in Headers */,
 				B4CC31211B2F440800E755DA /* ChatViewCell.h in Headers */,
@@ -1954,6 +1998,7 @@
 				B4BA87E31B14D50100612214 /* PMLMiniMapViewController.h in Headers */,
 				B49892F5199B839500F51B8F /* PMLImageTableViewCell.h in Headers */,
 				B406CA47197D126300A7FFE2 /* MKCustomMapView.h in Headers */,
+				B455E7731B8009B0002B79E0 /* PMLReportingTableViewController.h in Headers */,
 				B4726FB91B56B74900441BDF /* PMLNetworkUsersAdditionPhotoProvider.h in Headers */,
 				B4726FC11B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.h in Headers */,
 				B4A47D201ADE0827000178BD /* AUIAutoGrowingTextView.h in Headers */,
@@ -1967,6 +2012,7 @@
 				B45B38241AB0C1F200730313 /* PMLSnippetDescTableViewCell.h in Headers */,
 				B41DD754197B5FA5008F09D9 /* UIAttachmentView.h in Headers */,
 				B47A69D71AA7843B00877B58 /* PMLThumbHeaderView.h in Headers */,
+				B455E7881B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h in Headers */,
 				B4270E1C19F631B700620773 /* PMLUserActionsView.h in Headers */,
 				B45E049C1B0A8B970013357B /* PMLGenericEditorBehavior.h in Headers */,
 				B4D26A7219DE1637004C5991 /* NSData+Conversion.h in Headers */,
@@ -1981,6 +2027,7 @@
 				B43D11731A97A12B008476C7 /* PresentingSpringAnimator.h in Headers */,
 				B46AD73519E509580021E1DE /* PMLSnippetLikeTableViewCell.h in Headers */,
 				B457A1121A9D93D200207D8E /* PMLFakeViewController.h in Headers */,
+				B455E7821B82625C002B79E0 /* JBLineChartFooterView.h in Headers */,
 				B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */,
 				B43123AD1ACDBDFB008EF107 /* PMLHelpService.h in Headers */,
 				B43143EE1B0270E900B189BA /* PMLBanner.h in Headers */,
@@ -1991,6 +2038,7 @@
 				B47A69C61AA6927D00877B58 /* PMLThumbCollectionViewController.h in Headers */,
 				B43123A91ACDB141008EF107 /* Arrow.h in Headers */,
 				B4CCFD0B1B4F4E9F002D34DA /* PMLManagedRecipientsGroup.h in Headers */,
+				B455E7771B8009EF002B79E0 /* PMLReportData.h in Headers */,
 				B43E9ADE19F47F5300F91FC1 /* PMLAddTableViewCell.h in Headers */,
 				B46AD72C19E0E1E50021E1DE /* SettingsTableViewController.h in Headers */,
 				B4CCFD131B4F50BA002D34DA /* PMLRecipientsGroup.h in Headers */,
@@ -2038,6 +2086,7 @@
 				B4BA87EF1B17953B00612214 /* PMLActionManager.h in Headers */,
 				B47523EE1B7A681100FD5B22 /* PMLPurchaseTableViewController.h in Headers */,
 				B4AA0A571AFABB7100DCDE29 /* PMLPhotosCollectionViewController.h in Headers */,
+				B455E77B1B800EF0002B79E0 /* PMLGraphTableViewCell.h in Headers */,
 				B49C97261AB35EB8009B9F8F /* PMLEventDescriptionTableViewCell.h in Headers */,
 				B41DD75A197BD9DA008F09D9 /* UIMapOptionView.h in Headers */,
 				B457A1161A9E374E00207D8E /* PMLModalTransitionAnimator.h in Headers */,
@@ -2386,6 +2435,7 @@
 				B4BB9F1319D7E8840070B03C /* PMLCityInfoProvider.m in Sources */,
 				B4B503FA161EC7AC002D5669 /* ProfileTableViewController.m in Sources */,
 				B4B503FE161ED611002D5669 /* HeightPickerDataSource.m in Sources */,
+				B455E7781B8009EF002B79E0 /* PMLReportData.m in Sources */,
 				B4B50401161EF150002D5669 /* DatePickerDataSource.m in Sources */,
 				B4B50404161F0194002D5669 /* ProfileHeaderView.m in Sources */,
 				B4DE4E921B2F398800748ECB /* PMLMessagingContainerController.m in Sources */,
@@ -2426,6 +2476,7 @@
 				B4726FC21B5712BC00441BDF /* PMLNetworkCheckinsTableViewController.m in Sources */,
 				B4CC31501B3278B000E755DA /* PMLChatLoaderViewCell.m in Sources */,
 				B45CAB3319721BD40089C7E8 /* DynamicObject.m in Sources */,
+				B455E77C1B800EF0002B79E0 /* PMLGraphTableViewCell.m in Sources */,
 				B4BB9F0D19D4F9260070B03C /* HPGrowingTextView.m in Sources */,
 				B4CCFD041B4F4E9F002D34DA /* PMLManagedMessage.m in Sources */,
 				B4EECADC162C15F9005F80DE /* UITableGridImageCell.m in Sources */,
@@ -2468,6 +2519,7 @@
 				B4CCFD0C1B4F4E9F002D34DA /* PMLManagedRecipientsGroup.m in Sources */,
 				B452FC21169C45F100596D9E /* Tag.m in Sources */,
 				B43143F41B0296A900B189BA /* PMLBannerEditorTableViewCell.m in Sources */,
+				B455E7831B82625C002B79E0 /* JBLineChartFooterView.m in Sources */,
 				B47523F71B7A995700FD5B22 /* PMLTextViewTableViewCell.m in Sources */,
 				B4A290BC16A6BB03007F5AA9 /* TogaytherHeaderView.m in Sources */,
 				B4A290BF16A6C49C007F5AA9 /* UITableNoResultViewCell.m in Sources */,
@@ -2483,6 +2535,8 @@
 				B405E6671A93C04900C49F64 /* PMLCalendarTableViewController.m in Sources */,
 				B457A10B1A9D914100207D8E /* UIViewController+BackButtonHandler.m in Sources */,
 				B45BBF03196AB883001C1DF5 /* UIWaitingView.m in Sources */,
+				B455E7741B8009B0002B79E0 /* PMLReportingTableViewController.m in Sources */,
+				B455E7891B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m in Sources */,
 				B4A47D2D1AE07C4E000178BD /* PMLPropertyTableViewCell.m in Sources */,
 				B45B38251AB0C1F200730313 /* PMLSnippetDescTableViewCell.m in Sources */,
 				B47A69DC1AA7992500877B58 /* StickyHeaderFlowLayout.m in Sources */,

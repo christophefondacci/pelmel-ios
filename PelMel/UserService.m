@@ -232,6 +232,23 @@
         // Creating user
         _currentUser = [[CurrentUser alloc] initWithLogin:login password:password token:token];
         [jsonService fillUser:_currentUser fromJson:jsonLoginResponse];
+        
+        // Parsing extra JSON info
+        NSNumber *emailValidated    = [jsonLoginResponse objectForKey:@"emailValidated"];
+        NSNumber *isAdmin           = [jsonLoginResponse objectForKey:@"admin"];
+        NSArray *jsonOwnedPlaces    = [jsonLoginResponse objectForKey:@"ownedPlaces"];
+        NSMutableArray *ownedPlaces = [[NSMutableArray alloc] init];
+        
+        // Processing places
+        for(NSDictionary *jsonPlace in jsonOwnedPlaces) {
+            Place *ownedPlace = [jsonService convertJsonPlaceToPlace:jsonPlace];
+            [ownedPlaces addObject:ownedPlace];
+        }
+        _currentUser.ownedPlaces = ownedPlaces;
+        _currentUser.isEmailValidated = emailValidated.boolValue;
+        _currentUser.isAdmin = isAdmin.boolValue;
+        
+        
         //                _currentUser.hasOverviewData = YES;
         [cacheService setObject:_currentUser forKey:_currentUser.key];
         

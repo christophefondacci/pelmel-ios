@@ -18,6 +18,9 @@
 @property (nonatomic,retain) NSArray *networkPendingApprovals;
 @property (nonatomic,retain) NSArray *networkPendingRequests;
 @property (nonatomic,retain) NSArray *networkUsers;
+@property (nonatomic) BOOL isEmailValidated;
+@property (nonatomic) BOOL isAdmin;
+@property (nonatomic,retain) NSArray *ownedPlaces;
 
 /**
  * Convenience initializer

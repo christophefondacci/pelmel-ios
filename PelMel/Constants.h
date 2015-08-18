@@ -52,6 +52,7 @@
 #define SB_ID_NETWORK @"networkController"
 #define SB_ID_NETWORK_CHECKINS @"networkCheckins"
 #define SB_ID_PURCHASE @"purchaseController"
+#define SB_ID_REPORTING @"reportController"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
