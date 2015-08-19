@@ -53,6 +53,7 @@
 #define SB_ID_NETWORK_CHECKINS @"networkCheckins"
 #define SB_ID_PURCHASE @"purchaseController"
 #define SB_ID_REPORTING @"reportController"
+#define SB_ID_USE_DEAL @"useDealController"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 
@@ -107,4 +108,8 @@
 #define kPMLBannerStatusDeleted @"DELETED"
 
 #define kPMLBannerCycleTimeSeconds 10
+
+// Deals
+#define DEAL_STATUS_RUNNING @"RUNNING"
+#define DEAL_STATUS_PAUSED @"PAUSED"
 #endif

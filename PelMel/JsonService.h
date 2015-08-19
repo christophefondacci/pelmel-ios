@@ -17,6 +17,7 @@
 #import "PMLCalendar.h"
 #import "PMLBanner.h"
 #import "CurrentUser.h"
+#import "Deal.h"
 
 @interface JsonService : NSObject
 
@@ -70,7 +71,13 @@
  * @return the corresponding model as a PMLCalendar bean
  */
 - (PMLCalendar*)convertJsonCalendarToCalendar:(NSDictionary*)jsonHour forPlace:(Place*)place defaultCalendar:(PMLCalendar*)calendar;
-
+/**
+ * Converts a JsonDeal bean to a Deal model object
+ * @param jsonDeal the JSON map structure
+ * @param place the place for this deal (/!\ place is not yet extracted from JSON)
+ * @return the corresponding Deal object (refreshed from cache or new instance)
+ */
+-(Deal*)convertJsonDealToDeal:(NSDictionary*)jsonDeal forPlace:(Place*)place;
 /**
  * Retrieves an object instance from its key
  */

@@ -132,6 +132,13 @@
 		B455E7851B82643E002B79E0 /* JBFontConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7841B82643E002B79E0 /* JBFontConstants.h */; };
 		B455E7881B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7861B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h */; };
 		B455E7891B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E7871B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m */; };
+		B455E78C1B83B9CE002B79E0 /* PMLDealDisplayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B455E78B1B83B9CE002B79E0 /* PMLDealDisplayTableViewCell.xib */; };
+		B455E78E1B83BDAD002B79E0 /* SourceSansPro-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B455E78D1B83BDAD002B79E0 /* SourceSansPro-Semibold.ttf */; };
+		B455E7911B83C06B002B79E0 /* PMLDealDisplayTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E78F1B83C06B002B79E0 /* PMLDealDisplayTableViewCell.h */; };
+		B455E7921B83C06B002B79E0 /* PMLDealDisplayTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E7901B83C06B002B79E0 /* PMLDealDisplayTableViewCell.m */; };
+		B455E7951B83D926002B79E0 /* PMLUseDealViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B455E7931B83D926002B79E0 /* PMLUseDealViewController.h */; };
+		B455E7961B83D926002B79E0 /* PMLUseDealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B455E7941B83D926002B79E0 /* PMLUseDealViewController.m */; };
+		B455E7981B83DAAC002B79E0 /* SourceSansPro-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B455E7971B83DAAC002B79E0 /* SourceSansPro-Bold.ttf */; };
 		B457A0E61A980DDA00207D8E /* PMLEventTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B457A0E51A980DDA00207D8E /* PMLEventTableViewCell.xib */; };
 		B457A0E91A999C3E00207D8E /* PMLEventTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B457A0E71A999C3E00207D8E /* PMLEventTableViewCell.h */; };
 		B457A0EA1A999C3E00207D8E /* PMLEventTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B457A0E81A999C3E00207D8E /* PMLEventTableViewCell.m */; };
@@ -642,6 +649,13 @@
 		B455E7861B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLReportRangeSelectorTableViewCell.h; sourceTree = "<group>"; };
 		B455E7871B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLReportRangeSelectorTableViewCell.m; sourceTree = "<group>"; };
 		B455E78A1B82A08F002B79E0 /* PMLReportConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PMLReportConstants.h; sourceTree = "<group>"; };
+		B455E78B1B83B9CE002B79E0 /* PMLDealDisplayTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLDealDisplayTableViewCell.xib; sourceTree = "<group>"; };
+		B455E78D1B83BDAD002B79E0 /* SourceSansPro-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Semibold.ttf"; sourceTree = "<group>"; };
+		B455E78F1B83C06B002B79E0 /* PMLDealDisplayTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLDealDisplayTableViewCell.h; sourceTree = "<group>"; };
+		B455E7901B83C06B002B79E0 /* PMLDealDisplayTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLDealDisplayTableViewCell.m; sourceTree = "<group>"; };
+		B455E7931B83D926002B79E0 /* PMLUseDealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLUseDealViewController.h; sourceTree = "<group>"; };
+		B455E7941B83D926002B79E0 /* PMLUseDealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLUseDealViewController.m; sourceTree = "<group>"; };
+		B455E7971B83DAAC002B79E0 /* SourceSansPro-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Bold.ttf"; sourceTree = "<group>"; };
 		B457A0E51A980DDA00207D8E /* PMLEventTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PMLEventTableViewCell.xib; sourceTree = "<group>"; };
 		B457A0E71A999C3E00207D8E /* PMLEventTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLEventTableViewCell.h; sourceTree = "<group>"; };
 		B457A0E81A999C3E00207D8E /* PMLEventTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLEventTableViewCell.m; sourceTree = "<group>"; };
@@ -1227,13 +1241,15 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
-		B455E7701B80098F002B79E0 /* Reporting */ = {
+		B455E7701B80098F002B79E0 /* Deals */ = {
 			isa = PBXGroup;
 			children = (
 				B455E7711B8009B0002B79E0 /* PMLReportingTableViewController.h */,
 				B455E7721B8009B0002B79E0 /* PMLReportingTableViewController.m */,
+				B455E7931B83D926002B79E0 /* PMLUseDealViewController.h */,
+				B455E7941B83D926002B79E0 /* PMLUseDealViewController.m */,
 			);
-			name = Reporting;
+			name = Deals;
 			sourceTree = "<group>";
 		};
 		B457A0F71A9AEFB000207D8E /* Event */ = {
@@ -1288,6 +1304,9 @@
 				B455E7861B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.h */,
 				B455E7871B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m */,
 				B455E78A1B82A08F002B79E0 /* PMLReportConstants.h */,
+				B455E78B1B83B9CE002B79E0 /* PMLDealDisplayTableViewCell.xib */,
+				B455E78F1B83C06B002B79E0 /* PMLDealDisplayTableViewCell.h */,
+				B455E7901B83C06B002B79E0 /* PMLDealDisplayTableViewCell.m */,
 			);
 			name = Deals;
 			sourceTree = "<group>";
@@ -1567,7 +1586,7 @@
 		B4D560B4160C9555003A738E /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				B455E7701B80098F002B79E0 /* Reporting */,
+				B455E7701B80098F002B79E0 /* Deals */,
 				B4BA87E01B14D4E500612214 /* Maps */,
 				B43143F51B02986100B189BA /* Advertising */,
 				B4AA0A591AFABDCD00DCDE29 /* Activities */,
@@ -1705,6 +1724,8 @@
 				B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */,
 				B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */,
 				B4BA87E91B16209400612214 /* SourceSansPro-Regular.ttf */,
+				B455E78D1B83BDAD002B79E0 /* SourceSansPro-Semibold.ttf */,
+				B455E7971B83DAAC002B79E0 /* SourceSansPro-Bold.ttf */,
 				B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */,
 				B4FC957E19B1E28B00269E74 /* Sari-Light.otf */,
 				B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */,
@@ -2038,6 +2059,7 @@
 				B47A69C61AA6927D00877B58 /* PMLThumbCollectionViewController.h in Headers */,
 				B43123A91ACDB141008EF107 /* Arrow.h in Headers */,
 				B4CCFD0B1B4F4E9F002D34DA /* PMLManagedRecipientsGroup.h in Headers */,
+				B455E7951B83D926002B79E0 /* PMLUseDealViewController.h in Headers */,
 				B455E7771B8009EF002B79E0 /* PMLReportData.h in Headers */,
 				B43E9ADE19F47F5300F91FC1 /* PMLAddTableViewCell.h in Headers */,
 				B46AD72C19E0E1E50021E1DE /* SettingsTableViewController.h in Headers */,
@@ -2067,6 +2089,7 @@
 				B4FC959F19B1F85D00269E74 /* PMLDescriptionTableViewCell.h in Headers */,
 				B41C63B819B311BE003C9B52 /* PMLContextInfoProvider.h in Headers */,
 				B4859DB8197FC6810036D8FF /* PopupAction.h in Headers */,
+				B455E7911B83C06B002B79E0 /* PMLDealDisplayTableViewCell.h in Headers */,
 				B4BB9F0119D4E2460070B03C /* PMLChatTimeTableViewCell.h in Headers */,
 				B4A4666819A73A0B004ADC7E /* PMLInfoProvider.h in Headers */,
 				B43D11751A97A12B008476C7 /* SpringTransitioningDelegate.h in Headers */,
@@ -2203,6 +2226,7 @@
 				B47523FC1B7BFE3A00FD5B22 /* PMLDealTableViewCell.xib in Resources */,
 				B47523FA1B7BFB4A00FD5B22 /* PMLActivateDealTableViewCell.xib in Resources */,
 				B4D56089160B673F003A738E /* MainStoryboard_iPhone.storyboard in Resources */,
+				B455E7981B83DAAC002B79E0 /* SourceSansPro-Bold.ttf in Resources */,
 				B4D5608C160B673F003A738E /* MainStoryboard_iPad.storyboard in Resources */,
 				B45BBEFB196AB76C001C1DF5 /* UIWaitingView.xib in Resources */,
 				B4BA87EA1B16209400612214 /* SourceSansPro-Regular.ttf in Resources */,
@@ -2221,6 +2245,7 @@
 				B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */,
 				B41830C2197CA89900B7E2DD /* UIMapPopupView.xib in Resources */,
 				B4AA0A611AFACBB800DCDE29 /* PMLPhotoLoadingView.xib in Resources */,
+				B455E78E1B83BDAD002B79E0 /* SourceSansPro-Semibold.ttf in Resources */,
 				B406AB4C1613881E0053E067 /* Localizable.strings in Resources */,
 				B4CC314C1B3276FC00E755DA /* PMLChatLoaderViewCell.xib in Resources */,
 				B45C3C5C1AB757B700D8B321 /* Launch Screen.xib in Resources */,
@@ -2236,6 +2261,7 @@
 				B49C97231AB2AEE7009B9F8F /* JsonService in Resources */,
 				B41A13F2163942C600827E04 /* TogaytherHeaderView.xib in Resources */,
 				B4BA87D11B0DA48D00612214 /* OpenSans-Light.ttf in Resources */,
+				B455E78C1B83B9CE002B79E0 /* PMLDealDisplayTableViewCell.xib in Resources */,
 				B4BD19111AE5CAB000510AC4 /* PMLChatLoaderView.xib in Resources */,
 				B47A69D41AA7837200877B58 /* PMLThumbHeaderView.xib in Resources */,
 				B4E9120C169ACD4E005D3CAF /* TogaytherTitleView.xib in Resources */,
@@ -2454,6 +2480,7 @@
 				B4B504151621DE95002D5669 /* UITableMeasureViewCell.m in Sources */,
 				B4592A861622CF35009688B8 /* UITableDescriptionViewCell.m in Sources */,
 				B4270E1D19F631B700620773 /* PMLUserActionsView.m in Sources */,
+				B455E7921B83C06B002B79E0 /* PMLDealDisplayTableViewCell.m in Sources */,
 				B4A47D251AE06071000178BD /* PMLPhotoPickerPreviewViewController.m in Sources */,
 				B40668B419713AF20012DF71 /* MenuAction.m in Sources */,
 				B43143F91B02987B00B189BA /* PMLBannerEditorTableViewController.m in Sources */,
@@ -2539,6 +2566,7 @@
 				B455E7891B829953002B79E0 /* PMLReportRangeSelectorTableViewCell.m in Sources */,
 				B4A47D2D1AE07C4E000178BD /* PMLPropertyTableViewCell.m in Sources */,
 				B45B38251AB0C1F200730313 /* PMLSnippetDescTableViewCell.m in Sources */,
+				B455E7961B83D926002B79E0 /* PMLUseDealViewController.m in Sources */,
 				B47A69DC1AA7992500877B58 /* StickyHeaderFlowLayout.m in Sources */,
 				B406CA48197D126300A7FFE2 /* MKCustomMapView.m in Sources */,
 				B4859DBD197FC7FF0036D8FF /* PMLPopupActionManager.m in Sources */,

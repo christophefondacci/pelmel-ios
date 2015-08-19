@@ -204,8 +204,13 @@
 "counters.network.friends"="Friends";
 "deal.activate.headline"="Get MORE clients!";
 "deal.activate.button"="Activate your deal NOW";
+"deal.activate.errorTitle"="Error";
+"deal.activate.errorMsg"="A problem occurred while trying to activate this deal. Please try again or contact an administrator.";
+"deal.present"="PRESENT TO BARTENDER";
 "deal.report.button"="View my statistics";
-"deal.twoforone.template"="2 for 1 deal %@";
+"deal.type.TWO_FOR_ONE"="Buy 1st drink / Get 1 free";
+"deal.use.countdown"="Activation in %d";
+"deal.use.legal"="This deal is offered by %@, not by us.\nYou certify being of legal age to use the deal";
 
 //"counters.likes.singular"="%d Like";
 "description"="Description";

@@ -189,6 +189,14 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 -(void)updateEvent:(Event*)event callback:(UpdateEventCompletionBlock)callback errorCallback:(ErrorCompletionBlock)errorCallback;
 
 -(void)fetchReportFor:(Place*)place timeRange:(PMLReportRange)timeRange onSuccess:(ReportingCompletionBlock)callback onFailure:(ErrorCompletionBlock)errorCompletion;
+
+/**
+ * Activates the deal for the given place
+ * @param place the Place to activate the deal for
+ * @param successCallback the completor to call when the call succeeds
+ * @param errorCompletion called whenever a problem occurred (deal already activated, not owner of place, connection issues)
+ */
+-(void)activateDealFor:(Place*)place onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
 @end
 
 

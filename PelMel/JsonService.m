@@ -57,6 +57,27 @@
         return nil;
     }
 }
+-(Deal*)convertJsonDealToDeal:(NSDictionary*)jsonDeal forPlace:(Place*)place {
+    NSString *key               = [jsonDeal objectForKey:@"key"];
+    NSString *relatedItemKey    = [jsonDeal objectForKey:@"relatedItemKey"];
+    NSString *status            = [jsonDeal objectForKey:@"status"];
+    NSString *type              = [jsonDeal objectForKey:@"type"];
+    NSNumber *startTime         = [jsonDeal objectForKey:@"startDate"];
+    
+    Deal *deal = [_objectCache objectForKey:key];
+    if(deal == nil) {
+        deal = [[Deal alloc ] init];
+        [_objectCache setObject:deal forKey:key];
+    }
+    
+    // Filling deal
+    deal.key = key;
+    deal.relatedObject = place;
+    deal.dealStartDate = [[NSDate alloc] initWithTimeIntervalSince1970:startTime.longValue];
+    deal.dealType = type;
+    deal.dealStatus = status;
+    return deal;
+}
 -(void)fillPlace:(Place*)place fromJsonPlace:(NSDictionary*)json {
     
     // Owner management
@@ -67,24 +88,9 @@
     NSArray *jsonDeals          = [json objectForKey:@"deals"];
     NSMutableArray *deals       = [NSMutableArray new];
     for(NSDictionary *jsonDeal in jsonDeals) {
-        NSString *key               = [jsonDeal objectForKey:@"key"];
-        NSString *relatedItemKey    = [jsonDeal objectForKey:@"relatedItemKey"];
-        NSString *status            = [jsonDeal objectForKey:@"status"];
-        NSString *type              = [jsonDeal objectForKey:@"type"];
-        NSNumber *startTime         = [jsonDeal objectForKey:@"startDate"];
         
-        Deal *deal = [_objectCache objectForKey:key];
-        if(deal == nil) {
-            deal = [[Deal alloc ] init];
-            [_objectCache setObject:deal forKey:key];
-        }
-        
-        // Filling deal
-        deal.key = key;
-        deal.relatedObject = place;
-        deal.dealStartDate = [[NSDate alloc] initWithTimeIntervalSince1970:startTime.longValue];
-        deal.dealType = type;
-        deal.dealStatus = status;
+        // Building Deal bean
+        Deal *deal = [self convertJsonDealToDeal:jsonDeal forPlace:place];
         
         // Augmenting deal array
         [deals addObject:deal];

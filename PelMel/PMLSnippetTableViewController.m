@@ -47,6 +47,8 @@
 #import "PMLActivateDealTableViewCell.h"
 #import "PMLDealTableViewCell.h"
 #import "PMLReportingTableViewController.h"
+#import "PMLDealDisplayTableViewCell.h"
+#import "PMLUseDealViewController.h"
 
 #define kPMLSettingActiveTab @"pmlActiveSnippetTab"
 
@@ -94,6 +96,7 @@
 
 #define kPMLRowDealActivateId @"dealActivate"
 #define kPMLRowDealInfoId @"dealInfo"
+#define kPMLRowDealDisplayId @"dealDisplay"
 #define kPMLRowDealStatsButtonId @"dealStats"
 
 #define kPMLOvSummaryRows 0
@@ -268,6 +271,7 @@ typedef enum {
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowButtonId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLActivateDealTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealActivateId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLDealTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealInfoId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLDealDisplayTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealDisplayId];
     // Loading header views
     _eventPlaceTabsTitleView = (PMLEventPlaceTabsTitleView*)[_uiService loadView:@"PMLEventPlaceTabsTitleView"];
     _eventPlaceTabsTitleView.delegate = self;
@@ -537,7 +541,7 @@ typedef enum {
                 return kPMLRowDealActivateId;
             } else if(!isOwner && indexPath.row < dealsCount) {
                 // Not owner, displaying deal
-                return kPMLRowDealInfoId;
+                return kPMLRowDealDisplayId;
             } else if(isOwner && indexPath.row < dealsCount) {
                 // Owner, displaying deal stats
                 return kPMLRowDealInfoId;
@@ -636,7 +640,8 @@ typedef enum {
                 [self configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell];
             } else if(indexPath.row < dealsCount) {
                 if(!isOwner && !user.isAdmin) {
-                    [self configureRowDisplayDeal:nil forIndex:indexPath.row];
+                    cell.backgroundColor = [UIColor blackColor];
+                    [self configureRowDisplayDeal:(PMLDealDisplayTableViewCell*)cell forIndex:indexPath.row];
                 } else {
                     [self configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:indexPath.row];
                 }
@@ -757,6 +762,8 @@ typedef enum {
                 return 102;
             } else if([rowId isEqualToString:kPMLRowDealInfoId]) {
                 return 102;
+            } else if([rowId isEqualToString:kPMLRowDealDisplayId]) {
+                return 149;
             } else if([rowId isEqualToString:kPMLRowButtonId]) {
                 return kPMLHeightButton;
             }
@@ -1572,24 +1579,36 @@ typedef enum {
 -(void)configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell {
     cell.activateHeadlineLabel.text = NSLocalizedString(@"deal.activate.headline", @"Get MORE clients!");
     [cell.activateButton setTitle:NSLocalizedString(@"deal.activate.button", @"Activate your deal now") forState:UIControlStateNormal];
+    [cell.activateButton addTarget:self action:@selector(didTapActivateDeal:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:(NSInteger)index {
     Deal *deal = [[_infoProvider deals] objectAtIndex:index];
     NSString *statusCode = [NSString stringWithFormat:@"deal.status.%@",deal.dealStatus];
     NSString *statusLabel= NSLocalizedString(statusCode, statusCode);
-    NSString *template = NSLocalizedString(@"deal.twoforone.template", @"deal.twoforone.template");
-    NSString *headline = [NSString stringWithFormat:template, statusLabel];
+    NSString *dealTypeCode = [NSString stringWithFormat:@"deal.type.%@",deal.dealType];
+    NSString *dealType = NSLocalizedString(dealTypeCode,dealTypeCode);
+    NSString *headline = [NSString stringWithFormat:@"%@ %@", dealType, statusLabel];
     
     cell.dealHeadlineLabel.text = headline;
     cell.dealStartLabel.text = NSLocalizedString(@"banner.list.startDateLabel", @"banner.list.startDateLabel");
     cell.dealStartValueLabel.text = [_dateFormatter stringFromDate:deal.dealStartDate];
+    if([deal.dealStatus isEqualToString:DEAL_STATUS_RUNNING]) {
+        [cell.dealActivationButton setImage:[UIImage imageNamed:@"btnPause"] forState:UIControlStateNormal];
+    } else {
+        [cell.dealActivationButton setImage:[UIImage imageNamed:@"btnPlay"] forState:UIControlStateNormal];
+    }
 }
 -(void) configureRowPlaceReportButton:(PMLButtonTableViewCell*)cell {
     cell.buttonLabel.text= NSLocalizedString(@"deal.report.button", @"deal.report.button");
     
 }
--(void)configureRowDisplayDeal:(UITableViewCell*)cell forIndex:(NSInteger)row {
-    
+-(void)configureRowDisplayDeal:(PMLDealDisplayTableViewCell*)cell forIndex:(NSInteger)row {
+    Deal *deal = [[_infoProvider deals] objectAtIndex:row];
+    NSString *dealTypeCode = [NSString stringWithFormat:@"deal.type.%@",deal.dealType];
+    NSString *dealType = NSLocalizedString(dealTypeCode,dealTypeCode);
+    cell.dealTitle.text = dealType;
+    cell.dealConditionLabel.text = nil;
+    [cell.useDealButton addTarget:self action:@selector(useDealTapped:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(NSString *) stringByStrippingHTML:(NSString*)html {
     NSRange r;
@@ -2261,5 +2280,29 @@ typedef enum {
     [self.tableView reloadData];
     [self saveActiveTab];
     return YES;
+}
+-(void)didTapActivateDeal:(UIButton*)button {
+    Place *place = (Place*)_snippetItem;
+    [_dataService activateDealFor:place onSuccess:^(id obj) {
+        Deal *deal = (Deal*)obj;
+        BOOL hasDeal = NO;
+        for(Deal *placeDeal in place.deals) {
+            if([placeDeal.key isEqualToString:deal.key]) {
+                hasDeal = YES;
+                break;
+            }
+        }
+        if(!hasDeal) {
+            [place.deals addObject:deal];
+        }
+        [self.tableView reloadData];
+    } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+        [_uiService alertWithTitle:@"deal.activate.errorTitle" text:@"deal.activate.errorMsg"];
+    }];
+}
+-(void)useDealTapped:(UIButton*)button {
+    PMLUseDealViewController *useDealController = (PMLUseDealViewController*)[_uiService instantiateViewController:SB_ID_USE_DEAL];
+    useDealController.deal = [[_infoProvider deals] objectAtIndex:0];
+    [[[_uiService menuManagerController] navigationController] pushViewController:useDealController animated:YES];
 }
 @end

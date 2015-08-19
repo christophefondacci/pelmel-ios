@@ -207,10 +207,16 @@
 "counters.network.friends"="Amis";
 "deal.activate.headline"="Attirez PLUS de clients !";
 "deal.activate.button"="Activez une promotion MAINTENANT";
+"deal.activate.errorTitle"="Erreur";
+"deal.activate.errorMsg"="Un problème est survenu lors de l'activation de la promotion. Essayez à nouveau ou contactez un administrateur si le problème persiste.";
+"deal.present"="PRESENTER AU BARMAN";
 "deal.report.button"="Voir mes statistiques";
-"deal.twoforone.template"="1 acheté = 1 offert %@";
+"deal.type.TWO_FOR_ONE"="Buy 1st drink / Get 1 free";
 "deal.status.RUNNING"="ACTIVE";
 "deal.status.PAUSED"="PAUSED";
+"deal.use.countdown"="Activation dans %d";
+"deal.use.legal"="Cette promo est offerte par %@, pas par nous.\nVous devez avoir l'âge légal pour utiliser cette promo.";
+
 "description"="Description";
 "description.placeholder"="Ecrire en %@";
 "description.edition.title"="Choisissez votre langue";
