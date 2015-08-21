@@ -11,7 +11,7 @@
 #import "PMLButtonTableViewCell.h"
 #import "PMLTextViewTableViewCell.h"
 #import "TogaytherService.h"
-
+#import <MBProgressHUD.h>
 #define kSectionCount 1
 
 #define kSectionFeatures 0
@@ -19,7 +19,8 @@
 #define kRowFeatureIntro 1
 #define kRowFeatureListOffset 2
 
-#define kCellIdButton @"buttonCell"
+#define kCellIdButton @"purchaseButtonCell"
+
 
 @interface PMLPurchaseTableViewController ()
 
@@ -31,7 +32,15 @@
     [super viewDidLoad];
     
     self.tableView.separatorColor = [UIColor clearColor];
-    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kCellIdButton];
+//    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kCellIdButton];
+
+    self.view.backgroundColor = UIColorFromRGB(0x141A2F);
+    self.tableView.backgroundColor = UIColorFromRGB(0x141A2F);
+    self.tableView.opaque=YES;
+    self.tableView.separatorColor = UIColorFromRGB(0x141A2F);
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.showsHorizontalScrollIndicator = NO;
+    
     self.view.layer.cornerRadius = 5;
     self.view.layer.masksToBounds=YES;
     self.view.layer.borderWidth=2;
@@ -50,6 +59,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(purchaseSuccess:) name:PML_NOTIFICATION_PAYMENT_DONE object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(purchaseFailed:) name:PML_NOTIFICATION_PAYMENT_FAILED object:nil];
+}
+- (void)viewWillDisappear:(BOOL)animated {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
+}
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -111,9 +127,11 @@
     cell.titleLabel.text = [_provider featureIntroLabel];
 }
 -(void)configurePurchaseCell:(PMLButtonTableViewCell*)cell {
-    cell.buttonLabel.text = [_provider purchaseButtonLabel];
-    cell.buttonImageView.image = [_provider purchaseButtonIcon];
-    cell.backgroundColor = [UIColor clearColor];
+    [cell.button setTitle:[_provider purchaseButtonLabel] forState:UIControlStateNormal];
+    [cell.button addTarget:self action:@selector(purchaseTapped) forControlEvents:UIControlEventTouchUpInside];
+//    cell.buttonLabel.text = [_provider purchaseButtonLabel];
+//    cell.buttonImageView.image = [_provider purchaseButtonIcon];
+//    cell.backgroundColor = [UIColor clearColor];
 }
 
 -(void)configureFeatureCell:(PMLImagedTitleTableViewCell*)cell atIndex:(NSInteger)index {
@@ -135,13 +153,13 @@
                     return 44;
                 default:
                     if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-2) {
-                        return 62;
+                        return 95;
                     } else if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-1) {
                         UITextView *templateView = [[UITextView alloc] init];
                         templateView.text =NSLocalizedString(@"purchase.claim.terms",@"Terms");
                         return [templateView sizeThatFits:CGSizeMake(self.tableView.bounds.size.width-10,MAXFLOAT)].height;
                     } else {
-                        return 24;
+                        return 32;
                     }
             }
     }
@@ -152,7 +170,7 @@
     switch(indexPath.section) {
         case kSectionFeatures:
             if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-2) {
-                [_provider didTapPurchaseButton];
+                [self purchaseTapped];
             }
             break;
     }
@@ -201,5 +219,18 @@
     // Pass the selected object to the new view controller.
 }
 */
-
+-(void)purchaseTapped {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString(@"banner.store.payment.inprogress",@"banner.store.payment.inprogress");
+    [hud show:YES];
+    [_provider didTapPurchaseButton];
+}
+- (void)purchaseSuccess:(NSNotification*)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+- (void)purchaseFailed:(NSNotification*)notification {
+    [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+}
 @end

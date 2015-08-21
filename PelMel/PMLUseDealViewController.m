@@ -8,11 +8,16 @@
 
 #import "PMLUseDealViewController.h"
 #import "TogaytherService.h"
+#import "Deal.h"
 
 #define kPhaseAlphaDuration 1.0
 #define kPhaseAngleDuration 2.0
 
-#define kDealPressMinTime 2
+#define kSuccessAnimationDuration 0.5
+
+#define kCircleDefaultSize 200.0
+
+#define kDealPressMinTime 2.0
 
 @interface PMLUseDealViewController ()
 
@@ -58,13 +63,14 @@
     
     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
     CALImage *image = [[TogaytherService imageService] imageOrPlaceholderFor:user allowAdditions:NO];
-    [[TogaytherService imageService] load:image to:self.userThumbImage thumb:YES];
+    [[TogaytherService imageService] load:image to:self.userThumbImage thumb:NO];
     self.userNicknameLabel.text = user.pseudo;
     
     
     NSString *template = NSLocalizedString(@"deal.use.legal",@"deal.use.legal");
     self.legalLabel.text = [NSString stringWithFormat:template, self.title];
     [self refreshPresentLabel];
+    self.dealCountLabel.text = nil;
     
     // Wiring button actions
     [self.dealButton addTarget:self action:@selector(didStartDealTap:) forControlEvents:UIControlEventTouchDown];
@@ -96,6 +102,8 @@
 - (void)didStartDealTap:(UIButton*)button {
     self.greenOverlay.hidden = NO;
     self.greenOverlay.alpha = 0;
+    self.greenOverlay.backgroundColor = UIColorFromRGB(0xA1E3BB);
+    self.dealCountLabel.text = nil;
     self.canProceedWithDeal = NO;
     [self.pressTimer invalidate];
     self.pressTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(dealCountdown) userInfo:nil repeats:YES];
@@ -103,6 +111,18 @@
     [self refreshCountdown];
     [UIView animateWithDuration:kDealPressMinTime delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         self.greenOverlay.alpha = 0.9;
+    } completion:NULL];
+
+    [self resizeCircles:kCircleDefaultSize+60 duration:kDealPressMinTime/4];
+
+}
+-(void)resizeCircles:(CGFloat)size duration:(NSTimeInterval)duration {
+    self.circleWidthConstraint.constant = size;
+    self.circleHeightConstraint.constant = size;
+    [self.view setNeedsUpdateConstraints];
+    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        
+        [self.view layoutIfNeeded];
     } completion:NULL];
 }
 -(void)refreshCountdown {
@@ -123,6 +143,7 @@
             self.greenOverlay.alpha=0;
         } completion:NULL];
         [self refreshPresentLabel];
+        [self resizeCircles:kCircleDefaultSize duration:0.1];
     }
 }
 -(void)dealCountdown {
@@ -137,7 +158,20 @@
 }
 -(void)proceedWithDeal {
     NSLog(@"Can Proceed");
-    self.presentLabel.text=@"Processing...";
+    self.presentLabel.text=NSLocalizedString(@"deal.activation.message", @"deal.activation.message");
+    [[TogaytherService dataService] useDeal:self.deal onSuccess:^(id obj) {
+        Deal *deal = (Deal*)obj;
+        self.presentLabel.text = NSLocalizedString(@"deal.proceed",@"Proceed with the deal");
+        self.dealCountLabel.text = [NSString stringWithFormat:@"# %d",(int)deal.usedToday];
+        [self resizeCircles:1 duration:kSuccessAnimationDuration];
+    } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+        [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+            self.greenOverlay.backgroundColor = UIColorFromRGBAlpha(0xff0000, 0.7f);
+        } completion:NULL];
+        [self resizeCircles:1 duration:kSuccessAnimationDuration];
+        self.presentLabel.text = @"DENIED!";
+//        [[TogaytherService uiService] alertError];
+    }];
 }
 /*
 #pragma mark - Navigation

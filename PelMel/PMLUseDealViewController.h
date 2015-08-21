@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *legalLabel;
 @property (weak, nonatomic) IBOutlet UIView *greenOverlay;
 @property (weak, nonatomic) IBOutlet UIButton *dealButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *circleWidthConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *circleHeightConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *dealCountLabel;
 
 @property (nonatomic,weak) Deal *deal;
 

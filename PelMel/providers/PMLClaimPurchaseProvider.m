@@ -44,7 +44,17 @@
     return NSLocalizedString(labelCode, @"feature");
 }
 - (UIImage *)featureIconAtIndex:(NSInteger)index {
-    return [UIImage imageNamed:@"icoBulletRibbon"];
+    switch(index) {
+        case 0:
+            return [UIImage imageNamed:@"icoClaimStats"];
+        case 1:
+            return [UIImage imageNamed:@"icoClaimLock"];
+        case 2:
+            return [UIImage imageNamed:@"icoClaimDeal"];
+        case 3:
+            return [UIImage imageNamed:@"icoClaimMessage"];
+    }
+    return nil;
 }
 - (NSInteger)featuresCount {
     return kFeaturesCount;

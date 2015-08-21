@@ -84,23 +84,23 @@
     for(CALObject *item in items) {
         if(![_itemKeys containsObject:item.key]) {
             [_itemKeys addObject:item.key];
-            UIImage *icon;
-            switch(type) {
-                case PMLThumbsCheckin:
-                    icon = [UIImage imageNamed:@"snpDecoratorCheckin"];
-                    break;
-                case PMLThumbsLike:
-                    icon = [UIImage imageNamed:@"snpDecoratorLike"];
-                    break;
-                case PMLThumbChatUsers:
-                    icon = [UIImage imageNamed:PML_ICON_COMMENT];
-                    break;
-                default:
-                    icon = nil;
-            }
-            if(icon != nil) {
-                [_itemsTypes setObject:icon forKey:item.key];
-            }
+//            UIImage *icon;
+//            switch(type) {
+//                case PMLThumbsCheckin:
+//                    icon = [UIImage imageNamed:@"snpDecoratorCheckin"];
+//                    break;
+//                case PMLThumbsLike:
+//                    icon = [UIImage imageNamed:@"snpDecoratorLike"];
+//                    break;
+//                case PMLThumbChatUsers:
+//                    icon = [UIImage imageNamed:PML_ICON_COMMENT];
+//                    break;
+//                default:
+//                    icon = nil;
+//            }
+//            if(icon != nil) {
+//                [_itemsTypes setObject:icon forKey:item.key];
+//            }
         }
         if(![typedItems containsObject:item]) {
             [typedItems addObject:item];

@@ -197,6 +197,7 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
  * @param errorCompletion called whenever a problem occurred (deal already activated, not owner of place, connection issues)
  */
 -(void)activateDealFor:(Place*)place onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
+-(void)useDeal:(Deal*)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
 @end
 
 

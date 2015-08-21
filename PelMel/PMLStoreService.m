@@ -15,6 +15,9 @@
 #define kPMLKeyPendingBannerPayment @"banner.pendingPayment"
 #define kPMLKeyPendingClaimedPlacePayment @"placeClaimed.pendingPayment"
 
+typedef enum {
+    PMLPaymentTypeBanner, PMLPaymentTypeClaim
+} PMLPaymentType;
 
 @interface PMLStoreService ()
 
@@ -135,13 +138,23 @@
         [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
     } else {
         
-        if([transaction.payment.productIdentifier hasPrefix:kPMLProductBannerPrefix]) {
-            [self completeBannerPayment:transaction receipt:receipt];
-        } else if([transaction.payment.productIdentifier isEqualToString:kPMLProductClaim30]) {
-            [self completeClaimPayment:transaction receipt:receipt];
+        switch([self paymentType:transaction]) {
+            case PMLPaymentTypeBanner:
+                [self completeBannerPayment:transaction receipt:receipt];
+                break;
+            case PMLPaymentTypeClaim:
+                [self completeClaimPayment:transaction receipt:receipt];
+                break;
         }
+
     }
-    
+}
+-(PMLPaymentType)paymentType:(SKPaymentTransaction*)transaction {
+    if([transaction.payment.productIdentifier hasPrefix:kPMLProductBannerPrefix]) {
+        return PMLPaymentTypeBanner;
+    } else {
+        return PMLPaymentTypeClaim;
+    }
 }
 -(void)completeClaimPayment:(SKPaymentTransaction*)transaction receipt:(NSData*)receipt {
     // Building URL string
@@ -154,7 +167,6 @@
     // Getting pending purchase
     NSString *placeKey = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLKeyPendingClaimedPlacePayment];
     
-
     // We might be called before login so we need to check if we have a token
     if(user.token != nil) {
         // Building params list
@@ -169,16 +181,33 @@
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"success");
-            [[TogaytherService uiService] alertWithTitle:@"store.claim.paymentDone.title" text:@"store.claim.paymentDone"];
+            // Parsing place response
+            Place *place = [[TogaytherService getJsonService] convertJsonOverviewPlaceToPlace:(NSDictionary*)responseObject defaultPlace:nil];
+            
+            // Ensuring place is part of owned user places
+            BOOL owned = NO;
+            for(Place *ownedPlace in user.ownedPlaces) {
+                if([ownedPlace.key isEqualToString:place.key]) {
+                    owned = YES;
+                    break;
+                }
+            }
+            // Adding place
+            if(!owned) {
+                user.ownedPlaces = [user.ownedPlaces arrayByAddingObject:place];
+            }
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PAYMENT_DONE object:place];
+//            [[TogaytherService uiService] alertWithTitle:@"store.claim.paymentDone.title" text:@"store.claim.paymentDone"];
             [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
             [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
             
             // Resetting overview info
-            if(placeKey!=nil) {
-                CALObject *place = [[TogaytherService getJsonService] objectForKey:placeKey];
-                place.hasOverviewData = NO;
-                [[TogaytherService dataService] getOverviewData:place];
-            }
+//            if(placeKey!=nil) {
+//                CALObject *place = [[TogaytherService getJsonService] objectForKey:placeKey];
+//                place.hasOverviewData = NO;
+//                [[TogaytherService dataService] getOverviewData:place];
+//            }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"failure");
             [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
@@ -226,9 +255,20 @@
 }
 -(void)failedTransaction:(SKPaymentTransaction*)transaction {
     NSLog(@"failedTransaction");
-    [[TogaytherService uiService] alertWithTitle:@"banner.store.paymentFailed.title" text:@"banner.store.paymentFailed"];
+    NSString *msg = nil;
+    switch([self paymentType:transaction]) {
+        case PMLPaymentTypeBanner:
+            msg = @"banner.store.paymentFailed";
+            break;
+        case PMLPaymentTypeClaim:
+        default:
+            msg = @"store.paymentFailed";
+            break;
+    }
+    [[TogaytherService uiService] alertWithTitle:@"banner.store.paymentFailed.title" text:msg];
     [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
     [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
+    [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PAYMENT_FAILED object:self];
 }
 
 - (void)setUserService:(UserService *)userService {

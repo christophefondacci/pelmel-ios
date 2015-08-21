@@ -10,6 +10,12 @@
 #import <CoreLocation/CoreLocation.h>
 #import "TogaytherService.h"
 
+@interface ConversionService()
+@property (nonatomic,retain) NSCache *calendarCache;
+@property (nonatomic,retain) NSDateFormatter *eventDateFormatter;
+@property (nonatomic,retain) NSDateFormatter *eventDateFormatterTimeOnly;
+@property (nonatomic,retain) NSArray *daySymbols;
+@end
 @implementation ConversionService {
     CLGeocoder *_geocoder;
     NSDateFormatter *_eventDateFormatter;
@@ -21,10 +27,16 @@
     if (self) {
         _geocoder = [[CLGeocoder alloc] init];
         _eventDateFormatter = [[NSDateFormatter alloc] init];
+        _eventDateFormatterTimeOnly = [[NSDateFormatter alloc] init];
+        _calendarCache = [[NSCache alloc ] init];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        _daySymbols = [formatter shortStandaloneWeekdaySymbols];
         NSString *formatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMMhmma" options:0
                                                                   locale:[NSLocale currentLocale]];
-
         [_eventDateFormatter setDateFormat:formatString];
+        formatString = [NSDateFormatter dateFormatFromTemplate:@"hmma" options:0
+                                                       locale:[NSLocale currentLocale]];
+        [_eventDateFormatterTimeOnly setDateFormat:formatString];
     }
     return self;
 }
@@ -212,8 +224,8 @@
     return hasData ? NO : defaultResult;
 }
 -(NSString *)stringFromCalendar:(PMLCalendar *)calendar {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    NSArray *daySymbols = [formatter shortStandaloneWeekdaySymbols];
+
+
     
     
     // Building a list from days
@@ -261,9 +273,9 @@
         }
         // If not enabled we print last range
         if (!enabled && start != nil) {
-            buf = [buf stringByAppendingFormat:@"%@%@",sep,daySymbols[start.intValue ]];
+            buf = [buf stringByAppendingFormat:@"%@%@",sep,_daySymbols[start.intValue ]];
             if (i > start.intValue + 1) {
-                buf = [buf stringByAppendingFormat:@"-%@",daySymbols[i-1]];
+                buf = [buf stringByAppendingFormat:@"-%@",_daySymbols[i-1]];
             }
             sep = @", ";
             start = nil;
@@ -272,9 +284,9 @@
     }
     // Last part may not have been added
     if (start != nil) {
-        buf = [buf stringByAppendingFormat:@"%@%@",sep,daySymbols[start.intValue ]];
+        buf = [buf stringByAppendingFormat:@"%@%@",sep,_daySymbols[start.intValue ]];
         if (i > start.intValue + 1) {
-            buf = [buf stringByAppendingFormat:@"-%@",daySymbols[i-1]];
+            buf = [buf stringByAppendingFormat:@"-%@",_daySymbols[i-1]];
         }
     }
     if (allTrue) {
@@ -292,15 +304,25 @@
 }
 
 - (NSString *)stringForHours:(NSInteger)hours minutes:(NSInteger)minutes {
-    NSDateFormatter *fullClockFormatter = [[NSDateFormatter alloc]init];
-    [fullClockFormatter setDateFormat:@"HH:mm"];
+    NSNumber *hoursKey = [NSNumber numberWithInt:hours*100+minutes];
+    
+    // Cache lookup because this is a common function which might be used in tableview display
+    NSString *localizedStartTime = [_calendarCache objectForKey:hoursKey];
+    if(localizedStartTime == nil) {
+        NSDateFormatter *fullClockFormatter = [[NSDateFormatter alloc]init];
+        [fullClockFormatter setDateFormat:@"HH:mm"];
+        
+        NSString *startTimeStr = [NSString stringWithFormat:@"%02d:%02ld",(int)hours%24,(long)minutes];
+        NSDate *startTime = [fullClockFormatter dateFromString:startTimeStr];
+        
+        [fullClockFormatter setDateStyle:NSDateFormatterNoStyle];
+        [fullClockFormatter setTimeStyle:NSDateFormatterShortStyle];
+        localizedStartTime = [fullClockFormatter stringFromDate:startTime];
+        
+        [_calendarCache setObject:localizedStartTime forKey:hoursKey];
+    }
 
-    NSDate *startTime = [fullClockFormatter dateFromString:[NSString stringWithFormat:@"%02d:%02ld",(int)hours%24,(long)minutes]];
-
-    [fullClockFormatter setDateStyle:NSDateFormatterNoStyle];
-    [fullClockFormatter setTimeStyle:NSDateFormatterShortStyle];
-    NSString *localStartTime = [fullClockFormatter stringFromDate:startTime];
-    return localStartTime;
+    return localizedStartTime;
 }
 
 -(NSDictionary*)hashHoursByType:(CALObject*)object {
@@ -345,18 +367,15 @@
     return [self stringForEventDate:date timeOnly:timeOnly timezoneId:event.place.timezoneId];
 }
 -(NSString *)stringForEventDate:(NSDate*)date timeOnly:(BOOL)timeOnly timezoneId:(NSString *)timezone {
-    NSString *template=@"EdMMMhmma";
+    NSDateFormatter *formatter = _eventDateFormatter;
     if(timeOnly) {
-        template = @"hmma";
+        formatter = _eventDateFormatterTimeOnly;
     }
-    NSString *formatString = [NSDateFormatter dateFormatFromTemplate:template options:0
-                                                              locale:[NSLocale currentLocale]];
     if(timezone != nil) {
-        [_eventDateFormatter setTimeZone:[NSTimeZone timeZoneWithName:timezone]];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:timezone]];
     } else {
-        [_eventDateFormatter setTimeZone:[NSTimeZone defaultTimeZone]];
+        [formatter setTimeZone:[NSTimeZone defaultTimeZone]];
     }
-    [_eventDateFormatter setDateFormat:formatString];
-    return [_eventDateFormatter stringFromDate:date];
+    return [formatter stringFromDate:date];
 }
 @end

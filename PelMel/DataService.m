@@ -33,6 +33,8 @@
 
 #define kReportingUrlFormat @"%@/admin/ownerReport"
 #define kActivateDealUrlFormat @"%@/mobileActivateDeal"
+#define kUseDealUrlFormat @"%@/mobileUseDeal"
+
 
 #define kLikeUrlFormat @"%@/mobileIlike?id=%@&nxtpUserToken=%@&type=%@"
 #define kPlaceUpdateUrlFormat @"%@/mobileUpdatePlace"
@@ -1268,6 +1270,32 @@
         Deal *deal = [jsonService convertJsonDealToDeal:(NSDictionary*)responseObject forPlace:place];
         if(successCallback) {
             successCallback(deal);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if(errorCompletion) {
+            errorCompletion(-1, error.localizedDescription);
+        }
+    }];
+}
+
+- (void)useDeal:(Deal *)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion {
+    NSString *url = [[NSString alloc] initWithFormat:kUseDealUrlFormat,togaytherServer ];
+    
+    // Getting birth date components
+    NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
+    CurrentUser *user = userService.getCurrentUser;
+    
+    // Injecting parameters
+    [paramValues setObject:deal.key forKey:@"dealKey"];
+    [paramValues setObject:user.token forKey:@"nxtpUserToken"];
+    
+    // Preparing POST request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        Deal *newDeal = [jsonService convertJsonDealToDeal:(NSDictionary*)responseObject forPlace:(Place*)deal.relatedObject];
+        if(successCallback) {
+            successCallback(newDeal);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if(errorCompletion) {

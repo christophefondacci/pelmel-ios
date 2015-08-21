@@ -206,7 +206,9 @@
 "deal.activate.button"="Activate your deal NOW";
 "deal.activate.errorTitle"="Error";
 "deal.activate.errorMsg"="A problem occurred while trying to activate this deal. Please try again or contact an administrator.";
+"deal.activation.message"="Activating the deal...";
 "deal.present"="PRESENT TO BARTENDER";
+"deal.proceed"="PROCEED WITH THE DEAL";
 "deal.report.button"="View my statistics";
 "deal.type.TWO_FOR_ONE"="Buy 1st drink / Get 1 free";
 "deal.use.countdown"="Activation in %d";
@@ -417,10 +419,10 @@
 "purchase.claim.header"="Is this your";
 "purchase.claim.headerPlaceTypeTemplate"="%@?";
 "purchase.claim.intro"="Claim this %@ on PELMEL and:";
-"purchase.claim.feature.0"="Access real-time analytics on your customers";
-"purchase.claim.feature.1"="Lock your information on PELMEL";
-"purchase.claim.feature.2"="Offer deals to get more client";
-"purchase.claim.feature.3"="Send weekly messages to your customers";
+"purchase.claim.feature.0"="Access real-time analytics";
+"purchase.claim.feature.1"="Lock your information";
+"purchase.claim.feature.2"="Offer deals to get more clients";
+"purchase.claim.feature.3"="Weekly message your customers";
 "purchase.claim.terms"="Subscription valid for 30 days and will auto-renew unless auto-renew is turned off at least 24 hours before the end of the current period. Payment will be charged to your Apple iTunes account. Subscriptions may be managed and auto-renewal may be turned off by going to the Account Settings section of your iTunes account after purchase. No cancellation of the current subscription is allowed during the active subscription period.";
 
 "push.permission.title"="Enable push?";
@@ -458,7 +460,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "reporting.graphTitles.VIEW"="Number of views (unique user)";
 "reporting.graphTitles.LOCALIZATION_AUTO_STAT"="Nearby unique users";
 "reporting.graphTitles.CHECKIN"="Unique users check-ins";
-"reporting.graphTitles.DEAL"="Deals use";
+"reporting.graphTitles.DEAL_USED"="Deals use";
 "reporting.graphTitles.CHECKOUT"="Unique users check-outs";
 
 "search.done.serverTitle"="Search worldwide?";
@@ -535,7 +537,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "store.claim.paymentDone.title"="Congratulations!";
 "store.claim.paymentDone"="Your purchase has been made and you now have ownership of your place on PELMEL and can access your reports.";
 "store.claim.paymentFailed.title"="Purchase failed!";
-"store.claim.paymentFailed"="We were unable to proceed with your purchase.";
+"store.paymentFailed"="We were unable to proceed with your purchase.";
 "tabs.deals"="Deals";
 "tabs.events"="Events";
 "tabs.places"="Hangouts";

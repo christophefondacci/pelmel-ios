@@ -16,6 +16,8 @@
 #define PML_PROP_USER_LAST_TOKEN @"pmlUserLastToken"
 
 #define PML_NOTIFICATION_PUSH_RECEIVED @"pmlPushReceived"
+#define PML_NOTIFICATION_PAYMENT_DONE @"pmlPaymentDone"
+#define PML_NOTIFICATION_PAYMENT_FAILED @"pmlPaymentFailed"
 #define PML_NOTIFICATION_PRODUCTS_LOADED @"pmlProductsLoaded"  // Products definition loaded from App Store
 
 #define VIEW_INDEX_PLACES 0

@@ -63,6 +63,7 @@
     NSString *status            = [jsonDeal objectForKey:@"status"];
     NSString *type              = [jsonDeal objectForKey:@"type"];
     NSNumber *startTime         = [jsonDeal objectForKey:@"startDate"];
+    NSNumber *usedToday         = [jsonDeal objectForKey:@"usedToday"];
     
     Deal *deal = [_objectCache objectForKey:key];
     if(deal == nil) {
@@ -76,6 +77,7 @@
     deal.dealStartDate = [[NSDate alloc] initWithTimeIntervalSince1970:startTime.longValue];
     deal.dealType = type;
     deal.dealStatus = status;
+    deal.usedToday = usedToday.integerValue;
     return deal;
 }
 -(void)fillPlace:(Place*)place fromJsonPlace:(NSDictionary*)json {

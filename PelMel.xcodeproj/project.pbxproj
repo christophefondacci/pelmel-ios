@@ -114,6 +114,8 @@
 		B43E9ADF19F47F5300F91FC1 /* PMLAddTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B43E9ADD19F47F5300F91FC1 /* PMLAddTableViewCell.m */; };
 		B43FA67619866ECD008A1679 /* Activity.h in Headers */ = {isa = PBXBuildFile; fileRef = B43FA67419866ECD008A1679 /* Activity.h */; };
 		B43FA67719866ECD008A1679 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = B43FA67519866ECD008A1679 /* Activity.m */; };
+		B4474C941B854C7E00A3C23A /* SourceSansPro-ExtraLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4474C921B854C7E00A3C23A /* SourceSansPro-ExtraLight.ttf */; };
+		B4474C951B854C7E00A3C23A /* SourceSansPro-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4474C931B854C7E00A3C23A /* SourceSansPro-Light.ttf */; };
 		B449DEE216245B6600C362F8 /* ImageService.m in Sources */ = {isa = PBXBuildFile; fileRef = B449DEE116245B6600C362F8 /* ImageService.m */; };
 		B449DEE51625F3F100C362F8 /* PhotoManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B449DEE41625F3F100C362F8 /* PhotoManagerViewController.m */; };
 		B449DEE81626AA9700C362F8 /* UITablePhotoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B449DEE71626AA9600C362F8 /* UITablePhotoViewCell.m */; };
@@ -467,9 +469,6 @@
 		B4EECAF616300218005F80DE /* UITableSegmentViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4EECAF516300218005F80DE /* UITableSegmentViewCell.m */; };
 		B4FC957B19AF3B4B00269E74 /* PMLEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = B4FC957919AF3B4B00269E74 /* PMLEditor.h */; };
 		B4FC957C19AF3B4B00269E74 /* PMLEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = B4FC957A19AF3B4B00269E74 /* PMLEditor.m */; };
-		B4FC958019B1E28B00269E74 /* Sari-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */; };
-		B4FC958119B1E28B00269E74 /* Sari-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC957E19B1E28B00269E74 /* Sari-Light.otf */; };
-		B4FC958219B1E28B00269E74 /* Sari-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */; };
 		B4FC958519B1E64A00269E74 /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC958319B1E64A00269E74 /* OpenSans-Bold.ttf */; };
 		B4FC958619B1E64A00269E74 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4FC958419B1E64A00269E74 /* OpenSans-Regular.ttf */; };
 		B4FC958A19B1EFAC00269E74 /* PMLSnippetTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4FC958819B1EFAC00269E74 /* PMLSnippetTableViewCell.h */; };
@@ -625,6 +624,8 @@
 		B43E9ADD19F47F5300F91FC1 /* PMLAddTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLAddTableViewCell.m; sourceTree = "<group>"; };
 		B43FA67419866ECD008A1679 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
 		B43FA67519866ECD008A1679 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
+		B4474C921B854C7E00A3C23A /* SourceSansPro-ExtraLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-ExtraLight.ttf"; sourceTree = "<group>"; };
+		B4474C931B854C7E00A3C23A /* SourceSansPro-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SourceSansPro-Light.ttf"; sourceTree = "<group>"; };
 		B449DEE016245B6600C362F8 /* ImageService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageService.h; sourceTree = "<group>"; };
 		B449DEE116245B6600C362F8 /* ImageService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageService.m; sourceTree = "<group>"; };
 		B449DEE31625F3F100C362F8 /* PhotoManagerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoManagerViewController.h; sourceTree = "<group>"; };
@@ -1029,9 +1030,6 @@
 		B4EECAF516300218005F80DE /* UITableSegmentViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableSegmentViewCell.m; sourceTree = "<group>"; };
 		B4FC957919AF3B4B00269E74 /* PMLEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLEditor.h; sourceTree = "<group>"; };
 		B4FC957A19AF3B4B00269E74 /* PMLEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLEditor.m; sourceTree = "<group>"; };
-		B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sari-ExtraBold.otf"; sourceTree = "<group>"; };
-		B4FC957E19B1E28B00269E74 /* Sari-Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sari-Light.otf"; sourceTree = "<group>"; };
-		B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Sari-Medium.otf"; sourceTree = "<group>"; };
 		B4FC958319B1E64A00269E74 /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Bold.ttf"; sourceTree = "<group>"; };
 		B4FC958419B1E64A00269E74 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		B4FC958819B1EFAC00269E74 /* PMLSnippetTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLSnippetTableViewCell.h; sourceTree = "<group>"; };
@@ -1722,13 +1720,12 @@
 				B46C4C3A19D2D27A00C81DA3 /* OpenSans-Italic.ttf */,
 				B4FC958419B1E64A00269E74 /* OpenSans-Regular.ttf */,
 				B4BA87D01B0DA48D00612214 /* OpenSans-Light.ttf */,
-				B4FC957D19B1E28B00269E74 /* Sari-ExtraBold.otf */,
 				B4BA87E91B16209400612214 /* SourceSansPro-Regular.ttf */,
 				B455E78D1B83BDAD002B79E0 /* SourceSansPro-Semibold.ttf */,
 				B455E7971B83DAAC002B79E0 /* SourceSansPro-Bold.ttf */,
+				B4474C921B854C7E00A3C23A /* SourceSansPro-ExtraLight.ttf */,
+				B4474C931B854C7E00A3C23A /* SourceSansPro-Light.ttf */,
 				B45C3C5D1AB75C6F00D8B321 /* Cooper Black.ttf */,
-				B4FC957E19B1E28B00269E74 /* Sari-Light.otf */,
-				B4FC957F19B1E28B00269E74 /* Sari-Medium.otf */,
 				B4BA87D21B0DA54600612214 /* OpenSans-Semibold.ttf */,
 				B43123A51ACDB08D008EF107 /* ComingSoon.ttf */,
 				B4A290B816A5AC9F007F5AA9 /* hd_logo_small.gif */,
@@ -2236,8 +2233,8 @@
 				B457A0E61A980DDA00207D8E /* PMLEventTableViewCell.xib in Resources */,
 				B47A69C91AA6931A00877B58 /* PMLThumbView.xib in Resources */,
 				B457A0EC1A9A658A00207D8E /* PMLSectionTitleView.xib in Resources */,
-				B4FC958219B1E28B00269E74 /* Sari-Medium.otf in Resources */,
 				B4270E1919F62E5C00620773 /* PMLUserActionsView.xib in Resources */,
+				B4474C951B854C7E00A3C23A /* SourceSansPro-Light.ttf in Resources */,
 				B45B38211AAF9F5000730313 /* PMLHoursSectionTitleView.xib in Resources */,
 				B4B560A818B76C41006E6D90 /* UIPelmelTitleView.xib in Resources */,
 				B47A69BF1AA63E3900877B58 /* PMLCountersView.xib in Resources */,
@@ -2245,15 +2242,14 @@
 				B43E761D1991012000153B46 /* PMLMainNavBarView.xib in Resources */,
 				B41830C2197CA89900B7E2DD /* UIMapPopupView.xib in Resources */,
 				B4AA0A611AFACBB800DCDE29 /* PMLPhotoLoadingView.xib in Resources */,
+				B4474C941B854C7E00A3C23A /* SourceSansPro-ExtraLight.ttf in Resources */,
 				B455E78E1B83BDAD002B79E0 /* SourceSansPro-Semibold.ttf in Resources */,
 				B406AB4C1613881E0053E067 /* Localizable.strings in Resources */,
 				B4CC314C1B3276FC00E755DA /* PMLChatLoaderViewCell.xib in Resources */,
 				B45C3C5C1AB757B700D8B321 /* Launch Screen.xib in Resources */,
 				B405E6691A93C5CF00C49F64 /* PMLAddModifyViewCell.xib in Resources */,
-				B4FC958019B1E28B00269E74 /* Sari-ExtraBold.otf in Resources */,
 				B41DD757197BD844008F09D9 /* UIMapOptionView.xib in Resources */,
 				B4B503F4161EC13D002D5669 /* ProfileHeader.xib in Resources */,
-				B4FC958119B1E28B00269E74 /* Sari-Light.otf in Resources */,
 				B4FC958519B1E64A00269E74 /* OpenSans-Bold.ttf in Resources */,
 				B4B5040F1621CE4C002D5669 /* DescriptionHeader.xib in Resources */,
 				B4AA0A6B1AFD1BD100DCDE29 /* PMLEventPlaceTabsTitleView.xib in Resources */,

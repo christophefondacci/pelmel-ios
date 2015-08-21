@@ -297,7 +297,7 @@
     for(PMLCalendar *special in _place.hours) {
 //        Event *event = [[TogaytherService getJsonService] convertSpecial:special toEventForPlace:_place];
 //        if(event != nil) {
-        if(![special.calendarType isEqualToString:SPECIAL_TYPE_OPENING]) {
+        if([special.calendarType isEqualToString:SPECIAL_TYPE_THEME]) {
             [allEvents addObject:special];
         }
     }

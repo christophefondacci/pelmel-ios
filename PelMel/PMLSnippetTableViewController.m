@@ -125,7 +125,7 @@
 #define kPMLOvHoursRows 1
 #define kPMLRowHoursTitleId @"hoursTitle"
 #define kPMLHeightOvHoursRows 20
-#define kPMLHeightOvHoursTitleRows 40
+#define kPMLHeightOvHoursTitleRows 30
 #define kPMLHeaderHeightOvHours 20
 
 #define kPMLRowEventId @"event"
@@ -147,10 +147,6 @@
 #define kPMLOvTagWidth 60
 #define kPMLOvTagInnerWidth 50
 #define kPMLMaxTagsPerRow 5
-
-#define kPMLRowActivityId @"activity"
-#define kPMLHeightActivityRows 60
-#define kPMLHeightActivityHeader 30
 
 #define kPMLReportRows 2
 #define kPMLRowClaimButton 0
@@ -485,7 +481,7 @@ typedef enum {
             case kPMLSectionSnippet:
                 return 1;
             case kPMLSectionActivity:
-                return [[_infoProvider activities] count];
+                return 0;
             case kPMLSectionTopPlaces:
                 return 0;//[[_infoProvider topPlaces] count];
             case kPMLSectionOvEvents:
@@ -587,17 +583,15 @@ typedef enum {
         case kPMLSectionOvProperties:
             return kPMLRowOvImagedTitleId;
         case kPMLSectionOvHours:
-            return indexPath.row == 0 ? kPMLRowHoursTitleId : kPMLRowTextId;
+            return indexPath.row == 0 ? @"hoursTitle" : kPMLRowTextId;
         case kPMLSectionOvHappyHours:
-            return indexPath.row == 0 ? kPMLRowHoursTitleId : kPMLRowTextId;
+            return indexPath.row == 0 ? @"hoursTitle" : kPMLRowTextId;
         case kPMLSectionOvAdvertising:
             return kPMLRowButtonId;
         case kPMLSectionOvDesc:
             return kPMLRowDescId;
         case kPMLSectionOvTags:
             return kPMLRowOvTagsId;
-        case kPMLSectionActivity:
-            return kPMLRowActivityId;
         case kPMLSectionTopPlaces:
             return kPMLRowEventId;
         case kPMLSectionButtons:
@@ -954,8 +948,6 @@ typedef enum {
         }
     } else {
         switch(section) {
-            case kPMLSectionActivity:
-                return [[_infoProvider activities] count ]>0 ? kPMLHeightActivityHeader : 0;
             case kPMLSectionTopPlaces:
 //                if([[_infoProvider topPlaces] count ]>0) {
 //                    return kPMLHeightTopPlacesHeader;
@@ -1387,7 +1379,6 @@ typedef enum {
     NSArray *components = [_infoProvider addressComponents];
 
     cell.cellTextLabel.text = (NSString*)[components objectAtIndex:row];
-    cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
     cell.cellTextLabel.textColor = [UIColor whiteColor];
 
 }
@@ -1426,19 +1417,19 @@ typedef enum {
         NSString *calLabel = [_conversionService stringFromCalendar:cal];
     
         cell.cellTextLabel.text = calLabel;
-        cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
+//        cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:16];
         cell.cellTextLabel.textColor = UIColorFromRGB(0xababac);
     } else {
         cell.cellTextLabel.text = nil;
     }
 }
 -(void)configureRowOvHoursTitle:(PMLTextTableViewCell*)cell {
-    cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:18];
+//    cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_DEFAULT size:14];
     cell.cellTextLabel.textColor = UIColorFromRGB(0x72ff00);
     cell.cellTextLabel.text = NSLocalizedString(@"snippet.title.hours", @"Opening hours");
 }
 -(void)configureRowOvHappyHoursTitle:(PMLTextTableViewCell*)cell {
-    cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:18];
+//    cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:18];
     cell.cellTextLabel.textColor = UIColorFromRGB(0xfff600);
     cell.cellTextLabel.text = NSLocalizedString(@"snippet.title.happyhours", @"Happy hours");
 }
@@ -2051,50 +2042,6 @@ typedef enum {
     if([_snippetItem isKindOfClass:[Place class]]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
     }
-    
-    // TODO Avoid the class test here
-//    if([_snippetItem isKindOfClass:[User class]] && ![_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
-//        return;
-//    }
-//    // Computing if we are at the bottom of the scroll view
-//    CGPoint offset = self.tableView.contentOffset;
-//    CGRect bounds = self.tableView.bounds;
-//    CGSize size = self.tableView.contentSize;
-//    UIEdgeInsets inset = self.tableView.contentInset;
-//    CGRect snippetFrame = self.parentMenuController.bottomView.frame;
-//    float y = offset.y + bounds.size.height - inset.bottom - snippetFrame.origin.y;
-//    float h = size.height;
-//    
-//    float reload_distance = 50;
-//    BOOL bottom = NO;
-//    if(y > (h - reload_distance)) {
-//        bottom = YES;
-//    }
-//    // Showing edit button if scrolled beyond gallery OR if already at the bottom of the screen
-//    if(_editVisible == PMLVisibityStateInvisible && (self.tableView.contentOffset.y >kPMLHeightGallery || bottom) && _opened) {
-//        _editVisible = PMLVisibityStateTransitioning;
-//        if(self.navigationItem.rightBarButtonItem==nil) {
-//            [self installNavBarEdit];
-//        }
-//        [UIView animateWithDuration:0.3 animations:^{
-//            self.navigationItem.rightBarButtonItem.customView.alpha=1;
-//        } completion:^(BOOL finished) {
-//            _editVisible = PMLVisibityStateVisible;
-//            
-//            // Showing help if needed
-//            if(_didOpened && [_snippetItem isKindOfClass:[Place class]]) {
-//                [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_EDIT object:self];
-//            }
-//        }];
-//    } else if(_editVisible == PMLVisibityStateVisible && self.tableView.contentOffset.y < kPMLHeightGallery && !bottom && _opened) {
-//        _editVisible = PMLVisibityStateTransitioning;
-//
-//        [UIView animateWithDuration:0.3 animations:^{
-//            self.navigationItem.rightBarButtonItem.customView.alpha=0;
-//        } completion:^(BOOL finished) {
-//            _editVisible = PMLVisibityStateInvisible;
-//        }];
-//    }
 }
 -(void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset {
     if(_parentDragging) {
@@ -2107,7 +2054,7 @@ typedef enum {
         self.tableView.contentOffset = CGPointMake(0, 0);
     }
     // Setting edit button to appear / disappear
-    [self adjustEditVisibility];
+//    [self adjustEditVisibility];
 
 }
 #pragma mark - NavBar management
@@ -2117,18 +2064,25 @@ typedef enum {
     if([_infoProvider respondsToSelector:@selector(editActionType)]) {
         PMLActionType editType = [_infoProvider editActionType];
         if(editType!=PMLActionTypeNoAction) {
-            UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
-            self.navigationItem.rightBarButtonItem = barItem;
-//            barItem.customView.alpha=0;
+            
+            // Checking ownership
+            CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+            
+            // Either we have no owner, or owner is current user
+            if(![_infoProvider respondsToSelector:@selector(ownerKey)] || [_infoProvider ownerKey] == nil || [[_infoProvider ownerKey] isEqualToString:user.key]) {
+                UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
+                self.navigationItem.rightBarButtonItem = barItem;
+            } else {
+                // Not owner = no edit
+                self.navigationItem.rightBarButtonItem=nil;
+            }
         } else {
             self.navigationItem.rightBarButtonItem=nil;
         }
     } else {
         if([_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
             UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeMyProfile selector:@selector(navbarActionTapped:)];
-            //            _navbarEdit = YES;
             self.navigationItem.rightBarButtonItem = barItem;
-//            barItem.customView.alpha=0;
         } else {
             self.navigationItem.rightBarButtonItem = nil;
         }

@@ -14,5 +14,6 @@
 @property (nonatomic,retain) NSString *dealType;
 @property (nonatomic,retain) NSString *dealStatus;
 @property (nonatomic,retain) NSDate *dealStartDate;
+@property (nonatomic) NSInteger usedToday;
 
 @end

@@ -209,6 +209,7 @@
 "deal.activate.button"="Activez une promotion MAINTENANT";
 "deal.activate.errorTitle"="Erreur";
 "deal.activate.errorMsg"="Un problème est survenu lors de l'activation de la promotion. Essayez à nouveau ou contactez un administrateur si le problème persiste.";
+"deal.activation.message"="Activation de la promo...";
 "deal.present"="PRESENTER AU BARMAN";
 "deal.report.button"="Voir mes statistiques";
 "deal.type.TWO_FOR_ONE"="Buy 1st drink / Get 1 free";
@@ -418,10 +419,10 @@
 "purchase.claim.header"="Est-ce votre";
 "purchase.claim.headerPlaceTypeTemplate"="%@ ?";
 "purchase.claim.intro"="Réclamez ce %@ sur PELMEL et :";
-"purchase.claim.feature.0"="Accédez aux statistiques de vos clients";
+"purchase.claim.feature.0"="Accédez à vos statistiques";
 "purchase.claim.feature.1"="Verrouillez vos informations";
-"purchase.claim.feature.2"="Offrez deals to get more client";
-"purchase.claim.feature.3"="Send weekly messages to your customers";
+"purchase.claim.feature.2"="Offrez des promos à vos clients";
+"purchase.claim.feature.3"="Contactez vos clients chaque semaine";
 
 
 "push.permission.title"="Activer le push ?";
@@ -462,7 +463,7 @@
 "reporting.graphTitles.VIEW"="Nombre de vues (utilisateurs uniques)";
 "reporting.graphTitles.LOCALIZATION_AUTO_STAT"="Utilisateurs uniques à proximité";
 "reporting.graphTitles.CHECKIN"="Checkins (utilisateurs uniques)";
-"reporting.graphTitles.DEAL"="Utilisations de la promotion";
+"reporting.graphTitles.DEAL_USED"="Utilisations de la promotion";
 "reporting.graphTitles.CHECKOUT"="Checkouts (utilisateurs uniques)";
 
 "search.done.serverTitle"="Recherche mondiale ?";
