@@ -94,6 +94,7 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 @property (strong, nonatomic) MessageService    *messageService;
 @property (strong, nonatomic) JsonService       *jsonService;
 @property (strong, nonatomic) UIService         *uiService;
+@property (retain, nonatomic) MKNumberBadgeView *dealsBadgeView;
 @property (copy, nonatomic) NSString *searchTerm;
 @property (strong, nonatomic) AFNetworkReachabilityManager *reachabilityManager;
 @property (strong) ModelHolder *modelHolder;

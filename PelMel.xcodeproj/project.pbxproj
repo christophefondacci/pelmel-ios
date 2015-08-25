@@ -315,6 +315,10 @@
 		B4A47D311AE0852F000178BD /* PMLWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A47D2F1AE0852F000178BD /* PMLWebViewController.m */; };
 		B4A6642F1695E32100732B6D /* MKNumberBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */; };
 		B4A6643516970EB700732B6D /* AccountNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A6643416970EB700732B6D /* AccountNavigationController.m */; };
+		B4A757F91B8B812D00950F05 /* PMLDealsTableViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B4A757F71B8B812D00950F05 /* PMLDealsTableViewController.h */; };
+		B4A757FA1B8B812D00950F05 /* PMLDealsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A757F81B8B812D00950F05 /* PMLDealsTableViewController.m */; };
+		B4A757FD1B8B8AA700950F05 /* PMLListedDealTableViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = B4A757FB1B8B8AA700950F05 /* PMLListedDealTableViewCell.h */; };
+		B4A757FE1B8B8AA700950F05 /* PMLListedDealTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A757FC1B8B8AA700950F05 /* PMLListedDealTableViewCell.m */; };
 		B4A8542916354170003649C8 /* SizedTTLCacheService.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A854281635416F003649C8 /* SizedTTLCacheService.m */; };
 		B4AA0A2F1AF177DE00DCDE29 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4AA0A2E1AF177DE00DCDE29 /* CoreData.framework */; };
 		B4AA0A331AF178AE00DCDE29 /* PMLStorageService.h in Headers */ = {isa = PBXBuildFile; fileRef = B4AA0A311AF178AE00DCDE29 /* PMLStorageService.h */; };
@@ -843,6 +847,10 @@
 		B4A6642E1695E32100732B6D /* MKNumberBadgeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MKNumberBadgeView.m; sourceTree = "<group>"; };
 		B4A6643316970EB700732B6D /* AccountNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountNavigationController.h; sourceTree = "<group>"; };
 		B4A6643416970EB700732B6D /* AccountNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountNavigationController.m; sourceTree = "<group>"; };
+		B4A757F71B8B812D00950F05 /* PMLDealsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLDealsTableViewController.h; sourceTree = "<group>"; };
+		B4A757F81B8B812D00950F05 /* PMLDealsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLDealsTableViewController.m; sourceTree = "<group>"; };
+		B4A757FB1B8B8AA700950F05 /* PMLListedDealTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLListedDealTableViewCell.h; sourceTree = "<group>"; };
+		B4A757FC1B8B8AA700950F05 /* PMLListedDealTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLListedDealTableViewCell.m; sourceTree = "<group>"; };
 		B4A854271635416F003649C8 /* SizedTTLCacheService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizedTTLCacheService.h; sourceTree = "<group>"; };
 		B4A854281635416F003649C8 /* SizedTTLCacheService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SizedTTLCacheService.m; sourceTree = "<group>"; };
 		B4AA0A2E1AF177DE00DCDE29 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -1246,6 +1254,8 @@
 				B455E7721B8009B0002B79E0 /* PMLReportingTableViewController.m */,
 				B455E7931B83D926002B79E0 /* PMLUseDealViewController.h */,
 				B455E7941B83D926002B79E0 /* PMLUseDealViewController.m */,
+				B4A757F71B8B812D00950F05 /* PMLDealsTableViewController.h */,
+				B4A757F81B8B812D00950F05 /* PMLDealsTableViewController.m */,
 			);
 			name = Deals;
 			sourceTree = "<group>";
@@ -1305,6 +1315,8 @@
 				B455E78B1B83B9CE002B79E0 /* PMLDealDisplayTableViewCell.xib */,
 				B455E78F1B83C06B002B79E0 /* PMLDealDisplayTableViewCell.h */,
 				B455E7901B83C06B002B79E0 /* PMLDealDisplayTableViewCell.m */,
+				B4A757FB1B8B8AA700950F05 /* PMLListedDealTableViewCell.h */,
+				B4A757FC1B8B8AA700950F05 /* PMLListedDealTableViewCell.m */,
 			);
 			name = Deals;
 			sourceTree = "<group>";
@@ -2042,6 +2054,7 @@
 				B45CAB3419721BD40089C7E8 /* UIPopBehavior.h in Headers */,
 				B47A69DF1AA7AAE700877B58 /* PMLThumbsPreviewProvider.h in Headers */,
 				B45E04A41B0A904F0013357B /* PMLBannerEditorBehavior.h in Headers */,
+				B4A757F91B8B812D00950F05 /* PMLDealsTableViewController.h in Headers */,
 				B43D11731A97A12B008476C7 /* PresentingSpringAnimator.h in Headers */,
 				B46AD73519E509580021E1DE /* PMLSnippetLikeTableViewCell.h in Headers */,
 				B457A1121A9D93D200207D8E /* PMLFakeViewController.h in Headers */,
@@ -2121,6 +2134,7 @@
 				B43B1B941B20AFFF000DB17B /* PMLObjectsPhotoProvider.h in Headers */,
 				B4E8292F18AAFAA10063715C /* SettingsService.h in Headers */,
 				B457A1021A9AF1B100207D8E /* PMLEventTableViewController.h in Headers */,
+				B4A757FD1B8B8AA700950F05 /* PMLListedDealTableViewCell.h in Headers */,
 				B4A47D241AE06071000178BD /* PMLPhotoPickerPreviewViewController.h in Headers */,
 				B4AA0A641AFACCC100DCDE29 /* PMLPhotoLoadingView.h in Headers */,
 				B4AA0A531AF81CC900DCDE29 /* PMLActivityDetailTableViewController.h in Headers */,
@@ -2351,8 +2365,10 @@
 				B41C63BD19B31581003C9B52 /* PMLActivityTableViewCell.m in Sources */,
 				B43D11721A97A12B008476C7 /* LinearDismissalAnimator.m in Sources */,
 				B4CCFD001B4F4E9E002D34DA /* PMLManagedRecipientsGroupUser.m in Sources */,
+				B4A757FA1B8B812D00950F05 /* PMLDealsTableViewController.m in Sources */,
 				B495655D163EDBA6006A0451 /* ChatView.m in Sources */,
 				B45C3C621AB7A61800D8B321 /* PMLSnippetEditTableViewCell.m in Sources */,
+				B4A757FE1B8B8AA700950F05 /* PMLListedDealTableViewCell.m in Sources */,
 				B49892F6199B839500F51B8F /* PMLImageTableViewCell.m in Sources */,
 				B495655E163EDBA6006A0451 /* Message.m in Sources */,
 				B4A47D291AE078F2000178BD /* PMLProperty.m in Sources */,

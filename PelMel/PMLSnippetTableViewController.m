@@ -757,7 +757,7 @@ typedef enum {
             } else if([rowId isEqualToString:kPMLRowDealInfoId]) {
                 return 102;
             } else if([rowId isEqualToString:kPMLRowDealDisplayId]) {
-                return 149;
+                return 136;
             } else if([rowId isEqualToString:kPMLRowButtonId]) {
                 return kPMLHeightButton;
             }
@@ -1599,6 +1599,7 @@ typedef enum {
     NSString *dealType = NSLocalizedString(dealTypeCode,dealTypeCode);
     cell.dealTitle.text = dealType;
     cell.dealConditionLabel.text = nil;
+    [cell.useDealButton setTitle:NSLocalizedString(@"deal.use.button", @"Use this deal") forState:UIControlStateNormal];
     [cell.useDealButton addTarget:self action:@selector(useDealTapped:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(NSString *) stringByStrippingHTML:(NSString*)html {

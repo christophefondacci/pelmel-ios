@@ -21,6 +21,7 @@
 #import "PMLHelpOverlayView.h"
 #import "PMLBanner.h"
 #import "PMLBannerEditorTableViewController.h"
+#import "PMLDealsTableViewController.h"
 
 @import QuartzCore;
 
@@ -78,6 +79,7 @@
     MenuAction *_menuMyPositionAction;
     MenuAction *_menuCheckinAction;
     MenuAction *_menuNetworkAction;
+    MenuAction *_menuDealsAction;
     BOOL _zoomAnimation;
     
     // Context filters
@@ -157,6 +159,7 @@
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuMyPositionAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuCheckinAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuNetworkAction];
+    [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuDealsAction];
     
     // Adding the badge view for messages
     BOOL badgeViewExists = NO;
@@ -176,7 +179,17 @@
         [_menuNetworkAction.menuActionView addSubview:badgeView];
         [[TogaytherService getMessageService] setNetworkCountBadgeView:badgeView];
     }
-    
+    if(_dataService.dealsBadgeView == nil) {
+        MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
+        badgeView.frame = CGRectMake(_menuDealsAction.menuActionView.frame.size.width-20, -5, 30, 20);
+        badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
+        badgeView.shadow = NO;
+        badgeView.shine=NO;
+        badgeView.hidden=YES;
+        [_menuDealsAction.menuActionView addSubview:badgeView];
+        [_dataService setDealsBadgeView:badgeView];
+        
+    }
     
     [self.parentMenuController addObserver:self forKeyPath:@"contextObject" options:NSKeyValueObservingOptionNew context:NULL];
     
@@ -331,6 +344,14 @@
     }];
     _menuNetworkAction.leftMargin = 5;
     _menuNetworkAction.topMargin = _menuCheckinAction.topMargin+50+5;
+    
+    _menuDealsAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnDeal"] pctWidth:0 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+        PMLDealsTableViewController *dealsController = (PMLDealsTableViewController*)[_uiService instantiateViewController:SB_ID_LIST_DEALS];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:dealsController];
+        [[_uiService menuManagerController] presentModal:navController];
+    }];
+    _menuDealsAction.leftMargin = 5;
+    _menuDealsAction.topMargin = _menuNetworkAction.topMargin+50+5;
 }
 
 -(CLLocationDistance)distanceFromCornerPoint {

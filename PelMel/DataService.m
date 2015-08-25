@@ -382,9 +382,30 @@
         [_modelHolder setBanner:nil];
     }
     
+    // Computing nearby deals
+    ConversionService *conversionService = [TogaytherService getConversionService];
+    NSArray *sortedPlaces = [docs sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Place *p1 = (Place*)obj1;
+        Place *p2 = (Place*)obj2;
+        CLLocationDistance distance1 = [conversionService numericDistanceTo:p1];
+        CLLocationDistance distance2 = [conversionService numericDistanceTo:p2];
+        if(distance1<distance2) {
+            return NSOrderedAscending;
+        } else if(distance1>distance2) {
+            return NSOrderedDescending;
+        } else {
+            return NSOrderedSame;
+        }
+    }];
+    NSMutableArray *deals = [[NSMutableArray alloc] init];
+    for(Place * place in sortedPlaces) {
+        [deals addObjectsFromArray:place.deals];
+    }
+    
     // Assigning to model holder for all-view synch
     [_modelHolder setPlaces:docs];
     [_modelHolder setEvents:events];
+    [_modelHolder setDeals:deals];
     [_modelHolder setHappyHours:happyHoursEvents];
     [[_modelHolder allPlaces] addObjectsFromArray:docs];
     [_modelHolder setCities:cities];
@@ -399,7 +420,7 @@
     if(totalUsersCount != nil) {
         [_modelHolder setTotalUsersCount:[totalUsersCount intValue]];
     }
-    
+    [self updateDealsBadge];
     // Callback on main thread
     dispatch_async(dispatch_get_main_queue(), ^{
         [self doCallback:isSilent];
@@ -1303,4 +1324,17 @@
         }
     }];
 }
+
+-(void)setDealsBadgeView:(MKNumberBadgeView *)dealsBadgeView {
+    _dealsBadgeView = dealsBadgeView;
+    [self updateDealsBadge];
+}
+-(void)updateDealsBadge {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _dealsBadgeView.value = [[_modelHolder deals] count];
+        _dealsBadgeView.hidden = _dealsBadgeView.value<=0;
+        _dealsBadgeView.superview.hidden = _dealsBadgeView.hidden;
+    });
+}
+
 @end

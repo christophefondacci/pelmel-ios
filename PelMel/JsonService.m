@@ -84,7 +84,11 @@
     
     // Owner management
     NSString *ownerKey          = [json objectForKey:@"ownerKey"];
-    place.ownerKey = ownerKey;
+    if([ownerKey length]>0) {
+        place.ownerKey = ownerKey;
+    } else {
+        place.ownerKey = nil;
+    }
     
     // Deal management
     NSArray *jsonDeals          = [json objectForKey:@"deals"];

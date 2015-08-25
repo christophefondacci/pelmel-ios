@@ -215,8 +215,10 @@
 "deal.type.TWO_FOR_ONE"="Buy 1st drink / Get 1 free";
 "deal.status.RUNNING"="ACTIVE";
 "deal.status.PAUSED"="PAUSED";
+"deal.use.button"="Utiliser la promo";
 "deal.use.countdown"="Activation dans %d";
 "deal.use.legal"="Cette promo est offerte par %@, pas par nous.\nVous devez avoir l'âge légal pour utiliser cette promo.";
+"deal.use.title"="Bons plans";
 
 "description"="Description";
 "description.placeholder"="Ecrire en %@";

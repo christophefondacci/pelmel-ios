@@ -56,6 +56,7 @@
 #define SB_ID_PURCHASE @"purchaseController"
 #define SB_ID_REPORTING @"reportController"
 #define SB_ID_USE_DEAL @"useDealController"
+#define SB_ID_LIST_DEALS @"listDealsController"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 

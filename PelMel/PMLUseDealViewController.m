@@ -28,6 +28,7 @@
 @property (nonatomic,retain) NSTimer *pressTimer;
 @property (nonatomic) NSInteger pressTimerCountdown;
 @property (nonatomic) BOOL canProceedWithDeal;
+@property (nonatomic) BOOL viewDisappeared;
 @end
 
 @implementation PMLUseDealViewController
@@ -76,13 +77,18 @@
     [self.dealButton addTarget:self action:@selector(didStartDealTap:) forControlEvents:UIControlEventTouchDown];
     [self.dealButton addTarget:self action:@selector(didEndDealTap:) forControlEvents:UIControlEventTouchUpInside];
 }
+-(void)viewDidDisappear:(BOOL)animated {
+    self.viewDisappeared = YES;
+}
 
 -(void)animateAlphaPhase:(NSInteger)phase delay:(CGFloat)delay {
     [UIView animateWithDuration:(kPhaseAlphaDuration-delay) delay:delay options:UIViewAnimationOptionCurveEaseInOut animations:^{
         UIView *view = [_phaseViews objectAtIndex:phase];
         view.alpha = (view.alpha == 1 ? 0.8 : 1);
     } completion:^(BOOL finished) {
-        [self animateAlphaPhase:phase delay:delay];
+        if(!self.viewDisappeared) {
+            [self animateAlphaPhase:phase delay:delay];
+        }
     }];
 }
 -(void)animateAnglePhase:(NSInteger)phase delay:(CGFloat)delay {
@@ -90,7 +96,9 @@
         UIView *view = [_phaseViews objectAtIndex:phase];
         view.layer.affineTransform = CGAffineTransformMakeRotation(M_PI_4*rand());
     } completion:^(BOOL finished) {
-        [self animateAnglePhase:phase delay:delay];
+        if(!self.viewDisappeared) {
+            [self animateAnglePhase:phase delay:delay];
+        }
     }];
 }
 - (void)didReceiveMemoryWarning {
