@@ -406,6 +406,9 @@ typedef enum {
                         // If no deal, section to add a deal
                         if(dealsRows == 0) {
                             dealsRows++;
+                        } else {
+                            // Adding each management row
+                            dealsRows = dealsRows*2;
                         }
                         // Last row for accessing stats
                         dealsRows++;
@@ -535,11 +538,10 @@ typedef enum {
             // No deals, owner, first row => deal activation row
             if(isOwner && indexPath.row == 0 && dealsCount == 0) {
                 return kPMLRowDealActivateId;
-            } else if(!isOwner && indexPath.row < dealsCount) {
+            } else if(indexPath.row < dealsCount) {
                 // Not owner, displaying deal
                 return kPMLRowDealDisplayId;
-            } else if(isOwner && indexPath.row < dealsCount) {
-                // Owner, displaying deal stats
+            } else if(isOwner && indexPath.row < dealsCount*2) {
                 return kPMLRowDealInfoId;
             } else {
                 return kPMLRowButtonId;
@@ -629,16 +631,13 @@ typedef enum {
         case kPMLSectionDeals: {
             CurrentUser *user = [[TogaytherService userService] getCurrentUser];
             NSInteger dealsCount = [[_infoProvider deals] count];
-            BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
+            BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key] || user.isAdmin;
             if(indexPath.row == 0 && (isOwner || user.isAdmin) && dealsCount == 0) {
                 [self configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell];
             } else if(indexPath.row < dealsCount) {
-                if(!isOwner && !user.isAdmin) {
-                    cell.backgroundColor = [UIColor blackColor];
-                    [self configureRowDisplayDeal:(PMLDealDisplayTableViewCell*)cell forIndex:indexPath.row];
-                } else {
-                    [self configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:indexPath.row];
-                }
+                [self configureRowDisplayDeal:(PMLDealDisplayTableViewCell*)cell forIndex:indexPath.row];
+            } else if(isOwner && indexPath.row < dealsCount*2) {
+                [self configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:indexPath.row/2];
             } else {
                 [self configureRowPlaceReportButton:(PMLButtonTableViewCell*)cell];
             }
@@ -757,7 +756,7 @@ typedef enum {
             } else if([rowId isEqualToString:kPMLRowDealInfoId]) {
                 return 102;
             } else if([rowId isEqualToString:kPMLRowDealDisplayId]) {
-                return 136;
+                return 112;
             } else if([rowId isEqualToString:kPMLRowButtonId]) {
                 return kPMLHeightButton;
             }

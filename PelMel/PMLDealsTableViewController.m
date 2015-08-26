@@ -84,8 +84,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
         case kSectionDeals:
-            return 157;
+            return 125;
     }
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 /*
 // Override to support conditional editing of the table view.
