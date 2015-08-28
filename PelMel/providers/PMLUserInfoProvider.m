@@ -416,4 +416,12 @@
 - (NSString *)localizationSectionTitle {
     return NSLocalizedString(@"snippet.title.localization.user", @"Checked in at");
 }
+
+-(PMLActionType)editActionType {
+    if([_user.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
+        return PMLActionTypeMyProfile;
+    } else {
+        return PMLActionTypeNoAction;
+    }
+}
 @end

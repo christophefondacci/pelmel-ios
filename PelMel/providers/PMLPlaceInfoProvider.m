@@ -326,7 +326,12 @@
 #pragma mark - Actions
 
 - (PMLActionType)editActionType {
-    return PMLActionTypeEditPlace;
+    
+    // Checking ownership
+    CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+    
+    // Either we have no owner, or owner is current user
+    return _place.ownerKey == nil || [_place.ownerKey isEqualToString:user.key] ? PMLActionTypeEditPlace : PMLActionTypeNoAction;
 }
 
 - (NSString *)actionSubtitleFor:(PMLActionType)actionType {
@@ -449,45 +454,42 @@
     }
 }
 #pragma mark Report
+- (BOOL) isClaimable {
+    // Either we have no owner, or owner is current user
+    return _place.ownerKey == nil ;
+}
 - (NSInteger)footerButtonsCount {
-    return 2;
+    
+    return [self isClaimable] ? 2 : 1;
 }
 - (PMLActionType)footerButtonActionAtIndex:(NSInteger)buttonIndex {
-    switch(buttonIndex) {
-        case 0:
-            return PMLActionTypeClaim;
-        case 1:
-            return PMLActionTypeReport;
+
+    if(buttonIndex==0 && [self isClaimable]) {
+        return PMLActionTypeClaim;
+    } else {
+        return PMLActionTypeReport;
     }
-    return PMLActionTypeNoAction;
 }
 - (UIImage *)footerButtonIconAtIndex:(NSInteger)buttonIndex {
-    switch(buttonIndex) {
-        case 0:
+    if(buttonIndex==0 && [self isClaimable]) {
             return [UIImage imageNamed:@"snpButtonClaim"];
-        case 1:
+    } else {
             return [UIImage imageNamed:@"snpButtonReport"];
     }
-        return PMLActionTypeNoAction;
-
 }
 - (NSString *)footerButtonTextAtIndex:(NSInteger)buttonIndex {
-    switch(buttonIndex) {
-        case 0:
-            return NSLocalizedString(@"snippet.button.claim", @"Claim this place");
-        case 1:
-            return NSLocalizedString(@"snippet.button.report", @"Report a problem");
+    if(buttonIndex==0 && [self isClaimable]) {
+        return NSLocalizedString(@"snippet.button.claim", @"Claim this place");
+    } else {
+        return NSLocalizedString(@"snippet.button.report", @"Report a problem");
     }
-    return nil;
 }
 - (UIColor *)footerButtonColorAtIndex:(NSInteger)buttonIndex {
-    switch(buttonIndex) {
-        case 0:
-            return nil;
-        case 1:
-            return UIColorFromRGBAlpha(0xc50000,0.2);
+    if(buttonIndex==0 && [self isClaimable]) {
+        return nil;
+    } else {
+        return UIColorFromRGBAlpha(0xc50000,0.2);
     }
-    return nil;
 }
 
 -(PMLActionType)advertisingActionType {

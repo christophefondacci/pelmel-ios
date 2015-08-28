@@ -38,7 +38,7 @@
     // Adjusting label width to fit label size
     CGSize fitSize = [self.titleLabel sizeThatFits:CGSizeMake(MAXFLOAT, self.titleLabel.bounds.size.height)];
     self.titleLabelWidthConstraint.constant = fitSize.width;
-    self.backgroundColor=UIColorFromRGB(0x272a2e); //, 0.2f);
+//    self.contentView.backgroundColor=UIColorFromRGB(0x272a2e); //, 0.2f);
 }
 - (void)installPopupActions:(NSArray *)popupActions {
     if(popupActions.count>0) {

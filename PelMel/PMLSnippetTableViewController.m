@@ -2144,28 +2144,14 @@ typedef enum {
     if([_infoProvider respondsToSelector:@selector(editActionType)]) {
         PMLActionType editType = [_infoProvider editActionType];
         if(editType!=PMLActionTypeNoAction) {
+            UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
+            self.navigationItem.rightBarButtonItem = barItem;
             
-            // Checking ownership
-            CurrentUser *user = [[TogaytherService userService] getCurrentUser];
-            
-            // Either we have no owner, or owner is current user
-            if(![_infoProvider respondsToSelector:@selector(ownerKey)] || [_infoProvider ownerKey] == nil || [[_infoProvider ownerKey] isEqualToString:user.key]) {
-                UIBarButtonItem *barItem = [self barButtonItemFromAction:[_infoProvider editActionType] selector:@selector(navbarActionTapped:)];
-                self.navigationItem.rightBarButtonItem = barItem;
-            } else {
-                // Not owner = no edit
-                self.navigationItem.rightBarButtonItem=nil;
-            }
         } else {
             self.navigationItem.rightBarButtonItem=nil;
         }
     } else {
-        if([_snippetItem.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
-            UIBarButtonItem *barItem = [self barButtonItemFromAction:PMLActionTypeMyProfile selector:@selector(navbarActionTapped:)];
-            self.navigationItem.rightBarButtonItem = barItem;
-        } else {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
+        self.navigationItem.rightBarButtonItem = nil;
     }
     
     // Installing help
