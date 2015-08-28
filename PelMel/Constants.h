@@ -9,7 +9,7 @@
 #ifndef togayther_Constants_h
 #define togayther_Constants_h
 
-#define PML_CHECKIN_DISTANCE 1500
+#define PML_CHECKIN_DISTANCE 15000
 
 #define PML_PROP_PUSH_ENABLED @"pushEnabled"
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
@@ -67,7 +67,6 @@
 #define kPMLKeyLastLatitude @"lastLatitude"
 #define kPMLKeyLastLongitude @"lastLongitude"
 
-#define kPMLCheckinDistanceMeters 10000
 
 #define MAP_HACK_TAG 24681357
 
@@ -115,4 +114,5 @@
 // Deals
 #define DEAL_STATUS_RUNNING @"RUNNING"
 #define DEAL_STATUS_PAUSED @"PAUSED"
+#define PML_DEAL_MIN_REUSE_SECONDS 86400
 #endif

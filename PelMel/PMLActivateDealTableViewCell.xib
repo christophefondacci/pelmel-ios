@@ -7,68 +7,109 @@
     <customFonts key="customFonts">
         <mutableArray key="OpenSans-Regular.ttf">
             <string>OpenSans</string>
+            <string>OpenSans</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="102" id="0mz-7N-wdk" customClass="PMLActivateDealTableViewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="102"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="146" id="0mz-7N-wdk" customClass="PMLActivateDealTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="146"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0mz-7N-wdk" id="gZ8-3F-mMp">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pdQ-Xf-mYb">
-                        <rect key="frame" x="8" y="8" width="304" height="85.5"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="145.5"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get MORE clients!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t0x-uq-80e">
-                                <rect key="frame" x="0.0" y="8" width="304" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get MORE clients!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t0x-uq-80e">
+                                <rect key="frame" x="88" y="25" width="224" height="39"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="x8e-Bj-ce4"/>
+                                    <constraint firstAttribute="height" constant="39" id="x8e-Bj-ce4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="21"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" red="0.8980392157" green="0.38431372549999998" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icoClaimDeal" translatesAutoresizingMaskIntoConstraints="NO" id="mVu-Yo-jef">
+                                <rect key="frame" x="44" y="22" width="36" height="39"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="39" id="3PH-Rx-VUU"/>
+                                    <constraint firstAttribute="width" constant="36" id="SLb-0P-BRd"/>
+                                </constraints>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vsH-wI-pHn">
-                                <rect key="frame" x="8" y="46" width="288" height="34"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <rect key="frame" x="29" y="74" width="263" height="55"/>
+                                <color key="backgroundColor" red="0.8980392157" green="0.38431372549999998" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="288" id="G87-pg-Z45"/>
-                                    <constraint firstAttribute="height" constant="34" id="gpw-2A-aG6"/>
+                                    <constraint firstAttribute="height" constant="55" id="gpw-2A-aG6"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="uqO-4t-cEk"/>
                                 </constraints>
+                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="20"/>
                                 <state key="normal" title="Activate your deal now">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                        <integer key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="G87-pg-Z45"/>
+                                        <exclude reference="uqO-4t-cEk"/>
+                                    </mask>
+                                </variation>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="t0x-uq-80e" firstAttribute="leading" secondItem="mVu-Yo-jef" secondAttribute="trailing" constant="8" id="0pc-NU-jrK"/>
+                            <constraint firstAttribute="bottom" secondItem="vsH-wI-pHn" secondAttribute="bottom" constant="17" id="2c5-8i-v3h"/>
                             <constraint firstAttribute="width" constant="304" id="3pg-68-zUy"/>
+                            <constraint firstItem="mVu-Yo-jef" firstAttribute="top" secondItem="pdQ-Xf-mYb" secondAttribute="top" constant="22" id="J6X-OY-1Hv"/>
+                            <constraint firstItem="mVu-Yo-jef" firstAttribute="leading" secondItem="pdQ-Xf-mYb" secondAttribute="leading" constant="44" id="KCj-WB-geq"/>
+                            <constraint firstItem="vsH-wI-pHn" firstAttribute="leading" secondItem="pdQ-Xf-mYb" secondAttribute="leading" constant="29" id="KbA-yH-9Wn"/>
+                            <constraint firstAttribute="trailing" secondItem="vsH-wI-pHn" secondAttribute="trailing" constant="28" id="TQC-n3-8PW"/>
                             <constraint firstAttribute="centerX" secondItem="vsH-wI-pHn" secondAttribute="centerX" id="VHD-Cb-OhA"/>
                             <constraint firstItem="vsH-wI-pHn" firstAttribute="top" secondItem="t0x-uq-80e" secondAttribute="bottom" constant="8" id="cOL-ch-UpC"/>
-                            <constraint firstItem="t0x-uq-80e" firstAttribute="top" secondItem="pdQ-Xf-mYb" secondAttribute="top" constant="8" id="rAz-TL-hhy"/>
-                            <constraint firstAttribute="trailing" secondItem="t0x-uq-80e" secondAttribute="trailing" id="tef-ZY-E19"/>
-                            <constraint firstItem="t0x-uq-80e" firstAttribute="leading" secondItem="pdQ-Xf-mYb" secondAttribute="leading" id="ugK-vJ-Lv2"/>
+                            <constraint firstItem="t0x-uq-80e" firstAttribute="top" secondItem="pdQ-Xf-mYb" secondAttribute="top" constant="25" id="rAz-TL-hhy"/>
+                            <constraint firstAttribute="trailing" secondItem="t0x-uq-80e" secondAttribute="trailing" constant="8" id="tef-ZY-E19"/>
+                            <constraint firstItem="t0x-uq-80e" firstAttribute="leading" secondItem="pdQ-Xf-mYb" secondAttribute="leading" constant="50" id="ugK-vJ-Lv2"/>
                         </constraints>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                <integer key="value" value="1"/>
-                            </userDefinedRuntimeAttribute>
-                            <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
-                                <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </userDefinedRuntimeAttribute>
-                        </userDefinedRuntimeAttributes>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="3pg-68-zUy"/>
+                                <exclude reference="VHD-Cb-OhA"/>
+                                <exclude reference="cOL-ch-UpC"/>
+                                <exclude reference="ugK-vJ-Lv2"/>
+                            </mask>
+                        </variation>
                     </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="pdQ-Xf-mYb" firstAttribute="top" secondItem="gZ8-3F-mMp" secondAttribute="top" id="Irr-Uz-hCo"/>
                     <constraint firstAttribute="centerX" secondItem="pdQ-Xf-mYb" secondAttribute="centerX" id="XAL-zQ-xxw"/>
+                    <constraint firstAttribute="bottom" secondItem="pdQ-Xf-mYb" secondAttribute="bottom" id="coM-u4-kwh"/>
+                    <constraint firstAttribute="trailing" secondItem="pdQ-Xf-mYb" secondAttribute="trailing" id="fjD-e0-hfv"/>
                     <constraint firstAttribute="bottom" secondItem="pdQ-Xf-mYb" secondAttribute="bottom" constant="8" id="hW6-qu-sN1"/>
+                    <constraint firstItem="pdQ-Xf-mYb" firstAttribute="leading" secondItem="gZ8-3F-mMp" secondAttribute="leading" id="jBX-JN-mdI"/>
                     <constraint firstItem="pdQ-Xf-mYb" firstAttribute="top" secondItem="gZ8-3F-mMp" secondAttribute="top" constant="8" id="wCn-lW-51J"/>
                 </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="XAL-zQ-xxw"/>
+                        <exclude reference="hW6-qu-sN1"/>
+                        <exclude reference="wCn-lW-51J"/>
+                    </mask>
+                </variation>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.1529411765" green="0.1647058824" blue="0.18039215689999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="activateButton" destination="vsH-wI-pHn" id="boO-Fu-KGk"/>
                 <outlet property="activateHeadlineLabel" destination="t0x-uq-80e" id="PY0-KJ-847"/>
@@ -76,4 +117,7 @@
             <point key="canvasLocation" x="208" y="246"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icoClaimDeal" width="22" height="19"/>
+    </resources>
 </document>

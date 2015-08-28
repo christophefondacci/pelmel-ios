@@ -179,7 +179,7 @@
         [_menuNetworkAction.menuActionView addSubview:badgeView];
         [[TogaytherService getMessageService] setNetworkCountBadgeView:badgeView];
     }
-    if(_dataService.dealsBadgeView == nil) {
+    if([[TogaytherService dealsService] dealsBadgeView] == nil) {
         MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
         badgeView.frame = CGRectMake(_menuDealsAction.menuActionView.frame.size.width-20, -5, 30, 20);
         badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
@@ -187,7 +187,7 @@
         badgeView.shine=NO;
         badgeView.hidden=YES;
         [_menuDealsAction.menuActionView addSubview:badgeView];
-        [_dataService setDealsBadgeView:badgeView];
+        [[TogaytherService dealsService] setDealsBadgeView:badgeView];
         
     }
     

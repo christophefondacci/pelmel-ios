@@ -8,12 +8,14 @@
 
 #import "CALObject.h"
 
-@interface Deal : CALObject
+@interface PMLDeal : CALObject
 
 @property (nonatomic,retain) CALObject *relatedObject;
 @property (nonatomic,retain) NSString *dealType;
 @property (nonatomic,retain) NSString *dealStatus;
 @property (nonatomic,retain) NSDate *dealStartDate;
+@property (nonatomic,retain) NSDate *lastUsedDate;
 @property (nonatomic) NSInteger usedToday;
+@property (nonatomic) NSInteger maxUses;
 
 @end

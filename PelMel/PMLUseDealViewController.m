@@ -8,7 +8,7 @@
 
 #import "PMLUseDealViewController.h"
 #import "TogaytherService.h"
-#import "Deal.h"
+#import "PMLDeal.h"
 
 #define kPhaseAlphaDuration 1.0
 #define kPhaseAngleDuration 2.0
@@ -167,8 +167,8 @@
 -(void)proceedWithDeal {
     NSLog(@"Can Proceed");
     self.presentLabel.text=NSLocalizedString(@"deal.activation.message", @"deal.activation.message");
-    [[TogaytherService dataService] useDeal:self.deal onSuccess:^(id obj) {
-        Deal *deal = (Deal*)obj;
+    [[TogaytherService dealsService] useDeal:self.deal onSuccess:^(id obj) {
+        PMLDeal *deal = (PMLDeal*)obj;
         self.presentLabel.text = NSLocalizedString(@"deal.proceed",@"Proceed with the deal");
         self.dealCountLabel.text = [NSString stringWithFormat:@"# %d",(int)deal.usedToday];
         [self resizeCircles:1 duration:kSuccessAnimationDuration];

@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Deal.h"
+#import "PMLDeal.h"
 
 @interface PMLUseDealViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UIImageView *circleExternalImage;
@@ -23,6 +23,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *circleHeightConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *dealCountLabel;
 
-@property (nonatomic,weak) Deal *deal;
+@property (nonatomic,weak) PMLDeal *deal;
 
 @end

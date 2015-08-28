@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PMLSectionTitleView : UIView
+@interface PMLSectionTitleView : UITableViewHeaderFooterView
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *titleLabelWidthConstraint;
 @property (weak, nonatomic) IBOutlet UIView *rightSeparator;

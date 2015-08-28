@@ -6,8 +6,8 @@
 //  Copyright (c) 2015 Christophe Fondacci. All rights reserved.
 //
 
-#import "Deal.h"
+#import "PMLDeal.h"
 
-@implementation Deal
+@implementation PMLDeal
 
 @end

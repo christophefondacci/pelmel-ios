@@ -255,13 +255,7 @@
     }
     return nil;
 }
-- (PMLActionType)secondaryActionType {
-    if(![_user.key isEqualToString:[[[TogaytherService userService] getCurrentUser] key]]) {
-        return PMLActionTypeComment;
-    } else {
-        return -1;
-    }
-}
+
 #pragma mark - PMLCounterDataSource
 - (id<PMLCountersDatasource>)countersDatasource {
     return self;

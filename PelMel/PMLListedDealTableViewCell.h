@@ -13,7 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *placeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dealLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dealConditionLabel;
-@property (weak, nonatomic) IBOutlet UILabel *useDealButtonLabel;
-@property (weak, nonatomic) IBOutlet UIImageView *useDealButtonIcon;
+@property (weak, nonatomic) IBOutlet UIButton *useDealButton;
+
 
 @end

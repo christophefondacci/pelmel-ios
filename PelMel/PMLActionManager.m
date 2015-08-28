@@ -21,6 +21,7 @@
 #import "PMLNetworkUsersAdditionPhotoProvider.h"
 #import "PMLPurchaseTableViewController.h"
 #import "PMLClaimPurchaseProvider.h"
+#import "PMLUseDealViewController.h"
 
 #define kPMLConfirmDistance 21.0
 #define kPMLConfirmSize 52.0
@@ -72,6 +73,7 @@
 @property (nonatomic,retain) UIAlertView *addressAlertView;
 @property (nonatomic,retain) UIAlertView *reportConfirmAlertView;
 @property (nonatomic,retain) UIAlertView *privateNetworkAlertView;
+@property (nonatomic,retain) UIAlertView *useDealCheckinAlertView;
 @property (nonatomic,retain) CLGeocoder *geocoder;
 
 @property (nonatomic) PMLActionType selectorActionType;
@@ -110,6 +112,7 @@
         [self registerAddToPrivateNetworkAction];
         [self registerPrivateNetworkRespond];
         [self registerClaimAction];
+        [self registerUseDealAction];
     }
     return self;
 }
@@ -571,6 +574,67 @@
     [self registerAction:claimAction forType:PMLActionTypeClaim];
 }
 
+-(void)registerUseDealAction {
+    PopupAction *useDealAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        PMLDeal *deal = (PMLDeal*)object;
+
+        double distance = [[TogaytherService getConversionService] numericDistanceTo:deal.relatedObject];
+        
+        // Checking if distance is OK
+        if(distance <= PML_CHECKIN_DISTANCE ) {
+            
+            // Are we already checked in?
+            if( ![_userService isCheckedInAt:(Place*)deal.relatedObject]) {
+                NSString *title = NSLocalizedString(@"deal.use.checkin.title", @"Check in required");
+                NSString *msg = NSLocalizedString(@"deal.use.checkin.message", @"Checkin message");
+                NSString *btnCheckin = NSLocalizedString(@"deal.use.checkin.checkinButton", @"deal.use.checkin.checkinButton");
+                NSString *btnCancel = NSLocalizedString(@"deal.use.checkin.cancelButton", @"deal.use.checkin.cancelButton");
+                self.useDealCheckinAlertView = [[UIAlertView alloc] initWithTitle:title message:msg delegate:self cancelButtonTitle:nil otherButtonTitles:btnCheckin, btnCancel, nil];
+                self.useDealCheckinAlertView.cancelButtonIndex=1;
+                
+                // Storing deal
+                self.modalActionObject = deal;
+                [self.useDealCheckinAlertView show];
+            } else {
+                
+                // Use is in the place AND is checked in, he can process with the DEAL
+                UIView *hudView = [[_uiService menuManagerController] view];
+                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:hudView animated:YES];
+                hud.mode = MBProgressHUDModeIndeterminate;
+                hud.labelText=NSLocalizedString(@"deal.availability.check", @"deal.availability.check");
+                [hud show:YES];
+                [[TogaytherService dealsService] refreshDeal:deal onSuccess:^(id obj) {
+                    [MBProgressHUD hideAllHUDsForView:hudView animated:YES];
+                    PMLDeal *d = (PMLDeal *)obj;
+                    NSString *errorMsgCode = nil;
+                    if([d.lastUsedDate timeIntervalSinceNow]>-PML_DEAL_MIN_REUSE_SECONDS) {
+                        errorMsgCode = @"deal.useError.mustWait";
+                    }
+                    if(d.maxUses>0 && d.maxUses<=d.usedToday) {
+                        errorMsgCode = @"deal.useError.quotaReached";
+                    }
+                    if(errorMsgCode != nil) {
+                        [_uiService alertWithTitle:@"deal.useError.title" text:errorMsgCode];
+                    } else {
+                        PMLUseDealViewController *useDealController = (PMLUseDealViewController*)[_uiService instantiateViewController:SB_ID_USE_DEAL];
+                        useDealController.deal = deal;
+                        [[[_uiService menuManagerController] navigationController] pushViewController:useDealController animated:YES];
+                    }
+                    
+                } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+                    [_uiService alertError];
+                }];
+                
+
+            }
+        } else {
+            [_uiService alertWithTitle:@"deal.use.localization.title" text:@"deal.use.localization.message" textObjectName:((Place*)deal.relatedObject).title];
+        }
+        
+
+    }];
+    [self registerAction:useDealAction forType:PMLActionTypeUseDeal];
+}
 #pragma mark - Edition sheets
 -(void)initializeEditFor:(CALObject*)object {
     self.modalActionObject = object;
@@ -1011,6 +1075,17 @@
             [_dataService sendReportFor:self.modalActionObject reportType:PMLReportTypeRemovalRequest];
         } else if(alertView == _privateNetworkAlertView) {
             [self privateNetworkAction:_modalPrivateNetworkAction onUser:(User*)_modalActionObject];
+        } else if(alertView == _useDealCheckinAlertView) {
+            [self.uiService.menuManagerController.menuManagerDelegate loadingStart];
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.uiService.menuManagerController.bottomView animated:YES];
+            hud.mode = MBProgressHUDModeIndeterminate;
+            [hud show:YES];
+            PMLDeal *deal = (PMLDeal*)self.modalActionObject;
+            [_userService checkin:deal.relatedObject completion:^(id obj) {
+                [MBProgressHUD hideAllHUDsForView:self.uiService.menuManagerController.bottomView animated:YES];
+                [self execute:PMLActionTypeUseDeal onObject:deal];
+                [self.uiService.menuManagerController.menuManagerDelegate loadingEnd];
+            }];
         }
     }
     self.modalActionObject = nil;

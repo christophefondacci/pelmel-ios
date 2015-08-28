@@ -17,7 +17,7 @@
 #import "PMLCalendar.h"
 #import "PMLBanner.h"
 #import "CurrentUser.h"
-#import "Deal.h"
+#import "PMLDeal.h"
 
 @interface JsonService : NSObject
 
@@ -77,7 +77,7 @@
  * @param place the place for this deal (/!\ place is not yet extracted from JSON)
  * @return the corresponding Deal object (refreshed from cache or new instance)
  */
--(Deal*)convertJsonDealToDeal:(NSDictionary*)jsonDeal forPlace:(Place*)place;
+-(PMLDeal*)convertJsonDealToDeal:(NSDictionary*)jsonDeal forPlace:(Place*)place;
 /**
  * Retrieves an object instance from its key
  */

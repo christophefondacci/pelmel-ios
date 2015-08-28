@@ -9,7 +9,7 @@
 #import "PMLDealsTableViewController.h"
 #import "TogaytherService.h"
 #import "PMLListedDealTableViewCell.h"
-#import "Deal.h"
+#import "PMLDeal.h"
 
 #define kSectionsCount 1
 #define kSectionDeals 0
@@ -72,21 +72,38 @@
 }
 
 -(void)configureDealCell:(PMLListedDealTableViewCell*)cell forRow:(NSInteger)row {
-    Deal *deal = [[[_dataService modelHolder] deals] objectAtIndex:row];
+    cell.clipsToBounds = YES;
+    PMLDeal *deal = [[[_dataService modelHolder] deals] objectAtIndex:row];
     NSString *template = [NSString stringWithFormat:@"deal.type.%@",deal.dealType];
     cell.placeLabel.text = ((Place*)deal.relatedObject).title;
     cell.dealLabel.text = NSLocalizedString(template,@"2 For 1");
-    cell.dealConditionLabel.text=nil;
+    cell.dealConditionLabel.text= [[TogaytherService dealsService] dealConditionLabel:deal];
     CALImage *image = [[TogaytherService imageService] imageOrPlaceholderFor:deal.relatedObject allowAdditions:NO];
     [[TogaytherService imageService] load:image to:cell.placeImage thumb:NO];
-    cell.useDealButtonLabel.text = NSLocalizedString(@"deal.use.button", @"Use this deal");
+    
+    [cell.useDealButton setTitle:NSLocalizedString(@"deal.use.button", @"Use this deal") forState:UIControlStateNormal];
+    cell.useDealButton.hidden = ![[TogaytherService dealsService] isDealUsable:deal considerCheckinDistance:YES];
+    cell.useDealButton.tag = row;
+    [cell.useDealButton addTarget:self action:@selector(didTapUseDeal:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
-        case kSectionDeals:
-            return 125;
+        case kSectionDeals: {
+            PMLDeal *deal = [[[_dataService modelHolder] deals] objectAtIndex:indexPath.row];
+            if([[TogaytherService dealsService] isDealUsable:deal considerCheckinDistance:YES]) {
+                return 120;
+            } else {
+                return 92;
+            }
+        }
     }
     return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    PMLDeal *deal = [[[_dataService modelHolder] deals] objectAtIndex:indexPath.row];
+
+    [[TogaytherService uiService] presentSnippetFor:deal.relatedObject opened:YES];
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 /*
 // Override to support conditional editing of the table view.
@@ -133,6 +150,11 @@
 */
 #pragma mark - Action callbacks
 -(void)cancelTapped:(id)source {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+-(void)didTapUseDeal:(UIButton*)source {
+    PMLDeal *deal = [[[_dataService modelHolder] deals] objectAtIndex:source.tag];
+    [[TogaytherService actionManager] execute:PMLActionTypeUseDeal onObject:deal];
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 @end

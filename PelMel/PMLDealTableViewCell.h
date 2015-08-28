@@ -11,9 +11,10 @@
 @interface PMLDealTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *dealHeadlineLabel;
 @property (weak, nonatomic) IBOutlet UIButton *dealActivationButton;
-@property (weak, nonatomic) IBOutlet UILabel *dealStartLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dealStartValueLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dealTodayLabel;
-@property (weak, nonatomic) IBOutlet UILabel *dealTodayValueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *statusIntroLabel;
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (weak, nonatomic) IBOutlet UIButton *dealQuotaLabelButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dealQuotaWidthConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *dealQuotaEditButton;
 
 @end

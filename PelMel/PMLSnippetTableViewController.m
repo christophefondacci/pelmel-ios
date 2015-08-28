@@ -52,25 +52,26 @@
 
 #define kPMLSettingActiveTab @"pmlActiveSnippetTab"
 
-#define kPMLSectionsCount 17
+#define kPMLSectionsCount 18
 
 #define kPMLSectionGallery 0
 #define kPMLSectionSnippet 1
-#define kPMLSectionCounters 3
+#define kPMLSectionCounters 4
 #define kPMLSectionDeals 2
-#define kPMLSectionLocalization 4
-#define kPMLSectionOvSummary 5
-#define kPMLSectionOvAddress 6
-#define kPMLSectionOvProperties 9
-#define kPMLSectionOvHours 7
-#define kPMLSectionOvHappyHours 8
-#define kPMLSectionOvEvents 10
-#define kPMLSectionOvAdvertising 11
-#define kPMLSectionOvDesc 12
-#define kPMLSectionOvTags 13
-#define kPMLSectionTopPlaces 14
-#define kPMLSectionActivity 15
-#define kPMLSectionButtons 16
+#define kPMLSectionDealsAdmin 3
+#define kPMLSectionLocalization 5
+#define kPMLSectionOvSummary 6
+#define kPMLSectionOvAddress 7
+#define kPMLSectionOvProperties 10
+#define kPMLSectionOvHours 8
+#define kPMLSectionOvHappyHours 9
+#define kPMLSectionOvEvents 11
+#define kPMLSectionOvAdvertising 12
+#define kPMLSectionOvDesc 13
+#define kPMLSectionOvTags 14
+#define kPMLSectionTopPlaces 15
+#define kPMLSectionActivity 16
+#define kPMLSectionButtons 17
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -164,6 +165,8 @@ typedef enum {
 } PMLVisibityState;
 @interface PMLSnippetTableViewController ()
 @property (nonatomic,retain) NSDateFormatter *dateFormatter;
+@property (nonatomic,retain) NSObject<PMLInfoProvider> *infoProvider;
+@property (nonatomic,retain) NSMutableArray *deals;
 @end
 
 @implementation PMLSnippetTableViewController {
@@ -174,7 +177,6 @@ typedef enum {
     PMLCountersView *_countersView;
     
     // Providers
-    NSObject<PMLInfoProvider> *_infoProvider;
     NSMutableArray *_observedProperties;
     PMLActionManager *_actionManager;
     
@@ -196,6 +198,7 @@ typedef enum {
     PMLSectionTitleView *_sectionTopPlacesTitleView;
     PMLSectionTitleView *_sectionActivityTitleView;
     PMLSectionTitleView *_sectionPropertiesTitleView;
+    PMLSectionTitleView *_sectionDealsAdminTitleView;
     
     // Gallery
     BOOL _galleryFullscreen;
@@ -244,7 +247,7 @@ typedef enum {
     _settingsService = [TogaytherService settingsService];
     _conversionService = [TogaytherService getConversionService];
     _actionManager = [TogaytherService actionManager];
-    _infoProvider = [_uiService infoProviderFor:_snippetItem];
+    self.infoProvider = [_uiService infoProviderFor:_snippetItem];
     _thumbPreviewMode = ThumbPreviewModeNone;
     _countersView = (PMLCountersView*)[_uiService loadView:@"PMLCountersView"];
     _heightsMap = [[NSMutableDictionary alloc] init];
@@ -277,6 +280,7 @@ typedef enum {
     _sectionTopPlacesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionActivityTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionPropertiesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
+    _sectionDealsAdminTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     
     // Tab selection
     [self updateTab];
@@ -394,9 +398,10 @@ typedef enum {
                 return _hasGallery ? 1 : 0;
             case kPMLSectionCounters:
                 return [_infoProvider thumbsRowCountForMode:ThumbPreviewModeLikes]+[_infoProvider thumbsRowCountForMode:ThumbPreviewModeCheckins] >0 ? 1 : 0;
-            case kPMLSectionDeals: {
+            case kPMLSectionDeals:
+                return self.deals.count;
+            case kPMLSectionDealsAdmin:
                 if([_infoProvider respondsToSelector:@selector(deals)]) {
-                    
                     // Determining whether current user is owner
                     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
                     BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key];
@@ -406,18 +411,16 @@ typedef enum {
                         // If no deal, section to add a deal
                         if(dealsRows == 0) {
                             dealsRows++;
-                        } else {
-                            // Adding each management row
-                            dealsRows = dealsRows*2;
                         }
                         // Last row for accessing stats
                         dealsRows++;
+                        return dealsRows;
+                    } else {
+                        return 0;
                     }
-                    return dealsRows;
 
                 }
                 return 0;
-            }
             case kPMLSectionLocalization: {
                 if([_infoProvider respondsToSelector:@selector(mapObjectForLocalization)]) {
                     CALObject *locationObject = [_infoProvider mapObjectForLocalization];
@@ -529,22 +532,23 @@ typedef enum {
                     return kPMLRowThumbPreviewId;
 //            }
             break;
-        case kPMLSectionDeals: {
-            
+        case kPMLSectionDeals:
+            return kPMLRowDealDisplayId;
+        case kPMLSectionDealsAdmin: {
             CurrentUser *user = [[TogaytherService userService] getCurrentUser];
             NSInteger dealsCount = [[_infoProvider deals] count];
             BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key] || user.isAdmin;
-            
-            // No deals, owner, first row => deal activation row
-            if(isOwner && indexPath.row == 0 && dealsCount == 0) {
-                return kPMLRowDealActivateId;
-            } else if(indexPath.row < dealsCount) {
-                // Not owner, displaying deal
-                return kPMLRowDealDisplayId;
-            } else if(isOwner && indexPath.row < dealsCount*2) {
-                return kPMLRowDealInfoId;
+            if(isOwner) {
+                // No deals, owner, first row => deal activation row
+                if(indexPath.row == 0 && dealsCount == 0) {
+                    return kPMLRowDealActivateId;
+                } else if(indexPath.row < dealsCount) {
+                    return kPMLRowDealInfoId;
+                } else {
+                    return kPMLRowButtonId;
+                }
             } else {
-                return kPMLRowButtonId;
+                return 0;
             }
         }
         case kPMLSectionLocalization:
@@ -628,18 +632,21 @@ typedef enum {
         case kPMLSectionCounters:
             [self configureRowThumbPreview:(PMLThumbsTableViewCell*)cell atIndex:indexPath.row];
             break;
-        case kPMLSectionDeals: {
+        case kPMLSectionDeals:
+            [self configureRowDisplayDeal:(PMLDealDisplayTableViewCell*)cell forIndex:indexPath.row];
+            break;
+        case kPMLSectionDealsAdmin: {
             CurrentUser *user = [[TogaytherService userService] getCurrentUser];
             NSInteger dealsCount = [[_infoProvider deals] count];
             BOOL isOwner = [[_infoProvider ownerKey] isEqualToString:user.key] || user.isAdmin;
-            if(indexPath.row == 0 && (isOwner || user.isAdmin) && dealsCount == 0) {
-                [self configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell];
-            } else if(indexPath.row < dealsCount) {
-                [self configureRowDisplayDeal:(PMLDealDisplayTableViewCell*)cell forIndex:indexPath.row];
-            } else if(isOwner && indexPath.row < dealsCount*2) {
-                [self configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:indexPath.row/2];
-            } else {
-                [self configureRowPlaceReportButton:(PMLButtonTableViewCell*)cell];
+            if(isOwner) {
+                if(indexPath.row == 0 && dealsCount == 0) {
+                    [self configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell];
+                } else if(indexPath.row < dealsCount) {
+                    [self configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:indexPath.row];
+                } else {
+                    [self configureRowPlaceReportButton:(PMLButtonTableViewCell*)cell];
+                }
             }
             break;
         }
@@ -750,13 +757,20 @@ typedef enum {
             }
             break;
         case kPMLSectionDeals: {
+            PMLDeal *deal = [self.deals objectAtIndex:indexPath.row];
+            if([[TogaytherService dealsService] isDealUsable:deal considerCheckinDistance:NO]) {
+                return 111;
+            } else {
+                return 82;
+            }
+            break;
+        }
+        case kPMLSectionDealsAdmin: {
             NSString *rowId = [self rowIdForIndexPath:indexPath];
             if([rowId isEqualToString:kPMLRowDealActivateId]) {
-                return 102;
+                return 146;
             } else if([rowId isEqualToString:kPMLRowDealInfoId]) {
-                return 102;
-            } else if([rowId isEqualToString:kPMLRowDealDisplayId]) {
-                return 112;
+                return 85;
             } else if([rowId isEqualToString:kPMLRowButtonId]) {
                 return kPMLHeightButton;
             }
@@ -846,7 +860,14 @@ typedef enum {
     return 44;
 
 }
+- (BOOL)isOwner {
+    CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+    if([_infoProvider respondsToSelector:@selector(ownerKey)]) {
+        return user.isAdmin || [_infoProvider.ownerKey isEqualToString:user.key];
+    }
+    return NO;
 
+}
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     switch(section) {
         case kPMLSectionOvEvents:
@@ -872,6 +893,17 @@ typedef enum {
                 if(obj !=nil) {
                     [_sectionLocalizationTitleView setTitle:[_infoProvider localizationSectionTitle]];
                     return _sectionLocalizationTitleView;
+                }
+            }
+            return nil;
+        case kPMLSectionDealsAdmin:
+            // Must be owner
+            if([self isOwner]) {
+                // Must be eligible to deals
+                if([_infoProvider respondsToSelector:@selector(deals)]) {
+                    _sectionDealsAdminTitleView.titleLabel.text = NSLocalizedString(@"deal.admin.sectionTitle", @"Manage your deals");
+                    _sectionDealsAdminTitleView.backgroundColor = [UIColor blackColor];
+                    return _sectionDealsAdminTitleView;
                 }
             }
             return nil;
@@ -928,6 +960,15 @@ typedef enum {
                     }
                 }
                 break;
+            case kPMLSectionDealsAdmin:
+                // Must be owner
+                if([self isOwner]) {
+                    // Must be eligible to deals
+                    if([_infoProvider respondsToSelector:@selector(deals)]) {
+                        return _sectionDealsAdminTitleView.bounds.size.height;
+                    }
+                }
+                return 0;
             case kPMLSectionOvSummary: {
                 NSInteger rows = [[_infoProvider addressComponents] count]+([_infoProvider city] == nil ? 0 : 1);
                 NSInteger height =38;
@@ -993,7 +1034,11 @@ typedef enum {
         case kPMLSectionOvHours:
         case kPMLSectionOvHappyHours:
             return YES;
-        case kPMLSectionDeals:
+        case kPMLSectionDeals: {
+            PMLDeal *deal = [self.deals objectAtIndex:indexPath.row];
+            return deal.lastUsedDate == nil || [deal.lastUsedDate timeIntervalSinceNow] < -PML_DEAL_MIN_REUSE_SECONDS;
+        }
+        case kPMLSectionDealsAdmin:
             return ([kPMLRowButtonId isEqualToString:[self rowIdForIndexPath:indexPath]]);
         case kPMLSectionOvProperties: {
             PMLProperty *p = [[_infoProvider properties] objectAtIndex:indexPath.row];
@@ -1020,6 +1065,9 @@ typedef enum {
             [self activityTapped:indexPath.row];
             break;
         case kPMLSectionDeals:
+            [self useDealTapped:nil];
+            break;
+        case kPMLSectionDealsAdmin:
             if([kPMLRowButtonId isEqualToString:[self rowIdForIndexPath:indexPath]]) {
                 PMLReportingTableViewController *controller = (PMLReportingTableViewController*)[_uiService instantiateViewController:SB_ID_REPORTING];
                 controller.reportingPlace = (Place*)_snippetItem;
@@ -1325,28 +1373,9 @@ typedef enum {
     } else {
         cell.addPhotoButton.hidden=YES;
     }
-    
-//    // Wiring secondary action
-//    if([_infoProvider respondsToSelector:@selector(secondaryActionType)]) {
-//        PMLActionType actionType = [_infoProvider secondaryActionType];
-//        PopupAction *action = [_actionManager actionForType:actionType];
-//        if(action != nil) {
-//            cell.secondaryButton.hidden=NO;
-//            cell.secondaryButtonTitle.hidden=NO;
-//            
-//            cell.secondaryButtonTitle.text = [_infoProvider actionSubtitleFor:actionType];
-//            [cell.secondaryButton setImage:action.icon forState:UIControlStateNormal];
-//            cell.secondaryButton.layer.borderColor = [action.color CGColor];
-//            cell.secondaryButton.tag = actionType;
-//            [cell.secondaryButton addTarget:self action:@selector(actionButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
-//        } else {
-//            cell.secondaryButton.hidden=YES;
-//            cell.secondaryButtonTitle.hidden=YES;
-//        }
-//    } else {
-        cell.secondaryButton.hidden=YES;
-        cell.secondaryButtonTitle.hidden=YES;
-//    }
+    cell.secondaryButton.hidden=YES;
+    cell.secondaryButtonTitle.hidden=YES;
+
 }
 -(void)actionButtonTapped:(UIButton*)source {
     [_actionManager execute:(PMLActionType)source.tag onObject:_snippetItem];
@@ -1567,39 +1596,73 @@ typedef enum {
     cell.buttonContainer.backgroundColor = [UIColor clearColor];
 }
 -(void)configureRowActivateDeal:(PMLActivateDealTableViewCell*)cell {
+    cell.backgroundColor = [UIColor blackColor];
     cell.activateHeadlineLabel.text = NSLocalizedString(@"deal.activate.headline", @"Get MORE clients!");
     [cell.activateButton setTitle:NSLocalizedString(@"deal.activate.button", @"Activate your deal now") forState:UIControlStateNormal];
     [cell.activateButton addTarget:self action:@selector(didTapActivateDeal:) forControlEvents:UIControlEventTouchUpInside];
 }
 - (void)configureRowAdminDeal:(PMLDealTableViewCell*)cell forIndex:(NSInteger)index {
-    Deal *deal = [[_infoProvider deals] objectAtIndex:index];
+    PMLDeal *deal = [[_infoProvider deals] objectAtIndex:index];
     NSString *statusCode = [NSString stringWithFormat:@"deal.status.%@",deal.dealStatus];
     NSString *statusLabel= NSLocalizedString(statusCode, statusCode);
     NSString *dealTypeCode = [NSString stringWithFormat:@"deal.type.%@",deal.dealType];
     NSString *dealType = NSLocalizedString(dealTypeCode,dealTypeCode);
-    NSString *headline = [NSString stringWithFormat:@"%@ %@", dealType, statusLabel];
     
-    cell.dealHeadlineLabel.text = headline;
-    cell.dealStartLabel.text = NSLocalizedString(@"banner.list.startDateLabel", @"banner.list.startDateLabel");
-    cell.dealStartValueLabel.text = [_dateFormatter stringFromDate:deal.dealStartDate];
+    cell.backgroundColor = [UIColor blackColor];
+    cell.dealHeadlineLabel.text = dealType;
+    cell.statusLabel.text = statusLabel;
+    cell.statusIntroLabel.text = NSLocalizedString(@"deal.status", @"STATUS");
+    
+    // Setuping play/pause button
     if([deal.dealStatus isEqualToString:DEAL_STATUS_RUNNING]) {
-        [cell.dealActivationButton setImage:[UIImage imageNamed:@"btnPause"] forState:UIControlStateNormal];
+        [cell.dealActivationButton setImage:[UIImage imageNamed:@"btnPauseGrey"] forState:UIControlStateNormal];
+        cell.statusLabel.textColor = UIColorFromRGB(0x5ED303);
+        cell.dealHeadlineLabel.textColor = UIColorFromRGB(0x5ED303);
     } else {
-        [cell.dealActivationButton setImage:[UIImage imageNamed:@"btnPlay"] forState:UIControlStateNormal];
+        [cell.dealActivationButton setImage:[UIImage imageNamed:@"btnPlayGreen"] forState:UIControlStateNormal];
+        cell.statusLabel.textColor = UIColorFromRGB(0x717171);
+        cell.dealHeadlineLabel.textColor = UIColorFromRGB(0x717171);
     }
+    
+    // Setuping callback for play/pause button
+    cell.dealActivationButton.tag=index;
+    [cell.dealActivationButton addTarget:self action:@selector(didTapDealPlayPauseButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    // Setuping quota text
+    if(deal.maxUses > 0 ) {
+        NSString *template = NSLocalizedString(@"deal.condition.max", @"deal.condition.max");
+        NSString *label = [NSString stringWithFormat:template, deal.maxUses];
+        [cell.dealQuotaLabelButton setTitle:label forState:UIControlStateNormal];
+    } else {
+        [cell.dealQuotaLabelButton setTitle:NSLocalizedString(@"deal.condition.nomax", @"deal.condition.nomax") forState:UIControlStateNormal];
+    }
+    cell.dealQuotaWidthConstraint.constant = [cell.dealQuotaLabelButton sizeThatFits:CGSizeMake(MAXFLOAT, cell.dealQuotaLabelButton.bounds.size.height)].width;
+    
+    // Quota edit callback
+    cell.dealQuotaEditButton.tag=index;
+    [cell.dealQuotaLabelButton addTarget:self action:@selector(didTapEditDealQuota:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.dealQuotaEditButton addTarget:self action:@selector(didTapEditDealQuota:) forControlEvents:UIControlEventTouchUpInside];
+
 }
 -(void) configureRowPlaceReportButton:(PMLButtonTableViewCell*)cell {
+    cell.backgroundColor = [UIColor blackColor];
     cell.buttonLabel.text= NSLocalizedString(@"deal.report.button", @"deal.report.button");
+    cell.buttonImageView.image = [UIImage imageNamed:@"icoClaimStats"];
+    cell.buttonContainer.backgroundColor = [UIColor clearColor];
     
 }
 -(void)configureRowDisplayDeal:(PMLDealDisplayTableViewCell*)cell forIndex:(NSInteger)row {
-    Deal *deal = [[_infoProvider deals] objectAtIndex:row];
+    PMLDeal *deal = [[_infoProvider deals] objectAtIndex:row];
     NSString *dealTypeCode = [NSString stringWithFormat:@"deal.type.%@",deal.dealType];
     NSString *dealType = NSLocalizedString(dealTypeCode,dealTypeCode);
     cell.dealTitle.text = dealType;
-    cell.dealConditionLabel.text = nil;
+    cell.useDealButton.hidden = ![[TogaytherService dealsService] isDealUsable:deal considerCheckinDistance:NO];
+    cell.dealConditionLabel.text = [[TogaytherService dealsService] dealConditionLabel:deal];
+
+    
     [cell.useDealButton setTitle:NSLocalizedString(@"deal.use.button", @"Use this deal") forState:UIControlStateNormal];
-    [cell.useDealButton addTarget:self action:@selector(useDealTapped:) forControlEvents:UIControlEventTouchUpInside];
+    cell.useDealButton.userInteractionEnabled=NO;
+//    [cell addTarget:self action:@selector(useDealTapped:) forControlEvents:UIControlEventTouchUpInside];
 }
 -(NSString *) stringByStrippingHTML:(NSString*)html {
     NSRange r;
@@ -1833,7 +1896,7 @@ typedef enum {
 #pragma mark - PMLDataListener
 - (void)didLoadOverviewData:(CALObject *)object {
     if([_snippetItem.key isEqualToString:object.key]) {
-        _infoProvider = [_uiService infoProviderFor:object];
+        self.infoProvider = [_uiService infoProviderFor:object];
         // Building provider
         _thumbController.thumbProvider = _infoProvider.thumbsProvider;
         _hoursTypeMap = [_conversionService hashHoursByType:object];
@@ -1859,7 +1922,7 @@ typedef enum {
 - (void)setSnippetItem:(CALObject *)snippetItem {
     [self clearObservers];
     _snippetItem = snippetItem;
-    _infoProvider = [TogaytherService.uiService infoProviderFor:_snippetItem];
+    self.infoProvider = [TogaytherService.uiService infoProviderFor:_snippetItem];
     [self updateTab];
     _hoursTypeMap = [_conversionService hashHoursByType:snippetItem];
     if(_snippetItem != nil) {
@@ -1874,6 +1937,23 @@ typedef enum {
     [_observedProperties addObject:@"editingDesc"];
     [self.snippetItem addObserver:self forKeyPath:@"address" options:NSKeyValueObservingOptionNew context:NULL];
     [_observedProperties addObject:@"address"];
+}
+
+- (void)setInfoProvider:(NSObject<PMLInfoProvider> *)infoProvider {
+    // Assigning
+    _infoProvider = infoProvider;
+    [self refreshDeals];
+}
+-(void)refreshDeals {
+    // Computing deals
+    self.deals = [[NSMutableArray alloc] init];
+    if([_infoProvider respondsToSelector:@selector(deals)]) {
+        for(PMLDeal *deal in [_infoProvider deals]) {
+            if([deal.dealStatus isEqualToString:DEAL_STATUS_RUNNING]) {
+                [self.deals addObject:deal];
+            }
+        }
+    }
 }
 -(void)updateTab {
     if([_infoProvider respondsToSelector:@selector(events)]) {
@@ -2237,10 +2317,10 @@ typedef enum {
 }
 -(void)didTapActivateDeal:(UIButton*)button {
     Place *place = (Place*)_snippetItem;
-    [_dataService activateDealFor:place onSuccess:^(id obj) {
-        Deal *deal = (Deal*)obj;
+    [[TogaytherService dealsService] activateDealFor:place onSuccess:^(id obj) {
+        PMLDeal *deal = (PMLDeal*)obj;
         BOOL hasDeal = NO;
-        for(Deal *placeDeal in place.deals) {
+        for(PMLDeal *placeDeal in place.deals) {
             if([placeDeal.key isEqualToString:deal.key]) {
                 hasDeal = YES;
                 break;
@@ -2254,9 +2334,74 @@ typedef enum {
         [_uiService alertWithTitle:@"deal.activate.errorTitle" text:@"deal.activate.errorMsg"];
     }];
 }
+-(void)didTapDealPlayPauseButton:(UIButton*)button {
+    NSInteger dealIndex = button.tag;
+    PMLDeal *deal = [[_infoProvider deals] objectAtIndex:dealIndex];
+    NSString *previousStatus = deal.dealStatus;
+    if([deal.dealStatus isEqualToString:DEAL_STATUS_PAUSED]) {
+        deal.dealStatus = DEAL_STATUS_RUNNING;
+    } else {
+        deal.dealStatus = DEAL_STATUS_PAUSED;
+    }
+    [[TogaytherService dealsService] updateDeal:deal onSuccess:^(id obj) {
+//        NSMutableIndexSet *indexSet = [NSMutableIndexSet indexSet];
+//        [indexSet addIndex:kPMLSectionDeals];
+//        [indexSet addIndex:kPMLSectionDealsAdmin];
+        [self refreshDeals];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionDeals] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionDealsAdmin] withRowAnimation:UITableViewRowAnimationAutomatic];
+
+//        [self.tableView reloadData];
+    } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+        deal.dealStatus = previousStatus;
+        [_uiService alertError];
+    }];
+}
+-(void)didTapEditDealQuota:(UIButton*)button {
+    NSString *title = NSLocalizedString(@"deal.quota.editTitle", @"deal.quota.editTitle");
+    NSString *message = NSLocalizedString(@"deal.quota.editMessage", @"deal.quota.editMessage");;
+    NSString *cancel = NSLocalizedString(@"cancel", @"cancel");
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:@"Ok", nil];
+    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+    // Initializing text field to current user nickname
+    PMLDeal *deal = [[_infoProvider deals] objectAtIndex:button.tag];
+    UITextField *textField = [alertView textFieldAtIndex:0];
+    textField.text = [NSString stringWithFormat:@"%d",(int)deal.maxUses];
+    alertView.tag = button.tag;
+    [alertView show];
+}
+
+
 -(void)useDealTapped:(UIButton*)button {
-    PMLUseDealViewController *useDealController = (PMLUseDealViewController*)[_uiService instantiateViewController:SB_ID_USE_DEAL];
-    useDealController.deal = [[_infoProvider deals] objectAtIndex:0];
-    [[[_uiService menuManagerController] navigationController] pushViewController:useDealController animated:YES];
+
+    PMLDeal *deal = [[_infoProvider deals] objectAtIndex:0];
+    [_actionManager execute:PMLActionTypeUseDeal onObject:deal];
+
+
+}
+
+#pragma mark - UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if(buttonIndex != alertView.cancelButtonIndex) {
+        UITextField *textField = [alertView textFieldAtIndex:0];
+        PMLDeal *deal = [[_infoProvider deals] objectAtIndex:alertView.tag];
+        NSInteger previousValue = deal.maxUses;
+        @try {
+            if([textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]].length ==0) {
+                deal.maxUses = 0;
+            } else {
+                NSNumber *number = [[[NSNumberFormatter alloc] init] numberFromString:textField.text];
+                deal.maxUses = number.integerValue;
+            }
+            [[TogaytherService dealsService] updateDeal:deal onSuccess:^(id obj) {
+                [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:kPMLSectionDealsAdmin] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+                [_uiService alertError];
+            }];
+        } @catch(NSException *e) {
+            [_uiService alertError];
+            deal.maxUses = previousValue;
+        }
+    }
 }
 @end

@@ -94,7 +94,6 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 @property (strong, nonatomic) MessageService    *messageService;
 @property (strong, nonatomic) JsonService       *jsonService;
 @property (strong, nonatomic) UIService         *uiService;
-@property (retain, nonatomic) MKNumberBadgeView *dealsBadgeView;
 @property (copy, nonatomic) NSString *searchTerm;
 @property (strong, nonatomic) AFNetworkReachabilityManager *reachabilityManager;
 @property (strong) ModelHolder *modelHolder;
@@ -191,14 +190,7 @@ typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage 
 
 -(void)fetchReportFor:(Place*)place timeRange:(PMLReportRange)timeRange onSuccess:(ReportingCompletionBlock)callback onFailure:(ErrorCompletionBlock)errorCompletion;
 
-/**
- * Activates the deal for the given place
- * @param place the Place to activate the deal for
- * @param successCallback the completor to call when the call succeeds
- * @param errorCompletion called whenever a problem occurred (deal already activated, not owner of place, connection issues)
- */
--(void)activateDealFor:(Place*)place onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
--(void)useDeal:(Deal*)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
+
 @end
 
 

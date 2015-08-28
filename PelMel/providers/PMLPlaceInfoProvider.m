@@ -328,17 +328,7 @@
 - (PMLActionType)editActionType {
     return PMLActionTypeEditPlace;
 }
-- (PMLActionType)primaryActionType {
-    return PMLActionTypeNoAction;
-}
-- (PMLActionType)secondaryActionType {
-    CLLocationDistance distance = [_conversionService numericDistanceTo:_place];
-    if(distance < kPMLCheckinDistanceMeters) {
-        return PMLActionTypeCheckin;
-    } else {
-        return -1;
-    }
-}
+
 - (NSString *)actionSubtitleFor:(PMLActionType)actionType {
     switch (actionType) {
         case PMLActionTypeLike:

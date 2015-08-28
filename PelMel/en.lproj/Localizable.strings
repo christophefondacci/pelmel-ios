@@ -207,14 +207,39 @@
 "deal.activate.errorTitle"="Error";
 "deal.activate.errorMsg"="A problem occurred while trying to activate this deal. Please try again or contact an administrator.";
 "deal.activation.message"="Activating the deal...";
+"deal.admin.sectionTitle"="Manage your deals";
+"deal.available"="Available";
+"deal.availability.check"="Checking availability...";
+"deal.condition.max"="Max %d deals / 24h";
+"deal.condition.nomax"="Max 1 deal / user / 24h";
+"deal.delay"="Available %@";
 "deal.present"="PRESENT TO BARTENDER";
 "deal.proceed"="PROCEED WITH THE DEAL";
+"deal.quota.editTitle"="Deal Quota";
+"deal.quota.editMessage"="Define the maximum number of deals that you would like to offer per 24 hours or leave blank to set to 1 deal per user per 24 hours.";
+"deal.quota.label"="%d left / %d total";
 "deal.report.button"="View my statistics";
-"deal.type.TWO_FOR_ONE"="Buy 1st drink / Get 1 free";
+"deal.status"="Status";
+"deal.status.RUNNING"="ACTIVE";
+"deal.status.PAUSED"="PAUSED";
+"deal.type.TWO_FOR_ONE"="Buy 1st / Get 1 free";
 "deal.use.button"="Use this deal";
+
+"deal.use.checkin.title"="You need to check in";
+"deal.use.checkin.message"="You need to check in to access this deal. Do you want to check in now?";
+"deal.use.checkin.checkinButton"="Check In";
+"deal.use.checkin.cancelButton"="Cancel";
+
 "deal.use.countdown"="Activation in %d";
 "deal.use.legal"="This deal is offered by %@, not by us.\nYou certify being of legal age to use the deal";
+
+"deal.use.localization.title"="Go there first";
+"deal.use.localization.message"="You need to go to %@, check in, and present your phone to the bartender to use this deal.";
+
 "deal.use.title"="Nearby Deals";
+"deal.useError.mustWait"="You have already used a deal in that place in the past 24 hours. You must wait 24 hours until you can use an offer in the same place again.";
+"deal.useError.quotaReached"="All deals have already been offered today, please come back tomorrow";
+"deal.useError.title"="Deal no longer available";
 
 //"counters.likes.singular"="%d Like";
 "description"="Description";

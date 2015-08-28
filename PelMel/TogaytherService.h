@@ -20,7 +20,8 @@
 #import "PMLStoreService.h"
 #import "PMLActionManager.h"
 #import "PMLStorageService.h"
-#import "Deal.h"
+#import "PMLDealService.h"
+#import "PMLDeal.h"
 
 
 @interface TogaytherService : NSObject
@@ -62,6 +63,9 @@
 
 // Action manager
 +(PMLActionManager*)actionManager;
+
+// Deals service
++(PMLDealService*)dealsService;
 
 + (MessageService*)getMessageService;
 + (void)applyCommonLookAndFeel:(UIViewController*)controller;

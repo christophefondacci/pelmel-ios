@@ -32,8 +32,6 @@
 #define kBannersCycleUrlFormat @"%@/api/banner"
 
 #define kReportingUrlFormat @"%@/admin/ownerReport"
-#define kActivateDealUrlFormat @"%@/mobileActivateDeal"
-#define kUseDealUrlFormat @"%@/mobileUseDeal"
 
 
 #define kLikeUrlFormat @"%@/mobileIlike?id=%@&nxtpUserToken=%@&type=%@"
@@ -420,7 +418,7 @@
     if(totalUsersCount != nil) {
         [_modelHolder setTotalUsersCount:[totalUsersCount intValue]];
     }
-    [self updateDealsBadge];
+    [[TogaytherService dealsService] updateDealsBadge];
     // Callback on main thread
     dispatch_async(dispatch_get_main_queue(), ^{
         [self doCallback:isSilent];
@@ -1272,69 +1270,5 @@
     }];
 }
 
-- (void)activateDealFor:(Place *)place onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion {
-    
-    NSString *url = [[NSString alloc] initWithFormat:kActivateDealUrlFormat,togaytherServer ];
-    
-    // Getting birth date components
-    NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
-    CurrentUser *user = userService.getCurrentUser;
-    
-    // Injecting parameters
-    [paramValues setObject:place.key forKey:@"placeKey"];
-    [paramValues setObject:user.token forKey:@"nxtpUserToken"];
-    
-    // Preparing POST request
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        Deal *deal = [jsonService convertJsonDealToDeal:(NSDictionary*)responseObject forPlace:place];
-        if(successCallback) {
-            successCallback(deal);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if(errorCompletion) {
-            errorCompletion(-1, error.localizedDescription);
-        }
-    }];
-}
-
-- (void)useDeal:(Deal *)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion {
-    NSString *url = [[NSString alloc] initWithFormat:kUseDealUrlFormat,togaytherServer ];
-    
-    // Getting birth date components
-    NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
-    CurrentUser *user = userService.getCurrentUser;
-    
-    // Injecting parameters
-    [paramValues setObject:deal.key forKey:@"dealKey"];
-    [paramValues setObject:user.token forKey:@"nxtpUserToken"];
-    
-    // Preparing POST request
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-        Deal *newDeal = [jsonService convertJsonDealToDeal:(NSDictionary*)responseObject forPlace:(Place*)deal.relatedObject];
-        if(successCallback) {
-            successCallback(newDeal);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if(errorCompletion) {
-            errorCompletion(-1, error.localizedDescription);
-        }
-    }];
-}
-
--(void)setDealsBadgeView:(MKNumberBadgeView *)dealsBadgeView {
-    _dealsBadgeView = dealsBadgeView;
-    [self updateDealsBadge];
-}
--(void)updateDealsBadge {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        _dealsBadgeView.value = [[_modelHolder deals] count];
-        _dealsBadgeView.hidden = _dealsBadgeView.value<=0;
-        _dealsBadgeView.superview.hidden = _dealsBadgeView.hidden;
-    });
-}
 
 @end

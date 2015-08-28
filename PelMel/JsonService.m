@@ -57,17 +57,19 @@
         return nil;
     }
 }
--(Deal*)convertJsonDealToDeal:(NSDictionary*)jsonDeal forPlace:(Place*)place {
+-(PMLDeal*)convertJsonDealToDeal:(NSDictionary*)jsonDeal forPlace:(Place*)place {
     NSString *key               = [jsonDeal objectForKey:@"key"];
     NSString *relatedItemKey    = [jsonDeal objectForKey:@"relatedItemKey"];
     NSString *status            = [jsonDeal objectForKey:@"status"];
     NSString *type              = [jsonDeal objectForKey:@"type"];
     NSNumber *startTime         = [jsonDeal objectForKey:@"startDate"];
+    NSNumber *lastUsedTime      = [jsonDeal objectForKey:@"lastUsedTime"];
     NSNumber *usedToday         = [jsonDeal objectForKey:@"usedToday"];
+    NSNumber *maxPerDay         = [jsonDeal objectForKey:@"maxUses"];
     
-    Deal *deal = [_objectCache objectForKey:key];
+    PMLDeal *deal = [_objectCache objectForKey:key];
     if(deal == nil) {
-        deal = [[Deal alloc ] init];
+        deal = [[PMLDeal alloc ] init];
         [_objectCache setObject:deal forKey:key];
     }
     
@@ -75,9 +77,13 @@
     deal.key = key;
     deal.relatedObject = place;
     deal.dealStartDate = [[NSDate alloc] initWithTimeIntervalSince1970:startTime.longValue];
+    if(lastUsedTime != nil && (id)lastUsedTime != [NSNull null]) {
+        deal.lastUsedDate = [[NSDate alloc] initWithTimeIntervalSince1970:lastUsedTime.longValue];
+    }
     deal.dealType = type;
     deal.dealStatus = status;
     deal.usedToday = usedToday.integerValue;
+    deal.maxUses = maxPerDay.intValue;
     return deal;
 }
 -(void)fillPlace:(Place*)place fromJsonPlace:(NSDictionary*)json {
@@ -96,7 +102,7 @@
     for(NSDictionary *jsonDeal in jsonDeals) {
         
         // Building Deal bean
-        Deal *deal = [self convertJsonDealToDeal:jsonDeal forPlace:place];
+        PMLDeal *deal = [self convertJsonDealToDeal:jsonDeal forPlace:place];
         
         // Augmenting deal array
         [deals addObject:deal];
@@ -259,6 +265,7 @@
         NSLog(@"WARNING: Original place object has been replaced: %@ (cache may have been purged)",place.key );
         place = defaultPlace;
     }
+    [self fillPlace:place fromJsonPlace:json];
     // Parsing lat / lng
     NSDecimalNumber *numLat = [json objectForKey:@"lat"];
     NSDecimalNumber *numLng = [json objectForKey:@"lng"];

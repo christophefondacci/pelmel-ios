@@ -8,9 +8,7 @@
         <mutableArray key="SourceSansPro-Light.ttf">
             <string>SourceSansPro-Light</string>
             <string>SourceSansPro-Light</string>
-        </mutableArray>
-        <mutableArray key="SourceSansPro-Regular.ttf">
-            <string>SourceSansPro-Regular</string>
+            <string>SourceSansPro-Light</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -56,7 +54,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="l80-FS-jqf"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="24"/>
+                                <fontDescription key="fontDescription" name="SourceSansPro-Light" family="Source Sans Pro" pointSize="24"/>
                                 <state key="normal" title="Use this deal">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -93,6 +91,7 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="BrF-oz-WJ2"/>
+                                <exclude reference="ra2-OX-Jsl"/>
                                 <exclude reference="rz8-IL-5qC"/>
                                 <exclude reference="z8a-IW-6ai"/>
                             </mask>
@@ -101,6 +100,7 @@
                 </subviews>
                 <color key="backgroundColor" red="0.15294118225574493" green="0.16470588743686676" blue="0.18039216101169586" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="32x-hZ-jme" secondAttribute="bottom" constant="9.5" id="861-Yg-omA"/>
                     <constraint firstItem="32x-hZ-jme" firstAttribute="top" secondItem="3Xy-ba-GGG" secondAttribute="top" constant="10" id="J1J-z9-vc3"/>
                     <constraint firstItem="32x-hZ-jme" firstAttribute="leading" secondItem="3Xy-ba-GGG" secondAttribute="leading" constant="15" id="KYW-rZ-TqO"/>
                     <constraint firstAttribute="bottom" secondItem="32x-hZ-jme" secondAttribute="bottom" constant="10" id="U55-uI-Ghy"/>
