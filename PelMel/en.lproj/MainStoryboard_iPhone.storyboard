@@ -110,8 +110,6 @@
             <string>OpenSans</string>
             <string>OpenSans</string>
             <string>OpenSans</string>
-            <string>OpenSans</string>
-            <string>OpenSans</string>
         </mutableArray>
         <mutableArray key="OpenSans-Semibold.ttf">
             <string>OpenSans-Semibold</string>
@@ -142,8 +140,10 @@
             <string>SourceSansPro-Light</string>
             <string>SourceSansPro-Light</string>
             <string>SourceSansPro-Light</string>
+            <string>SourceSansPro-Light</string>
         </mutableArray>
         <mutableArray key="SourceSansPro-Regular.ttf">
+            <string>SourceSansPro-Regular</string>
             <string>SourceSansPro-Regular</string>
             <string>SourceSansPro-Regular</string>
             <string>SourceSansPro-Regular</string>
@@ -2754,22 +2754,39 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="10" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dPu-IQ-wfy">
-                                            <rect key="frame" x="192" y="153" width="120" height="40"/>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="50"/>
-                                            <color key="textColor" red="0.92549019610000005" green="0.46666666670000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2015/02/03 10:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HzA-iC-pwy">
-                                            <rect key="frame" x="8" y="169" width="181" height="30"/>
-                                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="20"/>
-                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXa-8J-aE7" userLabel="selection">
+                                            <rect key="frame" x="0.0" y="54" width="111" height="50"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="2015-01-10 10:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="11" translatesAutoresizingMaskIntoConstraints="NO" id="2iA-t8-ALa">
+                                                    <rect key="frame" x="8" y="8" width="95" height="18"/>
+                                                    <fontDescription key="fontDescription" name="SourceSansPro-Light" family="Source Sans Pro" pointSize="14"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qh6-Hm-HfH">
+                                                    <rect key="frame" x="8" y="24" width="95" height="24"/>
+                                                    <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="19"/>
+                                                    <color key="textColor" red="0.8980392157" green="0.38431372549999998" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="50" id="MIh-kx-nKW"/>
+                                                <constraint firstAttribute="width" constant="111" id="m3f-tc-ZNs"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="uGN-Am-mmz" firstAttribute="top" secondItem="0iE-YA-fd8" secondAttribute="bottom" id="5SA-od-RWx"/>
                                         <constraint firstAttribute="bottom" secondItem="uGN-Am-mmz" secondAttribute="bottom" constant="30" id="6g3-yp-WnS"/>
+                                        <constraint firstItem="cXa-8J-aE7" firstAttribute="top" secondItem="GbB-iZ-879" secondAttribute="top" constant="54" id="9so-Vd-KmL"/>
                                         <constraint firstItem="uGN-Am-mmz" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" constant="20" id="DKH-ui-dC1"/>
                                         <constraint firstItem="uGN-Am-mmz" firstAttribute="leading" secondItem="zsn-8d-Ssd" secondAttribute="trailing" constant="2" id="Gec-Rp-h3e"/>
                                         <constraint firstAttribute="trailing" secondItem="uGN-Am-mmz" secondAttribute="trailing" id="PEr-5S-NJM"/>
@@ -2778,6 +2795,7 @@
                                         <constraint firstItem="0iE-YA-fd8" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" constant="8" id="loj-bx-jjd"/>
                                         <constraint firstAttribute="trailing" secondItem="0iE-YA-fd8" secondAttribute="trailing" constant="8" id="pPu-N1-Ez9"/>
                                         <constraint firstItem="zsn-8d-Ssd" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" id="quR-fP-S7A"/>
+                                        <constraint firstItem="cXa-8J-aE7" firstAttribute="leading" secondItem="GbB-iZ-879" secondAttribute="leading" id="shW-Rw-xnR"/>
                                         <constraint firstItem="0iE-YA-fd8" firstAttribute="top" secondItem="GbB-iZ-879" secondAttribute="top" id="ukT-Zq-ZRl"/>
                                         <constraint firstAttribute="bottom" secondItem="zsn-8d-Ssd" secondAttribute="bottom" constant="20" id="yJi-K6-yKI"/>
                                     </constraints>
@@ -2788,8 +2806,11 @@
                                     <outlet property="maxYLabel" destination="MzI-Pt-CWZ" id="tvL-zR-Lgu"/>
                                     <outlet property="minYLabel" destination="zsn-8d-Ssd" id="VHB-It-5DS"/>
                                     <outlet property="reportTitleLabel" destination="0iE-YA-fd8" id="Zpm-Cd-wuN"/>
-                                    <outlet property="selectionDateLabel" destination="HzA-iC-pwy" id="hoE-Nd-uwV"/>
-                                    <outlet property="selectionValueLabel" destination="dPu-IQ-wfy" id="Vgn-My-6fq"/>
+                                    <outlet property="selectionDateLabel" destination="2iA-t8-ALa" id="UWf-ZM-hmX"/>
+                                    <outlet property="selectionLeadingConstraint" destination="shW-Rw-xnR" id="81h-AL-Ck3"/>
+                                    <outlet property="selectionTopConstraint" destination="9so-Vd-KmL" id="PVd-Ux-26X"/>
+                                    <outlet property="selectionValueLabel" destination="qh6-Hm-HfH" id="XZO-Gt-nKP"/>
+                                    <outlet property="selectionView" destination="cXa-8J-aE7" id="gTy-XT-hqr"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="rangeSelector" id="nOd-hj-qcJ" customClass="PMLReportRangeSelectorTableViewCell">

@@ -259,18 +259,29 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
     return UIColorFromRGBAlpha(0x3daf2c,1);
 }
 
--(void)lineChartView:(JBLineChartView *)lineChartView didSelectLineAtIndex:(NSUInteger)lineIndex horizontalIndex:(NSUInteger)horizontalIndex {
+-(void)lineChartView:(JBLineChartView *)lineChartView didSelectLineAtIndex:(NSUInteger)lineIndex horizontalIndex:(NSUInteger)horizontalIndex touchPoint:(CGPoint)touchPoint {
     NSString *type = [_sortedTypes objectAtIndex:lineChartView.tag];
     NSArray *typedData = [_typedReportData objectForKey:type];
     PMLReportData *data = [typedData objectAtIndex:horizontalIndex];
     PMLGraphTableViewCell *cell = [self.typedReportCells objectForKey:type];
+    cell.selectionView.hidden = NO;
     cell.selectionDateLabel.text = [_dateFormatter stringFromDate:data.date];
     cell.selectionDateLabel.hidden = NO;
     cell.selectionValueLabel.text = [data.count stringValue];
     cell.selectionValueLabel.hidden=NO;
-    
+    if(touchPoint.x>self.view.bounds.size.width/2) {
+        cell.selectionLeadingConstraint.constant = touchPoint.x +lineChartView.frame.origin.x- 30 - cell.selectionView.bounds.size.width;
+        cell.selectionTopConstraint.constant = touchPoint.y+lineChartView.frame.origin.y-cell.selectionView.bounds.size.height - 30;
+    } else {
+        cell.selectionLeadingConstraint.constant = touchPoint.x +lineChartView.frame.origin.x+ 30;
+        cell.selectionTopConstraint.constant = touchPoint.y+lineChartView.frame.origin.y-cell.selectionView.bounds.size.height - 30;
+    }
 }
-
+- (void)didDeselectLineInLineChartView:(JBLineChartView *)lineChartView {
+    NSString *type = [_sortedTypes objectAtIndex:lineChartView.tag];
+    PMLGraphTableViewCell *cell = [self.typedReportCells objectForKey:type];
+    cell.selectionView.hidden = YES;
+}
 #pragma mark - PMLReportRangeSelector 
 - (void)didSelectRange:(PMLReportRange)range {
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];

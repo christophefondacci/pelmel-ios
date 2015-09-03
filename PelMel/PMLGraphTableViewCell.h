@@ -16,5 +16,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *maxYLabel;
 @property (weak, nonatomic) IBOutlet UILabel *selectionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *selectionValueLabel;
+@property (weak, nonatomic) IBOutlet UIView *selectionView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectionTopConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *selectionLeadingConstraint;
 
 @end
