@@ -351,6 +351,20 @@
 "modify"="Modifier";
 "moreresults.title"="Voir plus de résultats";
 "moreresults.subtitle"="Tapez ici pour rechercher tous les lieux et villes";
+
+"msgAudience.delayError"="Vous pourrez envoyer un message à vos clients %@.";
+"msgAudience.info"="Écrivez un message qui sera envoyé aux utilisateurs ayant checkiné dans votre établissement dans les 30 derniers jours.";
+"msgAudience.ownershipError"="Vous n'êtes pas propriétaire de cet établissement, seuls les propriétaires peuvent envoyer des annonces à leur clientèle.";
+"msgAudience.reach.computing"="Calcul de l'atteinte...";
+"msgAudience.reach"="Atteinte:";
+"msgAudience.reachValue"="%d Utilisateurs";
+"msgAudience.reachValueError"="Impossible de joindre le serveur";
+"msgAudience.send"="ENVOYER";
+"msgAudience.sending"="Envoi du message...";
+"msgAudience.success"="Votre message a bien été envoyé !";
+"msgAudience.successTitle"="Message envoyé !";
+"msgAudience.title"="Annonce";
+
 "navbar.activity"="Activité";
 "network.error"="Erreur, appuyez sur rafraîchir";
 "network.noconnection"="Aucune connexion au réseau";
@@ -487,6 +501,8 @@
 "reporting.graphTitles.CHECKIN"="Checkins (utilisateurs uniques)";
 "reporting.graphTitles.DEAL_USED"="Utilisations de la promotion";
 "reporting.graphTitles.CHECKOUT"="Checkouts (utilisateurs uniques)";
+"reporting.loading"="Chargement des rapports...";
+"reporting.messageButton"="Message à mes Clients";
 
 "search.done.serverTitle"="Recherche mondiale ?";
 "search.done.serverMsg"="Souhaitez-vous chercher des résultats dans le monde entier ou préférez vous rester local sur votre carte actuelle ?";

@@ -9,7 +9,7 @@
 #ifndef togayther_Constants_h
 #define togayther_Constants_h
 
-#define PML_CHECKIN_DISTANCE 15000
+#define PML_CHECKIN_DISTANCE 150000
 
 #define PML_PROP_PUSH_ENABLED @"pushEnabled"
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
@@ -57,6 +57,7 @@
 #define SB_ID_REPORTING @"reportController"
 #define SB_ID_USE_DEAL @"useDealController"
 #define SB_ID_LIST_DEALS @"listDealsController"
+#define SB_ID_MSG_AUDIENCE @"msgAudience"
 
 #define BACKGROUND_COLOR UIColorFromRGB(0x272a2e)
 

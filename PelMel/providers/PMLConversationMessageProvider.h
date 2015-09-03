@@ -13,6 +13,6 @@
 
 @property (nonatomic) NSInteger numberOfResults;
 
-- (instancetype)initWithFromUserKey:(NSString*)fromUserKey toUserKey:(NSString*)toUserKey;
+- (instancetype)initWithFromUserKey:(NSString*)fromUserKey toUserKey:(NSString*)toUserKey commentsMode:(BOOL)showComments;
 
 @end

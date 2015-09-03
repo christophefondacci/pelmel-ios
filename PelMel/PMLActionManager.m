@@ -349,15 +349,29 @@
 -(void)registerCommentAction {
     PopupAction *commentAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         NSLog(@"COMMENT");
-        if(object!= nil) {
-            PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
-            msgController.withObject = object;
-            [_uiService presentSnippet:msgController opened:YES root:NO];
-        }
+        [self chatActionWith:object showComments:YES];
     }];
 
     [self registerAction:commentAction forType:PMLActionTypeComment];
 }
+-(void)registerChatAction {
+    PopupAction *chatAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
+        NSLog(@"CHAT");
+        [self chatActionWith:object showComments:NO];
+    }];
+    
+    [self registerAction:chatAction forType:PMLActionTypeChat];
+}
+-(void)chatActionWith:(CALObject *)withObject showComments:(BOOL)showComments {
+    if(withObject!= nil) {
+        PMLMessagingContainerController *msgController = (PMLMessagingContainerController*)[_uiService instantiateViewController:SB_ID_MESSAGES];
+        msgController.withObject = withObject;
+        msgController.showComments = showComments;
+        [_uiService presentSnippet:msgController opened:YES root:NO];
+    }
+
+}
+
 -(void)registerReportAction {
     PopupAction *reportAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         

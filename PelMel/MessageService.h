@@ -14,10 +14,14 @@
 #import "PMLManagedUser.h"
 #import "PMLManagedRecipientsGroup.h"
 #import "PMLRecipientsGroup.h"
+#import "Services.h"
 
 #define kPMLNotificationActivityChanged @"PMLActivityChanged"
 
 typedef void(^PushPropositionCallback)(BOOL pushActive);
+typedef void(^MessageAudienceCallback)(NSInteger usersReachedCount, NSDate *nextAnnouncementDate);
+typedef void(^MessageAudienceFailureCallback)(BOOL ownershipError, NSDate *nextAnnouncementDate, NSInteger usersReachedCount);
+
 
 @protocol MessageCallback
 @optional
@@ -118,4 +122,20 @@ typedef void(^PushPropositionCallback)(BOOL pushActive);
  * @param usersList the list of User objects to include in the chat
  */
 -(void)startChat:(NSArray*)usersList;
+
+/**
+ * Sends a message to the audience of the given place.
+ * @param place the Place whose audience should be targetted
+ * @param successCallback called on success with the number of users reached as argument
+ * @param errorCallback called on failure
+ */
+-(void)messageAudienceOf:(Place*)place message:(NSString*)message onSuccess:(MessageAudienceCallback)successCallback onFailure:(MessageAudienceFailureCallback)errorCallback;
+/**
+ * Counts the number of users that would be reached by an announcement.
+ * @param place the Place whose audience should be counted
+ * @param successCallback called on success
+ * @param errrorCallback called when the call fails
+ */
+-(void)countAudienceOf:(Place*)place onSuccess:(MessageAudienceCallback)successCallback onFailure:(MessageAudienceFailureCallback)errorCallback;
+
 @end

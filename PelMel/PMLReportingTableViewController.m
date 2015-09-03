@@ -12,12 +12,21 @@
 #import "PMLReportData.h"
 #import "PMLReportRangeSelectorTableViewCell.h"
 #import "JBLineChartFooterView.h"
+#import "PMLButtonTableViewCell.h"
+#import "PMLMessageAudienceTableViewController.h"
+#import "SpringTransitioningDelegate.h"
+#import <MBProgressHUD.h>
 
 #define kSectionsCount 2
 #define kSectionRangeSelector 0
 #define kSectionGraphs 1
+
+#define kRowMessageButton 0
+#define kRowTabs 1
+
 #define kRowIdRangeSelector @"rangeSelector"
 #define kRowIdReport @"graphCell"
+#define kRowIdButton @"button"
 
 #define PML_REPORT_VIEWS @"VIEW"
 #define PML_REPORT_LOCALIZATION @"LOCALIZATION_AUTO_STAT"
@@ -42,6 +51,8 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
 @property (nonatomic,retain) NSNumber *minY;
 @property (nonatomic,retain) NSDateFormatter *dateFormatter;
 @property (nonatomic,retain) NSNumberFormatter *numberFormatter;
+
+@property (nonatomic,retain) SpringTransitioningDelegate *transitioningDelegate;
 @end
 
 @implementation PMLReportingTableViewController
@@ -66,6 +77,7 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
     
     self.typedReportCells = [[NSMutableDictionary alloc] init];
     
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kRowIdButton];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -88,20 +100,41 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     switch(section) {
         case kSectionRangeSelector:
-            return 1;
+            return 2;
         case kSectionGraphs:
             return _typedReportData == nil ? 0 : [_sortedTypes count];
     }
     return 0;
 }
 
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:(indexPath.section == 0 ? kRowIdRangeSelector : kRowIdReport) forIndexPath:indexPath];
-    
+-(NSString*)rowIdForIndexPath:(NSIndexPath*)indexPath {
     switch(indexPath.section) {
         case kSectionRangeSelector:
-            [self configureRowRangeSelector:(PMLReportRangeSelectorTableViewCell*)cell];
+            switch(indexPath.row) {
+                case kRowTabs:
+                    return kRowIdRangeSelector;
+                case kRowMessageButton:
+                    return kRowIdButton;
+            }
+            break;
+        case kSectionGraphs:
+            return kRowIdReport;
+    }
+    return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[self rowIdForIndexPath:indexPath] forIndexPath:indexPath];
+    cell.backgroundColor = BACKGROUND_COLOR;
+    switch(indexPath.section) {
+        case kSectionRangeSelector:
+            switch(indexPath.row) {
+                case kRowTabs:
+                    [self configureRowRangeSelector:(PMLReportRangeSelectorTableViewCell*)cell];
+                    break;
+                case kRowMessageButton:
+                    [self configureRowMessage:(PMLButtonTableViewCell*)cell];
+            }
             break;
         case kSectionGraphs:
             [self configureRowGraph:(PMLGraphTableViewCell*)cell forRow:indexPath.row];
@@ -117,6 +150,10 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
         cell.delegate = self;
         [cell selectRange:PMLReportRangeSemester];
     }
+}
+-(void)configureRowMessage:(PMLButtonTableViewCell*)cell {
+    cell.buttonImageView.image = [UIImage imageNamed:@"icoClaimStats"];
+    cell.buttonLabel.text = NSLocalizedString(@"reporting.messageButton", @"reporting.messageButton");
 }
 -(NSString*)typeForRow:(NSInteger)row {
 
@@ -164,11 +201,31 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
         case kSectionRangeSelector:
-            return 44;
+            switch(indexPath.row) {
+                case kRowTabs:
+                    return 44;
+                case kRowMessageButton:
+                    return 62;
+            }
+
         case kSectionGraphs:
             return 200;
     }
     return 44;
+}
+-(BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == kSectionRangeSelector && indexPath.row == kRowMessageButton;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(indexPath.section == kSectionRangeSelector && indexPath.row == kRowMessageButton) {
+        PMLMessageAudienceTableViewController *msgController = (PMLMessageAudienceTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_MSG_AUDIENCE];
+        msgController.place = self.reportingPlace;
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:msgController];
+        self.transitioningDelegate = [[SpringTransitioningDelegate alloc] initWithDelegate:self];
+        self.transitioningDelegate.transitioningDirection = TransitioningDirectionDown;
+        [self.transitioningDelegate presentViewController:navController];
+        
+    }
 }
 
 #pragma mark - JBLineChartViewDataSource
@@ -216,6 +273,9 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
 
 #pragma mark - PMLReportRangeSelector 
 - (void)didSelectRange:(PMLReportRange)range {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.mode = MBProgressHUDModeIndeterminate;
+    hud.labelText = NSLocalizedString(@"reporting.loading", @"reporting.loading");
     [[TogaytherService dataService] fetchReportFor:self.reportingPlace timeRange:range onSuccess:^(NSArray *reportDataList) {
         self.minY = @0;
         self.typedReportData = [[NSMutableDictionary alloc] init];
@@ -252,7 +312,9 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
         }];
         
         [self.tableView reloadData];
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
+        [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
         [[TogaytherService uiService] alertWithTitle:@"Error" text:@"Error fetching report data or you are not authorized to acces this data"];
     }];
 }

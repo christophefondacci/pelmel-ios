@@ -115,7 +115,7 @@
     if([self isAllMessageView] ) {
         self.messageProvider = [[PMLThreadMessageProvider alloc] init];
     } else {
-        self.messageProvider = [[PMLConversationMessageProvider alloc] initWithFromUserKey:_withObject.key toUserKey:[[userService getCurrentUser] key]];
+        self.messageProvider = [[PMLConversationMessageProvider alloc] initWithFromUserKey:_withObject.key toUserKey:[[userService getCurrentUser] key] commentsMode:self.showComments];
         [self readConversationWith:_withObject.key];
     }
     
@@ -197,9 +197,9 @@
     }
 }
 - (void)refreshContents {
-    if([_withObject isKindOfClass:[PMLRecipientsGroup class]] || [_withObject isKindOfClass:[User class]]) {
+    if(!self.showComments) {
         [messageService getMessagesWithUser:_withObject.key messageCallback:self];
-    } else if([_withObject isKindOfClass:[CALObject class]]){
+    } else {
         [messageService getReviewsAsMessagesFor:_withObject.key messageCallback:self];
     }
     [self refreshTable];
@@ -505,7 +505,7 @@
         PMLRecipientsGroup *group = (PMLRecipientsGroup*)_withObject;
         if(group.key == nil) {
             group.key = message.recipientsGroupKey;
-            self.messageProvider = [[PMLConversationMessageProvider alloc] initWithFromUserKey:group.key toUserKey:[[userService getCurrentUser] key] ];
+            self.messageProvider = [[PMLConversationMessageProvider alloc] initWithFromUserKey:group.key toUserKey:[[userService getCurrentUser] key] commentsMode:self.showComments];
             [messageService setLastRecipientsGroup:group];
             [self refreshTable];
             [self.tableView reloadData];

@@ -17,6 +17,7 @@ typedef enum {
     PMLActionTypeAddPhoto,
     PMLActionTypeCheckin,
     PMLActionTypeComment,
+    PMLActionTypeChat,
     PMLActionTypeConfirm,
     PMLActionTypeCancel,
     PMLActionTypeReport,

@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "PMLDeal.h"
-#import "DataService.h"
+#import "UserService.h"
+#import "Services.h"
+#import <MKNumberBadgeView.h>
 
 @interface PMLDealService : NSObject
 

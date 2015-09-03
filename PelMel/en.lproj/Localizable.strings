@@ -353,6 +353,22 @@
 "message.thread.message"="%d messages";
 "messages.my.title"="Chats";
 "messaging.title.groupChat"="Group chat";
+
+"msgAudience.delayError"="You will be able to send a message to your clients %@.";
+"msgAudience.info"="Write a message that will be sent to the users who checked in at your place within the last 30 days.";
+"msgAudience.ownershipError.title"="Ownership error";
+"msgAudience.ownershipError"="You are not the owner of the place, only owners can send messages to their audience.";
+"msgAudience.reach"="Reach:";
+"msgAudience.reach.computing"="Calculating reach...";
+"msgAudience.reachValue"="%d Users";
+"msgAudience.reachValue.singular"="%d User";
+"msgAudience.reachValueError"="Unable to contact server";
+"msgAudience.send"="SEND";
+"msgAudience.sending"="Sending message...";
+"msgAudience.success"="Your message has been sent successfully!";
+"msgAudience.successTitle"="Message sent successfully!";
+"msgAudience.title"="Announcement";
+
 "modify"="Modify";
 "moreresults.title"="Search more results";
 "moreresults.subtitle"="Tap here to search for all places and cities";
@@ -484,11 +500,15 @@ Then, we may use your localization when you are near a place so that we can expo
 
 Don't be scared, we only need an email, a password, a nickname and your birth date. Your email is only used as a unique identifier internally to our services and will never be exposed to anyone. We encourage you to never use your personal info as your nickname (like your name) but to instead use anything which cannot personally identify yourself.
 ";
+
 "reporting.graphTitles.VIEW"="Number of views (unique user)";
 "reporting.graphTitles.LOCALIZATION_AUTO_STAT"="Nearby unique users";
 "reporting.graphTitles.CHECKIN"="Unique users check-ins";
 "reporting.graphTitles.DEAL_USED"="Deals use";
 "reporting.graphTitles.CHECKOUT"="Unique users check-outs";
+"reporting.loading"="Loading report data...";
+"reporting.messageButton"="Message my Clients";
+
 
 "search.done.serverTitle"="Search worldwide?";
 "search.done.serverMsg"="Do you want to search for worldwide results or do you prefer to stay local on your current map?";

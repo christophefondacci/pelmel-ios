@@ -294,7 +294,7 @@
 
         }
         case kPMLCounterIndexComment:
-            return PMLActionTypeComment;
+            return PMLActionTypeChat;
     }
     return PMLActionTypeNoAction;
 }

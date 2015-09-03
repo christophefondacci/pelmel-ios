@@ -21,6 +21,7 @@
 @interface PMLMessageTableViewController : UITableViewController <MessageCallback,NSFetchedResultsControllerDelegate>
 
 @property (strong,nonatomic) CALObject *withObject;
+@property (nonatomic) BOOL showComments;
 @property (strong,nonatomic) id<PMLMessageProvider> messageProvider;
 
 @end

@@ -32,7 +32,6 @@
 
 - (NSFetchedResultsController *)fetchedResultsController:(NSManagedObjectContext*)managedObjectContext delegate:(id<NSFetchedResultsControllerDelegate>)delegate {
     
-    
     if (_fetchedResultsController != nil) {
         _fetchedResultsController.delegate = delegate;
         return _fetchedResultsController;

@@ -17,6 +17,7 @@
 #import "SizedTTLCacheService.h"
 #import "PMLBanner.h"
 #import "PMLReportConstants.h"
+#import "Services.h"
 
 @class AFNetworkReachabilityManager;
 
@@ -85,7 +86,7 @@ typedef void (^ListBannerCompletionBlock)(NSArray *banners );
 typedef void (^UpdateCalendarCompletionBlock)(PMLCalendar *calendar );
 typedef void (^UpdateEventCompletionBlock)(Event *calendar );
 typedef void (^ReportingCompletionBlock)(NSArray *reportDataList );
-typedef void (^ErrorCompletionBlock)(NSInteger errorCode,NSString *errorMessage );
+
 
 @interface DataService : NSObject <CLLocationManagerDelegate>
 

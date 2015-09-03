@@ -19,19 +19,21 @@
 @property (nonatomic,retain) DataService *dataService;
 @property (nonatomic,retain) NSString *fromItemKey;
 @property (nonatomic,retain) NSString *toItemKey;
+@property (nonatomic) BOOL showComments;
 @end
 
 
 
 @implementation PMLConversationMessageProvider
 
-- (instancetype)initWithFromUserKey:(NSString*)fromUserKey toUserKey:(NSString*)toUserKey
+- (instancetype)initWithFromUserKey:(NSString*)fromUserKey toUserKey:(NSString*)toUserKey commentsMode:(BOOL)showComments
 {
     self = [super init];
     if (self) {
         self.dataService = [TogaytherService dataService];
         self.fromItemKey = fromUserKey;
         self.toItemKey = toUserKey;
+        self.showComments = showComments;
         self.numberOfResults = 20;
     }
     return self;
@@ -53,8 +55,13 @@
     if([self.fromItemKey hasPrefix:@"RCPT"]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"replyTo.itemKey=%@ and toItemKey=%@",self.fromItemKey,user.key];
         [fetchRequest setPredicate:predicate];
-    } else if([self.fromItemKey hasPrefix:@"USER"]) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@ and replyTo.itemKey=from.itemKey) or (toItemKey = %@ and from.itemKey=%@ and replyTo.itemKey=from.itemKey)",self.fromItemKey,user.key,self.fromItemKey,user.key];
+    } else if(!self.showComments) {
+        NSPredicate *predicate;
+        if([self.fromItemKey isKindOfClass:[User class]]) {
+            predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@ and replyTo.itemKey=from.itemKey) or (toItemKey = %@ and from.itemKey=%@ and replyTo.itemKey=from.itemKey)",self.fromItemKey,user.key,self.fromItemKey,user.key];
+        } else {
+            predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@ and replyTo.itemKey=from.itemKey)",self.fromItemKey,user.key];
+        }
         [fetchRequest setPredicate:predicate];
     } else {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"toItemKey=%@",self.fromItemKey];

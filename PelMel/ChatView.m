@@ -42,7 +42,7 @@
     userService = [TogaytherService userService];
     imageService = [TogaytherService imageService];
     _uiService = [TogaytherService uiService];
-    User *fromUser = (User*)message.from;
+    CALObject *fromUser = message.from;
     
     UIImageView *currentThumb;
     UITextView *currentBubbleText;
@@ -137,12 +137,19 @@
         }
         
         // Decorating thumb
-        if(fromUser.isOnline) {
-            currentThumb.layer.borderColor = [_uiService colorForObject:fromUser].CGColor;
-        } else {
+        if([fromUser isKindOfClass:[User class]]) {
+            if(((User*)fromUser).isOnline) {
+                currentThumb.layer.borderColor = [_uiService colorForObject:fromUser].CGColor;
+            } else {
+                currentThumb.layer.borderColor = [UIColor whiteColor].CGColor;
+            }
+            currentUsernameLabel.text = ((User*)fromUser).pseudo;
+            currentThumb.layer.cornerRadius = currentThumb.bounds.size.width/2;
+        } else if([fromUser isKindOfClass:[Place class]]) {
             currentThumb.layer.borderColor = [UIColor whiteColor].CGColor;
+            currentUsernameLabel.text = ((Place*)fromUser).title;
+            currentThumb.layer.cornerRadius = 0;
         }
-        currentUsernameLabel.text = fromUser.pseudo;
     }
     // Setting the message's textual contents
     NSString *msgText = nil;
@@ -150,7 +157,11 @@
         msgText = [NSString stringWithFormat:NSLocalizedString(@"message.thread.message", @"message.thread.message"),message.messageCount];
         self.threadNicknameLabel.hidden=NO;
         if(message.recipientsGroupKey == fromUser.key || message.recipientsGroupKey == nil) {
-            self.threadNicknameLabel.text = fromUser.pseudo;
+            if([fromUser respondsToSelector:@selector(pseudo)]) {
+                self.threadNicknameLabel.text = [(User*)fromUser pseudo];
+            } else if([fromUser respondsToSelector:@selector(title)]) {
+                self.threadNicknameLabel.text = [(Place*)fromUser title];
+            }
         } else {
             PMLManagedRecipientsGroup *group = [[TogaytherService getMessageService] managedRecipientsGroupForKey:message.recipientsGroupKey];
             // Building comma seperated list of recipients

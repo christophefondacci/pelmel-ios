@@ -33,6 +33,7 @@
 #define kActivitiesStatsUrlFormat @"%@/api/activityStats"
 #define kActivitiesUrlFormat @"%@/api/activityDetails"
 #define kActivitiesGroupedUrlFormat @"%@/api/groupedActivityDetails"
+#define kMessageAudienceUrlFormat @"%@/admin/messageAudience"
 #define kParamLat @"lat"
 #define kParamLng @"lng"
 #define kParamToken @"nxtpUserToken"
@@ -46,6 +47,7 @@
 #define kParamFromMessageId @"fromMessageId"
 #define kParamStatActivityType @"statActivityType"
 #define kParamLastActivityTime @"lastActivityTime"
+
 #define kSendMessageUrlFormat @"%@/mobileSendMsg"
 #define kPostCommentUrlFormat @"%@/mobilePostComment"
 #define kTopQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)
@@ -164,7 +166,7 @@
     [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         // Processing JSON message response
         [self processJsonMessage:(NSDictionary*)responseObject messageCallback:callback forUserKey:userKey];
-        if(userKey != nil && ![userKey isEqualToString:user.key]) {
+        if(userKey != nil ) {
             [self markReadConversationWithUser:userKey];
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -224,10 +226,19 @@
         PMLManagedUser *user = [managedUsersMap objectForKey:key];
         
         if(user == nil) {
-            
-            // If not then we deserialize
-            User *aUser = [_jsonService convertJsonUserToUser:jsonUser];
-            [usersMap setObject:aUser forKey:aUser.key];
+            if([key hasPrefix:@"PLAC"]) {
+                User *placeUser = [[User alloc] init];
+                placeUser.key = key;
+                placeUser.pseudo = [jsonUser objectForKey:@"pseudo"];
+                NSDictionary *jsonThumb = [jsonUser objectForKey:@"thumb"];
+                CALImage *thumb = [[TogaytherService imageService] convertJsonImageToImage:jsonThumb];
+                placeUser.mainImage = thumb;
+                [usersMap setObject:placeUser forKey:key];
+            } else {
+                // If not then we deserialize
+                User *aUser = [_jsonService convertJsonUserToUser:jsonUser];
+                [usersMap setObject:aUser forKey:aUser.key];
+            }
         } else {
             [users addObject:user];
         }
@@ -442,6 +453,9 @@
         msg.isUnread = unread;
 
         PMLManagedUser *fromUser = [managedUsersMap objectForKey:fromKey];
+        if(fromUser == nil) {
+            
+        }
         msg.from = fromUser;
         PMLManagedRecipientsGroup *group = [recipientsGroupMap objectForKey:recipientsGroupKey];
         if(group != nil) {
@@ -463,7 +477,10 @@
                 group.lastMessageDate = msg.messageDate;
             }
         } else if(fromUser.lastMessageDate == nil || [msg.messageDate compare:fromUser.lastMessageDate] == NSOrderedDescending) {
-            fromUser.lastMessageDate = msg.messageDate;
+            // Only if user key specified
+            if(userKey != nil) {
+                fromUser.lastMessageDate = msg.messageDate;
+            }
         }
     }
     // Saving entries
@@ -1102,4 +1119,62 @@
 - (void)unregisterCallback:(id<MessageCallback>)callback {
     [_messageCallbacks removeObject:callback];
 }
+
+#pragma mark - Announcement
+- (void)countAudienceOf:(Place *)place onSuccess:(MessageAudienceCallback)successCallback onFailure:(MessageAudienceFailureCallback)errorCallback {
+    [self messageOrCountAudienceOf:place message:nil countOnly:YES onSuccess:successCallback onFailure:errorCallback];
+}
+- (void)messageAudienceOf:(Place *)place message:(NSString *)message onSuccess:(MessageAudienceCallback)successCallback onFailure:(MessageAudienceFailureCallback)errorCallback {
+    [self messageOrCountAudienceOf:place message:message countOnly:NO onSuccess:successCallback onFailure:errorCallback];
+}
+-(void)messageOrCountAudienceOf:(Place *)place message:(NSString *)message countOnly:(BOOL)countOnly onSuccess:(MessageAudienceCallback)successCallback onFailure:(MessageAudienceFailureCallback)errorCallback {
+    
+    // Building URL
+    NSString *url = [[NSString alloc] initWithFormat:kMessageAudienceUrlFormat,togaytherServer];
+    
+    // Building arguments
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    CurrentUser *user = [userService getCurrentUser];
+    
+    [params setObject:user.token forKey:kParamToken];
+    [params setObject:place.key forKey:@"placeKey"];
+    if(message != nil) {
+        [params setObject:message forKey:@"message"];
+    }
+    if(countOnly) {
+        [params setObject:@"true" forKey:@"countReach"];
+    }
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *json = (NSDictionary*)responseObject;
+        NSNumber *usersReached          = [json objectForKey:@"usersReached"];
+        NSNumber *nextAnnouncementTime  = [json objectForKey:@"nextAnnouncementDate"];
+        NSDate *nextAnnouncementDate = nil;
+        if(nextAnnouncementTime != nil && (id)nextAnnouncementTime != [NSNull null]) {
+            nextAnnouncementDate = [NSDate dateWithTimeIntervalSince1970:nextAnnouncementTime.longValue];
+        }
+        // Calling back
+        successCallback(usersReached.integerValue,nextAnnouncementDate);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSData *response = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+        NSError *jsonError;
+        
+        @try {
+            NSDictionary *json = [NSJSONSerialization JSONObjectWithData:response options:kNilOptions error:&jsonError];
+            NSNumber    *ownershipError         = [json objectForKey:@"ownershipError"];
+            NSNumber    *nextAnnouncementTime   = [json objectForKey:@"nextAnnouncementDate"];
+            NSNumber    *usersReached           = [json objectForKey:@"usersReached"];
+            NSDate * nextAnnouncementDate = nil;
+            if(nextAnnouncementTime != nil && (id)nextAnnouncementTime != [NSNull null]) {
+                nextAnnouncementDate = [NSDate dateWithTimeIntervalSince1970:nextAnnouncementTime.longValue];
+            }
+            
+            errorCallback(ownershipError.boolValue,nextAnnouncementDate, usersReached.integerValue);
+        } @catch(NSException *ex) {
+            errorCallback(NO, nil, 0);
+        }
+    }];
+}
+
 @end

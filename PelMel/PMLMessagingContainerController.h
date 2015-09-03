@@ -24,5 +24,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *addPhotoButton;
 
 @property (strong,nonatomic) CALObject *withObject;
+@property (nonatomic) BOOL showComments;
 
 @end

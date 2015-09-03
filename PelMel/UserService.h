@@ -12,6 +12,7 @@
 #import "CurrentUser.h"
 #import "ImageService.h"
 #import "JsonService.h"
+#import "Services.h"
 
 typedef enum {
     PMLUserPrivateNetworkNotInNetwork,
@@ -27,7 +28,7 @@ typedef enum {
     PMLPrivateNetworkActionInvite
 } PMLPrivateNetworkAction;
 
-typedef void(^Completor)(id obj);
+
 
 @protocol PMLUserCallback
 

@@ -101,6 +101,7 @@
         // Child controllers init
         self.messageTableController = (PMLMessageTableViewController*)[self.uiService instantiateViewController:SB_ID_MESSAGES_TABLE];
         self.messageTableController.withObject = self.withObject;
+        self.messageTableController.showComments = self.showComments;
         [self.messageTableView addSubview:self.messageTableController.view];
         UIView *messageView = self.messageTableController.view;
         [messageView setTranslatesAutoresizingMaskIntoConstraints:NO];
