@@ -12,9 +12,11 @@
 #import "TermsOfUseViewController.h"
 #import "PickerInputTableViewCell.h"
 #import "UIPelmelTitleView.h"
+#import <PBWebViewController.h>
 
 #define kUserEmailKey @"userEmail"
 #define kUserPasswordKey @"userPassword"
+
 
 #define kSectionsCount 3
 
@@ -375,7 +377,16 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    if(indexPath.section == kSectionRegister && indexPath.row == kRowRegisterTerms) {
+        
+        PBWebViewController *webviewController= [[PBWebViewController alloc] init];
+        NSString *server = [TogaytherService propertyFor:PML_PROP_SERVER];
+        NSString *url = [NSString stringWithFormat:kPMLUrlTerms,server];
+        webviewController.URL = [[NSURL alloc] initWithString:url];
+        [TogaytherService applyCommonLookAndFeel:self];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController pushViewController:webviewController animated:YES];
+    }
 }
 
 - (IBAction)loginPressed:(id)sender {

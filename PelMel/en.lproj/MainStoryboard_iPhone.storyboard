@@ -590,9 +590,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.92549020049999997" green="0.46666666870000001" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <connections>
-                                            <segue destination="s7K-fk-3zG" kind="push" identifier="terms" id="Z4U-LC-fic"/>
-                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="Nqa-QM-7bd">
                                         <rect key="frame" x="0.0" y="446" width="320" height="44"/>
@@ -5574,10 +5571,9 @@
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
+        <segue reference="eKE-7K-Ihn"/>
         <segue reference="enc-VM-87F"/>
-        <segue reference="fnn-3s-KqK"/>
         <segue reference="PYU-04-aVk"/>
         <segue reference="54f-Lu-DMh"/>
-        <segue reference="eKE-7K-Ihn"/>
     </inferredMetricsTieBreakers>
 </document>

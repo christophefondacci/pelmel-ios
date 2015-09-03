@@ -112,8 +112,15 @@
 
 #define kPMLBannerCycleTimeSeconds 10
 
+
 // Deals
 #define DEAL_STATUS_RUNNING @"RUNNING"
 #define DEAL_STATUS_PAUSED @"PAUSED"
 #define PML_DEAL_MIN_REUSE_SECONDS 86400
+
+
+// Terms
+#define kPMLUrlTerms @"%@/terms-agreement"
+
+
 #endif
