@@ -213,16 +213,21 @@
 "deal.condition.max"="Max %d deals / 24h";
 "deal.condition.nomax"="Max 1 deal / user / 24h";
 "deal.delay"="Available %@";
+"deal.error.alreadyUsed"="Already used in past 24h";
+"deal.error.generic"="Technical error, please retry later";
+"deal.error.quotaReached"="No more deals left";
 "deal.present"="PRESENT TO BARTENDER";
 "deal.proceed"="PROCEED WITH THE DEAL";
 "deal.quota.editTitle"="Deal Quota";
 "deal.quota.editMessage"="Define the maximum number of deals that you would like to offer per 24 hours or leave blank to set to 1 deal per user per 24 hours.";
 "deal.quota.label"="%d left / %d total";
 "deal.report.button"="View my statistics";
+"deal.report.text"="Our administrators and the owner of this place have been notified of a problem and will do their best to fix it or get in touch with you. We are very sorry for the inconvenience.";
+"deal.report.title"="Problem reported!";
 "deal.status"="Status";
 "deal.status.RUNNING"="ACTIVE";
 "deal.status.PAUSED"="PAUSED";
-"deal.type.TWO_FOR_ONE"="Buy 1st / Get 1 free";
+"deal.type.TWO_FOR_ONE"="Buy 1 / Get 1 free";
 "deal.use.button"="Use this deal";
 
 "deal.use.checkin.title"="You need to check in";

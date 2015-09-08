@@ -32,7 +32,6 @@
     [super viewDidLoad];
     
     self.tableView.separatorColor = [UIColor clearColor];
-//    [self.tableView registerNib:[UINib nibWithNibName:@"PMLButtonTableViewCell" bundle:nil] forCellReuseIdentifier:kCellIdButton];
 
     self.view.backgroundColor = UIColorFromRGB(0x141A2F);
     self.tableView.backgroundColor = UIColorFromRGB(0x141A2F);
@@ -233,4 +232,9 @@
 - (void)purchaseFailed:(NSNotification*)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
+- (IBAction)didTapCancel:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
+
+
 @end

@@ -14,6 +14,7 @@
 
 #define kActivateDealUrlFormat @"%@/mobileActivateDeal"
 #define kUseDealUrlFormat @"%@/mobileUseDeal"
+#define kReportDealUrlFormat @"%@/mobileReportDeal"
 
 @interface PMLDealService()
 @property (nonatomic,retain) NSString *server;
@@ -71,11 +72,11 @@
     
 }
 
-- (void)useDeal:(PMLDeal *)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion {
+- (void)useDeal:(PMLDeal *)deal onSuccess:(Completor)successCallback onFailure:(PMLDealErrorBlock)errorCompletion {
     [self useDeal:deal dryRun:NO onSuccess:successCallback onFailure:errorCompletion];
 }
 
-- (void)useDeal:(PMLDeal *)deal dryRun:(BOOL)dryRun onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion {
+- (void)useDeal:(PMLDeal *)deal dryRun:(BOOL)dryRun onSuccess:(Completor)successCallback onFailure:(PMLDealErrorBlock)errorCompletion {
     NSString *url = [[NSString alloc] initWithFormat:kUseDealUrlFormat,_server ];
     
     // Getting birth date components
@@ -96,13 +97,59 @@
             successCallback(newDeal);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSString *errorCode = @"deal.error.generic";
+        if(operation.response.statusCode == 403 && operation.responseObject) {
+
+
+            @try {
+                PMLDeal *newDeal = [_jsonService convertJsonDealToDeal:(NSDictionary *)operation.responseObject forPlace:(Place*)deal.relatedObject];
+                
+                if([newDeal.lastUsedDate timeIntervalSinceNow] > -PML_DEAL_MIN_REUSE_SECONDS) {
+                    errorCode = @"deal.error.alreadyUsed";
+                } else if(newDeal.usedToday>=newDeal.maxUses && newDeal.maxUses>0) {
+                    errorCode = @"deal.error.quotaReached";
+                }
+                errorCompletion(error.code,newDeal,NSLocalizedString(errorCode, errorCode));
+            } @catch(NSException *e) {
+                NSLog(@"Error parsing DEAL error JSON: %@",e.description);
+                errorCompletion(-1,nil,NSLocalizedString(errorCode, errorCode));
+            }
+        } else {
+            errorCompletion(error.code,nil,NSLocalizedString(errorCode, errorCode));
+        }
+    }];
+}
+- (void)refreshDeal:(PMLDeal*)deal onSuccess:(Completor)successCallback onFailure:(PMLDealErrorBlock)errorCompletion {
+    [self useDeal:deal dryRun:YES onSuccess:successCallback onFailure:errorCompletion];
+}
+
+-(void)reportDealProblem:(PMLDeal *)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion {
+    NSString *url = [[NSString alloc] initWithFormat:kReportDealUrlFormat,_server ];
+
+    // Getting birth date components
+    NSMutableDictionary *paramValues = [[NSMutableDictionary alloc] init];
+    CurrentUser *user = _userService.getCurrentUser;
+    
+    // Injecting parameters
+    [paramValues setObject:deal.key forKey:@"dealKey"];
+    [paramValues setObject:user.token forKey:@"nxtpUserToken"];
+    
+    // Preparing POST request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager POST:url parameters:paramValues success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+        NSDictionary *json = (NSDictionary*)responseObject;
+        NSNumber *errorFlag = [json objectForKey:@"error"];
+        if(!errorFlag.boolValue) {
+            successCallback(nil);
+        } else {
+            errorCompletion(-1,@"Error");
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if(errorCompletion) {
             errorCompletion(-1, error.localizedDescription);
         }
     }];
-}
-- (void)refreshDeal:(PMLDeal*)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion {
-    [self useDeal:deal dryRun:YES onSuccess:successCallback onFailure:errorCompletion];
 }
 
 -(void)setDealsBadgeView:(MKNumberBadgeView *)dealsBadgeView {

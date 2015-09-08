@@ -261,7 +261,7 @@
         } else {
             place = [[Place alloc] init];
         }
-    } else if(place != defaultPlace) {
+    } else if(place != defaultPlace && defaultPlace != nil) {
         NSLog(@"WARNING: Original place object has been replaced: %@ (cache may have been purged)",place.key );
         place = defaultPlace;
     }

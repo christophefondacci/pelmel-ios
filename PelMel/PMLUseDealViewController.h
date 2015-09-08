@@ -22,6 +22,8 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *circleWidthConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *circleHeightConstraint;
 @property (weak, nonatomic) IBOutlet UILabel *dealCountLabel;
+@property (weak, nonatomic) IBOutlet UIButton *reportProblemButton;
+@property (weak, nonatomic) IBOutlet UIButton *helpButton;
 
 @property (nonatomic,weak) PMLDeal *deal;
 

@@ -635,8 +635,8 @@
                         [[[_uiService menuManagerController] navigationController] pushViewController:useDealController animated:YES];
                     }
                     
-                } onFailure:^(NSInteger errorCode, NSString *errorMessage) {
-                    [_uiService alertError];
+                } onFailure:^(NSInteger errorCode, PMLDeal *deal, NSString *userMessage) {
+                    [_uiService alertWithTitle:@"action.failure.title" text:userMessage];
                 }];
                 
 

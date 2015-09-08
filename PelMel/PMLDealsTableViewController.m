@@ -77,7 +77,7 @@
     NSString *template = [NSString stringWithFormat:@"deal.type.%@",deal.dealType];
     cell.placeLabel.text = ((Place*)deal.relatedObject).title;
     cell.dealLabel.text = NSLocalizedString(template,@"2 For 1");
-    cell.dealConditionLabel.text= [[TogaytherService dealsService] dealConditionLabel:deal];
+    cell.dealConditionLabel.text= nil; //[[TogaytherService dealsService] dealConditionLabel:deal];
     CALImage *image = [[TogaytherService imageService] imageOrPlaceholderFor:deal.relatedObject allowAdditions:NO];
     [[TogaytherService imageService] load:image to:cell.placeImage thumb:NO];
     

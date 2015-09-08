@@ -12,6 +12,8 @@
 #import "Services.h"
 #import <MKNumberBadgeView.h>
 
+typedef void (^PMLDealErrorBlock)(NSInteger errorCode,PMLDeal *deal, NSString *userMessage);
+
 @interface PMLDealService : NSObject
 
 @property (nonatomic,retain) UserService *userService;
@@ -38,7 +40,7 @@
  * @param successCallback the block to call upon success, the updated deal bean will be passed through
  * @param errorCompletion the block called whenever something goes wrong
  */
--(void)useDeal:(PMLDeal*)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
+-(void)useDeal:(PMLDeal*)deal onSuccess:(Completor)successCallback onFailure:(PMLDealErrorBlock)errorCompletion;
 
 /**
  * Contacts the server to get up to date deal information. Should be called before granting access to the
@@ -47,8 +49,8 @@
  * @param successCallback the block to call when the call succeeds, where updated PMLDeal is passed as arg
  * @param errorCompletion the block called when the call fails
  */
-- (void)refreshDeal:(PMLDeal*)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
-
+- (void)refreshDeal:(PMLDeal*)deal onSuccess:(Completor)successCallback onFailure:(PMLDealErrorBlock)errorCompletion;
+-(void)reportDealProblem:(PMLDeal *)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
 -(NSString*)dealConditionLabel:(PMLDeal*)deal;
 -(BOOL)isDealUsable:(PMLDeal*)deal considerCheckinDistance:(BOOL)checkDistance ;
 @end
