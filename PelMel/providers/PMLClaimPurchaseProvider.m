@@ -65,7 +65,14 @@
 }
 - (NSString *)purchaseButtonLabel {
     NSString *title = NSLocalizedString(@"purchase.claim.button", @"purchase.claim.button");
-    return [NSString stringWithFormat:title,@"$19.99"];
+    SKProduct *productClaim30 = [[TogaytherService storeService] productFromId:kPMLProductClaim30];
+    if(productClaim30 != nil) {
+        NSString *price = [[TogaytherService storeService] priceFromProduct:productClaim30];
+        return [NSString stringWithFormat:title,price];
+    } else {
+        return [NSString stringWithFormat:title,@"n/a"];
+    }
+    
 }
 - (BOOL)didCancel {
     return NO;

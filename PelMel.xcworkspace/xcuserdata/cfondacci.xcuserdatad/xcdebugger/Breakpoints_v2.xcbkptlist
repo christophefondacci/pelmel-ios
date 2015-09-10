@@ -3434,11 +3434,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "-productsRequest:didReceiveResponse:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3450,11 +3450,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "135"
-            endingLineNumber = "135"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "-completeTransaction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3466,11 +3466,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLBannerEditorBehavior.m"
-            timestampString = "453852539.152814"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "44"
-            endingLineNumber = "44"
+            startingLineNumber = "45"
+            endingLineNumber = "45"
             landmarkName = "-editor:submitEditedObject:"
             landmarkType = "5">
             <Locations>
@@ -3514,11 +3514,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
+            startingLineNumber = "271"
+            endingLineNumber = "271"
             landmarkName = "-failedTransaction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3562,11 +3562,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
             landmarkName = "-paymentQueue:updatedTransactions:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3578,11 +3578,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
             landmarkName = "-productsRequest:didReceiveResponse:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3594,11 +3594,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLBannerEditorBehavior.m"
-            timestampString = "453879840.143757"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "84"
+            endingLineNumber = "84"
             landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
@@ -3642,11 +3642,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "-completeTransaction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8192,11 +8192,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLPurchaseTableViewController.m"
-            timestampString = "463427625.591635"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "171"
+            endingLineNumber = "171"
             landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8208,11 +8208,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
             landmarkName = "-completeClaimPayment:receipt:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8224,11 +8224,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "-completeClaimPayment:receipt:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8240,11 +8240,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "182"
-            endingLineNumber = "182"
+            startingLineNumber = "195"
+            endingLineNumber = "195"
             landmarkName = "-completeClaimPayment:receipt:"
             landmarkType = "5">
             <Locations>
@@ -8288,11 +8288,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "134"
+            endingLineNumber = "134"
             landmarkName = "-paymentQueue:updatedTransactions:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8352,11 +8352,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "161"
-            endingLineNumber = "161"
+            startingLineNumber = "174"
+            endingLineNumber = "174"
             landmarkName = "-completeClaimPayment:receipt:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8368,11 +8368,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "127"
+            endingLineNumber = "127"
             landmarkName = "-request:didFailWithError:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8384,11 +8384,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "268"
-            endingLineNumber = "268"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "-failedTransaction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8686,11 +8686,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLUseDealViewController.m"
-            timestampString = "463432686.501841"
+            timestampString = "463505676.354352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "119"
-            endingLineNumber = "119"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "-didStartDealTap:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8702,11 +8702,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLUseDealViewController.m"
-            timestampString = "463432686.501841"
+            timestampString = "463505676.354352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "-didStartDealTap:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8718,11 +8718,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLUseDealViewController.m"
-            timestampString = "463432686.501841"
+            timestampString = "463505676.354352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "161"
+            endingLineNumber = "161"
             landmarkName = "-didEndDealTap:"
             landmarkType = "5">
          </BreakpointContent>
@@ -8750,11 +8750,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLUseDealViewController.m"
-            timestampString = "463432686.501841"
+            timestampString = "463505676.354352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "179"
-            endingLineNumber = "179"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "-dealCountdown"
             landmarkType = "5">
          </BreakpointContent>
@@ -8766,11 +8766,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLUseDealViewController.m"
-            timestampString = "463432686.501841"
+            timestampString = "463505676.354352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "175"
-            endingLineNumber = "175"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "-dealCountdown"
             landmarkType = "5">
          </BreakpointContent>
@@ -8782,11 +8782,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "461725749.167667"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "200"
-            endingLineNumber = "200"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
             landmarkName = "-completeClaimPayment:receipt:"
             landmarkType = "5">
          </BreakpointContent>
@@ -9006,11 +9006,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLUseDealViewController.m"
-            timestampString = "463432686.501841"
+            timestampString = "463505676.354352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "96"
-            endingLineNumber = "96"
+            startingLineNumber = "101"
+            endingLineNumber = "101"
             landmarkName = "-animateAlphaPhase:delay:"
             landmarkType = "5">
          </BreakpointContent>
@@ -9022,11 +9022,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLUseDealViewController.m"
-            timestampString = "463432686.501841"
+            timestampString = "463505676.354352"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "106"
-            endingLineNumber = "106"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
             landmarkName = "-animateAnglePhase:delay:"
             landmarkType = "5">
          </BreakpointContent>
@@ -9518,11 +9518,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "463015658.069446"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "185"
-            endingLineNumber = "185"
+            startingLineNumber = "198"
+            endingLineNumber = "198"
             landmarkName = "-completeClaimPayment:receipt:"
             landmarkType = "5">
          </BreakpointContent>
@@ -9550,11 +9550,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLStoreService.m"
-            timestampString = "463017441.139761"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "169"
-            endingLineNumber = "169"
+            startingLineNumber = "182"
+            endingLineNumber = "182"
             landmarkName = "-completeClaimPayment:receipt:"
             landmarkType = "5">
          </BreakpointContent>
@@ -9566,13 +9566,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PelMel/PMLPurchaseTableViewController.m"
-            timestampString = "463428130.293433"
+            timestampString = "463447532.147903"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
-            landmarkName = "@implementation PMLPurchaseTableViewController"
-            landmarkType = "3">
+            startingLineNumber = "240"
+            endingLineNumber = "240"
+            landmarkName = "-productsDefinitionChanged:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -9588,6 +9588,22 @@
             startingLineNumber = "100"
             endingLineNumber = "100"
             landmarkName = "-useDeal:dryRun:onSuccess:onFailure:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PelMel/providers/PMLConversationMessageProvider.m"
+            timestampString = "463450134.895006"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "-fetchedResultsController:delegate:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

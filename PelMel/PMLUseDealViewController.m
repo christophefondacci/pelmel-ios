@@ -89,6 +89,11 @@
     self.legalLabel.text = [NSString stringWithFormat:template, self.title];
     [self refreshPresentLabel];
     self.dealCountLabel.text = nil;
+    
+    // Deal title
+    NSString *dealTypeCode = [NSString stringWithFormat:@"deal.type.%@",self.deal.dealType];
+    NSString *dealType = NSLocalizedString(dealTypeCode,dealTypeCode);
+    self.dealLabel.text = dealType;
 
 }
 -(void)animateAlphaPhase:(NSInteger)phase delay:(CGFloat)delay {

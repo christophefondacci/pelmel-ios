@@ -57,7 +57,7 @@
         [fetchRequest setPredicate:predicate];
     } else if(!self.showComments) {
         NSPredicate *predicate;
-        if([self.fromItemKey isKindOfClass:[User class]]) {
+        if([self.fromItemKey hasPrefix:@"USER"]) {
             predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@ and replyTo.itemKey=from.itemKey) or (toItemKey = %@ and from.itemKey=%@ and replyTo.itemKey=from.itemKey)",self.fromItemKey,user.key,self.fromItemKey,user.key];
         } else {
             predicate = [NSPredicate predicateWithFormat:@"(from.itemKey = %@ and toItemKey=%@ and replyTo.itemKey=from.itemKey)",self.fromItemKey,user.key];

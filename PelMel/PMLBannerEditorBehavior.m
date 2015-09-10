@@ -39,13 +39,14 @@
     // Saving as we need this in alert view callback
     self.banner = (PMLBanner*)object;
     self.editor = editor;
+    PMLStoreService *storeService = [TogaytherService storeService];
     
     // First saving the banner to the server (will be in pending state)
     [[TogaytherService dataService] updateBanner:self.banner callback:^(PMLBanner *banner) {
         
-        SKProduct *product1000 = [[TogaytherService storeService] productFromId:kPMLProductBanner1000];
-        SKProduct *product2500 = [[TogaytherService storeService] productFromId:kPMLProductBanner2500];
-        SKProduct *product6000 = [[TogaytherService storeService] productFromId:kPMLProductBanner6000];
+        SKProduct *product1000 = [storeService productFromId:kPMLProductBanner1000];
+        SKProduct *product2500 = [storeService productFromId:kPMLProductBanner2500];
+        SKProduct *product6000 = [storeService productFromId:kPMLProductBanner6000];
         if(product1000 == nil || product2500 == nil || product6000 == nil) {
             [[TogaytherService storeService] loadProducts:@[kPMLProductBanner1000,kPMLProductBanner2500,kPMLProductBanner6000]];
             [[TogaytherService uiService] alertWithTitle:@"banner.store.notReadyTitle" text:@"banner.store.notReadyMsg"];
@@ -59,9 +60,9 @@
         NSString *str1000 = [numberFormatter stringFromNumber:@1000];
         NSString *str2500 = [numberFormatter stringFromNumber:@2500];
         NSString *str6000 = [numberFormatter stringFromNumber:@6000];
-        NSString *price1000 = [self priceFromProduct:product1000];
-        NSString *price2500 = [self priceFromProduct:product2500];
-        NSString *price6000 = [self priceFromProduct:product6000];
+        NSString *price1000 = [storeService priceFromProduct:product1000];
+        NSString *price2500 = [storeService priceFromProduct:product2500];
+        NSString *price6000 = [storeService priceFromProduct:product6000];
         NSString *template = NSLocalizedString(@"banner.purchase.productTemplate", @"banner.purchase.productTemplate");
         NSString *option1000 = [NSString stringWithFormat:template,str1000,price1000];
         NSString *option2500 = [NSString stringWithFormat:template,str2500,price2500];
@@ -77,17 +78,7 @@
         
     }];
 }
--(NSString*)priceFromProduct:(SKProduct *)product {
-    if(product.price.doubleValue == 0.0f) {
-        return NSLocalizedString(@"banner.price.free", @"banner.price.free");
-    } else {
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
-        [formatter setLocale:product.priceLocale];
-        NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
-        return localizedMoneyString;
-    }
-}
+
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch(buttonIndex) {

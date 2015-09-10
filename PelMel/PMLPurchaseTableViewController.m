@@ -61,6 +61,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(purchaseSuccess:) name:PML_NOTIFICATION_PAYMENT_DONE object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(purchaseFailed:) name:PML_NOTIFICATION_PAYMENT_FAILED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(productsDefinitionChanged:) name:PML_NOTIFICATION_PRODUCTS_LOADED object:NULL];
+    
 }
 - (void)viewWillDisappear:(BOOL)animated {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -152,7 +154,7 @@
                     return 44;
                 default:
                     if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-2) {
-                        return 95;
+                        return 105;
                     } else if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-1) {
                         UITextView *templateView = [[UITextView alloc] init];
                         templateView.text =NSLocalizedString(@"purchase.claim.terms",@"Terms");
@@ -236,5 +238,7 @@
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 
-
+- (void)productsDefinitionChanged:(id) source {
+    [self.tableView reloadData];
+}
 @end

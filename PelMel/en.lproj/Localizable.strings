@@ -219,7 +219,7 @@
 "deal.present"="PRESENT TO BARTENDER";
 "deal.proceed"="PROCEED WITH THE DEAL";
 "deal.quota.editTitle"="Deal Quota";
-"deal.quota.editMessage"="Define the maximum number of deals that you would like to offer per 24 hours or leave blank to set to 1 deal per user per 24 hours.";
+"deal.quota.editMessage"="Tell us the maximum number of deals that you would like to offer per 24 hour period. Leave blank to offer this deal to any number of users, but each user is limited to only one deal per 24 hours.";
 "deal.quota.label"="%d left / %d total";
 "deal.report.button"="View my statistics";
 "deal.report.text"="Our administrators and the owner of this place have been notified of a problem and will do their best to fix it or get in touch with you. We are very sorry for the inconvenience.";
@@ -236,13 +236,13 @@
 "deal.use.checkin.cancelButton"="Cancel";
 
 "deal.use.countdown"="Activation in %d";
-"deal.use.legal"="This deal is offered by %@, not by us.\nYou certify being of legal age to use the deal";
+"deal.use.legal"="This deal is offered by %@, not by us.\nYou certify being of legal age to use this deal";
 
 "deal.use.localization.title"="Go there first";
 "deal.use.localization.message"="You need to go to %@, check in, and present your phone to the bartender to use this deal.";
 
 "deal.use.title"="Nearby Deals";
-"deal.useError.mustWait"="You have already used a deal in that place in the past 24 hours. You must wait 24 hours until you can use an offer in the same place again.";
+"deal.useError.mustWait"="You have already used a deal in this place during the past 24 hours and must wait until the deal becomes available again.";
 "deal.useError.quotaReached"="All deals have already been offered today, please come back tomorrow";
 "deal.useError.title"="Deal no longer available";
 
@@ -362,7 +362,7 @@
 "msgAudience.delayError"="You will be able to send a message to your clients %@.";
 "msgAudience.info"="Write a message that will be sent to the users who checked in at your place within the last 30 days.";
 "msgAudience.ownershipError.title"="Ownership error";
-"msgAudience.ownershipError"="You are not the owner of the place, only owners can send messages to their audience.";
+"msgAudience.ownershipError"="You are not the registered owner of this place, only owners can send messages to their audience.";
 "msgAudience.reach"="Reach:";
 "msgAudience.reach.computing"="Calculating reach...";
 "msgAudience.reachValue"="%d Users";
@@ -508,9 +508,9 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 
 "reporting.graphTitles.VIEW"="Number of views (unique user)";
 "reporting.graphTitles.LOCALIZATION_AUTO_STAT"="Nearby unique users";
-"reporting.graphTitles.CHECKIN"="Unique users check-ins";
+"reporting.graphTitles.CHECKIN"="Unique user check-ins";
 "reporting.graphTitles.DEAL_USED"="Deals use";
-"reporting.graphTitles.CHECKOUT"="Unique users check-outs";
+"reporting.graphTitles.CHECKOUT"="Unique user check-outs";
 "reporting.loading"="Loading report data...";
 "reporting.messageButton"="Message my Clients";
 

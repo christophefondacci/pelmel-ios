@@ -100,6 +100,19 @@ typedef enum {
 -(NSString*)defaultsKeyForProduct:(NSString*)productId {
     return [NSString stringWithFormat:@"bannerProduct.%@",productId ];
 }
+
+-(NSString*)priceFromProduct:(SKProduct *)product {
+    if(product.price.doubleValue == 0.0f) {
+        return NSLocalizedString(@"banner.price.free", @"banner.price.free");
+    } else {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        [formatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+        [formatter setLocale:product.priceLocale];
+        NSString *localizedMoneyString = [formatter stringFromNumber:product.price];
+        return localizedMoneyString;
+    }
+}
+
 #pragma mark - SKProductsRequestDelegate
 - (void)productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response {
 

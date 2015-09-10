@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *circleBackgroundImage;
 @property (weak, nonatomic) IBOutlet UIImageView *userThumbImage;
 @property (weak, nonatomic) IBOutlet UILabel *userNicknameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dealLabel;
 @property (weak, nonatomic) IBOutlet UILabel *presentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *legalLabel;
 @property (weak, nonatomic) IBOutlet UIView *greenOverlay;
