@@ -94,6 +94,10 @@
     NSString *dealTypeCode = [NSString stringWithFormat:@"deal.type.%@",self.deal.dealType];
     NSString *dealType = NSLocalizedString(dealTypeCode,dealTypeCode);
     self.dealLabel.text = dealType;
+    
+    // Buttons
+    [self.reportProblemButton setTitle:NSLocalizedString(@"deal.button.problem",@"deal.button.problem") forState:UIControlStateNormal];
+    [self.helpButton setTitle:NSLocalizedString(@"deal.button.whatsthis",@"deal.button.whatsthis") forState:UIControlStateNormal];
 
 }
 -(void)animateAlphaPhase:(NSInteger)phase delay:(CGFloat)delay {
@@ -192,7 +196,7 @@
     [[TogaytherService dealsService] useDeal:self.deal onSuccess:^(id obj) {
         PMLDeal *deal = (PMLDeal*)obj;
         self.presentLabel.text = NSLocalizedString(@"deal.proceed",@"Proceed with the deal");
-        self.dealCountLabel.text = [NSString stringWithFormat:@"# %d",(int)deal.usedToday];
+        self.dealCountLabel.text = [NSString stringWithFormat:@"# %d",(int)deal.usedToday+1];
         [self resizeCircles:1 duration:kSuccessAnimationDuration];
     } onFailure:^(NSInteger errorCode, PMLDeal *deal, NSString *userMessage) {
         [UIView animateWithDuration:0.1 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{

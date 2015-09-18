@@ -34,9 +34,6 @@
     UIViewController *filtersViewController;
     float currentAngle;
     
-    // Our view for displaying a waiting overlay
-    UIWaitingView *waitingView;
-    
     UIWindow *currentWindow;
     UIImageView *insideMarker;
     UIImageView *outsideMarker;
@@ -58,9 +55,7 @@
 
         // Cache for nib objects
         nibCache = [[NSCache alloc] init];
-        
-        // Loading profile header view
-        waitingView = (UIWaitingView*)[self loadView:@"UIWaitingView"];
+
         
 
     }

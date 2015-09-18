@@ -23,7 +23,7 @@
 
 
 @interface PMLPurchaseTableViewController ()
-
+@property (nonatomic,retain) UITextView *templateTextView;
 @end
 
 @implementation PMLPurchaseTableViewController
@@ -46,6 +46,8 @@
     self.view.layer.borderColor = UIColorFromRGB(0xe0e0e1).CGColor;
     
     [[TogaytherService storeService] loadProducts:@[kPMLProductClaim30]];
+    self.templateTextView = [[UITextView alloc] init];
+    self.templateTextView.font = [UIFont fontWithName:PML_FONT_PRO_EXTRALIGHT size:14];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -156,9 +158,9 @@
                     if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-2) {
                         return 105;
                     } else if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-1) {
-                        UITextView *templateView = [[UITextView alloc] init];
-                        templateView.text =NSLocalizedString(@"purchase.claim.terms",@"Terms");
-                        return [templateView sizeThatFits:CGSizeMake(self.tableView.bounds.size.width-10,MAXFLOAT)].height;
+                        
+                        self.templateTextView.text =NSLocalizedString(@"purchase.claim.terms",@"Terms");
+                        return [self.templateTextView sizeThatFits:CGSizeMake(self.tableView.bounds.size.width-10,MAXFLOAT)].height;
                     } else {
                         return 32;
                     }

@@ -162,36 +162,37 @@ CGFloat const kJBLineChartViewControllerChartFooterHeight = 20.0f;
 }
 -(void)configureRowGraph:(PMLGraphTableViewCell*)cell forRow:(NSInteger)row {
 //    if(cell.chartView.delegate == nil) {
-        cell.chartView.tag = row;
-        cell.chartView.delegate = self;
-        cell.chartView.dataSource = self;
-        [cell.chartView reloadData];
-        
-        // Updating title
-        NSString *type = [self typeForRow:row];
-        NSArray *typedData = [self.typedReportData objectForKey:type];
+    [cell layoutIfNeeded];
+    cell.chartView.tag = row;
+    cell.chartView.delegate = self;
+    cell.chartView.dataSource = self;
+    [cell.chartView reloadData];
+    
+    // Updating title
+    NSString *type = [self typeForRow:row];
+    NSArray *typedData = [self.typedReportData objectForKey:type];
     [self.typedReportCells setObject:cell forKey:type];
-        PMLReportData *firstPoint = [typedData objectAtIndex:0];
-        PMLReportData *lastPoint = [typedData objectAtIndex:typedData.count-1];
-        
-        NSString *template = [NSString stringWithFormat:@"reporting.graphTitles.%@",type];
-        cell.reportTitleLabel.text = NSLocalizedString(template, template);
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy/MM/dd hh:mm"];
-        JBLineChartFooterView *footerView = [[JBLineChartFooterView alloc] initWithFrame:CGRectMake(kJBLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (kJBLineChartViewControllerChartPadding * 2), kJBLineChartViewControllerChartFooterHeight)];
-        footerView.backgroundColor = [UIColor clearColor];
-        footerView.leftLabel.text = [dateFormatter stringFromDate:firstPoint.date];
-        footerView.leftLabel.textColor = [UIColor whiteColor];
-        footerView.rightLabel.text = [dateFormatter stringFromDate:lastPoint.date];
-        footerView.rightLabel.textColor = [UIColor whiteColor];
-        
-        cell.minYLabel.text = @"0";
-        NSNumber *maxY = [self.typedReportMaxY objectForKey:type];
-        cell.maxYLabel.text = [NSString stringWithFormat:@"%d",maxY.intValue];
-//        footerView.sectionCount = [[self largestLineData] count];
-        cell.chartView.footerView = footerView;
-        
+    PMLReportData *firstPoint = [typedData objectAtIndex:0];
+    PMLReportData *lastPoint = [typedData objectAtIndex:typedData.count-1];
+    
+    NSString *template = [NSString stringWithFormat:@"reporting.graphTitles.%@",type];
+    cell.reportTitleLabel.text = NSLocalizedString(template, template);
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy/MM/dd hh:mm"];
+    JBLineChartFooterView *footerView = [[JBLineChartFooterView alloc] initWithFrame:CGRectMake(kJBLineChartViewControllerChartPadding, ceil(self.view.bounds.size.height * 0.5) - ceil(kJBLineChartViewControllerChartFooterHeight * 0.5), self.view.bounds.size.width - (kJBLineChartViewControllerChartPadding * 2), kJBLineChartViewControllerChartFooterHeight)];
+    footerView.backgroundColor = [UIColor clearColor];
+    footerView.leftLabel.text = [dateFormatter stringFromDate:firstPoint.date];
+    footerView.leftLabel.textColor = [UIColor whiteColor];
+    footerView.rightLabel.text = [dateFormatter stringFromDate:lastPoint.date];
+    footerView.rightLabel.textColor = [UIColor whiteColor];
+    
+    cell.minYLabel.text = @"0";
+    NSNumber *maxY = [self.typedReportMaxY objectForKey:type];
+    cell.maxYLabel.text = [NSString stringWithFormat:@"%d",maxY.intValue];
+    //        footerView.sectionCount = [[self largestLineData] count];
+    cell.chartView.footerView = footerView;
+    
 //        [self.view addSubview:self.lineChartView];
 
 //    }

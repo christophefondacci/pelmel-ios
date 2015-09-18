@@ -149,6 +149,7 @@
 "banner.purchase.title"="Sélectionnez un produit";
 "banner.purchase.msg"="Veuillez sélectionnez le nombre d'affichages de votre bannière. Il s'agit du nombre de fois que votre bannière sera affichée aux utilisateurs de PELMEL. Votre bannière continuera d'être affichée sans limitation de durée jusqu'à temps que ce nombre soit atteint.";
 "banner.purchase.productTemplate"="%@ affichages pour %@";
+"banner.store.payment.inprogress"="Contact de l'App Store...";
 "banner.store.paymentDone.title"="Félicitations !";
 "banner.store.paymentDone"="Votre paiement a été effectué et votre bannière est affichée à partir de maintenant dans la zone que vous avez sélectionné. Vous pouvez consultez les performances de votre bannière ou la mettre en pause à partir du menu de gauche via la section \"Mes Bannières\".";
 "banner.store.paymentFailed.title"="L'achat a échoué !";
@@ -192,8 +193,8 @@
 "counters.checkedin.singular"="%d y est";
 "counters.checkins"="%d y sont";
 "counters.checkins.singular"="%d y est";
-"counters.comments"="%d Commentaires";
-"counters.comments.singular"="%d Commentaire";
+"counters.comments"="%d Avis";
+"counters.comments.singular"="%d Avis";
 "counters.likes"="%d Aiment ça";
 "counters.likes.singular"="%d Aime ça";
 "counters.likes.user"="%d l'aiment";
@@ -213,6 +214,8 @@
 "deal.admin.sectionTitle"="Administrez vos promotions";
 "deal.available"="Disponible";
 "deal.availability.check"="Vérification disponibilité...";
+"deal.button.problem"="Il y a un problème";
+"deal.button.whatsthis"="Aide";
 "deal.condition.max"="%d promotions offertes / 24h max";
 "deal.condition.nomax"="1 promo / utilisateur / 24h max";
 "deal.delay"="Disponible %@";
@@ -220,6 +223,7 @@
 "deal.error.generic"="Erreur technique, réessayez ou rapportez";
 "deal.error.quotaReached"="Plus de promos disponibles";
 "deal.present"="PRESENTER AU BARMAN";
+"deal.proceed"="OFFREZ LA PROMOTION !";
 "deal.quota.editTitle"="Quota de la promotion";
 "deal.quota.editMessage"="Définissez le nombre maximum de promotions que vous souhaitez offrir par tranche de 24 heures. Laissez vide pour indiquer le maximum de 1 promotion par utilisateur par 24 heures.";
 "deal.quota.label"="Reste %d / %d total";
@@ -346,7 +350,7 @@
 "message.event.dummyMessage"="Dîtes nous ce que vous pensez de cet évènement, si vous comptez y aller, ou encore si vous avez des informations ou précisions utiles à partager.";
 "message.placeholder"="Entrez votre message";
 "message.placeholder.comment"="Ecrivez votre commentaire";
-"message.reviews.title"="Commentaires";
+"message.reviews.title"="Avis";
 "message.sending"="Envoi du message...";
 "message.sending.failed"="Nous n'avons pas pu délivrer votre message. Vérifiez votre connexion et essayez à nouveau.";
 "message.sending.failed.title"="Envoi Impossible";
@@ -359,6 +363,7 @@
 
 "msgAudience.delayError"="Vous pourrez envoyer un message à vos clients %@.";
 "msgAudience.info"="Écrivez un message qui sera envoyé aux utilisateurs ayant checkiné dans votre établissement dans les 30 derniers jours.";
+"msgAudience.ownershipError.title"="Propriétaire";
 "msgAudience.ownershipError"="Vous n'êtes pas propriétaire de cet établissement, seuls les propriétaires peuvent envoyer des annonces à leur clientèle.";
 "msgAudience.reach.computing"="Calcul de l'atteinte...";
 "msgAudience.reach"="Atteinte:";
@@ -464,8 +469,7 @@
 "purchase.claim.feature.1"="Verrouillez vos informations";
 "purchase.claim.feature.2"="Offrez des promos à vos clients";
 "purchase.claim.feature.3"="Contactez vos clients chaque semaine";
-
-
+"purchase.claim.terms"="L'abonnement est valide pendant 30 jours et se renouvellera automatiquement sauf si vous désactivez le renouvellement au minimum 24 heures avant la fin de la période en cours. Le paiement sera effectué sur votre compte Apple iTunes. L'abonnement peut être modifié et le renouvellement peut être désactivé en allant dans les paramètres de votre compte Apple après achat (paramètres > App Store > Votre identifiant > Voir > Abonnements > Gérer). Toute période commencée est due, aucune annulation ou remboursement de la période en cours n'est possible.";
 "push.permission.title"="Activer le push ?";
 "push.permission.msg"="Voulez-vous activer les notifications 'push' pour permettre à Pelmel de vous signaler l'arrivée de nouveaux messages ?";
 "push.refused.title"="C'est vous le chef";
@@ -532,6 +536,7 @@
 "settings.placeTypes.title"="Filtres de lieu";
 "settings.settings"="Paramètres";
 "snippet.activity"="Utilisateurs à proximité";
+"snippet.button.claim"="Revendiquer ce lieu";
 "snippet.button.report"="Signaler une fermeture";
 "snippet.button.reportForDeletion"="Demander la suppression";
 "snippet.distance.intro"="Instantané";
@@ -578,6 +583,10 @@
 "specials.start.in"="Commence dans";
 "specials.subtitleTemplate.soon"="Dans %@ : %@";
 "specials.subtitleTemplate.current"="Reste %@ : %@";
+"store.claim.paymentDone.title"="Félicitations !";
+"store.claim.paymentDone"="Votre inscription a été enregistrée et vous avez désormais la propriété de ce lieu sur PELMEL et pouvez accéder à vos rapports.";
+"store.claim.paymentFailed.title"="Echec de l'inscription !";
+"store.paymentFailed"="Nous n'avons pas été capables de procéder à votre inscription.";
 "tabs.deals"="Promos";
 "tabs.events"="Evènements";
 "tabs.places"="Lieux";

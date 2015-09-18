@@ -31,7 +31,7 @@
 "action.checkin.feedbackNetworkInvite"="Invite Friends";
 "action.checkout.feedbackTitle"="You checked out!";
 "action.checkout.feedbackMessage"="You checked out from %@, other users can no longer see that you are here. Nobody will ever see that you were there.";
-"action.comment"="Comment";
+"action.comment"="Review";
 "action.edit.address.geocoding"="Geocoding address";
 "action.edit.address.geocodingFailedTitle"="Address not found";
 "action.edit.address.geocodingFailed"="We could not find this address or there was a problem when trying to geocode it. We kept the place at its previous map position, so you may want to check if it matches this address.";
@@ -191,8 +191,8 @@
 "counters.checkedin.singular"="%d is here";
 "counters.checkins"="%d are here";
 "counters.checkins.singular"="%d is here";
-"counters.comments"="%d Comments";
-"counters.comments.singular"="%d Comment";
+"counters.comments"="%d Reviews";
+"counters.comments.singular"="%d Review";
 "counters.likes"="%d Like It";
 "counters.likes.singular"="%d Likes It";
 "counters.likes.user"="%d Like Him";
@@ -210,6 +210,8 @@
 "deal.admin.sectionTitle"="Manage your deals";
 "deal.available"="Available";
 "deal.availability.check"="Checking availability...";
+"deal.button.problem"="Report a problem";
+"deal.button.whatsthis"="What's this?";
 "deal.condition.max"="Max %d deals / 24h";
 "deal.condition.nomax"="Max 1 deal / user / 24h";
 "deal.delay"="Available %@";
@@ -351,7 +353,7 @@
 "message.event.dummyMessage"="Tell us what you think about this event, whether you gonna go, or if you have any useful information worth sharing.";
 "message.placeholder"="Enter your message";
 "message.placeholder.comment"="Write your comment";
-"message.reviews.title"="Comments";
+"message.reviews.title"="Reviews";
 "message.sending"="Sending message...";
 "message.sending.failed"="We were not able to deliver your message properly. Check your connection and try again.";
 "message.sending.failed.title"="Cannot send message";
@@ -587,9 +589,9 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "specials.subtitleTemplate.current"="%@ left : %@";
 "specials.subtitleTemplate.soon"="In %@ : %@";
 "store.claim.paymentDone.title"="Congratulations!";
-"store.claim.paymentDone"="Your purchase has been made and you now have ownership of your place on PELMEL and can access your reports.";
-"store.claim.paymentFailed.title"="Purchase failed!";
-"store.paymentFailed"="We were unable to proceed with your purchase.";
+"store.claim.paymentDone"="Your subscription has been made and you now have ownership of your place on PELMEL and can access your reports.";
+"store.claim.paymentFailed.title"="Subscription failed!";
+"store.paymentFailed"="We were unable to proceed with your subscription.";
 "tabs.deals"="Deals";
 "tabs.events"="Events";
 "tabs.places"="Hangouts";

@@ -205,6 +205,7 @@
     UIEdgeInsets insets = currentBubbleText.textContainerInset;
     currentBubbleText.textContainerInset = UIEdgeInsetsMake(insets.top, insets.top, insets.bottom, insets.bottom);
     CGFloat maxHeight = snippet ? 30 : FLT_MAX;
+    [self layoutIfNeeded];
     CGSize size = [currentBubbleText sizeThatFits:CGSizeMake(_threadNicknameLabel.bounds.size.width,maxHeight)];
     int minHeight = size.height; //MAX(size.height,_thumbImage.frame.size.height);
     if(image==nil || snippet) {

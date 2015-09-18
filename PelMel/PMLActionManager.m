@@ -113,6 +113,7 @@
         [self registerPrivateNetworkRespond];
         [self registerClaimAction];
         [self registerUseDealAction];
+        [self registerChatAction];
     }
     return self;
 }
