@@ -47,11 +47,9 @@ static NSString * const reuseIdentifier = @"Cell";
         layout = [[StickyHeaderFlowLayout alloc] init];
         layout.headerReferenceSize = CGSizeMake(150, 19);
         layout.sectionInset = UIEdgeInsetsMake(24,-150+15,0, 0);
-//        _size = [NSNumber numberWithInt:self.view.frame.size.height-19];
     } else {
         layout = [[UICollectionViewFlowLayout alloc] init];
         layout.headerReferenceSize = CGSizeMake(0, 0);
-//        _size = [NSNumber numberWithInt:self.view.frame.size.height];
     }
     layout.scrollDirection=UICollectionViewScrollDirectionHorizontal;
     layout.itemSize = CGSizeMake(_size.floatValue, _size.floatValue);
@@ -109,8 +107,8 @@ static NSString * const reuseIdentifier = @"Cell";
     PMLThumbType type = [self.thumbProvider thumbTypeAtIndex:section];
     NSInteger count = [[self.thumbProvider itemsForType:type] count ];
 //    NSInteger itemsCount = count>0 ? MAX(count,2) : count;
-    
-    return MIN(count,[self maxItems]);
+    NSInteger itemsCount = MIN(count,[self maxItems]);
+    return _hasShowMore ? itemsCount : count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {

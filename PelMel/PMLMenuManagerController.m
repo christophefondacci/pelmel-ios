@@ -661,14 +661,18 @@ static void *MyParentMenuControllerKey;
         [_animator addBehavior:_panAttachmentBehaviour];
         
         // Adding a collision to the screen top edge to constraint snippet in view bounds
-        UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[_bottomView]];
-        NSInteger top = [self offsetForOpenedSnippet];
-        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-4000, top) toPoint:CGPointMake(4000, top)];
-        [_animator addBehavior:collision];
+//        UICollisionBehavior *collision = [[UICollisionBehavior alloc] initWithItems:@[_bottomView]];
+//        NSInteger top = [self offsetForOpenedSnippet];
+//        top=-10;
+//        [collision addBoundaryWithIdentifier:@"top" fromPoint:CGPointMake(-4000, top) toPoint:CGPointMake(4000, top)];
+//        [_animator addBehavior:collision];
         
     } else if (state  == UIGestureRecognizerStateChanged) {
-        _panAttachmentBehaviour.anchorPoint = location;
-        [self snippetPannedCallback];
+        if(_bottomView.frame.origin.y>=[self offsetForOpenedSnippet]) {
+            _panAttachmentBehaviour.anchorPoint = location;
+            [self snippetPannedCallback];
+        }
+
 
     } else if (state  == UIGestureRecognizerStateEnded) {
         // Getting frames for whole view and bottom 'sliding' view

@@ -167,6 +167,7 @@ typedef enum {
 @property (nonatomic,retain) NSDateFormatter *dateFormatter;
 @property (nonatomic,retain) NSObject<PMLInfoProvider> *infoProvider;
 @property (nonatomic,retain) NSMutableArray *deals;
+@property (nonatomic,retain) PMLDescriptionTableViewCell *templateDescriptionCell;
 @end
 
 @implementation PMLSnippetTableViewController {
@@ -281,7 +282,7 @@ typedef enum {
     _sectionActivityTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionPropertiesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionDealsAdminTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
-    
+    _templateDescriptionCell = [[PMLDescriptionTableViewCell alloc] init];
     // Tab selection
     [self updateTab];
     
@@ -820,10 +821,10 @@ typedef enum {
             return kPMLHeightButton;
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
-                PMLDescriptionTableViewCell *descriptionCell = [self.tableView dequeueReusableCellWithIdentifier:kPMLRowDescId];
-                descriptionCell.descriptionLabel.text = _infoProvider.descriptionText;
                 
-                CGSize expectedSize = [descriptionCell.descriptionLabel sizeThatFits:CGSizeMake(descriptionCell.descriptionLabel.bounds.size.width, MAXFLOAT)];
+                _templateDescriptionCell.descriptionLabel.text = _infoProvider.descriptionText;
+                
+                CGSize expectedSize = [_templateDescriptionCell.descriptionLabel sizeThatFits:CGSizeMake(_templateDescriptionCell.descriptionLabel.bounds.size.width, MAXFLOAT)];
                 _readMoreSize = expectedSize.height+1;
             }
 
@@ -1357,7 +1358,7 @@ typedef enum {
     _galleryCell = cell;
     cell.galleryView.delegate=self;
     cell.galleryView.dataSource=self;
-    
+    [cell.galleryView reloadData];
     // Wiring add photo action (default is YES if not implemented)
     BOOL canAddPhoto = YES;
     if([_infoProvider respondsToSelector:@selector(canAddPhoto)]) {

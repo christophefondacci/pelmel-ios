@@ -50,7 +50,7 @@
     if(newStatus != nil) {
         [paramValues setObject:newStatus forKey:@"status"];
     }
-    [paramValues setObject:[NSNumber numberWithInt:maxUses] forKey:@"maxUses"];
+    [paramValues setObject:[NSNumber numberWithLong:maxUses] forKey:@"maxUses"];
     
     // Preparing POST request
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
