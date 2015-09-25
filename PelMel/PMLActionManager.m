@@ -800,7 +800,7 @@
         }
     }
     // Clearing object
-    self.modalActionObject = nil;
+//    self.modalActionObject = nil;
 }
 #pragma mark - Edition actions
 - (void)editName:(CALObject*)object {

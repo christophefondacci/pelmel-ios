@@ -108,23 +108,24 @@
     Activity *activity = [self.activities objectAtIndex:row];
     
     CALObject *activityObject = [self activityObjectFor:activity];
+    cell.widthConstraint.constant=50;
+    cell.heightConstraint.constant=50;
+    cell.thumbImageView.layer.cornerRadius = 25;
+    cell.thumbImageView.layer.masksToBounds = YES;
+    cell.thumbImageView.clipsToBounds = YES;
+    cell.thumbImageView.layer.borderColor = [[UIColor whiteColor] CGColor];
     if(activityObject != nil) {
         NSObject<PMLInfoProvider> *provider = [_uiService infoProviderFor:activityObject];
 
-        cell.imageView.layer.cornerRadius = 25;
-        cell.imageView.layer.masksToBounds = YES;
-        cell.imageView.image = [CALImage getDefaultUserThumb];
+//        cell.imageView.image = [CALImage getDefaultUserThumb];
 //        //    NSLog(@"W=%d / H=%d",(int)cell.imageView.frame.size.width,(int)cell.imageView.frame.size.height );
-    cell.imageView.layer.borderColor = [[UIColor whiteColor] CGColor]; //[[provider color] CGColor];
-        cell.imageView.layer.borderWidth = 1;
+        cell.thumbImageView.layer.borderColor = [[UIColor whiteColor] CGColor]; //[[provider color] CGColor];
+        cell.thumbImageView.layer.borderWidth = 1;
         CALImage *calImage = [_imageService imageOrPlaceholderFor:activityObject allowAdditions:NO];
-        [_imageService load:calImage to:cell.imageView thumb:YES];
+        [_imageService load:calImage to:cell.thumbImageView thumb:YES];
         cell.nameLabel.text = [provider title];
     } else {
-        cell.imageView.layer.cornerRadius = 25;
-        cell.imageView.layer.masksToBounds = YES;
-        cell.imageView.image = [CALImage getDefaultUserThumb];
-        cell.imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
+        cell.thumbImageView.image = [CALImage getDefaultUserThumb];
         cell.nameLabel.text = NSLocalizedString(@"likes.row.deleted",@"likes.row.deleted");
     }
     NSString *delay = [_uiService delayStringFrom:activity.activityDate];

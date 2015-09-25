@@ -1425,7 +1425,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="161.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="1Ie-bi-WgX">
+                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="time" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="1Ie-bi-WgX">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
                                             <date key="date" timeIntervalSinceReferenceDate="446360375.87055099">
                                                 <!--2015-02-23 04:59:35 +0000-->
@@ -1438,6 +1438,12 @@
                                         </datePicker>
                                     </subviews>
                                     <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="1Ie-bi-WgX" secondAttribute="trailing" id="668-hc-XGK"/>
+                                        <constraint firstAttribute="bottom" secondItem="1Ie-bi-WgX" secondAttribute="bottom" id="Gg6-Xa-OqI"/>
+                                        <constraint firstItem="1Ie-bi-WgX" firstAttribute="leading" secondItem="6sa-dR-RKN" secondAttribute="leading" id="Wzv-by-m6z"/>
+                                        <constraint firstItem="1Ie-bi-WgX" firstAttribute="top" secondItem="6sa-dR-RKN" secondAttribute="top" id="pSW-MD-gOT"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="datePicker" destination="1Ie-bi-WgX" id="xJf-xc-HY6"/>
@@ -1578,8 +1584,9 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="161.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="qtj-SV-xEm">
+                                        <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="5" translatesAutoresizingMaskIntoConstraints="NO" id="qtj-SV-xEm">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="162"/>
+                                            <color key="backgroundColor" red="0.078431372550000003" green="0.1019607843" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                             <date key="date" timeIntervalSinceReferenceDate="446360375.87055099">
                                                 <!--2015-02-23 04:59:35 +0000-->
                                             </date>
@@ -1594,7 +1601,14 @@
                                         </datePicker>
                                     </subviews>
                                     <color key="backgroundColor" red="0.15294118230000001" green="0.1647058874" blue="0.180392161" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstItem="qtj-SV-xEm" firstAttribute="top" secondItem="Efz-7q-Jh1" secondAttribute="top" id="1dH-1S-g2d"/>
+                                        <constraint firstItem="qtj-SV-xEm" firstAttribute="leading" secondItem="Efz-7q-Jh1" secondAttribute="leading" id="8EY-Jt-T1n"/>
+                                        <constraint firstAttribute="bottom" secondItem="qtj-SV-xEm" secondAttribute="bottom" id="Tg2-dl-p00"/>
+                                        <constraint firstAttribute="trailing" secondItem="qtj-SV-xEm" secondAttribute="trailing" id="kUP-IW-veJ"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.078431372550000003" green="0.1019607843" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="datePicker" destination="qtj-SV-xEm" id="xAK-T1-G0s"/>
                                 </connections>
@@ -2626,7 +2640,7 @@
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kQm-KZ-25Z">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kQm-KZ-25Z">
                                             <rect key="frame" x="8" y="5" width="50" height="50"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="50" id="TKK-mL-UeE"/>
@@ -2635,21 +2649,23 @@
                                         </imageView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="wHQ-hv-qRp" secondAttribute="trailing" constant="8" id="2PN-w0-XJL"/>
+                                        <constraint firstAttribute="trailing" secondItem="wHQ-hv-qRp" secondAttribute="trailing" constant="8" id="2PN-w0-XJL"/>
                                         <constraint firstItem="wHQ-hv-qRp" firstAttribute="leading" secondItem="kQm-KZ-25Z" secondAttribute="trailing" constant="16" id="3iH-q0-8Lc"/>
-                                        <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="jDL-hh-9Ge" secondAttribute="trailing" constant="8" id="868-We-xvQ"/>
-                                        <constraint firstItem="kQm-KZ-25Z" firstAttribute="leading" relation="lessThanOrEqual" secondItem="Dbb-pd-ysQ" secondAttribute="leading" constant="8" id="EQ5-8G-kaz"/>
+                                        <constraint firstAttribute="trailing" secondItem="jDL-hh-9Ge" secondAttribute="trailing" constant="8" id="868-We-xvQ"/>
+                                        <constraint firstItem="kQm-KZ-25Z" firstAttribute="leading" secondItem="Dbb-pd-ysQ" secondAttribute="leading" constant="8" id="EQ5-8G-kaz"/>
                                         <constraint firstItem="jDL-hh-9Ge" firstAttribute="top" secondItem="kQm-KZ-25Z" secondAttribute="top" id="TM6-IE-T8a"/>
+                                        <constraint firstItem="jDL-hh-9Ge" firstAttribute="top" secondItem="Dbb-pd-ysQ" secondAttribute="top" constant="5" id="VTA-ZJ-ekd"/>
                                         <constraint firstItem="wHQ-hv-qRp" firstAttribute="top" secondItem="jDL-hh-9Ge" secondAttribute="bottom" constant="4" id="peu-UW-n1o"/>
-                                        <constraint firstAttribute="centerY" secondItem="kQm-KZ-25Z" secondAttribute="centerY" id="rGs-rr-0yi"/>
                                         <constraint firstItem="jDL-hh-9Ge" firstAttribute="leading" secondItem="kQm-KZ-25Z" secondAttribute="trailing" constant="16" id="yho-Kz-RGf"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.15294118225574493" green="0.16470588743686676" blue="0.18039216101169586" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
+                                    <outlet property="heightConstraint" destination="ffg-Ii-d2X" id="BfQ-N2-on1"/>
                                     <outlet property="nameLabel" destination="jDL-hh-9Ge" id="tWr-mJ-Dzf"/>
                                     <outlet property="thumbImageView" destination="kQm-KZ-25Z" id="9lw-9E-Z9D"/>
                                     <outlet property="timeLabel" destination="wHQ-hv-qRp" id="54S-KF-QTi"/>
+                                    <outlet property="widthConstraint" destination="TKK-mL-UeE" id="0nu-O4-NaO"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="loadCell" rowHeight="60" id="CMp-Yd-edR" customClass="PMLTextTableViewCell">

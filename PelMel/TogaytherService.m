@@ -122,7 +122,7 @@
     return _actionManager;
 }
 + (NSString *)getLanguageIso6391Code {
-    return _language;
+    return [_language substringToIndex:2];
 }
 
 + (ConversionService *)getConversionService {
