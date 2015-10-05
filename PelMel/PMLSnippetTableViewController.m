@@ -167,7 +167,7 @@ typedef enum {
 @property (nonatomic,retain) NSDateFormatter *dateFormatter;
 @property (nonatomic,retain) NSObject<PMLInfoProvider> *infoProvider;
 @property (nonatomic,retain) NSMutableArray *deals;
-@property (nonatomic,retain) PMLDescriptionTableViewCell *templateDescriptionCell;
+@property (nonatomic,retain) UILabel *templateDescLabel;
 @end
 
 @implementation PMLSnippetTableViewController {
@@ -282,7 +282,6 @@ typedef enum {
     _sectionActivityTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionPropertiesTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
     _sectionDealsAdminTitleView = (PMLSectionTitleView*)[_uiService loadView:@"PMLSectionTitleView"];
-    _templateDescriptionCell = [[PMLDescriptionTableViewCell alloc] init];
     // Tab selection
     [self updateTab];
     
@@ -297,7 +296,14 @@ typedef enum {
             _activeTab = PMLTabPlaces;
         }
     }
+
+    // Adjusting template description view size
+    self.templateDescLabel = [[UILabel alloc] init];
+    self.templateDescLabel.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+    self.templateDescLabel.font = [UIFont fontWithName:PML_FONT_PRO size:17];
+    self.templateDescLabel.numberOfLines=0;
     
+
     // Date formatter for deals
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -821,10 +827,8 @@ typedef enum {
             return kPMLHeightButton;
         case kPMLSectionOvDesc: {
             if(_readMoreSize == 0) {
-                
-                _templateDescriptionCell.descriptionLabel.text = _infoProvider.descriptionText;
-                
-                CGSize expectedSize = [_templateDescriptionCell.descriptionLabel sizeThatFits:CGSizeMake(_templateDescriptionCell.descriptionLabel.bounds.size.width, MAXFLOAT)];
+                self.templateDescLabel.text = _infoProvider.descriptionText;
+                CGSize expectedSize = [self.templateDescLabel sizeThatFits:CGSizeMake(self.view.bounds.size.width-40, MAXFLOAT)];
                 _readMoreSize = expectedSize.height+1;
             }
 

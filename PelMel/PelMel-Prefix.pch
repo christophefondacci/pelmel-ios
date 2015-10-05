@@ -22,6 +22,7 @@
 #define PML_FONT_DEFAULT_BOLD @"OpenSans-Bold"
 #define PML_FONT_DEFAULT_ITALIC @"OpenSans-Italic"
 #define PML_FONT_PRO_EXTRALIGHT @"SourceSansPro-ExtraLight"
+#define PML_FONT_PRO            @"SourceSansPro-Regular"
 #define PML_FONT_SARI_EXTRABOLD @"Sari-ExtraBold"
 #define PML_FONT_SARI_MEDIUM @"Sari-Medium"
 #define PML_FONT_SARI_LIGHT @"Sari-Light"
