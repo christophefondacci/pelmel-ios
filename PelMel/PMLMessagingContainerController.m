@@ -246,7 +246,7 @@
 -(void)closeMenu:(id)sender {
     [[[TogaytherService uiService] menuManagerController] dismissControllerSnippet:NO];
     [[TogaytherService uiService] presentSnippetFor:nil opened:NO root:YES];
-    [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
+    [[TogaytherService uiService] popNavigationToMenuManager];
 }
 #pragma mark - PMLImagePickerCallback
 - (void)imagePicked:(CALImage *)image {

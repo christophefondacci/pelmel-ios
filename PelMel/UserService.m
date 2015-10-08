@@ -98,7 +98,7 @@
     }
 
     if(fbToken != nil) {
-        [self authenticateWithFacebook:fbToken email:email callback:callback];
+//        [self authenticateWithFacebook:fbToken email:email callback:callback];
     } else {
         // Fetching email & password from properties
         NSString *passw = (NSString *)[userDefaults objectForKey:kUserPasswordKey];
@@ -225,6 +225,7 @@
 
 -(void) handleAuthenticationSuccess:(NSDictionary*)jsonLoginResponse callback:(NSObject<PMLUserCallback>*)callback login:(NSString*)login password:(NSString*)password {
     
+    [[TogaytherService settingsService] storeSettingBoolValue:YES forName:PML_PROP_INTRO_DONE];
     // Retrieving authentication token
     NSString *token     =[jsonLoginResponse objectForKey:kParamUserToken];
     

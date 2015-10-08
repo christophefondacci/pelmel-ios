@@ -24,19 +24,23 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - CorePlot (1.6)
+  - EAIntroView (2.7.4):
+    - EARestrictedScrollView (~> 0.2.0)
+  - EARestrictedScrollView (0.2.0)
   - iRate (1.11.4)
-  - JBChartView (2.8.15)
-  - MBProgressHUD (0.9)
+  - JBChartView (2.8.16)
+  - MBProgressHUD (0.9.1)
   - PBWebViewController (0.3)
-  - SDWebImage (3.7.1):
-    - SDWebImage/Core (= 3.7.1)
-  - SDWebImage/Core (3.7.1)
+  - SDWebImage (3.7.3):
+    - SDWebImage/Core (= 3.7.3)
+  - SDWebImage/Core (3.7.3)
   - TWMessageBarManager (1.7.2)
 
 DEPENDENCIES:
   - AFNetworkActivityLogger (~> 2.0.4)
   - AFNetworking (~> 2.6)
   - CorePlot (~> 1.6)
+  - EAIntroView (~> 2.7.0)
   - iRate (~> 1.11.4)
   - JBChartView (~> 2.8.15)
   - MBProgressHUD (~> 0.9)
@@ -48,11 +52,13 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: 121486778117d53b3ab1c61d264b88081d0c3eee
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   CorePlot: 820901f6c147f2d84549ffa1f0902869f980d74d
+  EAIntroView: 50b85eedf414260e61330070ffe5947e72493a62
+  EARestrictedScrollView: f86d61e16c61d3e93c84f8e96e83122a2a3b7631
   iRate: 599ed07c854e0695f3c605d1b2a64c67d912acb7
-  JBChartView: d77d6a713a32547b24ccfaeba90958e7274f0c9d
-  MBProgressHUD: d8e7ea388dc1549a42e0d219067cf5f2c898fb66
+  JBChartView: 8e65b7fbb4e7f1f2c0197575734fce4af1c19e17
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   PBWebViewController: 909b1505da6ba7c5c82519a6457246027926061e
-  SDWebImage: ed3095af2ff88b436426037444979b917f6c5575
+  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   TWMessageBarManager: e7adc066ee425174f5dee79473fce913b1cd1662
 
-COCOAPODS: 0.36.3
+COCOAPODS: 0.39.0.rc.1

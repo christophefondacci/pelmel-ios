@@ -379,11 +379,12 @@
                 case kRowSettingDisconnect:
                     // Disconnecting
                     [_userService disconnect];
+                    [[[self parentMenuController] navigationController] popToRootViewControllerAnimated:YES];
                     // Dismissing this view and immediately
-                    UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
-                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-                    [self.parentMenuController dismissControllerMenu:YES];
-                    [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
+//                    UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
+//                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+//                    [self.parentMenuController dismissControllerMenu:YES];
+//                    [self.parentMenuController.navigationController presentViewController:navController animated:YES completion:nil];
                     
 
                     break;

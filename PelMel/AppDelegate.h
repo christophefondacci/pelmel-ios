@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "DataService.h"
-
-@interface AppDelegate : UIResponder <UIApplicationDelegate,PMLDataListener>
+#import <EAIntroView.h>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,PMLDataListener, EAIntroDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

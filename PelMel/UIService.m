@@ -21,6 +21,7 @@
 #import "PMLEventTableViewCell.h"
 #import "UIImage+ImageEffects.h"
 #import <MBProgressHUD.h>
+#import "UIMenuManagerMainDelegate.h"
 
 #define kColorPrefKeyTemplate @"color.%@"
 #define kPMLMarkerPrefKeyTemplate @"marker.%@"
@@ -311,6 +312,25 @@
         _progressHUD = nil;
     }
 }
+-(void)startMenuManager {
+    UIService *uiService = TogaytherService.uiService;
+    MapViewController *mapView = (MapViewController*)[uiService instantiateViewController:@"mapItemsView"];
+    
+    UIMenuManagerMainDelegate *mainDelegate = [[UIMenuManagerMainDelegate alloc] init];
+    PMLMenuManagerController * menuManagerController = (PMLMenuManagerController*)[uiService instantiateViewController:SB_ID_MENU_MANAGER];
+    //[[PMLMenuManagerController alloc] initWithViewController:mapView with:mainDelegate];
+    menuManagerController.menuManagerDelegate = mainDelegate;
+    menuManagerController.rootViewController = mapView;
+    
+    // Handlign root nav controller
+    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    UINavigationController *rootNavMenuController = (UINavigationController*)window.rootViewController;
+    if(rootNavMenuController == nil) {
+        rootNavMenuController = [[UINavigationController alloc] initWithRootViewController:menuManagerController];
+    }
+    [rootNavMenuController pushViewController:menuManagerController animated:YES];
+    TogaytherService.uiService.menuManagerController = menuManagerController;
+}
 
 - (void)presentSnippetFor:(CALObject *)object opened:(BOOL)opened {
     [self presentSnippetFor:object opened:opened root:NO];
@@ -331,7 +351,7 @@
     if(_menuManagerController.navigationController.topViewController != _menuManagerController) {
         [_menuManagerController presentControllerSnippet:snippetController animated:NO];
         [_menuManagerController openCurrentSnippet:NO];
-        [_menuManagerController.navigationController popToRootViewControllerAnimated:YES];
+        [self popNavigationToMenuManager];
     } else {
         BOOL isOpened = _menuManagerController.snippetFullyOpened;
         if(isOpened) {
@@ -578,5 +598,9 @@
             return [objects indexOfObject:obj1] > [objects indexOfObject:obj2] ? NSOrderedDescending : NSOrderedAscending;
         }
     }];
+}
+
+- (void)popNavigationToMenuManager {
+    [self.menuManagerController.navigationController popToViewController:self.menuManagerController animated:YES];
 }
 @end

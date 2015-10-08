@@ -94,15 +94,14 @@ static void *MyParentMenuControllerKey;
 
     UIView *_progressView;
     
-    // State
-    BOOL _initialized;
+
 }
 
 -(instancetype)init {
     self = [super init];
     if (self) {
         // Initializing data manager
-        self.dataManager = [[PMLDataManager alloc] initWith:self];
+        self.dataManager = [[PMLDataManager alloc] init];
     }
     return self;
 }
@@ -110,7 +109,7 @@ static void *MyParentMenuControllerKey;
     self = [super initWithCoder:aDecoder];
     if(self) {
         // Initializing data manager
-        self.dataManager = [[PMLDataManager alloc] initWith:self];
+        self.dataManager = [[PMLDataManager alloc] init];
     }
     return self;
 }
@@ -119,7 +118,7 @@ static void *MyParentMenuControllerKey;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Initializing data manager
-        self.dataManager = [[PMLDataManager alloc] initWith:self];
+        self.dataManager = [[PMLDataManager alloc] init];
     }
     return self;
 }
@@ -131,10 +130,13 @@ static void *MyParentMenuControllerKey;
         self.menuManagerDelegate = menuManagerDelegate;
         self.rootViewController = rootViewController;
         // Initializing data manager
-        self.dataManager = [[PMLDataManager alloc] initWith:self];
+        self.dataManager = [[PMLDataManager alloc] init];
         
     }
     return self;
+}
+- (void)dealloc {
+    [[_dataService modelHolder] removeObserver:self forKeyPath:@"banner"];
 }
 - (void)setRootViewController:(MapViewController *)rootViewController {
     _rootViewController = rootViewController;
@@ -154,6 +156,7 @@ static void *MyParentMenuControllerKey;
     _dataService = [TogaytherService dataService];
     _helpService = [TogaytherService helpService];
     [TogaytherService applyCommonLookAndFeel:self];
+    self.navigationItem.hidesBackButton=YES;
     
     // Configuring main nav bar
     [self configureNavBar];
@@ -211,9 +214,7 @@ static void *MyParentMenuControllerKey;
     // Registering for banner change notification
     [[_dataService modelHolder] addObserver:self forKeyPath:@"banner" options:NSKeyValueObservingOptionNew context:NULL];
 }
-- (void)dealloc {
-    [[_dataService modelHolder] removeObserver:self forKeyPath:@"banner"];
-}
+
 - (void)configureNavBar {
     NSArray *views = [[NSBundle mainBundle] loadNibNamed:@"PMLMainNavBarView" owner:self options:nil];
     _mainNavBarView = [views objectAtIndex:0];
@@ -231,6 +232,7 @@ static void *MyParentMenuControllerKey;
     
     
     self.navigationController.navigationBar.barStyle = UIBarStyleBlackOpaque;
+    [self.navigationController setNavigationBarHidden:NO];
     
     // Binding filter action
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(activityTapped:)];
@@ -268,7 +270,12 @@ static void *MyParentMenuControllerKey;
     // Registering it
     [[TogaytherService getMessageService] setActivityCountBadgeView:activitiesBadgeView];
 }
-
+- (void)didMoveToParentViewController:(UIViewController *)parent {
+    if(parent == nil) {
+        [_dataManager detach];
+    }
+    [super didMoveToParentViewController:parent];
+}
 - (void)viewDidAppear:(BOOL)animated {
     if(!_initialized) {
         CGRect myFrame = self.containerView.frame;
@@ -276,7 +283,13 @@ static void *MyParentMenuControllerKey;
         _bottomView.frame = bottomFrame;
         // Initializing actions
         [self.menuManagerDelegate initializeActionsFor:self belowView:_bottomView];
-        [[TogaytherService userService] authenticateWithLastLogin:nil];
+        CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+        if(user==nil) {
+            [[TogaytherService userService] authenticateWithLastLogin:nil];
+        } else {
+            [self.menuManagerDelegate loadingStart];
+            [self.dataManager userAuthenticated:user];
+        }
         _initialized = YES;
     }
 }

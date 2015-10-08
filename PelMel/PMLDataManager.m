@@ -12,16 +12,17 @@
 #import "PMLSnippetTableViewController.h"
 #import "Constants.h"
 
+static PMLDataManager *_instance;
 
-
+@interface PMLDataManager()
+@property (nonatomic, strong) UIService *uiService;
+@property (nonatomic, strong) DataService *dataService;
+@property (nonatomic, strong) UserService *userService;
+@end
 @implementation PMLDataManager {
     
     // Main view controller for UI interactions
-    PMLMenuManagerController *_menuController;
-    
-    // Services
-    DataService *_dataService;
-    UserService *_userService;
+//    PMLMenuManagerController *_menuController;
     
     // Animation
     UIDynamicAnimator *_animator;
@@ -44,19 +45,26 @@
     Place *_checkedInPlace;
     
 }
+//+ (instancetype)sharedInstance {
+//    if(_instance == nil) {
+//        @synchronized([PMLDataManager class]) {
+//            if(_instance == nil) {
+//                _instance = [[PMLDataManager alloc] init];
+//            }
+//        }
+//    }
+//    return _instance;
+//}
 
-
-- (instancetype)initWith:(PMLMenuManagerController *)controller
+- (instancetype)init
 {
     self = [super init];
     if (self) {
         
-        // Keeping UI Controller
-        _menuController = controller;
-        
         // Service initialization
-        _dataService = TogaytherService.dataService;
-        _userService = TogaytherService.userService;
+        _uiService = [TogaytherService uiService];
+        _dataService = [TogaytherService dataService];
+        _userService = [TogaytherService userService];
         
         // Starting data connection and fetch places
         [_dataService registerDataListener:self];
@@ -68,12 +76,15 @@
     return self;
 }
 - (void)hideSpinner {
-    [_menuController.menuManagerDelegate loadingEnd];
+    [_uiService.menuManagerController.menuManagerDelegate loadingEnd];
 }
-
+- (void)detach {
+    [_dataService unregisterDataListener:self];
+    [_userService unregisterListener:self];
+}
 - (void)promptUserForPhotoUploadOn:(CALObject *)object {
     _photoUploadTargetObject = object;
-    [TogaytherService.imageService promptUserForPhoto:_menuController callback:self];
+    [TogaytherService.imageService promptUserForPhoto:_uiService.menuManagerController callback:self];
 }
 
 #pragma mark - DataRefreshCallback
@@ -94,7 +105,7 @@
     } else {
         // Case of a single city, we search again in this city
         if(modelHolder.places.count == 0 && modelHolder.cities.count == 1) {
-            ((MapViewController*)_menuController.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
+            _uiService.menuManagerController.rootViewController.zoomUpdateType = PMLZoomUpdateFitResults;
             [_dataService fetchPlacesFor:modelHolder.cities[0]];
             return;
         }
@@ -106,7 +117,7 @@
         if(!isSilent) {
             PMLSnippetTableViewController *snippetController = (PMLSnippetTableViewController*)[uiService instantiateViewController:SB_ID_SNIPPET_CONTROLLER];
             
-            [_menuController presentControllerSnippet:snippetController];
+            [_uiService.menuManagerController presentControllerSnippet:snippetController];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:PML_HELP_SNIPPET_EVENTS object:self];
 //        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(60 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -116,7 +127,7 @@
         double delay = 2;
         if(![[TogaytherService settingsService] allFiltersActive]) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [_menuController setWarningMessage:NSLocalizedString(@"filters.warning", @"filters.warning") color:UIColorFromRGB(0x272a2e) animated:NO duration:4];
+                [_uiService.menuManagerController setWarningMessage:NSLocalizedString(@"filters.warning", @"filters.warning") color:UIColorFromRGB(0x272a2e) animated:NO duration:4];
 
             });
             delay = 4.6;
@@ -141,7 +152,7 @@
         }
         if(checkinAvailable) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_menuController setWarningMessage:NSLocalizedString(@"checkin.globalEnabled", @"checkin.globalEnabled") color:UIColorFromRGB(0x3083ea) animated:YES duration:2];
+                [_uiService.menuManagerController setWarningMessage:NSLocalizedString(@"checkin.globalEnabled", @"checkin.globalEnabled") color:UIColorFromRGB(0x3083ea) animated:YES duration:2];
             });
         }
     }
@@ -167,9 +178,9 @@
 //    }
 
     if(_animator == nil) {
-        _animator = [[UIDynamicAnimator alloc] initWithReferenceView:_menuController.view];
+        _animator = [[UIDynamicAnimator alloc] initWithReferenceView:_uiService.menuManagerController.view];
     }
-        [_menuController.menuManagerDelegate loadingStart];
+        [_uiService.menuManagerController.menuManagerDelegate loadingStart];
 
 //    insideImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"marker-inside.png"]];
 //    outsideImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"marker-outside.png"]];
@@ -224,7 +235,7 @@
         if([object isKindOfClass:[User class]]) {
             [[TogaytherService uiService] presentSnippetFor:object opened:YES];
         } else {
-            MapViewController *mapController = (MapViewController*)_menuController.rootViewController;
+            MapViewController *mapController = _uiService.menuManagerController.rootViewController;
             [mapController selectCALObject:_initialContextObject withSnippet:YES];
         }
         _initialContextObject = nil;
@@ -236,8 +247,8 @@
 //    }
 }
 -(void)didLooseConnection {
-    [_menuController.menuManagerDelegate loadingEnd];
-    [_menuController setWarningMessage:NSLocalizedString(@"network.error",@"network.error") color:UIColorFromRGBAlpha(0xe11d21, 1) animated:YES duration:3];
+    [_uiService.menuManagerController.menuManagerDelegate loadingEnd];
+    [_uiService.menuManagerController setWarningMessage:NSLocalizedString(@"network.error",@"network.error") color:UIColorFromRGBAlpha(0xe11d21, 1) animated:YES duration:3];
     _deviceConnected = NO;
 }
 
@@ -296,7 +307,7 @@
     [self dataLoginFailed];
 }
 - (void)authenticationImpossible {
-    [_menuController setWarningMessage:NSLocalizedString(@"network.noconnection", @"network.noconnection") color:UIColorFromRGB(0x272a2e) animated:NO duration:0];
+    [_uiService.menuManagerController setWarningMessage:NSLocalizedString(@"network.noconnection", @"network.noconnection") color:UIColorFromRGB(0x272a2e) animated:NO duration:0];
     _deviceConnected = NO;
 //    UILabel *warningLabel = ((MapViewController*)_menuController.rootViewController).warningLabel;
 //    warningLabel.hidden = NO;
@@ -307,14 +318,14 @@
 - (void)willStartAuthentication {
     if(!_deviceConnected) {
         // Authenticating
-        [_menuController setWarningMessage:NSLocalizedString(@"network.connecting", @"Logging in") color:UIColorFromRGB(0x3083ea) animated:YES duration:0];
+        [_uiService.menuManagerController setWarningMessage:NSLocalizedString(@"network.connecting", @"Logging in") color:UIColorFromRGB(0x3083ea) animated:YES duration:0];
     }
 }
 - (void)dataLoginFailed {
     if(!_isOnLoginPage) {
         UIViewController *controller = [TogaytherService.uiService instantiateViewController:SB_LOGIN_CONTROLLER];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [_menuController.navigationController presentViewController:navController animated:YES completion:nil];
+        [_uiService.menuManagerController.navigationController presentViewController:navController animated:YES completion:nil];
         _isOnLoginPage = YES;
     }
     _deviceConnected = NO;
@@ -324,12 +335,12 @@
     _isOnLoginPage = NO;
     if(!_deviceConnected) {
         _deviceConnected = YES;
-        [_menuController setWarningMessage:NSLocalizedString(@"network.connected", @"network.connected") color:UIColorFromRGB(0x5fd500) animated:NO duration:0.5];
+        [_uiService.menuManagerController setWarningMessage:NSLocalizedString(@"network.connected", @"network.connected") color:UIColorFromRGB(0x5fd500) animated:NO duration:0.5];
     }
     // If we have an initial context we open it
     if(_initialContextObject != nil) {
         // Opening a context means fitting results
-        ((MapViewController*)_menuController.rootViewController).zoomUpdateType = PMLZoomUpdateFitResults;
+        _uiService.menuManagerController.rootViewController.zoomUpdateType = PMLZoomUpdateFitResults;
         // Overview or search use case
         if(_initialContextSearch) {
             [[TogaytherService dataService] fetchPlacesFor:_initialContextObject];
@@ -349,7 +360,7 @@
             _dataService.currentRadius = 0;
             
             if(_userService.currentLocation == nil || (_userService.currentLocation.coordinate.latitude == 0 && _userService.currentLocation.coordinate.longitude==0)) {
-                MKMapView *mapView = ((MapViewController*)_menuController.rootViewController).mapView;
+                MKMapView *mapView = _uiService.menuManagerController.rootViewController.mapView;
                 // Getting current map center coordinates
                 CLLocationCoordinate2D centerCoords = mapView.centerCoordinate;
                 CLLocationCoordinate2D cornerCoords = [mapView convertPoint:CGPointMake(0, 0) toCoordinateFromView:mapView];
@@ -381,7 +392,7 @@
     // Refreshing data (models may have been switched because of memory pressure)
     [_dataService.modelHolder refreshPlaces:@[place]];
     // Updating map annotations
-    [_menuController.rootViewController updateAnnotations];
+    [_uiService.menuManagerController.rootViewController updateAnnotations];
     
     // Feedback message
     [[TogaytherService uiService] alertWithTitle:@"action.checkout.feedbackTitle" text:@"action.checkout.feedbackMessage" textObjectName:place.title];
@@ -431,7 +442,7 @@
     // Refreshing places if at least one update (there should always be
     if(newPlaces.count>0) {
         [_dataService.modelHolder refreshPlaces:newPlaces];
-        [_menuController.rootViewController updateAnnotations];
+        [_uiService.menuManagerController.rootViewController updateAnnotations];
     }
 }
 - (void)user:(CurrentUser *)user didFailCheckInTo:(CALObject *)object {
@@ -476,11 +487,11 @@
     _photoUploadTargetObject.mainImage = image;
     
     
-    [_menuController.menuManagerDelegate loadingEnd];
+    [_uiService.menuManagerController.menuManagerDelegate loadingEnd];
 }
 
 - (void)imageUploadFailed:(CALImage *)image {
-    [_menuController.menuManagerDelegate loadingEnd];
+    [_uiService.menuManagerController.menuManagerDelegate loadingEnd];
 }
 
 - (void)setInitialContext:(CALObject *)object isSearch:(BOOL)isSearch {

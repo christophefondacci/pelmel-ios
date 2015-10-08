@@ -58,7 +58,8 @@
     return NSLocalizedString(@"activity.title.photoGrid", @"activity.title.photoGrid");
 }
 -(void)photoControllerDidTapCloseMenu:(PMLPhotosCollectionViewController *)controller {
-    [controller.parentMenuController dismissControllerSnippet];
+//    [controller.parentMenuController dismissControllerSnippet];
+    [[TogaytherService uiService] presentSnippetFor:nil opened:NO];
 }
 #pragma mark - ActivitiesCallback
 

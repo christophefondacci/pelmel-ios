@@ -11,6 +11,7 @@
 
 #define PML_CHECKIN_DISTANCE 20000
 
+#define PML_PROP_INTRO_DONE @"intro.done"
 #define PML_PROP_PUSH_ENABLED @"pushEnabled"
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
 #define PML_PROP_USER_LAST_TOKEN @"pmlUserLastToken"

@@ -157,7 +157,7 @@
  * Notifies that the user has tapped the close menu button
  */
 -(void)photoControllerDidTapCloseMenu:(PMLPhotosCollectionViewController*)controller {
-    [[[[TogaytherService uiService] menuManagerController] navigationController] popToRootViewControllerAnimated:YES];
+    [[TogaytherService uiService] popNavigationToMenuManager];
 //    [[[TogaytherService uiService] menuManagerController] dismissControllerSnippet];
     [[TogaytherService uiService] presentSnippetFor:nil opened:NO root:YES];
 }

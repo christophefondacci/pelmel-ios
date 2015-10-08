@@ -12,4 +12,5 @@ pod 'iRate','~>1.11.4'
 pod 'TWMessageBarManager','~>1.7.2'
 pod 'CorePlot', '~> 1.6'
 pod 'JBChartView', '~>2.8.15'
+pod 'EAIntroView', '~> 2.7.0'
 

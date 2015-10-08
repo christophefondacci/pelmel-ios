@@ -179,4 +179,14 @@
  * @return an array of CAL objects sorted with image first, then others, preserving initial ordering within each category
  */
 -(NSArray*)sortObjectsWithImageFirst:(NSArray*)objects;
+
+/**
+ * Starts the menu manager. Should only be called once, from the login screen or from the app delegate
+ */
+-(void)startMenuManager;
+
+/**
+ * Makes sure that the menu manager view controller is visible
+ */
+-(void)popNavigationToMenuManager;
 @end

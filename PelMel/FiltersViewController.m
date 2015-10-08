@@ -303,7 +303,7 @@
 #pragma mark - Action callback
 -(void)closeMenu:(id)sender {
     [self.parentMenuController dismissControllerMenu:YES];
-    [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
+    [[TogaytherService uiService] popNavigationToMenuManager];
 }
 
 @end

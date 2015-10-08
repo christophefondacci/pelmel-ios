@@ -531,7 +531,7 @@
     [userService updateCurrentUser];
     // Dismissing
     [self dismissViewControllerAnimated:YES completion:nil];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [[TogaytherService uiService] popNavigationToMenuManager];
 }
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     cell.backgroundColor = UIColorFromRGB(0x272a2e);

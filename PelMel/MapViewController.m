@@ -178,16 +178,16 @@
         badgeView.hidden=YES;
         [_menuNetworkAction.menuActionView addSubview:badgeView];
         [[TogaytherService getMessageService] setNetworkCountBadgeView:badgeView];
-    }
-    if([[TogaytherService dealsService] dealsBadgeView] == nil) {
-        MKNumberBadgeView *badgeView = [[MKNumberBadgeView alloc] init];
+
+        // Deals badge
+        badgeView = [[MKNumberBadgeView alloc] init];
         badgeView.frame = CGRectMake(_menuDealsAction.menuActionView.frame.size.width-20, -5, 30, 20);
         badgeView.font = [UIFont fontWithName:PML_FONT_BADGES size:10];
         badgeView.shadow = NO;
         badgeView.shine=NO;
         badgeView.hidden=YES;
         [_menuDealsAction.menuActionView addSubview:badgeView];
-        [[TogaytherService dealsService] setDealsBadgeView:badgeView];
+        [[TogaytherService dealsService] setDealsBadgeView:badgeView forDealsMenuAction:_menuDealsAction];
         
     }
     

@@ -11,14 +11,16 @@
 #import "UserService.h"
 #import "Services.h"
 #import <MKNumberBadgeView.h>
+#import "MenuAction.h"
 
 typedef void (^PMLDealErrorBlock)(NSInteger errorCode,PMLDeal *deal, NSString *userMessage);
 
 @interface PMLDealService : NSObject
 
-@property (nonatomic,retain) UserService *userService;
-@property (nonatomic,retain) JsonService *jsonService;
-@property (nonatomic,retain) MKNumberBadgeView *dealsBadgeView;
+@property (nonatomic,strong) UserService *userService;
+@property (nonatomic,strong) JsonService *jsonService;
+@property (nonatomic,strong) MKNumberBadgeView *dealsBadgeView;
+@property (nonatomic,strong) MenuAction *dealsMenuAction;
 
 /**
  * Updates the deals badge based on the curren model holder definition of deals
@@ -53,4 +55,5 @@ typedef void (^PMLDealErrorBlock)(NSInteger errorCode,PMLDeal *deal, NSString *u
 -(void)reportDealProblem:(PMLDeal *)deal onSuccess:(Completor)successCallback onFailure:(ErrorCompletionBlock)errorCompletion;
 -(NSString*)dealConditionLabel:(PMLDeal*)deal;
 -(BOOL)isDealUsable:(PMLDeal*)deal considerCheckinDistance:(BOOL)checkDistance ;
+-(void)setDealsBadgeView:(MKNumberBadgeView *)dealsBadgeView forDealsMenuAction:(MenuAction*)menuAction;
 @end

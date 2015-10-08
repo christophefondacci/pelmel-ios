@@ -115,6 +115,7 @@ typedef void(^TextInputCallback)(NSString *text);
 @property (nonatomic,strong) PMLDataManager *dataManager; // Gives access to the data manager from children
 @property (nonatomic,retain) CALObject *contextObject; // Current context object
 @property (nonatomic) BOOL snippetFullyOpened; // Whether the snippet is 100% open and hides other views
+@property (nonatomic) BOOL initialized; // Whether the snippet is 100% open and hides other views
 @property (nonatomic,strong) PMLMainNavBarView *mainNavBarView; // Nav bar access
 @property (weak, nonatomic) IBOutlet UIView *topWarningView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *topWarningViewTopContraint;

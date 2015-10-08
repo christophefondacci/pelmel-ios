@@ -152,15 +152,16 @@
     }];
 }
 
--(void)setDealsBadgeView:(MKNumberBadgeView *)dealsBadgeView {
+-(void)setDealsBadgeView:(MKNumberBadgeView *)dealsBadgeView forDealsMenuAction:(MenuAction*)menuAction {
     _dealsBadgeView = dealsBadgeView;
+    _dealsMenuAction = menuAction;
     [self updateDealsBadge];
 }
 -(void)updateDealsBadge {
     dispatch_async(dispatch_get_main_queue(), ^{
         _dealsBadgeView.value = [[[[TogaytherService dataService] modelHolder] deals] count];
         _dealsBadgeView.hidden = _dealsBadgeView.value<=0;
-        _dealsBadgeView.superview.hidden = _dealsBadgeView.hidden;
+        _dealsMenuAction.menuActionView.hidden = _dealsBadgeView.hidden;
     });
 }
 -(NSString*)dealConditionLabel:(PMLDeal *)deal {

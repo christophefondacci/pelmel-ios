@@ -23,7 +23,10 @@
 #import <AFNetworkActivityLogger.h>
 #import <iRate.h>
 #import <TWMessageBarManager.h>
-
+#import <EAIntroPage.h>
+#import <EAIntroView.h>
+#import "UIIntroViewController.h"
+#import "PMLLoginIntroView.h"
 
 typedef void (^Callback)(CALObject *obj);
 
@@ -67,40 +70,66 @@ static BOOL isStarted;
     
     // Starting services
     [TogaytherService start];
-    UIService *uiService = TogaytherService.uiService;
-    MapViewController *mapView = (MapViewController*)[uiService instantiateViewController:@"mapItemsView"];
     
     // Facebook init
     [FBLoginView class];
+    
     // ------------ NEW PELMEL NAV
+    BOOL introDone = [[TogaytherService settingsService] settingValueAsBoolFor:PML_PROP_INTRO_DONE];
 
-    UIMenuManagerMainDelegate *mainDelegate = [[UIMenuManagerMainDelegate alloc] init];
-    PMLMenuManagerController * menuManagerController = (PMLMenuManagerController*)[uiService instantiateViewController:SB_ID_MENU_MANAGER];
-//[[PMLMenuManagerController alloc] initWithViewController:mapView with:mainDelegate];
-    menuManagerController.menuManagerDelegate = mainDelegate;
-    menuManagerController.rootViewController = mapView;
-    UINavigationController *rootNavMenuController = [[UINavigationController alloc] initWithRootViewController:menuManagerController];
-    self.window.rootViewController = rootNavMenuController;
+    UIIntroViewController *controller = [[UIIntroViewController alloc] init];
     
-//    CGRect winFrame = self.window.frame;
-//    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0,winFrame.size.width, 20)];
-//    view.backgroundColor=[UIColor blackColor];
-//    view.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-//    [self.window.rootViewController.view addSubview:view];
+    EAIntroPage *page1 = [EAIntroPage page];
+    page1.title = @"Find the gay community";
+    page1.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page1.bgImage = [UIImage imageNamed:@"intro-bg-1.jpg"];
     
-    [TogaytherService.uiService start:self.window];
-    TogaytherService.uiService.menuManagerController = menuManagerController;
+    EAIntroPage *page2 = [EAIntroPage page];
+    page2.title = @"Find where everybody is";
+    page2.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page2.bgImage = [UIImage imageNamed:@"intro-bg-2.jpg"];
     
-    // Checking if we are started with an URL
-    NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-
-    if(url != nil) {
-        [self openURL:url searchCallback:^(CALObject *object) {
-            [menuManagerController.dataManager setInitialContext:object isSearch:YES];
-        } overviewCallback:^(CALObject *object) {
-            [menuManagerController.dataManager setInitialContext:object isSearch:NO];
-        }];
+    EAIntroPage *page3 = [EAIntroPage page];
+    page3.title = @"Check in and get deals";
+    page3.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page3.bgImage = [UIImage imageNamed:@"intro-bg-4.jpg"];
+    
+    EAIntroPage *page4 = [EAIntroPage page];
+    page4.bgColor = [UIColor blackColor];
+    page4.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:22];
+    page4.bgImage = [UIImage imageNamed:@"intro-bg-3.jpg"];
+    PMLLoginIntroView * titleView = (PMLLoginIntroView*)[[TogaytherService uiService] loadView:@"PMLLoginIntroView"];
+    controller.loginIntroView = titleView;
+    page4.titleIconView = titleView;// [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo-deals"]];
+    
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.window.bounds andPages:@[page1,page2,page3,page4]];
+    intro.skipButton=nil;
+    intro.swipeToExit=NO;
+    [intro setDelegate:self];
+    [intro showInView:controller.view animateDuration:0.3];
+    
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [navController setNavigationBarHidden:YES];
+        self.window.rootViewController = navController;
+    
+    if(introDone) {
+        [intro setCurrentPageIndex:3];
+        [titleView login];
+//    } else {
+//        [[TogaytherService uiService] startMenuManager];
+//        // Checking if we are started with an URL
+//        NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+//        
+//        if(url != nil) {
+//            [self openURL:url searchCallback:^(CALObject *object) {
+//                [TogaytherService.uiService.menuManagerController.dataManager setInitialContext:object isSearch:YES];
+//            } overviewCallback:^(CALObject *object) {
+//                [TogaytherService.uiService.menuManagerController.dataManager setInitialContext:object isSearch:NO];
+//            }];
+//        }
     }
+
+
     
     
     [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
@@ -116,7 +145,9 @@ static BOOL isStarted;
     [[TogaytherService dataService] registerDataListener:self];
     return YES;
 }
-							
+
+
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -293,4 +324,15 @@ static BOOL isStarted;
         self.deepLinkCallback = nil;
     }
 }
+
+#pragma mark - EAIntroDelegate
+- (void)introDidFinish:(EAIntroView *)introView {
+    [[TogaytherService uiService] startMenuManager];
+}
+
+//-(void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSUInteger)pageIndex {
+//    ((UILabel*)introView.titleView).shadowColor=[UIColor blackColor];
+//    ((UILabel*)introView.titleView).shadowOffset = CGSizeMake(5.0f, 5.0f);
+//    introView.titleView.layer.masksToBounds=NO;
+//}
 @end

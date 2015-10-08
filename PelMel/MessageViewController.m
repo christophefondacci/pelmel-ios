@@ -650,7 +650,7 @@
 ////        [self.parentMenuController dismissControllerSnippet];
 //        [[TogaytherService uiService] presentSnippetFor:nil opened:NO];
 //    } else {
-//        [self.parentMenuController.navigationController popToRootViewControllerAnimated:YES];
+//        [[TogaytherService uiService] popNavigationToMenuManager];
 //        [self.parentMenuController dismissControllerMenu:YES];
 //    }
 //}

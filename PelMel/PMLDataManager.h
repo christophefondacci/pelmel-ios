@@ -13,10 +13,6 @@
 
 @interface PMLDataManager : NSObject <PMLDataListener,PMLUserCallback,PMLImagePickerCallback,PMLImageUploadCallback,UIAlertViewDelegate>
 
-/**
- * Initializes the data manager on the given view controller
- */
-- (instancetype)initWith:(PMLMenuManagerController*)controller;
 
 /**
  * Refreshes the current list of contents for the given coordinates using the radius
@@ -34,5 +30,8 @@
  * Registers the initial context that should be opened after 
  */
 -(void)setInitialContext:(CALObject*)object isSearch:(BOOL)isSearch;
-
+/**
+ * Detaches this data manager from the menu manager and releases its listeners
+ */
+-(void)detach;
 @end

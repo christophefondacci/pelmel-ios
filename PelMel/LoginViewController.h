@@ -11,6 +11,10 @@
 #import "DatePickerDataSource.h"
 #import <FacebookSDK/FacebookSDK.h>
 
+typedef enum {
+    PMLLoginModeSignIn, PMLLoginModeSignUp
+} PMLLoginMode;
+
 @interface LoginViewController : UITableViewController <PMLUserCallback, DateCallback, UITextFieldDelegate, FBLoginViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *loginEmail;
 @property (weak, nonatomic) IBOutlet UITextField *loginPassword;
@@ -23,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet FBLoginView *loginFacebookButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loginActivity;
 @property (weak, nonatomic) IBOutlet UILabel *loginWaitText;
+@property (nonatomic) PMLLoginMode loginMode;
 
 - (IBAction)loginPressed:(id)sender;
 - (IBAction)registerPressed:(id)sender;

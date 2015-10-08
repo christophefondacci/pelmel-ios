@@ -158,9 +158,20 @@
     registerPassword.delegate = self;
     registerPseudo.delegate = self;
 
-    // Facebook init
-    self.loginFacebookButton.readPermissions = @[@"public_profile", @"email", @"user_friends"];
-    self.loginFacebookButton.delegate=self;
+
+    
+    self.tableView.backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"intro-bg-3.jpg"]];
+    self.navigationController.edgesForExtendedLayout=UIRectEdgeAll;
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.shadowImage = [UIImage new];
+    self.navigationController.navigationBar.translucent = YES;
+    self.navigationController.view.backgroundColor = [UIColor clearColor];
+    self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    [self.navigationController setNavigationBarHidden:NO];
+    
 }
 
 - (void)viewDidUnload
@@ -198,7 +209,7 @@
     // e.g. self.myOutlet = nil;
 }
 - (void)viewDidAppear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+
 }
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
@@ -209,17 +220,17 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return kSectionsCount;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch(section) {
-        case kSectionSocial:
-            return kRowsSocial;
-        case kSectionLogin:
+    switch(_loginMode) {
+//        case kSectionSocial:
+//            return kRowsSocial;
+        case PMLLoginModeSignIn:
             return kRowsLogin;
-        case kSectionRegister:
+        case PMLLoginModeSignUp:
             return kRowsRegister;
         default:
             return 0;
@@ -232,16 +243,16 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
 //    NSLog(@"Section %ld - row %ld", (long)indexPath.section,(long)indexPath.row );
-    switch(indexPath.section) {
-        case kSectionSocial:
-            switch(indexPath.row) {
-                case kRowLoginFacebook:
-                    return self.loginFacebookCell;
-                case kRowSocialSeparator:
-                    return self.socialSeparatorCell;
-            }
-            break;
-        case kSectionLogin:
+    switch(_loginMode) {
+//        case kSectionSocial:
+//            switch(indexPath.row) {
+//                case kRowLoginFacebook:
+//                    return self.loginFacebookCell;
+//                case kRowSocialSeparator:
+//                    return self.socialSeparatorCell;
+//            }
+//            break;
+        case PMLLoginModeSignIn:
             switch(indexPath.row) {
                 case kRowLoginIntro:
                     return self.loginIntroCell;
@@ -261,7 +272,7 @@
                     return self.loginForgotPasswordCell;
             }
             break;
-        case kSectionRegister:
+        case PMLLoginModeSignUp:
             switch(indexPath.row ) {
                 case kRowRegisterWhy:
                     _registerIntroLabel.text = NSLocalizedString(@"register.why.intro", nil);
@@ -320,44 +331,44 @@
     return cell;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    switch(section) {
-        case kSectionSocial:
+//    switch(section) {
+//        case kSectionSocial:
             return headerView;
-        case kSectionLogin:
-            return loginTitleView;
-        case kSectionRegister:
-            return registerTitleView;
-    }
-    return nil;
+//        case kSectionLogin:
+//            return loginTitleView;
+//        case kSectionRegister:
+//            return registerTitleView;
+//    }
+//    return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    switch(section) {
-        case kSectionSocial:
+//    switch(section) {
+//        case kSectionSocial:
             return headerView.bounds.size.height;
-        case kSectionLogin:
-            return loginTitleView.bounds.size.height-5;
-        case kSectionRegister:
-            return registerTitleView.bounds.size.height;
-    }
-    return 0;
+//        case kSectionLogin:
+//            return loginTitleView.bounds.size.height-5;
+//        case kSectionRegister:
+//            return registerTitleView.bounds.size.height;
+//    }
+//    return 0;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    switch(indexPath.section) {
-        case kSectionSocial:
-            switch(indexPath.row) {
-                case kRowLoginFacebook:
-                    return 40; 
-                case kRowSocialSeparator:
-                    return 50;
-            }
-            break;
-        case kSectionLogin:
+    switch(_loginMode) {
+//        case kSectionSocial:
+//            switch(indexPath.row) {
+//                case kRowLoginFacebook:
+//                    return 40; 
+//                case kRowSocialSeparator:
+//                    return 50;
+//            }
+//            break;
+        case PMLLoginModeSignIn:
             switch(indexPath.row) {
                 case kRowLoginIntro:
                     return [loginInfo sizeThatFits:CGSizeMake(loginInfo.bounds.size.width, 2000)].height;
             }
-        case kSectionRegister:
+        case PMLLoginModeSignUp:
             switch(indexPath.row) {
                 case kRowRegisterWhy:
                     return 76;
@@ -377,7 +388,7 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section == kSectionRegister && indexPath.row == kRowRegisterTerms) {
+    if(_loginMode == PMLLoginModeSignUp && indexPath.row == kRowRegisterTerms) {
         
         PBWebViewController *webviewController= [[PBWebViewController alloc] init];
         NSString *server = [TogaytherService propertyFor:PML_PROP_SERVER];
@@ -513,7 +524,8 @@
     [loginActivity setHidden:YES];
     [loginActivity stopAnimating];
     [loginWaitText setHidden:YES];
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    [_uiService startMenuManager];
 }
 - (void)authenticationFailed:(NSString *)reason {
     

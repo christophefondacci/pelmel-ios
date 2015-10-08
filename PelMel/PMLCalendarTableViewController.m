@@ -376,6 +376,6 @@
 
 -(void)closeMenu:(id)sender {
     [_uiService presentSnippetFor:nil opened:NO root:YES];
-    [[[_uiService menuManagerController] navigationController] popToRootViewControllerAnimated:YES];
+    [[TogaytherService uiService] popNavigationToMenuManager];
 }
 @end
