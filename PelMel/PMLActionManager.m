@@ -22,6 +22,7 @@
 #import "PMLPurchaseTableViewController.h"
 #import "PMLClaimPurchaseProvider.h"
 #import "PMLUseDealViewController.h"
+#import "PMLPremiumPurchaseProvider.h"
 
 #define kPMLConfirmDistance 21.0
 #define kPMLConfirmSize 52.0
@@ -584,7 +585,10 @@
     PopupAction *claimAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         PMLPurchaseTableViewController *purchaseController = (PMLPurchaseTableViewController*)[[TogaytherService uiService] instantiateViewController:SB_ID_PURCHASE];
         purchaseController.provider = [[PMLClaimPurchaseProvider alloc] initWithPlace:(Place*)object];
-        [self.uiService.menuManagerController presentModal:purchaseController];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:purchaseController];
+
+        [self.uiService.menuManagerController presentModal:navController];
+//        [self.uiService.menuManagerController.navigationController pushViewController:purchaseController animated:YES];
     }];
     [self registerAction:claimAction forType:PMLActionTypeClaim];
 }
@@ -612,33 +616,42 @@
                 [self.useDealCheckinAlertView show];
             } else {
                 
-                // Use is in the place AND is checked in, he can process with the DEAL
-                UIView *hudView = [[_uiService menuManagerController] view];
-                MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:hudView animated:YES];
-                hud.mode = MBProgressHUDModeIndeterminate;
-                hud.labelText=NSLocalizedString(@"deal.availability.check", @"deal.availability.check");
-                [hud show:YES];
-                [[TogaytherService dealsService] refreshDeal:deal onSuccess:^(id obj) {
-                    [MBProgressHUD hideAllHUDsForView:hudView animated:YES];
-                    PMLDeal *d = (PMLDeal *)obj;
-                    NSString *errorMsgCode = nil;
-                    if([d.lastUsedDate timeIntervalSinceNow]>-PML_DEAL_MIN_REUSE_SECONDS) {
-                        errorMsgCode = @"deal.useError.mustWait";
-                    }
-                    if(d.maxUses>0 && d.maxUses<=d.usedToday) {
-                        errorMsgCode = @"deal.useError.quotaReached";
-                    }
-                    if(errorMsgCode != nil) {
-                        [_uiService alertWithTitle:@"deal.useError.title" text:errorMsgCode];
-                    } else {
-                        PMLUseDealViewController *useDealController = (PMLUseDealViewController*)[_uiService instantiateViewController:SB_ID_USE_DEAL];
-                        useDealController.deal = deal;
-                        [[[_uiService menuManagerController] navigationController] pushViewController:useDealController animated:YES];
-                    }
-                    
-                } onFailure:^(NSInteger errorCode, PMLDeal *deal, NSString *userMessage) {
-                    [_uiService alertWithTitle:@"action.failure.title" text:userMessage];
-                }];
+                CurrentUser *user = [_userService getCurrentUser];
+                if(!user.isPremium) {
+                    PMLPremiumPurchaseProvider *provider = [[PMLPremiumPurchaseProvider alloc] init];
+                    PMLPurchaseTableViewController *controller = (PMLPurchaseTableViewController*)[_uiService instantiateViewController:SB_ID_PURCHASE];
+                    controller.provider = provider;
+                    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                    [[_uiService menuManagerController] presentModal:navController];
+                } else {
+                    // Use is in the place AND is checked in, he can process with the DEAL
+                    UIView *hudView = [[_uiService menuManagerController] view];
+                    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:hudView animated:YES];
+                    hud.mode = MBProgressHUDModeIndeterminate;
+                    hud.labelText=NSLocalizedString(@"deal.availability.check", @"deal.availability.check");
+                    [hud show:YES];
+                    [[TogaytherService dealsService] refreshDeal:deal onSuccess:^(id obj) {
+                        [MBProgressHUD hideAllHUDsForView:hudView animated:YES];
+                        PMLDeal *d = (PMLDeal *)obj;
+                        NSString *errorMsgCode = nil;
+                        if([d.lastUsedDate timeIntervalSinceNow]>-PML_DEAL_MIN_REUSE_SECONDS) {
+                            errorMsgCode = @"deal.useError.mustWait";
+                        }
+                        if(d.maxUses>0 && d.maxUses<=d.usedToday) {
+                            errorMsgCode = @"deal.useError.quotaReached";
+                        }
+                        if(errorMsgCode != nil) {
+                            [_uiService alertWithTitle:@"deal.useError.title" text:errorMsgCode];
+                        } else {
+                            PMLUseDealViewController *useDealController = (PMLUseDealViewController*)[_uiService instantiateViewController:SB_ID_USE_DEAL];
+                            useDealController.deal = deal;
+                            [[[_uiService menuManagerController] navigationController] pushViewController:useDealController animated:YES];
+                        }
+                        
+                    } onFailure:^(NSInteger errorCode, PMLDeal *deal, NSString *userMessage) {
+                        [_uiService alertWithTitle:@"action.failure.title" text:userMessage];
+                    }];
+                }
                 
 
             }

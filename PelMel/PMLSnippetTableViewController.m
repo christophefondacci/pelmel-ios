@@ -233,6 +233,7 @@ typedef enum {
     BOOL _opened;
     BOOL _didOpened;
     PMLVisibityState _editVisible;
+    BOOL _isLoaded;
 
     
     PBWebViewController *_webviewController;
@@ -264,6 +265,7 @@ typedef enum {
     [self hideNavigationBar];
     
     [self.tableView.panGestureRecognizer addTarget:self action:@selector(tableViewPanned:)];
+    self.tableView.panGestureRecognizer.delaysTouchesBegan = YES;
     
     // Initializing external table view cells
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLEventTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowEventId];
@@ -307,6 +309,7 @@ typedef enum {
     // Date formatter for deals
     self.dateFormatter = [[NSDateFormatter alloc] init];
     [self.dateFormatter setDateFormat:@"yyyy-MM-dd"];
+
 }
 - (void)viewWillAppear:(BOOL)animated {
     self.parentMenuController.snippetDelegate = self;
@@ -343,7 +346,11 @@ typedef enum {
     if(_snippetItem != nil) {
         [_dataService getOverviewData:_snippetItem];
     } else {
-        [self.tableView reloadData];
+        if(_isLoaded) {
+            [self.tableView reloadData];
+        } else {
+            _isLoaded = YES;
+        }
     }
     
     // Map location
@@ -618,6 +625,7 @@ typedef enum {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseCellId forIndexPath:indexPath];
     cell.backgroundColor = BACKGROUND_COLOR;
     cell.opaque=YES;
+
     // Configure the cell...
     switch(indexPath.section) {
         case kPMLSectionSnippet:
@@ -1061,6 +1069,7 @@ typedef enum {
     }
     return NO;
 }
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     switch(indexPath.section) {
         case kPMLSectionTopPlaces:
@@ -2043,7 +2052,7 @@ typedef enum {
         });
     } else if([@"editing" isEqualToString:keyPath] || [@"editingDesc" isEqualToString:keyPath]) {
         NSLog(@"VALUE CHANGE: '%@' change catched from %p",keyPath,self);
-//        dispatch_async(dispatch_get_main_queue(), ^{
+//
             if(_snippetItem.editing || _snippetItem.editingDesc) {
                 [self.tableView setContentOffset:CGPointMake(0, 0)];
                 [self.parentMenuController minimizeCurrentSnippet:YES];
@@ -2051,8 +2060,9 @@ typedef enum {
             } else if(!_snippetItem.editing && !_snippetItem.editingDesc && self.navigationItem.leftBarButtonItem!=self.navigationItem.backBarButtonItem) {
                 [self uninstallNavBarCommitCancel];
             }
+        dispatch_async(dispatch_get_main_queue(), ^{
             [self.tableView reloadData];
-//        });
+        });
     } else if([keyPath isEqualToString:@"mainImage"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [_galleryCell.galleryView reloadData];

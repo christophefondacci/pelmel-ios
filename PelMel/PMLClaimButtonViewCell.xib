@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Light.ttf">
+            <string>OpenSans-Light</string>
+        </mutableArray>
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="P8K-ic-tsx" customClass="PMLButtonTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xlC-jl-j13">
+                    <rect key="frame" x="25" y="9" width="270" height="52"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnIconClaim" translatesAutoresizingMaskIntoConstraints="NO" id="rf8-Wi-F8m">
+                            <rect key="frame" x="10" y="6" width="43" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="8sy-gM-D4X"/>
+                                <constraint firstAttribute="width" constant="43" id="bfc-IE-raX"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claim and make money!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="esN-s5-GVc">
+                            <rect key="frame" x="65" y="5" width="188" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="21" id="Nwh-Jb-Tgq"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="16"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learn More" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="use-Pu-1DU">
+                            <rect key="frame" x="65" y="26" width="188" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="8xp-xe-0ez"/>
+                                <constraint firstAttribute="height" constant="21" id="dqm-Pk-ZRj"/>
+                                <constraint firstAttribute="width" constant="188" id="hWY-YD-nvT"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="16"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                            <variation key="default">
+                                <mask key="constraints">
+                                    <exclude reference="8xp-xe-0ez"/>
+                                </mask>
+                            </variation>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.18039215689999999" green="0.19215686269999999" blue="0.57254901960000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="use-Pu-1DU" firstAttribute="top" secondItem="esN-s5-GVc" secondAttribute="bottom" id="LBG-NU-NBs"/>
+                        <constraint firstAttribute="trailing" secondItem="use-Pu-1DU" secondAttribute="trailing" constant="17" id="Lmq-Hf-vdv"/>
+                        <constraint firstItem="rf8-Wi-F8m" firstAttribute="leading" secondItem="xlC-jl-j13" secondAttribute="leading" constant="10" id="PJf-bW-ySC"/>
+                        <constraint firstAttribute="height" constant="52" id="SBP-ni-Ukg"/>
+                        <constraint firstItem="esN-s5-GVc" firstAttribute="leading" secondItem="rf8-Wi-F8m" secondAttribute="trailing" constant="12" id="V9Z-4c-a8B"/>
+                        <constraint firstAttribute="trailing" secondItem="esN-s5-GVc" secondAttribute="trailing" constant="17" id="c7Q-Ug-yqg"/>
+                        <constraint firstAttribute="centerY" secondItem="esN-s5-GVc" secondAttribute="centerY" id="eOL-Wa-LC7"/>
+                        <constraint firstAttribute="centerY" secondItem="rf8-Wi-F8m" secondAttribute="centerY" constant="4" id="mjG-mz-IhK"/>
+                        <constraint firstItem="esN-s5-GVc" firstAttribute="top" secondItem="xlC-jl-j13" secondAttribute="top" constant="5" id="tEf-8G-pqD"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                            <integer key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
+                            <color key="value" red="0.26274509800000001" green="0.27450980390000002" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="eOL-Wa-LC7"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.1529411765" green="0.1647058824" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="centerY" secondItem="xlC-jl-j13" secondAttribute="centerY" id="O8S-8d-ryW"/>
+                <constraint firstItem="xlC-jl-j13" firstAttribute="leading" secondItem="P8K-ic-tsx" secondAttribute="leading" constant="25" id="Qr6-gN-eVx"/>
+                <constraint firstAttribute="trailing" secondItem="xlC-jl-j13" secondAttribute="trailing" constant="25" id="atd-Cs-bjq"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="buttonContainer" destination="xlC-jl-j13" id="4zO-Fx-N66"/>
+                <outlet property="buttonImageView" destination="rf8-Wi-F8m" id="7ML-Ns-Jp2"/>
+                <outlet property="buttonLabel" destination="esN-s5-GVc" id="OUw-Ty-O12"/>
+            </connections>
+            <point key="canvasLocation" x="274" y="-24"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="btnIconClaim" width="70" height="70"/>
+    </resources>
+</document>

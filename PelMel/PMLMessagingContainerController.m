@@ -12,6 +12,7 @@
 #import "PMLRecipientsGroup.h"
 #import "PMLThumbCollectionViewController.h"
 #import "ItemsThumbPreviewProvider.h"
+#import <MBProgressHUD.h>
 
 @interface PMLMessagingContainerController ()
 @property (nonatomic,retain) PMLMessageTableViewController *messageTableController;
@@ -227,10 +228,11 @@
     [self sendMessage:self.chatTextView.text withImage:nil];
 }
 -(void)sendMessage:(NSString*)text withImage:(CALImage*)image {
-    //    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    //    hud.mode = MBProgressHUDModeIndeterminate;
-    //    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
-    
+//    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+//    hud.mode = MBProgressHUDModeIndeterminate;
+//    hud.labelText = NSLocalizedString(@"message.sending", @"Wait message displayed while sending");
+    self.sendButton.enabled=NO;
+    [_uiService setProgressView:self.view];
     // Checking that message is not empty
     if(image==nil && (text ==nil || [[text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] isEqualToString:@""])) {
         return;
@@ -256,6 +258,7 @@
 - (void)messageSent:(Message *)message {
     [self.uiService progressDone ]; //MBProgressHUD hideAllHUDsForView:self.view animated:YES];
     [self.messageTableController messageSent:message];
+    self.sendButton.enabled=YES;
     
     [_chatTextView endEditing:YES];
     if(message.mainImage==nil) {
@@ -267,6 +270,7 @@
 }
 - (void)messageSendFailed {
     NSLog(@"Message sent failed");
+    self.sendButton.enabled=YES;
     [self.uiService progressDone ];
     [[TogaytherService uiService] alertWithTitle:@"message.sending.failed.title" text:@"message.sending.failed"];
 }

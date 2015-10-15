@@ -34,7 +34,11 @@
 -(void)login {
     self.loginActionsContainer.hidden=YES;
     self.loginMessageContainer.hidden=NO;
-    [[TogaytherService userService] authenticateWithLastLogin:self];
+    BOOL authenticationStarted = [[TogaytherService userService] authenticateWithLastLogin:self];
+    if(!authenticationStarted) {
+        self.loginActionsContainer.hidden=NO;
+        self.loginMessageContainer.hidden=YES;
+    }
 }
 - (void) didTapLogin:(UIButton*)button {
     UIViewController *loginController = [[TogaytherService uiService] instantiateViewController:@"userLogin"];

@@ -24,12 +24,16 @@
 
 @interface PMLPurchaseTableViewController ()
 @property (nonatomic,retain) UITextView *templateTextView;
+@property (nonatomic,retain) UILabel *templateIntroLabel;
 @end
 
 @implementation PMLPurchaseTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [[TogaytherService uiService] toggleTransparentNavBar:self];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(closeMenu:)];
     
     self.tableView.separatorColor = [UIColor clearColor];
 
@@ -45,9 +49,17 @@
     self.view.layer.borderWidth=2;
     self.view.layer.borderColor = UIColorFromRGB(0xe0e0e1).CGColor;
     
-    [[TogaytherService storeService] loadProducts:@[kPMLProductClaim30]];
+    [[TogaytherService storeService] loadProducts:@[kPMLProductClaim30, kPMLProductPremium30]];
     self.templateTextView = [[UITextView alloc] init];
     self.templateTextView.font = [UIFont fontWithName:PML_FONT_PRO_EXTRALIGHT size:14];
+    self.templateIntroLabel = [[UILabel alloc] init];
+    self.templateIntroLabel.font= [UIFont fontWithName:PML_FONT_PRO size:24];
+    self.templateIntroLabel.numberOfLines=0;
+    
+    self.tableView.bounces=YES;
+    
+
+
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -132,6 +144,7 @@
 -(void)configurePurchaseCell:(PMLButtonTableViewCell*)cell {
     [cell.button setTitle:[_provider purchaseButtonLabel] forState:UIControlStateNormal];
     [cell.button addTarget:self action:@selector(purchaseTapped) forControlEvents:UIControlEventTouchUpInside];
+    cell.freeFirstMonthLabel.hidden = ![_provider freeFirstMonth];
 //    cell.buttonLabel.text = [_provider purchaseButtonLabel];
 //    cell.buttonImageView.image = [_provider purchaseButtonIcon];
 //    cell.backgroundColor = [UIColor clearColor];
@@ -143,7 +156,7 @@
     cell.widthTitleConstraint.constant = [cell.titleLabel sizeThatFits:CGSizeMake(MAXFLOAT, cell.titleLabel.bounds.size.height)].width;
 }
 - (void)configureTermsCell:(PMLTextViewTableViewCell*)cell {
-    cell.textView.text = NSLocalizedString(@"purchase.claim.terms",@"Terms");
+    cell.textView.text = NSLocalizedString(@"purchase.terms",@"Terms");
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -152,15 +165,19 @@
             switch(indexPath.row) {
                 case kRowFeatureHeader:
                     return 86;
-                case kRowFeatureIntro:
-                    return 44;
+                case kRowFeatureIntro: {
+                    CGRect bounds = self.view.bounds;
+                    self.templateIntroLabel.text = [_provider featureIntroLabel];
+                    CGSize size = [self.templateIntroLabel sizeThatFits:CGSizeMake(bounds.size.width-16, MAXFLOAT)];
+                    return size.height+13;
+                }
                 default:
                     if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-2) {
                         return 105;
                     } else if(indexPath.row == [self tableView:self.tableView numberOfRowsInSection:indexPath.section]-1) {
                         
-                        self.templateTextView.text =NSLocalizedString(@"purchase.claim.terms",@"Terms");
-                        return [self.templateTextView sizeThatFits:CGSizeMake(self.tableView.bounds.size.width-10,MAXFLOAT)].height;
+                        self.templateTextView.text =NSLocalizedString(@"purchase.terms",@"Terms");
+                        return [self.templateTextView sizeThatFits:CGSizeMake(self.tableView.bounds.size.width-20,MAXFLOAT)].height+11;
                     } else {
                         return 32;
                     }
@@ -242,5 +259,9 @@
 
 - (void)productsDefinitionChanged:(id) source {
     [self.tableView reloadData];
+}
+
+-(void)closeMenu:(UIButton*)source {
+    [self dismissViewControllerAnimated:YES completion:NULL];
 }
 @end

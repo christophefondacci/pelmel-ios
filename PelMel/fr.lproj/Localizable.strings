@@ -461,15 +461,21 @@
 "property.label.phone"="Téléphone";
 "property.label.website"="Site web";
 
-"purchase.claim.button"="Claim this place for %@ / month";
-"purchase.claim.header"="Est-ce votre";
+"purchase.claim.button"="Réclamez-le pour %@ / mois";
+"purchase.claim.header"="Êtes-vous le";
+"purchase.claim.header2"="Propriétaire ?";
 "purchase.claim.headerPlaceTypeTemplate"="%@ ?";
-"purchase.claim.intro"="Réclamez ce %@ sur PELMEL et :";
+"purchase.claim.intro"="Déclarez-vous propriétaire de ce lieu et :";
 "purchase.claim.feature.0"="Accédez à vos statistiques";
 "purchase.claim.feature.1"="Verrouillez vos informations";
 "purchase.claim.feature.2"="Offrez des promos à vos clients";
 "purchase.claim.feature.3"="Contactez vos clients chaque semaine";
-"purchase.claim.terms"="L'abonnement est valide pendant 30 jours et se renouvellera automatiquement sauf si vous désactivez le renouvellement au minimum 24 heures avant la fin de la période en cours. Le paiement sera effectué sur votre compte Apple iTunes. L'abonnement peut être modifié et le renouvellement peut être désactivé en allant dans les paramètres de votre compte Apple après achat (paramètres > App Store > Votre identifiant > Voir > Abonnements > Gérer). Toute période commencée est due, aucune annulation ou remboursement de la période en cours n'est possible.";
+"purchase.terms"="L'abonnement est valide pendant 30 jours et se renouvellera automatiquement sauf si vous désactivez le renouvellement au minimum 24 heures avant la fin de la période en cours. Le paiement sera effectué sur votre compte Apple iTunes. L'abonnement peut être modifié et le renouvellement peut être désactivé en allant dans les paramètres de votre compte Apple après achat (paramètres > App Store > Votre identifiant > Voir > Abonnements > Gérer). Toute période commencée est due, aucune annulation ou remboursement de la période en cours n'est possible.";
+"purchase.premium.button"="Passez premium pour %@ / month";
+"purchase.premium.header"="Devenez";
+"purchase.premium.headerSubtitle"="Premium";
+"purchase.premium.intro"="Devenez un utilisateur premium et:";
+"purchase.premium.feature.0"="Accèdez à des promos illimitées";
 "push.permission.title"="Activer le push ?";
 "push.permission.msg"="Voulez-vous activer les notifications 'push' pour permettre à Pelmel de vous signaler l'arrivée de nouveaux messages ?";
 "push.refused.title"="C'est vous le chef";

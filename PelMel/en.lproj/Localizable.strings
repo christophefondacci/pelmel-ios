@@ -467,14 +467,19 @@
 
 "purchase.claim.button"="Claim for %@ / month";
 "purchase.claim.header"="Is this your";
+"purchase.claim.header2"="Business?";
 "purchase.claim.headerPlaceTypeTemplate"="%@?";
-"purchase.claim.intro"="Claim this %@ on PELMEL and:";
+"purchase.claim.intro"="Claim this business and:";
 "purchase.claim.feature.0"="Access real-time analytics";
 "purchase.claim.feature.1"="Lock your information";
 "purchase.claim.feature.2"="Offer deals to get more clients";
 "purchase.claim.feature.3"="Weekly message your customers";
-"purchase.claim.terms"="Subscription valid for 30 days and will auto-renew unless auto-renew is turned off at least 24 hours before the end of the current period. Payment will be charged to your Apple iTunes account. Subscriptions may be managed and auto-renewal may be turned off by going to the Account Settings section of your iTunes account after purchase. No cancellation of the current subscription is allowed during the active subscription period.";
-
+"purchase.terms"="Subscription valid for 30 days and will auto-renew unless auto-renew is turned off at least 24 hours before the end of the current period. Payment will be charged to your Apple iTunes account. Subscriptions may be managed and auto-renewal may be turned off by going to the Account Settings section of your iTunes account after purchase. No cancellation of the current subscription is allowed during the active subscription period.";
+"purchase.premium.button"="Go premium for %@ / month";
+"purchase.premium.header"="Premium";
+"purchase.premium.headerSubtitle"="Membership";
+"purchase.premium.intro"="Premium membership gives you access to unlimited deals.";
+"purchase.premium.feature.0"="Access unlimited deals";
 "push.permission.title"="Enable push?";
 "push.permission.msg"="Would you like to enable push notifications to let PelMel ping you whenever you got new messages?";
 "push.refused.title"="You're the boss";

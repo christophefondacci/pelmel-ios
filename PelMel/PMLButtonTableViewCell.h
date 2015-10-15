@@ -13,5 +13,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *buttonImageView;
 @property (weak, nonatomic) IBOutlet UIView *buttonContainer;
 @property (weak, nonatomic) IBOutlet UIButton *button;
+@property (weak, nonatomic) IBOutlet UILabel *freeFirstMonthLabel;
 
 @end

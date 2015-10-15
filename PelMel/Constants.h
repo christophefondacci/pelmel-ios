@@ -103,6 +103,9 @@
 #define kPMLProductBanner6000 @"com.fgp.pelmel.banner6000"
 #define kPMLProductBannerPrefix @"com.fgp.pelmel.banner"
 #define kPMLProductClaim30 @"com.fgp.pelmel.claim30"
+#define kPMLProductClaimPrefix @"com.fgp.pelmel.claim"
+#define kPMLProductPremium30 @"com.fgp.pelmel.userPremium30"
+#define kPMLProductPremiumPrefix @"com.fgp.pelmel.userPremium"
 
 // Advertising
 #define kPMLBannerMilesRadius 10.0f

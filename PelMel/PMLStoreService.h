@@ -26,5 +26,6 @@
  * @param productId the productId to pay (membership type)
  */
 - (void)startPaymentForClaim:(Place*)place productId:(NSString*)productId;
+- (void)startPaymentForPremium:(NSString *)productId;
 -(NSString*)priceFromProduct:(SKProduct *)product;
 @end

@@ -20,6 +20,7 @@
 @property (nonatomic,retain) NSArray *networkUsers;
 @property (nonatomic) BOOL isEmailValidated;
 @property (nonatomic) BOOL isAdmin;
+@property (nonatomic) BOOL isPremium;
 @property (nonatomic,retain) NSArray *ownedPlaces;
 
 /**

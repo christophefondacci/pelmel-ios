@@ -947,6 +947,22 @@
     CurrentUser *currentUser = [_userService getCurrentUser];
     if([user.key isEqualToString:currentUser.key]) {
         [self fillPrivateNetworkInfo:jsonLoginInfo inUser:currentUser];
+        // Parsing extra JSON info
+        NSNumber *emailValidated    = [jsonLoginInfo objectForKey:@"emailValidated"];
+        NSNumber *isAdmin           = [jsonLoginInfo objectForKey:@"admin"];
+        NSNumber *isPremium         = [jsonLoginInfo objectForKey:@"premium"];
+        NSArray *jsonOwnedPlaces    = [jsonLoginInfo objectForKey:@"ownedPlaces"];
+        NSMutableArray *ownedPlaces = [[NSMutableArray alloc] init];
+        
+        // Processing places
+        for(NSDictionary *jsonPlace in jsonOwnedPlaces) {
+            Place *ownedPlace = [self convertJsonPlaceToPlace:jsonPlace];
+            [ownedPlaces addObject:ownedPlace];
+        }
+        currentUser.ownedPlaces = ownedPlaces;
+        currentUser.isEmailValidated = emailValidated.boolValue;
+        currentUser.isAdmin = isAdmin.boolValue;
+        currentUser.isPremium = isPremium.boolValue;
     }
 }
 -(void)fillPrivateNetworkInfo:(NSDictionary*)privateNetworkContainer inUser:(CurrentUser*)currentUser {

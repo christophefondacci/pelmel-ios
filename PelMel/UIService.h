@@ -189,4 +189,10 @@
  * Makes sure that the menu manager view controller is visible
  */
 -(void)popNavigationToMenuManager;
+
+/**
+ * Toggles a transparent, superposed, navigation bar with white text and tint
+ * @param controller the controller to set the navbar on
+ */
+- (void)toggleTransparentNavBar:(UIViewController*)controller;
 @end

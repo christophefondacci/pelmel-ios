@@ -603,4 +603,18 @@
 - (void)popNavigationToMenuManager {
     [self.menuManagerController.navigationController popToViewController:self.menuManagerController animated:YES];
 }
+
+- (void)toggleTransparentNavBar:(UIViewController*)controller {
+    controller.edgesForExtendedLayout=UIRectEdgeAll;
+    controller.automaticallyAdjustsScrollViewInsets=NO;
+    [controller.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                  forBarMetrics:UIBarMetricsDefault];
+    controller.navigationController.navigationBar.shadowImage = [UIImage new];
+    controller.navigationController.navigationBar.translucent = YES;
+    controller.navigationController.view.backgroundColor = [UIColor clearColor];
+    controller.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+    [controller.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
+    controller.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+    [controller.navigationController setNavigationBarHidden:NO];
+}
 @end

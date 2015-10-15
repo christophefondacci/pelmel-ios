@@ -14,9 +14,11 @@
 #define kURLSubscribe @"%@/mobileSubscribe"
 #define kPMLKeyPendingBannerPayment @"banner.pendingPayment"
 #define kPMLKeyPendingClaimedPlacePayment @"placeClaimed.pendingPayment"
+#define kPMLKeyPendingPremiumPayment @"premium.pendingPayment"
+
 
 typedef enum {
-    PMLPaymentTypeBanner, PMLPaymentTypeClaim
+    PMLPaymentTypeBanner, PMLPaymentTypeClaim,PMLPaymentTypePremium
 } PMLPaymentType;
 
 @interface PMLStoreService ()
@@ -96,7 +98,19 @@ typedef enum {
         [[SKPaymentQueue defaultQueue] addPayment:payment];
     }
 }
-
+- (void)startPaymentForPremium:(NSString *)productId {
+    SKProduct *product = [self productFromId:productId];
+    
+    CurrentUser *user = [_userService getCurrentUser];
+    if(product != nil) {
+        // Storing the banner for asynchronous retrieval once payment is confirmed by Apple
+        [[NSUserDefaults standardUserDefaults] setObject:user.key forKey:kPMLKeyPendingPremiumPayment];
+        
+        // App store payment
+        SKPayment *payment = [SKPayment paymentWithProduct:product];
+        [[SKPaymentQueue defaultQueue] addPayment:payment];
+    }
+}
 -(NSString*)defaultsKeyForProduct:(NSString*)productId {
     return [NSString stringWithFormat:@"bannerProduct.%@",productId ];
 }
@@ -158,6 +172,9 @@ typedef enum {
             case PMLPaymentTypeClaim:
                 [self completeClaimPayment:transaction receipt:receipt];
                 break;
+            case PMLPaymentTypePremium:
+                [self completePremiumPayment:transaction receipt:receipt];
+                break;
         }
 
     }
@@ -165,11 +182,26 @@ typedef enum {
 -(PMLPaymentType)paymentType:(SKPaymentTransaction*)transaction {
     if([transaction.payment.productIdentifier hasPrefix:kPMLProductBannerPrefix]) {
         return PMLPaymentTypeBanner;
-    } else {
+    } else if([transaction.payment.productIdentifier hasPrefix:kPMLProductClaimPrefix]){
         return PMLPaymentTypeClaim;
+    } else if([transaction.payment.productIdentifier hasPrefix:kPMLProductPremiumPrefix]){
+        return PMLPaymentTypePremium;
     }
+    return -1;
 }
 -(void)completeClaimPayment:(SKPaymentTransaction*)transaction receipt:(NSData*)receipt {
+    // Getting pending purchase
+    NSString *placeKey = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLKeyPendingClaimedPlacePayment];
+    
+    [self completeSubscriptionPayment:transaction receipt:receipt objectKey:placeKey];
+}
+-(void)completePremiumPayment:(SKPaymentTransaction*)transaction receipt:(NSData*)receipt {
+    // Getting pending purchase
+    NSString *userKey = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLKeyPendingPremiumPayment];
+    
+    [self completeSubscriptionPayment:transaction receipt:receipt objectKey:userKey];
+}
+-(void)completeSubscriptionPayment:(SKPaymentTransaction*)transaction receipt:(NSData*)receipt objectKey:(NSString*)subscribedItemKey {
     // Building URL string
     NSString *serverUrl = [TogaytherService propertyFor:PML_PROP_SERVER];
     NSString *url = [NSString stringWithFormat:kURLSubscribe,serverUrl];
@@ -177,40 +209,46 @@ typedef enum {
     // Current user for auth
     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
     
-    // Getting pending purchase
-    NSString *placeKey = [[NSUserDefaults standardUserDefaults] objectForKey:kPMLKeyPendingClaimedPlacePayment];
-    
-    // We might be called before login so we need to check if we have a token
+        // We might be called before login so we need to check if we have a token
     if(user.token != nil) {
         // Building params list
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
         [params setObject:user.token forKey:@"nxtpUserToken"];
         [params setObject:[receipt base64EncodedStringWithOptions:0] forKey:@"appStoreReceipt"];
         [params setObject:transaction.transactionIdentifier forKey:@"transactionId"];
-        if(placeKey != nil) {
-            [params setObject:placeKey forKey:@"subscribedKey"];
+        if(subscribedItemKey != nil) {
+            [params setObject:subscribedItemKey forKey:@"subscribedKey"];
         }
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
         [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"success");
-            // Parsing place response
-            Place *place = [[TogaytherService getJsonService] convertJsonOverviewPlaceToPlace:(NSDictionary*)responseObject defaultPlace:nil];
-            
-            // Ensuring place is part of owned user places
-            BOOL owned = NO;
-            for(Place *ownedPlace in user.ownedPlaces) {
-                if([ownedPlace.key isEqualToString:place.key]) {
-                    owned = YES;
-                    break;
+            CALObject *obj = nil;
+            if([subscribedItemKey hasPrefix:@"PLAC"]) {
+                // Parsing place response
+                Place *place = [[TogaytherService getJsonService] convertJsonOverviewPlaceToPlace:(NSDictionary*)responseObject defaultPlace:nil];
+                
+                // Ensuring place is part of owned user places
+                BOOL owned = NO;
+                for(Place *ownedPlace in user.ownedPlaces) {
+                    if([ownedPlace.key isEqualToString:place.key]) {
+                        owned = YES;
+                        break;
+                    }
                 }
+                // Adding place
+                if(!owned) {
+                    user.ownedPlaces = [user.ownedPlaces arrayByAddingObject:place];
+                }
+                obj = place;
+            } else if([subscribedItemKey hasPrefix:@"USER"]) {
+                CurrentUser *user= [[TogaytherService userService] getCurrentUser];
+                [[TogaytherService getJsonService] fillUser:user fromJson:(NSDictionary*)responseObject];
+                obj = user;
             }
-            // Adding place
-            if(!owned) {
-                user.ownedPlaces = [user.ownedPlaces arrayByAddingObject:place];
+            if(obj != nil) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PAYMENT_DONE object:obj];
             }
-            
-            [[NSNotificationCenter defaultCenter] postNotificationName:PML_NOTIFICATION_PAYMENT_DONE object:place];
 //            [[TogaytherService uiService] alertWithTitle:@"store.claim.paymentDone.title" text:@"store.claim.paymentDone"];
             [[SKPaymentQueue defaultQueue] finishTransaction:transaction];
             [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];

@@ -29,9 +29,11 @@
     return NSLocalizedString(@"purchase.claim.header", @"Is this your");
 }
 - (NSString *)headerSecondLine {
-    PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
-    NSString *template = NSLocalizedString(@"purchase.claim.headerPlaceTypeTemplate", @"%@?");
-    return [NSString stringWithFormat:template,placeType.label];
+    return NSLocalizedString(@"purchase.claim.header2", @"Is this your");
+    
+//    PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
+//    NSString *template = NSLocalizedString(@"purchase.claim.headerPlaceTypeTemplate", @"%@?");
+//    return [NSString stringWithFormat:template,placeType.label];
 }
 - (NSString *)featureIntroLabel {
     PlaceType *placeType = [[TogaytherService settingsService] getPlaceType:_place.placeType];
@@ -79,6 +81,9 @@
 }
 - (void)didTapPurchaseButton {
     [[TogaytherService storeService] startPaymentForClaim:_place productId:kPMLProductClaim30];
+}
+- (BOOL)freeFirstMonth {
+    return YES;
 }
 
 @end

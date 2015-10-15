@@ -141,9 +141,9 @@
             <string>SourceSansPro-Light</string>
             <string>SourceSansPro-Light</string>
             <string>SourceSansPro-Light</string>
+            <string>SourceSansPro-Light</string>
         </mutableArray>
         <mutableArray key="SourceSansPro-Regular.ttf">
-            <string>SourceSansPro-Regular</string>
             <string>SourceSansPro-Regular</string>
             <string>SourceSansPro-Regular</string>
             <string>SourceSansPro-Regular</string>
@@ -3904,7 +3904,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xkc-aL-eLu">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkc-aL-eLu">
                                             <rect key="frame" x="15" y="8" width="243" height="98"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -4475,7 +4475,7 @@
                                                 <action selector="didTapCancel:" destination="dcc-kl-6N9" eventType="touchUpInside" id="LYW-4k-Xsb"/>
                                             </connections>
                                         </button>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mnuIconClose" translatesAutoresizingMaskIntoConstraints="NO" id="hfQ-ae-QLj">
+                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mnuIconClose" translatesAutoresizingMaskIntoConstraints="NO" id="hfQ-ae-QLj">
                                             <rect key="frame" x="292" y="8" width="20" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="20" id="omJ-Y6-F00"/>
@@ -4510,17 +4510,17 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claim it on PELMEL and:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rx1-ov-Ira">
-                                            <rect key="frame" x="8" y="6" width="304" height="30"/>
-                                            <fontDescription key="fontDescription" name="SourceSansPro-Regular" family="Source Sans Pro" pointSize="24"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Claim it on PELMEL and:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rx1-ov-Ira">
+                                            <rect key="frame" x="8" y="6" width="304" height="31"/>
+                                            <fontDescription key="fontDescription" name="SourceSansPro-Light" family="Source Sans Pro" pointSize="24"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <color key="backgroundColor" cyan="0.90113681550000002" magenta="0.78333145380000002" yellow="0.23672848939999999" black="0.50064849850000004" alpha="1" colorSpace="deviceCMYK"/>
                                     <constraints>
-                                        <constraint firstAttribute="centerX" secondItem="Rx1-ov-Ira" secondAttribute="centerX" id="8AC-vb-zc1"/>
-                                        <constraint firstAttribute="centerY" secondItem="Rx1-ov-Ira" secondAttribute="centerY" id="NU4-SJ-oSA"/>
+                                        <constraint firstItem="Rx1-ov-Ira" firstAttribute="top" secondItem="Eex-T3-viI" secondAttribute="top" constant="6" id="2hN-I7-F8M"/>
+                                        <constraint firstAttribute="bottom" secondItem="Rx1-ov-Ira" secondAttribute="bottom" constant="6" id="Dm4-St-C3g"/>
                                         <constraint firstItem="Rx1-ov-Ira" firstAttribute="leading" secondItem="Eex-T3-viI" secondAttribute="leading" constant="8" id="R77-xT-uy3"/>
                                         <constraint firstAttribute="trailing" secondItem="Rx1-ov-Ira" secondAttribute="trailing" constant="8" id="yWD-jb-aqE"/>
                                     </constraints>
@@ -4546,7 +4546,7 @@
                                             <color key="textColor" red="0.66274509803921566" green="0.66274509803921566" blue="0.66274509803921566" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icoBulletRibbon" translatesAutoresizingMaskIntoConstraints="NO" id="I6p-HY-gNl">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icoBulletRibbon" translatesAutoresizingMaskIntoConstraints="NO" id="I6p-HY-gNl">
                                             <rect key="frame" x="30" y="2" width="25" height="25"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="25" id="I89-WI-2KK"/>
@@ -4563,6 +4563,7 @@
                                         <constraint firstAttribute="centerY" secondItem="I10-yD-jbU" secondAttribute="centerY" id="jG4-c6-fBz"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" cyan="0.90113681550000002" magenta="0.78333145380000002" yellow="0.23672848939999999" black="0.50064849850000004" alpha="1" colorSpace="deviceCMYK"/>
                                 <connections>
                                     <outlet property="titleImage" destination="I6p-HY-gNl" id="0Bi-p7-ArP"/>
                                     <outlet property="titleLabel" destination="I10-yD-jbU" id="UvR-8y-0lI"/>
@@ -4575,8 +4576,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="83.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="d0I-E2-eWg">
-                                            <rect key="frame" x="30" y="0.0" width="260" height="83.5"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="justified" translatesAutoresizingMaskIntoConstraints="NO" id="d0I-E2-eWg">
+                                            <rect key="frame" x="10" y="0.0" width="300" height="73.5"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <color key="textColor" red="0.66274509803921566" green="0.66274509803921566" blue="0.66274509803921566" alpha="1" colorSpace="calibratedRGB"/>
@@ -4586,10 +4587,10 @@
                                     </subviews>
                                     <color key="backgroundColor" cyan="0.90113681550000002" magenta="0.78333145380000002" yellow="0.23672848939999999" black="0.50064849850000004" alpha="1" colorSpace="deviceCMYK"/>
                                     <constraints>
-                                        <constraint firstItem="d0I-E2-eWg" firstAttribute="leading" secondItem="cRb-G1-zSg" secondAttribute="leading" constant="30" id="B2q-cD-KPX"/>
-                                        <constraint firstAttribute="trailing" secondItem="d0I-E2-eWg" secondAttribute="trailing" constant="30" id="FSN-GO-BEV"/>
+                                        <constraint firstItem="d0I-E2-eWg" firstAttribute="leading" secondItem="cRb-G1-zSg" secondAttribute="leading" constant="10" id="B2q-cD-KPX"/>
+                                        <constraint firstAttribute="trailing" secondItem="d0I-E2-eWg" secondAttribute="trailing" constant="10" id="FSN-GO-BEV"/>
                                         <constraint firstItem="d0I-E2-eWg" firstAttribute="top" secondItem="cRb-G1-zSg" secondAttribute="top" id="fC6-cR-D9f"/>
-                                        <constraint firstAttribute="bottom" secondItem="d0I-E2-eWg" secondAttribute="bottom" id="s1s-ns-oKW"/>
+                                        <constraint firstAttribute="bottom" secondItem="d0I-E2-eWg" secondAttribute="bottom" constant="10" id="s1s-ns-oKW"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" cyan="0.90113681554794312" magenta="0.78333145380020142" yellow="0.2367284893989563" black="0.50064849853515625" alpha="1" colorSpace="deviceCMYK"/>
@@ -4646,6 +4647,7 @@
                                 <color key="backgroundColor" red="0.078431372549019607" green="0.10196078431372549" blue="0.18431372549019609" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="button" destination="6el-on-qoN" id="lOA-rs-969"/>
+                                    <outlet property="freeFirstMonthLabel" destination="oYx-9r-xoz" id="3Kw-ol-OE2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

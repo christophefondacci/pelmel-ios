@@ -59,7 +59,14 @@ typedef enum {
  * Authenticates the user on the server using its login and password
  */
 - (void)authenticateWithLogin:(NSString*)login password:(NSString *)password callback:(NSObject<PMLUserCallback>*)callback;
-- (void)authenticateWithLastLogin:(NSObject<PMLUserCallback>*)callback;
+/**
+ * Authenticates with the last known authentication method. The method returns YES if authentication was tried
+ * or NO to indicate that there was no last authentication method or it cannot be used. The caller should offer
+ * login options in that case.
+ * @param callback the login callback
+ * @return YES when authentication has been tried (and thus callback methods will be called), or NO if no authentication could be started
+ */
+- (BOOL)authenticateWithLastLogin:(NSObject<PMLUserCallback>*)callback;
 - (void)authenticateWithFacebook:(NSString*)accessToken email:(NSString*)email callback:(NSObject<PMLUserCallback>*)callback;
 
 -(void)registerListener:(NSObject<PMLUserCallback>*)listener;
