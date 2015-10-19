@@ -210,7 +210,7 @@ typedef enum {
     CurrentUser *user = [[TogaytherService userService] getCurrentUser];
     
         // We might be called before login so we need to check if we have a token
-    if(user.token != nil) {
+    if(user.token != nil && [subscribedItemKey isEqualToString:user.key]) {
         // Building params list
         NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
         [params setObject:user.token forKey:@"nxtpUserToken"];
@@ -221,7 +221,7 @@ typedef enum {
         }
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        AFHTTPRequestOperation *operation = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"success");
             CALObject *obj = nil;
             if([subscribedItemKey hasPrefix:@"PLAC"]) {
@@ -263,6 +263,7 @@ typedef enum {
             NSLog(@"failure");
             [MBProgressHUD hideAllHUDsForView:[[TogaytherService uiService] menuManagerController].view animated:YES];
         }];
+//        [operation waitUntilFinished];
     }
 
 }

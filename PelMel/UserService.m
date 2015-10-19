@@ -90,14 +90,15 @@
 #pragma mark - Authentication
 
 -(BOOL)authenticateWithLastLogin:(NSObject<PMLUserCallback>*)callback {
-    NSString *fbToken = nil; //[[[FBSession activeSession] accessTokenData] accessToken];
+    NSString *fbToken = [[[FBSession activeSession] accessTokenData] accessToken];
     NSString *email = nil;
     if(fbToken == nil) {
         fbToken = (NSString*)[userDefaults objectForKey:kUserFacebookTokenKey];
         email = (NSString *)[userDefaults objectForKey:kUserFacebookEmailKey];
     }
 
-    if(fbToken != nil) {
+    if(email == nil || email.length == 0) {
+        return fbToken != nil;
 //        [self authenticateWithFacebook:fbToken email:email callback:callback];
     } else {
         // Fetching email & password from properties
@@ -106,6 +107,7 @@
         
         // Authenticating
         [self authenticateWithLogin:email password:passw callback:callback];
+        return YES;
     }
 }
 

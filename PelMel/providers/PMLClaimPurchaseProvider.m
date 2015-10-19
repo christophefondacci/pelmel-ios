@@ -85,5 +85,10 @@
 - (BOOL)freeFirstMonth {
     return YES;
 }
-
+- (void)didCompletePayment {
+    [[TogaytherService uiService] alertWithTitle:@"purchase.claim.paymentCompleteTitle" text:@"purchase.claim.paymentComplete"];
+}
+- (void)didFailPayment {
+    [[TogaytherService uiService] alertWithTitle:@"purchase.paymentErrorTitle" text:@"purchase.paymentError"];
+}
 @end

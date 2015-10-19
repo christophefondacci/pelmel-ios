@@ -474,12 +474,17 @@
 "purchase.claim.feature.1"="Lock your information";
 "purchase.claim.feature.2"="Offer deals to get more clients";
 "purchase.claim.feature.3"="Weekly message your customers";
+"purchase.claim.paymentComplete"="Your subscription has been activated. Thank you for claiming your business on PELMEL, you can now access your analytics, message your past clients and setup deals!";
+"purchase.claim.paymentCompleteTitle"="Congratulations!";
+
 "purchase.terms"="Subscription valid for 30 days and will auto-renew unless auto-renew is turned off at least 24 hours before the end of the current period. Payment will be charged to your Apple iTunes account. Subscriptions may be managed and auto-renewal may be turned off by going to the Account Settings section of your iTunes account after purchase. No cancellation of the current subscription is allowed during the active subscription period.";
 "purchase.premium.button"="Go premium for %@ / month";
 "purchase.premium.header"="Premium";
 "purchase.premium.headerSubtitle"="Membership";
 "purchase.premium.intro"="Premium membership gives you access to unlimited deals.";
 "purchase.premium.feature.0"="Access unlimited deals";
+"purchase.premium.paymentComplete"="Your subscription has been activated. Thank you for becoming a premium PELMEL member!";
+"purchase.premium.paymentCompleteTitle"="Congratulations!";
 "push.permission.title"="Enable push?";
 "push.permission.msg"="Would you like to enable push notifications to let PelMel ping you whenever you got new messages?";
 "push.refused.title"="You're the boss";
@@ -518,6 +523,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 "reporting.graphTitles.CHECKIN"="Unique user check-ins";
 "reporting.graphTitles.DEAL_USED"="Deals use";
 "reporting.graphTitles.CHECKOUT"="Unique user check-outs";
+"reporting.graphTitles.SUBS_REFERRER"="Subscriptions referred by you";
 "reporting.loading"="Loading report data...";
 "reporting.messageButton"="Message my Clients";
 

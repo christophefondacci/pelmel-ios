@@ -53,5 +53,7 @@
 - (BOOL)freeFirstMonth {
     return NO;
 }
-
+- (void)didCompletePayment {
+    [[TogaytherService uiService] alertWithTitle:@"purchase.premium.paymentCompleteTitle" text:@"purchase.premium.paymentComplete"];
+}
 @end

@@ -470,12 +470,16 @@
 "purchase.claim.feature.1"="Verrouillez vos informations";
 "purchase.claim.feature.2"="Offrez des promos à vos clients";
 "purchase.claim.feature.3"="Contactez vos clients chaque semaine";
+"purchase.claim.paymentComplete"="Votre abonnement a été activé. Merci d'avoir revendiqué votre établissement sur PELMEL, vous pouvez désormais accéder à vos statistiques, envoyer des messages à vos clients passés et configurer des promotions !";
+"purchase.claim.paymentCompleteTitle"="Congratulations!";
 "purchase.terms"="L'abonnement est valide pendant 30 jours et se renouvellera automatiquement sauf si vous désactivez le renouvellement au minimum 24 heures avant la fin de la période en cours. Le paiement sera effectué sur votre compte Apple iTunes. L'abonnement peut être modifié et le renouvellement peut être désactivé en allant dans les paramètres de votre compte Apple après achat (paramètres > App Store > Votre identifiant > Voir > Abonnements > Gérer). Toute période commencée est due, aucune annulation ou remboursement de la période en cours n'est possible.";
 "purchase.premium.button"="Passez premium pour %@ / month";
 "purchase.premium.header"="Devenez";
 "purchase.premium.headerSubtitle"="Premium";
 "purchase.premium.intro"="Devenez un utilisateur premium et:";
 "purchase.premium.feature.0"="Accèdez à des promos illimitées";
+"purchase.premium.paymentComplete"="Votre abonnement a été activé. Merci de faire partie de nos membres Premium !";
+"purchase.premium.paymentCompleteTitle"="Félicitations !";
 "push.permission.title"="Activer le push ?";
 "push.permission.msg"="Voulez-vous activer les notifications 'push' pour permettre à Pelmel de vous signaler l'arrivée de nouveaux messages ?";
 "push.refused.title"="C'est vous le chef";
@@ -516,6 +520,7 @@
 "reporting.graphTitles.CHECKIN"="Checkins (utilisateurs uniques)";
 "reporting.graphTitles.DEAL_USED"="Utilisations de la promotion";
 "reporting.graphTitles.CHECKOUT"="Checkouts (utilisateurs uniques)";
+"reporting.graphTitles.SUBS_REFERRER"="Abonnements qui vous sont attribués";
 "reporting.loading"="Chargement des rapports...";
 "reporting.messageButton"="Message à mes Clients";
 

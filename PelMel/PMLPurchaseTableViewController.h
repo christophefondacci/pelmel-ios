@@ -21,6 +21,15 @@
 - (void)didTapPurchaseButton;
 - (BOOL)didCancel;
 - (BOOL)freeFirstMonth;
+@optional
+/**
+ * Optional callback method called when payment is successful
+ */
+-(void)didCompletePayment;
+/**
+ * Optional callback method called when payment has failed for any reason
+ */
+-(void)didFailPayment;
 
 @end
 @interface PMLPurchaseTableViewController : UITableViewController

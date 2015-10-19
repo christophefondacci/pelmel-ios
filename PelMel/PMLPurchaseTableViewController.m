@@ -248,10 +248,16 @@
 }
 - (void)purchaseSuccess:(NSNotification*)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    if([_provider respondsToSelector:@selector(didCompletePayment)]) {
+        [_provider didCompletePayment];
+    }
     [self dismissViewControllerAnimated:YES completion:NULL];
 }
 - (void)purchaseFailed:(NSNotification*)notification {
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
+    if([_provider respondsToSelector:@selector(didFailPayment)]) {
+        [_provider didFailPayment];
+    }
 }
 - (IBAction)didTapCancel:(id)sender {
     [self dismissViewControllerAnimated:YES completion:NULL];
