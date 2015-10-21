@@ -3318,12 +3318,36 @@
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X9G-J7-eQl">
+                                            <rect key="frame" x="16" y="163" width="31" height="31"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="31" id="HAX-7t-Old"/>
+                                                <constraint firstAttribute="width" constant="31" id="nmf-zf-SKe"/>
+                                            </constraints>
+                                            <state key="normal" image="popActionReport">
+                                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                    <integer key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="15"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="layer.borderUIColor">
+                                                    <color key="value" red="0.77254901960784317" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="0lj-4h-2sZ" secondAttribute="trailing" id="2dt-SO-cab"/>
+                                        <constraint firstAttribute="bottom" secondItem="X9G-J7-eQl" secondAttribute="bottom" constant="6" id="Dh8-Wn-MvA"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="leading" secondItem="tHk-nU-W36" secondAttribute="leading" id="Uvp-Mz-h2e"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="top" secondItem="tHk-nU-W36" secondAttribute="top" id="Z5g-aB-HMf"/>
                                         <constraint firstItem="0lj-4h-2sZ" firstAttribute="bottom" secondItem="atE-0a-bcp" secondAttribute="bottom" constant="6" id="a1O-lq-z2A"/>
+                                        <constraint firstItem="X9G-J7-eQl" firstAttribute="leading" secondItem="tHk-nU-W36" secondAttribute="leading" constant="16" id="ebR-1r-bvG"/>
                                         <constraint firstAttribute="trailing" secondItem="atE-0a-bcp" secondAttribute="trailing" constant="16" id="fpz-lc-hdq"/>
                                         <constraint firstAttribute="bottom" secondItem="0lj-4h-2sZ" secondAttribute="bottom" id="t2M-gb-rke"/>
                                     </constraints>
@@ -3333,6 +3357,7 @@
                                     <outlet property="addPhotoButton" destination="atE-0a-bcp" id="0qs-ho-RPi"/>
                                     <outlet property="galleryView" destination="0lj-4h-2sZ" id="L1V-AJ-Gyk"/>
                                     <outlet property="leftConstraint" destination="Uvp-Mz-h2e" id="8Yv-iT-sSf"/>
+                                    <outlet property="reportPhotoButton" destination="X9G-J7-eQl" id="cOK-Gx-BIm"/>
                                     <outlet property="rightConstraint" destination="2dt-SO-cab" id="osI-Jm-vdv"/>
                                 </connections>
                             </tableViewCell>
@@ -5751,6 +5776,7 @@
         <image name="ovvSeparatorInfo" width="62" height="23"/>
         <image name="place-marker.png" width="284" height="77"/>
         <image name="popActionPhoto" width="52" height="52"/>
+        <image name="popActionReport" width="40" height="40"/>
         <image name="snpActionButton" width="12" height="14"/>
         <image name="snpGripBottom" width="80" height="5"/>
         <image name="snpIconBar" width="20" height="20"/>

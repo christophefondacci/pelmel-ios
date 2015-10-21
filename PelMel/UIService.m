@@ -661,4 +661,9 @@
     }
     return controller;
 }
+
+#pragma mark - EAIntroDelegate
+- (void)introDidFinish:(EAIntroView *)introView {
+    [[TogaytherService uiService] startMenuManager];
+}
 @end

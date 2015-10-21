@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "PMLBanner.h"
 
-@interface PMLBannerViewTableViewCell : UITableViewCell
+@interface PMLBannerViewTableViewCell : UITableViewCell <MKMapViewDelegate>
 @property (weak, nonatomic) IBOutlet UIImageView *bannerImageView;
 
 @property (weak, nonatomic) IBOutlet UIButton *pauseButton;

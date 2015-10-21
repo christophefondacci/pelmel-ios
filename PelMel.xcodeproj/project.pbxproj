@@ -120,6 +120,7 @@
 		B449DEE51625F3F100C362F8 /* PhotoManagerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B449DEE41625F3F100C362F8 /* PhotoManagerViewController.m */; };
 		B449DEE81626AA9700C362F8 /* UITablePhotoViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B449DEE71626AA9600C362F8 /* UITablePhotoViewCell.m */; };
 		B449DEED1626F29200C362F8 /* PhotoPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B449DEEC1626F29100C362F8 /* PhotoPreviewViewController.m */; };
+		B451D5F51BD80FA400C0387D /* CALObject.h in Headers */ = {isa = PBXBuildFile; fileRef = B451D5F41BD80FA400C0387D /* CALObject.h */; settings = {ASSET_TAGS = (); }; };
 		B452EDF719B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = B452EDF519B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h */; };
 		B452EDF819B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = B452EDF619B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m */; };
 		B452FC21169C45F100596D9E /* Tag.m in Sources */ = {isa = PBXBuildFile; fileRef = B452FC20169C45F100596D9E /* Tag.m */; };
@@ -602,7 +603,6 @@
 		B40779BF1614A52500D02F66 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		B40779C11615913000D02F66 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		B40779C21615913000D02F66 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
-		B40779C4161592FD00D02F66 /* CALObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CALObject.h; sourceTree = "<group>"; };
 		B40779C5161592FD00D02F66 /* CALObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CALObject.m; sourceTree = "<group>"; };
 		B412D0C416C6A8F000312157 /* UIColor+Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Expanded.h"; sourceTree = "<group>"; };
 		B412D0C516C6A8F000312157 /* UIColor+Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Expanded.m"; sourceTree = "<group>"; };
@@ -700,6 +700,7 @@
 		B449DEE71626AA9600C362F8 /* UITablePhotoViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITablePhotoViewCell.m; sourceTree = "<group>"; };
 		B449DEEB1626F29100C362F8 /* PhotoPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoPreviewViewController.h; sourceTree = "<group>"; };
 		B449DEEC1626F29100C362F8 /* PhotoPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoPreviewViewController.m; sourceTree = "<group>"; };
+		B451D5F41BD80FA400C0387D /* CALObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CALObject.h; sourceTree = "<group>"; };
 		B452EDF519B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PMLPlaceTypesThumbProvider.h; sourceTree = "<group>"; };
 		B452EDF619B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PMLPlaceTypesThumbProvider.m; sourceTree = "<group>"; };
 		B452FC1F169C45F100596D9E /* Tag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tag.h; sourceTree = "<group>"; };
@@ -2388,7 +2389,7 @@
 				B40779BC16149D9700D02F66 /* CurrentUser.m */,
 				B40779C11615913000D02F66 /* User.h */,
 				B40779C21615913000D02F66 /* User.m */,
-				B40779C4161592FD00D02F66 /* CALObject.h */,
+				B451D5F41BD80FA400C0387D /* CALObject.h */,
 				B40779C5161592FD00D02F66 /* CALObject.m */,
 				B42D2D41161970DD00159EBD /* Imaged.h */,
 				B42D2D42161970DD00159EBD /* Imaged.m */,
@@ -2796,6 +2797,7 @@
 				B405E6741A9542AB00C49F64 /* PMLTimePickerDataSource.h in Headers */,
 				B4AA0A331AF178AE00DCDE29 /* PMLStorageService.h in Headers */,
 				B457A1061A9CECE800207D8E /* PMLEventInfoProvider.h in Headers */,
+				B451D5F51BD80FA400C0387D /* CALObject.h in Headers */,
 				B452EDF719B72A1B00E25BBE /* PMLPlaceTypesThumbProvider.h in Headers */,
 				B4FC959619B1F20A00269E74 /* PMLTextTableViewCell.h in Headers */,
 				B4B1FCF819E012BD0068894C /* NSString+HTML.h in Headers */,

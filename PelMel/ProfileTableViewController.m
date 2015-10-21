@@ -398,7 +398,7 @@
                 NSArray *tags = settingsService.listTags;
                 NSString *tagCode = [tags objectAtIndex:indexPath.row];
                 tagCell.icon.image = [imageService getTagImage:tagCode];
-                tagCell.label.text = tagCode;
+                tagCell.label.text = [settingsService labelForTag:tagCode];
                 if([user.tags containsObject:tagCode]) {
                     tagCell.accessoryType = UITableViewCellAccessoryCheckmark;
                 } else {

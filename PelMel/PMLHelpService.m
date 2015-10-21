@@ -32,7 +32,8 @@
 //    if(bubbles == nil) {
         bubbles = [[NSMutableSet alloc] init];
         [_bubblesNotificationMap setObject:bubbles forKey:notificationName];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpNotification:) name:notificationName object:nil];
+    // De-activating hints
+//        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(helpNotification:) name:notificationName object:nil];
 //    }
     [bubbles addObject:bubble];
 }

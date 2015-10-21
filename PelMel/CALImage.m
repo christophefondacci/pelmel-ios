@@ -42,7 +42,7 @@ static CALImage *defaultNoPhotoCalImage;
 - (id)initWithKey:(NSString*)key url:(NSString *)imageUrl thumbUrl:(NSString *)thumbUrl {
     if(self = [super init]) {
         [self configure];
-        _key = key;
+        self.key = key;
         _imageUrl = imageUrl;
         _thumbUrl = thumbUrl;
     }

@@ -7,10 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "CALObject.h"
 
-@interface CALImage : NSObject
+@interface CALImage : CALObject
 
-@property (strong) NSString *key;
 @property (strong) NSString *thumbUrl;
 @property (strong) NSString *imageUrl;
 

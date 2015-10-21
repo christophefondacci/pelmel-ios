@@ -1387,9 +1387,19 @@ typedef enum {
     } else {
         cell.addPhotoButton.hidden=YES;
     }
+    
+    cell.reportPhotoButton.tag = PMLActionTypeReportForDeletion;
+    [cell.reportPhotoButton addTarget:self action:@selector(actionReportPhotoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    cell.reportPhotoButton.alpha=0.7;
+    
     cell.secondaryButton.hidden=YES;
     cell.secondaryButtonTitle.hidden=YES;
 
+}
+-(void)actionReportPhotoButtonTapped:(UIButton*)source {
+    NSInteger currentImage = _galleryCell.galleryView.currentPage;
+    CALImage *image = [_snippetItem imageAtIndex:currentImage];
+    [_actionManager execute:(PMLActionType)source.tag onObject:image];
 }
 -(void)actionButtonTapped:(UIButton*)source {
     [_actionManager execute:(PMLActionType)source.tag onObject:_snippetItem];

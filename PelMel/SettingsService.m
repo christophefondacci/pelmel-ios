@@ -216,6 +216,16 @@
     return definedTags;
 }
 
+-(NSString *)labelForTag:(NSString *)tag {
+    NSString *tagKey = [NSString stringWithFormat:@"tag.%@",tag];
+    NSString *label = NSLocalizedString(tagKey, tagKey);
+    if([label isEqualToString:tagKey]) {
+        return tag;
+    } else {
+        return label;
+    }
+}
+
 - (PlaceType *)getPlaceType:(NSString *)placeTypeCode {
     return [placeTypesMap valueForKey:placeTypeCode];
 }

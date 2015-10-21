@@ -394,12 +394,20 @@
 -(void)registerReportForDeletionAction {
     PopupAction *reportForDeletionAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         NSLog(@"REPORT FOR DELETION");
-        NSString *title = NSLocalizedString(@"action.report.deletion.title", @"title");
-        NSString *message = NSLocalizedString(@"action.report.deletion.message", @"message");
+        NSString *objectType = [object.key substringToIndex:4];
+        NSString *titleKey =[NSString stringWithFormat:@"action.report.deletion.title.%@",objectType];
+        NSString *title = NSLocalizedString(titleKey, @"title");
+        NSString *messageKey =[NSString stringWithFormat:@"action.report.deletion.message.%@",objectType];
+        NSString *message = NSLocalizedString(messageKey, @"message");
         NSString *cancel = NSLocalizedString(@"cancel", @"cancel");
         NSString *ok = NSLocalizedString(@"ok", @"ok");
         self.modalActionObject = object;
         _reportConfirmAlertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:ok, nil];
+        if([object.key hasPrefix:@"MDIA"]) {
+            _reportConfirmAlertView.tag = PMLReportTypeAbuse;
+        } else {
+            _reportConfirmAlertView.tag = PMLReportTypeRemovalRequest;
+        }
         [_reportConfirmAlertView show];
     }];
     [self registerAction:reportForDeletionAction forType:PMLActionTypeReportForDeletion];
@@ -1108,7 +1116,7 @@
             }];
             
         } else if(alertView == _reportConfirmAlertView) {
-            [_dataService sendReportFor:self.modalActionObject reportType:PMLReportTypeRemovalRequest];
+            [_dataService sendReportFor:self.modalActionObject reportType:_reportConfirmAlertView.tag];
         } else if(alertView == _privateNetworkAlertView) {
             [self privateNetworkAction:_modalPrivateNetworkAction onUser:(User*)_modalActionObject];
         } else if(alertView == _useDealCheckinAlertView) {

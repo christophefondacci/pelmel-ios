@@ -16,4 +16,12 @@
     }
     return self;
 }
+
+- (CALImage*)imageAtIndex:(NSInteger) index {
+    if(index==0) {
+        return _mainImage;
+    } else {
+        return [_otherImages objectAtIndex:index-1];
+    }
+}
 @end

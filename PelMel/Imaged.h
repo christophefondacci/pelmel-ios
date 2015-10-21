@@ -7,11 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "CALImage.h"
+
+@class CALImage;
 
 @interface Imaged : NSObject
 
 @property (strong) CALImage *mainImage;
 @property (strong) NSMutableArray *otherImages;
 
+- (CALImage*)imageAtIndex:(NSInteger) index;
 @end

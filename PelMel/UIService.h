@@ -12,8 +12,9 @@
 #import "PMLInfoProvider.h"
 #import "PMLEventTableViewCell.h"
 #import "UIIntroViewController.h"
+#import <EAIntroView.h>
 
-@interface UIService : NSObject <UISplitViewControllerDelegate>
+@interface UIService : NSObject <UISplitViewControllerDelegate,EAIntroDelegate>
 
 @property (nonatomic) UIBarButtonItem *popoverBarButtonItem;
 @property (nonatomic) UIPopoverController *popoverController;

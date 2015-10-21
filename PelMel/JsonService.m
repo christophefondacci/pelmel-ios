@@ -59,7 +59,7 @@
 }
 -(PMLDeal*)convertJsonDealToDeal:(NSDictionary*)jsonDeal forPlace:(Place*)place {
     NSString *key               = [jsonDeal objectForKey:@"key"];
-    NSString *relatedItemKey    = [jsonDeal objectForKey:@"relatedItemKey"];
+//    NSString *relatedItemKey    = [jsonDeal objectForKey:@"relatedItemKey"];
     NSString *status            = [jsonDeal objectForKey:@"status"];
     NSString *type              = [jsonDeal objectForKey:@"type"];
     NSNumber *startTime         = [jsonDeal objectForKey:@"startDate"];

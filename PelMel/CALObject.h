@@ -11,8 +11,7 @@
 
 @interface CALObject : Imaged
 
-@property (strong) NSString *key;
-
+@property (strong,nonatomic) NSString *key;
 @property (nonatomic) NSInteger likeCount; // Number of people liking this
 @property (nonatomic) NSInteger dislikeCount; // Number of people not liking this
 @property (nonatomic) BOOL isLiked; // Whether or not the current user likes this element

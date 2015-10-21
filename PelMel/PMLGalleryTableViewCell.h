@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightConstraint;
 @property (weak, nonatomic) IBOutlet UIButton *addPhotoButton;
+@property (weak, nonatomic) IBOutlet UIButton *reportPhotoButton;
 @property (weak, nonatomic) IBOutlet UIButton *secondaryButton;
 @property (weak, nonatomic) IBOutlet UILabel *secondaryButtonTitle;
 

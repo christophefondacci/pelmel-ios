@@ -221,7 +221,7 @@ typedef enum {
         }
         
         AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-        AFHTTPRequestOperation *operation = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"success");
             CALObject *obj = nil;
             if([subscribedItemKey hasPrefix:@"PLAC"]) {

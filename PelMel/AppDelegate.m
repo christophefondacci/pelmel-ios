@@ -276,10 +276,6 @@ static BOOL isStarted;
     }
 }
 
-#pragma mark - EAIntroDelegate
-- (void)introDidFinish:(EAIntroView *)introView {
-    [[TogaytherService uiService] startMenuManager];
-}
 
 
 //-(void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSUInteger)pageIndex {

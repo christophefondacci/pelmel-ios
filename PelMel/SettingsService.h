@@ -60,6 +60,12 @@ typedef enum {
  * Provides the list of defined tags
  */
 - (NSArray*)listTags;
+/**
+ * Provides the label of the given tag
+ * @param tag the tag code
+ * @return the label of this tag
+ */
+- (NSString*)labelForTag:(NSString*)tag;
 
 /**
  * Adds the provided object as a listener to settings modifications
