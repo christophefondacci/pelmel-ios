@@ -21,6 +21,7 @@
 @property (nonatomic) BOOL isEmailValidated;
 @property (nonatomic) BOOL isAdmin;
 @property (nonatomic) BOOL isPremium;
+@property (nonatomic) BOOL isAnonymous;
 @property (nonatomic,retain) NSArray *ownedPlaces;
 
 /**

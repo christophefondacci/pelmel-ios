@@ -134,4 +134,9 @@ typedef enum {
 //-(void)sendPrivateNetworkRequestTo:(User*)user success:(Completor)success failure:(Completor)failure;
 -(void)privateNetworkAction:(PMLPrivateNetworkAction)action withUser:(CALObject*)user success:(Completor)success failure:(Completor)failure;
 -(void)privateNetworkListWithSuccess:(Completor)success failure:(Completor)failure;
+
+/**
+ * Handles anonymous authentication through the "skip" intro button
+ */
+-(void)skipLoginRegister:(NSObject<PMLUserCallback>*)userCallback;
 @end

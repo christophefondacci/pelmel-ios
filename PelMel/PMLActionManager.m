@@ -125,11 +125,19 @@
     return [self.actionRegistry objectForKey:[NSNumber numberWithInt:type]];
 }
 -(void)execute:(PMLActionType)actionType onObject:(CALObject*)object {
-    PopupAction *action = [self actionForType:actionType];
-    if(action != nil) {
-        action.actionCommand(object);
+    // Checking that user is not anonymous
+    CurrentUser *user = [[TogaytherService userService] getCurrentUser];
+    if(user.isAnonymous) {
+        UIIntroViewController *controller = [[TogaytherService uiService] buildIntroViewController:YES autoLogin:NO modal:YES];
+        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [[[TogaytherService uiService] menuManagerController] presentModal:navController];
     } else {
-        NSLog(@"ActionManager: nil action for type '%d'",actionType);
+        PopupAction *action = [self actionForType:actionType];
+        if(action != nil) {
+            action.actionCommand(object);
+        } else {
+            NSLog(@"ActionManager: nil action for type '%d'",actionType);
+        }
     }
 }
 -(void)registerCheckinAction {

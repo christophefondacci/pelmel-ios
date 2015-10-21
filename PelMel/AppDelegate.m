@@ -77,59 +77,10 @@ static BOOL isStarted;
     // ------------ NEW PELMEL NAV
     BOOL introDone = [[TogaytherService settingsService] settingValueAsBoolFor:PML_PROP_INTRO_DONE];
 
-    UIIntroViewController *controller = [[UIIntroViewController alloc] init];
-    
-    EAIntroPage *page1 = [EAIntroPage page];
-    page1.title = @"Find the gay community";
-    page1.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
-    page1.bgImage = [UIImage imageNamed:@"intro-bg-1.jpg"];
-    
-    EAIntroPage *page2 = [EAIntroPage page];
-    page2.title = @"Find where everybody is";
-    page2.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
-    page2.bgImage = [UIImage imageNamed:@"intro-bg-2.jpg"];
-    
-    EAIntroPage *page3 = [EAIntroPage page];
-    page3.title = @"Check in and get deals";
-    page3.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
-    page3.bgImage = [UIImage imageNamed:@"intro-bg-4.jpg"];
-    
-    EAIntroPage *page4 = [EAIntroPage page];
-    page4.bgColor = [UIColor blackColor];
-    page4.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:22];
-    page4.bgImage = [UIImage imageNamed:@"intro-bg-3.jpg"];
-    PMLLoginIntroView * titleView = (PMLLoginIntroView*)[[TogaytherService uiService] loadView:@"PMLLoginIntroView"];
-    controller.loginIntroView = titleView;
-    page4.titleIconView = titleView;// [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo-deals"]];
-    
-    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:self.window.bounds andPages:@[page1,page2,page3,page4]];
-    intro.skipButton=nil;
-    intro.swipeToExit=NO;
-    [intro setDelegate:self];
-    [intro showInView:controller.view animateDuration:0.3];
-    
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-        [navController setNavigationBarHidden:YES];
-        self.window.rootViewController = navController;
-    
-    if(introDone) {
-        [intro setCurrentPageIndex:3];
-        [titleView login];
-//    } else {
-//        [[TogaytherService uiService] startMenuManager];
-//        // Checking if we are started with an URL
-//        NSURL *url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-//        
-//        if(url != nil) {
-//            [self openURL:url searchCallback:^(CALObject *object) {
-//                [TogaytherService.uiService.menuManagerController.dataManager setInitialContext:object isSearch:YES];
-//            } overviewCallback:^(CALObject *object) {
-//                [TogaytherService.uiService.menuManagerController.dataManager setInitialContext:object isSearch:NO];
-//            }];
-//        }
-    }
-
-
+    UIIntroViewController *controller = [[TogaytherService uiService] buildIntroViewController:introDone autoLogin:introDone modal:NO];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [navController setNavigationBarHidden:YES];
+    self.window.rootViewController = navController;
     
     
     [[UITableView appearance] setSeparatorInset:UIEdgeInsetsZero];
@@ -329,6 +280,7 @@ static BOOL isStarted;
 - (void)introDidFinish:(EAIntroView *)introView {
     [[TogaytherService uiService] startMenuManager];
 }
+
 
 //-(void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSUInteger)pageIndex {
 //    ((UILabel*)introView.titleView).shadowColor=[UIColor blackColor];

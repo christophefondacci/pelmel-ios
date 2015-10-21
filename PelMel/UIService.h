@@ -11,6 +11,7 @@
 #import "MapViewController.h"
 #import "PMLInfoProvider.h"
 #import "PMLEventTableViewCell.h"
+#import "UIIntroViewController.h"
 
 @interface UIService : NSObject <UISplitViewControllerDelegate>
 
@@ -195,4 +196,8 @@
  * @param controller the controller to set the navbar on
  */
 - (void)toggleTransparentNavBar:(UIViewController*)controller;
+/**
+ * Builds and return the intro controller with login features
+ */
+-(UIIntroViewController*)buildIntroViewController:(BOOL)startAtLogin autoLogin:(BOOL)autoLogin modal:(BOOL)modal;
 @end

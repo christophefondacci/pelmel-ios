@@ -12,4 +12,5 @@
 @interface UIIntroViewController : UIViewController
 
 @property (nonatomic,weak) PMLLoginIntroView *loginIntroView;
+@property (nonatomic) BOOL modal;
 @end

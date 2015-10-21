@@ -19,11 +19,18 @@
 */
 
 -(void)viewWillAppear:(BOOL)animated {
+    self.loginIntroView.parentController=self;
     [self.navigationController setNavigationBarHidden:YES];
+    if(_modal) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"mnuIconClose"] style:UIBarButtonItemStylePlain target:self action:@selector(close:)];
+    }
 }
 - (void)viewDidDisappear:(BOOL)animated {
     self.loginIntroView.loginActionsContainer.hidden=NO;
     self.loginIntroView.loginMessageContainer.hidden=YES;
 }
 
+- (void)close:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:NULL];
+}
 @end

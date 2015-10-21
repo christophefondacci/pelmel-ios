@@ -111,6 +111,18 @@
     }
 }
 
+/**
+ * Fills device information login parameter
+ */
+-(void)fillDeviceInfo:(NSMutableDictionary*) params {
+    // Building version string
+    NSString *appVersionString  = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+    NSString *appBuildString    = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+    NSString *iosVersion        = [[UIDevice currentDevice] systemVersion];
+    NSString *deviceName        = [[UIDevice currentDevice] model];
+    NSString *versionBuildString = [NSString stringWithFormat:@"%@;%@;%@;%@",appVersionString, appBuildString, deviceName, iosVersion];
+    [params setObject:versionBuildString forKey:kParamVersion];
+}
 - (void)authenticateWithLogin:(NSString *)login password:(NSString *)password callback:(NSObject<PMLUserCallback>*)callback {
     
     // Notifying that we are about to start
@@ -128,13 +140,7 @@
     [params setObject:password forKey:kParamPassword];
     [params setObject:(isRetina ? @"true" : @"false") forKey:kParamHighRes];
     
-    // Building version string
-    NSString *appVersionString  = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
-    NSString *appBuildString    = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-    NSString *iosVersion        = [[UIDevice currentDevice] systemVersion];
-    NSString *deviceName        = [[UIDevice currentDevice] model];
-    NSString *versionBuildString = [NSString stringWithFormat:@"%@;%@;%@;%@",appVersionString, appBuildString, deviceName, iosVersion];
-    [params setObject:versionBuildString forKey:kParamVersion];
+    [self fillDeviceInfo:params];
     [self fillPushInformation:params];
     
     // Building URL
@@ -264,6 +270,64 @@
 
 #pragma mark - Registration
 
+-(void)skipLoginRegister:(NSObject<PMLUserCallback>*)userCallback {
+    // First checking if previous anonymous access is defined
+    // Getting push information
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *anonymousToken = [defaults objectForKey:PML_PROP_USER_ANONYMOUS_TOKEN];
+    if(anonymousToken == nil) {
+        // Building the URL
+        NSString *url = [[NSString alloc] initWithFormat:kRegisterUrlFormat,togaytherServer ];
+        BOOL isHighRes = [TogaytherService isRetina];
+        NSString *loginId = [[NSUUID UUID] UUIDString];
+        NSString *password = [[NSUUID UUID] UUIDString];
+        NSString *pseudo = loginId;
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setObject:loginId forKey:kParamEmail];
+        [params setObject:password forKey:kParamPassword];
+        [params setObject:pseudo forKey:kParamName];
+        [params setObject:@"true" forKey:@"anonymous"];
+        [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.latitude] forKey:kParamLat];
+        [params setObject:[NSNumber numberWithDouble:_currentLocation.coordinate.longitude] forKey:kParamLng];
+        [params setObject:(isHighRes ? @"true" : @"false") forKey:kParamHighRes];
+        // POSTing request
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *token = [responseObject objectForKey:@"nxtpUserToken"];
+            NSString *key   = [responseObject objectForKey:@"key"];
+            [defaults setObject:token   forKey:PML_PROP_USER_ANONYMOUS_TOKEN];
+            [defaults setObject:key     forKey:PML_PROP_USER_ANONYMOUS_ITEMKEY];
+            [defaults synchronize];
+            [self userRegistered:(NSDictionary*)responseObject login:loginId password:password callback:userCallback];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"User creation failed: %@",error.localizedDescription);
+            [self notifyUserRegistrationFailed:userCallback];
+        }];
+    } else {
+        NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+        [params setObject:anonymousToken forKey:@"nxtpUserToken"];
+        [self fillDeviceInfo:params];
+        // Building URL
+        NSString *url = [[NSString alloc] initWithFormat:kLoginUrlFormat, togaytherServer];
+        
+        // POSTing request
+        AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+        [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            [self handleAuthenticationSuccess:(NSDictionary*)responseObject callback:userCallback login:nil password:nil];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSHTTPURLResponse *response = operation.response;
+            if(response.statusCode == 401) {
+                [self notifyUserAuthenticationFailed:userCallback];
+            } else {
+                [self notifyUserAuthenticationImpossible:userCallback];
+            }
+        }];
+
+    }
+
+}
+
+
 -(void)registerWithLogin:(NSString *)login password:(NSString *)password pseudo:(NSString *)pseudo birthDate:(NSDate*)birthDate callback:(NSObject<PMLUserCallback>*)callback {
     // Building the URL
     NSString *url = [[NSString alloc] initWithFormat:kRegisterUrlFormat,togaytherServer ];
@@ -292,7 +356,7 @@
 }
 -(void) userRegistered:(NSDictionary*)jsonRegisterInfo login:(NSString*)login password:(NSString*)password callback:(NSObject<PMLUserCallback>*)callback {
 
-    
+    [[TogaytherService settingsService] storeSettingBoolValue:YES forName:PML_PROP_INTRO_DONE];
     // Retrieving authentication token
     NSString *token     =[jsonRegisterInfo objectForKey:@"nxtpUserToken"];
     

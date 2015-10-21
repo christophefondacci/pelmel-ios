@@ -22,6 +22,9 @@
 #import "UIImage+ImageEffects.h"
 #import <MBProgressHUD.h>
 #import "UIMenuManagerMainDelegate.h"
+#import "UIIntroViewController.h"
+#import <EAIntroPage.h>
+#import <EAIntroView.h>
 
 #define kColorPrefKeyTemplate @"color.%@"
 #define kPMLMarkerPrefKeyTemplate @"marker.%@"
@@ -327,8 +330,9 @@
     UINavigationController *rootNavMenuController = (UINavigationController*)window.rootViewController;
     if(rootNavMenuController == nil) {
         rootNavMenuController = [[UINavigationController alloc] initWithRootViewController:menuManagerController];
+    } else {
+        [rootNavMenuController pushViewController:menuManagerController animated:YES];
     }
-    [rootNavMenuController pushViewController:menuManagerController animated:YES];
     TogaytherService.uiService.menuManagerController = menuManagerController;
 }
 
@@ -616,5 +620,45 @@
     [controller.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     controller.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     [controller.navigationController setNavigationBarHidden:NO];
+}
+-(UIIntroViewController*)buildIntroViewController:(BOOL)startAtLogin autoLogin:(BOOL)autoLogin modal:(BOOL)modal {
+    UIIntroViewController *controller = [[UIIntroViewController alloc] init];
+    
+    EAIntroPage *page1 = [EAIntroPage page];
+    page1.title = @"Find the gay community";
+    page1.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page1.bgImage = [UIImage imageNamed:@"intro-bg-1.jpg"];
+    
+    EAIntroPage *page2 = [EAIntroPage page];
+    page2.title = @"Find where everybody is";
+    page2.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page2.bgImage = [UIImage imageNamed:@"intro-bg-2.jpg"];
+    
+    EAIntroPage *page3 = [EAIntroPage page];
+    page3.title = @"Check in and get deals";
+    page3.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page3.bgImage = [UIImage imageNamed:@"intro-bg-4.jpg"];
+    
+    EAIntroPage *page4 = [EAIntroPage page];
+    page4.bgColor = [UIColor blackColor];
+    page4.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:22];
+    page4.bgImage = [UIImage imageNamed:@"intro-bg-3.jpg"];
+    PMLLoginIntroView * titleView = (PMLLoginIntroView*)[[TogaytherService uiService] loadView:@"PMLLoginIntroView"];
+    controller.loginIntroView = titleView;
+    page4.titleIconView = titleView;// [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"logo-deals"]];
+    
+    UIWindow *window = [[[UIApplication sharedApplication] windows] objectAtIndex:0];
+    EAIntroView *intro = [[EAIntroView alloc] initWithFrame:window.bounds andPages:@[page1,page2,page3,page4]];
+    intro.swipeToExit=NO;
+    intro.skipButton = nil;
+    [intro setDelegate:self];
+    [intro showInView:controller.view animateDuration:0.3];
+    if(startAtLogin) {
+        [intro setCurrentPageIndex:3];
+    }
+    if(autoLogin) {
+        [titleView login];
+    }
+    return controller;
 }
 @end

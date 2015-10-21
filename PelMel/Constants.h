@@ -15,6 +15,9 @@
 #define PML_PROP_PUSH_ENABLED @"pushEnabled"
 #define PML_PROP_DEVICE_TOKEN @"deviceToken"
 #define PML_PROP_USER_LAST_TOKEN @"pmlUserLastToken"
+#define PML_PROP_USER_ANONYMOUS_TOKEN @"pmlUserAnonymousToken"
+#define PML_PROP_USER_ANONYMOUS_ITEMKEY @"pmlUserAnonymousItemKey"
+
 
 #define PML_NOTIFICATION_PUSH_RECEIVED @"pmlPushReceived"
 #define PML_NOTIFICATION_PAYMENT_DONE @"pmlPaymentDone"

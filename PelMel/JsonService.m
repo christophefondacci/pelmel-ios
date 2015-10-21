@@ -951,6 +951,7 @@
         NSNumber *emailValidated    = [jsonLoginInfo objectForKey:@"emailValidated"];
         NSNumber *isAdmin           = [jsonLoginInfo objectForKey:@"admin"];
         NSNumber *isPremium         = [jsonLoginInfo objectForKey:@"premium"];
+        NSNumber *isAnonymous       = [jsonLoginInfo objectForKey:@"anonymous"];
         NSArray *jsonOwnedPlaces    = [jsonLoginInfo objectForKey:@"ownedPlaces"];
         NSMutableArray *ownedPlaces = [[NSMutableArray alloc] init];
         
@@ -963,6 +964,7 @@
         currentUser.isEmailValidated = emailValidated.boolValue;
         currentUser.isAdmin = isAdmin.boolValue;
         currentUser.isPremium = isPremium.boolValue;
+        currentUser.isAnonymous = isAnonymous.boolValue;
     }
 }
 -(void)fillPrivateNetworkInfo:(NSDictionary*)privateNetworkContainer inUser:(CurrentUser*)currentUser {
