@@ -50,9 +50,10 @@
 #import "PMLDealDisplayTableViewCell.h"
 #import "PMLUseDealViewController.h"
 
+
 #define kPMLSettingActiveTab @"pmlActiveSnippetTab"
 
-#define kPMLSectionsCount 18
+#define kPMLSectionsCount 19
 
 #define kPMLSectionGallery 0
 #define kPMLSectionSnippet 1
@@ -62,16 +63,17 @@
 #define kPMLSectionLocalization 5
 #define kPMLSectionOvSummary 6
 #define kPMLSectionOvAddress 7
-#define kPMLSectionOvProperties 10
 #define kPMLSectionOvHours 8
 #define kPMLSectionOvHappyHours 9
-#define kPMLSectionOvEvents 11
-#define kPMLSectionOvAdvertising 12
-#define kPMLSectionOvDesc 13
-#define kPMLSectionOvTags 14
-#define kPMLSectionTopPlaces 15
-#define kPMLSectionActivity 16
-#define kPMLSectionButtons 17
+#define kPMLSectionOvProperties 10
+#define kPMLSectionOvClaim 11
+#define kPMLSectionOvEvents 12
+#define kPMLSectionOvAdvertising 13
+#define kPMLSectionOvDesc 14
+#define kPMLSectionOvTags 15
+#define kPMLSectionTopPlaces 16
+#define kPMLSectionActivity 17
+#define kPMLSectionButtons 18
 
 #define kPMLSnippetRows 1
 #define kPMLRowSnippet 0
@@ -154,6 +156,8 @@
 #define kPMLRowReportButton 1
 #define kPMLHeightButton 62
 #define kPMLRowButtonId @"buttonRow"
+#define kPMLRowClaimButtonId @"claim"
+
 
 #define kPMLHeightTopPlacesHeader 30
 
@@ -274,6 +278,7 @@ typedef enum {
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLActivateDealTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealActivateId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLDealTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealInfoId];
     [self.tableView registerNib:[UINib nibWithNibName:@"PMLDealDisplayTableViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowDealDisplayId];
+    [self.tableView registerNib:[UINib nibWithNibName:@"PMLClaimButtonViewCell" bundle:nil] forCellReuseIdentifier:kPMLRowClaimButtonId];
     // Loading header views
     _eventPlaceTabsTitleView = (PMLEventPlaceTabsTitleView*)[_uiService loadView:@"PMLEventPlaceTabsTitleView"];
     _eventPlaceTabsTitleView.delegate = self;
@@ -463,6 +468,11 @@ typedef enum {
                 NSInteger count = [[_hoursTypeMap objectForKey:SPECIAL_TYPE_HAPPY] count];
                 return count == 0 ? 0 : count+1;
             }
+            case kPMLSectionOvClaim:
+                if( [_snippetItem isKindOfClass:[Place class]]) {
+                    return ((Place*)_snippetItem).ownerKey==nil ? 1 : 0;
+                }
+                return 0;
             case kPMLSectionOvEvents:
                 if([_infoProvider respondsToSelector:@selector(events)]) {
                     NSInteger addEventRowCount = 0;
@@ -606,6 +616,8 @@ typedef enum {
             return indexPath.row == 0 ? @"hoursTitle" : kPMLRowTextId;
         case kPMLSectionOvHappyHours:
             return indexPath.row == 0 ? @"hoursTitle" : kPMLRowTextId;
+        case kPMLSectionOvClaim:
+            return kPMLRowClaimButtonId;
         case kPMLSectionOvAdvertising:
             return kPMLRowButtonId;
         case kPMLSectionOvDesc:
@@ -707,6 +719,9 @@ typedef enum {
                 [self configureRowOvHours:(PMLTextTableViewCell*)cell atIndex:indexPath.row-1 forType:SPECIAL_TYPE_HAPPY];
             }
             break;
+        case kPMLSectionOvClaim:
+            [self configureRowClaim:(PMLButtonTableViewCell*)cell];
+             break;
         case kPMLSectionOvEvents:
             if(_snippetItem != nil || (_snippetItem == nil && _activeTab==PMLTabEvents)) {
                 if(indexPath.row < [[_infoProvider events] count]) {
@@ -819,6 +834,8 @@ typedef enum {
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
         case kPMLSectionOvHappyHours:
             return indexPath.row == 0 ? kPMLHeightOvHoursTitleRows : kPMLHeightOvHoursRows;
+        case kPMLSectionOvClaim:
+            return 80;
         case kPMLSectionOvEvents:
             if(_snippetItem!=nil || (_snippetItem==nil && _activeTab == PMLTabEvents)) {
                 if(indexPath.row<[[_infoProvider events] count]) {
@@ -1043,9 +1060,9 @@ typedef enum {
         case kPMLSectionLocalization:
         case kPMLSectionButtons:
         case kPMLSectionOvAdvertising:
-            return YES;
         case kPMLSectionOvHours:
         case kPMLSectionOvHappyHours:
+        case kPMLSectionOvClaim:
             return YES;
         case kPMLSectionDeals: {
             PMLDeal *deal = [self.deals objectAtIndex:indexPath.row];
@@ -1140,6 +1157,10 @@ typedef enum {
                 [self dealsTapped:indexPath.row];
             }
             break;
+        case kPMLSectionOvClaim:
+            [_actionManager execute:PMLActionTypeClaim onObject:_snippetItem];
+            break;
+            
         case kPMLSectionButtons: {
             [_actionManager execute:[_infoProvider footerButtonActionAtIndex:indexPath.row] onObject:_snippetItem];
             break;
@@ -1484,6 +1505,9 @@ typedef enum {
 //    cell.cellTextLabel.font = [UIFont fontWithName:PML_FONT_SARI_MEDIUM size:18];
     cell.cellTextLabel.textColor = UIColorFromRGB(0xfff600);
     cell.cellTextLabel.text = NSLocalizedString(@"snippet.title.happyhours", @"Happy hours");
+}
+-(void)configureRowClaim:(PMLButtonTableViewCell*)cell {
+    
 }
 -(void)configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
     Event *event = [[_infoProvider events] objectAtIndex:row];

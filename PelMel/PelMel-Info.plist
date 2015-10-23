@@ -37,7 +37,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>185</string>
+	<string>229</string>
 	<key>FacebookAppID</key>
 	<string>302478486488872</string>
 	<key>FacebookDisplayName</key>
@@ -124,10 +124,10 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>Launch Screen2</string>
-	<key>UIMainStoryboardFile</key>
-	<string>MainStoryboard_iPhone</string>
 	<key>UIMainStoryboardFile~ipad</key>
 	<string>MainStoryboard_iPad</string>
+	<key>UIMainStoryboardFile~iphone</key>
+	<string>MainStoryboard_iPhone</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

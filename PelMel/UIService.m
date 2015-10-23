@@ -666,4 +666,10 @@
 - (void)introDidFinish:(EAIntroView *)introView {
     [[TogaytherService uiService] startMenuManager];
 }
+- (void)intro:(EAIntroView *)introView pageAppeared:(EAIntroPage *)page withIndex:(NSUInteger)pageIndex {
+    if(pageIndex==3) {
+        EAIntroPage *page = [[introView pages] objectAtIndex:pageIndex];
+        [(PMLLoginIntroView*)page.titleIconView login];
+    }
+}
 @end

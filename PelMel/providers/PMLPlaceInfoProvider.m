@@ -460,15 +460,10 @@
 }
 - (NSInteger)footerButtonsCount {
     
-    return [self isClaimable] ? 2 : 1;
+    return 1;
 }
 - (PMLActionType)footerButtonActionAtIndex:(NSInteger)buttonIndex {
-
-    if(buttonIndex==0 && [self isClaimable]) {
-        return PMLActionTypeClaim;
-    } else {
         return PMLActionTypeReport;
-    }
 }
 - (UIImage *)footerButtonIconAtIndex:(NSInteger)buttonIndex {
     if(buttonIndex==0 && [self isClaimable]) {
@@ -478,18 +473,10 @@
     }
 }
 - (NSString *)footerButtonTextAtIndex:(NSInteger)buttonIndex {
-    if(buttonIndex==0 && [self isClaimable]) {
-        return NSLocalizedString(@"snippet.button.claim", @"Claim this place");
-    } else {
-        return NSLocalizedString(@"snippet.button.report", @"Report a problem");
-    }
+    return NSLocalizedString(@"snippet.button.report", @"Report a problem");
 }
 - (UIColor *)footerButtonColorAtIndex:(NSInteger)buttonIndex {
-    if(buttonIndex==0 && [self isClaimable]) {
-        return nil;
-    } else {
-        return UIColorFromRGBAlpha(0xc50000,0.2);
-    }
+    return UIColorFromRGBAlpha(0xc50000,0.2);
 }
 
 -(PMLActionType)advertisingActionType {

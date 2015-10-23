@@ -9,11 +9,12 @@
 #import "PMLClaimPurchaseProvider.h"
 #import "TogaytherService.h"
 
-#define kFeaturesCount 4
+#define kFeaturesCount 5
 #define kFeatureStatistics 0
 #define kFeatureLock 1
 #define kFeatureDeals 2
 #define kFeatureMessage 3
+#define kFeatureMoney 4
 
 @implementation PMLClaimPurchaseProvider
 
@@ -47,14 +48,16 @@
 }
 - (UIImage *)featureIconAtIndex:(NSInteger)index {
     switch(index) {
-        case 0:
+        case kFeatureStatistics:
             return [UIImage imageNamed:@"icoClaimStats"];
-        case 1:
+        case kFeatureLock:
             return [UIImage imageNamed:@"icoClaimLock"];
-        case 2:
+        case kFeatureDeals:
             return [UIImage imageNamed:@"icoClaimDeal"];
-        case 3:
+        case kFeatureMessage:
             return [UIImage imageNamed:@"icoClaimMessage"];
+        case kFeatureMoney:
+            return [UIImage imageNamed:@"btnIconClaim"];
     }
     return nil;
 }

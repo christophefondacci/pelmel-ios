@@ -94,17 +94,19 @@
     NSString *email = nil;
     if(fbToken == nil) {
         fbToken = (NSString*)[userDefaults objectForKey:kUserFacebookTokenKey];
-        email = (NSString *)[userDefaults objectForKey:kUserFacebookEmailKey];
+//        email = (NSString *)[userDefaults objectForKey:kUserFacebookEmailKey];
     }
-
-    if(email == nil || email.length == 0) {
+    
+    // Fetching email & password from properties
+    email = (NSString *)[userDefaults objectForKey:kUserEmailKey];
+    NSString *passw = (NSString *)[userDefaults objectForKey:kUserPasswordKey];
+    
+    // If no email or no password
+    if(email == nil || email.length == 0 || passw==nil || passw.length==0) {
+        // Then we considered authentication has started if we got a facebook token
+        // (which will authenticate through the callbacks)
         return fbToken != nil;
-//        [self authenticateWithFacebook:fbToken email:email callback:callback];
     } else {
-        // Fetching email & password from properties
-        NSString *passw = (NSString *)[userDefaults objectForKey:kUserPasswordKey];
-        email = (NSString *)[userDefaults objectForKey:kUserEmailKey];
-        
         // Authenticating
         [self authenticateWithLogin:email password:passw callback:callback];
         return YES;

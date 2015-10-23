@@ -76,7 +76,7 @@
     // Menu management (referencing to avoid auto release)
     MenuAction *_menuAddAction;
     MenuAction *_menuRefreshAction;
-    MenuAction *_menuMyPositionAction;
+//    MenuAction *_menuMyPositionAction;
     MenuAction *_menuCheckinAction;
     MenuAction *_menuNetworkAction;
     MenuAction *_menuDealsAction;
@@ -156,7 +156,7 @@
     // Adding menu action
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuAddAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuRefreshAction];
-    [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuMyPositionAction];
+//    [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuMyPositionAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuCheckinAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuNetworkAction];
     [self.parentMenuController.menuManagerDelegate setupMenuAction:_menuDealsAction];
@@ -202,8 +202,8 @@
     [_helpService registerBubbleHint:bubble forNotification:PML_HELP_REFRESH];
     [_helpService registerBubbleHint:bubble forNotification:PML_HELP_REFRESH_TIMER];
 
-    bubble = [[PMLHelpBubble alloc] initWithRect:_menuMyPositionAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.myposition",@"hint.myposition") textPosition:PMLTextPositionLeft whenSnippetOpened:NO];
-    [_helpService registerBubbleHint:bubble forNotification:PML_HELP_LOCALIZE];
+//    bubble = [[PMLHelpBubble alloc] initWithRect:_menuMyPositionAction.menuActionView.frame cornerRadius:25 helpText:NSLocalizedString(@"hint.myposition",@"hint.myposition") textPosition:PMLTextPositionLeft whenSnippetOpened:NO];
+//    [_helpService registerBubbleHint:bubble forNotification:PML_HELP_LOCALIZE];
 }
 
 - (void)viewDidUnload
@@ -306,38 +306,44 @@
         // Getting current map center coordinates
         CLLocationDistance distance = [self distanceFromCornerPoint];
         double milesRadius = distance/1609.344f;
-
+        
         // No zoom, updating behind the scenes
         _zoomUpdateType = PMLZoomUpdateNone;
-        [self.parentMenuController.dataManager refreshAt:_mapView.centerCoordinate radius:milesRadius];
-    }];
-    _menuRefreshAction.rightMargin = 5;
-    _menuRefreshAction.topMargin = 84+24+50+5; //topMargin = 100; //69;
-    
-    // My Position action
-    _menuMyPositionAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnPosition"] pctWidth:1 pctHeight:00 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
-        if(_mapView.showsUserLocation) {
-            
-            // First zoom mode: center on current position
-            _zoomUpdateType = PMLZoomUpdateAroundLocation;
-            _dataService.currentRadius = 0;
+        
+        MKMapRect visibleRect = [self.mapView visibleMapRect];
+        if(MKMapRectContainsPoint(visibleRect, MKMapPointForCoordinate([[self.mapView userLocation] coordinate]))) {
             [_dataService fetchNearbyPlaces];
         } else {
-            NSString *title = NSLocalizedString(@"action.myposition.alertTitle", @"action.myposition.alertTitle");
-            NSString *msg = NSLocalizedString(@"action.myposition.alertMsg", @"action.myposition.alertMsg");
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
-            [alert show];
+            [self.parentMenuController.dataManager refreshAt:_mapView.centerCoordinate radius:milesRadius];
         }
     }];
-    _menuMyPositionAction.rightMargin = 5;
-    _menuMyPositionAction.topMargin = 84+24; //topMargin = 50;
+    _menuRefreshAction.rightMargin = 5;
+    _menuRefreshAction.topMargin = 84+24; //topMargin = 100; //69;
+    
+//    // My Position action
+//    _menuMyPositionAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnPosition"] pctWidth:1 pctHeight:00 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
+//        if(_mapView.showsUserLocation) {
+//            
+//            // First zoom mode: center on current position
+//            _zoomUpdateType = PMLZoomUpdateAroundLocation;
+//            _dataService.currentRadius = 0;
+//            [_dataService fetchNearbyPlaces];
+//        } else {
+//            NSString *title = NSLocalizedString(@"action.myposition.alertTitle", @"action.myposition.alertTitle");
+//            NSString *msg = NSLocalizedString(@"action.myposition.alertMsg", @"action.myposition.alertMsg");
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+//            [alert show];
+//        }
+//    }];
+//    _menuMyPositionAction.rightMargin = 5;
+//    _menuMyPositionAction.topMargin = 84+24; //topMargin = 50;
     
     
     _menuCheckinAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnCheckin"] pctWidth:0 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
         [[TogaytherService actionManager] execute:PMLActionTypeCheckin onObject:nil];
     }];
     _menuCheckinAction.leftMargin = 5;
-    _menuCheckinAction.topMargin = _menuMyPositionAction.topMargin; //topMargin
+    _menuCheckinAction.topMargin = 84+24; //topMargin
     
     _menuNetworkAction = [[MenuAction alloc] initWithIcon:[UIImage imageNamed:@"btnNetwork"] pctWidth:0 pctHeight:0 action:^(PMLMenuManagerController *menuManagerController, MenuAction *menuAction) {
         [[TogaytherService actionManager] execute:PMLActionTypePrivateNetworkShow onObject:nil];

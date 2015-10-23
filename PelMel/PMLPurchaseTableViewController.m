@@ -25,6 +25,7 @@
 @interface PMLPurchaseTableViewController ()
 @property (nonatomic,retain) UITextView *templateTextView;
 @property (nonatomic,retain) UILabel *templateIntroLabel;
+@property (nonatomic,retain) UILabel *templateFeatureLabel;
 @end
 
 @implementation PMLPurchaseTableViewController
@@ -55,6 +56,9 @@
     self.templateIntroLabel = [[UILabel alloc] init];
     self.templateIntroLabel.font= [UIFont fontWithName:PML_FONT_PRO size:24];
     self.templateIntroLabel.numberOfLines=0;
+    self.templateFeatureLabel = [[UILabel alloc] init];
+    self.templateFeatureLabel.font= [UIFont fontWithName:PML_FONT_PRO_LIGHT size:15];
+    self.templateFeatureLabel.numberOfLines=0;
     
     self.tableView.bounces=YES;
     
@@ -179,7 +183,10 @@
                         self.templateTextView.text =NSLocalizedString(@"purchase.terms",@"Terms");
                         return [self.templateTextView sizeThatFits:CGSizeMake(self.tableView.bounds.size.width-20,MAXFLOAT)].height+11;
                     } else {
-                        return 32;
+                        CGRect bounds = self.view.bounds;
+                        self.templateFeatureLabel.text = [_provider featureLabelAtIndex:indexPath.row-kRowFeatureListOffset];
+                        CGSize size = [self.templateFeatureLabel sizeThatFits:CGSizeMake(bounds.size.width-95, MAXFLOAT)];
+                        return size.height+7+1;
                     }
             }
     }

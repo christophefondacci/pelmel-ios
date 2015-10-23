@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="9hg-XG-APo">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ioq-7z-Wfd">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -4562,7 +4562,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="30.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="See analytics of your clients" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I10-yD-jbU">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="See analytics of your clients" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I10-yD-jbU">
                                             <rect key="frame" x="65" y="3" width="225" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="s4U-GO-enM"/>
@@ -4584,8 +4584,9 @@
                                         <constraint firstItem="I10-yD-jbU" firstAttribute="centerY" secondItem="I6p-HY-gNl" secondAttribute="centerY" id="3H7-N5-N85"/>
                                         <constraint firstItem="I6p-HY-gNl" firstAttribute="leading" secondItem="uh1-ed-JDm" secondAttribute="leading" constant="30" id="7ff-Uc-Lgp"/>
                                         <constraint firstItem="I10-yD-jbU" firstAttribute="leading" secondItem="I6p-HY-gNl" secondAttribute="trailing" constant="10" id="C2b-B9-LyQ"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="I10-yD-jbU" secondAttribute="bottom" constant="-4.5" id="Iuk-0I-3aT"/>
+                                        <constraint firstItem="I10-yD-jbU" firstAttribute="top" secondItem="uh1-ed-JDm" secondAttribute="topMargin" constant="-5" id="QWN-RE-pOG"/>
                                         <constraint firstAttribute="trailing" secondItem="I10-yD-jbU" secondAttribute="trailing" constant="30" id="hSR-iY-pS8"/>
-                                        <constraint firstAttribute="centerY" secondItem="I10-yD-jbU" secondAttribute="centerY" id="jG4-c6-fBz"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" cyan="0.90113681550000002" magenta="0.78333145380000002" yellow="0.23672848939999999" black="0.50064849850000004" alpha="1" colorSpace="deviceCMYK"/>
@@ -5791,8 +5792,8 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="enc-VM-87F"/>
-        <segue reference="hk5-7z-xvn"/>
         <segue reference="eKE-7K-Ihn"/>
         <segue reference="hap-7x-4U2"/>
+        <segue reference="54f-Lu-DMh"/>
     </inferredMetricsTieBreakers>
 </document>

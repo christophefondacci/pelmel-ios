@@ -17,7 +17,8 @@
 #import "PMLMessageTableViewController.h"
 #import "FiltersViewController.h"
 #import "PMLReportingTableViewController.h"
-
+#import "PMLPurchaseTableViewController.h"
+#import "PMLPremiumPurchaseProvider.h"
 
 #define kSectionsCount 4
 
@@ -37,7 +38,7 @@
 #define kRowSettingProfile 1
 #define kRowSettingSettings 2
 #define kRowSettingFilters 3
-#define kRowSettingHints 4
+#define kRowSettingPremium 4
 #define kRowSettingDisconnect 5
 
 #define kCellIdPlaceType @"placeTypeCell"
@@ -238,10 +239,10 @@
                     placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconFilter"];
                     placeTypeCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     break;
-                case kRowSettingHints: {
-                    placeTypeCell.label.text = NSLocalizedString(@"settings.hints", @"Show hints");
+                case kRowSettingPremium: {
+                    placeTypeCell.label.text = NSLocalizedString(@"settings.premium", @"Premium Membership");
                     placeTypeCell.accessoryType = UITableViewCellAccessoryNone;
-                    placeTypeCell.image.image = [UIImage imageNamed:@"mnuIconInfo"];
+                    placeTypeCell.image.image = [UIImage imageNamed:@"icoDeal"];
                     placeTypeCell.badgeLabel.hidden=YES;
                     break;
                 }
@@ -372,10 +373,21 @@
                     [self.parentMenuController.navigationController pushViewController:filtersController animated:YES];
                     break;
                 }
-                case kRowSettingHints:
-                    [[TogaytherService helpService] resetHints];
-                    [_uiService alertWithTitle:@"hint.reset.title" text:@"hint.reset.msg"];
+                case kRowSettingPremium: {
+                    CurrentUser *user = [_userService getCurrentUser];
+                    if(user.isPremium) {
+                        [_uiService alertWithTitle:@"purchase.premium.alreadyMemberTitle" text:@"purchase.premium.alreadyMemberText"];
+                    } else {
+                        PMLPremiumPurchaseProvider *provider = [[PMLPremiumPurchaseProvider alloc] init];
+                        PMLPurchaseTableViewController *controller = (PMLPurchaseTableViewController*)[_uiService instantiateViewController:SB_ID_PURCHASE];
+                        controller.provider = provider;
+                        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+                        [[_uiService menuManagerController] presentModal:navController];
+                    }
+//                    [[TogaytherService helpService] resetHints];
+//                    [_uiService alertWithTitle:@"hint.reset.title" text:@"hint.reset.msg"];
                     break;
+                }
                 case kRowSettingDisconnect:
                     // Disconnecting
                     [_userService disconnect];
