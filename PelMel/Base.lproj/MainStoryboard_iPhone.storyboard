@@ -261,7 +261,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="QVD-XM-35r">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="QVD-XM-35r">
                                         <rect key="frame" x="0.0" y="165.5" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QVD-XM-35r" id="Db6-aI-1Nd">
@@ -4528,7 +4528,7 @@
                                     <outlet property="titleLabel" destination="chd-EK-wky" id="Wxe-DT-LMB"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="introCell" id="TjI-NI-fvH" customClass="PMLImagedTitleTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="introCell" id="TjI-NI-fvH" customClass="PMLImagedTitleTableViewCell">
                                 <rect key="frame" x="0.0" y="108" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TjI-NI-fvH" id="Eex-T3-viI">
@@ -4555,7 +4555,7 @@
                                     <outlet property="titleLabel" destination="Rx1-ov-Ira" id="lc0-db-ZAq"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="featureCell" rowHeight="31" id="EVY-re-PcT" customClass="PMLImagedTitleTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="featureCell" rowHeight="31" id="EVY-re-PcT" customClass="PMLImagedTitleTableViewCell">
                                 <rect key="frame" x="0.0" y="152" width="320" height="31"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EVY-re-PcT" id="uh1-ed-JDm">
@@ -4595,7 +4595,7 @@
                                     <outlet property="titleLabel" destination="I10-yD-jbU" id="UvR-8y-0lI"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="termsCell" rowHeight="84" id="ixo-aZ-uZr" customClass="PMLTextViewTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="termsCell" rowHeight="84" id="ixo-aZ-uZr" customClass="PMLTextViewTableViewCell">
                                 <rect key="frame" x="0.0" y="183" width="320" height="84"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ixo-aZ-uZr" id="cRb-G1-zSg">
@@ -5792,8 +5792,8 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="enc-VM-87F"/>
+        <segue reference="hk5-7z-xvn"/>
         <segue reference="eKE-7K-Ihn"/>
         <segue reference="hap-7x-4U2"/>
-        <segue reference="54f-Lu-DMh"/>
     </inferredMetricsTieBreakers>
 </document>
