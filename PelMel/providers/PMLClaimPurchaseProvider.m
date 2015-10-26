@@ -9,7 +9,7 @@
 #import "PMLClaimPurchaseProvider.h"
 #import "TogaytherService.h"
 
-#define kFeaturesCount 5
+#define kFeaturesCount 4
 #define kFeatureStatistics 0
 #define kFeatureLock 1
 #define kFeatureDeals 2

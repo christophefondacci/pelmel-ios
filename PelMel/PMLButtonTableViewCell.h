@@ -10,6 +10,7 @@
 
 @interface PMLButtonTableViewCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *buttonLabel;
+@property (weak, nonatomic) IBOutlet UILabel *buttonSubtitleLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *buttonImageView;
 @property (weak, nonatomic) IBOutlet UIView *buttonContainer;
 @property (weak, nonatomic) IBOutlet UIButton *button;

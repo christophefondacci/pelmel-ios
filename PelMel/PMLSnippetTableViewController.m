@@ -1412,6 +1412,7 @@ typedef enum {
     cell.reportPhotoButton.tag = PMLActionTypeReportForDeletion;
     [cell.reportPhotoButton addTarget:self action:@selector(actionReportPhotoButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
     cell.reportPhotoButton.alpha=0.7;
+    cell.reportPhotoButton.hidden = (_snippetItem.mainImage==nil);
     
     cell.secondaryButton.hidden=YES;
     cell.secondaryButtonTitle.hidden=YES;
@@ -1507,7 +1508,8 @@ typedef enum {
     cell.cellTextLabel.text = NSLocalizedString(@"snippet.title.happyhours", @"Happy hours");
 }
 -(void)configureRowClaim:(PMLButtonTableViewCell*)cell {
-    
+    cell.buttonLabel.text = NSLocalizedString(@"snippet.button.claim", @"snippet.button.claim");
+    cell.buttonSubtitleLabel.text = NSLocalizedString(@"snippet.button.claim.subtitle", @"snippet.button.claim.subtitle");
 }
 -(void)configureRowOvEvents:(PMLEventTableViewCell*)cell atIndex:(NSInteger)row {
     Event *event = [[_infoProvider events] objectAtIndex:row];

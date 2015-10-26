@@ -108,6 +108,7 @@
                 <outlet property="buttonContainer" destination="xlC-jl-j13" id="4zO-Fx-N66"/>
                 <outlet property="buttonImageView" destination="rf8-Wi-F8m" id="7ML-Ns-Jp2"/>
                 <outlet property="buttonLabel" destination="esN-s5-GVc" id="OUw-Ty-O12"/>
+                <outlet property="buttonSubtitleLabel" destination="use-Pu-1DU" id="T2x-MR-Arg"/>
             </connections>
             <point key="canvasLocation" x="274" y="-24"/>
         </view>

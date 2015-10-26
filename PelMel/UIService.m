@@ -32,6 +32,7 @@
 #define kPMLMarkerOffsetPrefKeyTemplate @"marker.offset.%@.%@"
 #define kDefaultColorHex @"ff8000"
 #define OFFSET  0.003
+#define kPMLIntroTextSize 28
 
 @implementation UIService {
     UIStoryboard *storyboard;
@@ -316,6 +317,7 @@
     }
 }
 -(void)startMenuManager {
+    NSLog(@">>> Starting menu manager");
     UIService *uiService = TogaytherService.uiService;
     MapViewController *mapView = (MapViewController*)[uiService instantiateViewController:@"mapItemsView"];
     
@@ -621,22 +623,23 @@
     controller.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     [controller.navigationController setNavigationBarHidden:NO];
 }
+
 -(UIIntroViewController*)buildIntroViewController:(BOOL)startAtLogin autoLogin:(BOOL)autoLogin modal:(BOOL)modal {
     UIIntroViewController *controller = [[UIIntroViewController alloc] init];
     
     EAIntroPage *page1 = [EAIntroPage page];
-    page1.title = @"Find the gay community";
-    page1.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page1.title = NSLocalizedString(@"intro.1",@"Find the gay community");
+    page1.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:kPMLIntroTextSize];
     page1.bgImage = [UIImage imageNamed:@"intro-bg-1.jpg"];
     
     EAIntroPage *page2 = [EAIntroPage page];
-    page2.title = @"Find where everybody is";
-    page2.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page2.title = NSLocalizedString(@"intro.2",@"Find where everybody is");
+    page2.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:kPMLIntroTextSize];
     page2.bgImage = [UIImage imageNamed:@"intro-bg-2.jpg"];
     
     EAIntroPage *page3 = [EAIntroPage page];
-    page3.title = @"Check in and get deals";
-    page3.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:24];
+    page3.title = NSLocalizedString(@"intro.3",@"Check in and get deals");
+    page3.titleFont = [UIFont fontWithName:PML_FONT_DEFAULT_LIGHT size:kPMLIntroTextSize];
     page3.bgImage = [UIImage imageNamed:@"intro-bg-4.jpg"];
     
     EAIntroPage *page4 = [EAIntroPage page];

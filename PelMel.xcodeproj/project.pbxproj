@@ -1260,7 +1260,6 @@
 		B4D56083160B673F003A738E /* PelMel-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PelMel-Prefix.pch"; sourceTree = "<group>"; };
 		B4D56084160B673F003A738E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B4D56085160B673F003A738E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		B4D56088160B673F003A738E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		B4D56098160B673F003A738E /* PelMelTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PelMelTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B4D56099160B673F003A738E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		B4D560A1160B673F003A738E /* PelMelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PelMelTests-Info.plist"; sourceTree = "<group>"; };
@@ -1302,7 +1301,8 @@
 		B4E91221169B226F005D3CAF /* TogaytherTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TogaytherTabBarController.h; sourceTree = "<group>"; };
 		B4E91222169B226F005D3CAF /* TogaytherTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TogaytherTabBarController.m; sourceTree = "<group>"; };
 		B4E91224169B23D0005D3CAF /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		B4EDFED61BD9A88F00F6B41A /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		B4EDFEDF1BDA8FFC00F6B41A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		B4EDFEE01BDA911600F6B41A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		B4EECADA162C15F9005F80DE /* UITableGridImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITableGridImageCell.h; sourceTree = "<group>"; };
 		B4EECADB162C15F9005F80DE /* UITableGridImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UITableGridImageCell.m; sourceTree = "<group>"; };
 		B4EECAEA162EB6ED005F80DE /* ClosableBoxView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ClosableBoxView.xib; sourceTree = "<group>"; };
@@ -3569,7 +3569,7 @@
 		B4D56087160B673F003A738E /* MainStoryboard_iPhone.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B4D56088160B673F003A738E /* en */,
+				B4EDFEE01BDA911600F6B41A /* Base */,
 			);
 			name = MainStoryboard_iPhone.storyboard;
 			sourceTree = "<group>";
@@ -3585,7 +3585,7 @@
 		B4EDFED51BD9A88F00F6B41A /* MainStoryboard_iPad.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				B4EDFED61BD9A88F00F6B41A /* en */,
+				B4EDFEDF1BDA8FFC00F6B41A /* Base */,
 			);
 			name = MainStoryboard_iPad.storyboard;
 			sourceTree = "<group>";

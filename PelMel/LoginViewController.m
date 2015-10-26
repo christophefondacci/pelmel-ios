@@ -227,12 +227,17 @@
             return 0;
     }
 }
-
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    cell.backgroundColor = [UIColor clearColor];
+    cell.opaque=NO;
+    cell.contentView.backgroundColor = [UIColor clearColor];
+    cell.contentView.opaque=NO;
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
+
 //    NSLog(@"Section %ld - row %ld", (long)indexPath.section,(long)indexPath.row );
     switch(_loginMode) {
 //        case kSectionSocial:

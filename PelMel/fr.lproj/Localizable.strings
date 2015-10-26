@@ -295,6 +295,9 @@
 "hint.reset.msg"="Les conseils ont été réactivés et seront affichés à nouveau pendant que vous utilisez l'application.";
 "hint.snippet"="Tirez cette section vers le HAUT pour voir plus d'informations sur ce lieu";
 "hint.snippet.events"="Tirez cette section vers le HAUT pour voir les évènements à venir et les lieux populaires autour de vous";
+"intro.1"="Trouvez la communauté gay";
+"intro.2"="Trouvez où tout le monde est";
+"intro.3"="Localisez-vous et accédez à des promos";
 "language.fr"="Français";
 "language.en"="Anglais";
 "language.es"="Espagnol";
@@ -320,7 +323,7 @@
 "login.field.email"="Email";
 "login.field.password"="Mot de passe";
 "login.field.pseudo"="Pseudo";
-"login.forgotPassword"="Mot de pass oublié ?";
+"login.forgotPassword"="Mot de passe oublié ?";
 "login.forgotPassword.wait"="Envoi email";
 "login.forgotPasswordMissingEmailTitle"="Email requis";
 "login.forgotPasswordMissingEmail"="Veuillez renseigner votre adresse email pour que nous puissions vous envoyez un lien de changement de mot de passe.";
@@ -465,7 +468,7 @@
 
 "purchase.claim.button"="Réclamez-le pour %@ / mois";
 "purchase.claim.header"="Êtes-vous le";
-"purchase.claim.header2"="Propriétaire ?";
+"purchase.claim.header2"="propriétaire ?";
 "purchase.claim.headerPlaceTypeTemplate"="%@ ?";
 "purchase.claim.intro"="Déclarez-vous propriétaire de ce lieu et :";
 "purchase.claim.feature.0"="Accédez à vos statistiques";
@@ -475,13 +478,15 @@
 "purchase.claim.feature.4"="1€ gagné sur chaque abonnement premium créé dans votre lieu pendant 6 mois";
 "purchase.claim.paymentComplete"="Votre abonnement a été activé. Merci d'avoir revendiqué votre établissement sur PELMEL, vous pouvez désormais accéder à vos statistiques, envoyer des messages à vos clients passés et configurer des promotions !";
 "purchase.claim.paymentCompleteTitle"="Congratulations!";
+"purchase.paymentErrorTitle"="Echec Paiement";
+"purchase.paymentError"="Le processus de paiement a été interrompu, l'inscription a été annulée";
 "purchase.terms"="L'abonnement est valide pendant 30 jours et se renouvellera automatiquement sauf si vous désactivez le renouvellement au minimum 24 heures avant la fin de la période en cours. Le paiement sera effectué sur votre compte Apple iTunes. L'abonnement peut être modifié et le renouvellement peut être désactivé en allant dans les paramètres de votre compte Apple après achat (paramètres > App Store > Votre identifiant > Voir > Abonnements > Gérer). Toute période commencée est due, aucune annulation ou remboursement de la période en cours n'est possible.";
 "purchase.premium.alreadyMemberText"="Nous sommes heureux de vous compter parmi nos clients Premium! Vous pouvez arrêter votre abonnement à tout moment en allant dans la section Paramètres de votre compte iTunes.";
 "purchase.premium.alreadyMemberTitle"="Utilisateur Premium";
-"purchase.premium.button"="Passez premium pour %@ / month";
+"purchase.premium.button"="Devenez premium pour %@ / month";
 "purchase.premium.header"="Devenez";
 "purchase.premium.headerSubtitle"="Premium";
-"purchase.premium.intro"="Devenez un utilisateur premium et:";
+"purchase.premium.intro"="Les utilisateurs premiums peuvent accéder à des promotions !";
 "purchase.premium.feature.0"="Déverrouiller les promotions !";
 "purchase.premium.paymentComplete"="Votre abonnement a été activé. Merci de faire partie de nos membres Premium !";
 "purchase.premium.paymentCompleteTitle"="Félicitations !";

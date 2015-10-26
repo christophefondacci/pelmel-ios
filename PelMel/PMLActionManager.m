@@ -394,6 +394,9 @@
 -(void)registerReportForDeletionAction {
     PopupAction *reportForDeletionAction = [[PopupAction alloc] initWithCommand:^(CALObject *object) {
         NSLog(@"REPORT FOR DELETION");
+        if(object == nil) {
+            return;
+        }
         NSString *objectType = [object.key substringToIndex:4];
         NSString *titleKey =[NSString stringWithFormat:@"action.report.deletion.title.%@",objectType];
         NSString *title = NSLocalizedString(titleKey, @"title");
@@ -1116,7 +1119,7 @@
             }];
             
         } else if(alertView == _reportConfirmAlertView) {
-            [_dataService sendReportFor:self.modalActionObject reportType:_reportConfirmAlertView.tag];
+            [_dataService sendReportFor:self.modalActionObject reportType:(PMLReportType)_reportConfirmAlertView.tag];
         } else if(alertView == _privateNetworkAlertView) {
             [self privateNetworkAction:_modalPrivateNetworkAction onUser:(User*)_modalActionObject];
         } else if(alertView == _useDealCheckinAlertView) {

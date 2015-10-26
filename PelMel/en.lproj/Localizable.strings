@@ -296,6 +296,9 @@
 "hint.reset.msg"="Hints have been re-enabled and will be displayed again while you use the app.";
 "hint.snippet"="Pull UP this section to see more information about this place";
 "hint.snippet.events"="Pull UP this section to see upcoming events and top hangouts around you";
+"intro.1"="Find the gay community";
+"intro.2"="Find where everybody is";
+"intro.3"="Check in and get deals";
 "language.fr"="French";
 "language.en"="English";
 "language.es"="Spanish";
@@ -470,17 +473,18 @@
 
 "purchase.claim.button"="Claim for %@ / month";
 "purchase.claim.header"="Is this your";
-"purchase.claim.header2"="Business?";
+"purchase.claim.header2"="business?";
 "purchase.claim.headerPlaceTypeTemplate"="%@?";
 "purchase.claim.intro"="Claim this business and:";
 "purchase.claim.feature.0"="Access real-time analytics";
 "purchase.claim.feature.1"="Lock your information";
 "purchase.claim.feature.2"="Offer deals to get more clients";
-"purchase.claim.feature.3"="Weekly message your customers";
+"purchase.claim.feature.3"="Message your customers weekly";
 "purchase.claim.feature.4"="Get $1 on each premium sign-up at your place for 6 months";
 "purchase.claim.paymentComplete"="Your subscription has been activated. Thank you for claiming your business on PELMEL, you can now access your analytics, message your past clients and setup deals!";
 "purchase.claim.paymentCompleteTitle"="Congratulations!";
-
+"purchase.paymentErrorTitle"="Payment failure";
+"purchase.paymentError"="The payment process was interrupted, subscription has been cancelled.";
 "purchase.terms"="Subscription valid for 30 days and will auto-renew unless auto-renew is turned off at least 24 hours before the end of the current period. Payment will be charged to your Apple iTunes account. Subscriptions may be managed and auto-renewal may be turned off by going to the Account Settings section of your iTunes account after purchase. No cancellation of the current subscription is allowed during the active subscription period.";
 
 "purchase.premium.alreadyMemberText"="We are happy to have you as a premium user! You can revoke your subscription at any time by going to the Account Settings section of your iTunes account.";
@@ -579,7 +583,7 @@ Don't be scared, we only need an email, a password, a nickname and your birth da
 
 
 "snippet.activity"="Nearby users";
-"snippet.button.claim"="Claim it and make money!";
+"snippet.button.claim"="Claim this place!";
 "snippet.button.claim.subtitle"="Learn More";
 "snippet.button.report"="Report or mark as closed";
 "snippet.button.reportForDeletion"="Request removal";
